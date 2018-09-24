@@ -19,4 +19,11 @@ namespace Scene
 			sf::Time time) = 0;
 		virtual void onDraw() = 0;
 	};
+	
+	enum class Type
+	{
+		Boot,
+		Win,
+		SFML
+	};
 }

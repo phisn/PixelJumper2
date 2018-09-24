@@ -3,8 +3,11 @@
 // Used by Client.rc
 //
 #define IDD_DEBUG_DIALOG                101
+#define IDD_TEST_DIALOG                 101
 #define IDC_DEBUG_TEST                  1001
+#define IDC_TEST_PUSH                   1001
 #define IDC_DEBUG_COUNTER               1002
+#define IDC_TEST_COUNTER                1002
 
 // Next default values for new objects
 // 
