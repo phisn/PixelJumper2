@@ -26,7 +26,8 @@ namespace Scene
 			sf::Event event) override;
 		void onLogic(
 			sf::Time time) override;
-		void onDraw() override;
+		void onDraw(
+			::Device::Window* window) override;
 	protected:
 		virtual INT_PTR windowProcess(
 			HWND window,

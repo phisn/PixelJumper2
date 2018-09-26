@@ -69,9 +69,6 @@
     <ClCompile Include="source\scene\PixelJumper\PixelJumperScene.cpp">
       <Filter>source\scene\PixelJumper</Filter>
     </ClCompile>
-    <ClCompile Include="source\scene\DebugMenuScene.cpp">
-      <Filter>source\scene</Filter>
-    </ClCompile>
     <ClCompile Include="source\device\InputDevice.cpp">
       <Filter>source\devices</Filter>
     </ClCompile>
@@ -80,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="source\device\WindowDevice.cpp">
       <Filter>source\devices</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\DebugMenuScene.cpp">
+      <Filter>source\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

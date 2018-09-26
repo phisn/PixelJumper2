@@ -1,8 +1,9 @@
 #pragma once
-class PixelJumperContext
-{
-public:
-	PixelJumperContext();
-	~PixelJumperContext();
-};
 
+namespace PixelJumper
+{
+	class Context
+	{
+	public:
+	};
+}

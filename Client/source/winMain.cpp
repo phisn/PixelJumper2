@@ -1,4 +1,5 @@
-#include "scene/TestMenuScene.h"
+#include "scene/DebugMenuScene.h"
+#include <Client/source/device/RootDevice.h>
 
 int WINAPI wWinMain(
 	HINSTANCE hInstance, 
@@ -6,12 +7,25 @@ int WINAPI wWinMain(
 	PWSTR pCmdLine, 
 	int nCmdShow)
 {
-	Scene::Handler::pushScene( new Scene::TestMenu(0) );
-
-	while (Scene::Handler::getSceneSize() > 0)
+Retry:
+	Device::Root root;
+	if (root.initialize())
 	{
-		Scene::Handler::onDraw();
+		const int result = MessageBoxW(
+			NULL,
+			L"Failed to initialize Root Device\nDo you want to reset graphic settings?",
+			L"Error",
+			MB_YESNO);
+
+		if (result == IDYES)
+		{
+			// Reset settings
+
+			goto Retry;
+		}
+
+		return 1;
 	}
 
-	return 0;
+	return root.start();
 }

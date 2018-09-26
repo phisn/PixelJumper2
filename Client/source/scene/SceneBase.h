@@ -1,9 +1,17 @@
 #pragma once
 
+#include <Client/source/device/WindowDevice.h>
 #include <SFML/Graphics.hpp>
 
 namespace Scene
 {
+	enum class Type
+	{
+		Boot,
+		Win,
+		SFML
+	};
+
 	class Base
 	{
 	public:
@@ -17,13 +25,14 @@ namespace Scene
 			sf::Event event) = 0;
 		virtual void onLogic(
 			sf::Time time) = 0;
-		virtual void onDraw() = 0;
-	};
-	
-	enum class Type
-	{
-		Boot,
-		Win,
-		SFML
+		virtual void onDraw(
+			::Device::Window* window) = 0;
+
+		Type getType() const
+		{
+			return type;
+		}
+	private:
+		Type type;
 	};
 }

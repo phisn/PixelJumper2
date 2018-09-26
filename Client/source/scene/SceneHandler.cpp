@@ -49,9 +49,10 @@ namespace Scene
 		return true;
 	}
 
-	void Handler::onDraw()
+	void Handler::onDraw(
+		::Device::Window* window)
 	{
-		scenes.back()->onDraw();
+		scenes.back()->onDraw(window);
 	}
 
 	void Handler::onLogic(
@@ -69,5 +70,10 @@ namespace Scene
 	size_t Handler::getSceneSize()
 	{
 		return scenes.size();
+	}
+
+	Type Handler::getCurrentType()
+	{
+
 	}
 }

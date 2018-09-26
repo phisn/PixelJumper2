@@ -11,7 +11,23 @@ namespace Scene
 	{
 	public:
 		PixelJumper(
-			PixelJumperContext context);
-		~PixelJumper();
+			::PixelJumper::Context* context)
+			:
+			context(context)
+		{
+		}
+
+		bool onCreate() override;
+		bool onRemove() override;
+		void onShow() override;
+		void onHide() override;
+		void onEvent(
+			sf::Event event) override;
+		void onLogic(
+			sf::Time time) override;
+		void onDraw(
+			::Device::Window* window) override;
+	private:
+		::PixelJumper::Context* context;
 	};
 }

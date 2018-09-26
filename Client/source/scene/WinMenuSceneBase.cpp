@@ -2,61 +2,65 @@
 
 #include <iostream>
 
-void Scene::WinMenuBase::onShow()
+namespace Scene
 {
-	// Ignore
-}
-
-void Scene::WinMenuBase::onHide()
-{
-	DestroyWindow(window);
-}
-
-void Scene::WinMenuBase::onEvent(
-	sf::Event event)
-{
-	// Ignore
-}
-
-void Scene::WinMenuBase::onLogic(
-	sf::Time time)
-{
-	// Ignore
-}
-
-void Scene::WinMenuBase::onDraw()
-{
-	static HINSTANCE instance = GetModuleHandle(NULL);
-
-	window = NULL;
-	currentMenu = this;
-
-	DialogBoxParamW(
-		instance,
-		MAKEINTRESOURCE(resourceId),
-		NULL,
-		[](HWND window,
-			UINT message,
-			WPARAM wparam,
-			LPARAM lparam)
-		-> INT_PTR
+	void WinMenuBase::onShow()
 	{
-		if (WinMenuBase::currentMenu->window == NULL)
-		{
-			WinMenuBase::currentMenu->window = window;
-		}
+		// Ignore
+	}
 
-		if (message == WM_CLOSE && Scene::Handler::popScene())
-		{
-			return NULL;
-		}
+	void WinMenuBase::onHide()
+	{
+		DestroyWindow(window);
+	}
 
-		return WinMenuBase::currentMenu->windowProcess(
-			window,
-			message,
-			wparam,
-			lparam);
-	}, 0);
+	void WinMenuBase::onEvent(
+		sf::Event event)
+	{
+		// Ignore
+	}
+
+	void WinMenuBase::onLogic(
+		sf::Time time)
+	{
+		// Ignore
+	}
+
+	void WinMenuBase::onDraw(
+		::Device::Window* window)
+	{
+		static HINSTANCE instance = GetModuleHandle(NULL);
+
+		window = NULL;
+		currentMenu = this;
+
+		DialogBoxParamW(
+			instance,
+			MAKEINTRESOURCE(resourceId),
+			NULL,
+			[](HWND window,
+				UINT message,
+				WPARAM wparam,
+				LPARAM lparam)
+			-> INT_PTR
+		{
+			if (WinMenuBase::currentMenu->window == NULL)
+			{
+				WinMenuBase::currentMenu->window = window;
+			}
+
+			if (message == WM_CLOSE && Handler::popScene())
+			{
+				return NULL;
+			}
+
+			return WinMenuBase::currentMenu->windowProcess(
+				window,
+				message,
+				wparam,
+				lparam);
+		}, 0);
+	}
+
+	WinMenuBase* WinMenuBase::currentMenu = NULL;
 }
-
-Scene::WinMenuBase* Scene::WinMenuBase::currentMenu = NULL;

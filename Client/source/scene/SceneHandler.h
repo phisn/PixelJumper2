@@ -12,12 +12,14 @@ namespace Scene
 			Base* scene);
 		bool popScene();
 
-		void onDraw();
+		void onDraw(
+			::Device::Window* window);
 		void onLogic(
 			sf::Time time);
 		void onEvent(
 			sf::Event event);
 
 		size_t getSceneSize();
+		Type getCurrentType();
 	}
 }
