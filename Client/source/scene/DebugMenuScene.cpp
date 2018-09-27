@@ -22,9 +22,9 @@ namespace Scene
 		switch (message)
 		{
 		case WM_COMMAND:
-			if (LOWORD(wparam) == IDC_TEST_PUSH)
+			if (LOWORD(wparam) == IDC_DEBUG_RUN_SP)
 			{
-				Handler::pushScene(createSinglePlayerScene());
+				Handler::pushScene( createSinglePlayerScene() );
 			}
 
 			break;
@@ -39,7 +39,7 @@ namespace Scene
 		return NULL;
 	}
 
-	Scene::Base* DebugMenu::createSinglePlayerScene()
+	Base* DebugMenu::createSinglePlayerScene()
 	{
 		return new PixelJumper(&context);
 	}

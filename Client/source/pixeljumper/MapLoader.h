@@ -2,8 +2,10 @@
 
 namespace PixelJumper
 {
-	class Context
+	class MapLoader
 	{
 	public:
+		MapLoader();
+		~MapLoader();
 	};
 }

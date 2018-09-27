@@ -92,7 +92,11 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -117,20 +121,30 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\RootDevice.h" />
     <ClInclude Include="source\device\WindowDevice.h" />
+    <ClInclude Include="source\pixeljumper\LocalPlayer.h" />
+    <ClInclude Include="source\pixeljumper\Map.h" />
+    <ClInclude Include="source\pixeljumper\MapLoader.h" />
+    <ClInclude Include="source\pixeljumper\PixelJumperContext.h" />
+    <ClInclude Include="source\pixeljumper\Player.h" />
+    <ClInclude Include="source\pixeljumper\RemotePlayer.h" />
+    <ClInclude Include="source\scene\BootScene.h" />
     <ClInclude Include="source\scene\DebugMenuScene.h" />
-    <ClInclude Include="source\scene\PixelJumper\PixelJumperContext.h" />
-    <ClInclude Include="source\scene\PixelJumper\PixelJumperScene.h" />
+    <ClInclude Include="source\scene\PixelJumperScene.h" />
     <ClInclude Include="source\scene\TestMenuScene.h" />
     <ClInclude Include="source\scene\WinMenuSceneBase.h" />
     <ClInclude Include="source\scene\SceneBase.h" />
@@ -140,9 +154,15 @@
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\RootDevice.cpp" />
     <ClCompile Include="source\device\WindowDevice.cpp" />
+    <ClCompile Include="source\pixeljumper\LocalPlayer.cpp" />
+    <ClCompile Include="source\pixeljumper\Map.cpp" />
+    <ClCompile Include="source\pixeljumper\MapLoader.cpp" />
+    <ClCompile Include="source\pixeljumper\PixelJumperContext.cpp" />
+    <ClCompile Include="source\pixeljumper\Player.cpp" />
+    <ClCompile Include="source\pixeljumper\RemotePlayer.cpp" />
+    <ClCompile Include="source\scene\BootScene.cpp" />
     <ClCompile Include="source\scene\DebugMenuScene.cpp" />
-    <ClCompile Include="source\scene\PixelJumper\PixelJumperContext.cpp" />
-    <ClCompile Include="source\scene\PixelJumper\PixelJumperScene.cpp" />
+    <ClCompile Include="source\scene\PixelJumperScene.cpp" />
     <ClCompile Include="source\scene\TestMenuScene.cpp" />
     <ClCompile Include="source\scene\WinMenuSceneBase.cpp" />
     <ClCompile Include="source\scene\SceneHandler.cpp" />

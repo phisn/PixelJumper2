@@ -3,8 +3,8 @@
 #include <Client/resource.h>
 #include <Client/source/scene/WinMenuSceneBase.h>
 
-#include <Client/source/scene/PixelJumper/PixelJumperContext.h>
-#include <Client/source/scene/PixelJumper/PixelJumperScene.h>
+#include <Client/source/PixelJumper/PixelJumperContext.h>
+#include <Client/source/scene/PixelJumperScene.h>
 
 namespace Scene
 {
@@ -15,7 +15,7 @@ namespace Scene
 	public:
 		DebugMenu()
 			:
-			WinMenuBase(IDD_DEBUG_DIALOG)
+			WinMenuBase(IDD_DEBUG_MENU)
 		{
 		}
 
@@ -29,6 +29,6 @@ namespace Scene
 			LPARAM lparam) override;
 
 		Base* createSinglePlayerScene();
-		::PixelJumper::Context context;
+		PJ::Context context;
 	};
 }

@@ -4,12 +4,12 @@ namespace Scene
 {
 	bool PixelJumper::onCreate()
 	{
-		return false;
+		return true;
 	}
 
 	bool PixelJumper::onRemove()
 	{
-		return false;
+		return true;
 	}
 
 	void PixelJumper::onShow()
@@ -20,16 +20,18 @@ namespace Scene
 	{
 	}
 
-	void PixelJumper::onEvent(sf::Event event)
+	void PixelJumper::onEvent(
+		sf::Event event)
 	{
 	}
 
-	void PixelJumper::onLogic(sf::Time time)
+	void PixelJumper::onLogic(
+		sf::Time time)
 	{
 	}
 
 	void PixelJumper::onDraw(
-		::Device::Window* window)
+		DEVICE::Window* window)
 	{
 	}
 }

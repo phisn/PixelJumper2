@@ -27,7 +27,7 @@ namespace Scene
 	}
 
 	void WinMenuBase::onDraw(
-		::Device::Window* window)
+		DEVICE::Window* window)
 	{
 		static HINSTANCE instance = GetModuleHandle(NULL);
 

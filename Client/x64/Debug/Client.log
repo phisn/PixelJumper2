@@ -1,2 +1,3 @@
 ﻿  winMain.cpp
-  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe
+c:\users\phisn\source\repos\pixeljumper2\client\source\winmain.cpp(44): warning C4715: "wWinMain": Nicht alle Codepfade geben einen Wert zurück.
+LINK : fatal error LNK1168: "C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe" kann nicht zum Schreiben geöffnet werden.

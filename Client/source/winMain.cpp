@@ -9,7 +9,7 @@ int WINAPI wWinMain(
 {
 Retry:
 	Device::Root root;
-	if (root.initialize())
+	if (!root.initialize())
 	{
 		const int result = MessageBoxW(
 			NULL,
@@ -27,5 +27,18 @@ Retry:
 		return 1;
 	}
 
-	return root.start();
+	int result;
+
+	try
+	{
+		result = root.start();
+	}
+	catch (...)
+	{
+		MessageBox(
+			NULL,
+			L"Catched exception",
+			L"Error",
+			MB_OK);
+	}
 }

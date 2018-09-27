@@ -74,6 +74,6 @@ namespace Scene
 
 	Type Handler::getCurrentType()
 	{
-
+		return scenes.back()->getType();
 	}
 }

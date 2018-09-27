@@ -14,7 +14,13 @@ namespace Device
 			return false;
 		}
 
+		if (!Scene::Handler::pushScene(
+				new Scene::Boot))
+		{
+			return false;
+		}
 
+		return true;
 	}
 
 	int Root::start()
@@ -52,5 +58,6 @@ namespace Device
 			}
 		}
 
+		return 0;
 	}
 }

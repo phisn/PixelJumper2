@@ -15,6 +15,7 @@ namespace Scene
 		WinMenuBase(
 			const int resourceId)
 			:
+			Base(Type::Win),
 			resourceId(resourceId)
 		{
 		}
@@ -27,7 +28,7 @@ namespace Scene
 		void onLogic(
 			sf::Time time) override;
 		void onDraw(
-			::Device::Window* window) override;
+			DEVICE::Window* window) override;
 	protected:
 		virtual INT_PTR windowProcess(
 			HWND window,

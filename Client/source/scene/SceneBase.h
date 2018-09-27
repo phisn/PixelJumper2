@@ -3,6 +3,10 @@
 #include <Client/source/device/WindowDevice.h>
 #include <SFML/Graphics.hpp>
 
+#ifndef SCENE
+#define SCENE ::Scene
+#endif
+
 namespace Scene
 {
 	enum class Type
@@ -15,6 +19,12 @@ namespace Scene
 	class Base
 	{
 	public:
+		Base(Type type)
+			:
+			type(type)
+		{
+		}
+
 		virtual bool onCreate() = 0;
 		virtual bool onRemove() = 0;
 

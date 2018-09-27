@@ -2,6 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 
+#ifndef DEVICE
+#define DEVICE ::Device
+#endif
+
 namespace Device
 {
 	class Window

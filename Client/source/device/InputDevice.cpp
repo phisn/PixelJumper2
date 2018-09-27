@@ -4,6 +4,6 @@ namespace Device
 {
 	bool Input::initialize()
 	{
-		return false;
+		return true;
 	}
 }

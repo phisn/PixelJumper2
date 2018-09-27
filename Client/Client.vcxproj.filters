@@ -10,11 +10,11 @@
     <Filter Include="source\scene">
       <UniqueIdentifier>{b1781f27-0689-4c66-a4c6-9a3b93e5b872}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\scene\PixelJumper">
-      <UniqueIdentifier>{3f956eb6-260f-43e4-9488-f0fbbcda5410}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\devices">
       <UniqueIdentifier>{76a967fe-b88e-4dbb-92c0-0082c338f8a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\PixelJumper">
+      <UniqueIdentifier>{3f956eb6-260f-43e4-9488-f0fbbcda5410}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,12 +31,6 @@
     <ClInclude Include="source\scene\TestMenuScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\PixelJumper\PixelJumperContext.h">
-      <Filter>source\scene\PixelJumper</Filter>
-    </ClInclude>
-    <ClInclude Include="source\scene\PixelJumper\PixelJumperScene.h">
-      <Filter>source\scene\PixelJumper</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\DebugMenuScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
@@ -48,6 +42,30 @@
     </ClInclude>
     <ClInclude Include="source\device\WindowDevice.h">
       <Filter>source\devices</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\BootScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\pixeljumper\PixelJumperContext.h">
+      <Filter>source\PixelJumper</Filter>
+    </ClInclude>
+    <ClInclude Include="source\pixeljumper\LocalPlayer.h">
+      <Filter>source\PixelJumper</Filter>
+    </ClInclude>
+    <ClInclude Include="source\pixeljumper\Player.h">
+      <Filter>source\PixelJumper</Filter>
+    </ClInclude>
+    <ClInclude Include="source\pixeljumper\RemotePlayer.h">
+      <Filter>source\PixelJumper</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\PixelJumperScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\pixeljumper\MapLoader.h">
+      <Filter>source\PixelJumper</Filter>
+    </ClInclude>
+    <ClInclude Include="source\pixeljumper\Map.h">
+      <Filter>source\PixelJumper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -63,12 +81,6 @@
     <ClCompile Include="source\scene\TestMenuScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\scene\PixelJumper\PixelJumperContext.cpp">
-      <Filter>source\scene\PixelJumper</Filter>
-    </ClCompile>
-    <ClCompile Include="source\scene\PixelJumper\PixelJumperScene.cpp">
-      <Filter>source\scene\PixelJumper</Filter>
-    </ClCompile>
     <ClCompile Include="source\device\InputDevice.cpp">
       <Filter>source\devices</Filter>
     </ClCompile>
@@ -80,6 +92,30 @@
     </ClCompile>
     <ClCompile Include="source\scene\DebugMenuScene.cpp">
       <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\BootScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\pixeljumper\PixelJumperContext.cpp">
+      <Filter>source\PixelJumper</Filter>
+    </ClCompile>
+    <ClCompile Include="source\pixeljumper\LocalPlayer.cpp">
+      <Filter>source\PixelJumper</Filter>
+    </ClCompile>
+    <ClCompile Include="source\pixeljumper\Player.cpp">
+      <Filter>source\PixelJumper</Filter>
+    </ClCompile>
+    <ClCompile Include="source\pixeljumper\RemotePlayer.cpp">
+      <Filter>source\PixelJumper</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\PixelJumperScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\pixeljumper\Map.cpp">
+      <Filter>source\PixelJumper</Filter>
+    </ClCompile>
+    <ClCompile Include="source\pixeljumper\MapLoader.cpp">
+      <Filter>source\PixelJumper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
