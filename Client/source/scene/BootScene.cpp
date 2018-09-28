@@ -41,8 +41,7 @@ namespace Scene
 	{
 	}
 
-	void Boot::onDraw(
-		::Device::Window * window)
+	void Boot::onDraw()
 	{
 	}
 }

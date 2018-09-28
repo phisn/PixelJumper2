@@ -4,12 +4,7 @@ namespace Device
 {
 	bool Root::initialize()
 	{
-		if (!window.initialize())
-		{
-			return false;
-		}
-
-		if (!input.initialize())
+		if (!Window::initialize())
 		{
 			return false;
 		}
@@ -33,11 +28,11 @@ namespace Device
 			switch (Scene::Handler::getCurrentType())
 			{
 			case Scene::Type::Boot:
-				Scene::Handler::onDraw(NULL);
+				Scene::Handler::onDraw();
 
 				break;
 			case Scene::Type::SFML:
-				while (window.pollEvent(&event))
+				while (Window::pollEvent(&event))
 				{
 					Scene::Handler::onEvent(event);
 				}
@@ -45,19 +40,39 @@ namespace Device
 				Scene::Handler::onLogic(
 					clock.restart());
 
-				window.clear();
-				Scene::Handler::onDraw(
-					&window);
-				window.display();
+				Window::clear();
+				Scene::Handler::onDraw();
+				Window::display();
 
 				break;
 			case Scene::Type::Win:
-				Scene::Handler::onDraw(NULL);
+				Scene::Handler::onDraw();
 
 				break;
 			}
 		}
 
 		return 0;
+	}
+
+	void Root::onTypeChanged(
+		Scene::Type lastType,
+		Scene::Type currentType)
+	{
+		switch (lastType)
+		{
+		case Scene::Type::SFML:
+			Window::hide();
+
+			break;
+		}
+
+		switch (currentType)
+		{
+		case Scene::Type::SFML:
+			Window::show();
+
+			break;
+		}
 	}
 }

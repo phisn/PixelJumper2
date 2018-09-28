@@ -2,31 +2,31 @@
 
 #include "Player.h"
 
+#include <Client/source/device/InputDevice.h>
+
 #ifndef PJ
 #define PJ ::PixelJumper
 #endif
 
 namespace PixelJumper
 {
-	enum class Movement
-	{
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT
-	};
-
 	class LocalPlayer
 		:
 		public Player
 	{
 	public:
-		LocalPlayer();
-		~LocalPlayer();
+		LocalPlayer(const Device::Input input)
+			:
+			input(input)
+		{
+		}
 
-		virtual void onUpdate(
-			sf::Time time) = 0;
-		virtual void onMovement(
-			Movement movement) = 0;
+		void onUpdate(
+			sf::Time time)
+		{
+
+		}
+	private:
+		Device::Input input;
 	};
 }

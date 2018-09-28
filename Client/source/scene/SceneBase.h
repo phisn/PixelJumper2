@@ -35,8 +35,7 @@ namespace Scene
 			sf::Event event) = 0;
 		virtual void onLogic(
 			sf::Time time) = 0;
-		virtual void onDraw(
-			::Device::Window* window) = 0;
+		virtual void onDraw() = 0;
 
 		Type getType() const
 		{

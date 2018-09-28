@@ -2,10 +2,13 @@
 
 #include "SceneBase.h"
 
+#include <functional>
 #include <vector>
 
 namespace Scene
 {
+	typedef std::function<void(Type, Type)> OnTypeChanged;
+
 	namespace Handler
 	{
 		bool pushScene(
@@ -21,5 +24,8 @@ namespace Scene
 
 		size_t getSceneSize();
 		Type getCurrentType();
+
+		void setOnTypeChanged(
+			OnTypeChanged onTypeChanged);
 	}
 }

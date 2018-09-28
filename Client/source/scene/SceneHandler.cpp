@@ -5,6 +5,9 @@ namespace Scene
 {
 	namespace
 	{
+		Type lastType = Type::Boot;
+		OnTypeChanged onTypeChanged;
+		
 		std::vector<Base*> scenes;
 	}
 
@@ -21,6 +24,19 @@ namespace Scene
 		if (scenes.size() > 0)
 		{
 			scenes.back()->onHide();
+		}
+
+		if (scene->getType() != lastType)
+		{
+			const Type currentType =
+				scene->getType();
+			if (onTypeChanged)
+			{
+				onTypeChanged(
+					lastType,
+					currentType);
+			}
+			lastType = currentType;
 		}
 
 		scenes.push_back(scene);
@@ -43,6 +59,16 @@ namespace Scene
 
 		if (scenes.size() > 0)
 		{
+			if (scenes.back()->getType() != lastType)
+			{
+				const Type currentType = 
+					scenes.back()->getType();
+				onTypeChanged(
+					lastType,
+					currentType);
+				lastType = currentType;
+			}
+
 			scenes.back()->onShow();
 		}
 
@@ -75,5 +101,11 @@ namespace Scene
 	Type Handler::getCurrentType()
 	{
 		return scenes.back()->getType();
+	}
+
+	void Handler::setOnTypeChanged(
+		OnTypeChanged onTypeChanged)
+	{
+		::Scene::onTypeChanged = onTypeChanged;
 	}
 }

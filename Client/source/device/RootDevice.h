@@ -15,14 +15,25 @@
 
 namespace Device
 {
+	namespace Root
+	{
+		bool initialize();
+		int start();
+
+		void onTypeChanged(
+			Scene::Type lastType,
+			Scene::Type currentType);
+	}
+
 	class Root
 	{
 	public:
 		bool initialize();
 		int start();
 
+		void onTypeChanged(
+			Scene::Type lastType,
+			Scene::Type currentType);
 	private:
-		Input input;
-		Window window;
 	};
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Settings.h"
+
 #include <SFML/Graphics.hpp>
 
 #ifndef DEVICE
@@ -8,30 +10,29 @@
 
 namespace Device
 {
-	class Window
+	namespace Window
 	{
-	public:
 		bool initialize();
+
+		void hide();
+		void show();
 
 		void display();
 		void clear();
+
+		void draw(sf::Drawable& drawble)
+		{
+			window.draw(drawble);
+		}
+
 		bool pollEvent(sf::Event* event);
-	private:
-		sf::RenderWindow window;
-	};
 
-	inline void Window::display()
-	{
-		window.display();
-	}
+		bool loadVideoSettings();
+		bool saveVideoSettings();
 
-	inline void Window::clear()
-	{
-		window.clear();
-	}
-
-	inline bool Window::pollEvent(sf::Event* event)
-	{
-		return window.pollEvent(*event);
+		Settings::Video* getVideoSettingsP()
+		{
+			return &video;
+		}
 	}
 }

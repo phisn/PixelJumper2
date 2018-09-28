@@ -28,8 +28,7 @@ namespace Scene
 			sf::Event event) override;
 		void onLogic(
 			sf::Time time) override;
-		void onDraw(
-			::Device::Window* window) override;
+		void onDraw() override;
 	};
 }
 

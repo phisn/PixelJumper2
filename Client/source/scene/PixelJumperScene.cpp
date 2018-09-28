@@ -4,6 +4,10 @@ namespace Scene
 {
 	bool PixelJumper::onCreate()
 	{
+		shape.setFillColor(sf::Color::Red);
+		shape.setPosition(10, 10);
+		shape.setSize(sf::Vector2f(100, 100));
+
 		return true;
 	}
 
@@ -23,6 +27,11 @@ namespace Scene
 	void PixelJumper::onEvent(
 		sf::Event event)
 	{
+		switch (event.type)
+		{
+		case sf::Event::Resized:
+
+		}
 	}
 
 	void PixelJumper::onLogic(
@@ -30,8 +39,8 @@ namespace Scene
 	{
 	}
 
-	void PixelJumper::onDraw(
-		DEVICE::Window* window)
+	void PixelJumper::onDraw()
 	{
+		DEVICE::Window::draw(shape);
 	}
 }

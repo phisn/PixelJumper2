@@ -135,6 +135,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\RootDevice.h" />
+    <ClInclude Include="source\device\Settings.h" />
     <ClInclude Include="source\device\WindowDevice.h" />
     <ClInclude Include="source\pixeljumper\LocalPlayer.h" />
     <ClInclude Include="source\pixeljumper\Map.h" />
@@ -151,7 +152,6 @@
     <ClInclude Include="source\scene\SceneHandler.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\RootDevice.cpp" />
     <ClCompile Include="source\device\WindowDevice.cpp" />
     <ClCompile Include="source\pixeljumper\LocalPlayer.cpp" />

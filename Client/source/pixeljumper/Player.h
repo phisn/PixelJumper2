@@ -11,7 +11,15 @@ namespace PixelJumper
 	class Player
 	{
 	public:
-		virtual void draw(
-			DEVICE::Window* window) = 0;
+		Player(sf::Color color)
+		{
+			shape.setFillColor(color);
+		}
+		
+		void draw()
+		{
+		}
+	private:
+		sf::RectangleShape shape;
 	};
 }
