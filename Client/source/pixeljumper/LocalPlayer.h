@@ -22,7 +22,7 @@ namespace PixelJumper
 		}
 
 		void onUpdate(
-			sf::Time time)
+			sf::Time time) override
 		{
 
 		}

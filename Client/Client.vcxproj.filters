@@ -37,9 +37,6 @@
     <ClInclude Include="source\device\RootDevice.h">
       <Filter>source\devices</Filter>
     </ClInclude>
-    <ClInclude Include="source\device\WindowDevice.h">
-      <Filter>source\devices</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\BootScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
@@ -70,6 +67,9 @@
     <ClInclude Include="source\device\InputDevice.h">
       <Filter>source\devices</Filter>
     </ClInclude>
+    <ClInclude Include="source\device\ScreenDevice.h">
+      <Filter>source\devices</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\winMain.cpp">
@@ -85,9 +85,6 @@
       <Filter>source\scene</Filter>
     </ClCompile>
     <ClCompile Include="source\device\RootDevice.cpp">
-      <Filter>source\devices</Filter>
-    </ClCompile>
-    <ClCompile Include="source\device\WindowDevice.cpp">
       <Filter>source\devices</Filter>
     </ClCompile>
     <ClCompile Include="source\scene\DebugMenuScene.cpp">
@@ -116,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="source\pixeljumper\MapLoader.cpp">
       <Filter>source\PixelJumper</Filter>
+    </ClCompile>
+    <ClCompile Include="source\device\ScreenDevice.cpp">
+      <Filter>source\devices</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

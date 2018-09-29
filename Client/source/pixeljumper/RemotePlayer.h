@@ -9,8 +9,14 @@
 namespace PixelJumper
 {
 	class RemotePlayer
+		:
+		public Player
 	{
 	public:
-		virtual void onRemoteUpdate() = 0;
+		void onUpdate(
+			sf::Time time) override
+		{
+
+		}
 	};
 }

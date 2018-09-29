@@ -1,4 +1,5 @@
 #include "WindowDevice.h"
+#include "ScreenDevice.h"
 
 namespace Device
 {
@@ -8,7 +9,7 @@ namespace Device
 		sf::RenderWindow window;
 	}
 
-	bool Window::initialize()
+	bool Screen::initialize()
 	{
 		if (!loadVideoSettings())
 		{
@@ -25,24 +26,22 @@ namespace Device
 		return true;
 	}
 
-	bool Window::saveVideoSettings()
+	bool Screen::saveVideoSettings()
 	{
 		return true;
 	}
 
-	bool Window::loadVideoSettings()
+	bool Screen::loadVideoSettings()
 	{
 		return true;
 	}
 
-
-
-	void Window::hide()
+	void Screen::hide()
 	{
 		window.close();
 	}
 
-	void Window::show()
+	void Screen::show()
 	{
 		window.create(
 			video.videMode,
@@ -56,19 +55,13 @@ namespace Device
 			video.frameLimit);
 	}
 
-	void Window::display()
+	sf::RenderWindow& Screen::getWindow()
 	{
-		window.display();
+		return window;
 	}
 
-	void Window::clear()
+	Settings::Video* Screen::getVideoSettingsP()
 	{
-		window.clear();
-	}
-
-	bool Window::pollEvent(
-		sf::Event* event)
-	{
-		return window.pollEvent(*event);
+		return &video;
 	}
 }

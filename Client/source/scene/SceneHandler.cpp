@@ -76,7 +76,7 @@ namespace Scene
 	}
 
 	void Handler::onDraw(
-		::Device::Window* window)
+		::Device::Screen* window)
 	{
 		scenes.back()->onDraw(window);
 	}

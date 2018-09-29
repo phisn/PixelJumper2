@@ -4,7 +4,7 @@ namespace Device
 {
 	bool Root::initialize()
 	{
-		if (!Window::initialize())
+		if (!Screen::initialize())
 		{
 			return false;
 		}
@@ -32,7 +32,7 @@ namespace Device
 
 				break;
 			case Scene::Type::SFML:
-				while (Window::pollEvent(&event))
+				while (Screen::pollEvent(&event))
 				{
 					Scene::Handler::onEvent(event);
 				}
@@ -40,9 +40,9 @@ namespace Device
 				Scene::Handler::onLogic(
 					clock.restart());
 
-				Window::clear();
+				Screen::clear();
 				Scene::Handler::onDraw();
-				Window::display();
+				Screen::display();
 
 				break;
 			case Scene::Type::Win:
@@ -62,7 +62,7 @@ namespace Device
 		switch (lastType)
 		{
 		case Scene::Type::SFML:
-			Window::hide();
+			Screen::hide();
 
 			break;
 		}
@@ -70,7 +70,7 @@ namespace Device
 		switch (currentType)
 		{
 		case Scene::Type::SFML:
-			Window::show();
+			Screen::show();
 
 			break;
 		}

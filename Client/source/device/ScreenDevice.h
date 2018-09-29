@@ -10,29 +10,18 @@
 
 namespace Device
 {
-	namespace Window
+	namespace Screen
 	{
 		bool initialize();
 
 		void hide();
 		void show();
 
-		void display();
-		void clear();
-
-		void draw(sf::Drawable& drawble)
-		{
-			window.draw(drawble);
-		}
-
-		bool pollEvent(sf::Event* event);
+		sf::RenderWindow& getWindow();
 
 		bool loadVideoSettings();
 		bool saveVideoSettings();
 
-		Settings::Video* getVideoSettingsP()
-		{
-			return &video;
-		}
+		Settings::Video* getVideoSettingsP();
 	}
 }

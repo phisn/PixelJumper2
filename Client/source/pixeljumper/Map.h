@@ -7,5 +7,15 @@ namespace PixelJumper
 	public:
 		Map();
 		~Map();
+
+		void onUpdate(sf::Time time)
+		{
+
+		}
+
+		void draw()
+		{
+
+		}
 	};
 }

@@ -16,7 +16,7 @@ namespace Scene
 		bool popScene();
 
 		void onDraw(
-			::Device::Window* window);
+			::Device::Screen* window);
 		void onLogic(
 			sf::Time time);
 		void onEvent(

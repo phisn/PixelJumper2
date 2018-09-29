@@ -4,10 +4,6 @@ namespace Scene
 {
 	bool PixelJumper::onCreate()
 	{
-		shape.setFillColor(sf::Color::Red);
-		shape.setPosition(10, 10);
-		shape.setSize(sf::Vector2f(100, 100));
-
 		return true;
 	}
 
@@ -37,10 +33,36 @@ namespace Scene
 	void PixelJumper::onLogic(
 		sf::Time time)
 	{
+		for (PJ::LocalPlayer* player : context->localPlayers)
+		{
+			player->onUpdate(time);
+		}
+
+		for (PJ::RemotePlayer* player : context->remotePlayers)
+		{
+			player->onUpdate(time);
+		}
+
+		context->map->onUpdate(time);
 	}
 
 	void PixelJumper::onDraw()
 	{
-		DEVICE::Window::draw(shape);
+		for (PJ::Player* viewedPlayer : context->viewedPlayers)
+		{
+			viewedPlayer->applyView();
+
+			context->map->draw();
+
+			for (PJ::Player* player : context->remotePlayers)
+			{
+				player->draw();
+			}
+
+			for (PJ::Player* player : context->localPlayers)
+			{
+				player->draw();
+			}
+		}
 	}
 }

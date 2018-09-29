@@ -25,9 +25,16 @@ namespace PixelJumper
 		friend ::Scene::PixelJumper;
 	public:
 		void loadMapByFile(
-			std::wstring fileName);
+			std::wstring fileName)
+		{
+
+
+		}
+
 
 	private:
+		std::vector<Player*> viewedPlayers;
+
 		std::vector<LocalPlayer*> localPlayers;
 		std::vector<RemotePlayer*> remotePlayers;
 
