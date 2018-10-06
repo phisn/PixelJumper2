@@ -1,27 +1,42 @@
 #pragma once
 
-#include "Settings.h"
-
 #include <SFML/Graphics.hpp>
-
-#ifndef DEVICE
-#define DEVICE ::Device
-#endif
 
 namespace Device
 {
-	namespace Screen
+	class Screen
 	{
-		bool initialize();
+	public:
+		~Screen()
+		{
+			if (window)
+			{
+				delete window;
+			}
+		}
 
-		void hide();
-		void show();
+		bool initalize();
 
-		sf::RenderWindow& getWindow();
+		void onShow();
+		void onHide();
 
-		bool loadVideoSettings();
-		bool saveVideoSettings();
+		void draw(
+			const sf::Drawable* drawable)
+		{
+			window->draw(*drawable);
+		}
 
-		Settings::Video* getVideoSettingsP();
-	}
+		void applyView(
+			const sf::View* view)
+		{
+			window->setView(*view);
+		}
+
+		const sf::RenderWindow* getWindow() const
+		{
+			return window;
+		}
+	private:
+		sf::RenderWindow* window;
+	};
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/device/WindowDevice.h>
 #include <SFML/Graphics.hpp>
 
 #ifndef SCENE
@@ -9,27 +8,50 @@
 
 namespace Scene
 {
-	enum class Type
+	enum class FallbackType
 	{
-		Boot,
-		Win,
-		SFML
+		Default,
+		Complete, // Until main menu
+		Error,
+	};
+
+	enum Type : int
+	{
+		SFML,
+		Windows
 	};
 
 	class Base
 	{
 	public:
-		Base(Type type)
+		Base(
+			const bool catching,
+			const Type type)
 			:
+			catching(catching),
 			type(type)
 		{
 		}
 
+		Type getType() const
+		{
+			return type;
+		}
+
+		bool isCatching() const
+		{
+			return catching;
+		}
+
 		virtual bool onCreate() = 0;
-		virtual bool onRemove() = 0;
+		virtual void onRemove() = 0;
 
 		virtual void onShow() = 0;
 		virtual void onHide() = 0;
+		virtual void onCatch(
+			FallbackType type) // Fallback
+		{
+		}
 
 		virtual void onEvent(
 			sf::Event event) = 0;
@@ -37,11 +59,8 @@ namespace Scene
 			sf::Time time) = 0;
 		virtual void onDraw() = 0;
 
-		Type getType() const
-		{
-			return type;
-		}
 	private:
+		bool catching; // fallback
 		Type type;
 	};
 }

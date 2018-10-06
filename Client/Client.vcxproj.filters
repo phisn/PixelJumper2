@@ -7,118 +7,104 @@
     <Filter Include="source">
       <UniqueIdentifier>{2e177454-0310-4b98-83db-6131400532f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\device">
+      <UniqueIdentifier>{3c5ec0a8-907f-4a53-8d68-9f6dfb341cd4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="source\scene">
-      <UniqueIdentifier>{b1781f27-0689-4c66-a4c6-9a3b93e5b872}</UniqueIdentifier>
+      <UniqueIdentifier>{d66df3f7-ec3c-4cfc-b672-8a27167a6845}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\devices">
-      <UniqueIdentifier>{76a967fe-b88e-4dbb-92c0-0082c338f8a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\PixelJumper">
-      <UniqueIdentifier>{3f956eb6-260f-43e4-9488-f0fbbcda5410}</UniqueIdentifier>
+    <Filter Include="source\game">
+      <UniqueIdentifier>{038f029f-f416-4f5f-adf3-02047141e720}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource.h">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\device\DeviceInterface.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\device\InputDevice.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\device\ScreenDevice.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\device\Settings.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\DebugScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
     <ClInclude Include="source\scene\SceneBase.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\SceneHandler.h">
+    <ClInclude Include="source\scene\SceneInterface.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\WinMenuSceneBase.h">
+    <ClInclude Include="source\scene\GameScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\TestMenuScene.h">
-      <Filter>source\scene</Filter>
+    <ClInclude Include="source\game\World.h">
+      <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\DebugMenuScene.h">
-      <Filter>source\scene</Filter>
+    <ClInclude Include="source\game\LocalPlayer.h">
+      <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\device\RootDevice.h">
-      <Filter>source\devices</Filter>
+    <ClInclude Include="source\game\PlayerBase.h">
+      <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\BootScene.h">
-      <Filter>source\scene</Filter>
+    <ClInclude Include="source\game\GameView.h">
+      <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\pixeljumper\PixelJumperContext.h">
-      <Filter>source\PixelJumper</Filter>
-    </ClInclude>
-    <ClInclude Include="source\pixeljumper\LocalPlayer.h">
-      <Filter>source\PixelJumper</Filter>
-    </ClInclude>
-    <ClInclude Include="source\pixeljumper\Player.h">
-      <Filter>source\PixelJumper</Filter>
-    </ClInclude>
-    <ClInclude Include="source\pixeljumper\RemotePlayer.h">
-      <Filter>source\PixelJumper</Filter>
-    </ClInclude>
-    <ClInclude Include="source\scene\PixelJumperScene.h">
-      <Filter>source\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source\pixeljumper\MapLoader.h">
-      <Filter>source\PixelJumper</Filter>
-    </ClInclude>
-    <ClInclude Include="source\pixeljumper\Map.h">
-      <Filter>source\PixelJumper</Filter>
-    </ClInclude>
-    <ClInclude Include="source\device\Settings.h">
-      <Filter>source\devices</Filter>
-    </ClInclude>
-    <ClInclude Include="source\device\InputDevice.h">
-      <Filter>source\devices</Filter>
-    </ClInclude>
-    <ClInclude Include="source\device\ScreenDevice.h">
-      <Filter>source\devices</Filter>
+    <ClInclude Include="source\game\GameInterface.h">
+      <Filter>source\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\winMain.cpp">
+    <ClCompile Include="winMain.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\scene\SceneHandler.cpp">
-      <Filter>source\scene</Filter>
+    <ClCompile Include="source\device\DeviceInterface.cpp">
+      <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\scene\WinMenuSceneBase.cpp">
-      <Filter>source\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source\scene\TestMenuScene.cpp">
-      <Filter>source\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source\device\RootDevice.cpp">
-      <Filter>source\devices</Filter>
-    </ClCompile>
-    <ClCompile Include="source\scene\DebugMenuScene.cpp">
-      <Filter>source\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source\scene\BootScene.cpp">
-      <Filter>source\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source\pixeljumper\PixelJumperContext.cpp">
-      <Filter>source\PixelJumper</Filter>
-    </ClCompile>
-    <ClCompile Include="source\pixeljumper\LocalPlayer.cpp">
-      <Filter>source\PixelJumper</Filter>
-    </ClCompile>
-    <ClCompile Include="source\pixeljumper\Player.cpp">
-      <Filter>source\PixelJumper</Filter>
-    </ClCompile>
-    <ClCompile Include="source\pixeljumper\RemotePlayer.cpp">
-      <Filter>source\PixelJumper</Filter>
-    </ClCompile>
-    <ClCompile Include="source\scene\PixelJumperScene.cpp">
-      <Filter>source\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source\pixeljumper\Map.cpp">
-      <Filter>source\PixelJumper</Filter>
-    </ClCompile>
-    <ClCompile Include="source\pixeljumper\MapLoader.cpp">
-      <Filter>source\PixelJumper</Filter>
+    <ClCompile Include="source\device\InputDevice.cpp">
+      <Filter>source\device</Filter>
     </ClCompile>
     <ClCompile Include="source\device\ScreenDevice.cpp">
-      <Filter>source\devices</Filter>
+      <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\device\Settings.cpp">
+      <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\DebugScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\SceneInterface.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\GameScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\World.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\LocalPlayer.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\PlayerBase.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameView.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameInterface.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Client.rc" />
+    <ResourceCompile Include="Client.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

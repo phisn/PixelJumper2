@@ -133,40 +133,34 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="source\device\DeviceInterface.h" />
     <ClInclude Include="source\device\InputDevice.h" />
-    <ClInclude Include="source\device\RootDevice.h" />
-    <ClInclude Include="source\device\Settings.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
-    <ClInclude Include="source\pixeljumper\LocalPlayer.h" />
-    <ClInclude Include="source\pixeljumper\Map.h" />
-    <ClInclude Include="source\pixeljumper\MapLoader.h" />
-    <ClInclude Include="source\pixeljumper\PixelJumperContext.h" />
-    <ClInclude Include="source\pixeljumper\Player.h" />
-    <ClInclude Include="source\pixeljumper\RemotePlayer.h" />
-    <ClInclude Include="source\scene\BootScene.h" />
-    <ClInclude Include="source\scene\DebugMenuScene.h" />
-    <ClInclude Include="source\scene\PixelJumperScene.h" />
-    <ClInclude Include="source\scene\TestMenuScene.h" />
-    <ClInclude Include="source\scene\WinMenuSceneBase.h" />
+    <ClInclude Include="source\device\Settings.h" />
+    <ClInclude Include="source\game\GameInterface.h" />
+    <ClInclude Include="source\game\GameView.h" />
+    <ClInclude Include="source\game\LocalPlayer.h" />
+    <ClInclude Include="source\game\PlayerBase.h" />
+    <ClInclude Include="source\game\World.h" />
+    <ClInclude Include="source\scene\DebugScene.h" />
+    <ClInclude Include="source\scene\GameScene.h" />
     <ClInclude Include="source\scene\SceneBase.h" />
-    <ClInclude Include="source\scene\SceneHandler.h" />
+    <ClInclude Include="source\scene\SceneInterface.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\device\RootDevice.cpp" />
+    <ClCompile Include="source\device\DeviceInterface.cpp" />
+    <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
-    <ClCompile Include="source\pixeljumper\LocalPlayer.cpp" />
-    <ClCompile Include="source\pixeljumper\Map.cpp" />
-    <ClCompile Include="source\pixeljumper\MapLoader.cpp" />
-    <ClCompile Include="source\pixeljumper\PixelJumperContext.cpp" />
-    <ClCompile Include="source\pixeljumper\Player.cpp" />
-    <ClCompile Include="source\pixeljumper\RemotePlayer.cpp" />
-    <ClCompile Include="source\scene\BootScene.cpp" />
-    <ClCompile Include="source\scene\DebugMenuScene.cpp" />
-    <ClCompile Include="source\scene\PixelJumperScene.cpp" />
-    <ClCompile Include="source\scene\TestMenuScene.cpp" />
-    <ClCompile Include="source\scene\WinMenuSceneBase.cpp" />
-    <ClCompile Include="source\scene\SceneHandler.cpp" />
-    <ClCompile Include="source\winMain.cpp" />
+    <ClCompile Include="source\device\Settings.cpp" />
+    <ClCompile Include="source\game\GameInterface.cpp" />
+    <ClCompile Include="source\game\GameView.cpp" />
+    <ClCompile Include="source\game\LocalPlayer.cpp" />
+    <ClCompile Include="source\game\PlayerBase.cpp" />
+    <ClCompile Include="source\game\World.cpp" />
+    <ClCompile Include="source\scene\DebugScene.cpp" />
+    <ClCompile Include="source\scene\GameScene.cpp" />
+    <ClCompile Include="source\scene\SceneInterface.cpp" />
+    <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />
