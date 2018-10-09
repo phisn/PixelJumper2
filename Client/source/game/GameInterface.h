@@ -34,7 +34,7 @@ namespace Game
 		void setType(Type type);
 		const Type getType();
 
-		const World* getWorld();
+		World* getWorld();
 		const std::vector<LocalPlayer*> getLocalPlayers();
 	};
 }

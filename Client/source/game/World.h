@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 namespace Game
 {
 	class World
@@ -8,7 +10,8 @@ namespace Game
 		World();
 		~World();
 
-		void onLogic(sf::Time time)
+		void onLogic(
+			sf::Time time)
 		{
 
 		}
