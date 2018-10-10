@@ -35,7 +35,7 @@ namespace Game
 				collision))
 			{
 				*collision -= primOffset;
-				
+
 				return true;
 			}
 		}
@@ -45,18 +45,17 @@ namespace Game
 			destination + secOffset1,
 			collision))
 		{
-			*collision -= primOffset;
+			*collision -= secOffset1;
 
 			return true;
 		}
 
 		if (checkCollisionPath(
 			source + secOffset2,
-			destination + secOffset2
-			,
+			destination + secOffset2,
 			collision))
 		{
-			*collision -= primOffset;
+			*collision -= secOffset2;
 
 			return true;
 		}
@@ -232,8 +231,8 @@ namespace Game
 		*/ 
 
 		const float g_m =
-			(source.x - source.x) /
-			(destination.y - destination.y);
+			(source.x - destination.x) /
+			(source.y - destination.y);
 		const float g_h = source.x - g_m * source.y;
 
 		const float t_h_a = shape.getPosition().y;

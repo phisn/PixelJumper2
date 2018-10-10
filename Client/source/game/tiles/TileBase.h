@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Client/source/device/DeviceInterface.h>
+#include <Client/source/device/ScreenDevice.h>
+
 #include <SFML/Graphics.hpp>
 
 namespace Game
@@ -26,6 +29,11 @@ namespace Game
 				shape.setFillColor(color);
 			}
 
+			void draw() const
+			{
+				DEVICE::Interface::getScreen()->draw(&shape);
+			}
+
 			sf::Vector2f getSize() const
 			{
 				return shape.getSize();
@@ -35,7 +43,6 @@ namespace Game
 			{
 				return shape.getPosition();
 			}
-
 		protected:
 			sf::RectangleShape shape;
 
