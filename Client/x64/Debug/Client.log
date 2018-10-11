@@ -1,16 +1,1 @@
-﻿  RootDevice.cpp
-  WindowDevice.cpp
-  LocalPlayer.cpp
-  PixelJumperContext.cpp
-  Player.cpp
-  RemotePlayer.cpp
-  BootScene.cpp
-  DebugMenuScene.cpp
-  PixelJumperScene.cpp
-  SceneHandler.cpp
-  TestMenuScene.cpp
-  WinMenuSceneBase.cpp
-  winMain.cpp
-  Code wird generiert...
-c:\users\phisn\source\repos\pixeljumper2\client\source\winmain.cpp(44): warning C4715: "wWinMain": Nicht alle Codepfade geben einen Wert zurück.
-  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe
+﻿  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

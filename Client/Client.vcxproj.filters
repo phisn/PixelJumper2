@@ -16,6 +16,9 @@
     <Filter Include="source\game">
       <UniqueIdentifier>{038f029f-f416-4f5f-adf3-02047141e720}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\game\tiles">
+      <UniqueIdentifier>{7ef2c45d-03ec-4b5b-b25a-9802ab32cc3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -60,6 +63,18 @@
     <ClInclude Include="source\game\GameInterface.h">
       <Filter>source\game</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\tiles\CollidableTile.h">
+      <Filter>source\game\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiles\Wall.h">
+      <Filter>source\game\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiles\TileBase.h">
+      <Filter>source\game\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiles\TouchableTile.h">
+      <Filter>source\game\tiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -100,6 +115,18 @@
     </ClCompile>
     <ClCompile Include="source\game\GameInterface.cpp">
       <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tiles\CollidableTile.cpp">
+      <Filter>source\game\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tiles\Wall.cpp">
+      <Filter>source\game\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tiles\TileBase.cpp">
+      <Filter>source\game\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tiles\TouchableTile.cpp">
+      <Filter>source\game\tiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

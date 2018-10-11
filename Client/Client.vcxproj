@@ -141,6 +141,10 @@
     <ClInclude Include="source\game\GameView.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
+    <ClInclude Include="source\game\tiles\CollidableTile.h" />
+    <ClInclude Include="source\game\tiles\TileBase.h" />
+    <ClInclude Include="source\game\tiles\TouchableTile.h" />
+    <ClInclude Include="source\game\tiles\Wall.h" />
     <ClInclude Include="source\game\World.h" />
     <ClInclude Include="source\scene\DebugScene.h" />
     <ClInclude Include="source\scene\GameScene.h" />
@@ -156,6 +160,10 @@
     <ClCompile Include="source\game\GameView.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
     <ClCompile Include="source\game\PlayerBase.cpp" />
+    <ClCompile Include="source\game\tiles\CollidableTile.cpp" />
+    <ClCompile Include="source\game\tiles\TileBase.cpp" />
+    <ClCompile Include="source\game\tiles\TouchableTile.cpp" />
+    <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\scene\DebugScene.cpp" />
     <ClCompile Include="source\scene\GameScene.cpp" />
