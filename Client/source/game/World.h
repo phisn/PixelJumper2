@@ -1,7 +1,10 @@
 #pragma once
 
+#include <Client/source/game/LocalPlayer.h>
+
 #include <Client/source/game/tiles/CollidableTile.h>
 #include <Client/source/game/tiles/TileBase.h>
+#include <Client/source/game/tiles/TimedTile.h>
 #include <Client/source/game/tiles/TouchableTile.h>
 
 #include <SFML/Graphics.hpp>
@@ -10,6 +13,11 @@
 
 namespace Game
 {
+	struct WorldSettings
+	{
+		const float speed = 0.1f;
+	};
+
 	class World
 	{
 	public:
@@ -19,79 +27,30 @@ namespace Game
 		void onLogic(
 			sf::Time time)
 		{
-
+			for (Tile::Timed* tile : timed)
+			{
+				tile->onTime(time);
+			}
 		}
 
-		bool validate() const
+		void updatePlayer(
+			_In_ LocalPlayer* player,
+			const sf::Time time)
 		{
-			if (tiles.size() == 0)
+			movePlayer(
+				player,
+				makeDestination(
+					player, 
+					time));
+
+			if (player->getProperties()->isOnGround)
 			{
-				return false;
+				player->changeProperties()->movement *= 0.8f;
 			}
-
-			// entries & exits > 0
-
-			for (Tile::Base* root : tiles)
-				for (Tile::Base* cold : tiles)
-				{
-					if (cold == root)
-					{
-						continue;
-					}
-
-					const float r_near_x = root->getPosition().x;
-					const float r_far_x = r_near_x + root->getSize().x;
-
-					const float c_near_x = cold->getPosition().x;
-					const float c_far_x = c_near_x + cold->getSize().x;
-
-					const float r_near_y = root->getPosition().y;
-					const float r_far_y = r_near_x + root->getSize().y;
-
-					const float c_near_y = cold->getPosition().y;
-					const float c_far_y = c_near_y + cold->getSize().y;
-
-					/*
-					
-						>= & <= only same nears and fars
-						to solve a bug (Tiles on the same position)
-					
-					*/
-					if ((		// x
-							(		// 1. root x
-							r_near_x >= c_near_x &&
-							r_near_x < c_far_x 
-								||	// 2. root x
-							r_far_x > c_near_x &&
-							r_far_x <= c_far_x
-							) || (	// 1. cold x
-							c_near_x >= r_near_x &&
-							c_near_x < r_far_x
-								||	// 2. cold x
-							c_far_x > r_near_x &&
-							c_far_x <= r_far_x
-							)
-						) && (	// y
-							(		// 1. root y
-							r_near_y >= c_near_y &&
-							r_near_y < c_far_y
-								||	// 2. root y
-							r_far_y > c_near_y &&
-							r_far_y <= c_far_y
-							) || (	// 1. cold y
-							c_near_y >= r_near_y &&
-							c_near_y < r_far_y
-								||	// 2. cold y
-							c_far_y > r_near_y &&
-							c_far_y <= r_far_y
-							)
-						))
-					{
-						return false;
-					}
-				}
-
-			return true;
+			else
+			{
+				player->changeProperties()->movement *= 0.95f;
+			}
 		}
 
 		void draw() const
@@ -101,12 +60,46 @@ namespace Game
 				tile->draw();
 			}
 		}
+
+		bool validate() const;
 	private:
+		const WorldSettings settings;
+
+		void movePlayer(
+			LocalPlayer* player,
+			const sf::Vector2f destination)
+		{
+			Tile::Collision collision;
+
+			for (Tile::Collidable* tile : collidable)
+				if (tile->checkCollision(
+						player->getPosition(),
+						destination,
+						&collision) &&
+					tile->onCollision(
+						collision,
+						player))
+				{
+					return;
+				}
+
+			player->setPosition(destination);
+		}
+
+		sf::Vector2f makeDestination(
+			const LocalPlayer* player,
+			const sf::Time time)
+		{
+			return player->getPosition()
+				+ player->getProperties()->movement
+				* settings.speed
+				* (float) time.asMicroseconds();
+		}
+
 		std::vector<Tile::Base*> tiles;
 
-		// entries & exits
-
 		std::vector<Tile::Touchable*> touchable;
+		std::vector<Tile::Timed*> timed;
 		std::vector<Tile::Collidable*> collidable;
 	};
 }

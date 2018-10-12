@@ -6,7 +6,7 @@ namespace Game
 	bool Tile::Collidable::checkCollision(
 		const sf::Vector2f source,
 		const sf::Vector2f destination,
-		_Out_ sf::Vector2f* collision)
+		_Out_ Collision* collision)
 	{
 		/*
 		
@@ -34,7 +34,7 @@ namespace Game
 				destination + primOffset,
 				collision))
 			{
-				*collision -= primOffset;
+				collision->position -= primOffset;
 
 				return true;
 			}
@@ -45,7 +45,7 @@ namespace Game
 			destination + secOffset1,
 			collision))
 		{
-			*collision -= secOffset1;
+			collision->position -= secOffset1;
 
 			return true;
 		}
@@ -55,7 +55,7 @@ namespace Game
 			destination + secOffset2,
 			collision))
 		{
-			*collision -= secOffset2;
+			collision->position -= secOffset2;
 
 			return true;
 		}
@@ -192,7 +192,7 @@ namespace Game
 	bool Tile::Collidable::checkCollisionPath(
 		const sf::Vector2f source,
 		const sf::Vector2f destination,
-		_Out_ sf::Vector2f* collision)
+		_Out_ Collision* collision)
 	{
 		/*
 		      t_h  ---\
@@ -265,8 +265,10 @@ namespace Game
 
 			if (x > t_w_a && x < t_w_b)
 			{ // on collision vertical
-				collision->x = x;
-				collision->y = t_h;
+				collision->position.x = x;
+				collision->position.y = t_h;
+
+				collision->type = Collision::Vertical;
 
 				return true;
 			}
@@ -290,8 +292,10 @@ namespace Game
 
 			if (y > t_h_a && y < t_h_b)
 			{ // on collision horizontal
-				collision->x = t_w;
-				collision->y = y;
+				collision->position.x = t_w;
+				collision->position.y = y;
+
+				collision->type = Collision::Horizontal;
 
 				return true;
 			}

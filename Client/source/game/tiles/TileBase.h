@@ -5,6 +5,10 @@
 
 #include <SFML/Graphics.hpp>
 
+#ifndef GAME
+#define GAME ::Game
+#endif
+
 namespace Game
 {
 	namespace Tile
@@ -15,6 +19,7 @@ namespace Game
 
 			Collidable = 0b1,
 			Touchable = 0b01,
+			Timed = 0b001
 		};
 
 		class Base
@@ -34,21 +39,31 @@ namespace Game
 				DEVICE::Interface::getScreen()->draw(&shape);
 			}
 
-			sf::Vector2f getSize() const
-			{
-				return shape.getSize();
-			}
+			sf::Vector2f getSize() const;
+			sf::Vector2f getPosition() const;
 
-			sf::Vector2f getPosition() const
-			{
-				return shape.getPosition();
-			}
+			Type getType() const;
 		protected:
 			sf::RectangleShape shape;
 
 		private:
 			Type type;
 		};
+
+		inline sf::Vector2f Base::getSize() const
+		{
+			return shape.getSize();
+		}
+
+		inline sf::Vector2f Base::getPosition() const
+		{
+			return shape.getPosition();
+		}
+
+		inline Type Base::getType() const
+		{
+			return type;
+		}
 
 		const float defaultTileSize = 1.0f;
 	}

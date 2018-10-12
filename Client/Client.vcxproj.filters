@@ -10,14 +10,14 @@
     <Filter Include="source\device">
       <UniqueIdentifier>{3c5ec0a8-907f-4a53-8d68-9f6dfb341cd4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\scene">
-      <UniqueIdentifier>{d66df3f7-ec3c-4cfc-b672-8a27167a6845}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\game">
       <UniqueIdentifier>{038f029f-f416-4f5f-adf3-02047141e720}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\game\tiles">
       <UniqueIdentifier>{7ef2c45d-03ec-4b5b-b25a-9802ab32cc3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\scene">
+      <UniqueIdentifier>{d66df3f7-ec3c-4cfc-b672-8a27167a6845}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,9 +45,6 @@
     <ClInclude Include="source\scene\SceneInterface.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\GameScene.h">
-      <Filter>source\scene</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\World.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -58,9 +55,6 @@
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\GameView.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameInterface.h">
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiles\CollidableTile.h">
@@ -74,6 +68,13 @@
     </ClInclude>
     <ClInclude Include="source\game\tiles\TouchableTile.h">
       <Filter>source\game\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiles\TimedTile.h">
+      <Filter>source\game\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalGameScene.h" />
+    <ClInclude Include="source\scene\GameBaseScene.h">
+      <Filter>source\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -98,9 +99,6 @@
     <ClCompile Include="source\scene\SceneInterface.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\scene\GameScene.cpp">
-      <Filter>source\scene</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\World.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
@@ -111,9 +109,6 @@
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\GameView.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GameInterface.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\tiles\CollidableTile.cpp">
@@ -127,6 +122,13 @@
     </ClCompile>
     <ClCompile Include="source\game\tiles\TouchableTile.cpp">
       <Filter>source\game\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tiles\TimedTile.cpp">
+      <Filter>source\game\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalGameScene.cpp" />
+    <ClCompile Include="source\scene\GameBaseScene.cpp">
+      <Filter>source\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

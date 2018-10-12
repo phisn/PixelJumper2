@@ -5,6 +5,10 @@
 
 #include <SFML/Graphics.hpp>
 
+#ifndef GAME
+#define GAME ::Game
+#endif
+
 namespace Game
 {
 	class PlayerBase
@@ -16,12 +20,6 @@ namespace Game
 		void draw() const
 		{
 			DEVICE::Interface::getScreen()->draw(&shape);
-		}
-
-		void move(
-			const sf::Vector2f offset)
-		{
-			shape.move(offset);
 		}
 
 		void setPosition(

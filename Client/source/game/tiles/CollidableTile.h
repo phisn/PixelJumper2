@@ -1,12 +1,32 @@
 #pragma once
 
 #include <Client/source/game/tiles/TileBase.h>
-#include <Client/source/game/PlayerBase.h>
+#include <Client/source/game/LocalPlayer.h>
 
 namespace Game
 {
 	namespace Tile
 	{
+		/*
+		
+			Move collision to player (local)
+			reasons:
+			-	Allows more flex for tiles
+			-	Easier impl for player colls
+		
+		*/
+
+		struct Collision
+		{
+			enum Type
+			{
+				Vertical,
+				Horizontal
+			} type;
+
+			sf::Vector2f position;
+		};
+
 		class Collidable
 			:
 			public virtual Base
@@ -15,10 +35,11 @@ namespace Game
 			bool checkCollision(
 				const sf::Vector2f source,
 				const sf::Vector2f destination,
-				_Out_ sf::Vector2f* collision);
+				_Out_ Collision* collision);
 
-			virtual void onCollision(
-				PlayerBase* player) = 0;
+			virtual bool onCollision(
+				const Collision collision,
+				LocalPlayer* player) = 0;
 		private:
 			// return == ignore primary offset
 			bool findOffsets(
@@ -30,7 +51,7 @@ namespace Game
 			bool checkCollisionPath(
 				const sf::Vector2f source,
 				const sf::Vector2f destination,
-				_Out_ sf::Vector2f* collision);
+				_Out_ Collision* collision);
 		};
 	}
 }

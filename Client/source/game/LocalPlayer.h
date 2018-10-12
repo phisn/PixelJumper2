@@ -5,17 +5,43 @@
 
 namespace Game
 {
+	struct PlayerProperties
+	{
+		sf::Vector2f movement;
+		bool isOnGround;
+	};
+
 	class LocalPlayer
 		:
 		public PlayerBase
 	{
 	public:
+		enum class Action
+		{
+			Trigger,
+
+			Up,
+			Down,
+			Left,
+			Right
+		};
+
 		LocalPlayer();
 		~LocalPlayer();
 
-		void onLogic(sf::Time time)
+		void onAction(
+			const Action action)
 		{
+		}
 
+		PlayerProperties* changeProperties()
+		{
+			return &properties;
+		}
+
+		const PlayerProperties* getProperties() const
+		{
+			return &properties;
 		}
 
 		View* getView()
@@ -23,6 +49,8 @@ namespace Game
 			return &view;
 		}
 	private:
-		View view;
+		PlayerProperties properties;
+
+		Game::View view;
 	};
 }
