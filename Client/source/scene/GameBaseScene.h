@@ -67,20 +67,20 @@ namespace Scene
 					DEVICE::Interface::getInput()->codeToSymbol(
 						event.key.code))
 				{
-				case DEVICE::InputSymbol::Exit:
+				case DEVICE::GlobalInputSymbol::Exit:
 					SCENE::Interface::popScene();
 
 					break;
-				case DEVICE::InputSymbol::OpenMenu:
+				case DEVICE::GlobalInputSymbol::OpenMenu:
 					// SCENE::Interface::pushScene(
 					//     new GameMenu());
 
 					break;
-				case DEVICE::InputSymbol::Pause:
+				case DEVICE::GlobalInputSymbol::Pause:
 					// ...
 
 					break;
-				case DEVICE::InputSymbol::Invalid:
+				case DEVICE::GlobalInputSymbol::Invalid:
 				default:
 					break;
 				}

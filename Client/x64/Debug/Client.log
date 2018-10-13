@@ -1,1 +1,55 @@
-﻿  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe
+﻿  LocalGameScene.cpp
+  DeviceInterface.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\device\inputdevice.h(20): error C3083: "Keyboard": Das Symbol links neben "::" muss ein Typ sein.
+c:\users\phisn\source\repos\pixeljumper2\client\source\device\inputdevice.h(20): error C2039: "Key": Ist kein Element von "sf"
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector3.hpp(29): note: Siehe Deklaration von "sf"
+c:\users\phisn\source\repos\pixeljumper2\client\source\device\inputdevice.h(20): error C2061: Syntaxfehler: Bezeichner "Key"
+c:\users\phisn\source\repos\pixeljumper2\client\source\device\deviceinterface.cpp(27): error C2059: Syntaxfehler: ")"
+  InputDevice.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\device\inputdevice.h(20): error C3083: "Keyboard": Das Symbol links neben "::" muss ein Typ sein.
+c:\users\phisn\source\repos\pixeljumper2\client\source\device\inputdevice.h(20): error C2039: "Key": Ist kein Element von "sf"
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector3.hpp(29): note: Siehe Deklaration von "sf"
+c:\users\phisn\source\repos\pixeljumper2\client\source\device\inputdevice.h(20): error C2061: Syntaxfehler: Bezeichner "Key"
+  ScreenDevice.cpp
+  Settings.cpp
+  GameView.cpp
+  LocalPlayer.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.cpp(5): error C2653: "LocalPlayer": Keine Klasse oder Namespace
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.cpp(6): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.cpp(7): warning C4508: "LocalPlayer": Funktion sollte einen Wert zurückgeben; Ergebnistyp "void" angenommen
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.cpp(10): error C2523: "LocalPlayer::~LocalPlayer": Destruktor-Tag stimmt nicht überein.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.cpp(10): error C2510: "LocalPlayer": Der linke Teil von "::" muss eine Klasse/Struktur/Union sein
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.cpp(11): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.cpp(11): error C2084: Funktion "int LocalPlayer(void)" hat bereits einen Funktionsrumpf
+  c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.cpp(5): note: Siehe vorherige Definition von "LocalPlayer"
+  PlayerBase.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(5): error C2653: "PlayerBase": Keine Klasse oder Namespace
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(6): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(7): warning C4508: "PlayerBase": Funktion sollte einen Wert zurückgeben; Ergebnistyp "void" angenommen
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(10): error C2523: "PlayerBase::~PlayerBase": Destruktor-Tag stimmt nicht überein.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(10): error C2510: "PlayerBase": Der linke Teil von "::" muss eine Klasse/Struktur/Union sein
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(11): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(11): error C2084: Funktion "int PlayerBase(void)" hat bereits einen Funktionsrumpf
+  c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(5): note: Siehe vorherige Definition von "PlayerBase"
+  CollidableTile.cpp
+  TileBase.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilebase.cpp(5): error C2653: "TileBase": Keine Klasse oder Namespace
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilebase.cpp(6): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilebase.cpp(7): warning C4508: "TileBase": Funktion sollte einen Wert zurückgeben; Ergebnistyp "void" angenommen
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilebase.cpp(10): error C2523: "TileBase::~TileBase": Destruktor-Tag stimmt nicht überein.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilebase.cpp(10): error C2510: "TileBase": Der linke Teil von "::" muss eine Klasse/Struktur/Union sein
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilebase.cpp(11): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilebase.cpp(11): error C2084: Funktion "int TileBase(void)" hat bereits einen Funktionsrumpf
+  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilebase.cpp(5): note: Siehe vorherige Definition von "TileBase"
+  TimedTile.cpp
+  TouchableTile.cpp
+  Wall.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.cpp(1): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "WallTile.h": No such file or directory
+  World.cpp
+  DebugScene.cpp
+  GameBaseScene.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.cpp(1): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "GameScene.h": No such file or directory
+  SceneInterface.cpp
+  winMain.cpp
+  Code wird generiert...
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\collidabletile.cpp(190): warning C4715: "Game::Tile::Collidable::findOffsets": Nicht alle Codepfade geben einen Wert zurück.

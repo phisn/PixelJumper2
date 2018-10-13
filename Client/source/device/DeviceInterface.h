@@ -11,7 +11,7 @@
 namespace Device
 {
 	class Screen;
-	class Input;
+	class GlobalInput;
 
 	namespace Interface
 	{
@@ -19,7 +19,7 @@ namespace Device
 		int start();
 
 		Screen* getScreen();
-		Input* getInput();
+		GlobalInput* getInput();
 
 		void onSceneTypeChanged(
 			SCENE::Type oldType,

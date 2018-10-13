@@ -7,7 +7,7 @@
 
 namespace
 {
-	Device::Input* input;
+	Device::GlobalInput* input;
 	Device::Screen* screen;
 }
 
@@ -15,7 +15,7 @@ namespace Device
 {
 	bool Interface::initialize()
 	{
-		input = new Input();
+		input = new GlobalInput();
 		screen = new Screen();
 
 		if (!screen->initalize())
@@ -37,7 +37,7 @@ namespace Device
 		return 0;
 	}
 
-	Input* Interface::getInput()
+	GlobalInput* Interface::getInput()
 	{
 		return input;
 	}

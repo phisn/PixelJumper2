@@ -3,6 +3,8 @@
 #include <Client/source/game/GameView.h>
 #include <Client/source/game/PlayerBase.h>
 
+#define IF_HAS_ACTION(source, except) if ((int) source & (int) except)
+
 namespace Game
 {
 	struct PlayerProperties
@@ -18,12 +20,7 @@ namespace Game
 	public:
 		enum class Action
 		{
-			Trigger,
-
-			Up,
-			Down,
-			Left,
-			Right
+			ChangeView
 		};
 
 		LocalPlayer();
@@ -32,6 +29,13 @@ namespace Game
 		void onAction(
 			const Action action)
 		{
+
+		}
+
+		void onLogic(
+			const sf::Time time)
+		{
+
 		}
 
 		PlayerProperties* changeProperties()
@@ -50,6 +54,7 @@ namespace Game
 		}
 	private:
 		PlayerProperties properties;
+		Action action;
 
 		Game::View view;
 	};
