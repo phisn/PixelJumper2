@@ -4,6 +4,22 @@
 
 namespace Device
 {
+	const sf::Int32 fullscreen = sf::Style::Fullscreen;
+	const sf::Int32 windowed = sf::Style::Close | sf::Style::Titlebar;
+
+	const struct ScreenSettings
+	{
+		sf::Int32 style;
+
+		sf::VideoMode videoMode;
+		sf::ContextSettings settings;
+	} defaultScreenSettings =
+	{
+		fullscreen,
+		sf::VideoMode::getDesktopMode(),
+		sf::ContextSettings::ContextSettings(0U, 0U, 4U) // For AA
+	};
+
 	class Screen
 	{
 	public:
@@ -38,5 +54,7 @@ namespace Device
 		}
 	private:
 		sf::RenderWindow* window;
+
+		ScreenSettings settings;
 	};
 }

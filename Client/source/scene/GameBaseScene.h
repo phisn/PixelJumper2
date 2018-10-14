@@ -56,16 +56,11 @@ namespace Scene
 		void onEvent(
 			sf::Event event) override
 		{
-			for (GAME::LocalPlayer* localPlayer : GAME::Interface::getLocalPlayers())
-			{
-				localPlayer->onEvent(event);
-			}
-
 			if (event.type == sf::Event::KeyPressed)
 			{
 				switch (
-					DEVICE::Interface::getInput()->codeToSymbol(
-						event.key.code))
+					DEVICE::Interface::getInput()->codeToSymbol(event.key.code)
+					)
 				{
 				case DEVICE::GlobalInputSymbol::Exit:
 					SCENE::Interface::popScene();
@@ -92,10 +87,12 @@ namespace Scene
 		void onLogic(
 			sf::Time time) override
 		{
-			world->onLogic(time);
+			world->onLogic(time); // ?correct position?
 
 			for (GAME::LocalPlayer* localPlayer : localPlayers)
 			{
+				localPlayer->onLogic(time);
+
 				world->updatePlayer(
 					localPlayer, time);
 			}

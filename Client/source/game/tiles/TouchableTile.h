@@ -32,6 +32,7 @@ namespace Game
 			{
 				if (passedTime > resetTime)
 				{
+					sf::FileInputStream
 					onTouch();
 				}
 

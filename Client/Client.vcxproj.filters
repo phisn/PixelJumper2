@@ -72,9 +72,14 @@
     <ClInclude Include="source\game\tiles\TimedTile.h">
       <Filter>source\game\tiles</Filter>
     </ClInclude>
-    <ClInclude Include="LocalGameScene.h" />
     <ClInclude Include="source\scene\GameBaseScene.h">
       <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\LocalGameScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\device\ResourceDevice.h">
+      <Filter>source\device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +131,14 @@
     <ClCompile Include="source\game\tiles\TimedTile.cpp">
       <Filter>source\game\tiles</Filter>
     </ClCompile>
-    <ClCompile Include="LocalGameScene.cpp" />
     <ClCompile Include="source\scene\GameBaseScene.cpp">
       <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\LocalGameScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\device\ResourceDevice.cpp">
+      <Filter>source\device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

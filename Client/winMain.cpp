@@ -1,5 +1,20 @@
 #include <Client/source/device/DeviceInterface.h>
 
+bool handleInputError();
+bool handleNetworkError();
+bool handleSceneError();
+bool handleScreenError();
+bool handleResourceError();
+
+bool (*handleError[(int) DEVICE::InitError::_Length])() =
+{	// Sorted and para with InitError
+	handleInputError,
+	handleNetworkError,
+	handleSceneError,
+	handleScreenError,
+	handleResourceError
+};
+
 #ifdef _WIN32
 #include <Windows.h>
 #ifdef _DEBUG
@@ -15,21 +30,19 @@ int WINAPI wWinMain(
 #endif
 {
 Retry:
-	if (!DEVICE::Interface::initialize())
+	while (true)
 	{
-		if (MessageBoxW(
-				NULL,
-				L"Failed to initialize Root Device\nDo you want to reset graphic settings?",
-				L"Error",
-				MB_YESNO) 
-			== IDYES)
-		{
-			// Reset settings
+		Device::InitError result = DEVICE::Interface::initialize();
 
-			goto Retry;
+		if (result == Device::InitError::Invalid)
+		{
+			break;
 		}
 
-		return 1;
+		if (!handleError[(int) result - 1]())
+		{
+			return;
+		}
 	}
 
 	int result;
@@ -47,4 +60,69 @@ Retry:
 	}
 
 	return result;
+}
+
+bool handleInputError()
+{
+	if (MessageBoxW(
+		NULL,
+		L"Do you want to reset Input settings and retry?",
+		L"Input Initialization Error",
+		MB_YESNO)
+		== IDNO)
+	{
+		return false;
+	}
+
+	// Delete settings
+
+	return true;
+}
+
+bool handleNetworkError()
+{
+	// maybe offline mode?
+
+	return true;
+}
+
+bool handleSceneError()
+{
+	// No Idea how to fix
+
+	return false;
+}
+
+bool handleScreenError()
+{
+	if (MessageBoxW(
+			NULL,
+			L"Do you want to reset Graphic settings and retry?",
+			L"Graphic Initialization Error",
+			MB_YESNO)
+		== IDNO)
+	{
+		return false;
+	}
+
+	// Delete settings
+
+	return true;
+}
+
+bool handleResourceError()
+{
+	if (MessageBoxW(
+		NULL,
+		L"Do you want to reset All settings and retry?",
+		L"Resource Initialization Error",
+		MB_YESNO)
+		== IDNO)
+	{
+		return false;
+	}
+
+	// Delete settings
+
+	return true;
 }

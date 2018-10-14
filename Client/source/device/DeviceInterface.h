@@ -10,17 +10,38 @@
 
 namespace Device
 {
-	class Screen;
+	/*
+	
+		[Device]Settings classes provided for config generation
+	
+	*/
+
 	class GlobalInput;
+	class Screen;
+	class Resource;
+
+	enum class InitError
+	{
+		Invalid = -1,
+
+		Input,
+		Network,
+		Scene,
+		Screen,
+		Resource,
+
+		_Length
+	};
 
 	namespace Interface
 	{
-		bool initialize();
+		InitError initialize();
 		int start();
 
-		Screen* getScreen();
 		GlobalInput* getInput();
-
+		Screen* getScreen();
+		Resource* getResource();
+		
 		void onSceneTypeChanged(
 			SCENE::Type oldType,
 			SCENE::Type newType);

@@ -1,12 +1,12 @@
 #pragma once
 
-#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace Device
 {
 	enum class GlobalInputSymbol
 	{
-		Invalid = 0,
+		Invalid = -1,
 
 		OpenMenu,
 		Pause,
@@ -17,7 +17,7 @@ namespace Device
 
 	enum class LocalInputSymbol
 	{
-		Invalid = 0,
+		Invalid = -1,
 
 		// Important
 		Trigger,
@@ -40,7 +40,7 @@ namespace Device
 
 	struct GlobalInputSettings
 	{
-		sf::Keyboard::Key keys[(int) GlobalInputSymbol::_Length - 1];
+		sf::Keyboard::Key keys[(int) GlobalInputSymbol::_Length];
 	};
 
 	const GlobalInputSettings defaultGlobalSettings =
@@ -52,7 +52,7 @@ namespace Device
 
 	struct LocalInputSettings
 	{
-		sf::Keyboard::Key keys[(int) LocalInputSymbol::_Length - 1];
+		sf::Keyboard::Key keys[(int) LocalInputSymbol::_Length];
 	};
 
 	const LocalInputSettings localInputSettings1 =
@@ -94,84 +94,93 @@ namespace Device
 	class GlobalInput
 	{
 	public:
-		bool initialize()
-		{
-			// load from file
-
-			settings = defaultGlobalSettings;
-
-			return true;
-		}
+		bool initialize();
 
 		LocalInput loadLocalInput(
-			const int position) const
-		{
-			// load from file
-
-			switch (position)
-			{
-			case 1:
-				return LocalInput(localInputSettings1);
-			}
-		}
-
+			const int position) const;
 		void saveLocalInput(
 			const int position,
-			const LocalInput* input) const
-		{
-		}
+			const LocalInput* input) const;
+
+		void saveSettings() const;
 
 		GlobalInputSymbol codeToSymbol(
-			sf::Keyboard::Key key)
-		{
-			static_assert((int) GlobalInputSymbol::_Length > 1, L"Invalid GlobalInputSymbol Elements");
-
-			for (int i = 1; i < (int) GlobalInputSymbol::_Length; ++i)
-				if (settings.keys[i - 1] == key)
-				{
-					return (GlobalInputSymbol) i;
-				}
-
-			return GlobalInputSymbol::Invalid;
-		}
+			const sf::Keyboard::Key key);
 
 		void changeSettingsSymbol(
-			GlobalInputSymbol symbol,
-			sf::Keyboard::Key key)
-		{
-			settings.keys[(int) symbol - 1] = symbol;
+			const GlobalInputSymbol symbol,
+			const sf::Keyboard::Key key);
 
-			changed = true;
-		}
-
-		void saveSettings()
-		{
-			if (changed)
-			{
-				changed = false;
-
-				// ...
-			}
-		}
+		sf::Keyboard::Key getSymbolKey(
+			const LocalInputSymbol symbol) const;
 	private:
 		GlobalInputSettings settings;
 
-		bool changed = false;
+		mutable bool changed = false;
 	};
+
+	inline void GlobalInput::changeSettingsSymbol(
+		const GlobalInputSymbol symbol,
+		const sf::Keyboard::Key key)
+	{
+		settings.keys[(int)symbol] = key;
+
+		changed = true;
+	}
+
+	inline sf::Keyboard::Key GlobalInput::getSymbolKey(
+		const LocalInputSymbol symbol) const
+	{
+		return settings.keys[(int)symbol];
+	}
 
 	class LocalInput
 	{
 	public:
 		LocalInput(
-			const LocalInputSettings localInputSettings)
+			const LocalInputSettings settings)
 			:
-			localInputSettings(localInputSettings)
+			settings(settings)
 		{
 		}
 
+		void saveSettings(
+			const int position) const;
 
+		void changeSettingsSymbol(
+			const LocalInputSymbol symbol,
+			const sf::Keyboard::Key key);
 
+		bool isSymbolActive(
+			const LocalInputSymbol symbol) const;
+		sf::Keyboard::Key getSymbolKey(
+			const LocalInputSymbol symbol) const;
 	private:
-		LocalInputSettings localInputSettings;
+		LocalInputSettings settings;
+
+		mutable bool changed;
 	};
+
+	inline bool LocalInput::isSymbolActive(
+		const LocalInputSymbol symbol) const
+	{
+		return sf::Keyboard::isKeyPressed(
+			settings.keys[(int) symbol]
+		);
+	}
+
+	inline void LocalInput::changeSettingsSymbol(
+		const LocalInputSymbol symbol,
+		const sf::Keyboard::Key key)
+	{
+		settings.keys[(int) symbol] = key;
+
+		changed = true;
+	}
+
+	inline sf::Keyboard::Key LocalInput::getSymbolKey(
+		const LocalInputSymbol symbol) const
+	{
+		return settings.keys[(int)symbol];
+	}
 }
