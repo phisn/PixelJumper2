@@ -22,10 +22,13 @@ namespace Game
 	{
 	public:
 		LocalPlayer(
+			const PlayerSettings properties,
 			DEVICE::LocalInput* input)
 			:
+			PlayerBase(properties),
 			input(input)
 		{
+			view.changeTarget(this);
 		}
 
 		~LocalPlayer();

@@ -29,7 +29,7 @@ namespace Game
 
 		class Collidable
 			:
-			public virtual Base
+			public Base
 		{
 		public:
 			bool checkCollision(

@@ -9,17 +9,20 @@
 #define GAME ::Game
 #endif
 
+#ifndef CONTAINS_ENUM
+#define CONTAINS_ENUM(val, element) ((int) val & (int) element)
+#endif
+
 namespace Game
 {
 	namespace Tile
 	{
 		enum class Type
 		{
-			Invalid,
+			Invalid		= 0b000,
 
-			Collidable = 0b1,
-			Touchable = 0b01,
-			Timed = 0b001
+			Collidable	= 0b10,
+			Timed		= 0b01
 		};
 
 		class Base

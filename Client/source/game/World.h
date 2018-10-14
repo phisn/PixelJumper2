@@ -15,14 +15,58 @@ namespace Game
 {
 	struct WorldSettings
 	{
-		const float speed = 0.1f;
+		int difficulty;
+		float speed = 0.1f;
+
+		sf::Vector2f begin;
+		sf::Vector2f size;
+
+		std::wstring name;
+		std::wstring creator;
+		
+		std::vector<Tile::Base*> tiles;
 	};
 
 	class World
 	{
 	public:
-		World();
-		~World();
+
+
+		bool initialize(WorldSettings* settings)
+		{
+			this->settings = settings;
+
+			if (!validate())
+			{
+				return false;
+			}
+
+			for (Tile::Base* tile : settings->tiles)
+			{
+				if (CONTAINS_ENUM(tile->getType(), Tile::Type::Collidable))
+				{
+					collidable.push_back((Tile::Collidable*) tile);
+				}
+
+				if (CONTAINS_ENUM(tile->getType(), Tile::Type::Timed))
+				{
+					timed.push_back((Tile::Timed*) tile);
+				}
+			}
+
+			return true;
+		}
+
+		~World()
+		{
+			delete settings;
+		}
+
+		void initializePlayer(
+			_In_ LocalPlayer* player)
+		{
+			player->getView()->setSize();
+		}
 
 		void onLogic(
 			sf::Time time)
@@ -45,17 +89,18 @@ namespace Game
 
 			if (player->getProperties()->isOnGround)
 			{
-				player->changeProperties()->movement *= 0.8f;
+				player->changeProperties()->movement.x *= 0.8f;
 			}
 			else
 			{
-				player->changeProperties()->movement *= 0.95f;
+				player->changeProperties()->movement.x *= 0.95f;
+				player->changeProperties()->movement.y -= 0.2f;
 			}
 		}
 
 		void draw() const
 		{
-			for (Tile::Base* tile : tiles)
+			for (Tile::Base* tile : settings->tiles)
 			{
 				tile->draw();
 			}
@@ -63,7 +108,7 @@ namespace Game
 
 		bool validate() const;
 	private:
-		const WorldSettings settings;
+		WorldSettings* settings;
 
 		void movePlayer(
 			LocalPlayer* player,
@@ -92,13 +137,10 @@ namespace Game
 		{
 			return player->getPosition()
 				+ player->getProperties()->movement
-				* settings.speed
+				* settings->speed
 				* (float) time.asMicroseconds();
 		}
-
-		std::vector<Tile::Base*> tiles;
-
-		std::vector<Tile::Touchable*> touchable;
+		
 		std::vector<Tile::Timed*> timed;
 		std::vector<Tile::Collidable*> collidable;
 	};

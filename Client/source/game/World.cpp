@@ -4,15 +4,15 @@ namespace Game
 {
 	bool World::validate() const
 	{
-		if (tiles.size() == 0)
+		if (settings->tiles.size() == 0)
 		{
 			return false;
 		}
 
 		// entries & exits > 0
 
-		for (Tile::Base* root : tiles)
-			for (Tile::Base* cold : tiles)
+		for (Tile::Base* root : settings->tiles)
+			for (Tile::Base* cold : settings->tiles)
 			{
 				if (cold == root)
 				{

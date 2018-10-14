@@ -11,10 +11,27 @@
 
 namespace Game
 {
+	struct PlayerSettings
+	{
+		sf::Color color;
+		std::wstring name;
+	};
+
 	class PlayerBase
 	{
 	public:
-		PlayerBase();
+		PlayerBase(
+			const PlayerSettings properties)
+			:
+			properties(properties)
+		{
+			shape.setPosition(
+				sf::Vector2f(0.f, 0.f));
+			shape.setSize(
+				sf::Vector2f(1.f, 1.f));
+			shape.setFillColor(properties.color);
+		}
+
 		~PlayerBase();
 
 		void draw() const
@@ -33,6 +50,8 @@ namespace Game
 			shape.getPosition();
 		}
 	private:
+		const PlayerSettings properties;
+
 		sf::RectangleShape shape;
 	};
 }
