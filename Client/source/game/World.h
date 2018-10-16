@@ -30,8 +30,6 @@ namespace Game
 	class World
 	{
 	public:
-
-
 		bool initialize(WorldSettings* settings)
 		{
 			this->settings = settings;
@@ -40,6 +38,10 @@ namespace Game
 			{
 				return false;
 			}
+
+			worldImage.create(
+				settings->size.x,
+				settings->size.y);
 
 			for (Tile::Base* tile : settings->tiles)
 			{
@@ -51,6 +53,14 @@ namespace Game
 				if (CONTAINS_ENUM(tile->getType(), Tile::Type::Timed))
 				{
 					timed.push_back((Tile::Timed*) tile);
+				}
+
+				if (CONTAINS_ENUM(tile->getType(), Tile::Type::Static))
+				{
+					worldImage.setPixel(
+						tile->getPosition().x,
+						tile->getPosition().y,
+						tile->getColor());
 				}
 			}
 
@@ -108,6 +118,7 @@ namespace Game
 
 		bool validate() const;
 	private:
+		sf::Image worldImage;
 		WorldSettings* settings;
 
 		void movePlayer(

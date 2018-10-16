@@ -21,8 +21,9 @@ namespace Game
 		{
 			Invalid		= 0b000,
 
-			Collidable	= 0b10,
-			Timed		= 0b01
+			Collidable	= 0b100,
+			Timed		= 0b010,
+			Static		= 0b001
 		};
 
 		class Base
@@ -45,6 +46,8 @@ namespace Game
 			sf::Vector2f getSize() const;
 			sf::Vector2f getPosition() const;
 
+			sf::Color getColor() const;
+
 			Type getType() const;
 		protected:
 			sf::RectangleShape shape;
@@ -61,6 +64,11 @@ namespace Game
 		inline sf::Vector2f Base::getPosition() const
 		{
 			return shape.getPosition();
+		}
+
+		inline sf::Color Base::getColor() const
+		{
+			return shape.getFillColor();
 		}
 
 		inline Type Base::getType() const

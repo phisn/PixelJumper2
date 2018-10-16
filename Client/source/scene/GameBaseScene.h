@@ -24,22 +24,6 @@ namespace Scene
 		{
 		}
 
-		bool onCreate() override
-		{
-		}
-
-		void onRemove() override
-		{
-		}
-
-		void onShow() override
-		{
-		}
-
-		void onHide() override
-		{
-		}
-
 		void onCatch(
 			FallbackType type) override
 		{
@@ -113,7 +97,7 @@ namespace Scene
 				}
 			}
 		}
-	private:
+	protected:
 		std::vector<Game::LocalPlayer*> localPlayers;
 
 		Game::World* world;
