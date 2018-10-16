@@ -4,68 +4,73 @@
 
 namespace Scene
 {
+	struct LocalGameSettings
+	{
+		Game::WorldSettings worldSettings;
+
+		int playerCount;
+		std::vector<Game::PlayerSettings> playerSettings;
+	};
+
 	class LocalGame
 		:
 		public GameBase
 	{
 	public:
 		LocalGame(
-			Game::World* world,
-			int localPlayerCount)
+			LocalGameSettings* settings)
 			:
-			GameBase(world)
+			GameBase(
+				new GAME::World()
+			),
+			settings(settings)
 		{
-			for (int i = 0; i < localPlayerCount; ++i)
-			{
-				GAME::PlayerSettings settings;
-				DEVICE::LocalInputSettings input;
-
-				switch (localPlayerCount)
-				{
-				case 0:
-					settings.color = sf::Color::Red;
-					settings.name = L"Player 1";
-
-					break;
-				case 1:
-					settings.color = sf::Color::Blue;
-					settings.name = L"Player 2";
-
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-				}
-
-				localPlayers.emplace_back(
-					settings,
-					DEVICE::Interface::getInput()->loadLocalInput(i)
-				);
-
-				localPlayers.back()->getView()->adjustView(
-					i, localPlayerCount);
-			}
 		}
 
 		bool onCreate() override
 		{
+			if (!world->initialize(
+					&settings->worldSettings))
+			{
+				return false;
+			}
 
+			localPlayers.resize(settings->playerCount);
+			for (int i = 0; i < settings->playerCount; ++i)
+			{
+				GAME::LocalPlayer* player = new GAME::LocalPlayer(
+					settings->playerSettings[i],
+					DEVICE::Interface::getInput()->loadLocalInput(i)
+				);
+
+				player->getView()->adjustView(
+					i, settings->playerCount);
+
+				world->initializePlayer(player);
+				localPlayers.push_back(player);
+			}
+
+			return true;
 		}
 
 		void onRemove() override
 		{
+			for (GAME::LocalPlayer* player : localPlayers)
+			{
+				delete player;
+			}
 
+			delete world;
 		}
 
 		void onShow() override
 		{
-
 		}
 
 		void onHide() override
 		{
-
 		}
+	private:
+		LocalGameSettings* settings;
 	};
 }

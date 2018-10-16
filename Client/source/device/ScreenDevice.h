@@ -48,7 +48,7 @@ namespace Device
 			window->setView(*view);
 		}
 
-		const sf::RenderWindow* getWindow() const
+		sf::RenderWindow* getWindow()
 		{
 			return window;
 		}

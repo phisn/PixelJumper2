@@ -30,7 +30,8 @@ namespace Game
 	class World
 	{
 	public:
-		bool initialize(WorldSettings* settings)
+		bool initialize(
+			_In_ WorldSettings* settings)
 		{
 			this->settings = settings;
 

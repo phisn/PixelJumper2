@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SceneInterface.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="source\scene\SceneInterface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SceneInterface.cpp" />
     <ClCompile Include="source\device\DeviceInterface.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />

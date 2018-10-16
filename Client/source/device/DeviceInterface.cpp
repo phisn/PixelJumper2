@@ -66,6 +66,24 @@ namespace Device
 
 	int Interface::start()
 	{
+		sf::Clock clock;
+		sf::Event event;
+
+		while (Scene::Interface::getSceneSize() > 0)
+		{
+
+
+			if (Scene::Interface::getCurrentType() == Scene::Type::SFML)
+			{
+				while (screen->getWindow()->pollEvent(event))
+				{
+
+				}
+			}
+
+
+		}
+
 		return 0;
 	}
 
