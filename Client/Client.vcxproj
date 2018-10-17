@@ -154,7 +154,6 @@
     <ClInclude Include="source\scene\GameBaseScene.h" />
     <ClInclude Include="source\scene\LocalGameScene.h" />
     <ClInclude Include="source\scene\MainSceneBase.h" />
-    <ClInclude Include="source\scene\resource.h" />
     <ClInclude Include="source\scene\SceneInterface.h" />
     <ClInclude Include="source\scene\SubSceneBase.h" />
   </ItemGroup>

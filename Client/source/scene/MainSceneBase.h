@@ -8,8 +8,13 @@ namespace
 	class MainBase
 	{
 	public:
+		_Success_(return == true)
+		// Can fail & !!! MUST _NOT_ !!! use Interface
 		virtual bool onCreate() = 0;
 		virtual void onRemove() = 0;
+
+		// Cant fail
+		virtual void initialize() = 0;
 
 		virtual void onShow() = 0;
 		virtual void onHide() = 0;

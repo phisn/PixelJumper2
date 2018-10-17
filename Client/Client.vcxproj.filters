@@ -93,9 +93,6 @@
     <ClInclude Include="source\scene\MainSceneBase.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\resource.h">
-      <Filter>source\scene</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\SubSceneBase.h">
       <Filter>source\scene</Filter>
     </ClInclude>

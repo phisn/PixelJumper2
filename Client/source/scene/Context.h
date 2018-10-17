@@ -13,131 +13,51 @@ namespace Scene
 	class Context
 	{
 	public:
-		Context(MainBase* mainScene)
+		Context(
+			MainBase* mainScene)
 			:
 			mainScene(mainScene)
 		{
 		}
 
-		bool quickInitialize()
-		{
-			return mainScene->onCreate();
-		}
+		_Success_(return == true)
+		bool quickInitialize();
+		void deepInitialize();
 
-		void deepInitialize()
-		{
-			mainScene->onHide();
-		}
+		void onHide();
+		void onShow();
+		void cleanup();
 
+		void fallback();
+
+		void onDraw() const;
+		void onEvent(
+			const sf::Event event);
 		void onUpdate(
-			const sf::Time time)
-		{
-			if (seqAnimRunning)
-			{
-				updateSeqAnimation(time);
-			}
-			else
-			{
-				updateAsyncAnimations(time);
-			}
-
-			if (mainScene->isRunning())
-			{
-				mainScene->onLogic(time);
-			}
-
-			if (!subScenes.top())
-			{
-				subScenes.top()->onLogic(time);
-			}
-		}
-
-		void cleanup()
-		{
-			// ...
-		}
-
-		void onHide()
-		{
-			delete sequentialAnimation;
-
-			for (AsyncAnimation* animation : asyncAnimations)
-			{
-				delete animation;
-			}
-
-			mainScene->onHide();
-		}
-
-		void removeAnimations()
-		{
-			asyncAnimations.clear();
-		}
+			const sf::Time time);
 
 		bool pushScene(
-			SubBase* scene)
-		{
-			if (!scene->onCreate())
-			{
-				return false;
-			}
+			SubBase* scene);
+		void popScene();
 
-			subScenes.push(scene);
-
-			return true;
-		}
-
-		void onEvent(
-			const sf::Event event)
-		{
-			if (mainScene->isRunning())
-			{
-				mainScene->onEvent(event);
-			}
-
-			if (!subScenes.empty())
-			{
-				subScenes.top()->onEvent(event);
-			}
-		}
+		void pushAsyncAnimation(
+			AsyncAnimation* animation);
+		void pushSequentialAnimation(
+			Animation* animation);
+		void removeAnimations();
 
 	private:
 		std::stack<SubBase*> subScenes;
 		MainBase* mainScene;
 
 		void updateSeqAnimation(
-			const sf::Time time)
-		{
-			seqAnimRunning = !sequentialAnimation->onUpdate(time);
-
-			// On Sequential Animation finished
-		}
+			const sf::Time time);
 
 		bool seqAnimRunning = false;
 		Animation* sequentialAnimation;
 
 		void updateAsyncAnimations(
-			const sf::Time time)
-		{
-			int i = 0;
-
-			while (i < asyncAnimations.size())
-				if (!asyncAnimations[i]->onUpdate(time))
-				{
-					delete asyncAnimations[i];
-
-					if (i + 1 != asyncAnimations.size())
-					{
-						asyncAnimations[i] = asyncAnimations.back();
-					}
-
-					asyncAnimations.pop_back();
-				}
-				else
-				{
-					++i;
-				}
-		}
+			const sf::Time time);
 
 		std::vector<AsyncAnimation*> asyncAnimations;
 	};

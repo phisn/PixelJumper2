@@ -22,6 +22,11 @@ namespace Scene
 			this->onFinished = onFinished;
 		}
 
+		void onDraw() const
+		{
+			animation->onDraw();
+		}
+
 		bool onUpdate(
 			const sf::Time time)
 		{

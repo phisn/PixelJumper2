@@ -6,8 +6,6 @@
 #include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/InputDevice.h>
 
-#define IF_HAS_ACTION(source, except) if ((int) source & (int) except)
-
 namespace Game
 {
 	struct PlayerProperties
