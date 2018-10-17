@@ -133,7 +133,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SceneInterface.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
@@ -148,14 +147,18 @@
     <ClInclude Include="source\game\tiles\TouchableTile.h" />
     <ClInclude Include="source\game\tiles\Wall.h" />
     <ClInclude Include="source\game\World.h" />
+    <ClInclude Include="source\scene\Animation.h" />
+    <ClInclude Include="source\scene\AsyncAnimation.h" />
+    <ClInclude Include="source\scene\Context.h" />
     <ClInclude Include="source\scene\DebugScene.h" />
     <ClInclude Include="source\scene\GameBaseScene.h" />
     <ClInclude Include="source\scene\LocalGameScene.h" />
-    <ClInclude Include="source\scene\SceneBase.h" />
+    <ClInclude Include="source\scene\MainSceneBase.h" />
+    <ClInclude Include="source\scene\resource.h" />
     <ClInclude Include="source\scene\SceneInterface.h" />
+    <ClInclude Include="source\scene\SubSceneBase.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SceneInterface.cpp" />
     <ClCompile Include="source\device\DeviceInterface.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
@@ -170,10 +173,15 @@
     <ClCompile Include="source\game\tiles\TouchableTile.cpp" />
     <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
+    <ClCompile Include="source\scene\Animation.cpp" />
+    <ClCompile Include="source\scene\AsyncAnimation.cpp" />
+    <ClCompile Include="source\scene\Context.cpp" />
     <ClCompile Include="source\scene\DebugScene.cpp" />
     <ClCompile Include="source\scene\GameBaseScene.cpp" />
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
+    <ClCompile Include="source\scene\MainSceneBase.cpp" />
     <ClCompile Include="source\scene\SceneInterface.cpp" />
+    <ClCompile Include="source\scene\SubSceneBase.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>

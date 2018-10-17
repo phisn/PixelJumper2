@@ -38,9 +38,9 @@ namespace Game
 				shape.setFillColor(color);
 			}
 
-			void draw() const
+			void onDraw() const
 			{
-				DEVICE::Interface::getScreen()->draw(&shape);
+				DEVICE::Interface::getScreen()->onDraw(&shape);
 			}
 
 			sf::Vector2f getSize() const;

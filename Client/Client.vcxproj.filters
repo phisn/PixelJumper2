@@ -42,12 +42,6 @@
     <ClInclude Include="source\scene\DebugScene.h">
       <Filter>source\old_scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\SceneBase.h">
-      <Filter>source\old_scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source\scene\SceneInterface.h">
-      <Filter>source\old_scene</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\World.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -84,7 +78,25 @@
     <ClInclude Include="source\device\ResourceDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="SceneInterface.h">
+    <ClInclude Include="source\scene\SceneInterface.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\Animation.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\AsyncAnimation.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\Context.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\MainSceneBase.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\resource.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\SubSceneBase.h">
       <Filter>source\scene</Filter>
     </ClInclude>
   </ItemGroup>
@@ -144,9 +156,21 @@
       <Filter>source\device</Filter>
     </ClCompile>
     <ClCompile Include="source\scene\SceneInterface.cpp">
-      <Filter>source\old_scene</Filter>
+      <Filter>source\scene</Filter>
     </ClCompile>
-    <ClCompile Include="SceneInterface.cpp">
+    <ClCompile Include="source\scene\Animation.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\AsyncAnimation.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\Context.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\MainSceneBase.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\SubSceneBase.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
   </ItemGroup>

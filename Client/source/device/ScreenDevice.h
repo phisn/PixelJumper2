@@ -36,10 +36,10 @@ namespace Device
 		void onShow();
 		void onHide();
 
-		void draw(
+		void onDraw(
 			const sf::Drawable* drawable)
 		{
-			window->draw(*drawable);
+			window->onDraw(*drawable);
 		}
 
 		void applyView(

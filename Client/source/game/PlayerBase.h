@@ -34,9 +34,9 @@ namespace Game
 
 		~PlayerBase();
 
-		void draw() const
+		void onDraw() const
 		{
-			DEVICE::Interface::getScreen()->draw(&shape);
+			DEVICE::Interface::getScreen()->onDraw(&shape);
 		}
 
 		void setPosition(

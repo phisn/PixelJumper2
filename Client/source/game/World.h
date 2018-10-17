@@ -109,11 +109,11 @@ namespace Game
 			}
 		}
 
-		void draw() const
+		void onDraw() const
 		{
 			for (Tile::Base* tile : settings->tiles)
 			{
-				tile->draw();
+				tile->onDraw();
 			}
 		}
 

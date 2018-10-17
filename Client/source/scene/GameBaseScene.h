@@ -87,13 +87,13 @@ namespace Scene
 			for (GAME::LocalPlayer* playerView : localPlayers)
 			{
 				playerView->getView()->apply();
-				world->draw();
+				world->onDraw();
 
 				// ...
 
 				for (const GAME::LocalPlayer* localPlayer : localPlayers)
 				{
-					localPlayer->draw();
+					localPlayer->onDraw();
 				}
 			}
 		}
