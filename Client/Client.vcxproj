@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
+    <ClInclude Include="source\device\FailHandler.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\DeviceInterface.cpp" />
+    <ClCompile Include="source\device\FailHandler.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />

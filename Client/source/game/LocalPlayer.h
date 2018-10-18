@@ -29,7 +29,9 @@ namespace Game
 			view.changeTarget(this);
 		}
 
-		~LocalPlayer();
+		~LocalPlayer()
+		{
+		}
 
 		void onLogic(
 			const sf::Time time)

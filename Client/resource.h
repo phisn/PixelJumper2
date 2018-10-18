@@ -1,13 +1,10 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by Client.rc
+// Von Microsoft Visual C++ generierte Includedatei.
+// Verwendet durch Client.rc
 //
 #define IDD_DEBUG_DIALOG                101
-#define IDD_TEST_DIALOG                 101
 #define IDD_DEBUG_MENU                  103
 #define IDC_DEBUG_TEST                  1001
-#define IDC_TEST_PUSH                   1001
-#define IDC_TEST_COUNTER                1002
 #define IDC_DEBUG_RUN_SP                1003
 #define IDC_DEBUG_LOCAL_GROUP           1004
 

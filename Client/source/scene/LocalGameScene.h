@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/device/InputDevice.h>
 #include <Client/source/scene/GameBaseScene.h>
 
 namespace Scene
@@ -39,16 +40,51 @@ namespace Scene
 			}
 		}
 
+		void onRemove() override
+		{
+			GameBase::onRemove();
+
+			for (GAME::LocalPlayer* player : localPlayers)
+			{
+				delete player;
+			}
+		}
+
 		void initialize() override
 		{
 			GameBase::initialize();
 
+			GAME::PlayerSettings playerSettings;
 			for (int i = 0; i < settings->playerCount; ++i)
 			{
+				switch (i)
+				{
+				case 0:
+					playerSettings.color = sf::Color::Red;
+					playerSettings.name = L"Player 1";
 
+					break;
+				case 1:
+					playerSettings.color = sf::Color::Blue;
+					playerSettings.name = L"Player 2";
+
+					break;
+				case 2:
+				case 3:
+					break;
+				}
+
+				GAME::LocalPlayer* localPlayer = new GAME::LocalPlayer(
+					playerSettings, 
+					DEVICE::Interface::getInput()->loadLocalInput(i)
+				);
+
+				localPlayer->getView()->adjustView(
+					i, settings->playerCount);
 
 				world->initializePlayer(
 					localPlayers.back());
+				localPlayers.push_back(localPlayer);
 			}
 		}
 

@@ -91,12 +91,13 @@ namespace Device
 		sf::Keyboard::Key::RControl,
 	};
 
+	class LocalInput;
 	class GlobalInput
 	{
 	public:
 		bool initialize();
 
-		LocalInput loadLocalInput(
+		LocalInput* loadLocalInput(
 			const int position) const;
 		void saveLocalInput(
 			const int position,

@@ -2,27 +2,50 @@
 
 #include <Client/source/device/DeviceInterface.h>
 
+#include <Windows.h>
+
+namespace
+{
+	DEVICE::LocalInput* inputs[4] = { };
+}
+
 namespace Device
 {
 	bool GlobalInput::initialize()
 	{
-		// load from file
+		if (inputs[0])
+		{ // Quicker than loop
+			delete inputs[0];
+			delete inputs[1];
+			// delete inputs[2];
+			// delete inputs[3];
+		}
 
+		// load from file
 		settings = defaultGlobalSettings;
+
+		// load from file
+		inputs[0] = new LocalInput(localInputSettings1);
+		inputs[1] = new LocalInput(localInputSettings2);
 
 		return true;
 	}
 
-	LocalInput GlobalInput::loadLocalInput(
+	LocalInput* GlobalInput::loadLocalInput(
 		const int position) const
 	{
-		// load from file
-
-		switch (position)
+		if (position >= 0 && position <= 4)
 		{
-		case 1:
-			return LocalInput(localInputSettings1);
+			return inputs[position];
 		}
+
+		MessageBoxW(
+			NULL,
+			L"Attempted to load invalid input slot",
+			L"Error",
+			MB_OK);
+
+		return NULL;
 	}
 
 	void GlobalInput::saveLocalInput(
