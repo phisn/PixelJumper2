@@ -150,7 +150,6 @@
     <ClInclude Include="source\scene\Animation.h" />
     <ClInclude Include="source\scene\AsyncAnimation.h" />
     <ClInclude Include="source\scene\Context.h" />
-    <ClInclude Include="source\scene\DebugScene.h" />
     <ClInclude Include="source\scene\GameBaseScene.h" />
     <ClInclude Include="source\scene\LocalGameScene.h" />
     <ClInclude Include="source\scene\MainSceneBase.h" />
@@ -175,10 +174,8 @@
     <ClCompile Include="source\scene\Animation.cpp" />
     <ClCompile Include="source\scene\AsyncAnimation.cpp" />
     <ClCompile Include="source\scene\Context.cpp" />
-    <ClCompile Include="source\scene\DebugScene.cpp" />
     <ClCompile Include="source\scene\GameBaseScene.cpp" />
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
-    <ClCompile Include="source\scene\MainSceneBase.cpp" />
     <ClCompile Include="source\scene\SceneInterface.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
     <ClCompile Include="winMain.cpp" />

@@ -7,99 +7,108 @@
 #include <Client/source/game/PlayerBase.h>
 #include <Client/source/game/World.h>
 
-#include <Client/source/scene/SceneBase.h>
+#include <Client/source/scene/MainSceneBase.h>
 #include <Client/source/scene/SceneInterface.h>
+
+#include <Windows.h>
 
 namespace Scene
 {
 	class GameBase
 		:
-		public Base
+		public MainBase
 	{
 	public:
 		GameBase(
-			Game::World* world)
+			GAME::WorldSettings* settings)
 			:
-			Base(true, Scene::Type::SFML)
+			settings(settings)
 		{
 		}
 
-		void onCatch(
-			FallbackType type) override
+		_Success_(return == true)
+		bool onCreate() override
 		{
-			if (type == FallbackType::Default)
+			world = new GAME::World();
+
+			if (!world->initialize(settings));
 			{
-				onShow();
+				return false;
 			}
-			else
-			{
-				SCENE::Interface::fallback(type);
-			}
+
+			return true;
+		}
+		
+		void onRemove() override
+		{
+			delete world;
+		}
+
+		void initialize() override
+		{ // init things like scenes or animations
+			background.setFillColor(
+				sf::Color::Color(20, 20, 20, 40));
+			background.setSize(
+				settings->size);
+			background.setPosition(
+				0.f, 0.f);
 		}
 
 		void onEvent(
 			sf::Event event) override
 		{
-			if (event.type == sf::Event::KeyPressed)
+			if (event.type != sf::Event::KeyPressed)
 			{
-				switch (
-					DEVICE::Interface::getInput()->codeToSymbol(event.key.code)
-					)
-				{
-				case DEVICE::GlobalInputSymbol::Exit:
-					SCENE::Interface::popScene();
-
-					break;
-				case DEVICE::GlobalInputSymbol::OpenMenu:
-					// SCENE::Interface::pushScene(
-					//     new GameMenu());
-
-					break;
-				case DEVICE::GlobalInputSymbol::Pause:
-					// ...
-
-					break;
-				case DEVICE::GlobalInputSymbol::Invalid:
-				default:
-					break;
-				}
+				return;
 			}
 
-			return;
+			switch ( 
+				DEVICE::Interface::getInput()->codeToSymbol(
+					event.key.code) 
+				) 
+			{
+			case DEVICE::GlobalInputSymbol::Exit:
+				if (!Interface::popContext())
+				{
+					MessageBoxW(
+						NULL,
+						L"Unable to pop context",
+						L"Error",
+						MB_OK);
+				}
+
+				break;
+			}
 		}
 
-		void onLogic(
+		virtual void onLogic(
 			sf::Time time) override
 		{
-			world->onLogic(time); // ?correct position?
-
-			for (GAME::LocalPlayer* localPlayer : localPlayers)
-			{
-				localPlayer->onLogic(time);
-
-				world->updatePlayer(
-					localPlayer, time);
-			}
+			world->onLogic(time);
 		}
 
-		void onDraw() override
+		virtual void onDraw() override
 		{
-			for (GAME::LocalPlayer* playerView : localPlayers)
+			world->onDraw();
+		}
+
+	protected:
+		void tryDrawForeground() const
+		{
+			if (isHidden)
 			{
-				playerView->getView()->apply();
-				world->onDraw();
-
-				// ...
-
-				for (const GAME::LocalPlayer* localPlayer : localPlayers)
-				{
-					localPlayer->onDraw();
-				}
+				DEVICE::Interface::getScreen()->onDraw(&background);
 			}
 		}
-	protected:
-		std::vector<Game::LocalPlayer*> localPlayers;
 
-		Game::World* world;
+		std::vector<
+			GAME::PlayerBase*> player;
+
+		GAME::WorldSettings* settings;
+		GAME::World* world;
+
+		sf::RectangleShape background;
+	private:
+		bool isHidden = false;
 	};
 }

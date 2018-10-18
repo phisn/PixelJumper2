@@ -8,6 +8,9 @@
 #include <stack>
 #include <vector>
 
+#include <SFML/System/Time.hpp>
+#include <SFML/Window/Event.hpp>
+
 namespace Scene
 {
 	class Context

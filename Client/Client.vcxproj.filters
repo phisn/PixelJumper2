@@ -39,9 +39,6 @@
     <ClInclude Include="source\device\Settings.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\DebugScene.h">
-      <Filter>source\old_scene</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\World.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -113,9 +110,6 @@
     <ClCompile Include="source\device\Settings.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\scene\DebugScene.cpp">
-      <Filter>source\old_scene</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\World.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
@@ -152,9 +146,6 @@
     <ClCompile Include="source\device\ResourceDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\scene\SceneInterface.cpp">
-      <Filter>source\scene</Filter>
-    </ClCompile>
     <ClCompile Include="source\scene\Animation.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
@@ -164,10 +155,10 @@
     <ClCompile Include="source\scene\Context.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\scene\MainSceneBase.cpp">
+    <ClCompile Include="source\scene\SubSceneBase.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\scene\SubSceneBase.cpp">
+    <ClCompile Include="source\scene\SceneInterface.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
   </ItemGroup>

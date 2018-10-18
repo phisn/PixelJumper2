@@ -6,18 +6,100 @@ namespace Scene
 {
 	struct LocalGameSettings
 	{
-		Game::WorldSettings worldSettings;
+		Game::WorldSettings world;
 
 		int playerCount;
-		std::vector<Game::PlayerSettings> playerSettings;
 	};
 
 	class LocalGame
 		:
-		public GameBase
+		GameBase
 	{
 	public:
 		LocalGame(
+			LocalGameSettings* settings)
+			:
+			GameBase(
+				&settings->world),
+			settings(settings)
+		{
+		}
+
+		bool onCreate() override
+		{
+			if (settings->playerCount <= 0 ||
+				settings->playerCount > 4)
+			{
+				return false;
+			}
+
+			if (!GameBase::onCreate())
+			{
+				return false;
+			}
+		}
+
+		void initialize() override
+		{
+			GameBase::initialize();
+
+			for (int i = 0; i < settings->playerCount; ++i)
+			{
+
+
+				world->initializePlayer(
+					localPlayers.back());
+			}
+		}
+
+		void onShow() override { }
+		void onHide() override { }
+
+		void onLogic(
+			const sf::Time time) override
+		{
+			GameBase::onLogic(time);
+
+			for (GAME::LocalPlayer* localPlayer : localPlayers)
+			{
+				localPlayer->onLogic(time);
+
+				world->updatePlayer(
+					localPlayer,
+					time);
+			}
+		}
+
+		void onDraw() override
+		{
+			for (GAME::LocalPlayer* localPlayer : localPlayers)
+			{
+				localPlayer->getView()->apply();
+
+				GameBase::onDraw();
+
+				for (GAME::LocalPlayer* player : localPlayers)
+				{
+					player->onDraw();
+				}
+
+				tryDrawForeground();
+			}
+		}
+
+	private:
+		std::vector<
+			GAME::LocalPlayer*> localPlayers;
+
+		LocalGameSettings* settings;
+	};
+
+	class _LocalGame
+		:
+		public GameBase
+	{
+	public:
+		_LocalGame(
 			LocalGameSettings* settings)
 			:
 			GameBase(

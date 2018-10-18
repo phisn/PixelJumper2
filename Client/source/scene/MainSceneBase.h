@@ -20,9 +20,9 @@ namespace
 		virtual void onHide() = 0;
 
 		virtual void onEvent(
-			sf::Event event) = 0;
+			const sf::Event event) = 0;
 		virtual void onLogic(
-			sf::Time time) = 0;
+			const sf::Time time) = 0;
 		virtual void onDraw() = 0;
 
 		bool isRunning() const
