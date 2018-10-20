@@ -16,6 +16,14 @@ namespace Scene
 	class Context
 	{
 	public:
+		template <typename T, class... Args>
+		static Context* create(Args&&... args)
+		{
+			return new Context(
+				new T(args)
+			);
+		}
+
 		Context(
 			MainBase* mainScene)
 			:

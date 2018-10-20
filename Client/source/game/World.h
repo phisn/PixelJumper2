@@ -30,6 +30,16 @@ namespace Game
 	class World
 	{
 	public:
+		~World()
+		{
+			for (Tile::Base* tile : settings->tiles)
+			{
+				delete tile;
+			}
+
+			delete settings;
+		}
+
 		bool initialize(
 			_In_ WorldSettings* settings)
 		{
@@ -66,11 +76,6 @@ namespace Game
 			}
 
 			return true;
-		}
-
-		~World()
-		{
-			delete settings;
 		}
 
 		void initializePlayer(

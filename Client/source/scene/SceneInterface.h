@@ -54,5 +54,8 @@ namespace Scene
 		void onUpdate(
 			const sf::Time time);
 		void doOrders();
+
+		void shutdown();
+		bool isRunning();
 	}
 }

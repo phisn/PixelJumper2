@@ -3,15 +3,56 @@
 #include <Client/source/device/ResourceDevice.h>
 
 #include <Client/source/scene/SceneInterface.h>
-#include <Client/source/scene/DebugScene.h>
+
+#include <Client/source/scene/LocalGameScene.h>
+#include <Client/source/scene/Context.h>
+#include <Client/source/game/tiles/Wall.h>
 
 #include "DeviceInterface.h"
+
 
 namespace
 {
 	Device::GlobalInput* input = NULL;
 	Device::Screen* screen = NULL;
 	Device::Resource* resource = NULL;
+
+#ifdef _DEBUG
+	SCENE::Context* makeStartingContext()
+	{
+		SCENE::LocalGameSettings* settings = new SCENE::LocalGameSettings();
+
+		settings->playerCount = 2;
+
+		settings->world->begin = sf::Vector2f(5.f, 0.f);
+		settings->world->size  = sf::Vector2f(40.f, 18.f);
+		settings->world->speed = 1.f;
+
+		settings->world->tiles.push_back(
+			new GAME::Tile::Wall(
+				{
+					sf::Vector2f(1.f, 10.f),
+					sf::Vector2f(16.f, 2.f)
+				})
+		); // floor
+
+		settings->world->tiles.push_back(
+			new GAME::Tile::Wall(
+				{
+					sf::Vector2f(16.f, 2.f),
+					sf::Vector2f(2.f, 14.f)
+				})
+		); // wall
+
+		return SCENE::Context::create<
+			SCENE::LocalGame>(settings);
+	}
+#else
+	SCENE::Context* makeStartingContext()
+	{
+
+	}
+#endif
 }
 
 namespace Device
@@ -47,9 +88,9 @@ namespace Device
 			return InitError::Scene;
 		}
 
-		if (!Scene::Interface::pushScene(
-				new Scene::Debug())
-			)
+		if (!SCENE::Interface::pushContext(
+			makeStartingContext()
+		))
 		{
 			return InitError::Scene;
 		}
@@ -66,22 +107,26 @@ namespace Device
 
 	int Interface::start()
 	{
+		screen->onShow();
+
 		sf::Clock clock;
 		sf::Event event;
 
-		while (Scene::Interface::getSceneSize() > 0)
+		while (Scene::Interface::isRunning())
 		{
+			Scene::Interface::doOrders();
 
-
-			if (Scene::Interface::getCurrentType() == Scene::Type::SFML)
+			while (screen->getWindow()->pollEvent(event))
 			{
-				while (screen->getWindow()->pollEvent(event))
-				{
-
-				}
+				Scene::Interface::onEvent(event);
 			}
 
+			Scene::Interface::onUpdate(
+				clock.restart());
 
+			screen->getWindow()->clear();
+			Scene::Interface::onDraw();
+			screen->getWindow()->display();
 		}
 
 		return 0;
@@ -90,23 +135,6 @@ namespace Device
 	GlobalInput* Interface::getInput()
 	{
 		return input;
-	}
-
-	void Interface::onSceneTypeChanged(
-		SCENE::Type oldType, 
-		SCENE::Type newType)
-	{
-		if (oldType == SCENE::Type::SFML)
-		{
-			screen->onHide();
-
-			return;
-		}
-
-		if (newType == SCENE::Type::SFML)
-		{
-			screen->onShow();
-		}
 	}
 
 	Screen* Interface::getScreen()

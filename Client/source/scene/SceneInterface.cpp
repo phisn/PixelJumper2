@@ -11,6 +11,8 @@ namespace
 	{
 		return (int) currentOrder >= (int) order;
 	}
+
+	bool running = true;
 }
 
 namespace Scene
@@ -30,7 +32,11 @@ namespace Scene
 
 		currentOrder = Order::LoadContext;
 
-		contextStack.top()->onHide();
+		if (!contextStack.empty())
+		{
+			contextStack.top()->onHide();
+		}
+
 		contextStack.push(context);
 
 		return true;
@@ -131,8 +137,14 @@ namespace Scene
 
 			break;
 		case Order::PopContext:
-			contextStack.top()->cleanup();
 			// delete or reuse?
+			contextStack.top()->cleanup();
+			contextStack.pop();
+
+			if (!contextStack.empty())
+			{
+				contextStack.top()->onShow();
+			}
 
 			break;
 		case Order::LoadContext:
@@ -140,5 +152,15 @@ namespace Scene
 
 			break;
 		}
+	}
+	
+	void Interface::shutdown()
+	{
+		running = false;
+	}
+
+	bool Interface::isRunning()
+	{
+		return running;
 	}
 }

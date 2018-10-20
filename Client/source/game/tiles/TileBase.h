@@ -26,16 +26,24 @@ namespace Game
 			Static		= 0b001
 		};
 
+		struct BaseSettings
+		{
+			sf::Vector2f position, size;
+			Type type;
+			sf::Color color;
+		};
+
 		class Base
 		{
 		public:
 			Base(
-				const Type type,
-				const sf::Color color)
+				const BaseSettings settings)
 				:
-				type(type)
+				type(settings.type)
 			{
-				shape.setFillColor(color);
+				shape.setPosition(settings.position);
+				shape.setSize(settings.size);
+				shape.setFillColor(settings.color);
 			}
 
 			void onDraw() const

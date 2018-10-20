@@ -235,11 +235,11 @@ namespace Game
 			(source.y - destination.y);
 		const float g_h = source.x - g_m * source.y;
 
-		const float t_h_a = shape.getPosition().y;
-		const float t_h_b = t_h_a + shape.getSize().y;
+		const float t_h_a = _shape->getPosition().y;
+		const float t_h_b = t_h_a + _shape->getSize().y;
 
-		const float t_w_a = shape.getPosition().x;
-		const float t_w_b = t_w_a + shape.getSize().x;
+		const float t_w_a = _shape->getPosition().x;
+		const float t_w_b = t_w_a + _shape->getSize().x;
 
 		const float t_h = g_m > 0.0f 
 			? t_h_b : t_h_a;

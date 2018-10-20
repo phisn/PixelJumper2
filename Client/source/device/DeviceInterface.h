@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Client/source/scene/SceneBase.h>
-
 #include <SFML/Graphics.hpp>
 
 #ifndef DEVICE
@@ -41,9 +39,5 @@ namespace Device
 		GlobalInput* getInput();
 		Screen* getScreen();
 		Resource* getResource();
-		
-		void onSceneTypeChanged(
-			SCENE::Type oldType,
-			SCENE::Type newType);
 	}
 }

@@ -39,7 +39,7 @@ namespace Device
 		void onDraw(
 			const sf::Drawable* drawable)
 		{
-			window->onDraw(*drawable);
+			window->draw(*drawable);
 		}
 
 		void applyView(
