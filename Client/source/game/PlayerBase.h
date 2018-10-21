@@ -25,14 +25,11 @@ namespace Game
 			:
 			properties(properties)
 		{
-			shape.setPosition(
-				sf::Vector2f(0.f, 0.f));
 			shape.setSize(
 				sf::Vector2f(1.f, 1.f));
-			shape.setFillColor(properties.color);
+			shape.setFillColor(
+				properties.color);
 		}
-
-		~PlayerBase();
 
 		void onDraw() const
 		{
@@ -47,7 +44,7 @@ namespace Game
 
 		const sf::Vector2f getPosition() const
 		{
-			shape.getPosition();
+			return shape.getPosition();
 		}
 	private:
 		const PlayerSettings properties;

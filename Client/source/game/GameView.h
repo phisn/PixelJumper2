@@ -21,9 +21,14 @@ namespace Game
 			int position,
 			int count)
 		{
+			const sf::Vector2u windowSize = 
+				DEVICE::Interface::getScreen()->getWindow()->getSize();
+
 			switch (count)
 			{
 			case 1:
+				size = sf::Vector2f(windowSize);
+
 				view.setViewport(sf::FloatRect(
 					0.0f, 0.0f,
 					1.0f, 1.0f)
@@ -31,6 +36,10 @@ namespace Game
 
 				break;
 			case 2:
+				size = sf::Vector2f(
+					(float) windowSize.x / 2.f,
+					windowSize.y);
+
 				if (position == 1)
 				{
 					view.setViewport(sf::FloatRect(
@@ -49,18 +58,30 @@ namespace Game
 				switch (position)
 				{
 				case 1:
+					size = sf::Vector2f(
+						(float) windowSize.x / 2.f,
+						(float) windowSize.y / 2.f);
+
 					view.setViewport(sf::FloatRect(
 						0.0f, 0.0f,
-						0.5f, 0.0f));
+						0.5f, 5.0f));
 
 					break;
 				case 2:
+					size = sf::Vector2f(
+						(float)windowSize.x / 2.f,
+						(float)windowSize.y / 2.f);
+
 					view.setViewport(sf::FloatRect(
 						0.5f, 0.0f,
 						0.5f, 0.5f));
 
 					break;
 				case 3:
+					size = sf::Vector2f(
+						(float)windowSize.x,
+						(float)windowSize.y / 2.f);
+
 					view.setViewport(sf::FloatRect(
 						0.0f, 0.5f,
 						1.0f, 0.5f));
@@ -70,6 +91,10 @@ namespace Game
 
 				break;
 			case 4:
+				size = sf::Vector2f(
+					(float)windowSize.x / 2.f,
+					(float)windowSize.y / 2.f);
+
 				switch (position)
 				{
 				case 1:
@@ -126,9 +151,26 @@ namespace Game
 		void setSize(
 			sf::Vector2f size)
 		{
-			view.setSize(size);
+			sf::Vector2f tileSize = sf::Vector2f(
+				this->size.x / size.x,
+				this->size.y / size.y);
+
+			if (tileSize.x > tileSize.y)
+			{
+				view.setSize(
+					this->size.x / tileSize.y,
+					size.y);
+			}
+			else
+			{
+				view.setSize(
+					size.x,
+					this->size.y / tileSize.x);
+			}
 		}
 	private:
+		sf::Vector2f size;
+
 		PlayerBase* target;
 		sf::View view;
 	};

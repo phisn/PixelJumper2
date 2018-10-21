@@ -12,12 +12,14 @@ namespace Game
 		class Touchable
 			:
 			public Collidable,
-			public virtual Timed
+			public Timed
 		{
 		protected:
 			Touchable(
+				const BaseSettings settings,
 				const sf::Time resetTime)
 				:
+				Collidable(settings),
 				resetTime(resetTime)
 			{
 				passedTime = { };

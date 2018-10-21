@@ -1,245 +1,32 @@
 ﻿  DeviceInterface.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2039: "SubBase": Ist kein Element von "Scene"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(12): note: Siehe Deklaration von "Scene"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2065: "SubBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2065: "scene": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.h(89): warning C4305: "-=": Verkürzung von "double" in "T"
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(38): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(56): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(22): error C2512: "Game::Tile::Collidable": Kein geeigneter Standardkonstruktor verfügbar
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\collidabletile.h(30): note: Siehe Deklaration von "Game::Tile::Collidable"
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(54): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(76): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(73): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(75): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(72): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(84): error C2660: "Game::View::setSize": Funktion akzeptiert keine 0 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(126): note: Siehe Deklaration von "Game::View::setSize"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(34): warning C4390: ";": Leere kontrollierte Anweisung aufgetreten; ist dies beabsichtigt?
-  FailHandler.cpp
-  InputDevice.cpp
-  ResourceDevice.cpp
-  ScreenDevice.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-  Settings.cpp
-c1xx : fatal error C1083: Datei (Quelle) kann nicht geöffnet werden: "source\device\Settings.cpp": No such file or directory
-  GameView.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-  LocalPlayer.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.h(89): warning C4305: "-=": Verkürzung von "double" in "T"
-          with
-          [
-              T=float
-          ]
-  PlayerBase.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(5): error C2653: "PlayerBase": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(6): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(7): warning C4508: "PlayerBase": Funktion sollte einen Wert zurückgeben; Ergebnistyp "void" angenommen
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(10): error C2523: "PlayerBase::~PlayerBase": Destruktor-Tag stimmt nicht überein.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(10): error C2510: "PlayerBase": Der linke Teil von "::" muss eine Klasse/Struktur/Union sein
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(11): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(11): error C2084: Funktion "int PlayerBase(void)" hat bereits einen Funktionsrumpf
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\playerbase.cpp(5): note: Siehe vorherige Definition von "PlayerBase"
-  CollidableTile.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.h(89): warning C4305: "-=": Verkürzung von "double" in "T"
-          with
-          [
-              T=float
-          ]
-  TileBase.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-  TouchableTile.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.h(89): warning C4305: "-=": Verkürzung von "double" in "T"
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(22): error C2512: "Game::Tile::Collidable": Kein geeigneter Standardkonstruktor verfügbar
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\collidabletile.h(30): note: Siehe Deklaration von "Game::Tile::Collidable"
-  Wall.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.h(89): warning C4305: "-=": Verkürzung von "double" in "T"
-          with
-          [
-              T=float
-          ]
-  World.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.h(89): warning C4305: "-=": Verkürzung von "double" in "T"
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(22): error C2512: "Game::Tile::Collidable": Kein geeigneter Standardkonstruktor verfügbar
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\collidabletile.h(30): note: Siehe Deklaration von "Game::Tile::Collidable"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(54): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(73): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(72): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(84): error C2660: "Game::View::setSize": Funktion akzeptiert keine 0 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(126): note: Siehe Deklaration von "Game::View::setSize"
-  Animation.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\animation.cpp(5): error C2653: "Animation": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\animation.cpp(6): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\animation.cpp(7): warning C4508: "Animation": Funktion sollte einen Wert zurückgeben; Ergebnistyp "void" angenommen
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\animation.cpp(10): error C2523: "Animation::~Animation": Destruktor-Tag stimmt nicht überein.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\animation.cpp(10): error C2510: "Animation": Der linke Teil von "::" muss eine Klasse/Struktur/Union sein
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\animation.cpp(11): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\animation.cpp(11): error C2084: Funktion "int Animation(void)" hat bereits einen Funktionsrumpf
-  c:\users\phisn\source\repos\pixeljumper2\client\source\scene\animation.cpp(5): note: Siehe vorherige Definition von "Animation"
-  AsyncAnimation.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-  Context.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-  GameBaseScene.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.h(89): warning C4305: "-=": Verkürzung von "double" in "T"
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(22): error C2512: "Game::Tile::Collidable": Kein geeigneter Standardkonstruktor verfügbar
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\collidabletile.h(30): note: Siehe Deklaration von "Game::Tile::Collidable"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(54): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(73): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(72): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(84): error C2660: "Game::View::setSize": Funktion akzeptiert keine 0 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(126): note: Siehe Deklaration von "Game::View::setSize"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2039: "SubBase": Ist kein Element von "Scene"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(12): note: Siehe Deklaration von "Scene"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2065: "SubBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2065: "scene": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(34): warning C4390: ";": Leere kontrollierte Anweisung aufgetreten; ist dies beabsichtigt?
-  LocalGameScene.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\localplayer.h(89): warning C4305: "-=": Verkürzung von "double" in "T"
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(22): error C2512: "Game::Tile::Collidable": Kein geeigneter Standardkonstruktor verfügbar
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\collidabletile.h(30): note: Siehe Deklaration von "Game::Tile::Collidable"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(54): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(73): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(72): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(84): error C2660: "Game::View::setSize": Funktion akzeptiert keine 0 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(126): note: Siehe Deklaration von "Game::View::setSize"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2039: "SubBase": Ist kein Element von "Scene"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(12): note: Siehe Deklaration von "Scene"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2065: "SubBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2065: "scene": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(34): warning C4390: ";": Leere kontrollierte Anweisung aufgetreten; ist dies beabsichtigt?
-  SceneInterface.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2039: "SubBase": Ist kein Element von "Scene"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(12): note: Siehe Deklaration von "Scene"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2065: "SubBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(39): error C2065: "scene": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\device\screendevice.h(42): error C2039: "onDraw": Ist kein Element von "sf::RenderWindow"
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\renderwindow.hpp(44): note: Siehe Deklaration von "sf::RenderWindow"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.cpp(59): error C2063: "Scene::Interface::pushScene": Keine Funktion
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.cpp(59): error C2084: Funktion "bool Scene::Interface::pushScene" hat bereits einen Funktionsrumpf
-  c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.h(38): note: Siehe vorherige Definition von "pushScene"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\sceneinterface.cpp(59): error C3755: "pushScene": Ein Delegat ist möglicherweise nicht definiert
-  Code wird generiert...
-  Kompilieren...
-  SubSceneBase.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\subscenebase.cpp(5): error C2653: "SubSceneBase": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\subscenebase.cpp(6): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\subscenebase.cpp(7): warning C4508: "SubSceneBase": Funktion sollte einen Wert zurückgeben; Ergebnistyp "void" angenommen
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\subscenebase.cpp(10): error C2523: "SubSceneBase::~SubSceneBase": Destruktor-Tag stimmt nicht überein.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\subscenebase.cpp(10): error C2510: "SubSceneBase": Der linke Teil von "::" muss eine Klasse/Struktur/Union sein
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\subscenebase.cpp(11): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\subscenebase.cpp(11): error C2084: Funktion "int SubSceneBase(void)" hat bereits einen Funktionsrumpf
-  c:\users\phisn\source\repos\pixeljumper2\client\source\scene\subscenebase.cpp(5): note: Siehe vorherige Definition von "SubSceneBase"
-  winMain.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\winmain.cpp(44): error C2561: "main": Funktion muss einen Wert zurückgeben
-  c:\users\phisn\source\repos\pixeljumper2\client\winmain.cpp(21): note: Siehe Deklaration von "main"
-  Code wird generiert...
+  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

@@ -84,8 +84,6 @@ namespace Game
 			return type;
 		}
 
-		const float defaultTileSize = 1.0f;
+		static const float defaultTileSize = 1.0f;
 	}
 }
-
-Game::Tile::Type type = Game::Tile::Type::Invalid;

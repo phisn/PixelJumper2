@@ -14,21 +14,20 @@ namespace Game
 
 		class Wall
 			:
-			public Base,
 			public Collidable
 		{
 		public:
 			Wall(
 				const WallSettings settings)
 				:
-				Base({
-						settings.position, 
+				Collidable(
+					{
+						settings.position,
 						settings.size,
-						
+
 						Type::Collidable,
 						sf::Color::White
-					}),
-				Collidable(&shape)
+					})
 			{
 			}
 

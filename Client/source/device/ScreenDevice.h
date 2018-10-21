@@ -23,14 +23,6 @@ namespace Device
 	class Screen
 	{
 	public:
-		~Screen()
-		{
-			if (window)
-			{
-				delete window;
-			}
-		}
-
 		bool initalize();
 
 		void onShow();
@@ -39,21 +31,21 @@ namespace Device
 		void onDraw(
 			const sf::Drawable* drawable)
 		{
-			window->draw(*drawable);
+			window.draw(*drawable);
 		}
 
 		void applyView(
 			const sf::View* view)
 		{
-			window->setView(*view);
+			window.setView(*view);
 		}
 
 		sf::RenderWindow* getWindow()
 		{
-			return window;
+			return &window;
 		}
 	private:
-		sf::RenderWindow* window;
+		sf::RenderWindow window;
 
 		ScreenSettings settings;
 	};

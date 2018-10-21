@@ -28,11 +28,13 @@ namespace Game
 		};
 
 		class Collidable
+			:
+			public Base
 		{
 		public:
-			Collidable(sf::RectangleShape* shape)
+			Collidable(const BaseSettings settings)
 				:
-				_shape(shape)
+				Base(settings)
 			{
 			}
 
@@ -56,8 +58,6 @@ namespace Game
 				const sf::Vector2f source,
 				const sf::Vector2f destination,
 				_Out_ Collision* collision);
-
-			sf::RectangleShape* _shape;
 		};
 	}
 }

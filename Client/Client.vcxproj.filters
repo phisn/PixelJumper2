@@ -33,9 +33,6 @@
     <ClInclude Include="source\device\ScreenDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\device\Settings.h">
-      <Filter>source\device</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\World.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -105,9 +102,6 @@
       <Filter>source\device</Filter>
     </ClCompile>
     <ClCompile Include="source\device\ScreenDevice.cpp">
-      <Filter>source\device</Filter>
-    </ClCompile>
-    <ClCompile Include="source\device\Settings.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
     <ClCompile Include="source\game\World.cpp">

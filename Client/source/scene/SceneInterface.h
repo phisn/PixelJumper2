@@ -11,10 +11,12 @@
 
 namespace Scene
 {
-	class Context;
-
 	class Animation;
 	class AsyncAnimation;
+
+	class Context;
+
+	class SubBase;
 
 	namespace Interface
 	{
@@ -36,7 +38,7 @@ namespace Scene
 		bool popContext();
 		
 		bool pushScene(
-			Scene::SubBase* scene);
+			SubBase* scene);
 		bool popScene();
 
 		void fallback();

@@ -80,13 +80,13 @@ namespace Game
 			if (input->isSymbolActive(Device::LocalInputSymbol::Up) 
 				&& properties.isOnGround)
 			{
-				properties.movement.y = 1.f;
+				properties.movement.y = -1.f;
 			}
 			
 			if (input->isSymbolActive(Device::LocalInputSymbol::Down)
 				&& !properties.isOnGround)
 			{ // Maybe used for platfroms (like terraria)
-				properties.movement.y -= 0.05;
+				properties.movement.y += 0.05f;
 			}
 			
 			if (input->isSymbolActive(Device::LocalInputSymbol::Left))
