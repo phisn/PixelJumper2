@@ -11,7 +11,7 @@ bool Device::Screen::initalize()
 
 void Device::Screen::onShow()
 {
-	window->create(
+	window.create(
 		settings.videoMode, 
 		L"Pixel Jumper 2", 
 		settings.style, 
@@ -20,5 +20,5 @@ void Device::Screen::onShow()
 
 void Device::Screen::onHide()
 {
-	window->close();
+	window.close();
 }

@@ -39,9 +39,9 @@ Retry:
 			break;
 		}
 
-		if (!handleError[(int) result - 1]())
+		if (!handleError[(int) result]())
 		{
-			return;
+			return 0;
 		}
 	}
 

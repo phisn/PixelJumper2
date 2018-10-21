@@ -235,20 +235,69 @@ namespace Game
 			(source.y - destination.y);
 		const float g_h = source.x - g_m * source.y;
 
-		const float t_h_a = _shape->getPosition().y;
-		const float t_h_b = t_h_a + _shape->getSize().y;
+		const float t_h_a = shape.getPosition().y;
+		const float t_h_b = t_h_a + shape.getSize().y;
 
-		const float t_w_a = _shape->getPosition().x;
-		const float t_w_b = t_w_a + _shape->getSize().x;
+		const float t_w_a = shape.getPosition().x;
+		const float t_w_b = t_w_a + shape.getSize().x;
 
 		const float t_h = g_m > 0.0f 
 			? t_h_b : t_h_a;
 		const float t_w = source.x > destination.x
 			? t_w_b : t_w_a;
 
+		if (source.x != destination.x)
+		{ // ignore if x does not change
+
+			/*   ___
+			   a+   +
+			   _|___|_ <- g(x)
+				|   |
+			   b+___+
+				/\
+				 \ t_w
+			*/
+
+			// 2. g(t_w) = y = > y > t_h_a && y < t_h_b
+			//	= > g_m * t_w + g_h = x = > x > t_h_a && x < t_h_b
+			const float y = g_m * t_w + g_h;
+
+			if (y > t_h_a && y < t_h_b)
+			{ // on collision horizontal
+				collision->position.x = t_w;
+				collision->position.y = y;
+
+				collision->type = Collision::Horizontal;
+
+				return true;
+			}
+		}
+		else if (source.y != destination.y) // special case
+		{
+			const float _t_h = source.y > destination.y
+				? t_h_a
+				: t_h_b;
+			const float _p_h_a = source.y > destination.y
+				? source.y
+				: destination.y;
+			const float _p_h_b = source.y < destination.y
+				? source.y
+				: destination.y;
+
+			if (source.x > t_w_a && source.x < t_w_b &&
+				_p_h_a > _t_h && _p_h_b < _t_h)
+			{
+				collision->position.x = source.x;
+				collision->position.y = _t_h;
+
+				collision->type = Collision::Vertical;
+
+				return true;
+			}
+		}
+
 		if (source.y != destination.y)
 		{ // ignore if y does not change
-
 			/*    | <- g(x)
 				 ___  <- t_h
 				+ | + 
@@ -269,33 +318,6 @@ namespace Game
 				collision->position.y = t_h;
 
 				collision->type = Collision::Vertical;
-
-				return true;
-			}
-		}
-
-		if (source.x != destination.x)
-		{ // ignore if x does not change
-
-			/*   ___
-			   a+   +
-		       _|___|_ <- g(x)
-				|   |
-			   b+___+
-				/\
-				 \ t_w
-			*/
-
-			// 2. g(t_w) = y = > y > t_h_a && y < t_h_b
-			//	= > g_m * t_w + g_h = x = > x > t_h_a && x < t_h_b
-			const float y = g_m * t_w + g_h;
-
-			if (y > t_h_a && y < t_h_b)
-			{ // on collision horizontal
-				collision->position.x = t_w;
-				collision->position.y = y;
-
-				collision->type = Collision::Horizontal;
 
 				return true;
 			}

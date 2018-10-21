@@ -110,7 +110,7 @@ namespace Scene
 			mainScene->onLogic(time);
 		}
 
-		if (!subScenes.top())
+		if (!subScenes.empty())
 		{
 			subScenes.top()->onLogic(time);
 		}

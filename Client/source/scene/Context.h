@@ -20,7 +20,7 @@ namespace Scene
 		static Context* create(Args&&... args)
 		{
 			return new Context(
-				new T(args)
+				new T(args...)
 			);
 		}
 

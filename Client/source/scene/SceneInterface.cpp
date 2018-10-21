@@ -5,7 +5,8 @@
 namespace
 {
 	std::stack<Scene::Context*> contextStack;
-	Scene::Interface::Order currentOrder = Scene::Interface::Order::Empty;
+	Scene::Interface::Order currentOrder 
+		= Scene::Interface::Order::Empty;
 
 	bool isValid(const Scene::Interface::Order order)
 	{
@@ -126,6 +127,11 @@ namespace Scene
 
 	void Interface::doOrders()
 	{
+		if (currentOrder == Order::Empty)
+		{
+			return;
+		}
+
 		switch (currentOrder)
 		{
 		case Order::Fallback:
@@ -152,6 +158,8 @@ namespace Scene
 
 			break;
 		}
+
+		currentOrder = Order::Empty;
 	}
 	
 	void Interface::shutdown()

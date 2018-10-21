@@ -31,7 +31,7 @@ namespace Scene
 		{
 			world = new GAME::World();
 
-			if (!world->initialize(settings));
+			if (!world->initialize(settings))
 			{
 				return false;
 			}

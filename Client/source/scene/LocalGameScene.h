@@ -7,7 +7,7 @@ namespace Scene
 {
 	struct LocalGameSettings
 	{
-		Game::WorldSettings* world;
+		Game::WorldSettings world;
 
 		int playerCount;
 	};
@@ -21,7 +21,7 @@ namespace Scene
 			LocalGameSettings* settings)
 			:
 			GameBase(
-				settings->world),
+				&settings->world),
 			settings(settings)
 		{
 		}
@@ -39,10 +39,7 @@ namespace Scene
 				return false;
 			}
 
-			if (!GameBase::onCreate())
-			{
-				return false;
-			}
+			return GameBase::onCreate();
 		}
 
 		void onRemove() override
@@ -88,7 +85,7 @@ namespace Scene
 					i, settings->playerCount);
 
 				world->initializePlayer(
-					localPlayers.back());
+					localPlayer);
 				localPlayers.push_back(localPlayer);
 			}
 		}

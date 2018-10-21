@@ -10,7 +10,6 @@
 
 #include "DeviceInterface.h"
 
-
 namespace
 {
 	Device::GlobalInput* input = NULL;
@@ -24,11 +23,11 @@ namespace
 
 		settings->playerCount = 2;
 
-		settings->world->begin = sf::Vector2f(5.f, 0.f);
-		settings->world->size  = sf::Vector2f(40.f, 18.f);
-		settings->world->speed = 1.f;
+		settings->world.begin = sf::Vector2f(5.f, 0.f);
+		settings->world.size  = sf::Vector2f(40.f, 18.f);
+		settings->world.speed = 0.00001f;
 
-		settings->world->tiles.push_back(
+		settings->world.tiles.push_back(
 			new GAME::Tile::Wall(
 				{
 					sf::Vector2f(1.f, 10.f),
@@ -36,7 +35,7 @@ namespace
 				})
 		); // floor
 
-		settings->world->tiles.push_back(
+		settings->world.tiles.push_back(
 			new GAME::Tile::Wall(
 				{
 					sf::Vector2f(16.f, 2.f),
@@ -141,7 +140,7 @@ namespace Device
 	{
 		return screen;
 	}
-	Resource * Interface::getResource()
+	Resource* Interface::getResource()
 	{
 		return nullptr;
 	}

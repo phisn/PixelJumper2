@@ -10,13 +10,14 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
+#include <iostream>
 
 namespace Game
 {
 	struct WorldSettings
 	{
 		int difficulty;
-		float speed = 0.1f;
+		float speed;
 
 		sf::Vector2f begin;
 		sf::Vector2f size;
@@ -58,12 +59,14 @@ namespace Game
 			{
 				if (CONTAINS_ENUM(tile->getType(), Tile::Type::Collidable))
 				{
-					collidable.push_back((Tile::Collidable*) tile);
+					collidable.push_back(
+						(Tile::Collidable*) tile);
 				}
 
 				if (CONTAINS_ENUM(tile->getType(), Tile::Type::Timed))
 				{
-					timed.push_back((Tile::Timed*) tile);
+					timed.push_back(
+						(Tile::Timed*) tile);
 				}
 
 				if (CONTAINS_ENUM(tile->getType(), Tile::Type::Static))
@@ -81,7 +84,8 @@ namespace Game
 		void initializePlayer(
 			_In_ LocalPlayer* player)
 		{
-			player->getView()->setSize();
+			player->getView()->setSize(settings->size);
+			player->setPosition(settings->begin);
 		}
 
 		void onLogic(
@@ -92,16 +96,18 @@ namespace Game
 				tile->onTime(time);
 			}
 		}
-
 		void updatePlayer(
 			_In_ LocalPlayer* player,
 			const sf::Time time)
 		{
-			movePlayer(
-				player,
+
+			sf::Vector2f d =
 				makeDestination(
-					player, 
-					time));
+					player,
+					time);
+
+			movePlayer(
+				player, d);
 
 			if (player->getProperties()->isOnGround)
 			{
@@ -110,7 +116,7 @@ namespace Game
 			else
 			{
 				player->changeProperties()->movement.x *= 0.95f;
-				player->changeProperties()->movement.y -= 0.2f;
+				player->changeProperties()->movement.y += 0.2f;
 			}
 		}
 

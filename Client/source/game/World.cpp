@@ -37,6 +37,7 @@ namespace Game
 				to solve a bug (Tiles on the same position)
 
 				*/
+				return true;
 				if ((		// x
 					(		// 1. root x
 						r_near_x >= c_near_x &&
