@@ -80,6 +80,7 @@ namespace Game
 			if (input->isSymbolActive(Device::LocalInputSymbol::Up) 
 				&& properties.isOnGround)
 			{
+				properties.isOnGround = false;
 				properties.movement.y = -1.f;
 			}
 			

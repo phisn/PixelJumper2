@@ -96,18 +96,16 @@ namespace Game
 				tile->onTime(time);
 			}
 		}
+
 		void updatePlayer(
 			_In_ LocalPlayer* player,
 			const sf::Time time)
 		{
-
-			sf::Vector2f d =
+			movePlayer(
+				player, 
 				makeDestination(
 					player,
-					time);
-
-			movePlayer(
-				player, d);
+					time));
 
 			if (player->getProperties()->isOnGround)
 			{
@@ -115,8 +113,8 @@ namespace Game
 			}
 			else
 			{
-				player->changeProperties()->movement.x *= 0.95f;
-				player->changeProperties()->movement.y += 0.2f;
+				player->changeProperties()->movement.x *= 0.85f;
+				player->changeProperties()->movement.y += (0.2f * time.asMicroseconds() * settings->speed);
 			}
 		}
 

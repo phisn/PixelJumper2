@@ -50,7 +50,7 @@ namespace Game
 				{
 					player->changeProperties()->movement = sf::Vector2f(
 						0.f,
-						player->getProperties()->movement.x);
+						player->getProperties()->movement.y);
 				}
 
 				return true;
