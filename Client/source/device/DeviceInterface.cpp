@@ -27,21 +27,23 @@ namespace
 		settings->world.size  = sf::Vector2f(40.f, 18.f);
 		settings->world.speed = 0.00001f;
 
-		settings->world.tiles.push_back(
-			new GAME::Tile::Wall(
-				{
-					sf::Vector2f(1.f, 10.f),
-					sf::Vector2f(16.f, 2.f)
-				})
-		); // floor
+		GAME::Tile::Wall* wall1 = new GAME::Tile::Wall(
+			{
+				sf::Vector2f(1.f, 10.f),
+				sf::Vector2f(16.f, 2.f)
+			});
 
 		settings->world.tiles.push_back(
-			new GAME::Tile::Wall(
-				{
-					sf::Vector2f(16.f, 2.f),
-					sf::Vector2f(2.f, 14.f)
-				})
-		); // wall
+			wall1); // floor
+
+		GAME::Tile::Wall* wall2 = new GAME::Tile::Wall(
+			{
+				sf::Vector2f(16.f, 2.f),
+				sf::Vector2f(2.f, 14.f)
+			});
+
+		settings->world.tiles.push_back(
+			wall2); // wall
 
 		return SCENE::Context::create<
 			SCENE::LocalGame>(settings);
@@ -111,9 +113,14 @@ namespace Device
 		sf::Clock clock;
 		sf::Event event;
 
-		while (Scene::Interface::isRunning())
+		while (true)
 		{
 			Scene::Interface::doOrders();
+
+			if (!Scene::Interface::isRunning())
+			{
+				break;
+			}
 
 			while (screen->getWindow()->pollEvent(event))
 			{

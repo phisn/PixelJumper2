@@ -40,6 +40,18 @@ namespace Game
 			const sf::Vector2f position)
 		{
 			shape.setPosition(position);
+
+			static int i = 0;
+
+			if (++i % 100 == 0)
+			{
+				printf("x: %.3f, y: %.3f\n", position.x, position.y);
+			}
+
+			if (position.x < -100)
+			{
+				printf("test");
+			}
 		}
 
 		const sf::Vector2f getPosition() const

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/game/GameView.h>
+#include <Client/source/game/Movement.h>
 #include <Client/source/game/PlayerBase.h>
 
 #include <Client/source/device/DeviceInterface.h>
@@ -8,12 +9,6 @@
 
 namespace Game
 {
-	struct PlayerProperties
-	{
-		sf::Vector2f movement;
-		bool isOnGround;
-	};
-
 	class LocalPlayer
 		:
 		public PlayerBase
@@ -57,14 +52,14 @@ namespace Game
 			logicMovement(time);
 		}
 
-		PlayerProperties* changeProperties()
+		Movement* changeMovement()
 		{
-			return &properties;
+			return &movement;
 		}
 
-		const PlayerProperties* getProperties() const
+		const Movement* getMovement() const
 		{
-			return &properties;
+			return &movement;
 		}
 
 		View* getView()
@@ -72,35 +67,54 @@ namespace Game
 			return &view;
 		}
 	private:
-		PlayerProperties properties;
+		Movement movement;
 
 		void logicMovement(
 			const sf::Time time)
 		{
+			bool slowdown_x = true, slowdown_y = true;
+
 			if (input->isSymbolActive(Device::LocalInputSymbol::Up) 
-				&& properties.isOnGround)
+				&& movement.isOnGround())
 			{
-				properties.isOnGround = false;
-				properties.movement.y = -1.f;
+				movement.releaseGround();
+				movement.jump(-2.f);
+
+				slowdown_y = false;
 			}
 			
 			if (input->isSymbolActive(Device::LocalInputSymbol::Down)
-				&& !properties.isOnGround)
-			{ // Maybe used for platfroms (like terraria)
-				properties.movement.y += 0.05f;
+				&& !movement.isOnGround())
+			{
+				movement.change(time, { 0.f, 10.f });
+
+				if (movement.getMovement().y > 0.f)
+				{
+					slowdown_y = false;
+				}
 			}
 			
 			if (input->isSymbolActive(Device::LocalInputSymbol::Left))
 			{
-				properties.movement.x -= properties.movement.x > 0.f 
-					? 0.15f : 0.1f;
+				movement.change(time, { -0.6f, 0.f });
+
+				if (movement.getMovement().x < 0.f)
+				{
+					slowdown_x = false;
+				}
 			}
 
 			if (input->isSymbolActive(Device::LocalInputSymbol::Right))
 			{
-				properties.movement.x += properties.movement.x < 0.f 
-					? 0.15f : 0.1f;
+				movement.change(time, { 0.6f, 0.f });
+
+				if (movement.getMovement().x > 0.f)
+				{
+					slowdown_x = false;
+				}
 			}
+
+			movement.time(time, slowdown_x, slowdown_y);
 		}
 
 		Game::View view;

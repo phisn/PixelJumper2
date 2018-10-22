@@ -33,7 +33,10 @@ namespace Scene
 	
 	void Context::cleanup()
 	{
-		delete sequentialAnimation;
+		if (sequentialAnimation)
+		{
+			delete sequentialAnimation;
+		}
 
 		for (AsyncAnimation* animation : asyncAnimations)
 		{
@@ -42,8 +45,11 @@ namespace Scene
 
 		fallback(); // clear subscenes
 
-		mainScene->onRemove();
-		delete mainScene;
+		if (mainScene)
+		{
+			mainScene->onRemove();
+			delete mainScene;
+		}
 	}
 	
 	void Context::fallback()

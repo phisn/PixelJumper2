@@ -90,6 +90,9 @@
     <ClInclude Include="source\device\FailHandler.h">
       <Filter>source\device</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\Movement.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="source\device\FailHandler.cpp">
       <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\Movement.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

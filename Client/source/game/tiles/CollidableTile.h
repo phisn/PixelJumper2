@@ -38,6 +38,11 @@ namespace Game
 			{
 			}
 
+			virtual ~Collidable()
+			{
+
+			}
+
 			bool checkCollision(
 				const sf::Vector2f source,
 				const sf::Vector2f destination,
@@ -127,6 +132,11 @@ namespace Game
 						t_w,
 						t_y);
 
+					if (collision->position.x < -100)
+					{
+						printf("Now");
+					}
+
 					return true;
 				}
 
@@ -164,6 +174,11 @@ namespace Game
 						t_x,
 						t_h);
 
+					if (collision->position.x < -100)
+					{
+						printf("Now");
+					}
+
 					return true;
 				}
 
@@ -176,8 +191,6 @@ namespace Game
 				const sf::Vector2f destination,
 				_Out_ Collision* collision)
 			{
-				printf("Straight");
-
 				if (source.x == destination.x)
 				{
 					if (source.x < getPosition().x ||
@@ -226,6 +239,11 @@ namespace Game
 							width,
 							source.y);
 						collision->type = Collision::Type::Horizontal;
+
+						if (collision->position.x < -100)
+						{
+							printf("Now");
+						}
 						
 						return true;
 					}

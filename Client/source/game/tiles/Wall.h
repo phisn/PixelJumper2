@@ -31,6 +31,10 @@ namespace Game
 			{
 			}
 
+			~Wall()
+			{
+			}
+
 			bool onCollision(
 				const Collision collision,
 				LocalPlayer* player)
@@ -40,17 +44,15 @@ namespace Game
 
 				if (collision.type == Collision::Vertical)
 				{
-					player->changeProperties()->isOnGround = true;
+					player->changeMovement()->setOnGround(0.3f);
 
-					player->changeProperties()->movement = sf::Vector2f(
-						player->getProperties()->movement.x, 
-						0.f);
+					player->changeMovement()->mutliMovement(
+						{ 1.f, 0.f });
 				}
 				else
 				{
-					player->changeProperties()->movement = sf::Vector2f(
-						0.f,
-						player->getProperties()->movement.y);
+					player->changeMovement()->mutliMovement(
+						{ 0.f, 1.f });
 				}
 
 				return true;

@@ -46,6 +46,10 @@ namespace Game
 				shape.setFillColor(settings.color);
 			}
 
+			virtual ~Base()
+			{
+			}
+
 			void onDraw() const
 			{
 				DEVICE::Interface::getScreen()->onDraw(&shape);

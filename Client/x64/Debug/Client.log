@@ -9,17 +9,12 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warn
               T=float
           ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(38): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(56): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(76): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(54): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
@@ -29,6 +24,22 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(75): warning
           [
               T=float
           ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(74): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+  LocalPlayer.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  Movement.cpp
   World.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
           with
@@ -40,22 +51,22 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warn
               T=float
           ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(38): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(56): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(76): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(54): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(75): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(74): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
@@ -102,22 +113,22 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warn
               T=float
           ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(38): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(56): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(76): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(54): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(75): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(74): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
@@ -133,22 +144,22 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warn
               T=float
           ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(38): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(56): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(76): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(54): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float
           ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(75): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(74): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
           with
           [
               T=float

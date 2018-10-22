@@ -140,6 +140,7 @@
     <ClInclude Include="source\device\ScreenDevice.h" />
     <ClInclude Include="source\game\GameView.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
+    <ClInclude Include="source\game\Movement.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
     <ClInclude Include="source\game\tiles\CollidableTile.h" />
     <ClInclude Include="source\game\tiles\TileBase.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="source\device\ScreenDevice.cpp" />
     <ClCompile Include="source\game\GameView.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
+    <ClCompile Include="source\game\Movement.cpp" />
     <ClCompile Include="source\game\PlayerBase.cpp" />
     <ClCompile Include="source\game\tiles\CollidableTile.cpp" />
     <ClCompile Include="source\game\tiles\TileBase.cpp" />

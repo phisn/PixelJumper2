@@ -16,6 +16,14 @@ namespace Game
 {
 	struct WorldSettings
 	{
+		~WorldSettings()
+		{
+			for (Tile::Base* tile : tiles)
+			{
+				delete tile;
+			}
+		}
+
 		int difficulty;
 		float speed;
 
@@ -25,22 +33,13 @@ namespace Game
 		std::wstring name;
 		std::wstring creator;
 		
-		std::vector<Tile::Base*> tiles;
+		std::vector<
+			Tile::Base*> tiles;
 	};
 
 	class World
 	{
 	public:
-		~World()
-		{
-			for (Tile::Base* tile : settings->tiles)
-			{
-				delete tile;
-			}
-
-			delete settings;
-		}
-
 		bool initialize(
 			_In_ WorldSettings* settings)
 		{
@@ -103,19 +102,8 @@ namespace Game
 		{
 			movePlayer(
 				player, 
-				makeDestination(
-					player,
-					time));
-
-			if (player->getProperties()->isOnGround)
-			{
-				player->changeProperties()->movement.x *= 0.8f;
-			}
-			else
-			{
-				player->changeProperties()->movement.x *= 0.85f;
-				player->changeProperties()->movement.y += (0.2f * time.asMicroseconds() * settings->speed);
-			}
+				player->getMovement()->nextPositionOffset(time)
+			);
 		}
 
 		void onDraw() const
@@ -133,8 +121,10 @@ namespace Game
 
 		void movePlayer(
 			LocalPlayer* player,
-			const sf::Vector2f destination)
+			const sf::Vector2f offset)
 		{
+			const sf::Vector2f destination =
+				player->getPosition() + offset;
 			Tile::Collision collision;
 
 			for (Tile::Collidable* tile : collidable)
@@ -152,16 +142,6 @@ namespace Game
 			player->setPosition(destination);
 		}
 
-		sf::Vector2f makeDestination(
-			const LocalPlayer* player,
-			const sf::Time time)
-		{
-			return player->getPosition()
-				+ player->getProperties()->movement
-				* settings->speed
-				* (float) time.asMicroseconds();
-		}
-		
 		std::vector<Tile::Timed*> timed;
 		std::vector<Tile::Collidable*> collidable;
 	};

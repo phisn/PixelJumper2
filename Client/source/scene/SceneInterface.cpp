@@ -147,7 +147,11 @@ namespace Scene
 			contextStack.top()->cleanup();
 			contextStack.pop();
 
-			if (!contextStack.empty())
+			if (contextStack.empty())
+			{
+				shutdown();
+			}
+			else
 			{
 				contextStack.top()->onShow();
 			}
