@@ -30,7 +30,8 @@ namespace Game
 		private:
 			bool onCollision(
 				const Collision collision,
-				LocalPlayer* player) override
+				LocalPlayer* player,
+				sf::Vector2f* p) override
 			{
 				if (passedTime > resetTime)
 				{

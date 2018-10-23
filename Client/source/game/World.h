@@ -123,23 +123,56 @@ namespace Game
 			LocalPlayer* player,
 			const sf::Vector2f offset)
 		{
-			const sf::Vector2f destination =
+			sf::Vector2f destination =
 				player->getPosition() + offset;
+
+			Tile::Collidable* bestTile;
+			Tile::Collision bestCollision;
 			Tile::Collision collision;
 
-			for (Tile::Collidable* tile : collidable)
-				if (tile->checkCollision(
+			bool collided;
+			while (collision.remaining != 0.0f)
+			{
+				collided = false;
+
+				bestTile = NULL;
+				collision.remaining = 0.0f;
+
+				for (Tile::Collidable* tile : collidable)
+				{
+					if (tile->checkCollision(
 						player->getPosition(),
 						destination,
-						&collision) &&
-					tile->onCollision(
-						collision,
-						player))
-				{
-					return;
+						&collision) && !bestTile ||
+							sqrtf(
+								pow(destination.x - collision.position.x, 2.f) + 
+								pow(destination.y - collision.position.y, 2.f)
+							) >
+							sqrtf(
+								pow(destination.x - bestCollision.position.x, 2.f) +
+								pow(destination.y - bestCollision.position.y, 2.f)
+							)
+						)
+						
+					{
+						bestCollision = collision;
+						bestTile = tile;
+					}
 				}
 
-			player->setPosition(destination);
+				if (bestTile)
+				{
+					collided = bestTile->onCollision(
+						bestCollision,
+						player,
+						&destination);
+				}
+			}
+
+			if (!collided)
+			{
+				player->setPosition(destination);
+			}
 		}
 
 		std::vector<Tile::Timed*> timed;

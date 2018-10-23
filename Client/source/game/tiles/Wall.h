@@ -37,7 +37,8 @@ namespace Game
 
 			bool onCollision(
 				const Collision collision,
-				LocalPlayer* player)
+				LocalPlayer* player,
+				sf::Vector2f* remainingDestination)
 			{
 				player->setPosition(
 					collision.position);
@@ -48,11 +49,17 @@ namespace Game
 
 					player->changeMovement()->muliMovement(
 						{ 1.f, 0.f });
+
+					remainingDestination->x = collision.position.x + collision.remaining;
+					remainingDestination->y = collision.position.y;
 				}
 				else
 				{
 					player->changeMovement()->muliMovement(
 						{ 0.f, 1.f });
+
+					remainingDestination->x = collision.position.x;
+					remainingDestination->y = collision.position.y + collision.remaining;
 				}
 
 				return true;

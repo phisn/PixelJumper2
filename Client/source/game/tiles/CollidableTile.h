@@ -25,6 +25,7 @@ namespace Game
 			} type;
 
 			sf::Vector2f position;
+			float remaining = 1.0f;
 		};
 
 		class Collidable
@@ -50,7 +51,8 @@ namespace Game
 
 			virtual bool onCollision(
 				const Collision collision,
-				LocalPlayer* player) = 0;
+				LocalPlayer* player,
+				sf::Vector2f* remainingDestination) = 0;
 		private:
 			// return == ignore primary offset
 			bool findOffsets(
@@ -59,10 +61,6 @@ namespace Game
 				_Out_ sf::Vector2f* primOffset,
 				_Out_ sf::Vector2f* secOffset1,
 				_Out_ sf::Vector2f* secOffset2);
-			bool checkCollisionPath(
-				const sf::Vector2f source,
-				const sf::Vector2f destination,
-				_Out_ Collision* collision);
 
 			bool checkDefaultPath(
 				const sf::Vector2f source,
@@ -132,10 +130,7 @@ namespace Game
 						t_w,
 						t_y);
 
-					if (collision->position.x < -100)
-					{
-						printf("Now");
-					}
+					collision->remaining = destination.y - t_y;
 
 					return true;
 				}
@@ -174,10 +169,7 @@ namespace Game
 						t_x,
 						t_h);
 
-					if (collision->position.x < -100)
-					{
-						printf("Now");
-					}
+					collision->remaining = destination.x - t_x;
 
 					return true;
 				}
@@ -193,8 +185,8 @@ namespace Game
 			{
 				if (source.x == destination.x)
 				{
-					if (source.x < getPosition().x ||
-						source.x > getPosition().x + getSize().x)
+					if (source.x <= getPosition().x ||
+						source.x >= getPosition().x + getSize().x)
 					{
 						return false;
 					}
@@ -217,11 +209,19 @@ namespace Game
 							height);
 						collision->type = Collision::Type::Vertical;
 
+						collision->remaining = 0.0f;
+
 						return true;
 					}
 				}
 				else
 				{
+					if (source.y <= getPosition().y ||
+						source.y >= getPosition().y + getSize().y)
+					{
+						return false;
+					}
+
 					const float width = source.x < destination.x
 						? getPosition().x
 						: getPosition().x + getSize().x;
@@ -240,10 +240,7 @@ namespace Game
 							source.y);
 						collision->type = Collision::Type::Horizontal;
 
-						if (collision->position.x < -100)
-						{
-							printf("Now");
-						}
+						collision->remaining = 0.0f;
 						
 						return true;
 					}

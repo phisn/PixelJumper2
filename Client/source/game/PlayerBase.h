@@ -47,11 +47,6 @@ namespace Game
 			{
 				printf("x: %.3f, y: %.3f\n", position.x, position.y);
 			}
-
-			if (position.x < -100)
-			{
-				printf("test");
-			}
 		}
 
 		const sf::Vector2f getPosition() const

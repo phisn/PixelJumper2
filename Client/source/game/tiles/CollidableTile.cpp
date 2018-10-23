@@ -15,25 +15,25 @@ namespace Game
 		}
 
 		/*
-		
-		extend with a quick check at beginning 
+
+		extend with a quick check at beginning
 		if collision check makes sense
 		# Ideas:
-			- 
-		
+			-
+
 		*/
 
-		sf::Vector2f 
-			primOffset, 
-			secOffset1, 
+		sf::Vector2f
+			primOffset,
+			secOffset1,
 			secOffset2;
 
 		if (!findOffsets(
-				source,
-				destination,
-				&primOffset,
-				&secOffset1,
-				&secOffset2))
+			source,
+			destination,
+			&primOffset,
+			&secOffset1,
+			&secOffset2))
 		{
 			if (checkDefaultPath(
 				source + primOffset,
@@ -71,18 +71,18 @@ namespace Game
 
 	// return == ignore primary offset
 	bool Tile::Collidable::findOffsets(
-		const sf::Vector2f source, 
-		const sf::Vector2f destination, 
-		_Out_ sf::Vector2f* primOffset, 
-		_Out_ sf::Vector2f* secOffset1, 
+		const sf::Vector2f source,
+		const sf::Vector2f destination,
+		_Out_ sf::Vector2f* primOffset,
+		_Out_ sf::Vector2f* secOffset1,
 		_Out_ sf::Vector2f* secOffset2)
 	{
 		/*
-		
+
 			found a pattern in secOffset1 and secOffset2
 			both repeat in 1 & 4 | 2 & 3. Primoffset does
 			not repeat. possability for speed up
-		
+
 		*/
 
 		const bool ignorePrimary =
@@ -93,90 +93,14 @@ namespace Game
 		{
 			if (source.y <= destination.y)
 			{
-				/*   /s1
-					/__ /p
-					+  +
-					|  | /s2
-					+__+/
-				*/
+				printf("Correct");
 
-
-				secOffset1->x = 0.0f;
-				secOffset1->y = 0.0f;
-
-				secOffset2->x = defaultTileSize;
-				secOffset2->y = defaultTileSize;
-
-				if (ignorePrimary)
-				{
-					primOffset->x = defaultTileSize;
-					primOffset->y = 0.0f;
-				}
-
-				return ignorePrimary;
-			}
-
-			if (source.y > destination.y)
-			{
-				/* p  \ s1
-					\__\
-				s2	+  +
-				  \ |  |
-				   \+__+
-				*/
-
-
-				secOffset1->x = defaultTileSize;
-				secOffset1->y = 0.0f;
-
-				secOffset2->x = 0.0f;
-				secOffset2->y = defaultTileSize;
-
-				if (ignorePrimary)
-				{
-					primOffset->x = 0.0f;
-					primOffset->y = 0.0f;
-				}
-
-				return ignorePrimary;
-			}
-		}
-
-		if (source.x > destination.x)
-		{
-			if (source.y <= destination.y)
-			{
-				/* p  \ s1
-					\__\
-				s2	+  +
-				  \ |  |
-				   \+__+
-				*/
-
-				secOffset1->x = 0.0f;
-				secOffset1->y = 0.0f;
-
-				secOffset2->x = defaultTileSize;
-				secOffset2->y = defaultTileSize;
-
-				if (ignorePrimary)
-				{
-					primOffset->x = defaultTileSize;
-					primOffset->y = 0.0f;
-				}
-
-				return ignorePrimary;
-			}
-
-			if (source.y > destination.y)
-			{
-				/*    s1
-					 __  p
-				   /+  +
-				  /	|  |  s2
-					+__+
-				   /   /
-					  /
+				/*   __
+					+  +\ s1
+					|  | \
+				 s2 +__+
+					\   \
+					 \	 \ p
 				*/
 
 				secOffset1->x = defaultTileSize;
@@ -189,6 +113,83 @@ namespace Game
 				{
 					primOffset->x = defaultTileSize;
 					primOffset->y = defaultTileSize;
+				}
+
+				return ignorePrimary;
+			}
+
+			if (source.y > destination.y)
+			{
+				/*   /s1
+					/__ /p
+					+  +
+					|  | /s2
+					+__+/
+				*/
+
+				secOffset1->x = 0.0f;
+				secOffset1->y = 0.0f;
+
+				secOffset2->x = defaultTileSize;
+				secOffset2->y = defaultTileSize;
+
+				if (ignorePrimary)
+				{
+					primOffset->x = defaultTileSize;
+					primOffset->y = 0.0f;
+				}
+
+				return ignorePrimary;
+			}
+		}
+
+		if (source.x > destination.x)
+		{
+			if (source.y <= destination.y)
+			{
+				/*    s1
+					 __  p
+				   /+  +
+				  /	|  |  s2
+					+__+
+				   /   /
+					  /
+				*/
+
+				secOffset1->x = 0.0f;
+				secOffset1->y = 0.0f;
+
+				secOffset2->x = defaultTileSize;
+				secOffset2->y = defaultTileSize;
+
+				if (ignorePrimary)
+				{
+					primOffset->x = 0.0f;
+					primOffset->y = defaultTileSize;
+				}
+
+				return ignorePrimary;
+			}
+
+			if (source.y > destination.y)
+			{
+				/* p  \ s1
+					\__\
+				s2	+  +
+				  \ |  |
+				   \+__+
+				*/
+
+				secOffset1->x = defaultTileSize;
+				secOffset1->y = 0.0f;
+
+				secOffset2->x = 0.0f;
+				secOffset2->y = defaultTileSize;
+
+				if (ignorePrimary)
+				{
+					primOffset->x = 0.0f;
+					primOffset->y = 0.0f;
 				}
 
 				return ignorePrimary;
