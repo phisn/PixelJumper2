@@ -44,14 +44,14 @@ namespace Game
 
 				if (collision.type == Collision::Vertical)
 				{
-					player->changeMovement()->setOnGround(0.3f);
+					player->changeMovement()->setOnGround(0.4f);
 
-					player->changeMovement()->mutliMovement(
+					player->changeMovement()->muliMovement(
 						{ 1.f, 0.f });
 				}
 				else
 				{
-					player->changeMovement()->mutliMovement(
+					player->changeMovement()->muliMovement(
 						{ 0.f, 1.f });
 				}
 

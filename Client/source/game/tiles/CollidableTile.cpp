@@ -101,34 +101,6 @@ namespace Game
 				*/
 
 
-				secOffset1->x = defaultTileSize;
-				secOffset1->y = 0.0f;
-
-				secOffset2->x = 0.0f;
-				secOffset2->y = defaultTileSize;
-
-				if (ignorePrimary)
-				{
-					primOffset->x = defaultTileSize;
-					primOffset->y = defaultTileSize;
-				}
-
-				return ignorePrimary;
-			}
-
-			if (source.y > destination.y)
-			{
-				/* p    s1
-					 __
-					+  +\
-				s2  |  | \
-					+__+
-					\   \
-					 \
-				*/
-
-
-
 				secOffset1->x = 0.0f;
 				secOffset1->y = 0.0f;
 
@@ -138,6 +110,31 @@ namespace Game
 				if (ignorePrimary)
 				{
 					primOffset->x = defaultTileSize;
+					primOffset->y = 0.0f;
+				}
+
+				return ignorePrimary;
+			}
+
+			if (source.y > destination.y)
+			{
+				/* p  \ s1
+					\__\
+				s2	+  +
+				  \ |  |
+				   \+__+
+				*/
+
+
+				secOffset1->x = defaultTileSize;
+				secOffset1->y = 0.0f;
+
+				secOffset2->x = 0.0f;
+				secOffset2->y = defaultTileSize;
+
+				if (ignorePrimary)
+				{
+					primOffset->x = 0.0f;
 					primOffset->y = 0.0f;
 				}
 
@@ -164,8 +161,8 @@ namespace Game
 
 				if (ignorePrimary)
 				{
-					primOffset->x = 0.0f;
-					primOffset->y = defaultTileSize;
+					primOffset->x = defaultTileSize;
+					primOffset->y = 0.0f;
 				}
 
 				return ignorePrimary;
@@ -190,8 +187,8 @@ namespace Game
 
 				if (ignorePrimary)
 				{
-					primOffset->x = 0.0f;
-					primOffset->y = 0.0f;
+					primOffset->x = defaultTileSize;
+					primOffset->y = defaultTileSize;
 				}
 
 				return ignorePrimary;

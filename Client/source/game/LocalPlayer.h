@@ -72,49 +72,36 @@ namespace Game
 		void logicMovement(
 			const sf::Time time)
 		{
-			bool slowdown_x = true, slowdown_y = true;
+			bool x_changed = false;
 
 			if (input->isSymbolActive(Device::LocalInputSymbol::Up) 
 				&& movement.isOnGround())
 			{
 				movement.releaseGround();
-				movement.jump(-2.f);
-
-				slowdown_y = false;
+				movement.jump(-1.0f);
 			}
 			
 			if (input->isSymbolActive(Device::LocalInputSymbol::Down)
 				&& !movement.isOnGround())
 			{
-				movement.change(time, { 0.f, 10.f });
-
-				if (movement.getMovement().y > 0.f)
-				{
-					slowdown_y = false;
-				}
+				movement.change(time, { 0.f, 0.05f });
 			}
 			
 			if (input->isSymbolActive(Device::LocalInputSymbol::Left))
 			{
-				movement.change(time, { -0.6f, 0.f });
+				movement.change(time, { -0.3f, 0.f });
 
-				if (movement.getMovement().x < 0.f)
-				{
-					slowdown_x = false;
-				}
+				x_changed = true;
 			}
 
 			if (input->isSymbolActive(Device::LocalInputSymbol::Right))
 			{
-				movement.change(time, { 0.6f, 0.f });
+				movement.change(time, { 0.3f, 0.f });
 
-				if (movement.getMovement().x > 0.f)
-				{
-					slowdown_x = false;
-				}
+				x_changed = true;
 			}
 
-			movement.time(time, slowdown_x, slowdown_y);
+			movement.onLogic(time, x_changed);
 		}
 
 		Game::View view;
