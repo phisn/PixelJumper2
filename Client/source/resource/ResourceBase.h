@@ -11,14 +11,17 @@ namespace Resource
 	struct Base
 	{
 	public:
+		_Success_(return > 0)
 		virtual int appendToBuffer(
-			ByteBuffer* buffer) = 0;
+			ByteWriter* buffer) = 0;
 
+		_Success_(return > 0)
 		virtual int loadFromBuffer(
 			char* buffer,
 			const int length) = 0;
+		_Success_(return > 0)
 		virtual int stripFromBuffer(
-			ByteBuffer* buffer,
+			ByteWriter* buffer,
 			const int position)
 		{
 			if (buffer->getLength() - position <= 0)

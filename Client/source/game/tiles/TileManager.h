@@ -18,8 +18,6 @@ namespace Game
 {
 	namespace Tile
 	{
-		typedef BaseResource* (*TileCreator)();
-
 		enum class Id
 		{
 			InvalidTile = 0,
@@ -29,9 +27,17 @@ namespace Game
 
 		namespace Manager
 		{
-			std::map<Id, TileCreator> creators;
+			_Success_(return != NULL)
+			BaseResource* getTileResource(
+				const Id tileId);
+			void registerTileResource(
+				const Id tileId, 
+				BaseResource* resource);
+			void clearTileResources();
 
-			void registerTile(Id, TileCreator);
+			// Private ex. Easter Eggs or hidden tiles
+			void registerAllPrivate();
+			void registerAllPublic();
 		}
 	}
 }

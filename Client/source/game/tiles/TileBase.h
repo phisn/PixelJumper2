@@ -33,6 +33,8 @@ namespace Game
 			sf::Vector2f position, size;
 			Type type;
 			sf::Color color;
+
+			Id id;
 		};
 		
 		class Base
@@ -41,7 +43,8 @@ namespace Game
 			Base(
 				const BaseSettings settings)
 				:
-				type(settings.type)
+				type(settings.type),
+				id(settings.id)
 			{
 				shape.setPosition(settings.position);
 				shape.setSize(settings.size);
@@ -62,7 +65,13 @@ namespace Game
 
 			sf::Color getColor() const;
 			Type getType() const;
+
+			Id getId() const
+			{
+				return id;
+			}
 		protected:
+			const Id id;
 			sf::RectangleShape shape;
 
 		private:
@@ -73,7 +82,10 @@ namespace Game
 			:
 			public RESOURCE::Base
 		{
-			virtual Base* create() = 0;
+			_Success_(return == true)
+			virtual bool loadFromTile(
+				Tile::Base* tile);
+			virtual Tile::Base* create() = 0;
 		};
 
 		inline sf::Vector2f Base::getSize() const

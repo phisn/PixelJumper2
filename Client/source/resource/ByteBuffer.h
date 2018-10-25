@@ -9,10 +9,10 @@
 
 namespace Resource
 {
-	class ByteBuffer
+	class ByteWriter
 	{
 	public:
-		ByteBuffer(
+		ByteWriter(
 			const sf::Uint32 length)
 			:
 			realLength(length),
@@ -21,13 +21,13 @@ namespace Resource
 			buffer = new char[length];
 		}
 
-		ByteBuffer()
+		ByteWriter()
 			:
-			ByteBuffer(BYTEBUFFER_DEF_SIZE)
+			ByteWriter(BYTEBUFFER_DEF_SIZE)
 		{
 		}
 
-		~ByteBuffer()
+		~ByteWriter()
 		{
 			delete[] buffer;
 		}
@@ -48,7 +48,7 @@ namespace Resource
 		}
 
 		void append(
-			ByteBuffer* bb)
+			ByteWriter* bb)
 		{
 			append(bb->begin(), bb->getLength());
 		}
@@ -103,5 +103,10 @@ namespace Resource
 			remaining;
 
 		char* buffer = NULL;
+	};
+
+	class ByteReader
+	{
+
 	};
 }

@@ -9,7 +9,7 @@ namespace Game
 {
 	namespace Tile
 	{
-		typedef CollidableResource TouchableResource;
+		typedef CollidableSettings TouchableSettings;
 
 		class Touchable
 			:
@@ -18,7 +18,7 @@ namespace Game
 		{
 		protected:
 			Touchable(
-				const CollidableResource::Data settings,
+				const TouchableSettings settings,
 				const sf::Time resetTime)
 				:
 				Collidable(settings),

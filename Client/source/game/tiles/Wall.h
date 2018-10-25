@@ -27,7 +27,9 @@ namespace Game
 						settings.size,
 
 						Type::Collidable,
-						sf::Color::White
+						sf::Color::White,
+
+						Id::Wall
 					})
 			{
 			}
@@ -76,14 +78,58 @@ namespace Game
 			public BaseResource
 		{
 		public:
-			static WallResource* registerWallResource()
+			static void registerResource()
 			{
-				
+				Manager::registerTileResource( Id::Wall, new WallResource() );
 			}
 
-			Base* create() override
+			_Success_(return > 0)
+			int appendToBuffer(
+				RESOURCE::ByteWriter* buffer) override
 			{
-				return new Wall(settings);
+				buffer->appendValue(&settings);
+
+				return sizeof(settings);
+			}
+
+			_Success_(return > 0)
+			int loadFromBuffer(
+				char* buffer,
+				const int length) override
+			{
+				const int size = sizeof(settings);
+
+				if (length < size)
+				{
+					return 0;
+				}
+
+				memcpy(
+					&settings,
+					buffer,
+					size);
+
+				return size;
+			}
+
+			_Success_(return == true)
+			bool loadFromTile(
+				Tile::Base* tile) override
+			{
+				if (tile->getId() != Id::Wall)
+				{
+					return false;
+				}
+
+				settings.position = tile->getPosition();
+				settings.size = tile->getSize();
+
+				return true;
+			}
+
+			Tile::Base* create() override
+			{
+				return (Tile::Base*) new Wall(settings);
 			}
 
 		private:
