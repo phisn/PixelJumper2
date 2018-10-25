@@ -25,7 +25,6 @@ namespace Game
 		}
 
 		int difficulty;
-		float speed;
 
 		sf::Vector2f begin;
 		sf::Vector2f size;

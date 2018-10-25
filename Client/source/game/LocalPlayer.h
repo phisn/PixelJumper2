@@ -38,7 +38,7 @@ namespace Game
 
 			if (input->isSymbolActive(Device::LocalInputSymbol::Reset))
 			{
-				setPosition(sf::Vector2f(0.f, 0.f));
+				setPosition(sf::Vector2f(6.f, 8.f));
 
 				// ... (need to access world)
 			}

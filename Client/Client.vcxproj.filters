@@ -19,6 +19,9 @@
     <Filter Include="source\scene">
       <UniqueIdentifier>{82fc5087-42aa-4e96-8d10-f03557382342}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\resource">
+      <UniqueIdentifier>{66b67bfc-0010-45cc-80b8-4ec868cce6b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -93,6 +96,24 @@
     <ClInclude Include="source\game\Movement.h">
       <Filter>source\game</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\WorldLoader.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\WorldSettings.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ByteBuffer.h">
+      <Filter>source\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ResourceBase.h">
+      <Filter>source\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ResourceInterface.h">
+      <Filter>source\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiles\TileManager.h">
+      <Filter>source\game\tiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -163,6 +184,21 @@
     </ClCompile>
     <ClCompile Include="source\game\Movement.cpp">
       <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\WorldLoader.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\WorldSettings.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\ByteBuffer.cpp">
+      <Filter>source\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\ResourceInterface.cpp">
+      <Filter>source\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tiles\TileManager.cpp">
+      <Filter>source\game\tiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

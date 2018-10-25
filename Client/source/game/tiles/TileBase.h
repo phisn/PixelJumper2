@@ -3,6 +3,8 @@
 #include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
+#include <Client/source/resource/ResourceBase.h>
+
 #include <SFML/Graphics.hpp>
 
 #ifndef GAME
@@ -32,7 +34,7 @@ namespace Game
 			Type type;
 			sf::Color color;
 		};
-
+		
 		class Base
 		{
 		public:
@@ -59,13 +61,19 @@ namespace Game
 			sf::Vector2f getPosition() const;
 
 			sf::Color getColor() const;
-
 			Type getType() const;
 		protected:
 			sf::RectangleShape shape;
 
 		private:
 			Type type;
+		};
+
+		struct BaseResource
+			:
+			public RESOURCE::Base
+		{
+			virtual Base* create() = 0;
 		};
 
 		inline sf::Vector2f Base::getSize() const

@@ -25,7 +25,6 @@ namespace
 
 		settings->world.begin = sf::Vector2f(5.f, 0.f);
 		settings->world.size  = sf::Vector2f(40.f, 18.f);
-		settings->world.speed = 0.00001f;
 
 		settings->world.tiles.push_back(
 			new GAME::Tile::Wall(
@@ -41,19 +40,6 @@ namespace
 					sf::Vector2f(16.f, 2.f)
 				})); // floor
 
-		settings->world.tiles.push_back(
-			new GAME::Tile::Wall(
-				{
-					sf::Vector2f(1.f, 1.f),
-					sf::Vector2f(2.f, 16.f)
-				})); // floor
-
-		settings->world.tiles.push_back(
-			new GAME::Tile::Wall(
-				{
-					sf::Vector2f(1.f, 1.f),
-					sf::Vector2f(16.f, 2.f)
-				})); // floor
 		
 		return SCENE::Context::create<
 			SCENE::LocalGame>(settings);

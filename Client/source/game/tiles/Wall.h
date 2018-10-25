@@ -2,12 +2,13 @@
 
 #include <Client/source/game/tiles/CollidableTile.h>
 #include <Client/source/game/tiles/TileBase.h>
+#include <Client/source/game/tiles/TileManager.h>
 
 namespace Game
 {
 	namespace Tile
 	{
-		struct WallSettings // settings for binary file save / load
+		struct WallSettings
 		{
 			sf::Vector2f position, size;
 		};
@@ -40,13 +41,17 @@ namespace Game
 				LocalPlayer* player,
 				sf::Vector2f* remainingDestination)
 			{
+				if (collision.type == Collision::Vertical &&
+					player->getPosition().y < collision.position.y)
+				{
+					player->changeMovement()->setOnGround(0.4f);
+				}
+
 				player->setPosition(
 					collision.position);
 
 				if (collision.type == Collision::Vertical)
 				{
-					player->changeMovement()->setOnGround(0.4f);
-
 					player->changeMovement()->muliMovement(
 						{ 1.f, 0.f });
 
@@ -64,6 +69,25 @@ namespace Game
 
 				return true;
 			}
+		};
+
+		class WallResource
+			:
+			public BaseResource
+		{
+		public:
+			static WallResource* registerWallResource()
+			{
+				
+			}
+
+			Base* create() override
+			{
+				return new Wall(settings);
+			}
+
+		private:
+			WallSettings settings;
 		};
 	}
 }
