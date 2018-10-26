@@ -6,6 +6,8 @@
 
 #include <Client/source/scene/LocalGameScene.h>
 #include <Client/source/scene/Context.h>
+
+#include <Client/source/game/tiles/TileManager.h>
 #include <Client/source/game/tiles/Wall.h>
 
 #include "DeviceInterface.h"

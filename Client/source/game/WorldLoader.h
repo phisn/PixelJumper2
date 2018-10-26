@@ -8,5 +8,10 @@ namespace Game
 	{
 	public:
 		
+	private:
+		bool loadFromBuffer()
+		{
+
+		}
 	};
 }

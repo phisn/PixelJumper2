@@ -9,78 +9,37 @@
 
 namespace Resource
 {
-	class ByteWriter
+	class ByteBuffer
 	{
 	public:
-		ByteWriter(
-			const sf::Uint32 length)
-			:
-			realLength(length),
-			remaining(length)
+		ByteBuffer(
+			const sf::Uint32 size)
 		{
-			buffer = new char[length];
+			buffer = new char[size];
+			memset(buffer, 0, size);
+
+			realLength = size;
+			virtualLength = 0;
+			remaining = size;
 		}
 
-		ByteWriter()
-			:
-			ByteWriter(BYTEBUFFER_DEF_SIZE)
+		void reset(
+			const sf::Uint32 size = BYTEBUFFER_DEF_SIZE)
 		{
+			if (realLength != size)
+			{
+				delete buffer;
+				buffer = new char[size];
+			}
+
+			memset(buffer, 0, size);
+
+			realLength = size;
+			virtualLength = 0;
+			remaining = size;
 		}
 
-		~ByteWriter()
-		{
-			delete[] buffer;
-		}
-
-		void append(
-			char* mem,
-			const sf::Uint32 length)
-		{
-			remaining -= length;
-
-			incLength();
-
-			memcpy(
-				buffer + virtualLength,
-				mem,
-				length);
-			virtualLength += length;
-		}
-
-		void append(
-			ByteWriter* bb)
-		{
-			append(bb->begin(), bb->getLength());
-		}
-
-		void append(
-			std::wstring str)
-		{
-			append(
-				(char*) str.c_str(), 
-				str.length() 
-				* sizeof(wchar_t));
-		}
-
-		template <typename T>
-		void appendValue(
-			const T* value)
-		{
-			appendRaw((char*)value, sizeof(T));
-		}
-
-		char* begin()
-		{
-			return buffer;
-		}
-
-		const sf::Uint32 getLength() const
-		{
-			return virtualLength;
-		}
-
-	private:
-		void incLength()
+		void increaseLength()
 		{
 			const sf::Uint32 oldLength = realLength;
 
@@ -92,12 +51,50 @@ namespace Resource
 
 			char* temp = new char[realLength];
 			memcpy(temp, buffer, oldLength);
-			
+			memset(buffer, 0, realLength - oldLength);
+
 			delete buffer;
 			buffer = temp;
 		}
 
-		sf::Uint32 
+		char* use(
+			const sf::Uint32 size)
+		{
+			const sf::Uint32 temp = virtualLength;
+			
+			remaining -= size;
+			virtualLength += size;
+
+			if (remaining < 0)
+			{
+				increaseLength();
+			}
+
+			return buffer + temp;
+		}
+
+		char* write()
+		{
+			return buffer;
+		}
+
+		const char* read() const
+		{
+			return buffer;
+		}
+
+		sf::Uint32 getRealLength() const
+		{
+			return realLength;
+		}
+
+		sf::Uint32 getVirtualLength() const
+		{
+			return virtualLength;
+		}
+
+	private:
+		sf::Uint32
 			realLength,
 			virtualLength = 0,
 			remaining;
@@ -105,8 +102,184 @@ namespace Resource
 		char* buffer = NULL;
 	};
 
+	class ByteWriter
+	{
+	public:
+		ByteWriter(
+			const sf::Uint32 length)
+			:
+			buffer(length)
+		{
+		}
+
+		ByteWriter()
+			:
+			ByteWriter(BYTEBUFFER_DEF_SIZE)
+		{
+		}
+
+		void append(
+			const char* mem,
+			const sf::Uint32 length)
+		{
+			memcpy(
+				buffer.use(length),
+				mem,
+				length);
+		}
+
+		void append(
+			const wchar_t* str,
+			const sf::Uint32 length)
+		{
+			appendValue(
+				&length);
+			append(
+				(char*) str,
+				length * sizeof(wchar_t)
+			);
+		}
+
+		void append(
+			const ByteBuffer* buffer)
+		{
+			append(buffer->read(), buffer->getVirtualLength());
+		}
+
+		void append(
+			const ByteWriter* bb)
+		{
+			append(bb->readBuffer());
+		}
+
+		void append(
+			const std::wstring* str)
+		{
+			append(str->c_str(), str->length());
+		}
+
+		void append(
+			const std::wstring str)
+		{
+			append(&str);
+		}
+
+		template <typename T>
+		void appendValue(
+			const T* value)
+		{
+			appendRaw((char*)value, sizeof(T));
+		}
+
+		ByteBuffer* writeBuffer()
+		{
+			return &buffer;
+		}
+
+		const ByteBuffer* readBuffer() const
+		{
+			return &buffer;
+		}
+
+		const sf::Uint32 getLength() const
+		{
+			return buffer.getVirtualLength();
+		}
+
+	private:
+		ByteBuffer buffer;
+	};
+
 	class ByteReader
 	{
+	public:
+		ByteReader(
+			const ByteBuffer* buffer)
+			:
+			buffer(buffer)
+		{
+		}
 
+		template <typename T>
+		bool readValue(T* value)
+		{
+			if (!isValidSize( sizeof(T) ))
+			{
+				return false;
+			}
+
+			memcpy(
+				value,
+				buffer->read() + position,
+				sizeof(T));
+			position += sizeof(T);
+
+			return true;
+		}
+
+		bool readString(
+			wchar_t* strBuffer,
+			const sf::Uint32 bufferSize)
+		{
+			const sf::Uint32 strSize = getStringSize();
+
+			if (!strSize || strSize > bufferSize)
+			{
+				return false;
+			}
+
+			if (
+				!isValidPosition(strSize * sizeof(wchar_t))
+				)
+			{
+				return false;
+			}
+
+			memcpy(
+				(char*) strBuffer,
+				buffer->read() + sizeof(sf::Uint32),
+				strSize * sizeof(wchar_t)
+			);
+
+			return true;
+		}
+
+		sf::Uint32 getStringSize()
+		{
+			if (
+				!isValidPosition( sizeof(sf::Uint32) )
+				)
+			{
+				return NULL;
+			}
+
+			return *(int*) buffer->read();
+		}
+
+		bool endOfBuffer() const
+		{
+			return position == buffer->getVirtualLength();
+		}
+
+		const ByteBuffer* getBuffer() const
+		{
+			return buffer;
+		}
+
+		const sf::Int32 getLength()
+		{
+			return buffer->getVirtualLength();
+		}
+
+	private:
+		bool isValidPosition(
+			const sf::Uint32 size)
+		{
+			return buffer->getVirtualLength() - position >= size;
+		}
+
+		sf::Uint32 position = 0;
+
+		const ByteBuffer* buffer;
 	};
 }
