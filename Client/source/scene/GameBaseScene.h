@@ -20,7 +20,7 @@ namespace Scene
 	{
 	public:
 		GameBase(
-			GAME::WorldSettings* settings)
+			GAME::WorldResource* settings)
 			:
 			settings(settings)
 		{
@@ -104,7 +104,7 @@ namespace Scene
 		std::vector<
 			GAME::PlayerBase*> player;
 
-		GAME::WorldSettings* settings;
+		GAME::WorldResource* settings;
 		GAME::World* world;
 
 		sf::RectangleShape background;

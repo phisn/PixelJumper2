@@ -14,9 +14,9 @@
 
 namespace Game
 {
-	struct WorldSettings
+	struct WorldResource
 	{
-		~WorldSettings()
+		~WorldResource()
 		{
 			for (Tile::Base* tile : tiles)
 			{
@@ -40,7 +40,7 @@ namespace Game
 	{
 	public:
 		bool initialize(
-			_In_ WorldSettings* settings)
+			_In_ WorldResource* settings)
 		{
 			this->settings = settings;
 
@@ -116,7 +116,7 @@ namespace Game
 		bool validate() const;
 	private:
 		sf::Image worldImage;
-		WorldSettings* settings;
+		WorldResource* settings;
 
 		void movePlayer(
 			LocalPlayer* player,

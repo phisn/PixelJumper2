@@ -82,9 +82,12 @@ namespace Game
 			:
 			public RESOURCE::Base
 		{
+			virtual sf::Uint32 getSize() const;
+
 			_Success_(return == true)
-			virtual bool loadFromTile(
-				Tile::Base* tile);
+				virtual bool loadFromTile(
+					Tile::Base* tile) = 0;
+
 			virtual Tile::Base* create() = 0;
 		};
 

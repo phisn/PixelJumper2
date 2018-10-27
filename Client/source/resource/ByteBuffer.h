@@ -118,7 +118,7 @@ namespace Resource
 		{
 		}
 
-		void append(
+		void write(
 			const char* mem,
 			const sf::Uint32 length)
 		{
@@ -128,47 +128,48 @@ namespace Resource
 				length);
 		}
 
-		void append(
+		void write(
 			const wchar_t* str,
 			const sf::Uint32 length)
 		{
-			appendValue(
+			writeValue(
 				&length);
-			append(
+			write(
 				(char*) str,
 				length * sizeof(wchar_t)
 			);
 		}
 
-		void append(
+		void write(
 			const ByteBuffer* buffer)
 		{
-			append(buffer->read(), buffer->getVirtualLength());
+			write(buffer->read(), buffer->getVirtualLength());
 		}
 
-		void append(
+		void write(
 			const ByteWriter* bb)
 		{
-			append(bb->readBuffer());
+			write(bb->readBuffer());
 		}
 
-		void append(
+		void write(
 			const std::wstring* str)
 		{
-			append(str->c_str(), str->length());
+			write(str->c_str(), str->length());
 		}
 
-		void append(
+		void write(
 			const std::wstring str)
 		{
-			append(&str);
+			write(&str);
 		}
 
 		template <typename T>
-		void appendValue(
+		void writeValue(
 			const T* value)
 		{
-			appendRaw((char*)value, sizeof(T));
+			write(
+				(char*) value, sizeof(T));
 		}
 
 		ByteBuffer* writeBuffer()
@@ -240,6 +241,32 @@ namespace Resource
 				buffer->read() + sizeof(sf::Uint32),
 				strSize * sizeof(wchar_t)
 			);
+			position += strSize * sizeof(wchar_t);
+
+			return true;
+		}
+
+		bool readString(
+			std::wstring* str)
+		{
+			const sf::Uint32 strSize = getStringSize();
+
+			if (!strSize)
+			{
+				return false;
+			}
+
+			if (
+				!isValidPosition(strSize * sizeof(wchar_t))
+				)
+			{
+				return false;
+			}
+
+			str->resize(strSize + 1);
+			str->assign(
+				(wchar_t*) buffer->read() + sizeof(sf::Uint32),
+				strSize);
 
 			return true;
 		}

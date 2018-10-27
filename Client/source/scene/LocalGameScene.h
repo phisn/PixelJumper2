@@ -9,7 +9,7 @@ namespace Scene
 {
 	struct LocalGameSettings
 	{
-		Game::WorldSettings world;
+		Game::WorldResource world;
 
 		int playerCount;
 	};

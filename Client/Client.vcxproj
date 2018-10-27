@@ -149,11 +149,11 @@
     <ClInclude Include="source\game\tiles\TouchableTile.h" />
     <ClInclude Include="source\game\tiles\Wall.h" />
     <ClInclude Include="source\game\World.h" />
-    <ClInclude Include="source\game\WorldLoader.h" />
-    <ClInclude Include="source\game\WorldSettings.h" />
     <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
+    <ClInclude Include="source\resource\TileResource.h" />
+    <ClInclude Include="source\resource\WorldResource.h" />
     <ClInclude Include="source\scene\Animation.h" />
     <ClInclude Include="source\scene\AsyncAnimation.h" />
     <ClInclude Include="source\scene\Context.h" />
@@ -180,10 +180,10 @@
     <ClCompile Include="source\game\tiles\TouchableTile.cpp" />
     <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
-    <ClCompile Include="source\game\WorldLoader.cpp" />
-    <ClCompile Include="source\game\WorldSettings.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
+    <ClCompile Include="source\resource\TileResource.cpp" />
+    <ClCompile Include="source\resource\WorldResource.cpp" />
     <ClCompile Include="source\scene\Animation.cpp" />
     <ClCompile Include="source\scene\AsyncAnimation.cpp" />
     <ClCompile Include="source\scene\Context.cpp" />

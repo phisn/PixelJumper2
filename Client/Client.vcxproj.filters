@@ -28,9 +28,6 @@
     <Filter Include="source\game\tiles\base">
       <UniqueIdentifier>{b8c3d781-b9b2-4447-97ba-72111593031b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\game\world">
-      <UniqueIdentifier>{28707150-3c6f-465c-a8f7-10415380b661}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\game\player">
       <UniqueIdentifier>{61f686d4-2954-458f-bead-6997a1cdcb13}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,12 @@
     </Filter>
     <Filter Include="source\scene\impl">
       <UniqueIdentifier>{1395eaa2-ab1b-4a92-ac86-b0dd1060c309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\resource\base">
+      <UniqueIdentifier>{435a618e-c781-4a13-8c32-b740fd450383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\resource\impl">
+      <UniqueIdentifier>{63f0af3c-9df7-42b3-9623-58734ff35c55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -66,15 +69,6 @@
     <ClInclude Include="source\device\FailHandler.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\ByteBuffer.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\ResourceBase.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\ResourceInterface.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\tiles\TileManager.h">
       <Filter>source\game\tiles</Filter>
     </ClInclude>
@@ -92,15 +86,6 @@
     </ClInclude>
     <ClInclude Include="source\game\tiles\Wall.h">
       <Filter>source\game\tiles\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\WorldSettings.h">
-      <Filter>source\game\world</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\WorldLoader.h">
-      <Filter>source\game\world</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\World.h">
-      <Filter>source\game\world</Filter>
     </ClInclude>
     <ClInclude Include="source\game\PlayerBase.h">
       <Filter>source\game\player</Filter>
@@ -135,6 +120,24 @@
     <ClInclude Include="source\scene\LocalGameScene.h">
       <Filter>source\scene\impl</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\World.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ByteBuffer.h">
+      <Filter>source\resource\base</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ResourceBase.h">
+      <Filter>source\resource\base</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ResourceInterface.h">
+      <Filter>source\resource\base</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\WorldResource.h">
+      <Filter>source\resource\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\TileResource.h">
+      <Filter>source\resource\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -158,12 +161,6 @@
     <ClCompile Include="source\device\FailHandler.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\resource\ByteBuffer.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\ResourceInterface.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\tiles\TileManager.cpp">
       <Filter>source\game\tiles</Filter>
     </ClCompile>
@@ -181,15 +178,6 @@
     </ClCompile>
     <ClCompile Include="source\game\tiles\Wall.cpp">
       <Filter>source\game\tiles\impl</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\WorldSettings.cpp">
-      <Filter>source\game\world</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\WorldLoader.cpp">
-      <Filter>source\game\world</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\World.cpp">
-      <Filter>source\game\world</Filter>
     </ClCompile>
     <ClCompile Include="source\game\PlayerBase.cpp">
       <Filter>source\game\player</Filter>
@@ -220,6 +208,21 @@
     </ClCompile>
     <ClCompile Include="source\scene\LocalGameScene.cpp">
       <Filter>source\scene\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\World.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\ByteBuffer.cpp">
+      <Filter>source\resource\base</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\ResourceInterface.cpp">
+      <Filter>source\resource\base</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\WorldResource.cpp">
+      <Filter>source\resource\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\TileResource.cpp">
+      <Filter>source\resource\impl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

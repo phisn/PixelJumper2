@@ -83,33 +83,23 @@ namespace Game
 				Manager::registerTileResource( Id::Wall, new WallResource() );
 			}
 
-			_Success_(return > 0)
-			int appendToBuffer(
+			bool writeToBuffer(
 				RESOURCE::ByteWriter* buffer) override
 			{
-				buffer->appendValue(&settings);
+				buffer->writeValue(&settings);
 
-				return sizeof(settings);
+				return true;
 			}
 
-			_Success_(return > 0)
-			int loadFromBuffer(
-				char* buffer,
-				const int length) override
+			bool readFromBuffer(
+				RESOURCE::ByteReader* buffer) override
 			{
-				const int size = sizeof(settings);
-
-				if (length < size)
+				if (!buffer->readValue(&settings))
 				{
-					return 0;
+					return false;
 				}
 
-				memcpy(
-					&settings,
-					buffer,
-					size);
-
-				return size;
+				return true;
 			}
 
 			_Success_(return == true)
@@ -125,6 +115,11 @@ namespace Game
 				settings.size = tile->getSize();
 
 				return true;
+			}
+
+			sf::Uint32 getSize() const override
+			{
+				return sizeof(settings);
 			}
 
 			Tile::Base* create() override
