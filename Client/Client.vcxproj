@@ -149,6 +149,7 @@
     <ClInclude Include="source\game\tiles\TouchableTile.h" />
     <ClInclude Include="source\game\tiles\Wall.h" />
     <ClInclude Include="source\game\World.h" />
+    <ClInclude Include="source\game\WorldManager.h" />
     <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="source\game\tiles\TouchableTile.cpp" />
     <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
+    <ClCompile Include="source\game\WorldManager.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />

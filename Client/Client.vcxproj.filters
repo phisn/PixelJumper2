@@ -138,6 +138,9 @@
     <ClInclude Include="source\resource\TileResource.h">
       <Filter>source\resource\impl</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\WorldManager.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -223,6 +226,9 @@
     </ClCompile>
     <ClCompile Include="source\resource\TileResource.cpp">
       <Filter>source\resource\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\WorldManager.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

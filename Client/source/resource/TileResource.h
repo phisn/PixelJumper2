@@ -7,10 +7,11 @@
 
 namespace Resource
 {
-	struct TileResource
+	struct Tile
 		:
 		public Resource::Base
 	{
+		// NOT RESPONSIBLE FOR DELETING TILE
 		GAME::Tile::Base* tile;
 
 		struct
@@ -50,11 +51,6 @@ namespace Resource
 			GAME::Tile::BaseResource* resource = GAME::Tile::Manager::getTileResource(
 				data.id);
 			if (resource == NULL)
-			{
-				return false;
-			}
-
-			if (!buffer->readValue(&data))
 			{
 				return false;
 			}

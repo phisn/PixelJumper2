@@ -9,7 +9,7 @@ namespace Scene
 {
 	struct LocalGameSettings
 	{
-		Game::WorldResource world;
+		Game::WorldSettings* world;
 
 		int playerCount;
 	};
@@ -23,7 +23,7 @@ namespace Scene
 			LocalGameSettings* settings)
 			:
 			GameBase(
-				&settings->world),
+				settings->world),
 			settings(settings)
 		{
 		}

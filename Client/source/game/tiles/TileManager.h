@@ -3,7 +3,7 @@
 #include <map>
 
 #include <Client/source/game/tiles/TileBase.h>
-
+#include <Client/source/game/tiles/TileId.h>
 
 /*
 
@@ -18,13 +18,6 @@ namespace Game
 {
 	namespace Tile
 	{
-		enum class Id
-		{
-			InvalidTile = 0,
-
-			Wall
-		};
-
 		namespace Manager
 		{
 			_Success_(return != NULL)

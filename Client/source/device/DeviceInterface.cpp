@@ -12,6 +12,8 @@
 
 #include "DeviceInterface.h"
 
+#include <Client/source/game/WorldManager.h>
+
 namespace
 {
 	Device::GlobalInput* input = NULL;
@@ -21,28 +23,44 @@ namespace
 #ifdef _DEBUG
 	SCENE::Context* makeStartingContext()
 	{
+		GAME::Tile::Manager::registerAllPrivate();
+
 		SCENE::LocalGameSettings* settings = new SCENE::LocalGameSettings();
+		// settings->world = new GAME::WorldSettings();
 
 		settings->playerCount = 2;
 
-		settings->world.begin = sf::Vector2f(5.f, 0.f);
-		settings->world.size  = sf::Vector2f(40.f, 18.f);
+		/*
+		settings->world->author = L"Phisn";
+		settings->world->name = L"TestMap";
 
-		settings->world.tiles.push_back(
+		settings->world->size = sf::Vector2f(
+			40.f, 18.f);
+
+		settings->world->tiles.push_back(
 			new GAME::Tile::Wall(
 				{
 					sf::Vector2f(16.f, 2.f),
 					sf::Vector2f(2.f, 14.f)
 				})); // wall
 
-		settings->world.tiles.push_back(
+		settings->world->tiles.push_back(
 			new GAME::Tile::Wall(
 				{
 					sf::Vector2f(1.f, 10.f),
 					sf::Vector2f(16.f, 2.f)
 				})); // floor
 
-		
+		std::cout << GAME::WorldManager::saveSettingsToFile(
+			L"defaultWorld.pxjmpr",
+			settings->world) << std::endl;
+		*/
+
+		settings->world = GAME::WorldManager::loadSettingsFromFile(
+			L"defaultWorld.pxjmpr");
+
+		std::cout << (int)settings->world << std::endl;
+
 		return SCENE::Context::create<
 			SCENE::LocalGame>(settings);
 	}

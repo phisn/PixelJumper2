@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/game/LocalPlayer.h>
+#include <Client/source/game/WorldManager.h>
 
 #include <Client/source/game/tiles/CollidableTile.h>
 #include <Client/source/game/tiles/TileBase.h>
@@ -14,33 +15,16 @@
 
 namespace Game
 {
-	struct WorldResource
-	{
-		~WorldResource()
-		{
-			for (Tile::Base* tile : tiles)
-			{
-				delete tile;
-			}
-		}
-
-		int difficulty;
-
-		sf::Vector2f begin;
-		sf::Vector2f size;
-
-		std::wstring name;
-		std::wstring creator;
-		
-		std::vector<
-			Tile::Base*> tiles;
-	};
-
 	class World
 	{
 	public:
+		~World()
+		{
+			delete settings;
+		}
+
 		bool initialize(
-			_In_ WorldResource* settings)
+			_In_ WorldSettings* settings)
 		{
 			this->settings = settings;
 
@@ -83,7 +67,7 @@ namespace Game
 			_In_ LocalPlayer* player)
 		{
 			player->getView()->setSize(settings->size);
-			player->setPosition(settings->begin);
+			player->setPosition(sf::Vector2f(0, 0));
 		}
 
 		void onLogic(
@@ -116,7 +100,7 @@ namespace Game
 		bool validate() const;
 	private:
 		sf::Image worldImage;
-		WorldResource* settings;
+		WorldSettings* settings;
 
 		void movePlayer(
 			LocalPlayer* player,

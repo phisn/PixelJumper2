@@ -12,7 +12,7 @@
 
 namespace Resource
 {
-	struct WorldResource
+	struct World
 		:
 		public Base
 	{
@@ -21,7 +21,7 @@ namespace Resource
 			struct
 			{
 				sf::Uint32 magic = WORLD_MAGIC;
-				sf::Uint64 worldId;
+				sf::Uint32 worldId;
 			} begin;
 
 			struct
@@ -42,7 +42,7 @@ namespace Resource
 
 		struct
 		{
-			std::vector<TileResource> tileResources;
+			std::vector<Tile> tileResources;
 
 		} content;
 
@@ -93,7 +93,12 @@ namespace Resource
 
 		bool validateHeader() const
 		{
-			// extend later (content)
+			if (header.auth.author.length() > 0xff ||
+				header.auth.name.length() > 0xff)
+			{
+				return false;
+			}
+
 			return header.begin.magic == WORLD_MAGIC;
 		}
 
@@ -160,7 +165,7 @@ namespace Resource
 		bool writeContent(
 			RESOURCE::ByteWriter* buffer)
 		{
-			for (TileResource& resource : content.tileResources)
+			for (Tile& resource : content.tileResources)
 				if (!resource.writeToBuffer(
 						buffer))
 				{

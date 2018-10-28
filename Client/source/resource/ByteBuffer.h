@@ -204,7 +204,7 @@ namespace Resource
 		template <typename T>
 		bool readValue(T* value)
 		{
-			if (!isValidSize( sizeof(T) ))
+			if (!isValidPosition( sizeof(T) ))
 			{
 				return false;
 			}
@@ -238,10 +238,10 @@ namespace Resource
 
 			memcpy(
 				(char*) strBuffer,
-				buffer->read() + sizeof(sf::Uint32),
+				buffer->read() + position + sizeof(sf::Uint32),
 				strSize * sizeof(wchar_t)
 			);
-			position += strSize * sizeof(wchar_t);
+			position += strSize * sizeof(wchar_t) + sizeof(sf::Uint32);
 
 			return true;
 		}
@@ -265,8 +265,9 @@ namespace Resource
 
 			str->resize(strSize + 1);
 			str->assign(
-				(wchar_t*) buffer->read() + sizeof(sf::Uint32),
+				(wchar_t*) (buffer->read() + position + sizeof(sf::Uint32)),
 				strSize);
+			position += strSize * sizeof(wchar_t) + sizeof(sf::Uint32);
 
 			return true;
 		}
@@ -280,7 +281,7 @@ namespace Resource
 				return NULL;
 			}
 
-			return *(int*) buffer->read();
+			return *(int*) (buffer->read() + position);
 		}
 
 		bool endOfBuffer() const
