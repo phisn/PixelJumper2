@@ -46,6 +46,12 @@
     <Filter Include="source\resource\impl">
       <UniqueIdentifier>{63f0af3c-9df7-42b3-9623-58734ff35c55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\editor">
+      <UniqueIdentifier>{c56ab57d-2621-4dcd-8eab-476c9e143afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\scene\menu">
+      <UniqueIdentifier>{5911db9d-62e7-4a4e-81ac-4a2875fcd0c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -141,6 +147,24 @@
     <ClInclude Include="source\game\WorldManager.h">
       <Filter>source\game</Filter>
     </ClInclude>
+    <ClInclude Include="source\editor\WallTemplate.h">
+      <Filter>source\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\TileTemplate.h">
+      <Filter>source\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\EditorScene.h">
+      <Filter>source\scene\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\ContextMenu.h">
+      <Filter>source\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiles\TileColor.h">
+      <Filter>source\game\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\TileProperty.h">
+      <Filter>source\editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -229,6 +253,21 @@
     </ClCompile>
     <ClCompile Include="source\game\WorldManager.cpp">
       <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\WallTemplate.cpp">
+      <Filter>source\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\TileTemplate.cpp">
+      <Filter>source\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\EditorScene.cpp">
+      <Filter>source\scene\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\ContextMenu.cpp">
+      <Filter>source\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\TileProperty.cpp">
+      <Filter>source\editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

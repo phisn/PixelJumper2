@@ -2,6 +2,7 @@
 
 #include <Client/source/game/tiles/CollidableTile.h>
 #include <Client/source/game/tiles/TileBase.h>
+#include <Client/source/game/tiles/TileColor.h>
 #include <Client/source/game/tiles/TileManager.h>
 
 namespace Game
@@ -27,7 +28,7 @@ namespace Game
 						settings.size,
 
 						Type::Collidable,
-						sf::Color::White,
+						TILE_WALL_COLOR,
 
 						Id::Wall
 					})

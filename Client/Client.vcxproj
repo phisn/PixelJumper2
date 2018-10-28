@@ -138,12 +138,17 @@
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
+    <ClInclude Include="source\editor\ContextMenu.h" />
+    <ClInclude Include="source\editor\TileProperty.h" />
+    <ClInclude Include="source\editor\TileTemplate.h" />
+    <ClInclude Include="source\editor\WallTemplate.h" />
     <ClInclude Include="source\game\GameView.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\Movement.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
     <ClInclude Include="source\game\tiles\CollidableTile.h" />
     <ClInclude Include="source\game\tiles\TileBase.h" />
+    <ClInclude Include="source\game\tiles\TileColor.h" />
     <ClInclude Include="source\game\tiles\TileManager.h" />
     <ClInclude Include="source\game\tiles\TimedTile.h" />
     <ClInclude Include="source\game\tiles\TouchableTile.h" />
@@ -158,6 +163,7 @@
     <ClInclude Include="source\scene\Animation.h" />
     <ClInclude Include="source\scene\AsyncAnimation.h" />
     <ClInclude Include="source\scene\Context.h" />
+    <ClInclude Include="source\scene\EditorScene.h" />
     <ClInclude Include="source\scene\GameBaseScene.h" />
     <ClInclude Include="source\scene\LocalGameScene.h" />
     <ClInclude Include="source\scene\MainSceneBase.h" />
@@ -170,6 +176,10 @@
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
+    <ClCompile Include="source\editor\ContextMenu.cpp" />
+    <ClCompile Include="source\editor\TileProperty.cpp" />
+    <ClCompile Include="source\editor\TileTemplate.cpp" />
+    <ClCompile Include="source\editor\WallTemplate.cpp" />
     <ClCompile Include="source\game\GameView.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
     <ClCompile Include="source\game\Movement.cpp" />
@@ -189,6 +199,7 @@
     <ClCompile Include="source\scene\Animation.cpp" />
     <ClCompile Include="source\scene\AsyncAnimation.cpp" />
     <ClCompile Include="source\scene\Context.cpp" />
+    <ClCompile Include="source\scene\EditorScene.cpp" />
     <ClCompile Include="source\scene\GameBaseScene.cpp" />
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\SceneInterface.cpp" />
