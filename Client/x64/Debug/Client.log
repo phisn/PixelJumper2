@@ -1,1 +1,176 @@
-﻿  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe
+﻿  DeviceInterface.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(41): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(38): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\device\deviceinterface.cpp(62): warning C4311: "Typumwandlung": Zeigerverkürzung von "Game::WorldSettings *" zu "int"
+c:\users\phisn\source\repos\pixeljumper2\client\source\device\deviceinterface.cpp(62): warning C4302: "Typumwandlung": Verkürzung von "Game::WorldSettings *" in "int"
+  ContextMenu.cpp
+  TileProperty.cpp
+  TileTemplate.cpp
+  WallTemplate.cpp
+  TileManager.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  Wall.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  World.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(41): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(38): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+  WorldManager.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.cpp(17): warning C4244: "Initialisierung": Konvertierung von "std::streamoff" in "sf::Uint32", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.cpp(17): warning C4244: "Initialisierung": Konvertierung von "std::streamoff" in "const sf::Uint32", möglicher Datenverlust
+  TileResource.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+  WorldResource.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
+  EditorScene.cpp
+  GameBaseScene.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(41): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(38): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+  LocalGameScene.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(41): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(38): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+  Code wird generiert...
+TimedTile.obj : warning LNK4099: PDB "vc141.pdb" wurde nicht mit "TimedTile.obj" oder an "C:\Users\phisn\source\repos\PixelJumper2\build\Debug\vc141.pdb" gefunden; Objekt wird verkn³pft, als ob keine Debuginformationen vorhanden wõren.
+InputDevice.obj : warning LNK4099: PDB "vc141.pdb" wurde nicht mit "InputDevice.obj" oder an "C:\Users\phisn\source\repos\PixelJumper2\build\Debug\vc141.pdb" gefunden; Objekt wird verkn³pft, als ob keine Debuginformationen vorhanden wõren.
+FailHandler.obj : warning LNK4099: PDB "vc141.pdb" wurde nicht mit "FailHandler.obj" oder an "C:\Users\phisn\source\repos\PixelJumper2\build\Debug\vc141.pdb" gefunden; Objekt wird verkn³pft, als ob keine Debuginformationen vorhanden wõren.
+  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

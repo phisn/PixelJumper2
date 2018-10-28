@@ -52,6 +52,12 @@
     <Filter Include="source\scene\menu">
       <UniqueIdentifier>{5911db9d-62e7-4a4e-81ac-4a2875fcd0c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\editor\tile">
+      <UniqueIdentifier>{e4da38ce-ae04-406a-8015-81ef0beb4d25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\editor\template">
+      <UniqueIdentifier>{ca240b51-d38e-4fe4-a459-004fb99c2d25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -147,23 +153,29 @@
     <ClInclude Include="source\game\WorldManager.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\WallTemplate.h">
-      <Filter>source\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\TileTemplate.h">
-      <Filter>source\editor</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\EditorScene.h">
       <Filter>source\scene\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\ContextMenu.h">
-      <Filter>source\editor</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiles\TileColor.h">
       <Filter>source\game\tiles</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\TileProperty.h">
+    <ClInclude Include="source\editor\TileGrid.h">
       <Filter>source\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\tile\TileBase.h">
+      <Filter>source\editor\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\tile\Wall.h">
+      <Filter>source\editor\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\TemplateManager.h">
+      <Filter>source\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\template\TileTemplate.h">
+      <Filter>source\editor\template</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\template\WallTemplate.h">
+      <Filter>source\editor\template</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,20 +266,26 @@
     <ClCompile Include="source\game\WorldManager.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\WallTemplate.cpp">
-      <Filter>source\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\TileTemplate.cpp">
-      <Filter>source\editor</Filter>
-    </ClCompile>
     <ClCompile Include="source\scene\EditorScene.cpp">
       <Filter>source\scene\impl</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\ContextMenu.cpp">
+    <ClCompile Include="source\editor\TileGrid.cpp">
       <Filter>source\editor</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\TileProperty.cpp">
+    <ClCompile Include="source\editor\tile\Wall.cpp">
+      <Filter>source\editor\tile</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\tile\TileBase.cpp">
+      <Filter>source\editor\tile</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\TemplateManager.cpp">
       <Filter>source\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\template\TileTemplate.cpp">
+      <Filter>source\editor\template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\template\WallTemplate.cpp">
+      <Filter>source\editor\template</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
