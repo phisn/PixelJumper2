@@ -12,6 +12,7 @@
 
 #include "DeviceInterface.h"
 
+#include <Client/source/scene/EditorScene.h>
 #include <Client/source/game/WorldManager.h>
 
 namespace
@@ -23,6 +24,7 @@ namespace
 #ifdef _DEBUG
 	SCENE::Context* makeStartingContext()
 	{
+		/*
 		GAME::Tile::Manager::registerAllPrivate();
 
 		SCENE::LocalGameSettings* settings = new SCENE::LocalGameSettings();
@@ -54,15 +56,15 @@ namespace
 		std::cout << GAME::WorldManager::saveSettingsToFile(
 			L"defaultWorld.pxjmpr",
 			settings->world) << std::endl;
-		*/
 
 		settings->world = GAME::WorldManager::loadSettingsFromFile(
 			L"defaultWorld.pxjmpr");
 
 		std::cout << (int)settings->world << std::endl;
+		*/
 
-		return SCENE::Context::create<
-			SCENE::LocalGame>(settings);
+
+		return SCENE::Context::create<SCENE::Editor>();
 	}
 #else
 	SCENE::Context* makeStartingContext()

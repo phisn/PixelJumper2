@@ -2,8 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include 
-
+#include <Client/source/game/tiles/TileBase.h>
 #include <Client/source/game/tiles/TileId.h>
 
 namespace Editor
