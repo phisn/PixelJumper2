@@ -5,6 +5,10 @@
 
 #include <Client/source/scene/MainSceneBase.h>
 
+#include <Client/source/editor/GridView.h>
+#include <Client/source/editor/Selector.h>
+#include <Client/source/editor/World.h>
+
 #include <SFML/Graphics.hpp>
 
 namespace Scene
@@ -16,63 +20,20 @@ namespace Scene
 	public:
 		bool onCreate() override
 		{
-			selection.setFillColor(sf::Color(0.f, 0.f, 0.f, 0.f));
-			selection.setOutlineColor(sf::Color::Blue);
-			selection.setOutlineThickness(2.f);
-
-			view.setSize(sf::Vector2f(
-				1920,
-				1080));
-
-			image.create(1920.f, 1080.f);
-			for (float x = 1; x < 19.1f; ++x)
-			{
-				for (float y = 1; y < 1080.f; ++y)
-				{
-					if ((int) (y + 20) % 100 > 40)
-					{
-						continue;
-					}
-
-					image.setPixel(
-						x * 100,
-						y,
-						sf::Color::Color(80, 80, 80)
-					);
-				}
-			}
-
-			for (float y = 1; y < 10.7f; ++y)
-			{
-				for (float x = 1; x < 1920.f; ++x)
-				{
-					if ((int) (x + 20) % 100 > 40)
-					{
-						continue;
-					}
-
-					image.setPixel(
-						x,
-						y * 100,
-						sf::Color::Color(80, 80, 80)
-					);
-				}
-			}
-
-			image.saveToFile("testFile.png");
-			texture.loadFromImage(image);
-			sprite.setTexture(texture, true);
-
 			return true;
 		}
 
 		void onRemove() override
 		{
-
 		}
 
 		void initialize() override
 		{
+			gridView.initialize();
+			selector.initialize(
+				&gridView,
+				&world
+			);
 		}
 
 		void onShow() override { }
@@ -83,70 +44,145 @@ namespace Scene
 			switch (event.type)
 			{
 			case sf::Event::MouseButtonPressed:
-				pressed = true;
-				selection.setPosition(DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(
-					sf::Vector2i(
+				if (event.mouseButton.button == sf::Mouse::Button::Left)
+				{
+					pressed = Pressed::Left;
+					selector.begin(sf::Vector2f(
 						event.mouseButton.x,
-						event.mouseButton.y),
-					view));
-				selection.setSize(sf::Vector2f());
+						event.mouseButton.y
+					));
+
+					break;
+				}
+
+				if (event.mouseButton.button == sf::Mouse::Button::Right)
+				{
+					pressed = Pressed::Right;
+
+					/*
+					moveBeginPosition =
+						sf::Vector2i(
+							event.mouseButton.x,
+							event.mouseButton.y);
+					moveViewBegin = view.getCenter();
+					*/
+				}
+
+				if (event.mouseButton.button == sf::Mouse::Button::Middle)
+				{
+					gridView.resetZoom();
+				}
 
 				break;
 			case sf::Event::MouseButtonReleased:
-				pressed = false;
-				adjustSelection(DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(
-					sf::Vector2i(
+				if (pressed == Pressed::Left)
+				{
+					selector.release(sf::Vector2f(
 						event.mouseButton.x,
-						event.mouseButton.y),
-					view));
+						event.mouseButton.y));
+				}
+
+				pressed = Pressed::None;
 
 				break;
 			case sf::Event::MouseMoved:
-				if (pressed)
+				if (pressed == Pressed::Left)
 				{
-					adjustSelection(DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(
-						sf::Vector2i(
-							event.mouseMove.x,
-							event.mouseMove.y),
-						view));
+					selector.move(sf::Vector2f(
+						event.mouseMove.x,
+						event.mouseMove.y));
+
+					break;
 				}
 
+				if (pressed == Pressed::Right)
+				{
+					/*
+					const sf::Vector2f posCoords = DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(
+						sf::Vector2i(
+							moveBeginPosition.x - event.mouseMove.x,
+							moveBeginPosition.y - event.mouseMove.y),
+						view);
+
+					view.setCenter(sf::Vector2f(
+						moveViewBegin.x + posCoords.x / 2.f,
+						moveViewBegin.y + posCoords.y / 2.f
+					));
+					
+					gridView.background.sprite.setPosition(
+						DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(
+							sf::Vector2i(0.f, 0.f), view));
+
+					adjustSpriteSize(
+						sf::Vector2i(0, 0),
+						sf::Vector2i(
+							1920,
+							1080)
+					);
+					*/
+
+					break;
+				}
+
+				break;
+			case sf::Event::MouseWheelMoved:
+				gridView.zoom(1.f - 0.1f / (float) event.mouseWheel.delta);
+				
 				break;
 			}
 		}
 
 		void onLogic(
-			const sf::Time time) override
-		{
-			
-		}
+			const sf::Time time) override { }
 
 		void onDraw() override
 		{
-			DEVICE::Interface::getScreen()->onDraw(&sprite);
+			gridView.applyView();
 
-			DEVICE::Interface::getScreen()->onDraw(&selection);
+			world.draw();
+			gridView.draw();
+
+			DEVICE::Interface::getScreen()->getWindow()->setView(
+				DEVICE::Interface::getScreen()->getWindow()->getDefaultView());
+
+			selector.draw();
 		}
 	private:
-		void adjustSelection(
+		/*
+		void adjustSpriteSize(
+			const sf::Vector2i offset,
+			const sf::Vector2i size)
+		{
+			gridView.background.sprite.setTextureRect({ 
+				-offset.x / 4,
+				-offset.y / 4,
+				size.x,
+				size.y });
+
+			printf("%d, %d\n", offset.x, offset.y);
+		}
+
+		void adjustSelectionSize(
 			const sf::Vector2f position)
 		{
 			selection.setSize(sf::Vector2f(
 			  	position.x - selection.getPosition().x,
 				position.y - selection.getPosition().y)
 			);
-		}
+		}*/
 
-		sf::RectangleShape selection;
-		sf::Vector2f
-			selectionPos1,
-			selectionPos2;
-		sf::Image image;
-		sf::Texture texture;
-		sf::Sprite sprite;
+		EDITOR::GridView gridView;
+		EDITOR::Selector selector;
+		EDITOR::World world;
 
-		sf::View view;
+		enum class Pressed
+		{
+			None,
 
-		bool pressed;
+			Left,
+			Middle,
+			Right
+
+		} pressed;
 	};
 }

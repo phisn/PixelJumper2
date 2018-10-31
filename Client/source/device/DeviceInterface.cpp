@@ -165,6 +165,7 @@ namespace Device
 	{
 		return screen;
 	}
+
 	Resource* Interface::getResource()
 	{
 		return nullptr;

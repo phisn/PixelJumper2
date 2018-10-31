@@ -7,14 +7,25 @@
 
 namespace Editor
 {
+	struct TileSettings
+	{
+		sf::Color color;
+		sf::Vector2f position;
+		sf::Vector2f size;
+	};
+
 	class TileBase
 	{
 	public:
 		TileBase(
-			Game::Tile::Id id)
+			const Game::Tile::Id id,
+			const TileSettings settings)
 			:
 			id(id)
 		{
+			shape.setFillColor(settings.color);
+			shape.setPosition(settings.position);
+			shape.setSize(settings.size);
 		}
 
 		Game::Tile::Id getId() const
@@ -22,11 +33,14 @@ namespace Editor
 			return id;
 		}
 
-		sf::Vector2f position;
-		sf::Vector2f size;
+		sf::RectangleShape* getShape()
+		{
+			return &shape;
+		}
 
 		virtual Game::Tile::Base* create() = 0;
 	private:
-		Game::Tile::Id id;
+		const Game::Tile::Id id;
+		sf::RectangleShape shape;
 	};
 }

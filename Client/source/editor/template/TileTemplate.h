@@ -9,10 +9,18 @@ namespace Editor
 	class TileTemplate
 	{
 	public:
+		const struct Settings
+		{
+			int maxCount;
+
+		} settings;
+
 		TileTemplate(
-			const sf::Color color)
+			const sf::Color color,
+			const Settings settings)
 			:
-			color(color)
+			color(color),
+			settings(settings)
 		{
 		}
 
@@ -21,7 +29,9 @@ namespace Editor
 			return color;
 		}
 
-		virtual TileBase* create() = 0;
+		virtual TileBase* create(
+			sf::Vector2f position,
+			sf::Vector2f size) = 0;
 	protected:
 		sf::Color color;
 	};

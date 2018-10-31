@@ -138,10 +138,12 @@
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
+    <ClInclude Include="source\editor\GridView.h" />
+    <ClInclude Include="source\editor\Selector.h" />
     <ClInclude Include="source\editor\TemplateManager.h" />
     <ClInclude Include="source\editor\template\TileTemplate.h" />
     <ClInclude Include="source\editor\template\WallTemplate.h" />
-    <ClInclude Include="source\editor\TileGrid.h" />
+    <ClInclude Include="source\editor\World.h" />
     <ClInclude Include="source\editor\tile\TileBase.h" />
     <ClInclude Include="source\editor\tile\Wall.h" />
     <ClInclude Include="source\game\GameView.h" />
@@ -178,10 +180,12 @@
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
+    <ClCompile Include="source\editor\GridView.cpp" />
+    <ClCompile Include="source\editor\Selector.cpp" />
     <ClCompile Include="source\editor\TemplateManager.cpp" />
     <ClCompile Include="source\editor\template\TileTemplate.cpp" />
     <ClCompile Include="source\editor\template\WallTemplate.cpp" />
-    <ClCompile Include="source\editor\TileGrid.cpp" />
+    <ClCompile Include="source\editor\World.cpp" />
     <ClCompile Include="source\editor\tile\TileBase.cpp" />
     <ClCompile Include="source\editor\tile\Wall.cpp" />
     <ClCompile Include="source\game\GameView.cpp" />

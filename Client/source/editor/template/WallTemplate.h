@@ -14,16 +14,24 @@ namespace Editor
 	public:
 		WallTemplate()
 			:
-			TileTemplate(TILE_WALL_COLOR)
+			TileTemplate(TILE_WALL_COLOR, { 0 })
 		{
 		}
 
 		// onOpenContext ...
 
-		TileBase* create() override
+		// ex. can be saved and shon in context menu (portal binding)
+		TileBase* create(
+			sf::Vector2f position,
+			sf::Vector2f size) override
 		{
-			// ex. can be saved and shon in context menu (portal binding)
-			return new Wall();
+			TileSettings settings;
+
+			settings.color = color;
+			settings.position = position;
+			settings.size = size;
+
+			return new Wall(settings);
 		}
 	};
 }

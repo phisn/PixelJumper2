@@ -11,9 +11,12 @@ namespace Editor
 		public TileBase
 	{
 	public:
-		Wall()
+		Wall(
+			const TileSettings settings)
 			:
-			TileBase(Game::Tile::Id::Wall)
+			TileBase(
+				Game::Tile::Id::Wall,
+				settings)
 		{
 		}
 
@@ -21,8 +24,8 @@ namespace Editor
 		{
 			return new Game::Tile::Wall(
 				{
-					position,
-					size
+					getShape()->getPosition(),
+					getShape()->getSize()
 				});
 		}
 	};
