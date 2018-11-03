@@ -8,6 +8,8 @@ namespace Scene
 	class SubBase
 	{
 	public:
+		virtual ~SubBase() { }
+
 		virtual bool onCreate() = 0;
 		virtual void onRemove() = 0;
 

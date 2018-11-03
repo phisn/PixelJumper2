@@ -25,99 +25,69 @@ namespace Editor
 			resetZoom();
 		}
 
-		void applyView() const
+		void setCenter(
+			const sf::Vector2f center)
 		{
-			DEVICE::Interface::getScreen()->applyView(&view);
+			view.setCenter(center);
+
+			updateBackground();
 		}
 
-		void draw() const
-		{
-			DEVICE::Interface::getScreen()->onDraw(&background.sprite);
-		}
-
-		sf::Vector2f convertPtoC(
-			const sf::Vector2i position) const
-		{
-			return DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(position);
-		}
-
-		sf::Vector2i convertCtoP(
-			const sf::Vector2f position) const
-		{
-			return DEVICE::Interface::getScreen()->getWindow()->mapCoordsToPixel(position);
-		}
+		void applyView() const;
+		void draw() const;
 
 		void zoom(
-			const float zoom)
-		{
-			view.zoom(zoom);
-		}
-
+			const float zoom);
 		void resetZoom(
-			sf::Vector2f size = sf::Vector2f(192, 108)
-			)
+			const sf::Vector2f size = sf::Vector2f(192, 108));
+
+		sf::Vector2f convertPtoC(
+			const sf::Vector2i position) const;
+		sf::Vector2i convertCtoP(
+			const sf::Vector2f position) const;
+
+		void beginMovment(
+			const int x,
+			const int y)
 		{
-			view.setSize(size);
-			view.setCenter(size / 2.f);
+			movementOffset.x = x;
+			movementOffset.y = y;
+
+			movementBeginView = view.getCenter();
 		}
 
-		sf::View* getView()
+		void setMovement(
+			const int x,
+			const int y)
 		{
-			return &view;
+			const sf::Vector2f destination = convertPtoC(sf::Vector2i(
+				x, y
+			));
+
+			const sf::Vector2f source = convertPtoC(sf::Vector2i(
+				movementOffset.x,
+				movementOffset.y
+			));
+
+			setCenter(sf::Vector2f(
+				movementBeginView.x + (source.x - destination.x),
+				movementBeginView.y + (source.y - destination.y)
+			));
 		}
 
-		const sf::Sprite* getSprite() const
-		{
-			return &background.sprite;
-		}
+		sf::View* getView();
+		const sf::Sprite* getSprite() const;
 
-		int getGridSize() const
-		{
-			return background.gridSize * 2;
-		}
+		int getGridSize() const;
 	private:
-		void setupTexture()
-		{
-			background.image.create(
-				background.imageSize, 
-				background.imageSize);
+		sf::Vector2i movementOffset;
+		sf::Vector2f movementBeginView;
 
-			generateBackground(
-				true);
-			generateBackground(
-				false);
-
-			background.texture.loadFromImage(
-				background.image);
-			background.texture.setRepeated(
-				true);
-
-			background.sprite.setTexture(
-				background.texture);
-		}
+		void setupTexture();
 
 		void generateBackground(
-			bool isHorizontal)
-		{
-			const int gridDistance = (background.imageSize / background.gridSize);
-
-			const int crossLength = (gridDistance / background.gridLengthDiv) * 2;
-			const int crossOffset = crossLength / 2;
-
-			for (int a = 0; a < background.gridSize; ++a)
-				for (int b = 0; b < background.imageSize; ++b)
-				{
-					if ((int) (b + crossOffset) % gridDistance > crossLength)
-						continue;
-
-					background.image.setPixel(
-						isHorizontal ? b : a * gridDistance,
-						isHorizontal ? a * gridDistance : b,
-
-						background.color
-					);
-				}
-		}
+			bool isHorizontal);
+		void updateBackground();
 
 		struct
 		{
@@ -134,4 +104,52 @@ namespace Editor
 
 		sf::View view;
 	};
+
+	inline void GridView::applyView() const
+	{
+		DEVICE::Interface::getScreen()->applyView(&view);
+	}
+
+	inline void GridView::draw() const
+	{
+		DEVICE::Interface::getScreen()->onDraw(&background.sprite);
+	}
+
+	inline sf::Vector2f GridView::convertPtoC(
+		const sf::Vector2i position) const
+	{
+		return DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(position, view);
+	}
+
+	inline sf::Vector2i GridView::convertCtoP(
+		const sf::Vector2f position) const
+	{
+		return DEVICE::Interface::getScreen()->getWindow()->mapCoordsToPixel(position, view);
+	}
+
+	inline void GridView::resetZoom(
+		const sf::Vector2f size)
+	{
+		view.setSize(
+			size);
+		view.setCenter(
+			size / 2.f);
+
+		updateBackground();
+	}
+
+	inline sf::View * GridView::getView()
+	{
+		return &view;
+	}
+
+	inline const sf::Sprite * GridView::getSprite() const
+	{
+		return &background.sprite;
+	}
+
+	inline int GridView::getGridSize() const
+	{
+		return background.gridSize * 2;
+	}
 }

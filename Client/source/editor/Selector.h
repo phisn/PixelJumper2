@@ -175,32 +175,29 @@ namespace Editor
 
 			if (selection->tiles.size() == 0)
 			{
-				sf::Vector2f c_position = view->convertPtoC(sf::Vector2i(
-					size.x < 0 ? offset.x + size.x : offset.x,
-					size.y < 0 ? offset.y + size.y : offset.y
-				));
-				
-				if (size.x < -100)
-				{
-					printf("Hallo");
-				}
-
-				sf::Vector2f c_size = view->convertPtoC(sf::Vector2i(
-					size.x < 0 ? size.x : -size.x,
-					size.y < 0 ? size.y : -size.y
+				const sf::Vector2f 
+					c_position1 = view->convertPtoC(sf::Vector2i(
+						offset.x + (size.x < 0 ? size.x : 0),
+						offset.y + (size.y < 0 ? size.y : 0)
+				)), // 2 is always bigger
+					c_position2 = view->convertPtoC(sf::Vector2i(
+						offset.x + (size.x >= 0 ? size.x : 0),
+						offset.y + (size.y >= 0 ? size.y : 0)
 				));
 
 				selection->altSelectionRect.setPosition(sf::Vector2f(
-					c_position.x - fmod(c_position.x, (float) view->getGridSize()),
-					c_position.y - fmod(c_position.y, (float) view->getGridSize())
+					c_position1.x - fmod(c_position1.x, (float) view->getGridSize()) - (c_position1.x < 0 ? (float) view->getGridSize() : 0),
+					c_position1.y - fmod(c_position1.y, (float) view->getGridSize()) - (c_position1.y < 0 ? (float) view->getGridSize() : 0)
 				));
 
-				const float x_size = fmod(c_size.x, (float) view->getGridSize());
-				const float y_size = fmod(c_size.y, (float) view->getGridSize());
+				const sf::Vector2f c_real_position2 = sf::Vector2f(
+					c_position2.x - fmod(c_position2.x, (float)view->getGridSize()) - (c_position2.x < 0 ? (float) view->getGridSize() : 0) + (float) view->getGridSize(),
+					c_position2.y - fmod(c_position2.y, (float)view->getGridSize()) - (c_position2.y < 0 ? (float) view->getGridSize() : 0) + (float) view->getGridSize()
+				);
 
 				selection->altSelectionRect.setSize(sf::Vector2f(
-					(c_size.x - x_size) + (x_size == 0.f ? 0 : (float) view->getGridSize()),
-					(c_size.y - y_size) + (y_size == 0.f ? 0 : (float) view->getGridSize())
+					c_real_position2.x - selection->altSelectionRect.getPosition().x,
+					c_real_position2.y - selection->altSelectionRect.getPosition().y
 				));
 			}
 		}

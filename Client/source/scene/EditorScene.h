@@ -30,6 +30,7 @@ namespace Scene
 		void initialize() override
 		{
 			gridView.initialize();
+
 			selector.initialize(
 				&gridView,
 				&world
@@ -59,13 +60,10 @@ namespace Scene
 				{
 					pressed = Pressed::Right;
 
-					/*
-					moveBeginPosition =
-						sf::Vector2i(
-							event.mouseButton.x,
-							event.mouseButton.y);
-					moveViewBegin = view.getCenter();
-					*/
+					gridView.beginMovment(
+						event.mouseButton.x,
+						event.mouseButton.y
+					);
 				}
 
 				if (event.mouseButton.button == sf::Mouse::Button::Middle)
@@ -97,35 +95,18 @@ namespace Scene
 
 				if (pressed == Pressed::Right)
 				{
-					/*
-					const sf::Vector2f posCoords = DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(
-						sf::Vector2i(
-							moveBeginPosition.x - event.mouseMove.x,
-							moveBeginPosition.y - event.mouseMove.y),
-						view);
-
-					view.setCenter(sf::Vector2f(
-						moveViewBegin.x + posCoords.x / 2.f,
-						moveViewBegin.y + posCoords.y / 2.f
-					));
-					
-					gridView.background.sprite.setPosition(
-						DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(
-							sf::Vector2i(0.f, 0.f), view));
-
-					adjustSpriteSize(
-						sf::Vector2i(0, 0),
-						sf::Vector2i(
-							1920,
-							1080)
+					gridView.setMovement(
+						event.mouseMove.x,
+						event.mouseMove.y
 					);
-					*/
 
 					break;
 				}
 
 				break;
 			case sf::Event::MouseWheelMoved:
+				pressed = Pressed::None;
+				
 				gridView.zoom(1.f - 0.1f / (float) event.mouseWheel.delta);
 				
 				break;
@@ -148,29 +129,6 @@ namespace Scene
 			selector.draw();
 		}
 	private:
-		/*
-		void adjustSpriteSize(
-			const sf::Vector2i offset,
-			const sf::Vector2i size)
-		{
-			gridView.background.sprite.setTextureRect({ 
-				-offset.x / 4,
-				-offset.y / 4,
-				size.x,
-				size.y });
-
-			printf("%d, %d\n", offset.x, offset.y);
-		}
-
-		void adjustSelectionSize(
-			const sf::Vector2f position)
-		{
-			selection.setSize(sf::Vector2f(
-			  	position.x - selection.getPosition().x,
-				position.y - selection.getPosition().y)
-			);
-		}*/
-
 		EDITOR::GridView gridView;
 		EDITOR::Selector selector;
 		EDITOR::World world;

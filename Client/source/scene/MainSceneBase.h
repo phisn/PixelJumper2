@@ -8,12 +8,14 @@ namespace
 	class MainBase
 	{
 	public:
+		virtual ~MainBase() { }
+
 		_Success_(return == true)
 		// Can fail & !!! MUST _NOT_ !!! use Interface
 		virtual bool onCreate() = 0;
 		virtual void onRemove() = 0;
 
-		// Cant fail
+		// Cant fail & can use Interface
 		virtual void initialize() = 0;
 
 		virtual void onShow() = 0;

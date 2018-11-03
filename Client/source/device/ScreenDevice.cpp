@@ -16,6 +16,8 @@ void Device::Screen::onShow()
 		L"Pixel Jumper 2", 
 		settings.style, 
 		settings.settings);
+
+	window.setFramerateLimit(60);
 }
 
 void Device::Screen::onHide()

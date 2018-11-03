@@ -17,7 +17,7 @@ namespace Device
 	{
 		windowed,
 		sf::VideoMode::getDesktopMode(),
-		sf::ContextSettings::ContextSettings(0U, 0U, 8U) // For AA
+		sf::ContextSettings::ContextSettings(0U, 0U, 0U) // For AA
 	};
 
 	class Screen

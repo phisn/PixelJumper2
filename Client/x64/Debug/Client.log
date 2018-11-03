@@ -1,6 +1,6 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen World.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\World.cpp, source\game\World.cpp.
-C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen TileBase.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\TileBase.cpp, source\game\tiles\TileBase.cpp.
-C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen Wall.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\Wall.cpp, source\game\tiles\Wall.cpp.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen World.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\World.cpp, source\game\World.cpp.
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen TileBase.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\TileBase.cpp, source\game\tiles\TileBase.cpp.
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen Wall.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\Wall.cpp, source\game\tiles\Wall.cpp.
   DeviceInterface.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
           with
@@ -44,26 +44,28 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(51): 
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(82): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(79): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(81): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(78): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(93): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(90): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(92): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(89): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
+  GridView.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
   Selector.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
@@ -140,22 +142,22 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(51): 
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(82): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(79): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(81): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(78): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(93): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(90): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(92): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(89): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
