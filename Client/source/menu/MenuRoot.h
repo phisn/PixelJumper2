@@ -20,9 +20,10 @@ namespace Menu
 				&view);
 		}
 
-		sf::View* getView()
+		virtual void setViewport(
+			const sf::FloatRect viewport)
 		{
-			return &view;
+			view.setViewport(viewport);
 		}
 
 	protected:

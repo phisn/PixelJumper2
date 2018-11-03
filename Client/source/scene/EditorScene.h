@@ -25,13 +25,20 @@ namespace Scene
 
 		void onRemove() override
 		{
+			for (MENU::Root* const container : containers)
+			{
+				delete container;
+			}
 		}
 
 		void initialize() override
 		{
-			containers.push_back(
-				new EDITOR::GridMenu(&world)
-			);
+			EDITOR::GridMenu* const gridMenu = new EDITOR::GridMenu(&world);
+
+			gridMenu->setViewport(
+				{ 0.0f, 0.0f, 0.95f, 1.0f });
+
+			containers.push_back(gridMenu);
 		}
 
 		void onShow() override { }

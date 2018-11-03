@@ -1,12 +1,9 @@
 #include "TileMenuButton.h"
 
-
-
-TileMenuButton::TileMenuButton()
+void Editor::TileMenuButton::onLogic(const sf::Time time)
 {
 }
 
-
-TileMenuButton::~TileMenuButton()
+void Editor::TileMenuButton::onMouseClick()
 {
 }

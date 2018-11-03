@@ -201,9 +201,6 @@
     <ClInclude Include="source\scene\MenuBaseScene.h">
       <Filter>source\scene\highbase</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\MenuButton.h">
-      <Filter>source\menu\elements</Filter>
-    </ClInclude>
     <ClInclude Include="source\menu\VerticalScrollContainer.h">
       <Filter>source\menu\container</Filter>
     </ClInclude>
@@ -221,6 +218,12 @@
     </ClInclude>
     <ClInclude Include="source\menu\MenuContainer.h">
       <Filter>source\menu\container</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\LogicMenuButton.h">
+      <Filter>source\menu\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\SimpleMenuButton.h">
+      <Filter>source\menu\elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -341,9 +344,6 @@
     <ClCompile Include="source\scene\MenuBaseScene.cpp">
       <Filter>source\scene\highbase</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\MenuButton.cpp">
-      <Filter>source\menu\elements</Filter>
-    </ClCompile>
     <ClCompile Include="source\menu\VerticalScrollContainer.cpp">
       <Filter>source\menu\container</Filter>
     </ClCompile>
@@ -361,6 +361,12 @@
     </ClCompile>
     <ClCompile Include="source\menu\MenuContainer.cpp">
       <Filter>source\menu\container</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\LogicMenuButton.cpp">
+      <Filter>source\menu\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\SimpleMenuButton.cpp">
+      <Filter>source\menu\elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

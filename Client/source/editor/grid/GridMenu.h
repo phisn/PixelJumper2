@@ -23,7 +23,8 @@ namespace Editor
 		public MENU::Root
 	{
 	public:
-		GridMenu(World* const world)
+		GridMenu(
+			World* const world)
 			:
 			world(world),
 			gridView(&view)
@@ -67,7 +68,7 @@ namespace Editor
 
 				if (event.mouseButton.button == sf::Mouse::Button::Middle)
 				{
-					gridView.resetZoom();
+					gridView.resetSize();
 				}
 
 				break;
@@ -119,7 +120,20 @@ namespace Editor
 			MENU::Root::onDraw();
 
 			gridView.draw();
+
+			DEVICE::Interface::getScreen()->getWindow()->setView(
+				DEVICE::Interface::getScreen()->getWindow()->getDefaultView()
+			);
+
 			selector.draw();
+		}
+
+		void setViewport(
+			const sf::FloatRect viewport) override
+		{
+			Menu::Root::setViewport(viewport);
+
+			gridView.resetSize();
 		}
 
 	private:

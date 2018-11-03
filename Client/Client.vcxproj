@@ -163,9 +163,10 @@
     <ClInclude Include="source\game\World.h" />
     <ClInclude Include="source\game\WorldManager.h" />
     <ClInclude Include="source\menu\MenuBase.h" />
-    <ClInclude Include="source\menu\MenuButton.h" />
+    <ClInclude Include="source\menu\LogicMenuButton.h" />
     <ClInclude Include="source\menu\MenuContainer.h" />
     <ClInclude Include="source\menu\MenuRoot.h" />
+    <ClInclude Include="source\menu\SimpleMenuButton.h" />
     <ClInclude Include="source\menu\VerticalScrollContainer.h" />
     <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
@@ -212,9 +213,10 @@
     <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\game\WorldManager.cpp" />
-    <ClCompile Include="source\menu\MenuButton.cpp" />
+    <ClCompile Include="source\menu\LogicMenuButton.cpp" />
     <ClCompile Include="source\menu\MenuContainer.cpp" />
     <ClCompile Include="source\menu\MenuRoot.cpp" />
+    <ClCompile Include="source\menu\SimpleMenuButton.cpp" />
     <ClCompile Include="source\menu\VerticalScrollContainer.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
