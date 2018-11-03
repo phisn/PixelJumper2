@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/menu/MenuContainer.h>
+#include <Client/source/menu/MenuRoot.h>
 
 #include <Client/source/scene/MainSceneBase.h>
 
@@ -13,12 +13,12 @@ namespace Scene
 		public MainBase
 	{
 	public:
-		virtual ~MenuBase() = 0;
+		virtual ~MenuBase() { };
 
 		virtual void onEvent(
 			const sf::Event event)
 		{
-			for (Menu::Container* const container : containers)
+			for (Menu::Root* const container : containers)
 				if (container->isUseOnEvent())
 				{
 					container->onEvent(event);
@@ -28,7 +28,7 @@ namespace Scene
 		virtual void onLogic(
 			const sf::Time time)
 		{
-			for (Menu::Container* const container : containers)
+			for (Menu::Root* const container : containers)
 				if (container->isUseOnLogic())
 				{
 					container->onLogic(time);
@@ -37,11 +37,11 @@ namespace Scene
 
 		virtual void onDraw()
 		{
-			for (Menu::Container* const container : containers)
+			for (Menu::Root* const container : containers)
 				container->onDraw();
 		}
 
 	protected:
-		std::vector<Menu::Container* const> containers;
+		std::vector<Menu::Root*> containers;
 	};
 }

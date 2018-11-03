@@ -138,8 +138,9 @@
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
-    <ClInclude Include="source\editor\GridView.h" />
-    <ClInclude Include="source\editor\Selector.h" />
+    <ClInclude Include="source\editor\grid\GridMenu.h" />
+    <ClInclude Include="source\editor\grid\GridView.h" />
+    <ClInclude Include="source\editor\grid\Selector.h" />
     <ClInclude Include="source\editor\TemplateManager.h" />
     <ClInclude Include="source\editor\template\TileTemplate.h" />
     <ClInclude Include="source\editor\template\WallTemplate.h" />
@@ -163,9 +164,9 @@
     <ClInclude Include="source\game\WorldManager.h" />
     <ClInclude Include="source\menu\MenuBase.h" />
     <ClInclude Include="source\menu\MenuButton.h" />
-    <ClInclude Include="source\menu\MenuChildContainer.h" />
     <ClInclude Include="source\menu\MenuContainer.h" />
-    <ClInclude Include="source\menu\VerticalScrollMenu.h" />
+    <ClInclude Include="source\menu\MenuRoot.h" />
+    <ClInclude Include="source\menu\VerticalScrollContainer.h" />
     <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
@@ -188,8 +189,9 @@
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
-    <ClCompile Include="source\editor\GridView.cpp" />
-    <ClCompile Include="source\editor\Selector.cpp" />
+    <ClCompile Include="source\editor\grid\GridMenu.cpp" />
+    <ClCompile Include="source\editor\grid\GridView.cpp" />
+    <ClCompile Include="source\editor\grid\Selector.cpp" />
     <ClCompile Include="source\editor\TemplateManager.cpp" />
     <ClCompile Include="source\editor\template\TileTemplate.cpp" />
     <ClCompile Include="source\editor\template\WallTemplate.cpp" />
@@ -211,9 +213,9 @@
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\game\WorldManager.cpp" />
     <ClCompile Include="source\menu\MenuButton.cpp" />
-    <ClCompile Include="source\menu\MenuChildContainer.cpp" />
     <ClCompile Include="source\menu\MenuContainer.cpp" />
-    <ClCompile Include="source\menu\VerticalScrollMenu.cpp" />
+    <ClCompile Include="source\menu\MenuRoot.cpp" />
+    <ClCompile Include="source\menu\VerticalScrollContainer.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />

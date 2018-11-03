@@ -34,39 +34,37 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(52): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(52): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(51): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(51): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(79): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(79): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(78): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(78): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(90): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(90): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(89): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(89): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-  GridView.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
-  Selector.cpp
+  GridMenu.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
           with
@@ -99,6 +97,38 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning
           [
               T=float
           ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(52): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(51): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(79): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(78): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(90): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(89): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+  MenuContainer.cpp
+  MenuRoot.cpp
   EditorScene.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
@@ -132,35 +162,36 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(52): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(52): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(51): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(51): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(79): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(79): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(78): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(78): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(90): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(90): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(89): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(89): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
+  MenuBaseScene.cpp
   Code wird generiert...
   Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

@@ -64,6 +64,12 @@
     <Filter Include="source\menu">
       <UniqueIdentifier>{a3ddbd77-5830-493e-a816-07a355232ac5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\menu\elements">
+      <UniqueIdentifier>{155b7a0c-29a4-437b-8433-fc6d9e053746}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\menu\container">
+      <UniqueIdentifier>{5d838ea4-fcaf-4525-b877-0b7738f46845}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -183,12 +189,6 @@
     <ClInclude Include="source\editor\World.h">
       <Filter>source\editor</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\GridView.h">
-      <Filter>source\editor\grid</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\Selector.h">
-      <Filter>source\editor\grid</Filter>
-    </ClInclude>
     <ClInclude Include="source\editor\tilemenu\TileMenu.h">
       <Filter>source\editor\tilemenu</Filter>
     </ClInclude>
@@ -198,20 +198,29 @@
     <ClInclude Include="source\menu\MenuBase.h">
       <Filter>source\menu</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\MenuButton.h">
-      <Filter>source\menu</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\MenuContainer.h">
-      <Filter>source\menu</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\VerticalScrollMenu.h">
-      <Filter>source\menu</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\MenuBaseScene.h">
       <Filter>source\scene\highbase</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\MenuChildContainer.h">
+    <ClInclude Include="source\menu\MenuButton.h">
+      <Filter>source\menu\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\VerticalScrollContainer.h">
+      <Filter>source\menu\container</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\grid\GridMenu.h">
+      <Filter>source\editor\grid</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\grid\GridView.h">
+      <Filter>source\editor\grid</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\grid\Selector.h">
+      <Filter>source\editor\grid</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\MenuRoot.h">
       <Filter>source\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\MenuContainer.h">
+      <Filter>source\menu\container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -323,32 +332,35 @@
     <ClCompile Include="source\editor\World.cpp">
       <Filter>source\editor</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\GridView.cpp">
-      <Filter>source\editor\grid</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\Selector.cpp">
-      <Filter>source\editor\grid</Filter>
-    </ClCompile>
     <ClCompile Include="source\editor\tilemenu\TileMenu.cpp">
       <Filter>source\editor\tilemenu</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\tilemenu\TileMenuButton.cpp">
       <Filter>source\editor\tilemenu</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\MenuButton.cpp">
-      <Filter>source\menu</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\MenuContainer.cpp">
-      <Filter>source\menu</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\VerticalScrollMenu.cpp">
-      <Filter>source\menu</Filter>
-    </ClCompile>
     <ClCompile Include="source\scene\MenuBaseScene.cpp">
       <Filter>source\scene\highbase</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\MenuChildContainer.cpp">
+    <ClCompile Include="source\menu\MenuButton.cpp">
+      <Filter>source\menu\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\VerticalScrollContainer.cpp">
+      <Filter>source\menu\container</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\grid\GridMenu.cpp">
+      <Filter>source\editor\grid</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\grid\GridView.cpp">
+      <Filter>source\editor\grid</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\grid\Selector.cpp">
+      <Filter>source\editor\grid</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\MenuRoot.cpp">
       <Filter>source\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\MenuContainer.cpp">
+      <Filter>source\menu\container</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

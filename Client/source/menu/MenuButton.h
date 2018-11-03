@@ -1,8 +1,9 @@
 #pragma once
-class MenuButton
-{
-public:
-	MenuButton();
-	~MenuButton();
-};
 
+namespace Menu
+{
+	class Button
+	{
+	public:
+	};
+}

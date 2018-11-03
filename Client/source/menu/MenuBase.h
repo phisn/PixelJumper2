@@ -4,12 +4,16 @@
 
 #include <functional>
 
+#ifndef MENU
+#define MENU ::Menu
+#endif
+
 namespace Menu
 {
 	class Base
 	{
 	public:
-		virtual ~Base() { }
+		virtual ~Base() { };
 
 		virtual void onEvent(
 			const sf::Event event) = 0;
@@ -24,7 +28,7 @@ namespace Menu
 
 		bool isUseOnEvent() const
 		{
-			return useOnLogic;
+			return useOnEvent;
 		}
 	protected:
 		bool useOnEvent = false;

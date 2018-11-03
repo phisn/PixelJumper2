@@ -1,28 +1,61 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
-#include <Client/source/device/ScreenDevice.h>
+#include <Client/source/menu/MenuBase.h>
 
-#include <Client/source/menu/MenuChildContainer.h>
+#include <set>
 
 namespace Menu
 {
-	class Container
+	class ChildContainer
 		:
-		public ChildContainer
+		public Base
 	{
 	public:
-		virtual ~Container() = 0;
+		virtual ~ChildContainer() = 0;
 
-		virtual void onDraw() override
+		virtual void onEvent(
+			const sf::Event event)
 		{
-			DEVICE::Interface::getScreen()->applyView(
-				&view);
-
-			ChildContainer::onDraw();
+			for (Base* const element : elements)
+				element->onEvent(event);
 		}
 
-	private:
-		sf::View view;
+		virtual void onLogic(
+			const sf::Time time)
+		{
+			for (Base* const element : elements)
+				if (element->isUseOnLogic())
+				{
+					element->onLogic(time);
+				}
+		}
+
+		virtual void onDraw()
+		{
+			for (Base* const element : elements)
+				if (element->isUseOnEvent())
+				{
+					element->onDraw();
+				}
+		}
+
+		virtual void addElement(
+			Base* const element)
+		{
+			elements.insert(element);
+		}
+
+		virtual void removeElement(
+			Base* const element)
+		{
+			elements.erase(element);
+		}
+
+		virtual void removeAllElements()
+		{
+			elements.clear();
+		}
+	protected:
+		std::set<Base*> elements;
 	};
 }
