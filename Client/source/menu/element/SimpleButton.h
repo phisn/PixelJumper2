@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Client/source/menu/element/LogicButton.h>
-
 #include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
+
+#include <Client/source/menu/element/LogicButton.h>
 
 namespace Menu
 {
@@ -35,15 +35,13 @@ namespace Menu
 		};
 
 		SimpleButton(
+			ElementBase* const parent,
 			const Style style)
 			:
+			LogicButton(parent),
 			style(style)
 		{
-			shape.setSize(
-				style.size);
-			shape.setPosition(
-				style.position);
-
+			loadPosition();
 			setDefaultStyle();
 		}
 
@@ -64,13 +62,23 @@ namespace Menu
 			return shape.getSize();
 		}
 
+		void loadPosition() override
+		{
+			shape.setSize(
+				style.size
+			);
+		
+			shape.setPosition(convertPosition(
+				style.position
+			));
+		}
+
 	protected:
 		virtual void onMouseEnter() override;
 		virtual void onMouseLeave() override;
 
 		virtual void onMouseClickBegin() override;
 		virtual void onMouseClickEnd() override;
-
 	private:
 		const Style style;
 

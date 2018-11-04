@@ -1,12 +1,7 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
-#include <functional>
-
-#ifndef MENU
-#define MENU ::Menu
-#endif
+#include <SFML/System/Time.hpp>
+#include <SFML/Window/Event.hpp>
 
 namespace Menu
 {

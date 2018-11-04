@@ -9,7 +9,10 @@ namespace Menu
 		public ElementBase
 	{
 	public:
-		LogicButton()
+		LogicButton(
+			ElementBase* const parent)
+			:
+			ElementBase(parent)
 		{
 			useOnEvent = true;
 		}

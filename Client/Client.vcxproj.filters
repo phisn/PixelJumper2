@@ -213,9 +213,6 @@
     <ClInclude Include="source\menu\MenuRoot.h">
       <Filter>source\menu</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\container\MenuContainer.h">
-      <Filter>source\menu\container</Filter>
-    </ClInclude>
     <ClInclude Include="source\menu\container\VerticalScrollContainer.h">
       <Filter>source\menu\container</Filter>
     </ClInclude>
@@ -236,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="source\menu\element\ElementBase.h">
       <Filter>source\menu\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\container\ContainerBase.h">
+      <Filter>source\menu\container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -368,9 +368,6 @@
     <ClCompile Include="source\menu\MenuRoot.cpp">
       <Filter>source\menu</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\container\MenuContainer.cpp">
-      <Filter>source\menu\container</Filter>
-    </ClCompile>
     <ClCompile Include="source\menu\container\VerticalScrollContainer.cpp">
       <Filter>source\menu\container</Filter>
     </ClCompile>
@@ -387,6 +384,9 @@
       <Filter>source\menu\elements</Filter>
     </ClCompile>
     <ClCompile Include="source\menu\container\SimpleContainer.cpp">
+      <Filter>source\menu\container</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\container\ContainerBase.cpp">
       <Filter>source\menu\container</Filter>
     </ClCompile>
   </ItemGroup>

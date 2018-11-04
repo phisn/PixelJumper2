@@ -1,131 +1,16 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen World.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\World.cpp, source\game\World.cpp.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen TileBase.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\TileBase.cpp, source\game\tiles\TileBase.cpp.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen Wall.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\Wall.cpp, source\game\tiles\Wall.cpp.
-  DeviceInterface.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
-          with
-          [
-              T=unsigned int
-          ]
-          and
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(41): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(38): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(53): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(52): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(80): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(79): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(91): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(90): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-  EditorScene.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
-          with
-          [
-              T=unsigned int
-          ]
-          and
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(41): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(38): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(53): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(52): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(80): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(79): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(91): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(90): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
+  TileMenuButton.cpp
+  ContainerBase.cpp
+  SimpleContainer.cpp
+  VerticalScrollContainer.cpp
+  LogicButton.cpp
+  LogicScrollBar.cpp
+  SimpleButton.cpp
+  SimpleScrollBar.cpp
   Code wird generiert...
+x64\Debug\TileBase.obj : warning LNK4042: Objekt mehrmals angegeben; zusõtzliche Objekte werden ignoriert.
+x64\Debug\Wall.obj : warning LNK4042: Objekt mehrmals angegeben; zusõtzliche Objekte werden ignoriert.
+x64\Debug\World.obj : warning LNK4042: Objekt mehrmals angegeben; zusõtzliche Objekte werden ignoriert.
   Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

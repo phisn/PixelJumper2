@@ -12,7 +12,7 @@ namespace Menu
 
 			if (isInside)
 			{
-				handleInsidePressed();
+				handleInsidePressed(event);
 			}
 
 			break;

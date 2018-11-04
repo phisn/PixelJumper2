@@ -162,7 +162,7 @@
     <ClInclude Include="source\game\tiles\Wall.h" />
     <ClInclude Include="source\game\World.h" />
     <ClInclude Include="source\game\WorldManager.h" />
-    <ClInclude Include="source\menu\container\MenuContainer.h" />
+    <ClInclude Include="source\menu\container\ContainerBase.h" />
     <ClInclude Include="source\menu\container\SimpleContainer.h" />
     <ClInclude Include="source\menu\container\VerticalScrollContainer.h" />
     <ClInclude Include="source\menu\element\ElementBase.h" />
@@ -217,7 +217,7 @@
     <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\game\WorldManager.cpp" />
-    <ClCompile Include="source\menu\container\MenuContainer.cpp" />
+    <ClCompile Include="source\menu\container\ContainerBase.cpp" />
     <ClCompile Include="source\menu\container\SimpleContainer.cpp" />
     <ClCompile Include="source\menu\container\VerticalScrollContainer.cpp" />
     <ClCompile Include="source\menu\element\LogicButton.cpp" />

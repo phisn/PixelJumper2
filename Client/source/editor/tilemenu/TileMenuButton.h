@@ -55,21 +55,9 @@ namespace Editor
 		{
 		}
 
-		void setOnClick(
-			const std::function<void()> callback)
-		{
-			this->callback = callback;
-		}
-
 		void onLogic(
 			const sf::Time time) override { }
 	private:
-		std::function<void()> callback = callback;
-
-		void onMouseClick() override
-		{
-			if (callback) callback();
-		}
 
 		std::wstring label;
 	};

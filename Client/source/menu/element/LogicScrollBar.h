@@ -20,9 +20,11 @@ namespace Menu
 
 		// Needs view to convert coords
 		LogicScrollBar(
+			ElementBase* const parent,
 			const Direction direction,
 			const sf::View* const view)
 			:
+			ElementBase(parent),
 			direction(direction),
 			view(view)
 		{

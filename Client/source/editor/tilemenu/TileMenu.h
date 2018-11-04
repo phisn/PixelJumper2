@@ -1,25 +1,13 @@
 #pragma once
 
-#include <Client/source/menu/MenuRoot.h>
+#include <Client/source/menu/RootBase.h>
 
 namespace Editor
 {
 	class TileMenu
 		:
-		public MENU::Root
+		public MENU::RootBase
 	{
 	public:
-
-		void onEvent(
-			const sf::Event event) override
-		{
-
-		}
-
-		void onLogic(
-			const sf::Time time) override
-		{
-
-		}
 	};
 }

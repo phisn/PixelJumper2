@@ -4,7 +4,7 @@
 #include <Client/source/editor/grid/Selector.h>
 #include <Client/source/editor/World.h>
 
-#include <Client/source/menu/MenuRoot.h>
+#include <Client/source/menu/RootBase.h>
 
 namespace Editor
 {
@@ -20,21 +20,18 @@ namespace Editor
 
 	class GridMenu
 		:
-		public MENU::Root
+		public MENU::RootBase
 	{
 	public:
 		GridMenu(
 			World* const world)
 			:
 			world(world),
-			gridView(&view)
+			gridView(getView())
 		{
 			selector.initialize(
 				&gridView,
 				world);
-
-			useOnEvent = true;
-			useOnLogic = false;
 		}
 
 		~GridMenu() { }
@@ -117,7 +114,7 @@ namespace Editor
 
 		void onDraw() override
 		{
-			MENU::Root::onDraw();
+			MENU::RootBase::onDraw();
 
 			gridView.draw();
 
@@ -131,7 +128,7 @@ namespace Editor
 		void setViewport(
 			const sf::FloatRect viewport) override
 		{
-			Menu::Root::setViewport(viewport);
+			Menu::RootBase::setViewport(viewport);
 
 			gridView.resetSize();
 		}

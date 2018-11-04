@@ -41,15 +41,20 @@ namespace Menu
 		};
 
 		SimpleScrollBar(
+			ElementBase* const parent,
 			const Style style,
 			const Direction direction,
 			const sf::View* const view)
 			:
 			style(style),
 			LogicScrollBar(
+				parent,
 				direction,
 				view)
 		{
+			useOnLogic = false;
+
+			loadPosition();
 			setupStyle();
 		}
 
@@ -61,6 +66,12 @@ namespace Menu
 			const float percent);
 		void setPosition(
 			const float position);
+		
+		// Position of the scrollbar as
+		float getCurrentPosition() const
+		{
+			return currentPosition;
+		}
 
 		sf::Vector2f getPosition() const override
 		{
@@ -71,6 +82,20 @@ namespace Menu
 		{
 			return shape.getSize();
 		}
+
+		void loadPosition() override
+		{
+			shape.setPosition(convertPosition(
+				style.position
+			));
+			
+			shape.setSize(
+				style.size
+			);
+
+			setConsumption(1.f);
+		}
+
 	protected:
 		virtual void onScrollBarMoved() override;
 		virtual void onMouseEnter() override;
@@ -78,6 +103,7 @@ namespace Menu
 		
 		virtual void onMouseClickBegin() override;
 		virtual void onMouseClickEnd() override;
+
 	private:
 		const Style style;
 
@@ -114,7 +140,7 @@ namespace Menu
 			currentPosition = position;
 		}
 
-		updatePosition();
+		onScrollBarMoved();
 	}
 
 	inline void SimpleScrollBar::onScrollBarMoved()
@@ -146,9 +172,19 @@ namespace Menu
 
 	inline void SimpleScrollBar::updatePosition()
 	{
-		scrollBar.setPosition(sf::Vector2f(
-			style.position.x + style.padding + currentPosition,
-			style.position.y + style.padding + currentPosition
-		));
+		if (getDirection() == Direction::Horizontal)
+		{
+			scrollBar.setPosition(convertPosition(
+				style.position.x + style.padding + currentPosition,
+				scrollBar.getPosition().y
+			));
+		}
+		else
+		{
+			scrollBar.setPosition(convertPosition(
+				scrollBar.getPosition().x,
+				style.position.y + style.padding + currentPosition
+			));
+		}
 	}
 }
