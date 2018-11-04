@@ -14,6 +14,10 @@ namespace Menu
 	public:
 		struct Style
 		{
+			sf::Vector2f
+				size,
+				position;
+
 			sf::Color
 				default_fillColor,
 				default_outlineColor,
@@ -35,7 +39,12 @@ namespace Menu
 			:
 			style(style)
 		{
-			onMouseEnter();
+			shape.setSize(
+				style.size);
+			shape.setPosition(
+				style.position);
+
+			setDefaultStyle();
 		}
 
 		virtual ~SimpleButton() {  }
@@ -44,60 +53,49 @@ namespace Menu
 		{
 			DEVICE::Interface::getScreen()->onDraw(&shape);
 		}
+
+		sf::Vector2f getPosition() const override
+		{
+			return shape.getPosition();
+		}
+
+		sf::Vector2f getSize() const override
+		{
+			return shape.getSize();
+		}
+
 	protected:
-		virtual void onMouseEnter()
-		{
-			shape.setFillColor(
-				style.enter_fillColor);
-			shape.setOutlineColor(
-				style.enter_outlineColor);
-			shape.setOutlineThickness(
-				style.enter_outlineThickness);
-		}
+		virtual void onMouseEnter() override;
+		virtual void onMouseLeave() override;
 
-		virtual void onMouseLeave()
-		{
-			shape.setFillColor(
-				style.default_fillColor);
-			shape.setOutlineColor(
-				style.default_outlineColor);
-			shape.setOutlineThickness(
-				style.default_outlineThickness);
-		}
+		virtual void onMouseClickBegin() override;
+		virtual void onMouseClickEnd() override;
 
-		virtual void onMouseClickBegin()
-		{
-			shape.setFillColor(
-				style.default_fillColor);
-			shape.setOutlineColor(
-				style.default_outlineColor);
-			shape.setOutlineThickness(
-				style.default_outlineThickness);
-		}
-
-		virtual void onMouseClickEnd()
-		{
-			shape.setFillColor(
-				style.default_fillColor);
-			shape.setOutlineColor(
-				style.default_outlineColor);
-			shape.setOutlineThickness(
-				style.default_outlineThickness);
-		}
 	private:
 		const Style style;
 
+		void setEnterStyle();
+		void setDefaultStyle();
+
 		bool checkIsInside(
 			const int x,
-			const int y) const override
-		{
-			return
-				shape.getPosition().x >= x &&
-				shape.getPosition().y >= y &&
-				shape.getPosition().x + shape.getSize().x <= x &&
-				shape.getPosition().y + shape.getSize().y <= y;
-		}
+			const int y) const override;
 
 		sf::RectangleShape shape;
 	};
+
+	inline void SimpleButton::onMouseEnter()
+	{
+		setEnterStyle();
+	}
+
+	inline void SimpleButton::onMouseLeave()
+	{
+		setDefaultStyle();
+	}
+
+	inline void SimpleButton::onMouseClickEnd()
+	{
+		setEnterStyle();
+	}
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/menu/SimpleMenuButton.h>
+#include <Client/source/menu/element/SimpleButton.h>
 
 #include <functional>
 
@@ -13,6 +13,10 @@ namespace Editor
 	public:
 		struct Style
 		{
+			sf::Vector2f
+				size,
+				position;
+
 			std::wstring label;
 			sf::Color 
 				fillColor, 
@@ -21,6 +25,9 @@ namespace Editor
 			MENU::SimpleButton::Style makeStyle() const
 			{
 				MENU::SimpleButton::Style style = { };
+
+				style.size = size;
+				style.position = position;
 				
 				style.enter_fillColor = fillColor;
 				style.enter_outlineColor = sf::Color::Color(150, 150, 150);

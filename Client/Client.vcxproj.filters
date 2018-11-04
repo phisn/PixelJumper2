@@ -231,6 +231,12 @@
     <ClInclude Include="source\menu\element\SimpleScrollBar.h">
       <Filter>source\menu\elements</Filter>
     </ClInclude>
+    <ClInclude Include="source\menu\container\SimpleContainer.h">
+      <Filter>source\menu\container</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\element\ElementBase.h">
+      <Filter>source\menu\elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -379,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="source\menu\element\SimpleScrollBar.cpp">
       <Filter>source\menu\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\container\SimpleContainer.cpp">
+      <Filter>source\menu\container</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

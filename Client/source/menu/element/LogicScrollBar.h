@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/menu/MenuBase.h>
+#include <Client/source/menu/element/ElementBase.h>
 
 #include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
@@ -9,7 +9,7 @@ namespace Menu
 {
 	class LogicScrollBar
 		:
-		public Menu::Base
+		public ElementBase
 	{
 	public:
 		enum class Direction

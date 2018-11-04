@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Client/source/menu/MenuBase.h>
+#include <Client/source/menu/element/ElementBase.h>
 
 namespace Menu
 {
 	class LogicButton
 		:
-		public Base
+		public ElementBase
 	{
 	public:
 		LogicButton()

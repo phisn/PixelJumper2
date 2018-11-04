@@ -1,29 +1,29 @@
 #pragma once
 
-#include <Client/source/menu/MenuBase.h>
+#include <Client/source/menu/element/ElementBase.h>
 
 #include <set>
 
 namespace Menu
 {
-	class ChildContainer
+	class ContainerBase
 		:
 		public Base
 	{
 	public:
-		virtual ~ChildContainer() = 0;
+		virtual ~ContainerBase() = 0;
 
 		virtual void onEvent(
 			const sf::Event event)
 		{
-			for (Base* const element : elements)
+			for (ElementBase* const element : elements)
 				element->onEvent(event);
 		}
 
 		virtual void onLogic(
 			const sf::Time time)
 		{
-			for (Base* const element : elements)
+			for (ElementBase* const element : elements)
 				if (element->isUseOnLogic())
 				{
 					element->onLogic(time);
@@ -32,7 +32,7 @@ namespace Menu
 
 		virtual void onDraw()
 		{
-			for (Base* const element : elements)
+			for (ElementBase* const element : elements)
 				if (element->isUseOnEvent())
 				{
 					element->onDraw();
@@ -40,13 +40,13 @@ namespace Menu
 		}
 
 		virtual void addElement(
-			Base* const element)
+			ElementBase* const element)
 		{
 			elements.insert(element);
 		}
 
 		virtual void removeElement(
-			Base* const element)
+			ElementBase* const element)
 		{
 			elements.erase(element);
 		}
@@ -56,6 +56,6 @@ namespace Menu
 			elements.clear();
 		}
 	protected:
-		std::set<Base*> elements;
+		std::set<ElementBase*> elements;
 	};
 }
