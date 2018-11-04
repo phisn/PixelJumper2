@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/menu/LogicMenuButton.h>
+#include <Client/source/menu/element/LogicButton.h>
 
 #include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>

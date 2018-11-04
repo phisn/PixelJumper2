@@ -1,4 +1,4 @@
-#include "LogicMenuButton.h"
+#include "LogicButton.h"
 
 namespace Menu
 {

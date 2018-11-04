@@ -201,9 +201,6 @@
     <ClInclude Include="source\scene\MenuBaseScene.h">
       <Filter>source\scene\highbase</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\VerticalScrollContainer.h">
-      <Filter>source\menu\container</Filter>
-    </ClInclude>
     <ClInclude Include="source\editor\grid\GridMenu.h">
       <Filter>source\editor\grid</Filter>
     </ClInclude>
@@ -216,13 +213,22 @@
     <ClInclude Include="source\menu\MenuRoot.h">
       <Filter>source\menu</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\MenuContainer.h">
+    <ClInclude Include="source\menu\container\MenuContainer.h">
       <Filter>source\menu\container</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\LogicMenuButton.h">
+    <ClInclude Include="source\menu\container\VerticalScrollContainer.h">
+      <Filter>source\menu\container</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\element\LogicButton.h">
       <Filter>source\menu\elements</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\SimpleMenuButton.h">
+    <ClInclude Include="source\menu\element\LogicScrollBar.h">
+      <Filter>source\menu\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\element\SimpleButton.h">
+      <Filter>source\menu\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\element\SimpleScrollBar.h">
       <Filter>source\menu\elements</Filter>
     </ClInclude>
   </ItemGroup>
@@ -344,9 +350,6 @@
     <ClCompile Include="source\scene\MenuBaseScene.cpp">
       <Filter>source\scene\highbase</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\VerticalScrollContainer.cpp">
-      <Filter>source\menu\container</Filter>
-    </ClCompile>
     <ClCompile Include="source\editor\grid\GridMenu.cpp">
       <Filter>source\editor\grid</Filter>
     </ClCompile>
@@ -359,13 +362,22 @@
     <ClCompile Include="source\menu\MenuRoot.cpp">
       <Filter>source\menu</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\MenuContainer.cpp">
+    <ClCompile Include="source\menu\container\MenuContainer.cpp">
       <Filter>source\menu\container</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\LogicMenuButton.cpp">
+    <ClCompile Include="source\menu\container\VerticalScrollContainer.cpp">
+      <Filter>source\menu\container</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\element\LogicButton.cpp">
       <Filter>source\menu\elements</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\SimpleMenuButton.cpp">
+    <ClCompile Include="source\menu\element\LogicScrollBar.cpp">
+      <Filter>source\menu\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\element\SimpleButton.cpp">
+      <Filter>source\menu\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\element\SimpleScrollBar.cpp">
       <Filter>source\menu\elements</Filter>
     </ClCompile>
   </ItemGroup>
