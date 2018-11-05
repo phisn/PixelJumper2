@@ -12,12 +12,10 @@ namespace Menu
 		public LogicButton
 	{
 	public:
+		typedef Properties Properties;
+
 		struct Style
 		{
-			sf::Vector2f
-				size,
-				position;
-
 			sf::Color
 				default_fillColor,
 				default_outlineColor,
@@ -34,6 +32,13 @@ namespace Menu
 				click_outlineThickness;
 		};
 
+		/*
+		
+			Policy -> (
+				ElementBase* const
+			)
+		
+		*/
 		SimpleButton(
 			ElementBase* const parent,
 			const Style style)
@@ -41,11 +46,18 @@ namespace Menu
 			LogicButton(parent),
 			style(style)
 		{
-			loadPosition();
 			setDefaultStyle();
 		}
 
 		virtual ~SimpleButton() {  }
+
+		void initialize(
+			ElementBase::Properties* const properties) override
+		{
+			this->properties = *(Properties*) properties;
+
+			loadPosition();
+		}
 
 		virtual void onDraw() override
 		{
@@ -65,11 +77,11 @@ namespace Menu
 		void loadPosition() override
 		{
 			shape.setSize(
-				style.size
+				properties.size
 			);
 		
 			shape.setPosition(convertPosition(
-				style.position
+				properties.position
 			));
 		}
 
@@ -79,7 +91,9 @@ namespace Menu
 
 		virtual void onMouseClickBegin() override;
 		virtual void onMouseClickEnd() override;
+
 	private:
+		Properties properties;
 		const Style style;
 
 		void setEnterStyle();

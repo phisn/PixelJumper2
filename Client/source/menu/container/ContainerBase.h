@@ -11,6 +11,8 @@ namespace Menu
 		public ElementBase
 	{
 	public:
+		typedef Properties Properties;
+
 		ContainerBase(
 			ElementBase* const parent)
 			:

@@ -6,7 +6,7 @@
 
 namespace Menu
 {
-	class SimpleContainer
+	class SimpleRowContainer
 		:
 		public ContainerBase
 	{
@@ -25,7 +25,7 @@ namespace Menu
 				position;
 		};
 
-		SimpleContainer(
+		SimpleRowContainer(
 			ElementBase* const parent,
 			const Style style,
 			const Direction direction)
@@ -36,8 +36,13 @@ namespace Menu
 		{
 		}
 		
-		virtual ~SimpleContainer() { }
+		virtual ~SimpleRowContainer() { }
 
+		void initialize(
+			Properties* const properties) override
+		{
+
+		}
 		virtual void onEvent(
 			const sf::Event event)
 		{
@@ -63,7 +68,6 @@ namespace Menu
 					element->onDraw();
 				}
 		}
-
 
 		sf::Vector2f getSize() const override
 		{
@@ -121,6 +125,7 @@ namespace Menu
 		{
 			elements.clear();
 		}
+
 	private:
 		const Style style;
 		const Direction direction;

@@ -3,42 +3,57 @@
 #include <Client/source/menu/container/SimpleContainer.h>
 #include <Client/source/menu/element/SimpleScrollBar.h>
 
+#ifdef _DEBUG
+#	ifndef HIDE_POLICIES
+#	define HIDE_POLICIES
+#	endif
+#endif
+
+#ifdef HIDE_POLICIES
+#include <Client/source/menu/style/DefaultStyles.h>
+#endif
+
 namespace Menu
 {
+#ifndef HIDE_POLICIES
+	template<
+		class ScrollBarPolicy,
+		class ContainerPolicy
+	>
+#endif
 	class VerticalScrollContainer
 		:
 		public ContainerBase
 	{
 	public:
-		struct Style
-		{
-			sf::Vector2f
-				size,
-				position;
-		};
+#ifdef HIDE_POLICIES
+		typedef DefaultStyle::ScrollBar ScrollBarPolicy;
+		typedef DefaultStyle::RowContainer RowContainerPolicy;
+#endif
+		typedef Properties Properties;
 
 		VerticalScrollContainer(
 			ElementBase* const parent,
-			const Style style,
-			SimpleContainer::Style containerStyle,
-			SimpleScrollBar::Style scrollBarStyle,
 			const sf::View* const view)
 			:
 			container(
-				this,
-				containerStyle,
-				SimpleContainer::Direction::Vertical,
+				this, // maybe change later
+				SimpleRowContainer::Direction::Vertical,
 				this),
 			scrollBar(
-				this,
-				scrollBarStyle,
+				this, // maybe change later
 				SimpleScrollBar::Direction::Vertical,
 				view,
 				this),
 			ContainerBase(
-				NULL),
-			style(style)
+				parent)
 		{
+		}
+
+		void initialize(
+			ElementBase::Properties* const properties) override
+		{
+			this->properties = *(Properties*) properties;
 		}
 
 		void onEvent(
@@ -55,12 +70,11 @@ namespace Menu
 
 		void onDraw() override
 		{
-
 		}
 
 		sf::Vector2f getSize() const override
 		{
-			return style.size;
+			return properties.size;
 		}
 		
 		sf::Vector2f getPosition() const override
@@ -70,7 +84,8 @@ namespace Menu
 
 		void loadPosition() override
 		{
-			this->position = convertPosition(style.position);
+			position = convertPosition(
+				properties.position);
 
 			scrollBar.loadPosition();
 			container.loadPosition();
@@ -86,10 +101,10 @@ namespace Menu
 		{
 			container.clearElements();
 		}
+
 	private:
 		sf::Vector2f position;
-
-		const Style style;
+		Properties properties;
 
 		void onAddElement()
 		{
@@ -111,20 +126,19 @@ namespace Menu
 			));
 		}
 
-		class Container
+		class RowContainer
 			:
-			public SimpleContainer
+			public RowContainerPolicy
 		{
 		public:
-			Container(
+			RowContainer(
 				ElementBase* const parent,
-				const SimpleContainer::Style style,
-				const SimpleContainer::Direction direction,
+				const SimpleRowContainer::Direction direction,
+
 				VerticalScrollContainer* const container)
 				:
-				SimpleContainer(
+				RowContainerPolicy(
 					parent,
-					style,
 					direction),
 				container(container)
 			{
@@ -133,7 +147,7 @@ namespace Menu
 			void addElement(
 				ElementBase* const element) override
 			{
-				SimpleContainer::addElement(element);
+				SimpleRowContainer::addElement(element);
 
 				container->onAddElement();
 			}
@@ -144,27 +158,23 @@ namespace Menu
 
 		class ScrollBar
 			:
-			public SimpleScrollBar
+			public ScrollBarPolicy
 		{
 		public:
 			ScrollBar(
 				VerticalScrollContainer* const parent,
-				const Style style,
-				const Direction direction,
+				const SimpleScrollBar::Direction direction,
 				const sf::View* const view,
+				
 				VerticalScrollContainer* const container)
 				:
-				SimpleScrollBar(
+				ScrollBarPolicy(
 					parent,
-					style,
 					direction,
 					view),
 				container(container)
 			{
 			}
-
-			void onLogic(
-				const sf::Time time) override { }
 
 			void onScrollBarMoved() override
 			{

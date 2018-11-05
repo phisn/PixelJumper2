@@ -4,15 +4,50 @@
 
 namespace Menu
 {
+	/*
+	
+		How menus work:
+			-	ElementBase is the base
+				for everything
+			-	Each logic provides pure 
+				functions
+			-	Each implementation has
+				properties and styles
+			-	Each policy has no styles
+				and follows the rules
+				declared in the impl.
+			-	Policies to not let any
+				pure functions open
+
+			ElementBase -> Logic -> [Implementation] -> Policy
+			
+			-	Policies can be used by 
+				components like 
+				VerticalScrollContainer 
+				or as raw elements
+	
+	*/
+
 	class ElementBase
 	{
 	public:
+		struct Properties
+		{
+			sf::Vector2f
+				size,
+				position;
+		};
+
 		ElementBase(
 			ElementBase* const parent = NULL)
 			:
 			parent(parent)
 		{
 		}
+
+		// Can't fail & Can poly
+		virtual void initialize(
+			Properties* const properties) = 0;
 
 		virtual void onEvent(
 			const sf::Event event) = 0;

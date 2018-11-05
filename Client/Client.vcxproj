@@ -132,6 +132,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DefaultStyles.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
     <ClInclude Include="source\device\FailHandler.h" />
@@ -163,7 +164,7 @@
     <ClInclude Include="source\game\World.h" />
     <ClInclude Include="source\game\WorldManager.h" />
     <ClInclude Include="source\menu\container\ContainerBase.h" />
-    <ClInclude Include="source\menu\container\SimpleContainer.h" />
+    <ClInclude Include="source\menu\container\SimpleRowContainer.h" />
     <ClInclude Include="source\menu\container\VerticalScrollContainer.h" />
     <ClInclude Include="source\menu\element\ElementBase.h" />
     <ClInclude Include="source\menu\element\LogicButton.h" />
@@ -171,7 +172,8 @@
     <ClInclude Include="source\menu\element\SimpleButton.h" />
     <ClInclude Include="source\menu\element\SimpleScrollBar.h" />
     <ClInclude Include="source\menu\MenuBase.h" />
-    <ClInclude Include="source\menu\MenuRoot.h" />
+    <ClInclude Include="source\menu\RootBase.h" />
+    <ClInclude Include="source\menu\style\DefaultStyles.h" />
     <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
@@ -189,6 +191,7 @@
     <ClInclude Include="source\scene\SubSceneBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DefaultStyles.cpp" />
     <ClCompile Include="source\device\DeviceInterface.cpp" />
     <ClCompile Include="source\device\FailHandler.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
@@ -218,13 +221,13 @@
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\game\WorldManager.cpp" />
     <ClCompile Include="source\menu\container\ContainerBase.cpp" />
-    <ClCompile Include="source\menu\container\SimpleContainer.cpp" />
+    <ClCompile Include="source\menu\container\SimpleRowContainer.cpp" />
     <ClCompile Include="source\menu\container\VerticalScrollContainer.cpp" />
     <ClCompile Include="source\menu\element\LogicButton.cpp" />
     <ClCompile Include="source\menu\element\LogicScrollBar.cpp" />
     <ClCompile Include="source\menu\element\SimpleButton.cpp" />
     <ClCompile Include="source\menu\element\SimpleScrollBar.cpp" />
-    <ClCompile Include="source\menu\MenuRoot.cpp" />
+    <ClCompile Include="source\menu\style\DefaultStyles.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />

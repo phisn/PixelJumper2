@@ -12,14 +12,15 @@ namespace Menu
 		public LogicScrollBar
 	{
 	public:
-		struct Style
+		struct Properties
+			:
+			public LogicScrollBar::Properties
 		{
 			float padding;
+		};
 
-			sf::Vector2f
-				size,
-				position;
-
+		struct Style
+		{
 			sf::Color
 				background_fillColor,
 				background_outlineColor,
@@ -40,6 +41,15 @@ namespace Menu
 				click_outlineThickness;
 		};
 
+		/*
+		
+			Policy -> (
+				ElementBase* const
+				const Direction,
+				const sf::View* const
+			)
+
+		*/
 		SimpleScrollBar(
 			ElementBase* const parent,
 			const Style style,
@@ -86,14 +96,20 @@ namespace Menu
 		void loadPosition() override
 		{
 			shape.setPosition(convertPosition(
-				style.position
+				properties.position
 			));
 			
 			shape.setSize(
-				style.size
+				properties.size
 			);
 
 			setConsumption(1.f);
+		}
+
+		void initialize(
+			ElementBase::Properties* const properties) override
+		{
+			this->properties = *((Properties*) properties);
 		}
 
 	protected:
@@ -105,6 +121,7 @@ namespace Menu
 		virtual void onMouseClickEnd() override;
 
 	private:
+		Properties properties;
 		const Style style;
 
 		void updatePosition();
