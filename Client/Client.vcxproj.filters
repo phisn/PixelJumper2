@@ -210,9 +210,6 @@
     <ClInclude Include="source\editor\grid\Selector.h">
       <Filter>source\editor\grid</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\RootBase.h">
-      <Filter>source\menu</Filter>
-    </ClInclude>
     <ClInclude Include="source\menu\MenuBase.h">
       <Filter>source\menu</Filter>
     </ClInclude>
@@ -237,12 +234,14 @@
     <ClInclude Include="source\menu\element\SimpleButton.h">
       <Filter>source\menu\element</Filter>
     </ClInclude>
-    <ClInclude Include="DefaultStyles.h" />
     <ClInclude Include="source\menu\style\DefaultStyles.h">
       <Filter>source\menu\style</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\container\SimpleRowContainer.h">
       <Filter>source\menu\container</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\RootBase.h">
+      <Filter>source\menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -390,7 +389,6 @@
     <ClCompile Include="source\menu\element\SimpleButton.cpp">
       <Filter>source\menu\element</Filter>
     </ClCompile>
-    <ClCompile Include="DefaultStyles.cpp" />
     <ClCompile Include="source\menu\style\DefaultStyles.cpp">
       <Filter>source\menu\style</Filter>
     </ClCompile>

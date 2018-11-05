@@ -14,7 +14,7 @@ namespace Editor
 	public:
 		WallTemplate()
 			:
-			TileTemplate(TILE_WALL_COLOR, { 0 })
+			TileTemplate()
 		{
 		}
 
@@ -27,7 +27,7 @@ namespace Editor
 		{
 			TileSettings settings;
 
-			settings.color = color;
+			settings.color = settings.color;
 			settings.position = position;
 			settings.size = size;
 

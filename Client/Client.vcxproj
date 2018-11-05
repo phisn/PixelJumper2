@@ -132,7 +132,6 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DefaultStyles.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
     <ClInclude Include="source\device\FailHandler.h" />
@@ -191,7 +190,6 @@
     <ClInclude Include="source\scene\SubSceneBase.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DefaultStyles.cpp" />
     <ClCompile Include="source\device\DeviceInterface.cpp" />
     <ClCompile Include="source\device\FailHandler.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />

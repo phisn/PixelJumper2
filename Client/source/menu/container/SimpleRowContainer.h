@@ -11,6 +11,8 @@ namespace Menu
 		public ContainerBase
 	{
 	public:
+		typedef Properties Properties;
+
 		enum class Direction
 		{
 			Horizontal,
@@ -20,9 +22,6 @@ namespace Menu
 		struct Style
 		{
 			float elementMargin;
-			sf::Vector2f
-				size,
-				position;
 		};
 
 		SimpleRowContainer(
@@ -41,8 +40,9 @@ namespace Menu
 		void initialize(
 			Properties* const properties) override
 		{
-
+			this->properties = *(Properties*) properties;
 		}
+
 		virtual void onEvent(
 			const sf::Event event)
 		{
@@ -119,14 +119,26 @@ namespace Menu
 			}
 
 			elements.push_back(element);
+
+			useOnEvent |= element->isUseOnEvent();
+			useOnLogic |= element->isUseOnLogic();
 		}
 
 		virtual void clearElements() override
 		{
 			elements.clear();
+
+			useOnEvent = false;
+			useOnLogic = false;
+		}
+
+		virtual bool isEmpty() const override
+		{
+			return elements.empty();
 		}
 
 	private:
+		Properties properties;
 		const Style style;
 		const Direction direction;
 

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Client/source/menu/container/SimpleContainer.h>
+#include <Client/source/menu/container/SimpleRowContainer.h>
 #include <Client/source/menu/element/SimpleScrollBar.h>
 
 #ifdef _DEBUG
-#	ifndef HIDE_POLICIES
+#	ifndef USE_POLICIES
 #	define HIDE_POLICIES
 #	endif
 #endif
@@ -18,7 +18,7 @@ namespace Menu
 #ifndef HIDE_POLICIES
 	template<
 		class ScrollBarPolicy,
-		class ContainerPolicy
+		class RowContainerPolicy
 	>
 #endif
 	class VerticalScrollContainer
@@ -30,7 +30,18 @@ namespace Menu
 		typedef DefaultStyle::ScrollBar ScrollBarPolicy;
 		typedef DefaultStyle::RowContainer RowContainerPolicy;
 #endif
-		typedef Properties Properties;
+		struct Properties
+			:
+			public ContainerBase::Properties
+		{
+			ScrollBarPolicy::Properties scrollBar;
+			RowContainerPolicy::Properties container;
+		};
+
+		struct Style
+		{
+			float innerMargin;
+		};
 
 		VerticalScrollContainer(
 			ElementBase* const parent,
@@ -48,6 +59,8 @@ namespace Menu
 			ContainerBase(
 				parent)
 		{
+			useOnEvent = scrollBar.isUseOnEvent() || container.isUseOnEvent();
+			useOnLogic = scrollBar.isUseOnLogic() || container.isUseOnLogic();
 		}
 
 		void initialize(
@@ -59,17 +72,35 @@ namespace Menu
 		void onEvent(
 			const sf::Event event) override
 		{
+			if (scrollBar.isUseOnEvent())
+			{
+				scrollBar.onEvent(event);
+			}
 
+			if (container.isUseOnEvent())
+			{
+				container.onEvent(event);
+			}
 		}
 
 		void onLogic(
 			const sf::Time time) override
 		{
+			if (scrollBar.isUseOnLogic())
+			{
+				scrollBar.onLogic(time);
+			}
 
+			if (container.isUseOnLogic())
+			{
+				container.onLogic(time);
+			}
 		}
 
 		void onDraw() override
 		{
+			scrollBar.onDraw();
+			container.onDraw();
 		}
 
 		sf::Vector2f getSize() const override
@@ -95,11 +126,22 @@ namespace Menu
 			ElementBase* const element) override
 		{
 			container.addElement(element);
+
+			useOnEvent |= element->isUseOnEvent();
+			useOnLogic |= element->isUseOnLogic();
 		}
 
 		void clearElements() override
 		{
+			useOnEvent = scrollBar.isUseOnEvent() || container.isUseOnEvent();
+			useOnLogic = scrollBar.isUseOnLogic() || container.isUseOnLogic();
+
 			container.clearElements();
+		}
+
+		bool isEmpty() const override
+		{
+			return container.isEmpty();
 		}
 
 	private:
@@ -185,5 +227,5 @@ namespace Menu
 		private:
 			VerticalScrollContainer* const container;
 		} scrollBar;
-};
+	};
 }

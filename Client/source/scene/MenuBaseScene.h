@@ -18,30 +18,24 @@ namespace Scene
 		virtual void onEvent(
 			const sf::Event event)
 		{
-			for (Menu::Root* const container : containers)
-				if (container->isUseOnEvent())
-				{
-					container->onEvent(event);
-				}
+			for (Menu::RootBase* const container : containers)
+				container->onEvent(event);
 		}
 
 		virtual void onLogic(
 			const sf::Time time)
 		{
-			for (Menu::Root* const container : containers)
-				if (container->isUseOnLogic())
-				{
-					container->onLogic(time);
-				}
+			for (Menu::RootBase* const container : containers)
+				container->onLogic(time);
 		}
 
 		virtual void onDraw()
 		{
-			for (Menu::Root* const container : containers)
+			for (Menu::RootBase* const container : containers)
 				container->onDraw();
 		}
 
 	protected:
-		std::vector<Menu::Root*> containers;
+		std::vector<Menu::RootBase*> containers;
 	};
 }

@@ -23,12 +23,16 @@ namespace Menu
 			DEVICE::Interface::getScreen()->applyView(&view);
 		}
 
-		virtual void setViewport(
+		void setViewport(
 			const sf::FloatRect viewport)
 		{
 			view.setViewport(viewport);
+
+			resetLayout();
 		}
 
+		// size & position
+		virtual void resetLayout() = 0;
 	protected:
 		sf::View* getView()
 		{

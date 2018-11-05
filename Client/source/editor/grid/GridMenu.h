@@ -114,7 +114,7 @@ namespace Editor
 
 		void onDraw() override
 		{
-			MENU::RootBase::onDraw();
+			MENU::RootBase	::onDraw();
 
 			gridView.draw();
 
@@ -125,11 +125,8 @@ namespace Editor
 			selector.draw();
 		}
 
-		void setViewport(
-			const sf::FloatRect viewport) override
+		void resetLayout() override
 		{
-			Menu::RootBase::setViewport(viewport);
-
 			gridView.resetSize();
 		}
 

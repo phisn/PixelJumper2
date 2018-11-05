@@ -4,6 +4,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <string>
+
 namespace Editor
 {
 	class TileTemplate
@@ -11,28 +13,30 @@ namespace Editor
 	public:
 		const struct Settings
 		{
+			std::wstring name;
+			sf::Color color;
+
 			int maxCount;
 
-		} settings;
+		};
 
 		TileTemplate(
-			const sf::Color color,
 			const Settings settings)
 			:
-			color(color),
+			// error implement posibility (settings constructor) to easyly pass settings
 			settings(settings)
 		{
 		}
 
-		sf::Color getColor() const
+		const Settings* getSettings() const
 		{
-			return color;
+			return *settings;
 		}
 
 		virtual TileBase* create(
 			sf::Vector2f position,
 			sf::Vector2f size) = 0;
 	protected:
-		sf::Color color;
+		Settings settings;
 	};
 }

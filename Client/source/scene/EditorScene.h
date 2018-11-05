@@ -25,7 +25,7 @@ namespace Scene
 
 		void onRemove() override
 		{
-			for (MENU::Root* const container : containers)
+			for (MENU::RootBase* const container : containers)
 			{
 				delete container;
 			}

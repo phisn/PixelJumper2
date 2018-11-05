@@ -24,5 +24,7 @@ namespace Menu
 
 		virtual void addElement(ElementBase* const element) = 0;
 		virtual void clearElements() = 0;
+
+		virtual bool isEmpty() const = 0;
 	};
 }
