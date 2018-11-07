@@ -140,8 +140,14 @@
     <ClInclude Include="source\device\ScreenDevice.h" />
     <ClInclude Include="source\editor\grid\GridMenu.h" />
     <ClInclude Include="source\editor\grid\GridView.h" />
+    <ClInclude Include="source\editor\grid\Selection.h" />
     <ClInclude Include="source\editor\grid\Selector.h" />
-    <ClInclude Include="source\editor\TemplateManager.h" />
+    <ClInclude Include="source\editor\manipulator\Cache.h" />
+    <ClInclude Include="source\editor\manipulator\Component.h" />
+    <ClInclude Include="source\editor\manipulator\Element.h" />
+    <ClInclude Include="source\editor\manipulator\CacheManager.h" />
+    <ClInclude Include="source\editor\manipulator\Executor.h" />
+    <ClInclude Include="source\editor\manipulator\Manipulator.h" />
     <ClInclude Include="source\editor\template\TileTemplate.h" />
     <ClInclude Include="source\editor\template\WallTemplate.h" />
     <ClInclude Include="source\editor\tilemenu\TileMenu.h" />
@@ -197,8 +203,14 @@
     <ClCompile Include="source\device\ScreenDevice.cpp" />
     <ClCompile Include="source\editor\grid\GridMenu.cpp" />
     <ClCompile Include="source\editor\grid\GridView.cpp" />
+    <ClCompile Include="source\editor\grid\Selection.cpp" />
     <ClCompile Include="source\editor\grid\Selector.cpp" />
-    <ClCompile Include="source\editor\TemplateManager.cpp" />
+    <ClCompile Include="source\editor\manipulator\Cache.cpp" />
+    <ClCompile Include="source\editor\manipulator\Component.cpp" />
+    <ClCompile Include="source\editor\manipulator\Element.cpp" />
+    <ClCompile Include="source\editor\manipulator\CacheManager.cpp" />
+    <ClCompile Include="source\editor\manipulator\Executor.cpp" />
+    <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
     <ClCompile Include="source\editor\template\TileTemplate.cpp" />
     <ClCompile Include="source\editor\template\WallTemplate.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileMenu.cpp" />
@@ -243,6 +255,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="source\editor\manipulator\Manipulator.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

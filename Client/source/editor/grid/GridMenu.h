@@ -103,7 +103,7 @@ namespace Editor
 				break;
 			case sf::Event::MouseWheelMoved:
 				pressed = Pressed::None;
-				gridView.zoom(1.f - 0.1f / (float)event.mouseWheel.delta);
+				gridView.zoom(1.f - 0.1f / (float) event.mouseWheel.delta);
 
 				break;
 			}
@@ -114,9 +114,16 @@ namespace Editor
 
 		void onDraw() override
 		{
-			MENU::RootBase	::onDraw();
+			MENU::RootBase::onDraw();
 
 			gridView.draw();
+
+			for (TileBase* const tile : world->getTiles())
+			{
+				DEVICE::Interface::getScreen()->onDraw(
+					tile->getShape()
+				);
+			}
 
 			DEVICE::Interface::getScreen()->getWindow()->setView(
 				DEVICE::Interface::getScreen()->getWindow()->getDefaultView()

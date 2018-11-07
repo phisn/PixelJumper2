@@ -11,32 +11,19 @@ namespace Editor
 	class TileTemplate
 	{
 	public:
-		const struct Settings
-		{
-			std::wstring name;
-			sf::Color color;
-
-			int maxCount;
-
-		};
-
 		TileTemplate(
-			const Settings settings)
+			const sf::Color color,
+			const std::wstring name)
 			:
-			// error implement posibility (settings constructor) to easyly pass settings
-			settings(settings)
+			color(color),
+			name(name)
 		{
-		}
-
-		const Settings* getSettings() const
-		{
-			return *settings;
 		}
 
 		virtual TileBase* create(
-			sf::Vector2f position,
-			sf::Vector2f size) = 0;
-	protected:
-		Settings settings;
+			sf::Vector2f position) = 0;
+
+		const sf::Color color;
+		const std::wstring name;
 	};
 }

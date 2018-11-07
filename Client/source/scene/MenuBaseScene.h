@@ -18,24 +18,36 @@ namespace Scene
 		virtual void onEvent(
 			const sf::Event event)
 		{
-			for (Menu::RootBase* const container : containers)
-				container->onEvent(event);
+			if (event.type == sf::Event::MouseButtonPressed &&
+				event.mouseButton.button == sf::Mouse::Button::Left)
+			{
+				selected->getView()->getSize();
+			}
+
+			selected->onEvent(event);
 		}
 
 		virtual void onLogic(
 			const sf::Time time)
 		{
-			for (Menu::RootBase* const container : containers)
-				container->onLogic(time);
+			selected->onLogic(time);
 		}
 
 		virtual void onDraw()
 		{
-			for (Menu::RootBase* const container : containers)
-				container->onDraw();
+			selected->onDraw();
 		}
 
 	protected:
+		Menu::RootBase* selected;
+
+		void addRoot(
+			Menu::RootBase* const root)
+		{
+			containers.push_back(root);
+		}
+
+	private:
 		std::vector<Menu::RootBase*> containers;
 	};
 }

@@ -4,6 +4,7 @@
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/editor/tile/TileBase.h>
+#include <Client/source/editor/template/TileTemplate.h>
 
 #include <Client/source/game/World.h>
 
@@ -19,16 +20,6 @@ namespace Editor
 			for (TileBase* tile : tiles)
 			{
 				delete tile;
-			}
-		}
-
-		void draw()
-		{
-			for (TileBase* tile : tiles)
-			{
-				DEVICE::Interface::getScreen()->onDraw(
-					tile->getShape()
-				);
 			}
 		}
 
@@ -52,13 +43,13 @@ namespace Editor
 		}
 
 		void addTile(
-			TileBase* tile)
+			TileBase* const tile)
 		{
 			tiles.push_back(tile);
 		}
 
 		void removeTile(
-			TileBase* tile)
+			TileBase* const tile)
 		{
 			for (int i = 0; i < tiles.size(); ++i)
 				if (tiles[i] == tile)

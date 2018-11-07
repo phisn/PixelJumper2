@@ -14,7 +14,9 @@ namespace Editor
 	public:
 		WallTemplate()
 			:
-			TileTemplate()
+			TileTemplate(
+				TILE_WALL_COLOR,
+				L"Wall")
 		{
 		}
 
@@ -22,14 +24,12 @@ namespace Editor
 
 		// ex. can be saved and shon in context menu (portal binding)
 		TileBase* create(
-			sf::Vector2f position,
-			sf::Vector2f size) override
+			sf::Vector2f position) override
 		{
 			TileSettings settings;
 
-			settings.color = settings.color;
+			settings.color = color;
 			settings.position = position;
-			settings.size = size;
 
 			return new Wall(settings);
 		}

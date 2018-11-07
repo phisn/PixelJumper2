@@ -11,7 +11,6 @@ namespace Editor
 	{
 		sf::Color color;
 		sf::Vector2f position;
-		sf::Vector2f size;
 	};
 
 	class TileBase
@@ -25,7 +24,9 @@ namespace Editor
 		{
 			shape.setFillColor(settings.color);
 			shape.setPosition(settings.position);
-			shape.setSize(settings.size);
+			shape.setSize(
+				sf::Vector2f(1.f, 1.f)
+			);
 		}
 
 		Game::Tile::Id getId() const

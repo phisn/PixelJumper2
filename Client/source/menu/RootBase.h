@@ -31,6 +31,11 @@ namespace Menu
 			resetLayout();
 		}
 
+		const sf::View* getView() const
+		{
+			return &view;
+		}
+
 		// size & position
 		virtual void resetLayout() = 0;
 	protected:

@@ -6,10 +6,12 @@
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/editor/grid/GridView.h>
+#include <Client/source/editor/manipulator/Element.h>
 #include <Client/source/editor/World.h>
 
 namespace Editor
 {
+	// deprecated
 	struct Selection
 	{
 		Selection()
@@ -29,7 +31,11 @@ namespace Editor
 		sf::RectangleShape altSelectionRect;
 	};
 
+	// move drawing stuff to Selection.h
+	// only onEvent stuff here -> notify cachemanager
 	class Selector
+		:
+		public Element
 	{
 	public:
 		void initialize(
@@ -47,8 +53,6 @@ namespace Editor
 				color);
 			shape.setOutlineThickness(
 				2.f);
-			selectedTileShape.setFillColor(
-				selectedTileColor);
 		}
 
 		void begin(
@@ -118,11 +122,6 @@ namespace Editor
 			{
 				for (TileBase* tile : selection->tiles)
 				{
-					selectedTileShape.setPosition(
-						tile->getShape()->getPosition());
-					selectedTileShape.setSize(
-						tile->getShape()->getSize());
-
 					DEVICE::Interface::getScreen()->onDraw(
 						tile->getShape());
 				}
@@ -202,10 +201,6 @@ namespace Editor
 			}
 		}
 
-		sf::RectangleShape selectedTileShape;
-
-		const sf::Color selectedTileColor = 
-			sf::Color::Color(100, 100, 100, 60);
 		const sf::Color color = 
 			sf::Color::Color(150, 150, 150, 100);
 	};

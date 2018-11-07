@@ -4,6 +4,7 @@
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/editor/grid/GridMenu.h>
+#include <Client/source/editor/manipulator/Manipulator.h>
 #include <Client/source/editor/World.h>
 
 #include <Client/source/scene/MainSceneBase.h>
@@ -13,6 +14,14 @@
 
 namespace Scene
 {
+	/*
+	
+		Codebase information:
+		-	Only add methods provided because there
+			is ususally no need to remove things (static)
+	
+	*/
+
 	class Editor
 		:
 		public MenuBase
@@ -33,7 +42,9 @@ namespace Scene
 
 		void initialize() override
 		{
-			EDITOR::GridMenu* const gridMenu = new EDITOR::GridMenu(&world);
+			EDITOR::Manipulator::initialize(&world);
+			EDITOR::GridMenu* const gridMenu 
+				= new EDITOR::GridMenu(&world);
 
 			gridMenu->setViewport(
 				{ 0.0f, 0.0f, 0.95f, 1.0f });

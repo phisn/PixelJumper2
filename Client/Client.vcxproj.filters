@@ -73,6 +73,9 @@
     <Filter Include="source\menu\style">
       <UniqueIdentifier>{6ddc637d-501a-4851-bab9-000f8a04d3aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\editor\manipulator">
+      <UniqueIdentifier>{2cd07ebf-c0da-4f4e-9d5f-6a8903f74912}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -180,9 +183,6 @@
     <ClInclude Include="source\editor\tile\Wall.h">
       <Filter>source\editor\tile</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\TemplateManager.h">
-      <Filter>source\editor</Filter>
-    </ClInclude>
     <ClInclude Include="source\editor\template\TileTemplate.h">
       <Filter>source\editor\template</Filter>
     </ClInclude>
@@ -242,6 +242,27 @@
     </ClInclude>
     <ClInclude Include="source\menu\RootBase.h">
       <Filter>source\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\Element.h">
+      <Filter>source\editor\manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\Component.h">
+      <Filter>source\editor\manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\Cache.h">
+      <Filter>source\editor\manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\Manipulator.h">
+      <Filter>source\editor\manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\CacheManager.h">
+      <Filter>source\editor\manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\Executor.h">
+      <Filter>source\editor\manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\grid\Selection.h">
+      <Filter>source\editor\grid</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -341,9 +362,6 @@
     <ClCompile Include="source\editor\tile\TileBase.cpp">
       <Filter>source\editor\tile</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\TemplateManager.cpp">
-      <Filter>source\editor</Filter>
-    </ClCompile>
     <ClCompile Include="source\editor\template\TileTemplate.cpp">
       <Filter>source\editor\template</Filter>
     </ClCompile>
@@ -395,10 +413,36 @@
     <ClCompile Include="source\menu\container\SimpleRowContainer.cpp">
       <Filter>source\menu\container</Filter>
     </ClCompile>
+    <ClCompile Include="source\editor\manipulator\Element.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\manipulator\Component.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\manipulator\Cache.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\manipulator\Manipulator.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\manipulator\CacheManager.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\manipulator\Executor.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\grid\Selection.cpp">
+      <Filter>source\editor\grid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
       <Filter>resource</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="source\editor\manipulator\Manipulator.jpg">
+      <Filter>source\editor\manipulator</Filter>
+    </Image>
   </ItemGroup>
 </Project>
