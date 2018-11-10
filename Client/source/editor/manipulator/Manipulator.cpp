@@ -1,11 +1,14 @@
 #include "Manipulator.h"
+
 #include <Client/source/editor/manipulator/Cache.h>
+#include <Client/source/editor/manipulator/CacheManager.h>
 #include <Client/source/editor/manipulator/Executor.h>
 
 namespace
 {
 	Editor::Cache* cache = NULL;
-	Editor::CacheManager* executor = NULL;
+	Editor::CacheManager* manager = NULL;
+	Editor::Executor* executor = NULL;
 }
 
 namespace Editor
@@ -14,9 +17,9 @@ namespace Editor
 		World* const world)
 	{
 		cache = new Cache();
-		executor = new CacheManager(
-			cache,
-			world);
+		executor = new Executor();
+		manager = new CacheManager(
+			cache);
 	}
 
 	void Manipulator::uninitialize()
@@ -30,10 +33,10 @@ namespace Editor
 		{
 			delete executor;
 		}
-	}
 
-	Cache* Manipulator::getCache()
-	{
-		return cache;
+		if (manager)
+		{
+			delete manager;
+		}
 	}
 }

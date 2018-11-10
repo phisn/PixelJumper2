@@ -76,6 +76,9 @@
     <Filter Include="source\editor\manipulator">
       <UniqueIdentifier>{2cd07ebf-c0da-4f4e-9d5f-6a8903f74912}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\editor\manipulator\cache">
+      <UniqueIdentifier>{35661510-c28b-4826-9ed5-0642be31d455}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -249,20 +252,32 @@
     <ClInclude Include="source\editor\manipulator\Component.h">
       <Filter>source\editor\manipulator</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\manipulator\Cache.h">
-      <Filter>source\editor\manipulator</Filter>
-    </ClInclude>
     <ClInclude Include="source\editor\manipulator\Manipulator.h">
-      <Filter>source\editor\manipulator</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\CacheManager.h">
       <Filter>source\editor\manipulator</Filter>
     </ClInclude>
     <ClInclude Include="source\editor\manipulator\Executor.h">
       <Filter>source\editor\manipulator</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\grid\Selection.h">
+    <ClInclude Include="source\editor\grid\SelectorComponent.h">
       <Filter>source\editor\grid</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\grid\SelectorElement.h">
+      <Filter>source\editor\grid</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\cache\Cache.h">
+      <Filter>source\editor\manipulator\cache</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\cache\CacheManager.h">
+      <Filter>source\editor\manipulator\cache</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\cache\SelectionCache.h">
+      <Filter>source\editor\manipulator\cache</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\cache\TileCache.h">
+      <Filter>source\editor\manipulator\cache</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\manipulator\cache\ModeCache.h">
+      <Filter>source\editor\manipulator\cache</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -419,20 +434,23 @@
     <ClCompile Include="source\editor\manipulator\Component.cpp">
       <Filter>source\editor\manipulator</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\manipulator\Cache.cpp">
-      <Filter>source\editor\manipulator</Filter>
-    </ClCompile>
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp">
-      <Filter>source\editor\manipulator</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\manipulator\CacheManager.cpp">
       <Filter>source\editor\manipulator</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\manipulator\Executor.cpp">
       <Filter>source\editor\manipulator</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\grid\Selection.cpp">
+    <ClCompile Include="source\editor\grid\SelectorComponent.cpp">
       <Filter>source\editor\grid</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\grid\SelectorElement.cpp">
+      <Filter>source\editor\grid</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\manipulator\cache\Cache.cpp">
+      <Filter>source\editor\manipulator\cache</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\manipulator\cache\CacheManager.cpp">
+      <Filter>source\editor\manipulator\cache</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
