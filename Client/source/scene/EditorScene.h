@@ -42,7 +42,9 @@ namespace Scene
 
 		void initialize() override
 		{
+			// initialized first
 			EDITOR::Manipulator::initialize(&world);
+
 			EDITOR::GridMenu* const gridMenu 
 				= new EDITOR::GridMenu(&world);
 

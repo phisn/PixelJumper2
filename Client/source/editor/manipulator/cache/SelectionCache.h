@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/editor/tile/TileBase.h>
+
 #include <SFML/Graphics.hpp>
 
 #include <variant>
@@ -25,7 +27,7 @@ namespace Editor
 
 		struct Tile
 		{
-			std::vector<Tile*> tiles;
+			std::vector<::Editor::TileBase*> tiles;
 		};
 
 		struct Output
@@ -36,12 +38,16 @@ namespace Editor
 			{
 			}
 
+			bool typeChanged;
+
 			enum class Type
 			{
+				None,
+				
 				Area,
 				Tile
 
-			} type;
+			} type = Type::None;
 
 			// independent from view
 			// always shown as marker

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/editor/manipulator/Cache.h>
+#include <Client/source/editor/manipulator/cache/Cache.h>
 
 namespace Editor
 {
@@ -8,7 +8,8 @@ namespace Editor
 	class Element
 	{
 	public:
-		virtual void manipulate(
+		// return == notify components
+		virtual bool manipulate(
 			Cache::Input* const input,
 			Cache::Output* const output,
 

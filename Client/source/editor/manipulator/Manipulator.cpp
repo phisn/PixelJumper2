@@ -1,7 +1,7 @@
 #include "Manipulator.h"
 
-#include <Client/source/editor/manipulator/Cache.h>
-#include <Client/source/editor/manipulator/CacheManager.h>
+#include <Client/source/editor/manipulator/cache/Cache.h>
+#include <Client/source/editor/manipulator/cache/CacheManager.h>
 #include <Client/source/editor/manipulator/Executor.h>
 
 namespace

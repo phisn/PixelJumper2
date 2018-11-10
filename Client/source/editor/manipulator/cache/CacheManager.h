@@ -37,10 +37,11 @@ namespace Editor
 		void notify(
 			const Cache::Sector sector)
 		{
-			notifyElements(
-				sector);
-			notifyComponents(
-				sector);
+			if ( notifyElement(sector) )
+			{
+				notifyComponents(
+					sector);
+			}
 		}
 
 	private:
@@ -53,20 +54,21 @@ namespace Editor
 			}
 		}
 
-		void notifyElements(
+		bool notifyElement(
 			const Cache::Sector sector)
 		{
 			decltype(elements)::iterator iter = elements.find(sector);
 
 			if (iter != elements.end())
 			{
-				elements[sector]->manipulate(
+				return iter->second->manipulate(
 					&cache->input,
 					&cache->output,
 
 					sector);
 			}
 
+			return true;
 		}
 
 		std::map<

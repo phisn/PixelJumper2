@@ -27,11 +27,11 @@ namespace Editor
 			World* const world)
 			:
 			world(world),
-			gridView(getView())
+			gridView(getView()),
+			selector(
+				world,
+				&gridView)
 		{
-			selector.initialize(
-				&gridView,
-				world);
 		}
 
 		~GridMenu() { }
@@ -72,9 +72,7 @@ namespace Editor
 			case sf::Event::MouseButtonReleased:
 				if (pressed == Pressed::Left)
 				{
-					selector.release(sf::Vector2f(
-						event.mouseButton.x,
-						event.mouseButton.y));
+					selector.release();
 				}
 
 				pressed = Pressed::None;
