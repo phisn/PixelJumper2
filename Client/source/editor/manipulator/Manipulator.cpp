@@ -39,4 +39,19 @@ namespace Editor
 			delete manager;
 		}
 	}
+
+	Cache* Manipulator::getCache()
+	{
+		return cache;
+	}
+
+	CacheManager* Manipulator::getCacheManager()
+	{
+		return manager;
+	}
+
+	Executor* Manipulator::getExecutor()
+	{
+		return executor;
+	}
 }

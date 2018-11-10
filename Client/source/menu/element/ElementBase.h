@@ -2,6 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 
+#ifndef MENU
+#define MENU ::Menu
+#endif
+
 namespace Menu
 {
 	/*

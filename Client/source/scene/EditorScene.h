@@ -34,7 +34,7 @@ namespace Scene
 
 		void onRemove() override
 		{
-			for (MENU::RootBase* const container : containers)
+			for (MENU::RootBase* const container : getContainers())
 			{
 				delete container;
 			}
@@ -51,7 +51,7 @@ namespace Scene
 			gridMenu->setViewport(
 				{ 0.0f, 0.0f, 0.95f, 1.0f });
 
-			containers.push_back(gridMenu);
+			addRoot(gridMenu);
 		}
 
 		void onShow() override { }

@@ -12,6 +12,7 @@
 #ifdef HIDE_POLICIES
 #include <Client/source/menu/style/DefaultStyles.h>
 #endif
+#include <Client/source/menu/style/DefaultStyles.h>
 
 namespace Menu
 {
@@ -34,8 +35,8 @@ namespace Menu
 			:
 			public ContainerBase::Properties
 		{
-			ScrollBarPolicy::Properties scrollBar;
-			RowContainerPolicy::Properties container;
+			DefaultStyle::ScrollBar::Properties scrollBar;
+			DefaultStyle::RowContainer::Properties container;
 		};
 
 		struct Style
@@ -52,6 +53,7 @@ namespace Menu
 				SimpleRowContainer::Direction::Vertical,
 				this),
 			scrollBar(
+
 				this, // maybe change later
 				SimpleScrollBar::Direction::Vertical,
 				view,
@@ -150,7 +152,7 @@ namespace Menu
 
 		void onAddElement()
 		{
-			float percent = container.getSize().y / style.size.y;
+			float percent = container.getSize().y / properties.size.y;
 
 			if (percent > 1.f)
 			{

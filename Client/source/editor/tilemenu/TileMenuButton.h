@@ -13,10 +13,6 @@ namespace Editor
 	public:
 		struct Style
 		{
-			sf::Vector2f
-				size,
-				position;
-
 			std::wstring label;
 			sf::Color 
 				fillColor, 
@@ -26,9 +22,6 @@ namespace Editor
 			{
 				MENU::SimpleButton::Style style = { };
 
-				style.size = size;
-				style.position = position;
-				
 				style.enter_fillColor = fillColor;
 				style.enter_outlineColor = sf::Color::Color(150, 150, 150);
 				style.enter_outlineThickness = 0.2f;
@@ -48,15 +41,23 @@ namespace Editor
 		};
 
 		TileMenuButton(
+			ElementBase* const parent,
 			const Style style)
 			:
-			MENU::SimpleButton( style.makeStyle() ),
+			MENU::SimpleButton( 
+				parent,
+				style.makeStyle() ),
 			label(style.label)
 		{
 		}
 
 		void onLogic(
 			const sf::Time time) override { }
+
+		void onMouseClick() override
+		{
+
+		}
 	private:
 
 		std::wstring label;

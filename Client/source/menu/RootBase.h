@@ -31,7 +31,7 @@ namespace Menu
 			resetLayout();
 		}
 
-		const sf::View* getView() const
+	    sf::View* getView()
 		{
 			return &view;
 		}
@@ -39,11 +39,6 @@ namespace Menu
 		// size & position
 		virtual void resetLayout() = 0;
 	protected:
-		sf::View* getView()
-		{
-			return &view;
-		}
-
 		bool useOnEvent = false;
 		bool useOnLogic = false;
 

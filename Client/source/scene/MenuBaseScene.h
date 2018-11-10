@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/menu/MenuRoot.h>
+#include <Client/source/menu/RootBase.h>
 
 #include <Client/source/scene/MainSceneBase.h>
 
@@ -45,6 +45,11 @@ namespace Scene
 			Menu::RootBase* const root)
 		{
 			containers.push_back(root);
+		}
+
+		const std::vector<Menu::RootBase*>& getContainers() const
+		{
+			return containers;
 		}
 
 	private:

@@ -2,6 +2,9 @@
 
 #define USE_POLICIES
 
+#include <Client/source/editor/template/WallTemplate.h>
+
+#include <Client/source/editor/template/TileTemplate.h>
 #include <Client/source/editor/tilemenu/TileMenuButton.h>
 
 #include <Client/source/menu/container/VerticalScrollContainer.h>
@@ -28,12 +31,18 @@ namespace Editor
 				getView()
 			)
 		{
+			createTiles();
+			createElements();
 		}
 
 		void onEvent(
-			const sf::Event event) override;
+			const sf::Event event) override
+		{
+			container.onEvent(event);
+		}
+
 		void onLogic(
-			const sf::Time time) override;
+			const sf::Time time) override { }
 
 		void resetLayout() override
 		{
@@ -68,20 +77,52 @@ namespace Editor
 				properties.size.y
 			};
 
+			TileMenuButton::Properties buttonProp;
+
 			// setup container elements
 			for (TileMenuButton& element : elements)
 			{
-				// ...
+				buttonProp.position = { 0, 0 };
+				buttonProp.size =
+				{
+					properties.size.x,
+					properties.size.y / 10.f
+				};
+
+				element.initialize(
+					&buttonProp);
+				container.addElement(&element);
 			}
+
+			container.initialize(&properties);
 		}
 
 	private:
+		void createTiles()
+		{
+			tiles.push_back( new WallTemplate() );
+		}
+
 		void createElements()
 		{
+			TileMenuButton::Style style;
+
+			style.clickColor = sf::Color(
+				tiles[elements.size()]->color.toInteger() - 0x05050500
+			);
+			style.fillColor = 
+				tiles[elements.size()]->color;
+			style.label = 
+				tiles[elements.size()]->name;
+
+			elements.emplace_back(&container, style);
+
 			// ...
 			// add from templates
 		}
 
+		std::vector<
+			TileTemplate*> tiles;
 		std::vector<
 			TileMenuButton> elements;
 		Container container;

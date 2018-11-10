@@ -10,8 +10,8 @@ namespace Menu
 		if (getDirection() == Direction::Horizontal)
 		{
 			scrollBar.setSize(sf::Vector2f(
-			   (style.size.x - style.padding * 2) * percent,
-				style.size.y - style.padding * 2
+			   (properties.size.x - properties.padding * 2) * percent,
+				properties.size.y - properties.padding * 2
 			));
 
 			length = scrollBar.getSize().x;
@@ -19,8 +19,8 @@ namespace Menu
 		else
 		{
 			scrollBar.setSize(sf::Vector2f(
-				style.size.y - style.padding * 2,
-				(style.size.y - style.padding * 2) * percent
+				properties.size.y - properties.padding * 2,
+				(properties.size.y - properties.padding * 2) * percent
 			));
 
 			length = scrollBar.getSize().y;

@@ -71,7 +71,7 @@ namespace Menu
 
 		sf::Vector2f getSize() const override
 		{
-			return style.size;
+			return properties.size;
 		}
 
 		sf::Vector2f getPosition() const override
@@ -81,7 +81,7 @@ namespace Menu
 
 		void loadPosition() override
 		{
-			position = convertPosition(style.position);
+			position = convertPosition(properties.position);
 
 			for (ElementBase* const element : elements)
 			{

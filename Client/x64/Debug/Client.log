@@ -34,6 +34,43 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning
           [
               T=float
           ]
+  class template variant is only available with C++17 or later.
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(53): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(52): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(57): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(56): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(50): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
@@ -44,67 +81,19 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(49
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(77): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(86): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(76): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(85): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(88): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(87): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(65): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(65): warning C4244: "Initialisierung": Konvertierung von "T" in "const int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(66): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(66): warning C4244: "Initialisierung": Konvertierung von "T" in "const int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(68): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(69): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(72): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(98): error C2039: "Selection": Ist kein Element von "Editor::Cache"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(14): note: Siehe Deklaration von "Editor::Cache"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(103): warning C4060: switch-Anweisung enthält weder "case"- noch "default"-Bezeichnungen
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(3): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "Client/source/menu/MenuRoot.h": No such file or directory
   GridMenu.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+  class template variant is only available with C++17 or later.
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
           with
           [
@@ -136,6 +125,42 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning
           [
               T=float
           ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(53): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(52): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(57): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(56): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(50): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
@@ -146,30 +171,89 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(49
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(77): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(86): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(76): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(85): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(88): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(87): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-  GridView.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
   Selector.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+  class template variant is only available with C++17 or later.
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(41): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(38): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(53): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(52): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(57): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(56): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+  SelectorComponent.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+  class template variant is only available with C++17 or later.
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
           with
           [
@@ -203,6 +287,7 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning
           ]
   Manipulator.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+  class template variant is only available with C++17 or later.
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
           with
           [
@@ -234,255 +319,9 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(65): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(65): warning C4244: "Initialisierung": Konvertierung von "T" in "const int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(66): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(66): warning C4244: "Initialisierung": Konvertierung von "T" in "const int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(68): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(69): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(72): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(98): error C2039: "Selection": Ist kein Element von "Editor::Cache"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(14): note: Siehe Deklaration von "Editor::Cache"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(98): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(98): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(103): warning C4060: switch-Anweisung enthält weder "case"- noch "default"-Bezeichnungen
-  TileTemplate.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
-  WallTemplate.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
-          with
-          [
-              T=unsigned int
-          ]
-          and
-          [
-              T=float
-          ]
-  TileMenu.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(12): error C2653: "MENU": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(12): error C2504: "SimpleButton": Basisklasse undefiniert
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(25): error C2653: "MENU": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(58): error C3668: "Editor::TileMenuButton::onLogic": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(27): error C2653: "MENU": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(32): error C2039: "enter_fillColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(33): error C2039: "enter_outlineColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(34): error C2039: "enter_outlineThickness": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(37): error C2039: "click_fillColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(38): error C2039: "click_outlineColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(39): error C2039: "click_outlineThickness": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(42): error C2039: "default_fillColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(43): error C2039: "click_outlineColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(44): error C2039: "click_outlineThickness": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(53): error C2653: "MENU": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(53): error C2614: "Editor::TileMenuButton": Unzulässige Elementinitialisierung: "SimpleButton" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(74): error C2039: "size": Ist kein Element von "Menu::SimpleRowContainer::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(22): note: Siehe Deklaration von "Menu::SimpleRowContainer::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(84): error C2039: "position": Ist kein Element von "Menu::SimpleRowContainer::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(22): note: Siehe Deklaration von "Menu::SimpleRowContainer::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(195): error C2039: "position": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(195): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(203): error C2039: "position": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(203): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(201): error C2664: "sf::Vector2f Menu::ElementBase::convertPosition(const float,const float) const" : Konvertierung von Argument 1 von "const T" in "const sf::Vector2f" nicht möglich
-          with
-          [
-              T=float
-          ]
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(204): note: Quelltyp konnte von keinem Konstruktor angenommen werden, oder die Überladungsauflösung des Konstruktors ist mehrdeutig
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(37): warning C4346: "Properties": Abhängiger Name ist kein Typ
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(37): note: Präfix mit "typename" zum Angeben eines Typs
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(37): note: Siehe Verweis auf die Klasse Vorlage-Instanziierung "Menu::VerticalScrollContainer<ScrollBarPolicy,RowContainerPolicy>::Properties", die kompiliert wird.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(230): note: Siehe Verweis auf die Klasse Vorlage-Instanziierung "Menu::VerticalScrollContainer<ScrollBarPolicy,RowContainerPolicy>", die kompiliert wird.
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(37): error C2061: Syntaxfehler: Bezeichner "Properties"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(37): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(38): warning C4346: "Properties": Abhängiger Name ist kein Typ
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(38): note: Präfix mit "typename" zum Angeben eines Typs
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(38): error C2061: Syntaxfehler: Bezeichner "Properties"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(38): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\verticalscrollcontainer.h(153): error C3861: "style": Bezeichner wurde nicht gefunden.
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(55): error C2059: Syntaxfehler: "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(59): error C2143: Syntaxfehler: Es fehlt ";" vor "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(55): error C2143: Syntaxfehler: Es fehlt ";" vor "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(60): error C2059: Syntaxfehler: "<L_GRAMMAR_end_class>"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(61): error C2143: Syntaxfehler: Es fehlt ";" vor "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(61): fatal error C1506: Weiterverarbeitung nach der Auflösung von Blöcken nicht möglich
-  TileMenuButton.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(12): error C2653: "MENU": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(12): error C2504: "SimpleButton": Basisklasse undefiniert
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(25): error C2653: "MENU": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(58): error C3668: "Editor::TileMenuButton::onLogic": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(27): error C2653: "MENU": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(32): error C2039: "enter_fillColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(33): error C2039: "enter_outlineColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(34): error C2039: "enter_outlineThickness": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(37): error C2039: "click_fillColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(38): error C2039: "click_outlineColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(39): error C2039: "click_outlineThickness": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(42): error C2039: "default_fillColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(43): error C2039: "click_outlineColor": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(44): error C2039: "click_outlineThickness": Ist kein Element von "Editor::TileMenuButton::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(14): note: Siehe Deklaration von "Editor::TileMenuButton::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(53): error C2653: "MENU": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenubutton.h(53): error C2614: "Editor::TileMenuButton": Unzulässige Elementinitialisierung: "SimpleButton" ist weder Basis noch Element
-  World.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
-          with
-          [
-              T=unsigned int
-          ]
-          and
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(149): warning C4267: "=": Konvertierung von "size_t" nach "sf::Int32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\touchabletile.h(41): warning C4930: "sf::FileInputStream onTouch(void)": Funktion mit Prototyp wurde nicht aufgerufen (war eine Variablendefinition gemeint?)
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(38): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning C4244: "Argument": Konvertierung von "T" in "unsigned int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-  TileBase.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
-  Wall.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
-          with
-          [
-              T=unsigned int
-          ]
-          and
-          [
-              T=float
-          ]
-  SimpleRowContainer.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(74): error C2039: "size": Ist kein Element von "Menu::SimpleRowContainer::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(22): note: Siehe Deklaration von "Menu::SimpleRowContainer::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(84): error C2039: "position": Ist kein Element von "Menu::SimpleRowContainer::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(22): note: Siehe Deklaration von "Menu::SimpleRowContainer::Style"
-  VerticalScrollContainer.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(74): error C2039: "size": Ist kein Element von "Menu::SimpleRowContainer::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(22): note: Siehe Deklaration von "Menu::SimpleRowContainer::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(84): error C2039: "position": Ist kein Element von "Menu::SimpleRowContainer::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\container\simplerowcontainer.h(22): note: Siehe Deklaration von "Menu::SimpleRowContainer::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(195): error C2039: "position": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(195): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(203): error C2039: "position": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(203): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(201): error C2664: "sf::Vector2f Menu::ElementBase::convertPosition(const float,const float) const" : Konvertierung von Argument 1 von "const T" in "const sf::Vector2f" nicht möglich
-          with
-          [
-              T=float
-          ]
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(204): note: Quelltyp konnte von keinem Konstruktor angenommen werden, oder die Überladungsauflösung des Konstruktors ist mehrdeutig
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(55): error C2059: Syntaxfehler: "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(59): error C2143: Syntaxfehler: Es fehlt ";" vor "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(55): error C2143: Syntaxfehler: Es fehlt ";" vor "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(60): error C2059: Syntaxfehler: "<L_GRAMMAR_end_class>"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(61): error C2143: Syntaxfehler: Es fehlt ";" vor "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\style\defaultstyles.h(61): fatal error C1506: Weiterverarbeitung nach der Auflösung von Blöcken nicht möglich
-  SimpleScrollBar.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(195): error C2039: "position": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(195): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(203): error C2039: "position": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(203): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(201): error C2664: "sf::Vector2f Menu::ElementBase::convertPosition(const float,const float) const" : Konvertierung von Argument 1 von "const T" in "const sf::Vector2f" nicht möglich
-          with
-          [
-              T=float
-          ]
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(204): note: Quelltyp konnte von keinem Konstruktor angenommen werden, oder die Überladungsauflösung des Konstruktors ist mehrdeutig
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.cpp(13): error C2039: "size": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.cpp(13): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.cpp(14): error C2039: "size": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.cpp(14): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.cpp(22): error C2039: "size": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.cpp(22): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.cpp(23): error C2039: "size": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
-c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.cpp(23): error C2039: "padding": Ist kein Element von "Menu::SimpleScrollBar::Style"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\menu\element\simplescrollbar.h(22): note: Siehe Deklaration von "Menu::SimpleScrollBar::Style"
   EditorScene.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
+  class template variant is only available with C++17 or later.
 c:\users\phisn\source\repos\pixeljumper2\client\source\game\gameview.h(41): warning C4244: "Argument": Konvertierung von "const T" in "T", möglicher Datenverlust
           with
           [
@@ -513,6 +352,42 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): warning
           with
           [
               T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(53): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(52): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(57): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(56): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
           ]
 c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(50): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
@@ -524,65 +399,19 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(49
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(77): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(86): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(76): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(85): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(88): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(87): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(65): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(65): warning C4244: "Initialisierung": Konvertierung von "T" in "const int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(66): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(66): warning C4244: "Initialisierung": Konvertierung von "T" in "const int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(68): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(69): warning C4244: "Initialisierung": Konvertierung von "T" in "int", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(72): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(98): error C2039: "Selection": Ist kein Element von "Editor::Cache"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(14): note: Siehe Deklaration von "Editor::Cache"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator.h(103): warning C4060: switch-Anweisung enthält weder "case"- noch "default"-Bezeichnungen
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(3): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "Client/source/menu/MenuRoot.h": No such file or directory
-  MenuBaseScene.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(3): fatal error C1083: Datei (Include) kann nicht geöffnet werden: "Client/source/menu/MenuRoot.h": No such file or directory
   Code wird generiert...
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(43): warning C4715: "Editor::SelectorElement::manipulate": Nicht alle Codepfade geben einen Wert zurück.
+x64\Debug\TileBase.obj : warning LNK4042: Objekt mehrmals angegeben; zusätzliche Objekte werden ignoriert.
+x64\Debug\Wall.obj : warning LNK4042: Objekt mehrmals angegeben; zusätzliche Objekte werden ignoriert.
+x64\Debug\World.obj : warning LNK4042: Objekt mehrmals angegeben; zusätzliche Objekte werden ignoriert.
+  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

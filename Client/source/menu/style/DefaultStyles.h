@@ -55,7 +55,7 @@ namespace Menu
 			const Style style = 
 			{
 
-			}
+			};
 		};
 	}
 }

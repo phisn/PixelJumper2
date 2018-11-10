@@ -3,6 +3,10 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 
+#ifndef MENU
+#define MENU ::Menu
+#endif
+
 namespace Menu
 {
 	class Base

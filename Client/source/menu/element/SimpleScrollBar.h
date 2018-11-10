@@ -192,7 +192,7 @@ namespace Menu
 		if (getDirection() == Direction::Horizontal)
 		{
 			scrollBar.setPosition(convertPosition(
-				style.position.x + style.padding + currentPosition,
+				properties.position.x + properties.padding + currentPosition,
 				scrollBar.getPosition().y
 			));
 		}
@@ -200,7 +200,7 @@ namespace Menu
 		{
 			scrollBar.setPosition(convertPosition(
 				scrollBar.getPosition().x,
-				style.position.y + style.padding + currentPosition
+				properties.position.y + properties.padding + currentPosition
 			));
 		}
 	}
