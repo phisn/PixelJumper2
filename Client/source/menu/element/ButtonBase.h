@@ -29,12 +29,19 @@ namespace Menu
 				click_outlineThickness;
 		};
 
-		ButtonBase(
-			const Style style)
+		ButtonBase(const Style style)
 			:
 			style(style)
 		{
+			useOnEvent = true;
+			useOnLogic = false;
+
+			setDefaultStyle();
 		}
+
+		virtual void onEvent(const sf::Event event) override;
+		virtual void onDraw() override;
+
 	protected:
 		void setEnterStyle();
 		void setDefaultStyle();
@@ -48,8 +55,20 @@ namespace Menu
 		virtual void onClickBegin() = 0;
 		virtual void onClickEnd() = 0;
 
+		virtual void resetPosition() override;
+
 	private:
 		const Style style;
+
+		bool checkIsInside(const sf::Vector2f p)
+		{
+			return shape.getPosition().x < p.x 
+				&& shape.getPosition().y < p.y 
+				&& shape.getPosition().x + shape.getSize().x > p.x 
+				&& shape.getPosition().y + shape.getSize().y > p.y;
+		}
+
+		bool beginInside, isInside;
 
 		sf::RectangleShape shape;
 	};

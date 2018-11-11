@@ -47,7 +47,7 @@ namespace Menu
 		};
 
 		// Can't fail & Can poly
-		void initialize(
+		virtual void initialize(
 			Properties* const properties);
 
 		virtual void onEvent(
@@ -64,15 +64,12 @@ namespace Menu
 		sf::Vector2f getSize() const { return size; }
 		sf::Vector2f getPosition() const { return position; }
 
-		virtual void calculatePositon() = 0;
+		virtual void resetPosition() = 0;
 
 		bool isUseOnLogic() const;
 		bool isUseOnEvent() const;
 
 	protected:
-		virtual void onInitialize(
-			Properties* const properties) = 0;
-
 		sf::Vector2f convertPixel(
 			const int x,
 			const int y) const;
@@ -102,10 +99,9 @@ namespace Menu
 	{
 		view = properties->view;
 		size = properties->size;
-		position = properties->position;
+		position = convertPosition( properties->position );
 
-		onInitialize(properties);
-		calculatePositon();
+		resetPosition();
 	}
 
 	inline void ElementBase::setParent(
@@ -113,7 +109,7 @@ namespace Menu
 	{
 		this->parent = parent;
 
-		calculatePositon();
+		resetPosition();
 	}
 
 	inline void ElementBase::setSpecificOffset(
@@ -121,7 +117,7 @@ namespace Menu
 	{
 		this->specificOffset = offset;
 
-		calculatePositon();
+		resetPosition();
 	}
 	
 	inline bool ElementBase::isUseOnLogic() const
