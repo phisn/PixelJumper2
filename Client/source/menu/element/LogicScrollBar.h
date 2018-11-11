@@ -28,6 +28,7 @@ namespace Menu
 			direction(direction),
 			view(view)
 		{
+			useOnEvent = true;
 		}
 
 		virtual ~LogicScrollBar() { }

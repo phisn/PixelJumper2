@@ -20,7 +20,7 @@ namespace Menu
 		{
 		}
 
-		virtual ~ContainerBase() = 0;
+		virtual ~ContainerBase() { }
 
 		virtual void addElement(ElementBase* const element) = 0;
 		virtual void clearElements() = 0;

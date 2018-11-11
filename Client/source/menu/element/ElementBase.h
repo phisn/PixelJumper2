@@ -43,6 +43,7 @@ namespace Menu
 		};
 
 		ElementBase(
+			// parameter deprecated
 			ElementBase* const parent = NULL)
 			:
 			parent(parent)
@@ -77,6 +78,12 @@ namespace Menu
 			loadPosition();
 		}
 
+		void setParent(
+			ElementBase* const parent)
+		{
+			this->parent = parent;
+		}
+
 		virtual sf::Vector2f getSize() const = 0;
 		virtual sf::Vector2f getPosition() const = 0;
 
@@ -100,7 +107,7 @@ namespace Menu
 			const float x,
 			const float y) const
 		{
-			convertPosition(
+			return convertPosition(
 				sf::Vector2f(x, y)
 			);
 		}

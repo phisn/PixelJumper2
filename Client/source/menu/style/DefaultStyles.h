@@ -27,12 +27,8 @@ namespace Menu
 
 			void onLogic(
 				const sf::Time) override { }
-
 		private:
-			const Style style =
-			{
-				// ...
-			};
+			static Style style;
 		};
 
 		class RowContainer
@@ -54,7 +50,7 @@ namespace Menu
 		private:
 			const Style style = 
 			{
-
+				0.0f // margin
 			};
 		};
 	}

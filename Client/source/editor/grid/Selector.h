@@ -25,6 +25,7 @@ namespace Editor
 			const World* const world,
 			GridView* const view)
 			:
+			view(view),
 			element(view, world)
 		{
 			Manipulator::getCacheManager()->registerComponent(
@@ -37,7 +38,13 @@ namespace Editor
 
 		void draw()
 		{
-			component.draw();
+			DEVICE::Interface::getScreen()->resetView();
+
+			component.drawMarker();
+
+			view->applyView();
+
+			component.drawSelection();
 		}
 
 		void begin(
@@ -83,6 +90,7 @@ namespace Editor
 		SelectorComponent component;
 		SelectorElement element;
 
+		GridView* const view;
 		sf::Vector2f
 			size,
 			offset;

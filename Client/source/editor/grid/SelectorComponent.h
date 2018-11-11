@@ -18,6 +18,10 @@ namespace Editor
 			:
 			selection(&Manipulator::getCache()->readOutput()->selection)
 		{
+			marker.setFillColor(sf::Color::Transparent);
+
+			marker.setOutlineColor(markerColor);
+			marker.setOutlineThickness(2.f);
 		}
 
 		void notify(
@@ -32,13 +36,19 @@ namespace Editor
 			}
 		}
 
-		void draw()
+		void drawSelection()
 		{
-			for (sf::RectangleShape& shape : shapes)
+			for (sf::RectangleShape& shape : selections)
 			{
 				DEVICE::Interface::getScreen()->onDraw(
 					&shape);
 			}
+		}
+
+		void drawMarker()
+		{
+			DEVICE::Interface::getScreen()->onDraw(
+				&marker);
 		}
 
 	private:
@@ -50,43 +60,49 @@ namespace Editor
 			{
 				if (selection->typeChanged)
 				{
-					shapes.clear();
-					shapes.emplace_back();
+					selections.clear();
+					selections.emplace_back();
 
-					shapes.back().setFillColor(selectionColor);
+					selections.back().setFillColor(selectionColor);
 				}
 
-				shapes.back().setSize(sf::Vector2f(
+				selections.back().setSize(sf::Vector2f(
 					selection->area->size.x,
 					selection->area->size.y
 				));
-				shapes.back().setPosition(
+				selections.back().setPosition(
 					selection->area->offset.x,
 					selection->area->offset.y);
 			}
 			else // == SelectionCache::Output::Type::Tile
 			{
-				shapes.clear();
+				selections.clear();
 
 				for (TileBase* const tile : selection->tile->tiles)
 				{
-					shapes.emplace_back();
+					selections.emplace_back();
 
-					shapes.back().setFillColor(selectionColor);
-					shapes.back().setSize(
+					selections.back().setFillColor(selectionColor);
+					selections.back().setSize(
 						tile->getShape()->getSize()
 					);
-					shapes.back().setPosition(
+					selections.back().setPosition(
 						tile->getShape()->getPosition()
 					);
 				}
 			}
+
+			marker.setSize(
+				selection->size);
+			marker.setPosition(
+				selection->offset);
 		}
 
+		sf::RectangleShape marker;
 		std::vector<
-			sf::RectangleShape> shapes;
+			sf::RectangleShape> selections;
 
-		const sf::Color selectionColor =
-			sf::Color(150, 150, 150, 100);
+		const sf::Color selectionColor = sf::Color(150, 150, 150, 100);
+		const sf::Color markerColor = sf::Color(50, 50, 50, 100);
 	};
 }

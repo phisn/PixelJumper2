@@ -92,6 +92,8 @@ namespace Menu
 		virtual void addElement(
 			ElementBase* const element) override
 		{
+			element->setParent(this);
+
 			if (elements.size() > 0)
 			{
 				ElementBase* const lastElement = elements.back();

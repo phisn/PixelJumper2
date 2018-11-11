@@ -23,11 +23,24 @@ namespace Menu
 			DEVICE::Interface::getScreen()->applyView(&view);
 		}
 
+		void resetSize()
+		{
+			view.setSize(
+				DEVICE::Interface::getScreen()->getWindow()->getSize().x * view.getViewport().width,
+				DEVICE::Interface::getScreen()->getWindow()->getSize().y * view.getViewport().height
+			);
+
+			view.setCenter(
+				view.getSize() / 2.f
+			);
+		}
+
 		void setViewport(
 			const sf::FloatRect viewport)
 		{
 			view.setViewport(viewport);
 
+			resetSize();
 			resetLayout();
 		}
 

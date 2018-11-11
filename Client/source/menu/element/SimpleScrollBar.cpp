@@ -19,7 +19,7 @@ namespace Menu
 		else
 		{
 			scrollBar.setSize(sf::Vector2f(
-				properties.size.y - properties.padding * 2,
+				properties.size.x - properties.padding * 2,
 				(properties.size.y - properties.padding * 2) * percent
 			));
 
@@ -73,10 +73,12 @@ namespace Menu
 		const int x, 
 		const int y) const
 	{
+		sf::Vector2f pos = DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(sf::Vector2i(x, y));
+
 		return
-			shape.getPosition().x >= x &&
-			shape.getPosition().y >= y &&
-			shape.getPosition().x + shape.getSize().x <= x &&
-			shape.getPosition().y + shape.getSize().y <= y;
+			shape.getPosition().x >= pos.x &&
+			shape.getPosition().y >= pos.y &&
+			shape.getPosition().x + shape.getSize().x <= pos.x &&
+			shape.getPosition().y + shape.getSize().y <= pos.y;
 	}
 }

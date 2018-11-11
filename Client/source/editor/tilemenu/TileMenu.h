@@ -44,6 +44,13 @@ namespace Editor
 		void onLogic(
 			const sf::Time time) override { }
 
+		void onDraw() override
+		{
+			MENU::RootBase::onDraw();
+
+			container.onDraw();
+		}
+
 		void resetLayout() override
 		{
 			// all values as pixel
@@ -56,7 +63,11 @@ namespace Editor
 			static Container::Properties properties;
 
 			properties.position = { 0.f, 0.f };
-			properties.size = getView()->getSize();
+			properties.size =
+			{
+				DEVICE::Interface::getScreen()->getWindow()->getSize().x * getView()->getViewport().width,
+				DEVICE::Interface::getScreen()->getWindow()->getSize().y * getView()->getViewport().height
+			};
 
 			properties.scrollBar.padding = 2.f;
 			properties.scrollBar.position = { 0.f, 0.f };
@@ -95,6 +106,7 @@ namespace Editor
 			}
 
 			container.initialize(&properties);
+			container.loadPosition();
 		}
 
 	private:

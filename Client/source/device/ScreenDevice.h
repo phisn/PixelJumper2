@@ -40,6 +40,13 @@ namespace Device
 			window.setView(*view);
 		}
 
+		void resetView()
+		{
+			window.setView(
+				window.getDefaultView()
+			);
+		}
+
 		sf::RenderWindow* getWindow()
 		{
 			return &window;

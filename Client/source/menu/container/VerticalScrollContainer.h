@@ -69,6 +69,9 @@ namespace Menu
 			ElementBase::Properties* const properties) override
 		{
 			this->properties = *(Properties*) properties;
+
+			scrollBar.initialize(&this->properties.scrollBar);
+			container.initialize(&this->properties.container);
 		}
 
 		void onEvent(

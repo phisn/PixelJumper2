@@ -68,10 +68,7 @@ namespace Editor
 				c_position2.y - fmod(c_position2.y, (float)view->getGridSize()) - (c_position2.y < 0 ? (float)view->getGridSize() : 0) + (float)view->getGridSize()
 			);
 
-			output->area->offset = sf::Vector2f(
-				c_real_position2.x - output->area->offset.x,
-				c_real_position2.y - output->area->offset.y
-			);
+			output->area->size = c_real_position2 - output->area->offset;
 		}
 
 		void determineType() // & load tile tiles
