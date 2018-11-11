@@ -175,6 +175,7 @@
     <ClInclude Include="source\menu\container\ContainerBase.h" />
     <ClInclude Include="source\menu\container\SimpleRowContainer.h" />
     <ClInclude Include="source\menu\container\VerticalScrollContainer.h" />
+    <ClInclude Include="source\menu\element\ButtonBase.h" />
     <ClInclude Include="source\menu\element\ElementBase.h" />
     <ClInclude Include="source\menu\element\LogicButton.h" />
     <ClInclude Include="source\menu\element\LogicScrollBar.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="source\menu\container\ContainerBase.cpp" />
     <ClCompile Include="source\menu\container\SimpleRowContainer.cpp" />
     <ClCompile Include="source\menu\container\VerticalScrollContainer.cpp" />
+    <ClCompile Include="source\menu\element\ButtonBase.cpp" />
     <ClCompile Include="source\menu\element\LogicButton.cpp" />
     <ClCompile Include="source\menu\element\LogicScrollBar.cpp" />
     <ClCompile Include="source\menu\element\SimpleButton.cpp" />

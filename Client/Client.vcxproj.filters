@@ -79,6 +79,12 @@
     <Filter Include="source\editor\manipulator\cache">
       <UniqueIdentifier>{35661510-c28b-4826-9ed5-0642be31d455}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\menu\element_">
+      <UniqueIdentifier>{6966766c-ff3d-45a9-a06f-fcf4bdca3e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\menu\container_">
+      <UniqueIdentifier>{c0fa9da4-1b5f-4eb6-afb3-b41bc156f0bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -279,6 +285,9 @@
     <ClInclude Include="source\editor\manipulator\cache\ModeCache.h">
       <Filter>source\editor\manipulator\cache</Filter>
     </ClInclude>
+    <ClInclude Include="source\menu\element\ButtonBase.h">
+      <Filter>source\menu\element</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -451,6 +460,9 @@
     </ClCompile>
     <ClCompile Include="source\editor\manipulator\cache\CacheManager.cpp">
       <Filter>source\editor\manipulator\cache</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\element\ButtonBase.cpp">
+      <Filter>source\menu\element</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
