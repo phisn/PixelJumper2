@@ -154,6 +154,7 @@
     <ClInclude Include="source\editor\manipulator\Manipulator.h" />
     <ClInclude Include="source\editor\template\TileTemplate.h" />
     <ClInclude Include="source\editor\template\WallTemplate.h" />
+    <ClInclude Include="source\editor\tilemenu\TileComponent.h" />
     <ClInclude Include="source\editor\tilemenu\TileMenu.h" />
     <ClInclude Include="source\editor\tilemenu\TileMenuButton.h" />
     <ClInclude Include="source\editor\World.h" />
@@ -173,12 +174,15 @@
     <ClInclude Include="source\game\World.h" />
     <ClInclude Include="source\game\WorldManager.h" />
     <ClInclude Include="source\menu\container\ContainerBase.h" />
+    <ClInclude Include="source\menu\container\RowContainerBase.h" />
     <ClInclude Include="source\menu\container\SimpleRowContainer.h" />
     <ClInclude Include="source\menu\container\VerticalScrollContainer.h" />
+    <ClInclude Include="source\menu\Common.h" />
     <ClInclude Include="source\menu\element\ButtonBase.h" />
     <ClInclude Include="source\menu\element\ElementBase.h" />
     <ClInclude Include="source\menu\element\LogicButton.h" />
     <ClInclude Include="source\menu\element\LogicScrollBar.h" />
+    <ClInclude Include="source\menu\element\ScrollBarBase.h" />
     <ClInclude Include="source\menu\element\SimpleButton.h" />
     <ClInclude Include="source\menu\element\SimpleScrollBar.h" />
     <ClInclude Include="source\menu\MenuBase.h" />
@@ -219,6 +223,7 @@
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
     <ClCompile Include="source\editor\template\TileTemplate.cpp" />
     <ClCompile Include="source\editor\template\WallTemplate.cpp" />
+    <ClCompile Include="source\editor\tilemenu\TileComponent.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileMenu.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileMenuButton.cpp" />
     <ClCompile Include="source\editor\World.cpp" />
@@ -237,11 +242,13 @@
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\game\WorldManager.cpp" />
     <ClCompile Include="source\menu\container\ContainerBase.cpp" />
+    <ClCompile Include="source\menu\container\RowContainerBase.cpp" />
     <ClCompile Include="source\menu\container\SimpleRowContainer.cpp" />
     <ClCompile Include="source\menu\container\VerticalScrollContainer.cpp" />
     <ClCompile Include="source\menu\element\ButtonBase.cpp" />
     <ClCompile Include="source\menu\element\LogicButton.cpp" />
     <ClCompile Include="source\menu\element\LogicScrollBar.cpp" />
+    <ClCompile Include="source\menu\element\ScrollBarBase.cpp" />
     <ClCompile Include="source\menu\element\SimpleButton.cpp" />
     <ClCompile Include="source\menu\element\SimpleScrollBar.cpp" />
     <ClCompile Include="source\menu\style\DefaultStyles.cpp" />

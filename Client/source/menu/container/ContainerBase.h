@@ -11,16 +11,32 @@ namespace Menu
 		public ElementBase
 	{
 	public:
+		typedef Properties Propeties;
+
+
+		virtual ~ContainerBase() { }
+
+		virtual void addElement(ElementBase* const element) = 0;
+		virtual void clearElements() = 0;
+
+		virtual bool isEmpty() const = 0;
+	};
+
+	class _ContainerBase
+		:
+		public ElementBase
+	{
+	public:
 		typedef Properties Properties;
 
-		ContainerBase(
+		_ContainerBase(
 			ElementBase* const parent)
 			:
 			ElementBase(parent)
 		{
 		}
 
-		virtual ~ContainerBase() { }
+		virtual ~_ContainerBase() { }
 
 		virtual void addElement(ElementBase* const element) = 0;
 		virtual void clearElements() = 0;

@@ -46,6 +46,8 @@ namespace Menu
 				position;
 		};
 
+		virtual ~ElementBase() { }
+
 		// Can't fail & Can poly
 		virtual void initialize(
 			Properties* const properties);

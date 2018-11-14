@@ -39,6 +39,8 @@ namespace Menu
 			setDefaultStyle();
 		}
 
+		virtual ~ButtonBase() { }
+
 		virtual void onEvent(const sf::Event event) override;
 		virtual void onDraw() override;
 
@@ -47,20 +49,25 @@ namespace Menu
 		void setDefaultStyle();
 		void setClickStyle();
 
-		virtual void onEnter() = 0;
-		virtual void onLeave() = 0;
+		bool getIsInside() const { return isInside; }
 
-		virtual void onClick() = 0;
+		virtual void onMouseEnter() { setEnterStyle(); }
+		virtual void onMouseLeave() { setDefaultStyle(); }
 
-		virtual void onClickBegin() = 0;
-		virtual void onClickEnd() = 0;
+		virtual void onMouseClick() = 0;
 
+		virtual void onMouseClickBegin() { setClickStyle(); }
+		virtual void onMouseClickEnd()
+		{
+			isInside ? setEnterStyle() : setDefaultStyle();
+		}
+		
 		virtual void resetPosition() override;
 
 	private:
 		const Style style;
 
-		bool checkIsInside(const sf::Vector2f p)
+		bool checkIsInside(const sf::Vector2f p) const
 		{
 			return shape.getPosition().x < p.x 
 				&& shape.getPosition().y < p.y 

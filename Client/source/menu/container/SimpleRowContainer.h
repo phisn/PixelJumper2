@@ -8,7 +8,7 @@ namespace Menu
 {
 	class SimpleRowContainer
 		:
-		public ContainerBase
+		public _ContainerBase
 	{
 	public:
 		typedef Properties Properties;
@@ -29,7 +29,7 @@ namespace Menu
 			const Style style,
 			const Direction direction)
 			:
-			ContainerBase(parent),
+			_ContainerBase(parent),
 			style(style),
 			direction(direction)
 		{

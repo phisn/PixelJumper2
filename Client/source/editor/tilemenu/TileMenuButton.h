@@ -1,6 +1,12 @@
 #pragma once
 
-#include <Client/source/menu/element/SimpleButton.h>
+#include <Client/source/menu/element/ButtonBase.h>
+
+#include <Client/source/editor/manipulator/Manipulator.h>
+#include <Client/source/editor/manipulator/cache/CacheManager.h>
+#include <Client/source/editor/manipulator/cache/Cache.h>
+
+#include <Client/source/editor/template/TileTemplate.h>
 
 #include <functional>
 
@@ -8,20 +14,21 @@ namespace Editor
 {
 	class TileMenuButton
 		:
-		public MENU::SimpleButton
+		public MENU::ButtonBase
 	{
 	public:
 		struct Style
 		{
-			std::wstring label;
+			TileTemplate* tile;
+
 			sf::Color 
 				fillColor, 
 				clickColor;
 
-			MENU::SimpleButton::Style makeStyle() const
+			MENU::ButtonBase::Style makeStyle() const
 			{
-				MENU::SimpleButton::Style style = { };
-
+				MENU::ButtonBase::Style style = { };
+				
 				style.enter_fillColor = fillColor;
 				style.enter_outlineColor = sf::Color::Color(150, 150, 150);
 				style.enter_outlineThickness = 0.2f;
@@ -41,25 +48,61 @@ namespace Editor
 		};
 
 		TileMenuButton(
-			ElementBase* const parent,
 			const Style style)
 			:
-			MENU::SimpleButton( 
-				parent,
-				style.makeStyle() ),
-			label(style.label)
+			MENU::ButtonBase( style.makeStyle() ),
+			tile( style.tile ),
+			label( style.tile->name )
 		{
 		}
 
 		void onLogic(
 			const sf::Time time) override { }
 
-		void onMouseClick() override
+		void unselect()
 		{
-
+			selected = false;
+			setDefaultStyle();
 		}
+
 	private:
+		bool selected = false;
 
 		std::wstring label;
+		TileTemplate* tile;
+
+		void onMouseEnter() override
+		{
+			if (!selected)
+			{
+				MENU::ButtonBase::onMouseEnter();
+			}
+		}
+
+		void onMouseLeave() override
+		{
+			if (!selected)
+			{
+				MENU::ButtonBase::onMouseLeave();
+			}
+		}
+
+		void onMouseClick() override
+		{
+			selected = true;
+
+			Manipulator::getCache()->writeInput()->tile.tile = tile;
+			Manipulator::getCacheManager()->notify(
+				Cache::Sector::Tile
+			); // container as component
+		} 
+
+		void onMouseClickEnd() override
+		{
+			if (!getIsInside())
+			{
+				MENU::ButtonBase::onMouseClickEnd();
+			}
+		}
 	};
 }

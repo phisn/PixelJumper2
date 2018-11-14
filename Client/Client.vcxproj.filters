@@ -231,9 +231,6 @@
     <ClInclude Include="source\menu\element\SimpleScrollBar.h">
       <Filter>source\menu\element</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\element\ElementBase.h">
-      <Filter>source\menu\element</Filter>
-    </ClInclude>
     <ClInclude Include="source\menu\container\ContainerBase.h">
       <Filter>source\menu\container</Filter>
     </ClInclude>
@@ -287,6 +284,21 @@
     </ClInclude>
     <ClInclude Include="source\menu\element\ButtonBase.h">
       <Filter>source\menu\element</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\Common.h">
+      <Filter>source\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\tilemenu\TileComponent.h">
+      <Filter>source\menu\element_</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\element\ScrollBarBase.h">
+      <Filter>source\menu\element_</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\element\ElementBase.h">
+      <Filter>source\menu\element_</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\container\RowContainerBase.h">
+      <Filter>source\menu\container_</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -463,6 +475,15 @@
     </ClCompile>
     <ClCompile Include="source\menu\element\ButtonBase.cpp">
       <Filter>source\menu\element</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\tilemenu\TileComponent.cpp">
+      <Filter>source\menu\element_</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\element\ScrollBarBase.cpp">
+      <Filter>source\menu\element_</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\container\RowContainerBase.cpp">
+      <Filter>source\menu\container_</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

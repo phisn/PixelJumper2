@@ -43,7 +43,7 @@ namespace Menu
 			{
 				beginInside = true;
 
-				onClickBegin();
+				onMouseClickBegin();
 			}
 
 			break;
@@ -54,11 +54,11 @@ namespace Menu
 				{
 					beginInside = false;
 					
-					onClickEnd();
+					onMouseClickEnd();
 					
 					if (isInside)
 					{
-						onClick();
+						onMouseClick();
 					}
 				}
 			}
@@ -80,11 +80,11 @@ namespace Menu
 
 				if (isInside)
 				{
-					onEnter();
+					onMouseEnter();
 				}
 				else
 				{
-					onLeave();
+					onMouseLeave();
 				}
 			}
 

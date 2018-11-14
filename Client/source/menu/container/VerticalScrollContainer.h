@@ -24,7 +24,7 @@ namespace Menu
 #endif
 	class VerticalScrollContainer
 		:
-		public ContainerBase
+		public _ContainerBase
 	{
 	public:
 #ifdef HIDE_POLICIES
@@ -33,7 +33,7 @@ namespace Menu
 #endif
 		struct Properties
 			:
-			public ContainerBase::Properties
+			public _ContainerBase::Properties
 		{
 			DefaultStyle::ScrollBar::Properties scrollBar;
 			DefaultStyle::RowContainer::Properties container;
@@ -58,7 +58,7 @@ namespace Menu
 				SimpleScrollBar::Direction::Vertical,
 				view,
 				this),
-			ContainerBase(
+			_ContainerBase(
 				parent)
 		{
 			useOnEvent = scrollBar.isUseOnEvent() || container.isUseOnEvent();
