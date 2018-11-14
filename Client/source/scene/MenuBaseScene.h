@@ -5,6 +5,7 @@
 #include <Client/source/scene/MainSceneBase.h>
 
 #include <vector>
+#include <iostream>
 
 namespace Scene
 {
@@ -18,18 +19,26 @@ namespace Scene
 		virtual void onEvent(
 			const sf::Event event)
 		{
-			if (event.type == sf::Event::MouseMoved &&
+			/*
+			
+				Create strong select and weak select
+				Strong: MouseButtonPressed -> for important events
+				Weak:   MouseMoved -> for visual events
+			
+			*/
+			if (event.type == sf::Event::MouseButtonPressed &&
 				!isInside(
 					selected,
-					event.mouseMove.x,
-					event.mouseMove.y)
+
+					event.mouseButton.x,
+					event.mouseButton.y)
 				)
 			{
 				for (MENU::RootBase* root : containers)
 					if (isInside(
 						root,
-						event.mouseMove.x,
-						event.mouseMove.y))
+						event.mouseButton.x,
+						event.mouseButton.y))
 					{
 						selected = root;
 
@@ -37,11 +46,22 @@ namespace Scene
 					}
 			}
 
-			for (MENU::RootBase* const root : containers)
+			switch (event.type)
 			{
-				root->onEvent(event);
+			// case ...:
+			case sf::Event::MouseMoved:
+			case sf::Event::MouseWheelScrolled:
+				for (MENU::RootBase* const root : containers)
+				{
+					root->onEvent(event);
+				}
+
+				break;
+			default:
+				selected->onEvent(event);
+
+				break;
 			}
-			// selected->onEvent(event);
 		}
 
 		virtual void onLogic(
@@ -84,8 +104,10 @@ namespace Scene
 			Menu::RootBase* const root)
 		{
 			containers.push_back(root);
-
-			selected = root;
+			
+			static int i = 0;
+			if (++i == 1)
+				selected = root;
 		}
 
 		const std::vector<Menu::RootBase*>& getContainers() const

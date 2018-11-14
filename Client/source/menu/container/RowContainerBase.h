@@ -11,40 +11,49 @@ namespace Menu
 		public ContainerBase
 	{
 	public:
-		RowContainerBase();
-		~RowContainerBase();
-
 		virtual void onEvent(
 			const sf::Event event) override
 		{
-
+			for (ElementBase* const element : elements)
+				element->onEvent(event);
 		}
 
 		virtual void onLogic(
 			const sf::Time time) override
 		{
-
+			for (ElementBase* const element : elements)
+				if (element->isUseOnLogic())
+				{
+					element->onLogic(time);
+				}
 		}
 
 		virtual void onDraw() override
 		{
-
+			for (ElementBase* const element : elements)
+				if (element->isUseOnEvent())
+				{
+					element->onDraw();
+				}
 		}
 
 		virtual void resetPosition() override
 		{
+			ContainerBase::resetPosition();
 
+			for (ElementBase* const element : elements)
+				element->resetPosition();
 		}
 
 		void addElement(
 			ElementBase* const element) override
 		{
-
+			elements.push_back(element);
 		}
 
 		void clearElements() override
 		{
-
+			elements.clear();
 		}
 
 		bool isEmpty() const override
@@ -54,5 +63,7 @@ namespace Menu
 
 	private:
 		std::vector<ElementBase*> elements;
+
+		float elementOffset = 0.f;
 	};
 }

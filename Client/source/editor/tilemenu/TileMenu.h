@@ -1,17 +1,35 @@
 #pragma once
 
-#define USE_POLICIES
-
-#include <Client/source/editor/template/WallTemplate.h>
-
-#include <Client/source/editor/template/TileTemplate.h>
-#include <Client/source/editor/tilemenu/TileMenuButton.h>
-
-#include <Client/source/menu/container/VerticalScrollContainer.h>
+#include <Client/source/menu/element/ScrollBarBase.h>
 #include <Client/source/menu/RootBase.h>
-#include <Client/source/menu/style/DefaultStyles.h>
 
 #include <vector>
+
+class ScrollBar
+	:
+	public MENU::ScrollBarBase
+{
+public:
+	ScrollBar()
+		:
+		MENU::ScrollBarBase(
+			{
+				sf::Color::Color(100, 100, 100),
+				sf::Color::Color(50, 50, 50),
+
+				sf::Color::Color(150, 150, 150),
+				sf::Color::Color(50, 50, 50),
+
+				sf::Color::Color(200, 200, 200),
+				sf::Color::Color(50, 50, 50),
+			},
+			MENU::Direction::Vertical)
+	{
+	}
+
+	void onLogic(const sf::Time time) override { }
+	void onScrollBarMoved() override { updatePosition(); }
+};
 
 namespace Editor
 {
@@ -20,25 +38,14 @@ namespace Editor
 		public MENU::RootBase
 	{
 	public:
-		typedef MENU::VerticalScrollContainer<
-			MENU::DefaultStyle::ScrollBar,
-			MENU::DefaultStyle::RowContainer> Container;
-
 		TileMenu()
-			:
-			container(
-				NULL,
-				getView()
-			)
 		{
-			createTiles();
-			createElements();
 		}
 
 		void onEvent(
 			const sf::Event event) override
 		{
-			container.onEvent(event);
+			s.onEvent(event);
 		}
 
 		void onLogic(
@@ -48,9 +55,26 @@ namespace Editor
 		{
 			MENU::RootBase::onDraw();
 
-			container.onDraw();
+			s.onDraw();
 		}
 
+		void resetLayout() override
+		{
+			MENU::ScrollBarBase::Properties p;
+
+			p.padding = 4.f;
+			p.position = { 0.0f, 0.0f };
+			p.size = sf::Vector2f(
+				50.f, 
+				DEVICE::Interface::getScreen()->getWindow()->getSize().y 
+			);
+			p.view = getView();
+
+			s.initialize(&p);
+			s.setConsumption(0.5);
+		}
+
+		/*
 		void resetLayout() override
 		{
 			// all values as pixel
@@ -107,9 +131,11 @@ namespace Editor
 
 			container.initialize(&properties);
 			container.loadPosition();
-		}
+		}*/
 
 	private:
+		ScrollBar s;
+		/*
 		void createTiles()
 		{
 			tiles.push_back( new WallTemplate() );
@@ -133,10 +159,12 @@ namespace Editor
 			// add from templates
 		}
 
+
 		std::vector<
 			TileTemplate*> tiles;
 		std::vector<
 			TileMenuButton> elements;
-		Container container;
+			*/
+
 	};
 }

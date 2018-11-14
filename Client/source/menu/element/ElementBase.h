@@ -66,7 +66,7 @@ namespace Menu
 		sf::Vector2f getSize() const { return size; }
 		sf::Vector2f getPosition() const { return position; }
 
-		virtual void resetPosition() = 0;
+		virtual void resetPosition();
 
 		bool isUseOnLogic() const;
 		bool isUseOnEvent() const;
@@ -89,7 +89,10 @@ namespace Menu
 	private:
 		sf::Vector2f 
 			specificOffset,
+			
+			nativePosition,
 			size,
+
 			position;
 
 		sf::View* view = NULL;
@@ -100,8 +103,9 @@ namespace Menu
 		ElementBase::Properties* const properties)
 	{
 		view = properties->view;
+
 		size = properties->size;
-		position = convertPosition( properties->position );
+		nativePosition = properties->position;
 
 		resetPosition();
 	}
@@ -120,6 +124,11 @@ namespace Menu
 		this->specificOffset = offset;
 
 		resetPosition();
+	}
+
+	inline void ElementBase::resetPosition()
+	{
+		position = convertPosition( nativePosition );
 	}
 	
 	inline bool ElementBase::isUseOnLogic() const

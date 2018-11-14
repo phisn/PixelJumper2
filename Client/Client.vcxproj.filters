@@ -64,12 +64,6 @@
     <Filter Include="source\menu">
       <UniqueIdentifier>{173be716-58fa-45c2-88ec-bbae6ac60ee8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\menu\element">
-      <UniqueIdentifier>{6510cbe6-5fda-4563-9d92-a9b4b3a236da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\menu\container">
-      <UniqueIdentifier>{7776c1aa-e037-441d-9f42-54a061ba138a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\menu\style">
       <UniqueIdentifier>{6ddc637d-501a-4851-bab9-000f8a04d3aa}</UniqueIdentifier>
     </Filter>
@@ -222,29 +216,8 @@
     <ClInclude Include="source\menu\MenuBase.h">
       <Filter>source\menu</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\element\LogicButton.h">
-      <Filter>source\menu\element</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\element\LogicScrollBar.h">
-      <Filter>source\menu\element</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\element\SimpleScrollBar.h">
-      <Filter>source\menu\element</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\container\ContainerBase.h">
-      <Filter>source\menu\container</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\container\VerticalScrollContainer.h">
-      <Filter>source\menu\container</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\element\SimpleButton.h">
-      <Filter>source\menu\element</Filter>
-    </ClInclude>
     <ClInclude Include="source\menu\style\DefaultStyles.h">
       <Filter>source\menu\style</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\container\SimpleRowContainer.h">
-      <Filter>source\menu\container</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\RootBase.h">
       <Filter>source\menu</Filter>
@@ -282,9 +255,6 @@
     <ClInclude Include="source\editor\manipulator\cache\ModeCache.h">
       <Filter>source\editor\manipulator\cache</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\element\ButtonBase.h">
-      <Filter>source\menu\element</Filter>
-    </ClInclude>
     <ClInclude Include="source\menu\Common.h">
       <Filter>source\menu</Filter>
     </ClInclude>
@@ -299,6 +269,9 @@
     </ClInclude>
     <ClInclude Include="source\menu\container\RowContainerBase.h">
       <Filter>source\menu\container_</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\element\ButtonBase.h">
+      <Filter>source\menu\element_</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -425,29 +398,8 @@
     <ClCompile Include="source\editor\grid\Selector.cpp">
       <Filter>source\editor\grid</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\element\LogicButton.cpp">
-      <Filter>source\menu\element</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\element\LogicScrollBar.cpp">
-      <Filter>source\menu\element</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\element\SimpleScrollBar.cpp">
-      <Filter>source\menu\element</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\container\ContainerBase.cpp">
-      <Filter>source\menu\container</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\container\VerticalScrollContainer.cpp">
-      <Filter>source\menu\container</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\element\SimpleButton.cpp">
-      <Filter>source\menu\element</Filter>
-    </ClCompile>
     <ClCompile Include="source\menu\style\DefaultStyles.cpp">
       <Filter>source\menu\style</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\container\SimpleRowContainer.cpp">
-      <Filter>source\menu\container</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\manipulator\Element.cpp">
       <Filter>source\editor\manipulator</Filter>
@@ -473,9 +425,6 @@
     <ClCompile Include="source\editor\manipulator\cache\CacheManager.cpp">
       <Filter>source\editor\manipulator\cache</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\element\ButtonBase.cpp">
-      <Filter>source\menu\element</Filter>
-    </ClCompile>
     <ClCompile Include="source\editor\tilemenu\TileComponent.cpp">
       <Filter>source\menu\element_</Filter>
     </ClCompile>
@@ -484,6 +433,9 @@
     </ClCompile>
     <ClCompile Include="source\menu\container\RowContainerBase.cpp">
       <Filter>source\menu\container_</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\element\ButtonBase.cpp">
+      <Filter>source\menu\element_</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

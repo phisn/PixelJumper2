@@ -8,24 +8,27 @@ namespace Menu
 		switch (event.type)
 		{
 		case sf::Event::MouseButtonPressed:
-			if (isInside)
+			if (event.mouseButton.button == sf::Mouse::Left && isInside)
 			{
 				beginInside = isInside;
 
 				const sf::Vector2f p = convertPixel(
-					event.mouseMove.x,
-					event.mouseMove.y);
+					event.mouseButton.x,
+					event.mouseButton.y);
 
-				beginPosition = direction == Direction::Horizontal
+				beginMousePosition = direction == Direction::Horizontal
 					? p.x : p.y;
 
-				onMouseClickEnd();
+				onMouseClickBegin();
 			}
 
 			break;
 		case sf::Event::MouseButtonReleased:
-			if (beginInside)
+			if (beginInside && event.mouseButton.button == sf::Mouse::Left)
 			{
+				scrollBarPosition += scrollBarOffset;
+				scrollBarOffset = 0;
+
 				beginInside = false;
 
 				onMouseClickEnd();
@@ -39,25 +42,25 @@ namespace Menu
 					event.mouseMove.x,
 					event.mouseMove.y);
 
-				const float position = direction == Direction::Horizontal
+				const float mousePosition = direction == Direction::Horizontal
 					? p.x : p.y,
-					oldCurrentPosition = currentPosition;
+					oldScrollBarOffset = scrollBarOffset;
 
-				currentPosition = position - beginPosition;
+				scrollBarOffset = mousePosition - beginMousePosition;
 
-				if (currentPosition < 0)
+				if (scrollBarOffset + scrollBarPosition < 0)
 				{
-					currentPosition = 0;
+					scrollBarOffset = -(2 * scrollBarPosition + scrollBarOffset);
 
-					if (oldCurrentPosition == 0)
+					if (oldScrollBarOffset == scrollBarOffset)
 						break;
 				}
 				else
-					if (currentPosition > length)
+					if (scrollBarOffset + scrollBarPosition > length)
 					{
-						currentPosition = length;
+						scrollBarOffset = (scrollBarOffset + scrollBarPosition) - length;
 
-						if (oldCurrentPosition == length)
+						if (oldScrollBarOffset == scrollBarOffset)
 							break;
 					}
 
