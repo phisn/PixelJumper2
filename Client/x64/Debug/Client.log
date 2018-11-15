@@ -100,10 +100,21 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenu.
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(27): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(26): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+  TileMenu.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenu.h(69): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  ScrollBarBase.cpp
   EditorScene.cpp
 c:\users\phisn\source\repos\pixeljumper2\client\source\resource\bytebuffer.h(158): warning C4267: "Argument": Konvertierung von "size_t" nach "const sf::Uint32", Datenverlust möglich
   class template variant is only available with C++17 or later.
@@ -203,15 +214,10 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenu.
           [
               T=float
           ]
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(27): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(26): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-  MenuBaseScene.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(27): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(26): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
   Code wird generiert...
 c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(43): warning C4715: "Editor::SelectorElement::manipulate": Nicht alle Codepfade geben einen Wert zurück.
   Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

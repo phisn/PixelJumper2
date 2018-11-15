@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/menu/Common.h>
 #include <Client/source/menu/container/ContainerBase.h>
 
 #include <vector>
@@ -11,6 +12,17 @@ namespace Menu
 		public ContainerBase
 	{
 	public:
+		struct Style
+		{
+			float elementMargin;
+		};
+		
+		RowContainerBase(
+			const Style style,
+			const Direction direction)
+		{
+		}
+		
 		virtual void onEvent(
 			const sf::Event event) override
 		{

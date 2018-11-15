@@ -58,6 +58,12 @@ namespace Editor
 			s.onDraw();
 		}
 
+		void addTile(
+			TileTemplate* const tile)
+		{
+
+		}
+
 		void resetLayout() override
 		{
 			MENU::ScrollBarBase::Properties p;

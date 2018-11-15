@@ -108,8 +108,8 @@ namespace Menu
 			) *= consumption;
 
 			length = direction == Direction::Horizontal
-				? getSize().x - x_size
-				: getSize().y - y_size;
+				? getSize().x - x_size - padding * 2
+				: getSize().y - y_size - padding * 2;
 
 			scrollBar.setSize(sf::Vector2f(
 				x_size, y_size

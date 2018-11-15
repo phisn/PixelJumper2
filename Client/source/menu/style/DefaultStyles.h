@@ -1,57 +1,54 @@
 #pragma once
 
-#include <Client/source/menu/container/SimpleRowContainer.h>
-#include <Client/source/menu/element/SimpleScrollBar.h>
+#include <Client/source/menu/container/RowContainerBase.h>
+#include <Client/source/menu/element/ScrollBarBase.h>
 
 namespace Menu
 {
 	namespace DefaultStyle
 	{
+		template <
+			class ScrollBarPolicy
+		>
 		class ScrollBar
 			:
-			public SimpleScrollBar
+			public ScrollBarPolicy
 		{
 		public:
 			ScrollBar(
-				ElementBase* const parent,
-				const Direction direction,
-				const sf::View* const view)
+				const Direction direction)
 				:
-				SimpleScrollBar(
-					parent,
+				ScrollBarPolicy(
 					style,
-					direction,
-					view)
+					direction)
 			{
 			}
 
 			void onLogic(
 				const sf::Time) override { }
 		private:
-			static Style style;
+			static ScrollBarBase::Style style;
 		};
 
+		template <
+			class RowContainerPolicy
+		>
 		class RowContainer
 			:
-			public SimpleRowContainer
+			public RowContainerPolicy
 		{
 		public:
 			RowContainer(
-				ElementBase* const parent,
 				const Direction direction)
 				:
-				SimpleRowContainer(
-					parent,
+				RowContainerPolicy(
 					style,
 					direction)
 			{
 			}
 
 		private:
-			const Style style = 
-			{
-				0.0f // margin
-			};
+			static RowContainerBase::Style style;
 		};
 	}
 }

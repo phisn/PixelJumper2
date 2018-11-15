@@ -173,8 +173,9 @@
     <ClInclude Include="source\game\tiles\Wall.h" />
     <ClInclude Include="source\game\World.h" />
     <ClInclude Include="source\game\WorldManager.h" />
-    <ClInclude Include="source\menu\container\RowContainerBase.h" />
     <ClInclude Include="source\menu\Common.h" />
+    <ClInclude Include="source\menu\container\RowContainerBase.h" />
+    <ClInclude Include="source\menu\container\ScrollContainer.h" />
     <ClInclude Include="source\menu\element\ButtonBase.h" />
     <ClInclude Include="source\menu\element\ElementBase.h" />
     <ClInclude Include="source\menu\element\ScrollBarBase.h" />
@@ -235,6 +236,7 @@
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\game\WorldManager.cpp" />
     <ClCompile Include="source\menu\container\RowContainerBase.cpp" />
+    <ClCompile Include="source\menu\container\ScrollContainer.cpp" />
     <ClCompile Include="source\menu\element\ButtonBase.cpp" />
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp" />
     <ClCompile Include="source\menu\style\DefaultStyles.cpp" />

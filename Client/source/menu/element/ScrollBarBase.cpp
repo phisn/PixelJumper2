@@ -50,7 +50,7 @@ namespace Menu
 
 				if (scrollBarOffset + scrollBarPosition < 0)
 				{
-					scrollBarOffset = -(2 * scrollBarPosition + scrollBarOffset);
+					scrollBarOffset = -scrollBarPosition;
 
 					if (oldScrollBarOffset == scrollBarOffset)
 						break;
@@ -58,7 +58,7 @@ namespace Menu
 				else
 					if (scrollBarOffset + scrollBarPosition > length)
 					{
-						scrollBarOffset = (scrollBarOffset + scrollBarPosition) - length;
+						scrollBarOffset = length - scrollBarPosition;
 
 						if (oldScrollBarOffset == scrollBarOffset)
 							break;

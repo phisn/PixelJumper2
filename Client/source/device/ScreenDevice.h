@@ -15,7 +15,7 @@ namespace Device
 		sf::ContextSettings settings;
 	} defaultScreenSettings =
 	{
-		windowed,
+		fullscreen,
 		sf::VideoMode::getDesktopMode(),
 		sf::ContextSettings::ContextSettings(0U, 0U, 0U) // For AA
 	};
