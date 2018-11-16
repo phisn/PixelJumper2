@@ -27,7 +27,17 @@ namespace Menu
 			void onLogic(
 				const sf::Time) override { }
 		private:
-			static ScrollBarBase::Style style;
+			const ScrollBarBase::Style style = 
+			{
+				sf::Color::Color(100, 100, 100),
+				sf::Color::Color(50, 50, 50),
+
+				sf::Color::Color(150, 150, 150),
+				sf::Color::Color(50, 50, 50),
+
+				sf::Color::Color(200, 200, 200),
+				sf::Color::Color(50, 50, 50),
+			};
 		};
 
 		template <
@@ -48,7 +58,10 @@ namespace Menu
 			}
 
 		private:
-			static RowContainerBase::Style style;
+			const RowContainerBase::Style style =
+			{
+				0.0f
+			};
 		};
 	}
 }

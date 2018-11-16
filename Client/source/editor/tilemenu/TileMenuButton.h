@@ -65,6 +65,11 @@ namespace Editor
 			setDefaultStyle();
 		}
 
+		TileTemplate* getTemplate() const
+		{
+			return tile;
+		}
+
 	private:
 		bool selected = false;
 

@@ -258,9 +258,6 @@
     <ClInclude Include="source\menu\Common.h">
       <Filter>source\menu</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\tilemenu\TileComponent.h">
-      <Filter>source\menu\element_</Filter>
-    </ClInclude>
     <ClInclude Include="source\menu\element\ScrollBarBase.h">
       <Filter>source\menu\element_</Filter>
     </ClInclude>
@@ -275,6 +272,15 @@
     </ClInclude>
     <ClInclude Include="source\menu\container\RowContainerBase.h">
       <Filter>source\menu\container_</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\container\ContainerBase.h">
+      <Filter>source\menu\container_</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\tilemenu\TileComponent.h">
+      <Filter>source\editor\tilemenu</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\tilemenu\TileContainer.h">
+      <Filter>source\editor\tilemenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -401,9 +407,6 @@
     <ClCompile Include="source\editor\grid\Selector.cpp">
       <Filter>source\editor\grid</Filter>
     </ClCompile>
-    <ClCompile Include="source\menu\style\DefaultStyles.cpp">
-      <Filter>source\menu\style</Filter>
-    </ClCompile>
     <ClCompile Include="source\editor\manipulator\Element.cpp">
       <Filter>source\editor\manipulator</Filter>
     </ClCompile>
@@ -428,9 +431,6 @@
     <ClCompile Include="source\editor\manipulator\cache\CacheManager.cpp">
       <Filter>source\editor\manipulator\cache</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\tilemenu\TileComponent.cpp">
-      <Filter>source\menu\element_</Filter>
-    </ClCompile>
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp">
       <Filter>source\menu\element_</Filter>
     </ClCompile>
@@ -442,6 +442,15 @@
     </ClCompile>
     <ClCompile Include="source\menu\container\RowContainerBase.cpp">
       <Filter>source\menu\container_</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\container\ContainerBase.cpp">
+      <Filter>source\menu\container_</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\tilemenu\TileComponent.cpp">
+      <Filter>source\editor\tilemenu</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\tilemenu\TileContainer.cpp">
+      <Filter>source\editor\tilemenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

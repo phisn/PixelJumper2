@@ -9,8 +9,9 @@ namespace Menu
 {
 	class RowContainerBase
 		:
-		public ContainerBase
+		public ContainerBase<std::vector<ElementBase*>::iterator>
 	{
+		typedef std::vector<ElementBase*> Container;
 	public:
 		struct Style
 		{
@@ -68,13 +69,23 @@ namespace Menu
 			elements.clear();
 		}
 
+		Container::iterator begin() override
+		{
+			return elements.begin();
+		}
+
+		Container::iterator end() override
+		{
+			return elements.end();
+		}
+
 		bool isEmpty() const override
 		{
 			return elements.empty();
 		}
 
 	private:
-		std::vector<ElementBase*> elements;
+		Container elements;
 
 		float elementOffset = 0.f;
 	};

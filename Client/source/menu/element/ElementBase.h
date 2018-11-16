@@ -67,6 +67,7 @@ namespace Menu
 		sf::Vector2f getPosition() const { return position; }
 
 		virtual void resetPosition();
+		virtual void resetSize(); // call if view changes
 
 		bool isUseOnLogic() const;
 		bool isUseOnEvent() const;
@@ -91,9 +92,10 @@ namespace Menu
 			specificOffset,
 			
 			nativePosition,
-			size,
+			nativeSize,
 
-			position;
+			position,
+			size;
 
 		sf::View* view = NULL;
 		ElementBase* parent = NULL;
@@ -104,10 +106,11 @@ namespace Menu
 	{
 		view = properties->view;
 
-		size = properties->size;
+		nativeSize = properties->size;
 		nativePosition = properties->position;
 
 		resetPosition();
+		resetSize();
 	}
 
 	inline void ElementBase::setParent(
@@ -128,7 +131,18 @@ namespace Menu
 
 	inline void ElementBase::resetPosition()
 	{
-		position = convertPosition( nativePosition );
+		position = convertPosition( 
+			view->getSize().x * nativePosition.x,
+			view->getSize().y * nativePosition.y
+		);
+	}
+
+	inline void ElementBase::resetSize()
+	{
+		size = sf::Vector2f(
+			view->getSize().x * nativeSize.x,
+			view->getSize().y * nativeSize.y
+		);
 	}
 	
 	inline bool ElementBase::isUseOnLogic() const

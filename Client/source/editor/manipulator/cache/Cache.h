@@ -46,7 +46,7 @@ namespace Editor
 		struct Output
 		{
 			SelectionCache::Output selection;
-
+			TileCache::Output tile;
 		};
 
 		Input* writeInput()

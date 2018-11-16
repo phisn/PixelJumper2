@@ -11,6 +11,11 @@ namespace Editor
 			TileTemplate* tile;
 		};
 
+		struct Output
+		{
+			TileTemplate* tile;
+		};
+
 		// currently doesnt need output
 		// & doesnt need element
 	}

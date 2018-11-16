@@ -102,6 +102,12 @@ namespace Menu
 		ElementBase::resetPosition();
 
 		shape.setPosition( getPosition() );
+	}
+
+	void ButtonBase::resetSize()
+	{
+		ElementBase::resetSize();
+
 		shape.setSize( getSize() );
 	}
 }

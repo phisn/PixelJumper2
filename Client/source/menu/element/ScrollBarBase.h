@@ -45,100 +45,31 @@ namespace Menu
 		virtual ~ScrollBarBase() { }
 
 		void initialize(
-			ElementBase::Properties* const properties) override
-		{
-			ElementBase::initialize(properties);
-
-			padding = ((Properties*) properties)->padding;
-		}
+			ElementBase::Properties* const properties) override;
 
 		virtual void onEvent(
 			const sf::Event event) override;
-		virtual void onDraw() override
-		{
-			DEVICE::Interface::getScreen()->onDraw(&background);
-			DEVICE::Interface::getScreen()->onDraw(&scrollBar);
-		}
+		virtual void onDraw() override;
 
-		virtual void resetPosition() override
-		{
-			ElementBase::resetPosition();
-
-			background.setPosition( getPosition() );
-			background.setSize( getSize() );
-
-			updateConsumption();
-		}
+		virtual void resetPosition() override;
 
 		void setConsumption(
-			const float consumption)
-		{
-			this->consumption = consumption;
+			const float consumption);
 
-			updateConsumption();
+		float getOffset() const
+		{
+			return scrollBarOffset + scrollBarPosition;
 		}
 
 	protected:
-		void updatePosition()
-		{
-			float x_position = getPosition().x + padding;
-			float y_position = getPosition().y + padding;
+		void updatePosition();
+		void updateConsumption();
 
-			(	direction == Direction::Horizontal
-					? x_position
-					: y_position
-			) += scrollBarOffset + scrollBarPosition;
+		void setEnterStyle();
+		void setDefaultStyle();
+		void setClickStyle();
 
-			scrollBar.setPosition(
-				x_position,
-				y_position);
-		}
-
-		void updateConsumption()
-		{
-			scrollBarOffset = 0.f;
-			updatePosition();
-
-			float x_size = getSize().x - padding * 2;
-			float y_size = getSize().y - padding * 2;
-
-			(	direction == Direction::Horizontal 
-					? x_size 
-					: y_size
-			) *= consumption;
-
-			length = direction == Direction::Horizontal
-				? getSize().x - x_size - padding * 2
-				: getSize().y - y_size - padding * 2;
-
-			scrollBar.setSize(sf::Vector2f(
-				x_size, y_size
-			));
-		}
-
-		void setEnterStyle() 
-		{
-			background.setFillColor(style.enter_background_color);
-			scrollBar.setFillColor(style.enter_scrollBar_color);
-		}
-
-		void setDefaultStyle()
-		{
-			background.setFillColor(style.default_background_color);
-			scrollBar.setFillColor(style.default_scrollBar_color);
-		}
-
-		void setClickStyle()
-		{
-			background.setFillColor(style.click_background_color);
-			scrollBar.setFillColor(style.click_scrollBar_color);
-		}
-
-		bool getIsInside() const
-		{
-			return isInside;
-		}
-
+		bool getIsInside() const;
 		float
 			length,
 			scrollBarPosition,
@@ -155,13 +86,7 @@ namespace Menu
 			isInside ? setEnterStyle() : setDefaultStyle();
 		}
 
-		bool checkIsInside(const sf::Vector2f p) const
-		{
-			return scrollBar.getPosition().x < p.x
-				&& scrollBar.getPosition().y < p.y
-				&& scrollBar.getPosition().x + scrollBar.getSize().x > p.x
-				&& scrollBar.getPosition().y + scrollBar.getSize().y > p.y;
-		}
+		bool checkIsInside(const sf::Vector2f p) const;
 	private:
 		const Style style;
 		const Direction direction;
@@ -176,4 +101,32 @@ namespace Menu
 
 		sf::RectangleShape background, scrollBar;
 	};
+
+	inline void ScrollBarBase::onDraw()
+	{
+		DEVICE::Interface::getScreen()->onDraw(&background);
+		DEVICE::Interface::getScreen()->onDraw(&scrollBar);
+	}
+
+	inline void ScrollBarBase::setConsumption(
+		const float consumption)
+	{
+		this->consumption = consumption;
+
+		updateConsumption();
+	}
+
+	inline bool ScrollBarBase::getIsInside() const
+	{
+		return isInside;
+	}
+
+	inline bool ScrollBarBase::checkIsInside(
+		const sf::Vector2f p) const
+	{
+		return scrollBar.getPosition().x < p.x
+			&& scrollBar.getPosition().y < p.y
+			&& scrollBar.getPosition().x + scrollBar.getSize().x > p.x
+			&& scrollBar.getPosition().y + scrollBar.getSize().y > p.y;
+	}
 }

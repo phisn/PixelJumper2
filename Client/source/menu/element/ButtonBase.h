@@ -63,6 +63,7 @@ namespace Menu
 		}
 		
 		virtual void resetPosition() override;
+		virtual void resetSize() override;
 
 	private:
 		const Style style;

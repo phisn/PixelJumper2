@@ -155,6 +155,7 @@
     <ClInclude Include="source\editor\template\TileTemplate.h" />
     <ClInclude Include="source\editor\template\WallTemplate.h" />
     <ClInclude Include="source\editor\tilemenu\TileComponent.h" />
+    <ClInclude Include="source\editor\tilemenu\TileContainer.h" />
     <ClInclude Include="source\editor\tilemenu\TileMenu.h" />
     <ClInclude Include="source\editor\tilemenu\TileMenuButton.h" />
     <ClInclude Include="source\editor\World.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="source\game\World.h" />
     <ClInclude Include="source\game\WorldManager.h" />
     <ClInclude Include="source\menu\Common.h" />
+    <ClInclude Include="source\menu\container\ContainerBase.h" />
     <ClInclude Include="source\menu\container\RowContainerBase.h" />
     <ClInclude Include="source\menu\container\ScrollContainer.h" />
     <ClInclude Include="source\menu\element\ButtonBase.h" />
@@ -218,6 +220,7 @@
     <ClCompile Include="source\editor\template\TileTemplate.cpp" />
     <ClCompile Include="source\editor\template\WallTemplate.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileComponent.cpp" />
+    <ClCompile Include="source\editor\tilemenu\TileContainer.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileMenu.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileMenuButton.cpp" />
     <ClCompile Include="source\editor\World.cpp" />
@@ -235,11 +238,11 @@
     <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\game\WorldManager.cpp" />
+    <ClCompile Include="source\menu\container\ContainerBase.cpp" />
     <ClCompile Include="source\menu\container\RowContainerBase.cpp" />
     <ClCompile Include="source\menu\container\ScrollContainer.cpp" />
     <ClCompile Include="source\menu\element\ButtonBase.cpp" />
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp" />
-    <ClCompile Include="source\menu\style\DefaultStyles.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />
