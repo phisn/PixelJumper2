@@ -22,12 +22,30 @@ namespace Menu
 			const Style style,
 			const Direction direction)
 		{
+			useOnEvent = true;
+		}
+
+		bool initialize() override
+		{
+			if (!ContainerBase::initialize())
+			{
+				return false;
+			}
+
+			for (ElementBase* const element : elements)
+				if (!element->initialize())
+				{
+					return false;
+				}
+
+			return true;
 		}
 		
 		virtual void onEvent(
 			const sf::Event event) override
 		{
 			for (ElementBase* const element : elements)
+				// extend with if
 				element->onEvent(event);
 		}
 
@@ -44,10 +62,7 @@ namespace Menu
 		virtual void onDraw() override
 		{
 			for (ElementBase* const element : elements)
-				if (element->isUseOnEvent())
-				{
-					element->onDraw();
-				}
+				element->onDraw();
 		}
 
 		virtual void resetPosition() override
@@ -61,6 +76,7 @@ namespace Menu
 		void addElement(
 			ElementBase* const element) override
 		{
+			element->setParent(this);
 			elements.push_back(element);
 		}
 

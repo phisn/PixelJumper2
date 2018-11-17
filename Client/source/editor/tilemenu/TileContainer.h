@@ -22,7 +22,7 @@ namespace Editor
 			view(view),
 			container(MENU::Direction::Vertical)
 		{
-			initializeContainer(view);
+			setupContainer(view);
 		}
 		
 		~TileContainer()
@@ -56,20 +56,26 @@ namespace Editor
 			TileMenuButton::Properties properties;
 
 			properties.position		= { 0.0f, 0.0f  };
-			properties.size			= { 8.0f, 0.05f };
+			properties.size			= { 0.8f, 0.05f };
 			properties.view			= view;
 
 			TileMenuButton* button = new TileMenuButton(style);
 
+			button->setup(&properties);
 			container.addElement(button);
 
 			return button;
 		}
 
+		bool initialize()
+		{
+			return container.initialize();
+		}
+
 	private:
 		sf::View* const view;
 
-		void initializeContainer(
+		void setupContainer(
 			sf::View* const view)
 		{
 			MENU::RowContainerBase::Properties rowContainer;
@@ -94,7 +100,7 @@ namespace Editor
 			properties.rowContainer = &rowContainer;
 			properties.scrollBar = &scrollBar;
 
-			container.initialize(&properties);
+			container.setup(&properties);
 		}
 
 		Container container;

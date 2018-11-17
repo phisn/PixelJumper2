@@ -44,6 +44,9 @@ namespace Menu
 		virtual void onEvent(const sf::Event event) override;
 		virtual void onDraw() override;
 
+		virtual void resetPosition() override;
+		virtual void resetSize() override;
+
 	protected:
 		void setEnterStyle();
 		void setDefaultStyle();
@@ -61,9 +64,6 @@ namespace Menu
 		{
 			isInside ? setEnterStyle() : setDefaultStyle();
 		}
-		
-		virtual void resetPosition() override;
-		virtual void resetSize() override;
 
 	private:
 		const Style style;

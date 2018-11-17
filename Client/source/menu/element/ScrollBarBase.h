@@ -44,7 +44,7 @@ namespace Menu
 
 		virtual ~ScrollBarBase() { }
 
-		void initialize(
+		void setup(
 			ElementBase::Properties* const properties) override;
 
 		virtual void onEvent(
@@ -52,6 +52,7 @@ namespace Menu
 		virtual void onDraw() override;
 
 		virtual void resetPosition() override;
+		virtual void resetSize() override;
 
 		void setConsumption(
 			const float consumption);
@@ -106,6 +107,14 @@ namespace Menu
 	{
 		DEVICE::Interface::getScreen()->onDraw(&background);
 		DEVICE::Interface::getScreen()->onDraw(&scrollBar);
+	}
+
+	inline void ScrollBarBase::resetSize()
+	{
+		ElementBase::resetSize();
+
+		background.setSize(getSize());
+		updateConsumption();
 	}
 
 	inline void ScrollBarBase::setConsumption(

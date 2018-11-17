@@ -1,5 +1,5 @@
 #include "ButtonBase.h"
-
+#include <iostream>
 namespace Menu
 {
 	void ButtonBase::setEnterStyle()
@@ -35,6 +35,8 @@ namespace Menu
 	void ButtonBase::onEvent(
 		const sf::Event event)
 	{
+		std::cout << (int)event.type << std::endl;
+
 		switch (event.type)
 		{
 		case sf::Event::MouseButtonPressed:
@@ -66,8 +68,8 @@ namespace Menu
 			break;
 		case sf::Event::MouseMoved:
 			const bool temp = checkIsInside(convertPixel(
-				event.mouseButton.x,
-				event.mouseButton.y));
+				event.mouseMove.x,
+				event.mouseMove.y));
 
 			if (temp != isInside)
 			{

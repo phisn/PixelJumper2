@@ -14,6 +14,8 @@ namespace Menu
 	class RootBase
 	{
 	public:
+		virtual bool initialize() = 0;
+
 		virtual void onEvent(
 			const sf::Event event) = 0;
 		virtual void onLogic(

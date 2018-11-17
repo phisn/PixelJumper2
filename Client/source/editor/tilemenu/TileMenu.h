@@ -36,6 +36,11 @@ namespace Editor
 			}
 		}
 
+		bool initialize() override
+		{
+			return container.initialize();
+		}
+
 		void onEvent(
 			const sf::Event event)
 		{
@@ -45,16 +50,16 @@ namespace Editor
 		void onLogic(
 			const sf::Time time) { }
 
-		void resetLayout()
-		{
-			
-		}
-
-		virtual void onDraw()
+		void onDraw()
 		{
 			MENU::RootBase::onDraw();
 
 			container.onDraw();
+		}
+
+		void resetLayout()
+		{
+
 		}
 
 	private:

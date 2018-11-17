@@ -3,7 +3,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 
-namespace
+namespace Scene
 {
 	class MainBase
 	{

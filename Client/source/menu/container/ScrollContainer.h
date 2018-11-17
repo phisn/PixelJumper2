@@ -40,22 +40,36 @@ namespace Menu
 		{
 		}
 
-		void initialize(
+		void setup(
 			ElementBase::Properties* const EB_properties) override
 		{
-			
-			Properties* properties = (Properties*)EB_properties;
+			ContainerBase::setup(EB_properties);
+	
+			Properties* properties = (Properties*) EB_properties;
 
-			container.initialize(properties->rowContainer);
-			scrollBar.initialize(properties->scrollBar);
+			container.setup(properties->rowContainer);
+			scrollBar.setup(properties->scrollBar);
 
-			ContainerBase::initialize(EB_properties);
-			
 			properties->scrollBar->position += properties->position;
 			properties->rowContainer->position += properties->position;
+		}
 
-			container.setParent(this);
-			scrollBar.setParent(this);
+		bool initialize() override
+		{
+			if (!container.initialize())
+			{
+				return false;
+			}
+
+			if (!scrollBar.initialize())
+			{
+				return false;
+			}
+
+			updateConsumption();
+			scrollBar.setConsumption(0.7f);
+
+			return true;
 		}
 
 		void onEvent(
@@ -105,12 +119,9 @@ namespace Menu
 		void addElement(
 			ElementBase* const element) override
 		{
+			// no consumption update
+			// elements are added non - initialized
 			container.addElement(element);
-
-			consumedLength += direction == Direction::Horizontal
-				? element->getSize().x
-				: element->getSize().y;
-			updateConsumption();
 		}
 		
 		void clearElements() override
@@ -136,6 +147,20 @@ namespace Menu
 			return container.isEmpty();
 		}
 
+		void updateConsumption()
+		{
+			float consumption = (direction == Direction::Horizontal
+				? container.getSize().x
+				: container.getSize().y) / consumedLength;
+
+			if (consumption > 1.f)
+			{
+				consumption = 1.f;
+			}
+
+			scrollBar.setConsumption(consumption);
+		}
+
 	private:
 		float consumedLength = 0.f;
 
@@ -153,20 +178,6 @@ namespace Menu
 			}
 
 			updateConsumption();
-		}
-
-		void updateConsumption()
-		{
-			float consumption = consumedLength / (direction == Direction::Horizontal
-				? container.getSize().x
-				: container.getSize().y);
-
-			if (consumption > 1.f)
-			{
-				consumption = 1.f;
-			}
-
-			scrollBar.setConsumption(consumption);
 		}
 
 		void onScrollBarMoved()

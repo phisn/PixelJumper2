@@ -100,14 +100,12 @@ namespace Scene
 
 		Menu::RootBase* selected;
 
-		void addRoot(
-			Menu::RootBase* const root)
+		template <class Root, class... Args>
+		Root* addRoot(Args... arguments)
 		{
-			containers.push_back(root);
-			
-			static int i = 0;
-			if (++i == 1)
-				selected = root;
+			Root* root = new Root(arguments...);
+			containers.push_back(selected = root);
+			return root;
 		}
 
 		const std::vector<Menu::RootBase*>& getContainers() const

@@ -36,6 +36,8 @@ namespace Editor
 
 		~GridMenu() { }
 
+		bool initialize() override { return true; }
+
 		void onEvent(
 			const sf::Event event) override
 		{

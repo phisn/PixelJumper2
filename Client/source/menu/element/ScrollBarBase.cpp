@@ -2,10 +2,10 @@
 
 namespace Menu
 {
-	void ScrollBarBase::initialize(
+	void ScrollBarBase::setup(
 		ElementBase::Properties* const properties)
 	{
-		ElementBase::initialize(properties);
+		ElementBase::setup(properties);
 
 		padding = ((Properties*)properties)->padding;
 	}
@@ -105,9 +105,6 @@ namespace Menu
 		ElementBase::resetPosition();
 
 		background.setPosition(getPosition());
-		background.setSize(getSize());
-
-		updateConsumption();
 	}
 
 	void ScrollBarBase::updatePosition()

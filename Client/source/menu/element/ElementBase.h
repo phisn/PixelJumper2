@@ -48,9 +48,11 @@ namespace Menu
 
 		virtual ~ElementBase() { }
 
-		// Can't fail & Can poly
-		virtual void initialize(
+		// only setup properties
+		virtual void setup(
 			Properties* const properties);
+		// Can fail & use properties
+		virtual bool initialize();
 
 		virtual void onEvent(
 			const sf::Event event) = 0;
@@ -101,16 +103,21 @@ namespace Menu
 		ElementBase* parent = NULL;
 	};
 
-	inline void ElementBase::initialize(
+	inline void ElementBase::setup(
 		ElementBase::Properties* const properties)
 	{
 		view = properties->view;
 
-		nativeSize = properties->size;
 		nativePosition = properties->position;
+		nativeSize = properties->size;
+	}
 
+	inline bool ElementBase::initialize()
+	{
 		resetPosition();
 		resetSize();
+
+		return true;
 	}
 
 	inline void ElementBase::setParent(

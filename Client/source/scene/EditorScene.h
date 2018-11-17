@@ -14,6 +14,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <windows.h>
+
 namespace Scene
 {
 	/*
@@ -30,7 +32,8 @@ namespace Scene
 	{
 	public:
 		bool onCreate() override
-		{
+		{	
+
 			return true;
 		}
 
@@ -42,23 +45,37 @@ namespace Scene
 			}
 		}
 
-		void initialize() override
+		void initialize() override 
 		{
-			// initialized first
 			EDITOR::Manipulator::initialize(&world);
 
-			EDITOR::GridMenu* const gridMenu = new EDITOR::GridMenu(&world);
-			gridMenu->setViewport({ 0.0f, 0.0f, 0.90f, 1.0f });
-			addRoot(gridMenu);
+			EDITOR::GridMenu* gridMenu = addRoot<EDITOR::GridMenu>(&world);
+			gridMenu->setViewport({ 0.0f, 0.0f, 0.9f, 1.0f });
+			if (!gridMenu->initialize())
+			{
+				onFailedInitialize();
 
-			EDITOR::TileMenu* const tileMenu = new EDITOR::TileMenu();
-			tileMenu->setViewport({ 0.90f, 0.0f, 0.10f, 1.0f });
-			addRoot(tileMenu);
+				return;
+			}
+
+			EDITOR::TileMenu* tileMenu = addRoot<EDITOR::TileMenu>();
+			tileMenu->setViewport({ 0.9f, 0.0f, 0.1f, 1.0f });
+			if (!tileMenu->initialize())
+			{
+				onFailedInitialize();
+
+				return;
+			}
 		}
 
 		void onShow() override { }
 		void onHide() override { }
 	private:
+		void onFailedInitialize()
+		{
+			MessageBox(NULL, L"Failed", L"Error", MB_OK);
+		}
+
 		EDITOR::World world;
 	};
 }
