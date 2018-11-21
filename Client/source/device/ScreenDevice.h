@@ -51,8 +51,15 @@ namespace Device
 		{
 			return &window;
 		}
+
+		sf::Font* getFont()
+		{
+			return &font;
+		}
+
 	private:
 		sf::RenderWindow window;
+		sf::Font font;
 
 		ScreenSettings settings;
 	};

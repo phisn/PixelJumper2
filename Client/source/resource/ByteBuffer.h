@@ -155,7 +155,7 @@ namespace Resource
 		void write(
 			const std::wstring* str)
 		{
-			write(str->c_str(), str->length());
+			write(str->c_str(), (const sf::Uint32) str->length());
 		}
 
 		void write(

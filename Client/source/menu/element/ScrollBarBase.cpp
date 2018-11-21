@@ -112,10 +112,10 @@ namespace Menu
 		float x_position = getPosition().x + padding;
 		float y_position = getPosition().y + padding;
 
-		(direction == Direction::Horizontal
+		(	direction == Direction::Horizontal
 			? x_position
 			: y_position
-			) += scrollBarOffset + scrollBarPosition;
+		) += scrollBarOffset + scrollBarPosition;
 
 		scrollBar.setPosition(
 			x_position,
@@ -129,11 +129,11 @@ namespace Menu
 
 		float x_size = getSize().x - padding * 2;
 		float y_size = getSize().y - padding * 2;
-
-		(direction == Direction::Horizontal
+		
+		(	direction == Direction::Horizontal
 			? x_size
 			: y_size
-			) *= consumption;
+		) *= consumption;
 
 		length = direction == Direction::Horizontal
 			? getSize().x - x_size - padding * 2

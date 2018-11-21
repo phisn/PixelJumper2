@@ -1,4 +1,287 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen World.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\World.cpp, source\game\World.cpp.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen TileBase.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\TileBase.cpp, source\game\tiles\TileBase.cpp.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen Wall.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\Wall.cpp, source\game\tiles\Wall.cpp.
-  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe
+  DeviceInterface.cpp
+  class template variant is only available with C++17 or later.
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(71): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(70): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(75): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(74): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(61): error C2679: Binärer Operator "=": Es konnte kein Operator gefunden werden, der einen rechtsseitigen Operanden vom Typ "sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: kann "sf::Vector2<int> &sf::Vector2<int>::operator =(sf::Vector2<int> &&)" sein
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: oder "sf::Vector2<int> &sf::Vector2<int>::operator =(const sf::Vector2<int> &)"
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(64): note: bei Anpassung der Argumentliste "(sf::Vector2i, sf::Vector2f)"
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): error C2678: Binärer Operator "-": Es konnte kein Operator gefunden werden, der einen linksseitigen Operanden vom Typ "const sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\time.hpp(268): note: kann "sf::Time sf::operator -(sf::Time,sf::Time)" sein [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\color.hpp(158): note: oder "sf::Color sf::operator -(const sf::Color &,const sf::Color &)" [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): note: bei Anpassung der Argumentliste "(const sf::Vector2f, sf::Vector2i)"
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+  FailHandler.cpp
+  InputDevice.cpp
+  ResourceDevice.cpp
+  ScreenDevice.cpp
+  GridMenu.cpp
+  class template variant is only available with C++17 or later.
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(71): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(70): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(75): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(74): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(61): error C2679: Binärer Operator "=": Es konnte kein Operator gefunden werden, der einen rechtsseitigen Operanden vom Typ "sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: kann "sf::Vector2<int> &sf::Vector2<int>::operator =(sf::Vector2<int> &&)" sein
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: oder "sf::Vector2<int> &sf::Vector2<int>::operator =(const sf::Vector2<int> &)"
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(64): note: bei Anpassung der Argumentliste "(sf::Vector2i, sf::Vector2f)"
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): error C2678: Binärer Operator "-": Es konnte kein Operator gefunden werden, der einen linksseitigen Operanden vom Typ "const sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\time.hpp(268): note: kann "sf::Time sf::operator -(sf::Time,sf::Time)" sein [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\color.hpp(158): note: oder "sf::Color sf::operator -(const sf::Color &,const sf::Color &)" [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): note: bei Anpassung der Argumentliste "(const sf::Vector2f, sf::Vector2i)"
+  GridView.cpp
+  SelectorComponent.cpp
+  class template variant is only available with C++17 or later.
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(71): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(70): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(75): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(74): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+  Selector.cpp
+  class template variant is only available with C++17 or later.
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(71): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(70): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(75): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(74): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(61): error C2679: Binärer Operator "=": Es konnte kein Operator gefunden werden, der einen rechtsseitigen Operanden vom Typ "sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: kann "sf::Vector2<int> &sf::Vector2<int>::operator =(sf::Vector2<int> &&)" sein
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: oder "sf::Vector2<int> &sf::Vector2<int>::operator =(const sf::Vector2<int> &)"
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(64): note: bei Anpassung der Argumentliste "(sf::Vector2i, sf::Vector2f)"
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): error C2678: Binärer Operator "-": Es konnte kein Operator gefunden werden, der einen linksseitigen Operanden vom Typ "const sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\time.hpp(268): note: kann "sf::Time sf::operator -(sf::Time,sf::Time)" sein [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\color.hpp(158): note: oder "sf::Color sf::operator -(const sf::Color &,const sf::Color &)" [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): note: bei Anpassung der Argumentliste "(const sf::Vector2f, sf::Vector2i)"
+  SelectorElement.cpp
+  class template variant is only available with C++17 or later.
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(61): error C2679: Binärer Operator "=": Es konnte kein Operator gefunden werden, der einen rechtsseitigen Operanden vom Typ "sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: kann "sf::Vector2<int> &sf::Vector2<int>::operator =(sf::Vector2<int> &&)" sein
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: oder "sf::Vector2<int> &sf::Vector2<int>::operator =(const sf::Vector2<int> &)"
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(64): note: bei Anpassung der Argumentliste "(sf::Vector2i, sf::Vector2f)"
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): error C2678: Binärer Operator "-": Es konnte kein Operator gefunden werden, der einen linksseitigen Operanden vom Typ "const sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\time.hpp(268): note: kann "sf::Time sf::operator -(sf::Time,sf::Time)" sein [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\color.hpp(158): note: oder "sf::Color sf::operator -(const sf::Color &,const sf::Color &)" [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): note: bei Anpassung der Argumentliste "(const sf::Vector2f, sf::Vector2i)"
+  Cache.cpp
+  CacheManager.cpp
+  class template variant is only available with C++17 or later.
+  Component.cpp
+  class template variant is only available with C++17 or later.
+  Element.cpp
+  class template variant is only available with C++17 or later.
+  Executor.cpp
+  Manipulator.cpp
+  class template variant is only available with C++17 or later.
+  TileTemplate.cpp
+  WallTemplate.cpp
+  TileComponent.cpp
+  class template variant is only available with C++17 or later.
+  TileContainer.cpp
+  class template variant is only available with C++17 or later.
+  Code wird generiert...
+  Kompilieren...
+  TileMenu.cpp
+  class template variant is only available with C++17 or later.
+  TileMenuButton.cpp
+  class template variant is only available with C++17 or later.
+  World.cpp
+  TileBase.cpp
+  Wall.cpp
+  GameView.cpp
+  LocalPlayer.cpp
+  Movement.cpp
+  PlayerBase.cpp
+  CollidableTile.cpp
+  TileBase.cpp
+  TileManager.cpp
+  TimedTile.cpp
+  TouchableTile.cpp
+  Wall.cpp
+  World.cpp
+  WorldManager.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.cpp(17): warning C4244: "Initialisierung": Konvertierung von "std::streamoff" in "sf::Uint32", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.cpp(17): warning C4244: "Initialisierung": Konvertierung von "std::streamoff" in "const sf::Uint32", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.cpp(82): warning C4244: "=": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.cpp(83): warning C4244: "=": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=unsigned int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.cpp(102): error C2679: Binärer Operator "=": Es konnte kein Operator gefunden werden, der einen rechtsseitigen Operanden vom Typ "sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: kann "sf::Vector2<unsigned int> &sf::Vector2<unsigned int>::operator =(sf::Vector2<unsigned int> &&)" sein
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: oder "sf::Vector2<unsigned int> &sf::Vector2<unsigned int>::operator =(const sf::Vector2<unsigned int> &)"
+  c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.cpp(104): note: bei Anpassung der Argumentliste "(sf::Vector2u, sf::Vector2f)"
+  ContainerBase.cpp
+  RowContainerBase.cpp
+  ScrollContainer.cpp
+  Code wird generiert...
+  Kompilieren...
+  ButtonBase.cpp
+  ScrollBarBase.cpp
+  ByteBuffer.cpp
+  ResourceInterface.cpp
+  TileResource.cpp
+  WorldResource.cpp
+  Animation.cpp
+  AsyncAnimation.cpp
+  Context.cpp
+  EditorScene.cpp
+  class template variant is only available with C++17 or later.
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(71): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(70): warning C4244: "Argument": Konvertierung von "T" in "T", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(75): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(74): warning C4244: "Argument": Konvertierung von "T" in "float", möglicher Datenverlust
+          with
+          [
+              T=int
+          ]
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(61): error C2679: Binärer Operator "=": Es konnte kein Operator gefunden werden, der einen rechtsseitigen Operanden vom Typ "sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: kann "sf::Vector2<int> &sf::Vector2<int>::operator =(sf::Vector2<int> &&)" sein
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\vector2.hpp(77): note: oder "sf::Vector2<int> &sf::Vector2<int>::operator =(const sf::Vector2<int> &)"
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(64): note: bei Anpassung der Argumentliste "(sf::Vector2i, sf::Vector2f)"
+c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): error C2678: Binärer Operator "-": Es konnte kein Operator gefunden werden, der einen linksseitigen Operanden vom Typ "const sf::Vector2f" akzeptiert (oder keine geeignete Konvertierung möglich)
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\system\time.hpp(268): note: kann "sf::Time sf::operator -(sf::Time,sf::Time)" sein [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\color.hpp(158): note: oder "sf::Color sf::operator -(const sf::Color &,const sf::Color &)" [bei der Verwendung der argumentbezogenen Suche gefunden]
+  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(71): note: bei Anpassung der Argumentliste "(const sf::Vector2f, sf::Vector2i)"
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+  GameBaseScene.cpp
+  LocalGameScene.cpp
+  MenuBaseScene.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+  SceneInterface.cpp
+  SubSceneBase.cpp
+  winMain.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\winmain.cpp(32): warning C4102: "Retry": Unreferenzierte Bezeichnung
+  Code wird generiert...

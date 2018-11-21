@@ -282,6 +282,9 @@
     <ClInclude Include="source\editor\tilemenu\TileContainer.h">
       <Filter>source\editor\tilemenu</Filter>
     </ClInclude>
+    <ClInclude Include="source\resource\ResourceManager.h">
+      <Filter>source\resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -452,6 +455,9 @@
     <ClCompile Include="source\editor\tilemenu\TileContainer.cpp">
       <Filter>source\editor\tilemenu</Filter>
     </ClCompile>
+    <ClCompile Include="source\resource\ResourceManager.cpp">
+      <Filter>source\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -462,5 +468,10 @@
     <Image Include="source\editor\manipulator\Manipulator.jpg">
       <Filter>source\editor\manipulator</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\font.hbin">
+      <Filter>resource</Filter>
+    </None>
   </ItemGroup>
 </Project>

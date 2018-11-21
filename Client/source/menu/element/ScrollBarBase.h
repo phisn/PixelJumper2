@@ -76,7 +76,7 @@ namespace Menu
 			scrollBarPosition,
 			scrollBarOffset;
 
-		virtual void onScrollBarMoved() = 0;
+		virtual void onScrollBarMoved() { updatePosition(); }
 
 		virtual void onMouseEnter() { setEnterStyle(); }
 		virtual void onMouseLeave() { setDefaultStyle(); }

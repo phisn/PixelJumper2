@@ -146,7 +146,7 @@ namespace Resource
 			header.begin.magic = WORLD_MAGIC;
 
 			header.prop.contentSize;
-			header.prop.tileCount = content.tileResources.size();
+			header.prop.tileCount = (const sf::Uint32) content.tileResources.size();
 
 			return true;
 		}

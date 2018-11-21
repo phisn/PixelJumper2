@@ -12,7 +12,7 @@ namespace Editor
 	{
 		struct Input
 		{
-			sf::Vector2f
+			sf::Vector2i
 				size,
 				offset;
 		};
@@ -20,7 +20,7 @@ namespace Editor
 		struct Area
 		{
 			// marking area (boxes)
-			sf::Vector2f
+			sf::Vector2i
 				size,
 				offset;
 		};

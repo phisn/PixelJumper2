@@ -187,6 +187,7 @@
     <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
+    <ClInclude Include="source\resource\ResourceManager.h" />
     <ClInclude Include="source\resource\TileResource.h" />
     <ClInclude Include="source\resource\WorldResource.h" />
     <ClInclude Include="source\scene\Animation.h" />
@@ -245,6 +246,7 @@
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
+    <ClCompile Include="source\resource\ResourceManager.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />
     <ClCompile Include="source\resource\WorldResource.cpp" />
     <ClCompile Include="source\scene\Animation.cpp" />
@@ -263,6 +265,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\editor\manipulator\Manipulator.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\font.hbin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

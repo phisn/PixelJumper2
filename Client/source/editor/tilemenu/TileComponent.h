@@ -45,7 +45,8 @@ namespace Editor
 		void onNotifyTile()
 		{
 			for (TileMenuButton* const button : menuButtons)
-				if (button->getTemplate() == Manipulator::getCache()->writeInput()->tile.tile)
+				if (button->getTemplate() == Manipulator::getCache()->writeInput()->tile.tile &&
+					button != selected)
 				{
 					selected->unselect();
 					selected = button;

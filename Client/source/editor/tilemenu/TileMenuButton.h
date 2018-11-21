@@ -22,6 +22,7 @@ namespace Editor
 			TileTemplate* tile;
 
 			sf::Color 
+				enterColor,
 				fillColor, 
 				clickColor;
 
@@ -29,19 +30,19 @@ namespace Editor
 			{
 				MENU::ButtonBase::Style style = { };
 				
-				style.enter_fillColor = fillColor;
+				style.enter_fillColor = enterColor;
 				style.enter_outlineColor = sf::Color::Color(150, 150, 150);
 				style.enter_outlineThickness = 0.2f;
 
 
-				style.click_fillColor = clickColor;
-				style.click_outlineColor = { };
-				style.click_outlineThickness = 0.0f;
+				style.click_fillColor = fillColor;
+				style.click_outlineColor = sf::Color::Color(200, 200, 200);
+				style.click_outlineThickness = 2.f;
 
 
 				style.default_fillColor = fillColor;
-				style.click_outlineColor = { };
-				style.click_outlineThickness = 0.0f;
+				style.default_outlineColor = { };
+				style.default_outlineThickness = 0.0f;
 
 				return style;
 			}
@@ -109,5 +110,7 @@ namespace Editor
 				MENU::ButtonBase::onMouseClickEnd();
 			}
 		}
+
+		sf::Text text;
 	};
 }

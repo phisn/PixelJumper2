@@ -24,7 +24,7 @@ namespace Game
 
 		std::vector<Tile::Base*> tiles;
 
-		sf::Vector2f size;
+		sf::Vector2u size;
 		std::wstring author, name;
 	};
 

@@ -38,7 +38,8 @@ namespace Game
 			case 2:
 				size = sf::Vector2f(
 					(float) windowSize.x / 2.f,
-					windowSize.y);
+					(float) windowSize.y
+				);
 
 				if (position == 1)
 				{

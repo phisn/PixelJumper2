@@ -26,7 +26,7 @@ namespace Editor
 		Game::WorldSettings* createSettings(
 			const std::wstring author,
 			const std::wstring name,
-			const sf::Vector2f size)
+			const sf::Vector2u size)
 		{
 			Game::WorldSettings* world = new Game::WorldSettings();
 

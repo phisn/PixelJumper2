@@ -46,12 +46,6 @@ namespace Scene
 
 		void initialize() override
 		{ // init things like scenes or animations
-			background.setFillColor(
-				sf::Color::Color(20, 20, 20, 40));
-			background.setSize(
-				settings->size);
-			background.setPosition(
-				0.f, 0.f);
 		}
 
 		void onEvent(

@@ -48,13 +48,15 @@ namespace Editor
 		}
 
 		void begin(
-			const sf::Vector2f position)
+			const int x,
+			const int y)
 		{
-			offset = position;
+			offset = sf::Vector2i(x, y);
 		}
 
 		void move(
-			const sf::Vector2f position)
+			const int x,
+			const int y)
 		{
 			if (!active)
 			{
@@ -65,7 +67,7 @@ namespace Editor
 				&Manipulator::getCache()->writeInput()->selection;
 
 			selection->offset = offset;
-			selection->size = position - offset;
+			selection->size = sf::Vector2i(x, y) - offset;
 
 			Manipulator::getCacheManager()->notify(	
 				Cache::Sector::Selection
@@ -91,7 +93,7 @@ namespace Editor
 		SelectorElement element;
 
 		GridView* const view;
-		sf::Vector2f
+		sf::Vector2i
 			size,
 			offset;
 	};

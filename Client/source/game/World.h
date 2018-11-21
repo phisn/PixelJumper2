@@ -54,9 +54,10 @@ namespace Game
 				if (CONTAINS_ENUM(tile->getType(), Tile::Type::Static))
 				{
 					worldImage.setPixel(
-						tile->getPosition().x,
-						tile->getPosition().y,
-						tile->getColor());
+						(unsigned int) tile->getPosition().x,
+						(unsigned int)tile->getPosition().y,
+						tile->getColor()
+					);
 				}
 			}
 
@@ -66,7 +67,7 @@ namespace Game
 		void initializePlayer(
 			_In_ LocalPlayer* player)
 		{
-			player->getView()->setSize(settings->size);
+			player->getView()->setSize( sf::Vector2f(settings->size) );
 			player->setPosition(sf::Vector2f(0, 0));
 		}
 

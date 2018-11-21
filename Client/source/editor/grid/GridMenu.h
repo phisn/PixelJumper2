@@ -47,10 +47,10 @@ namespace Editor
 				if (event.mouseButton.button == sf::Mouse::Button::Left)
 				{
 					pressed = Pressed::Left;
-					selector.begin(sf::Vector2f(
+					selector.begin(
 						event.mouseButton.x,
 						event.mouseButton.y
-					));
+					);
 
 					break;
 				}
@@ -83,9 +83,10 @@ namespace Editor
 			case sf::Event::MouseMoved:
 				if (pressed == Pressed::Left)
 				{
-					selector.move(sf::Vector2f(
+					selector.move(
 						event.mouseMove.x,
-						event.mouseMove.y));
+						event.mouseMove.y
+					);
 
 					break;
 				}

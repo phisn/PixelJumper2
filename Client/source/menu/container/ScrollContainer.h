@@ -184,11 +184,11 @@ namespace Menu
 		{
 			container.setSpecificOffset(sf::Vector2f(
 				direction == Direction::Horizontal
-					? scrollBar.getOffset()
-					: container.getPosition().x,
+					? -scrollBar.getOffset()
+					: 0.f,
 				direction == Direction::Vertical
-					? scrollBar.getOffset()
-					: container.getPosition().y
+					? -scrollBar.getOffset()
+					: 0.f
 			));
 		}
 
@@ -222,6 +222,7 @@ namespace Menu
 
 			void onScrollBarMoved() override
 			{
+				ScrollBarBase::onScrollBarMoved();
 				container->onScrollBarMoved();
 			}
 
