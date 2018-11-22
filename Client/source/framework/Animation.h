@@ -8,7 +8,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Time.hpp>
 
-namespace Scene
+namespace Framework
 {
 	class Animation
 	{

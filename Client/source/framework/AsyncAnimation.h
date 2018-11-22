@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Client/source/scene/Animation.h>
+#include <Client/source/framework/Animation.h>
 
 #include <functional>
 
 #include <SFML/System/Time.hpp>
 
-namespace Scene
+namespace Framework
 {
 	class AsyncAnimation
 	{

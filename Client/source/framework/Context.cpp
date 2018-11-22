@@ -1,8 +1,8 @@
 #include "Context.h"
 
-namespace Scene
+namespace Framework
 {
-	bool Scene::Context::quickInitialize()
+	bool Context::quickInitialize()
 	{
 		return mainScene->onCreate();
 	}

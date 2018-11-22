@@ -1,7 +1,8 @@
 #pragma once
 
-#include <Client/source/scene/Animation.h>
-#include <Client/source/scene/AsyncAnimation.h>
+#include <Client/source/framework/Animation.h>
+#include <Client/source/framework/AsyncAnimation.h>
+
 #include <Client/source/scene/MainSceneBase.h>
 #include <Client/source/scene/SubSceneBase.h>
 
@@ -11,7 +12,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 
-namespace Scene
+namespace Framework
 {
 	class Context
 	{

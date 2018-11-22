@@ -134,7 +134,6 @@
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
-    <ClInclude Include="source\device\FailHandler.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
@@ -161,6 +160,10 @@
     <ClInclude Include="source\editor\World.h" />
     <ClInclude Include="source\editor\tile\TileBase.h" />
     <ClInclude Include="source\editor\tile\Wall.h" />
+    <ClInclude Include="source\framework\Animation.h" />
+    <ClInclude Include="source\framework\AsyncAnimation.h" />
+    <ClInclude Include="source\framework\Context.h" />
+    <ClInclude Include="source\framework\FrameworkInterface.h" />
     <ClInclude Include="source\game\GameView.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\Movement.h" />
@@ -190,20 +193,15 @@
     <ClInclude Include="source\resource\ResourceManager.h" />
     <ClInclude Include="source\resource\TileResource.h" />
     <ClInclude Include="source\resource\WorldResource.h" />
-    <ClInclude Include="source\scene\Animation.h" />
-    <ClInclude Include="source\scene\AsyncAnimation.h" />
-    <ClInclude Include="source\scene\Context.h" />
     <ClInclude Include="source\scene\EditorScene.h" />
     <ClInclude Include="source\scene\GameBaseScene.h" />
     <ClInclude Include="source\scene\LocalGameScene.h" />
     <ClInclude Include="source\scene\MainSceneBase.h" />
     <ClInclude Include="source\scene\MenuBaseScene.h" />
-    <ClInclude Include="source\scene\SceneInterface.h" />
     <ClInclude Include="source\scene\SubSceneBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\DeviceInterface.cpp" />
-    <ClCompile Include="source\device\FailHandler.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
@@ -227,6 +225,10 @@
     <ClCompile Include="source\editor\World.cpp" />
     <ClCompile Include="source\editor\tile\TileBase.cpp" />
     <ClCompile Include="source\editor\tile\Wall.cpp" />
+    <ClCompile Include="source\framework\Animation.cpp" />
+    <ClCompile Include="source\framework\AsyncAnimation.cpp" />
+    <ClCompile Include="source\framework\Context.cpp" />
+    <ClCompile Include="source\framework\FrameworkInterface.cpp" />
     <ClCompile Include="source\game\GameView.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
     <ClCompile Include="source\game\Movement.cpp" />
@@ -249,14 +251,10 @@
     <ClCompile Include="source\resource\ResourceManager.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />
     <ClCompile Include="source\resource\WorldResource.cpp" />
-    <ClCompile Include="source\scene\Animation.cpp" />
-    <ClCompile Include="source\scene\AsyncAnimation.cpp" />
-    <ClCompile Include="source\scene\Context.cpp" />
     <ClCompile Include="source\scene\EditorScene.cpp" />
     <ClCompile Include="source\scene\GameBaseScene.cpp" />
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
-    <ClCompile Include="source\scene\SceneInterface.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>

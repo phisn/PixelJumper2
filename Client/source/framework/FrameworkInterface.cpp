@@ -1,14 +1,14 @@
-#include "SceneInterface.h"
+#include "FrameworkInterface.h"
 
-#include <Client/source/scene/Context.h>
+#include <Client/source/framework/Context.h>
 
 namespace
 {
-	std::stack<Scene::Context*> contextStack;
-	Scene::Interface::Order currentOrder 
-		= Scene::Interface::Order::Empty;
+	std::stack<Framework::Context*> contextStack;
+	Framework::Interface::Task currentOrder
+		= Framework::Interface::Task::Empty;
 
-	bool isValid(const Scene::Interface::Order order)
+	bool isValid(const Framework::Interface::Task order)
 	{
 		return (int) currentOrder >= (int) order;
 	}
@@ -16,12 +16,12 @@ namespace
 	bool running = true;
 }
 
-namespace Scene
+namespace Framework
 {
-	bool Interface::pushContext(
+	bool Interface::PushContext(
 		Context* context)
 	{
-		if (isValid(Order::LoadContext))
+		if (isValid(Task::LoadContext))
 		{
 			return false;
 		}
@@ -31,7 +31,7 @@ namespace Scene
 			return false;
 		}
 
-		currentOrder = Order::LoadContext;
+		currentOrder = Task::LoadContext;
 
 		if (!contextStack.empty())
 		{
@@ -43,22 +43,22 @@ namespace Scene
 		return true;
 	}
 
-	bool Interface::popContext()
+	bool Interface::PopContext()
 	{
-		if (isValid(Order::PopContext))
+		if (isValid(Task::PopContext))
 		{
 			return false;
 		}
 
-		currentOrder = Order::PopContext;
+		currentOrder = Task::PopContext;
 
 		return true;
 	}
 
-	bool Interface::pushScene(
+	bool Interface::PushScene(
 		Scene::SubBase* scene)
 	{
-		if (isValid(Order::PopScene))
+		if (isValid(Task::PopScene))
 		{
 			return false;
 		}
@@ -73,7 +73,7 @@ namespace Scene
 		return true;
 	}
 
-	bool Interface::popScene()
+	bool Interface::PopScene()
 	{
 		if (isValid(Order::LoadScene))
 		{
@@ -85,47 +85,47 @@ namespace Scene
 		return true;
 	}
 
-	void Interface::fallback()
+	void Interface::Fallback()
 	{
 		contextStack.top()->fallback();
 	}
 
-	void Interface::pushAsyncAnimation(
+	void Interface::PushAsyncAnimation(
 		AsyncAnimation* animation)
 	{
 		contextStack.top()->pushAsyncAnimation(animation);
 	}
 
-	void Interface::pushSequentialAnimation(
+	void Interface::PushSequentialAnimation(
 		Animation* animation)
 	{
 		contextStack.top()->pushSequentialAnimation(animation);
 	}
 
-	void Interface::resetAnimations()
+	void Interface::ResetAnimations()
 	{
 		contextStack.top()->removeAnimations();
 	}
 
 
-	void Interface::onDraw()
+	void Interface::OnDraw()
 	{
 		contextStack.top()->onDraw();
 	}
 
-	void Interface::onEvent(
+	void Interface::OnEvent(
 		const sf::Event event)
 	{
 		contextStack.top()->onEvent(event);
 	}
 
-	void Interface::onUpdate(
+	void Interface::OnUpdate(
 		const sf::Time time)
 	{
 		contextStack.top()->onUpdate(time);
 	}
 
-	void Interface::doOrders()
+	void Interface::DoOrders()
 	{
 		if (currentOrder == Order::Empty)
 		{
@@ -166,12 +166,12 @@ namespace Scene
 		currentOrder = Order::Empty;
 	}
 	
-	void Interface::shutdown()
+	void Interface::Shutdown()
 	{
 		running = false;
 	}
 
-	bool Interface::isRunning()
+	bool Interface::IsRunning()
 	{
 		return running;
 	}
