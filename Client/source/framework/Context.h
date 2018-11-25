@@ -2,6 +2,7 @@
 
 #include <Client/source/framework/Animation.h>
 #include <Client/source/framework/AsyncAnimation.h>
+#include <Client/source/framework/ResourceContext.h>
 
 #include <Client/source/scene/MainSceneBase.h>
 #include <Client/source/scene/SubSceneBase.h>
@@ -26,7 +27,7 @@ namespace Framework
 		}
 
 		Context(
-			MainBase* mainScene)
+			SCENE::MainBase* mainScene)
 			:
 			mainScene(mainScene)
 		{
@@ -49,7 +50,7 @@ namespace Framework
 			const sf::Time time);
 
 		bool pushScene(
-			SubBase* scene);
+			SCENE::SubBase* scene);
 		void popScene();
 
 		void pushAsyncAnimation(
@@ -58,13 +59,19 @@ namespace Framework
 			Animation* animation);
 		void removeAnimations();
 
+		ResourceContext* getResource()
+		{
+			return &resourceContext;
+		}
+
 	private:
-		std::stack<SubBase*> subScenes;
-		MainBase* mainScene;
+		ResourceContext resourceContext;
+
+		std::stack<SCENE::SubBase*> subScenes;
+		SCENE::MainBase* mainScene;
 
 		void updateSeqAnimation(
 			const sf::Time time);
-
 		bool seqAnimRunning = false;
 		Animation* sequentialAnimation;
 

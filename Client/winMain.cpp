@@ -32,7 +32,7 @@ int WINAPI wWinMain(
 Retry:
 	while (true)
 	{
-		Device::InitError result = DEVICE::Interface::initialize();
+		Device::InitError result = DEVICE::Interface::Initialize();
 
 		if (result == Device::InitError::Invalid)
 		{
@@ -48,7 +48,7 @@ Retry:
 	int result;
 	try
 	{
-		result = DEVICE::Interface::start();
+		result = DEVICE::Interface::Start();
 	}
 	catch (...)
 	{

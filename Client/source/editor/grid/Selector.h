@@ -38,7 +38,7 @@ namespace Editor
 
 		void draw()
 		{
-			DEVICE::Interface::getScreen()->resetView();
+			DEVICE::Interface::GetScreen()->resetView();
 
 			component.drawMarker();
 

@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
+    <ClInclude Include="source\device\ErrorDevice.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="source\framework\AsyncAnimation.h" />
     <ClInclude Include="source\framework\Context.h" />
     <ClInclude Include="source\framework\FrameworkInterface.h" />
+    <ClInclude Include="source\framework\ResourceContext.h" />
     <ClInclude Include="source\game\GameView.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\Movement.h" />
@@ -190,7 +192,7 @@
     <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
-    <ClInclude Include="source\resource\ResourceManager.h" />
+    <ClInclude Include="source\resource\StaticResource.h" />
     <ClInclude Include="source\resource\TileResource.h" />
     <ClInclude Include="source\resource\WorldResource.h" />
     <ClInclude Include="source\scene\EditorScene.h" />
@@ -202,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\DeviceInterface.cpp" />
+    <ClCompile Include="source\device\ErrorDevice.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
@@ -229,6 +232,7 @@
     <ClCompile Include="source\framework\AsyncAnimation.cpp" />
     <ClCompile Include="source\framework\Context.cpp" />
     <ClCompile Include="source\framework\FrameworkInterface.cpp" />
+    <ClCompile Include="source\framework\ResourceContext.cpp" />
     <ClCompile Include="source\game\GameView.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
     <ClCompile Include="source\game\Movement.cpp" />
@@ -248,7 +252,7 @@
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
-    <ClCompile Include="source\resource\ResourceManager.cpp" />
+    <ClCompile Include="source\resource\StaticResource.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />
     <ClCompile Include="source\resource\WorldResource.cpp" />
     <ClCompile Include="source\scene\EditorScene.cpp" />

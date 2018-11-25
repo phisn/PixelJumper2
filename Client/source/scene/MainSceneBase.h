@@ -3,6 +3,10 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 
+#ifndef SCENE
+#define SCENE ::Scene
+#endif
+
 namespace Scene
 {
 	class MainBase

@@ -1,26 +1,8 @@
 #pragma once
 
-#include <Client/source/resource/ResourceManager.h>
+#include <Client/source/resource/StaticResource.h>
 
-#include <SFML/System/MemoryInputStream.hpp>
-
-#include <fstream>
-#include <map>
-
-#ifdef _WIN32
-#include <Windows.h>
-
-#define _EXISTS(file) !(INVALID_FILE_ATTRIBUTES == GetFileAttributesW(file) \
-	&& GetLastError() == ERROR_FILE_NOT_FOUND)
-#endif
-
-namespace Resource
-{
-	enum class File
-	{
-		DefaultFont
-	};
-}
+#include <utility>
 
 namespace Device
 {
@@ -34,9 +16,16 @@ namespace Device
 	class Resource
 	{
 	public:
+		typedef RESOURCE::Static::Resource Content;
+
 		bool initialize();
 
-		sf::MemoryInputStream load(
-			const ::Resource::File resource);
+		Content obtain(
+			RESOURCE::Static::Type type);
+		Content obtain(
+			const std::wstring folderName,
+			const std::wstring fileName);
+		Content obtain(
+			const std::wstring fileName);
 	};
 }

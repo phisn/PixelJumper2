@@ -33,7 +33,7 @@ namespace Game
 
 		void onDraw() const
 		{
-			DEVICE::Interface::getScreen()->onDraw(&shape);
+			DEVICE::Interface::GetScreen()->onDraw(&shape);
 		}
 
 		void setPosition(

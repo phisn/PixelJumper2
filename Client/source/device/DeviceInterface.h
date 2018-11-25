@@ -33,11 +33,11 @@ namespace Device
 
 	namespace Interface
 	{
-		InitError initialize();
-		int start();
+		InitError Initialize();
+		int Start();
 
-		GlobalInput* getInput();
-		Screen* getScreen();
-		Resource* getResource();
+		GlobalInput* GetInput();
+		Screen* GetScreen();
+		Resource* GetResource();
 	}
 }

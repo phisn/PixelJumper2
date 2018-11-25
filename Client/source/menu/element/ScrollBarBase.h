@@ -105,8 +105,8 @@ namespace Menu
 
 	inline void ScrollBarBase::onDraw()
 	{
-		DEVICE::Interface::getScreen()->onDraw(&background);
-		DEVICE::Interface::getScreen()->onDraw(&scrollBar);
+		DEVICE::Interface::GetScreen()->onDraw(&background);
+		DEVICE::Interface::GetScreen()->onDraw(&scrollBar);
 	}
 
 	inline void ScrollBarBase::resetSize()

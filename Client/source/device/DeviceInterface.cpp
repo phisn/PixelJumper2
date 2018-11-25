@@ -2,10 +2,10 @@
 #include <Client/source/device/InputDevice.h>
 #include <Client/source/device/ResourceDevice.h>
 
-#include <Client/source/scene/SceneInterface.h>
+#include <Client/source/framework/FrameworkInterface.h>
 
 #include <Client/source/scene/LocalGameScene.h>
-#include <Client/source/scene/Context.h>
+#include <Client/source/framework/Context.h>
 
 #include <Client/source/game/tiles/TileManager.h>
 #include <Client/source/game/tiles/Wall.h>
@@ -22,8 +22,10 @@ namespace
 	Device::Resource* resource = NULL;
 
 #ifdef _DEBUG
-	SCENE::Context* makeStartingContext()
+	FW::Context* makeStartingContext()
 	{
+		return FW::Context::create<SCENE::Editor>();
+
 		/*
 		GAME::Tile::Manager::registerAllPrivate();
 
@@ -62,12 +64,9 @@ namespace
 
 		std::cout << (int)settings->world << std::endl;
 		*/
-
-
-		return SCENE::Context::create<SCENE::Editor>();
 	}
 #else
-	SCENE::Context* makeStartingContext()
+	FW::Context* makeStartingContext()
 	{
 
 	}
@@ -76,7 +75,7 @@ namespace
 
 namespace Device
 {
-	InitError Interface::initialize()
+	InitError Interface::Initialize()
 	{
 		if (input)
 		{
@@ -107,7 +106,7 @@ namespace Device
 			return InitError::Scene;
 		}
 
-		if (!SCENE::Interface::pushContext(
+		if (!FW::Interface::PushContext(
 			makeStartingContext()
 		))
 		{
@@ -124,7 +123,7 @@ namespace Device
 		return InitError::Invalid;
 	}
 
-	int Interface::start()
+	int Interface::Start()
 	{
 		screen->onShow();
 
@@ -133,40 +132,41 @@ namespace Device
 
 		while (true)
 		{
-			Scene::Interface::doOrders();
+			FW::Execution::DoTasks();
 
-			if (!Scene::Interface::isRunning())
+			if (!FW::Execution::IsRunning())
 			{
 				break;
 			}
 
 			while (screen->getWindow()->pollEvent(event))
 			{
-				Scene::Interface::onEvent(event);
+				FW::Execution::OnEvent(event);
 			}
 
-			Scene::Interface::onUpdate(
-				clock.restart());
+			FW::Execution::OnUpdate(
+				clock.restart()
+			);
 
 			screen->getWindow()->clear();
-			Scene::Interface::onDraw();
+			FW::Execution::OnDraw();
 			screen->getWindow()->display();
 		}
 
 		return 0;
 	}
 
-	GlobalInput* Interface::getInput()
+	GlobalInput* Interface::GetInput()
 	{
 		return input;
 	}
 
-	Screen* Interface::getScreen()
+	Screen* Interface::GetScreen()
 	{
 		return screen;
 	}
 
-	Resource* Interface::getResource()
+	Resource* Interface::GetResource()
 	{
 		return nullptr;
 	}

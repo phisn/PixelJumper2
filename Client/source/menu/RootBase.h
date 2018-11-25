@@ -22,14 +22,14 @@ namespace Menu
 			const sf::Time time) = 0;
 		virtual void onDraw()
 		{
-			DEVICE::Interface::getScreen()->applyView(&view);
+			DEVICE::Interface::GetScreen()->applyView(&view);
 		}
 
 		void resetSize()
 		{
 			view.setSize(
-				DEVICE::Interface::getScreen()->getWindow()->getSize().x * view.getViewport().width,
-				DEVICE::Interface::getScreen()->getWindow()->getSize().y * view.getViewport().height
+				DEVICE::Interface::GetScreen()->getWindow()->getSize().x * view.getViewport().width,
+				DEVICE::Interface::GetScreen()->getWindow()->getSize().y * view.getViewport().height
 			);
 
 			view.setCenter(

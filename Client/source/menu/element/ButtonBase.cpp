@@ -94,7 +94,7 @@ namespace Menu
 	
 	void ButtonBase::onDraw()
 	{
-		DEVICE::Interface::getScreen()->onDraw(&shape);
+		DEVICE::Interface::GetScreen()->onDraw(&shape);
 	}
 
 	void ButtonBase::resetPosition()

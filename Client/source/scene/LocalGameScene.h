@@ -80,7 +80,7 @@ namespace Scene
 
 				GAME::LocalPlayer* localPlayer = new GAME::LocalPlayer(
 					playerSettings, 
-					DEVICE::Interface::getInput()->loadLocalInput(i)
+					DEVICE::Interface::GetInput()->loadLocalInput(i)
 				);
 
 				localPlayer->getView()->adjustView(

@@ -88,10 +88,10 @@ namespace Scene
 			const float mouse_y)
 		{
 			const float
-				x = DEVICE::Interface::getScreen()->getWindow()->getSize().x * root->getView()->getViewport().left,
-				y = DEVICE::Interface::getScreen()->getWindow()->getSize().y * root->getView()->getViewport().top,
-				width = DEVICE::Interface::getScreen()->getWindow()->getSize().x * root->getView()->getViewport().width,
-				height = DEVICE::Interface::getScreen()->getWindow()->getSize().y * root->getView()->getViewport().height;
+				x = DEVICE::Interface::GetScreen()->getWindow()->getSize().x * root->getView()->getViewport().left,
+				y = DEVICE::Interface::GetScreen()->getWindow()->getSize().y * root->getView()->getViewport().top,
+				width = DEVICE::Interface::GetScreen()->getWindow()->getSize().x * root->getView()->getViewport().width,
+				height = DEVICE::Interface::GetScreen()->getWindow()->getSize().y * root->getView()->getViewport().height;
 
 			return
 				mouse_x > x	&& mouse_x < x + width &&

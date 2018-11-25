@@ -77,8 +77,8 @@ namespace Editor
 		void resetSize()
 		{
 			const sf::Vector2f size = sf::Vector2f(
-				(DEVICE::Interface::getScreen()->getWindow()->getSize().x * view->getViewport().width) / 10.f,
-				(DEVICE::Interface::getScreen()->getWindow()->getSize().y * view->getViewport().height) / 10.f
+				(DEVICE::Interface::GetScreen()->getWindow()->getSize().x * view->getViewport().width) / 10.f,
+				(DEVICE::Interface::GetScreen()->getWindow()->getSize().y * view->getViewport().height) / 10.f
 			);
 
 			view->setSize(size);
@@ -117,24 +117,24 @@ namespace Editor
 
 	inline void GridView::applyView() const
 	{
-		DEVICE::Interface::getScreen()->applyView(view);
+		DEVICE::Interface::GetScreen()->applyView(view);
 	}
 
 	inline void GridView::draw() const
 	{
-		DEVICE::Interface::getScreen()->onDraw(&background.sprite);
+		DEVICE::Interface::GetScreen()->onDraw(&background.sprite);
 	}
 
 	inline sf::Vector2f GridView::convertPtoC(
 		const sf::Vector2i position) const
 	{
-		return DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(position, *view);
+		return DEVICE::Interface::GetScreen()->getWindow()->mapPixelToCoords(position, *view);
 	}
 
 	inline sf::Vector2i GridView::convertCtoP(
 		const sf::Vector2f position) const
 	{
-		return DEVICE::Interface::getScreen()->getWindow()->mapCoordsToPixel(position, *view);
+		return DEVICE::Interface::GetScreen()->getWindow()->mapCoordsToPixel(position, *view);
 	}
 
 	inline const sf::Sprite* GridView::getSprite() const

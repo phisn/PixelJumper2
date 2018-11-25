@@ -2,6 +2,11 @@
 
 #include <Client/source/framework/Context.h>
 
+#include <Client/source/device/DeviceInterface.h>
+#include <Client/source/device/ResourceDevice.h>
+
+#include <stack>
+
 namespace
 {
 	std::stack<Framework::Context*> contextStack;
@@ -75,12 +80,12 @@ namespace Framework
 
 	bool Interface::PopScene()
 	{
-		if (isValid(Order::LoadScene))
+		if (isValid(Task::LoadScene))
 		{
 			return false;
 		}
 
-		currentOrder = Order::PopScene;
+		currentOrder = Task::PopScene;
 
 		return true;
 	}
@@ -108,48 +113,48 @@ namespace Framework
 	}
 
 
-	void Interface::OnDraw()
+	void Execution::OnDraw()
 	{
 		contextStack.top()->onDraw();
 	}
 
-	void Interface::OnEvent(
+	void Execution::OnEvent(
 		const sf::Event event)
 	{
 		contextStack.top()->onEvent(event);
 	}
 
-	void Interface::OnUpdate(
+	void Execution::OnUpdate(
 		const sf::Time time)
 	{
 		contextStack.top()->onUpdate(time);
 	}
 
-	void Interface::DoOrders()
+	void Execution::DoTasks()
 	{
-		if (currentOrder == Order::Empty)
+		if (currentOrder == Interface::Task::Empty)
 		{
 			return;
 		}
 
 		switch (currentOrder)
 		{
-		case Order::Fallback:
+		case Interface::Task::Fallback:
 			contextStack.top()->fallback();
 
 			break;
-		case Order::PopScene:
+		case Interface::Task::PopScene:
 			contextStack.top()->popScene();
 
 			break;
-		case Order::PopContext:
+		case Interface::Task::PopContext:
 			// delete or reuse?
 			contextStack.top()->cleanup();
 			contextStack.pop();
 
 			if (contextStack.empty())
 			{
-				shutdown();
+				Shutdown();
 			}
 			else
 			{
@@ -157,22 +162,35 @@ namespace Framework
 			}
 
 			break;
-		case Order::LoadContext:
+		case Interface::Task::LoadContext:
 			contextStack.top()->deepInitialize();
 
 			break;
 		}
 
-		currentOrder = Order::Empty;
+		currentOrder = Interface::Task::Empty;
 	}
 	
-	void Interface::Shutdown()
+	void Execution::Shutdown()
 	{
 		running = false;
 	}
 
-	bool Interface::IsRunning()
+	bool Execution::IsRunning()
 	{
 		return running;
+	}
+
+	sf::MemoryInputStream Resource::Get(
+		RESOURCE::Static::Type type)
+	{
+		for (Framework::Context* context : contextStack._Get_container())
+			// quick because of 'ResourceContext' cache
+			if (context->getResource()->has(type))
+			{
+				return context->getResource()->get(type);
+			}
+
+		return contextStack.top()->getResource()->obtain(type);
 	}
 }

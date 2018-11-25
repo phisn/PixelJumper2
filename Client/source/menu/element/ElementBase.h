@@ -166,7 +166,7 @@ namespace Menu
 		const int x,
 		const int y) const
 	{
-		return DEVICE::Interface::getScreen()->getWindow()->mapPixelToCoords(
+		return DEVICE::Interface::GetScreen()->getWindow()->mapPixelToCoords(
 			sf::Vector2i(x, y), *view
 		);
 	}

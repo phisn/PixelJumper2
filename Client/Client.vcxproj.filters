@@ -246,9 +246,6 @@
     <ClInclude Include="source\editor\tilemenu\TileContainer.h">
       <Filter>source\editor\tilemenu</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\ResourceManager.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\SubSceneBase.h">
       <Filter>source\scene\base</Filter>
     </ClInclude>
@@ -278,6 +275,15 @@
     </ClInclude>
     <ClInclude Include="source\framework\FrameworkInterface.h">
       <Filter>source\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="source\framework\ResourceContext.h">
+      <Filter>source\framework</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\StaticResource.h">
+      <Filter>source\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\device\ErrorDevice.h">
+      <Filter>source\device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -334,9 +340,6 @@
     </ClCompile>
     <ClCompile Include="source\resource\ResourceInterface.cpp">
       <Filter>source\resource\base</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\WorldResource.cpp">
-      <Filter>source\resource\impl</Filter>
     </ClCompile>
     <ClCompile Include="source\resource\TileResource.cpp">
       <Filter>source\resource\impl</Filter>
@@ -419,9 +422,6 @@
     <ClCompile Include="source\editor\tilemenu\TileContainer.cpp">
       <Filter>source\editor\tilemenu</Filter>
     </ClCompile>
-    <ClCompile Include="source\resource\ResourceManager.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
     <ClCompile Include="source\scene\SubSceneBase.cpp">
       <Filter>source\scene\base</Filter>
     </ClCompile>
@@ -448,6 +448,18 @@
     </ClCompile>
     <ClCompile Include="source\framework\FrameworkInterface.cpp">
       <Filter>source\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="source\framework\ResourceContext.cpp">
+      <Filter>source\framework</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\WorldResource.cpp">
+      <Filter>source\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\StaticResource.cpp">
+      <Filter>source\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="source\device\ErrorDevice.cpp">
+      <Filter>source\device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

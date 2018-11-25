@@ -123,7 +123,7 @@ namespace Framework
 	}
 	
 	bool Context::pushScene(
-		SubBase* scene)
+		SCENE::SubBase* scene)
 	{
 		if (!scene->onCreate())
 		{

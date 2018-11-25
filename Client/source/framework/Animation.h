@@ -34,7 +34,7 @@ namespace Framework
 
 		void onDraw() const
 		{
-			DEVICE::Interface::getScreen()->onDraw(&sprites[spriteCounter]);
+			DEVICE::Interface::GetScreen()->onDraw(&sprites[spriteCounter]);
 		}
 
 		void reset()

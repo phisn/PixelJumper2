@@ -22,7 +22,7 @@ namespace Game
 			int count)
 		{
 			const sf::Vector2u windowSize = 
-				DEVICE::Interface::getScreen()->getWindow()->getSize();
+				DEVICE::Interface::GetScreen()->getWindow()->getSize();
 
 			switch (count)
 			{
@@ -135,7 +135,7 @@ namespace Game
 				view.setCenter(target->getPosition());
 			}
 
-			DEVICE::Interface::getScreen()->applyView(&view);
+			DEVICE::Interface::GetScreen()->applyView(&view);
 		}
 
 		void changeTarget(

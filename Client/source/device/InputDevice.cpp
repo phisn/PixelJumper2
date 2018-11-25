@@ -85,7 +85,7 @@ namespace Device
 		{
 			changed = false;
 
-			Device::Interface::getInput()->saveLocalInput(
+			Device::Interface::GetInput()->saveLocalInput(
 				position, this);
 		}
 	}

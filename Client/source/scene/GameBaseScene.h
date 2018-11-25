@@ -8,7 +8,7 @@
 #include <Client/source/game/World.h>
 
 #include <Client/source/scene/MainSceneBase.h>
-#include <Client/source/scene/SceneInterface.h>
+#include <Client/source/framework/FrameworkInterface.h>
 
 #include <Windows.h>
 
@@ -57,7 +57,7 @@ namespace Scene
 			}
 
 			switch ( 
-				DEVICE::Interface::getInput()->codeToSymbol(
+				DEVICE::Interface::GetInput()->codeToSymbol(
 					event.key.code) 
 				) 
 			{
@@ -91,7 +91,7 @@ namespace Scene
 		{
 			if (isHidden)
 			{
-				DEVICE::Interface::getScreen()->onDraw(&background);
+				DEVICE::Interface::GetScreen()->onDraw(&background);
 			}
 		}
 

@@ -121,13 +121,13 @@ namespace Editor
 
 			for (TileBase* const tile : world->getTiles())
 			{
-				DEVICE::Interface::getScreen()->onDraw(
+				DEVICE::Interface::GetScreen()->onDraw(
 					tile->getShape()
 				);
 			}
 
-			DEVICE::Interface::getScreen()->getWindow()->setView(
-				DEVICE::Interface::getScreen()->getWindow()->getDefaultView()
+			DEVICE::Interface::GetScreen()->getWindow()->setView(
+				DEVICE::Interface::GetScreen()->getWindow()->getDefaultView()
 			);
 
 			selector.draw();

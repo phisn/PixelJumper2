@@ -40,14 +40,14 @@ namespace Editor
 		{
 			for (sf::RectangleShape& shape : selections)
 			{
-				DEVICE::Interface::getScreen()->onDraw(
+				DEVICE::Interface::GetScreen()->onDraw(
 					&shape);
 			}
 		}
 
 		void drawMarker()
 		{
-			DEVICE::Interface::getScreen()->onDraw(
+			DEVICE::Interface::GetScreen()->onDraw(
 				&marker);
 		}
 

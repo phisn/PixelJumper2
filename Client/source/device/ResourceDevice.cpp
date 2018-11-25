@@ -1,73 +1,14 @@
 #include "ResourceDevice.h"
 
-namespace
-{
-	std::map<::Resource::File, std::pair<void*, sf::Uint32> > fileStreams;
-
-	bool createResource(
-		::Resource::File resource)
-	{
-		std::ifstream file(
-			Resource::Manager::translate(resource),
-			std::ios::binary | std::ios::in | std::ios::ate
-		);
-
-		if ( file.fail() )
-		{
-			return false;
-		}
-
-		const sf::Uint32 size = file.tellg();
-		file.clear();
-		file.seekg(0, std::ios::beg);
-
-		char* buffer = new char[size];
-		file.read(
-			buffer,
-			size);
-
-		if ( file.fail() )
-		{
-			return false;
-		}
-
-		fileStreams[resource] = std::pair<void*, sf::Uint32>(buffer, size);
-
-		return true;
-	}
-
-	_Ret_maybenull_
-	std::pair<void*, sf::Uint32>* acquireResource(
-		::Resource::File resource)
-	{
-		decltype(fileStreams)::iterator it = fileStreams.find(resource);
-
-		if (it == fileStreams.end())
-		{
-			if ( createResource(resource) )
-			{
-				return &fileStreams[resource];
-			}
-			else
-			{
-				return NULL;
-			}
-		}
-		else
-		{
-			return &it->second;
-		}
-	}
-}
+#include <fstream>
 
 namespace Device
 {
 	bool Resource::initialize()
 	{
-		for (int resource = 0; resource < (int) ::Resource::File::_Size; ++resource)
-			if (!_EXISTS(
-				::Resource::Manager::translate( (::Resource::File) resource ).c_str()
-			))
+		const wchar_t** translations = RESOURCE::GetTranslations();
+		for (int i = 0; i < RESOURCE::GetTranslationCount(); ++i)
+			if (std::ifstream(translations[i]).fail())
 			{
 				return false;
 			}
@@ -75,18 +16,51 @@ namespace Device
 		return true;
 	}
 
-	sf::MemoryInputStream Resource::load(
-		const ::Resource::File resource)
+	Resource::Content Resource::obtain(
+		RESOURCE::Static::Type type)
 	{
-		sf::MemoryInputStream mis;
+		return obtain( RESOURCE::Translate(type) );
+	}
+	
+	Resource::Content Resource::obtain(
+		const std::wstring folderName, 
+		const std::wstring fileName)
+	{
+		return obtain(folderName + L"\\" + fileName);
+	}
 
-		std::pair<void*, sf::Uint32>* data = acquireResource(resource);
-		if (data == NULL)
+	Resource::Content Resource::obtain(
+		const std::wstring fileName)
+	{
+		Content content = { };
+
+		std::ifstream file(
+			fileName,
+			std::ios::binary | std::ios::in | std::ios::ate);
+
+		if ( file.fail() )
 		{
-			MessageBox(NULL, L"Unable to load resource", L"Error", MB_OK);
+			return content;
 		}
 
-		mis.open(data->first, data->second);
-		return mis;
+		content.second = file.tellg();
+		file.clear();
+		file.seekg(0, std::ios::beg);
+
+		// released in 'ResourceContext' using RAII
+		content.first = new char[content.second];
+		file.read(
+			content.first,
+			content.second);
+
+		if ( file.fail() )
+		{
+			delete[] content.first;
+
+			content.first = NULL;
+			content.second = NULL;
+		}
+
+		return content;
 	}
 }

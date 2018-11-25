@@ -4,6 +4,7 @@
 
 namespace Device
 {
+	// Same for all players
 	enum class GlobalInputSymbol
 	{
 		Invalid = -1,
@@ -15,6 +16,7 @@ namespace Device
 		_Length
 	};
 
+	// Different for each player
 	enum class LocalInputSymbol
 	{
 		Invalid = -1,
