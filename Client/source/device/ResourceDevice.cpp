@@ -1,15 +1,24 @@
 #include "ResourceDevice.h"
 
+#include <Client/source/Logger.h>
 #include <fstream>
 
 namespace Device
 {
 	bool Resource::initialize()
 	{
+		Log::Section section(L"Initializing ResourceDevice");
+
 		const wchar_t** translations = RESOURCE::GetTranslations();
 		for (int i = 0; i < RESOURCE::GetTranslationCount(); ++i)
-			if (std::ifstream(translations[i]).fail())
+			if (std::wifstream(translations[i]).fail())
 			{
+				section.error(
+					std::wstring(L"File '")
+						.append(translations[i])
+						.append(L"' not found")
+				);
+
 				return false;
 			}
 

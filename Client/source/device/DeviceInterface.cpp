@@ -2,18 +2,20 @@
 #include <Client/source/device/InputDevice.h>
 #include <Client/source/device/ResourceDevice.h>
 
-#include <Client/source/framework/FrameworkInterface.h>
+#include "DeviceInterface.h"
 
-#include <Client/source/scene/LocalGameScene.h>
 #include <Client/source/framework/Context.h>
+#include <Client/source/framework/FrameworkInterface.h>
 
 #include <Client/source/game/tiles/TileManager.h>
 #include <Client/source/game/tiles/Wall.h>
+#include <Client/source/game/WorldManager.h>
 
-#include "DeviceInterface.h"
+#include <Client/source/Logger.h>
 
 #include <Client/source/scene/EditorScene.h>
-#include <Client/source/game/WorldManager.h>
+#include <Client/source/scene/LocalGameScene.h>
+
 
 namespace
 {
@@ -106,18 +108,16 @@ namespace Device
 			return InitError::Scene;
 		}
 
+		if (!resource->initialize())
+		{
+			return InitError::Resource;
+		}
+
 		if (!FW::Interface::PushContext(
 			makeStartingContext()
 		))
 		{
 			return InitError::Scene;
-		}
-
-		// Net
-
-		if (!resource->initialize())
-		{
-			return InitError::Resource;
 		}
 
 		return InitError::Invalid;
@@ -130,6 +130,7 @@ namespace Device
 		sf::Clock clock;
 		sf::Event event;
 
+		Log::Information(L"Entering Game Loop");
 		while (true)
 		{
 			FW::Execution::DoTasks();

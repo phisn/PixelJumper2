@@ -134,7 +134,6 @@
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
-    <ClInclude Include="source\device\ErrorDevice.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
@@ -179,6 +178,7 @@
     <ClInclude Include="source\game\tiles\Wall.h" />
     <ClInclude Include="source\game\World.h" />
     <ClInclude Include="source\game\WorldManager.h" />
+    <ClInclude Include="source\Logger.h" />
     <ClInclude Include="source\menu\Common.h" />
     <ClInclude Include="source\menu\container\ContainerBase.h" />
     <ClInclude Include="source\menu\container\RowContainerBase.h" />
@@ -204,7 +204,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\DeviceInterface.cpp" />
-    <ClCompile Include="source\device\ErrorDevice.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
@@ -245,6 +244,7 @@
     <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\game\WorldManager.cpp" />
+    <ClCompile Include="source\Logger.cpp" />
     <ClCompile Include="source\menu\container\ContainerBase.cpp" />
     <ClCompile Include="source\menu\container\RowContainerBase.cpp" />
     <ClCompile Include="source\menu\container\ScrollContainer.cpp" />

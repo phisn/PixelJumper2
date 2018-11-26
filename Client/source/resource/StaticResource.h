@@ -20,7 +20,7 @@ namespace Resource
 			DefaultFont,
 
 			_Length
-		} type;
+		};
 	}
 
 	const int GetTranslationCount();

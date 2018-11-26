@@ -32,8 +32,8 @@ namespace Resource
 
 			struct
 			{
-				float width;
-				float height;
+				sf::Uint32 width;
+				sf::Uint32 height;
 
 				sf::Int32 tileCount;
 				sf::Int32 contentSize;

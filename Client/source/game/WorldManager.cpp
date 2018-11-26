@@ -99,7 +99,7 @@ namespace Game
 	{
 		WorldSettings* settings = new WorldSettings();
 
-		settings->size = sf::Vector2f(
+		settings->size = sf::Vector2u(
 			world->header.prop.width,
 			world->header.prop.height);
 

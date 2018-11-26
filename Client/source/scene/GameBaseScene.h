@@ -62,7 +62,7 @@ namespace Scene
 				) 
 			{
 			case DEVICE::GlobalInputSymbol::Exit:
-				if (!Interface::popContext())
+				if (!FW::Interface::PopContext())
 				{
 					MessageBoxW(
 						NULL,

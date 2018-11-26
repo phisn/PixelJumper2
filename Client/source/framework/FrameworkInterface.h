@@ -71,7 +71,5 @@ namespace Framework
 	{
 		sf::MemoryInputStream Get(
 			RESOURCE::Static::Type type);
-		sf::MemoryInputStream Get(
-			int someRandomType) { }
 	}
 }

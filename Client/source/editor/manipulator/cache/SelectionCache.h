@@ -20,7 +20,7 @@ namespace Editor
 		struct Area
 		{
 			// marking area (boxes)
-			sf::Vector2i
+			sf::Vector2f
 				size,
 				offset;
 		};

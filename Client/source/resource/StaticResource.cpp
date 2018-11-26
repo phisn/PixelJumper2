@@ -16,7 +16,7 @@ const wchar_t** Resource::GetTranslations()
 }
 
 const std::wstring Resource::Translate(
-	RESOURCE::StaticResource::Type type)
+	RESOURCE::Static::Type type)
 {
 	return static_resource_names[(int) type];
 }

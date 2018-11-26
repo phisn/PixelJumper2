@@ -1,5 +1,7 @@
 #include <Client/source/device/DeviceInterface.h>
 
+#include <Client/source/Logger.h>
+
 bool handleInputError();
 bool handleNetworkError();
 bool handleSceneError();
@@ -29,6 +31,13 @@ int WINAPI wWinMain(
 #else
 #endif
 {
+#ifdef _DEBUG
+	Log::AddOutput(Log::OUTPUT_CONSOLE);
+#else
+	Log::AddOutput(Log::OUTPUT_FILE);
+	Log::SetOutputFilePath(L"logs.txt");
+#endif
+	Log::Information(L"Starting Game...");
 Retry:
 	while (true)
 	{
@@ -38,12 +47,22 @@ Retry:
 		{
 			break;
 		}
+		else
+		{
+			Log::Error(L"Failed...");
+		}
 
 		if (!handleError[(int) result]())
 		{
 			return 0;
 		}
+		else
+		{
+			Log::Information(L"Restart...");
+		}
 	}
+
+	Log::Information(L"Game successfully initialized");
 
 	int result;
 	try

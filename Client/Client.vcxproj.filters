@@ -282,8 +282,8 @@
     <ClInclude Include="source\resource\StaticResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
-    <ClInclude Include="source\device\ErrorDevice.h">
-      <Filter>source\device</Filter>
+    <ClInclude Include="source\Logger.h">
+      <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -458,8 +458,8 @@
     <ClCompile Include="source\resource\StaticResource.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
-    <ClCompile Include="source\device\ErrorDevice.cpp">
-      <Filter>source\device</Filter>
+    <ClCompile Include="source\Logger.cpp">
+      <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
