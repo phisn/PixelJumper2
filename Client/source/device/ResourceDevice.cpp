@@ -8,6 +8,10 @@ namespace Device
 	bool Resource::initialize()
 	{
 		Log::Section section(L"Initializing ResourceDevice");
+		section.information(
+			L"Checking '" 
+			+ std::to_wstring( RESOURCE::GetTranslationCount() )
+			+ L"' resources");
 
 		const wchar_t** translations = RESOURCE::GetTranslations();
 		for (int i = 0; i < RESOURCE::GetTranslationCount(); ++i)

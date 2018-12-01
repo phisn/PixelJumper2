@@ -19,9 +19,6 @@
     <Filter Include="source\scene">
       <UniqueIdentifier>{82fc5087-42aa-4e96-8d10-f03557382342}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\resource">
-      <UniqueIdentifier>{66b67bfc-0010-45cc-80b8-4ec868cce6b1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\game\tiles\impl">
       <UniqueIdentifier>{197122a1-34fc-4932-9ca1-5cd442206336}</UniqueIdentifier>
     </Filter>
@@ -33,12 +30,6 @@
     </Filter>
     <Filter Include="source\scene\base">
       <UniqueIdentifier>{d831bc2f-f995-4a94-8f2a-f3fb1637a4fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\resource\base">
-      <UniqueIdentifier>{435a618e-c781-4a13-8c32-b740fd450383}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\resource\impl">
-      <UniqueIdentifier>{63f0af3c-9df7-42b3-9623-58734ff35c55}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\editor">
       <UniqueIdentifier>{c56ab57d-2621-4dcd-8eab-476c9e143afe}</UniqueIdentifier>
@@ -75,6 +66,18 @@
     </Filter>
     <Filter Include="source\framework">
       <UniqueIdentifier>{e6571033-ad24-4860-8fad-429aaa5b6a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\logger">
+      <UniqueIdentifier>{e27b5282-e150-43bb-a9a9-0172ea1c17bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\resource">
+      <UniqueIdentifier>{66b67bfc-0010-45cc-80b8-4ec868cce6b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\resource\base">
+      <UniqueIdentifier>{435a618e-c781-4a13-8c32-b740fd450383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\resource\impl">
+      <UniqueIdentifier>{63f0af3c-9df7-42b3-9623-58734ff35c55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -282,8 +285,20 @@
     <ClInclude Include="source\resource\StaticResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
-    <ClInclude Include="source\Logger.h">
+    <ClInclude Include="source\logger\Level.h">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="source\logger\Output.h">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="source\logger\Section.h">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="source\_Logger.h">
       <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\logger\Logger.h">
+      <Filter>source\logger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -458,8 +473,17 @@
     <ClCompile Include="source\resource\StaticResource.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
-    <ClCompile Include="source\Logger.cpp">
+    <ClCompile Include="source\logger\Output.cpp">
+      <Filter>source\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="source\logger\Section.cpp">
+      <Filter>source\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="source\_Logger.cpp">
       <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\logger\Logger.cpp">
+      <Filter>source\logger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,5 +500,6 @@
     <None Include="resource\font.hbin">
       <Filter>resource</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

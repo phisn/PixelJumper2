@@ -178,7 +178,11 @@
     <ClInclude Include="source\game\tiles\Wall.h" />
     <ClInclude Include="source\game\World.h" />
     <ClInclude Include="source\game\WorldManager.h" />
-    <ClInclude Include="source\Logger.h" />
+    <ClInclude Include="source\_Logger.h" />
+    <ClInclude Include="source\logger\Level.h" />
+    <ClInclude Include="source\logger\Output.h" />
+    <ClInclude Include="source\logger\Section.h" />
+    <ClInclude Include="source\logger\Logger.h" />
     <ClInclude Include="source\menu\Common.h" />
     <ClInclude Include="source\menu\container\ContainerBase.h" />
     <ClInclude Include="source\menu\container\RowContainerBase.h" />
@@ -244,7 +248,10 @@
     <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
     <ClCompile Include="source\game\WorldManager.cpp" />
-    <ClCompile Include="source\Logger.cpp" />
+    <ClCompile Include="source\_Logger.cpp" />
+    <ClCompile Include="source\logger\Output.cpp" />
+    <ClCompile Include="source\logger\Section.cpp" />
+    <ClCompile Include="source\logger\Logger.cpp" />
     <ClCompile Include="source\menu\container\ContainerBase.cpp" />
     <ClCompile Include="source\menu\container\RowContainerBase.cpp" />
     <ClCompile Include="source\menu\container\ScrollContainer.cpp" />
@@ -269,6 +276,7 @@
     <Image Include="source\editor\manipulator\Manipulator.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="resource\font.hbin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

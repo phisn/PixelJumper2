@@ -130,7 +130,7 @@ namespace Device
 		sf::Clock clock;
 		sf::Event event;
 
-		Log::Information(L"Entering Game Loop");
+		Log::Independent::Information(L"Entering Game Loop");
 		while (true)
 		{
 			FW::Execution::DoTasks();
