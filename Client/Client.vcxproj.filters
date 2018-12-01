@@ -294,10 +294,13 @@
     <ClInclude Include="source\logger\Section.h">
       <Filter>source\logger</Filter>
     </ClInclude>
-    <ClInclude Include="source\_Logger.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="source\logger\Logger.h">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="source\logger\SectionHost.h">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="source\logger\Names.h">
       <Filter>source\logger</Filter>
     </ClInclude>
   </ItemGroup>
@@ -479,10 +482,10 @@
     <ClCompile Include="source\logger\Section.cpp">
       <Filter>source\logger</Filter>
     </ClCompile>
-    <ClCompile Include="source\_Logger.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="source\logger\Logger.cpp">
+      <Filter>source\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="source\logger\SectionHost.cpp">
       <Filter>source\logger</Filter>
     </ClCompile>
   </ItemGroup>

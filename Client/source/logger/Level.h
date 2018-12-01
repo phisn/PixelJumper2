@@ -1,15 +1,14 @@
 #pragma once
 
-namespace Logger
+namespace Log
 {
 	enum class Level
 	{
 		Invalid,
 
 		Section,
-
-		Error,
 		Information,
-		Warning
+		Warning,
+		Error
 	};
 }

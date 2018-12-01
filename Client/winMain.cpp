@@ -32,16 +32,20 @@ int WINAPI wWinMain(
 #endif
 {
 #ifdef _DEBUG
-	Logger::Output::Add(Logger::Output::CONSOLE_OUT);
+	Log::Output::Add(Log::Output::CONSOLE_OUT);
 #else
 	Log::AddOutput(Log::OUTPUT_FILE);
 	Log::SetOutputFilePath(L"logs.txt");
 #endif
-	Logger::Information(L"Starting Game...");
 Retry:
 	while (true)
 	{
-		Device::InitError result = DEVICE::Interface::Initialize();
+		Device::InitError result;
+
+		{
+			Log::Section section(L"Initializing Game");
+			result = DEVICE::Interface::Initialize();
+		}
 
 		if (result == Device::InitError::Invalid)
 		{

@@ -11,7 +11,7 @@
 #include <Client/source/game/tiles/Wall.h>
 #include <Client/source/game/WorldManager.h>
 
-#include <Client/source/Logger.h>
+#include <Client/source/logger/Logger.h>
 
 #include <Client/source/scene/EditorScene.h>
 #include <Client/source/scene/LocalGameScene.h>

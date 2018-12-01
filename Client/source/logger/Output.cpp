@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-namespace Logger
+namespace Log
 {
 	const Output::Out Output::FILE_OUT =
 		[](const std::wstring message) -> void
@@ -27,5 +27,6 @@ namespace Logger
 		std::wcout << message;
 	};
 
+	std::vector<Output> Output::outputs;
 	std::wstring Output::path = L"logs.txt"; // default
 }

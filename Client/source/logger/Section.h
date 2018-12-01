@@ -1,13 +1,20 @@
 #pragma once
 
 #include <Client/source/logger/Level.h>
-#include <Client/source/logger/Logger.h>
+#include <Client/source/logger/SectionHost.h>
 
-namespace Logger
+namespace Log
 {
 	class Section // SectionHost wrapper for RAII
 	{
 	public:
+		Section(
+			const std::wstring name)
+			:
+			Section( SectionHost::Create(name) )
+		{
+		}
+
 		Section(
 			SectionHost* const host)
 			:
@@ -23,19 +30,19 @@ namespace Logger
 		void error(
 			const std::wstring message)
 		{
-			Error(message);
+			host->addLog(Level::Error, message);
 		}
 
 		void information(
 			const std::wstring message)
 		{
-			Information(message);
+			host->addLog(Level::Information, message);
 		}
 
 		void warning(
 			const std::wstring message)
 		{
-			Warning(message);
+			host->addLog(Level::Warning, message);
 		}
 
 	private:

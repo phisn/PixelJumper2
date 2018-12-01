@@ -1,6 +1,7 @@
 #include "ResourceDevice.h"
 
-#include <Client/source/Logger.h>
+#include <Client/source/logger/Logger.h>
+
 #include <fstream>
 
 namespace Device

@@ -5,16 +5,25 @@
 #include <string>
 #include <vector>
 
-namespace Logger
+namespace Log
 {
 	class Output
 	{
 	public:
 		typedef void (*Out)(const std::wstring);
 
-		static void Add(
+		Output(
 			const Out out,
 			const Level importance)
+			:
+			out(out),
+			importance(importance)
+		{
+		}
+
+		static void Add(
+			const Out out,
+			const Level importance = Log::Level::Error)
 		{
 			outputs.emplace_back(
 				out,
@@ -45,18 +54,9 @@ namespace Logger
 		{
 			Output::path = path;
 		}
-	private:
+	public:
 		static std::vector<Output> outputs;
 		static std::wstring path;
-
-		Output(
-			const Out out,
-			const Level importance)
-			:
-			out(out),
-			importance(importance)
-		{
-		}
 
 		const Out out;
 		const Level importance;
