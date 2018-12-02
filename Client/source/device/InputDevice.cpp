@@ -1,6 +1,7 @@
 #include "InputDevice.h"
 
 #include <Client/source/device/DeviceInterface.h>
+#include <Client/source/logger/Logger.h>
 
 #include <Windows.h>
 
@@ -13,6 +14,8 @@ namespace Device
 {
 	bool GlobalInput::initialize()
 	{
+		Log::Section section(L"Initializing InputDevice");
+
 		if (inputs[0])
 		{ // Quicker than loop
 			delete inputs[0];

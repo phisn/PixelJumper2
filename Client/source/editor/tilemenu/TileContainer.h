@@ -49,8 +49,6 @@ namespace Editor
 		{
 			TileMenuButton::Style style;
 
-			style.enterColor = sf::Color::Color(0, 0, 255);
-			style.fillColor	 = tile->color;
 			style.tile = tile;
 
 			TileMenuButton::Properties properties;

@@ -1,7 +1,11 @@
 #include "ScreenDevice.h"
 
+#include <Client/source/logger/Logger.h>
+
 bool Device::Screen::initalize()
 {
+	Log::Section section(L"Initializing ScreenDevice");
+
 	// Load screen settings from file
 
 	settings = defaultScreenSettings;

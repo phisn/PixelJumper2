@@ -7,15 +7,20 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34)
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-  ResourceDevice.cpp
-  Logger.cpp
-  Section.cpp
-  SectionHost.cpp
-  winMain.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\winmain.cpp(40): warning C4102: "Retry": Unreferenzierte Bezeichnung
+  TileComponent.cpp
+  class template variant is only available with C++17 or later.
+  TileContainer.cpp
+  class template variant is only available with C++17 or later.
+  TileMenu.cpp
+  class template variant is only available with C++17 or later.
+  TileMenuButton.cpp
+  class template variant is only available with C++17 or later.
+  EditorScene.cpp
+  class template variant is only available with C++17 or later.
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
   Code wird generiert...
 c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(43): warning C4715: "Editor::SelectorElement::manipulate": Nicht alle Codepfade geben einen Wert zurück.
-x64\Debug\TileBase.obj : warning LNK4042: Objekt mehrmals angegeben; zusõtzliche Objekte werden ignoriert.
-x64\Debug\Wall.obj : warning LNK4042: Objekt mehrmals angegeben; zusõtzliche Objekte werden ignoriert.
-x64\Debug\World.obj : warning LNK4042: Objekt mehrmals angegeben; zusõtzliche Objekte werden ignoriert.
   Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

@@ -66,7 +66,7 @@ namespace Log
 		void extendPrefix() const;
 		void reducePrefix() const;
 
-		Level currentLevel;
+		Level currentLevel = Level::Information;
 		const std::wstring name;
 		
 		std::vector<SectionHost> sections;
@@ -135,7 +135,7 @@ namespace Log
 
 	inline void SectionHost::reducePrefix() const
 	{
-		loggingContext.currentPrefix.substr(
+		loggingContext.currentPrefix = loggingContext.currentPrefix.substr(
 			sizeof(LOGGER_SECTION_SUBMESSAGE_PREFIX_MID)
 			/ sizeof(*LOGGER_SECTION_SUBMESSAGE_PREFIX_MID)
 			- 1

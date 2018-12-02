@@ -79,6 +79,8 @@ namespace Device
 {
 	InitError Interface::Initialize()
 	{
+		Log::Section section(L"Initializing Game");
+
 		if (input)
 		{
 			delete input;
@@ -113,13 +115,15 @@ namespace Device
 			return InitError::Resource;
 		}
 
+		section.information(L"Pushing Starting Context");
+
 		if (!FW::Interface::PushContext(
 			makeStartingContext()
 		))
 		{
 			return InitError::Scene;
 		}
-
+		
 		return InitError::Invalid;
 	}
 

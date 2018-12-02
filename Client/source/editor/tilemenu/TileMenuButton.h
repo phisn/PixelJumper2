@@ -19,28 +19,25 @@ namespace Editor
 	public:
 		struct Style
 		{
+			const sf::Color enterOffset = sf::Color(20, 20, 20);
+/
 			TileTemplate* tile;
-
-			sf::Color 
-				enterColor,
-				fillColor, 
-				clickColor;
 
 			MENU::ButtonBase::Style makeStyle() const
 			{
 				MENU::ButtonBase::Style style = { };
 				
-				style.enter_fillColor = enterColor;
+				style.enter_fillColor = tile->color + enterOffset;
 				style.enter_outlineColor = sf::Color::Color(150, 150, 150);
 				style.enter_outlineThickness = 0.2f;
 
 
-				style.click_fillColor = fillColor;
+				style.click_fillColor = tile->color * clickOffset;
 				style.click_outlineColor = sf::Color::Color(200, 200, 200);
 				style.click_outlineThickness = 2.f;
 
 
-				style.default_fillColor = fillColor;
+				style.default_fillColor = tile->color;
 				style.default_outlineColor = { };
 				style.default_outlineThickness = 0.0f;
 

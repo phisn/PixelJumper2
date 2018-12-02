@@ -1,6 +1,7 @@
 #include <Client/source/device/DeviceInterface.h>
-
 #include <Client/source/logger/Logger.h>
+
+#include <Windows.h>
 
 bool handleInputError();
 bool handleNetworkError();
@@ -17,35 +18,14 @@ bool (*handleError[(int) DEVICE::InitError::_Length])() =
 	handleResourceError
 };
 
-#ifdef _WIN32
-#include <Windows.h>
-#ifdef _DEBUG
 int main()
-#else
-int WINAPI wWinMain(
-	HINSTANCE hInstance, 
-	HINSTANCE hPrevInstance, 
-	PWSTR pCmdLine, 
-	int nCmdShow)
-#endif
-#else
-#endif
 {
-#ifdef _DEBUG
-	Log::Output::Add(Log::Output::CONSOLE_OUT);
-#else
-	Log::AddOutput(Log::OUTPUT_FILE);
-	Log::SetOutputFilePath(L"logs.txt");
-#endif
+	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Information);
+
 Retry:
 	while (true)
 	{
-		Device::InitError result;
-
-		{
-			Log::Section section(L"Initializing Game");
-			result = DEVICE::Interface::Initialize();
-		}
+		const Device::InitError result = DEVICE::Interface::Initialize();
 
 		if (result == Device::InitError::Invalid)
 		{
@@ -62,23 +42,7 @@ Retry:
 		}
 	}
 
-	Log::Information(L"Game successfully initialized");
-
-	int result;
-	try
-	{
-		result = DEVICE::Interface::Start();
-	}
-	catch (...)
-	{
-		MessageBox(
-			NULL,
-			L"Catched exception",
-			L"Error",
-			MB_OK);
-	}
-
-	return result;
+	return DEVICE::Interface::Start();
 }
 
 bool handleInputError()
