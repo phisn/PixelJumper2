@@ -76,6 +76,7 @@ namespace Scene
 			MessageBox(NULL, L"Failed", L"Error", MB_OK);
 		}
 
+		// TODO: make accessable to tasks
 		EDITOR::World world;
 	};
 }

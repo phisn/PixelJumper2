@@ -20,7 +20,7 @@ bool (*handleError[(int) DEVICE::InitError::_Length])() =
 
 int main()
 {
-	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Information);
+	Log::Output::Add(Log::Output::CONSOLE_OUT);
 
 Retry:
 	while (true)

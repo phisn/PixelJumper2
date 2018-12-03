@@ -9,6 +9,18 @@
 
 namespace Editor
 {
+	/*
+	
+		Place tiles by (tileType = selected by tilemenu):
+		-	Click with mouse on already
+			selected  tile in  tilemenu
+		-	Open with mouse contextmenu
+			(inside  selected  area  in 
+			gridmenu)
+			and   select  "place tiles"
+		-	Press  the   'Enter' button
+
+	*/
 	class TileMenu
 		:
 		public MENU::RootBase

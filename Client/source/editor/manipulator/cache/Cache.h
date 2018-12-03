@@ -42,6 +42,7 @@ namespace Editor
 
 		};
 
+		// TODO: !!! when is cache ready? !!!
 		// modifyable though manager
 		struct Output
 		{
@@ -54,7 +55,7 @@ namespace Editor
 			return &input;
 		}
 
-		// relevant for Executor and Components
+		// relevant for Executor and Components and Tasks
 		const Output* readOutput() const
 		{
 			return &output;

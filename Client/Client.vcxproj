@@ -151,6 +151,7 @@
     <ClInclude Include="source\editor\manipulator\Element.h" />
     <ClInclude Include="source\editor\manipulator\Executor.h" />
     <ClInclude Include="source\editor\manipulator\Manipulator.h" />
+    <ClInclude Include="source\editor\manipulator\tasks\TilePlace.h" />
     <ClInclude Include="source\editor\template\TileTemplate.h" />
     <ClInclude Include="source\editor\template\WallTemplate.h" />
     <ClInclude Include="source\editor\tilemenu\TileComponent.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="source\editor\manipulator\Element.cpp" />
     <ClCompile Include="source\editor\manipulator\Executor.cpp" />
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
+    <ClCompile Include="source\editor\manipulator\tasks\TilePlace.cpp" />
     <ClCompile Include="source\editor\template\TileTemplate.cpp" />
     <ClCompile Include="source\editor\template\WallTemplate.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileComponent.cpp" />
@@ -277,7 +279,6 @@
     <Image Include="source\editor\manipulator\Manipulator.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
     <None Include="resource\font.hbin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

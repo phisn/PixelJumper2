@@ -21,6 +21,8 @@ c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34)
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
 c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
+  winMain.cpp
+c:\users\phisn\source\repos\pixeljumper2\client\winmain.cpp(25): warning C4102: "Retry": Unreferenzierte Bezeichnung
   Code wird generiert...
 c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(43): warning C4715: "Editor::SelectorElement::manipulate": Nicht alle Codepfade geben einen Wert zurück.
   Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

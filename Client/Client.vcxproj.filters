@@ -79,6 +79,9 @@
     <Filter Include="source\resource\impl">
       <UniqueIdentifier>{63f0af3c-9df7-42b3-9623-58734ff35c55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\editor\task">
+      <UniqueIdentifier>{65cdccb2-1b14-46d9-a0cf-01a1aa41fa7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -303,6 +306,9 @@
     <ClInclude Include="source\logger\Names.h">
       <Filter>source\logger</Filter>
     </ClInclude>
+    <ClInclude Include="source\editor\manipulator\tasks\TilePlace.h">
+      <Filter>source\editor\task</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -488,6 +494,9 @@
     <ClCompile Include="source\logger\SectionHost.cpp">
       <Filter>source\logger</Filter>
     </ClCompile>
+    <ClCompile Include="source\editor\manipulator\tasks\TilePlace.cpp">
+      <Filter>source\editor\task</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -503,6 +512,5 @@
     <None Include="resource\font.hbin">
       <Filter>resource</Filter>
     </None>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
