@@ -21,7 +21,9 @@ namespace Editor
 			}
 			else
 			{
-
+				for (_N_TileBase* tile : cache->selection.tile->tiles)
+				{
+				}
 			}
 		}
 
@@ -38,6 +40,7 @@ namespace Editor
 	private:
 		struct
 		{
+			TileTemplate* tile;
 
 
 		} newContent;

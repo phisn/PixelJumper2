@@ -5,43 +5,44 @@
 #include <Client/source/game/tiles/TileBase.h>
 #include <Client/source/game/tiles/TileId.h>
 
+#include <Client/source/resource/TileResource.h>
+
 namespace Editor
 {
-	struct TileSettings
+	struct TileState
 	{
-		sf::Color color;
 		sf::Vector2f position;
+
+		virtual bool isSameGroup(
+			const TileState* const state) const
+		{
+			return true;
+		}
 	};
 
 	class TileBase
 	{
+		const sf::Vector2f size =
+		{
+			1.f, 1.f
+		};
 	public:
 		TileBase(
-			const Game::Tile::Id id,
-			const TileSettings settings)
-			:
-			id(id)
+			const sf::Color color,
+			const sf::Vector2f position)
 		{
-			shape.setFillColor(settings.color);
-			shape.setPosition(settings.position);
-			shape.setSize(
-				sf::Vector2f(1.f, 1.f)
-			);
+			shape.setFillColor(color);
+			shape.setPosition(position);
+			shape.setSize(size);
 		}
 
-		Game::Tile::Id getId() const
-		{
-			return id;
-		}
-
-		sf::RectangleShape* getShape()
+		const sf::RectangleShape* getShape() const
 		{
 			return &shape;
 		}
 
-		virtual Game::Tile::Base* create() = 0;
+		virtual const TileState* getState() const = 0;
 	private:
-		const Game::Tile::Id id;
 		sf::RectangleShape shape;
 	};
 }

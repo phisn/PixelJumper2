@@ -6,7 +6,7 @@
 #include <Client/source/editor/tile/TileBase.h>
 #include <Client/source/editor/template/TileTemplate.h>
 
-#include <Client/source/game/World.h>
+#include <Client/source/resource/WorldResource.h>
 
 #include <vector>
 
@@ -14,68 +14,98 @@ namespace Editor
 {
 	class World
 	{
+		struct TileGroup
+		{
+			const TileState* primaryState;
+			sf::Vector2f size;
+		};
+
+		typedef std::vector<TileGroup> TileGroups;
+
+		typedef std::vector<const TileState*> StateGroup;
+		typedef std::vector<StateGroup> StateGroups;
 	public:
-		~World()
+		_Ret_maybenull_
+		RESOURCE::World* convert() const
 		{
-			for (TileBase* tile : tiles)
+			// init rand
+			static bool triggered = false;
+
+			if (!triggered)
 			{
-				delete tile;
+				triggered = true;
+				srand(time(NULL));
+			}
+			// ---------
+
+			RESOURCE::World* world = new RESOURCE::World();
+
+			world->header.begin.magic = WORLD_MAGIC;
+			world->header.begin.worldId = rand();
+
+			saveTiles(world);
+
+			// TODO: Setup header and content
+
+			if (world->validateHeader() && world->validateContent())
+			{
+				return world;
+			}
+
+			return NULL;
+		}
+
+	private:
+		void saveTiles(
+			RESOURCE::World* const world) const
+		{
+			TileGroups tileGroups;
+
+			{	StateGroups stateGroups;
+			
+				orderTiles(world, &stateGroups);
+				groupTiles(&stateGroups, &tileGroups);
+			} // delete stateGroups
+
+			for (TileGroup& const tileGroup : tileGroups)
+			{
+				// convert to resource
 			}
 		}
 
-		Game::WorldSettings* createSettings(
-			const std::wstring author,
-			const std::wstring name,
-			const sf::Vector2u size)
+		void orderTiles(
+			RESOURCE::World* const world,
+			StateGroups* const groups) const
 		{
-			Game::WorldSettings* world = new Game::WorldSettings();
-
-			world->author = author;
-			world->name = name;
-			world->size = size;
-
-			for (TileBase* tile : tiles)
+			for (const TileBase* const tile : tiles)
 			{
-				world->tiles.push_back(tile->create());
-			}
+			NEXT_TILE:
+				const TileState* const state = tile->getState();
 
-			return world;
-		}
-
-		void addTile(
-			TileBase* const tile)
-		{
-			tiles.push_back(tile);
-		}
-
-		void removeTile(
-			TileBase* const tile)
-		{
-			for (int i = 0; i < tiles.size(); ++i)
-				if (tiles[i] == tile)
-				{
-					if (i + 1 != tiles.size())
+				for (StateGroup& group : *groups)
+					if (group.back()->isSameGroup(state))
 					{
-						tiles[i] = tiles.back();
+						group.push_back(state);
+						goto NEXT_TILE; // continue replacement
 					}
 
-					tiles.pop_back();
-					
-					delete tile;
-					return;
-				}
+				groups->emplace_back();
+				groups->back().push_back(state);
+			}
 		}
 
-		void removeAllTiles()
+		void groupTiles(
+			StateGroups* const stateGroups,
+			TileGroups* const tileGroups) const
 		{
-			tiles.clear();
+			for (const StateGroup& stateGroup : *stateGroups)
+			{
+
+
+				// group and push to tileGroups
+			}
 		}
 
-		const std::vector<TileBase*>& getTiles() const
-		{
-			return tiles;
-		}
-	private:
 		std::vector<TileBase*> tiles;
 	};
 }

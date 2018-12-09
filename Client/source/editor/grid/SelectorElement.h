@@ -13,7 +13,7 @@ namespace Editor
 	public:
 		SelectorElement(
 			const GridView* const view,
-			const World* const world)
+			const World_N* const world)
 			:
 			view(view),
 			world(world)
@@ -84,7 +84,7 @@ namespace Editor
 				2.  Add new tiles to existent tiles
 				
 			*/
-			for (TileBase* tile : world->getTiles())
+			for (_N_TileBase* tile : world->getTiles())
 				if (tile->getShape()->getPosition().x + tile->getShape()->getSize().x > input->offset.x &&
 					tile->getShape()->getPosition().y + tile->getShape()->getSize().y > input->offset.y &&
 
@@ -153,6 +153,6 @@ namespace Editor
 		}
 
 		const GridView* const view;
-		const World* const world;
+		const World_N* const world;
 	};
 }

@@ -6,27 +6,31 @@
 
 namespace Editor
 {
-	class Wall
-		:
-		public TileBase
+	namespace Tile
 	{
-	public:
-		Wall(
-			const TileSettings settings)
+		class Wall
 			:
-			TileBase(
-				Game::Tile::Id::Wall,
-				settings)
+			public TileBase
 		{
-		}
+			typedef TileState WallState;
+		public:
+			Wall(
+				const sf::Vector2f position)
+				:
+				TileBase(
+					TILE_WALL_COLOR,
+					position)
+			{
+			}
 
-		Game::Tile::Base* create() override
-		{
-			return new Game::Tile::Wall(
-				{
-					getShape()->getPosition(),
-					getShape()->getSize()
-				});
-		}
-	};
+			TileState* getState() const
+			{
+				WallState* state = new WallState();
+				state->position = getShape()->getPosition();
+				return (TileState*)state;
+			}
+
+
+		};
+	}
 }

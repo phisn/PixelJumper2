@@ -77,6 +77,6 @@ namespace Scene
 		}
 
 		// TODO: make accessable to tasks
-		EDITOR::World world;
+		EDITOR::World_N world;
 	};
 }

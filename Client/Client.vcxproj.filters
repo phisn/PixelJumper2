@@ -507,6 +507,9 @@
     <Image Include="source\editor\manipulator\Manipulator.jpg">
       <Filter>source\editor\manipulator</Filter>
     </Image>
+    <Image Include="..\..\..\..\OneDrive\Bilder\IMAG0001[323].jpg">
+      <Filter>source\editor</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\font.hbin">

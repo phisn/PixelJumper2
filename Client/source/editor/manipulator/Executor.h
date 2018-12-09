@@ -14,8 +14,9 @@ namespace Editor
 	class Task
 	{
 	public:
-		_Success_(return == true)
-		virtual bool execute() = 0;
+		_Success_(return == true) 
+		virtual bool execute(
+			World* const world) = 0;
 
 		virtual void redo() = 0;
 		virtual void undo() = 0;
@@ -42,6 +43,19 @@ namespace Editor
 		{
 		}
 
+		~Executor()
+		{
+			for (Task* const task : tasks)
+			{
+				delete task;
+			}
+
+			for (Task* const task : redoTasks)
+			{
+				delete task;
+			}
+		}
+
 		template <typename _Task>
 		void execute()
 		{
@@ -50,7 +64,7 @@ namespace Editor
 
 		void execute(Task* task)
 		{
-			if (task->execute())
+			if ( task->execute(&world) )
 			{
 				tasks.push_front(task);
 
@@ -102,9 +116,13 @@ namespace Editor
 			}
 		}
 
+		Game::WorldSettings* convertWorld()
+		{
+		}
+
 		const std::deque<Task*>* getUndoTasks() const
 		{
-			return &undoTasks;
+			return &tasks;
 		}
 
 		const std::vector<Task*>* getRedoTasks() const
@@ -115,5 +133,7 @@ namespace Editor
 	private:
 		std::deque<Task*> tasks;
 		std::vector<Task*> redoTasks;
+
+		World world;
 	};
 }

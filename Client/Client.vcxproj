@@ -276,6 +276,7 @@
     <ResourceCompile Include="Client.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\OneDrive\Bilder\IMAG0001[323].jpg" />
     <Image Include="source\editor\manipulator\Manipulator.jpg" />
   </ItemGroup>
   <ItemGroup>

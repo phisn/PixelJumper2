@@ -20,7 +20,7 @@ namespace Editor
 		{
 		}
 
-		virtual TileBase* create(
+		virtual _N_TileBase* create(
 			sf::Vector2f position) = 0;
 
 		const sf::Color color;

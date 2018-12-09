@@ -27,7 +27,7 @@ namespace Editor
 
 		struct Tile
 		{
-			std::vector<::Editor::TileBase*> tiles;
+			std::vector<::Editor::_N_TileBase*> tiles;
 		};
 
 		struct Output

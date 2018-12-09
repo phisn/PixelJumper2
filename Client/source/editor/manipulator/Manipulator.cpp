@@ -14,7 +14,7 @@ namespace
 namespace Editor
 {
 	void Manipulator::initialize(
-		World* const world)
+		World_N* const world)
 	{
 		cache = new Cache();
 		executor = new Executor();

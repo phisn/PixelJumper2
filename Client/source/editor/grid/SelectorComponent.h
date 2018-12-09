@@ -78,7 +78,7 @@ namespace Editor
 			{
 				selections.clear();
 
-				for (TileBase* const tile : selection->tile->tiles)
+				for (_N_TileBase* const tile : selection->tile->tiles)
 				{
 					selections.emplace_back();
 
