@@ -15,6 +15,7 @@
 
 #include <Client/source/scene/EditorScene.h>
 #include <Client/source/scene/LocalGameScene.h>
+#include "..\..\ResourceInterface.h"
 
 
 namespace
@@ -123,7 +124,7 @@ namespace Device
 		{
 			return InitError::Scene;
 		}
-		
+
 		return InitError::Invalid;
 	}
 

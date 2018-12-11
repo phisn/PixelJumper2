@@ -14,16 +14,21 @@ namespace Editor
 {
 	class World
 	{
-		struct TileGroup
+		// group = NxN area (of tiles)
+		struct ExtendedTile
 		{
 			const TileState* primaryState;
-			sf::Vector2f size;
+
+			sf::Vector2f position, size;
 		};
 
-		typedef std::vector<TileGroup> TileGroups;
+		typedef std::vector<ExtendedTile> ExtendedTiles;
 
-		typedef std::vector<const TileState*> StateGroup;
-		typedef std::vector<StateGroup> StateGroups;
+		// Tile = TileGroup
+		typedef ExtendedTile Tile;
+
+		typedef std::vector<Tile> TileGroup;
+		typedef std::vector<TileGroup> TileGroups;
 	public:
 		_Ret_maybenull_
 		RESOURCE::World* convert() const
@@ -59,48 +64,82 @@ namespace Editor
 		void saveTiles(
 			RESOURCE::World* const world) const
 		{
-			TileGroups tileGroups;
+			ExtendedTiles tileGroups;
 
-			{	StateGroups stateGroups;
+			{	TileGroups stateGroups;
 			
 				orderTiles(world, &stateGroups);
 				groupTiles(&stateGroups, &tileGroups);
 			} // delete stateGroups
 
-			for (TileGroup& const tileGroup : tileGroups)
+			for (ExtendedTile& const extendedTile : tileGroups)
 			{
+				world->content.tileResources.push_back(
+					extendedTile.primaryState->create(
+						extendedTile.size,
+						extendedTile.position);
+				);
+
 				// convert to resource
 			}
 		}
 
 		void orderTiles(
 			RESOURCE::World* const world,
-			StateGroups* const groups) const
+			TileGroups* const groups) const
 		{
 			for (const TileBase* const tile : tiles)
 			{
 			NEXT_TILE:
 				const TileState* const state = tile->getState();
 
-				for (StateGroup& group : *groups)
-					if (group.back()->isSameGroup(state))
+				for (TileGroup& group : *groups)
+					if (group.back().primaryState->isSameGroup(state))
 					{
-						group.push_back(state);
+						pushTile(
+							tile, 
+							state,
+							&group
+						);
+
 						goto NEXT_TILE; // continue replacement
 					}
 
 				groups->emplace_back();
-				groups->back().push_back(state);
+				pushTile(
+					tile, 
+					state, 
+					&groups->back()
+				);
 			}
 		}
 
-		void groupTiles(
-			StateGroups* const stateGroups,
-			TileGroups* const tileGroups) const
-		{
-			for (const StateGroup& stateGroup : *stateGroups)
-			{
+		void pushTile(
+			const TileBase* const tile,
+			const TileState* const state,
 
+			TileGroup* const group) const
+		{
+			group->emplace_back();
+
+			group->back().position = tile->getShape()->getPosition();
+			group->back().primaryState = state;
+			// ignore size
+		}
+
+		void groupTiles(
+			TileGroups* const stateGroups,
+			ExtendedTiles* const extendedTiles) const
+		{
+			for (const TileGroup& tileGroup : *stateGroups)
+			{
+				// for tests replace later
+				for (const Tile& tile : tileGroup)
+				{
+					extendedTiles->emplace_back();
+					extendedTiles->back() = tile;
+				}
+				// -----------------------
 
 				// group and push to tileGroups
 			}

@@ -11,13 +11,15 @@ namespace Editor
 {
 	struct TileState
 	{
-		sf::Vector2f position;
-
 		virtual bool isSameGroup(
 			const TileState* const state) const
 		{
 			return true;
 		}
+
+		virtual RESOURCE::Tile* create(
+			const sf::Vector2f size,
+			const sf::Vector2f position) const = 0;
 	};
 
 	class TileBase
