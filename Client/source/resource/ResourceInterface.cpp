@@ -2,24 +2,182 @@
 
 namespace
 {
-	Resource::MapedResources resources;
+	Resource::MapedResources mapedResources;
 
-	const wchar_t* resourceTypes[(int) Resource::ResourceType::_Length]
+	const Resource::Definition resourceDefinitions[(int) Resource::ResourceType::_Length]
 	{
-		DEFAULT_RES_PATH_APPEND(L"world/")
+		Resource::Definition(
+			0x0000'0000,
+			L"World"
+		)
 	};
+
+	void mapResource(
+		const Resource::ResourceType type,
+		const std::filesystem::path filename)
+	{
+		Log::Information(
+			L"Mapping resource '" 
+			+ filename.filename().wstring() 
+			+ L"' as " 
+			+ std::to_wstring((int) type)
+		);
+
+		std::ifstream file(
+			filename,
+			std::ios::binary | std::ios::in);
+
+		if (!file)
+		{
+			Log::Warning(
+				L"Unable to open file ('"
+				+ filename.filename.wstring()
+				+ L'\')'
+			);
+
+			return;
+		}
+
+		sf::Uint64 magic;
+		file.read(
+			(char*) &magic,
+			sizeof(magic)
+		);
+
+		if (!file || file.eof())
+		{
+			Log::Warning(
+				L"Invalid file size ('"
+				+ filename.filename.wstring()
+				+ L'\')'
+			);
+
+			return;
+		}
+
+		if (Resource::Interface::GetDefinition(type)->magic != magic) // TODO: is valid magic
+		{
+			Log::Warning(
+				L"Invalid file format ('"
+				+ filename.filename.wstring()
+				+ L'\')'
+			);
+
+			return;
+		}
+
+		mapedResources[type].insert(  );
+	}
+
+	bool mapResourceFolder(
+		const Resource::ResourceType type)
+	{
+		try {
+			mapedResources[type].clear();
+
+			for (const std::filesystem::directory_entry& entry
+				: std::filesystem::directory_iterator(
+					resourceDefinitions[(int) type].path
+				))
+			{
+				const std::filesystem::path path = entry.path();
+
+				if (path.has_extension() &&
+					path.extension() == DEFAULT_RES_EXTENSION)
+				{
+					mapResource(type, path);
+				}
+			}
+
+			Log::Information(
+				L"Total mapped '" 
+				+ Resource::Interface::Translate(type)
+				+ L"' resources: '"
+				+ std::to_wstring( mapedResources[type].size() )
+				+ L'\''
+			);
+
+			return true;
+		}
+		catch (const std::filesystem::filesystem_error error)
+		{
+			Log::Error(
+				L"Failed to map files, Error Code: "
+				+ std::to_wstring(error.code)
+			);
+
+			return false;
+		}
+	}
+
+	bool mapAllResources()
+	{
+		Log::Section section(L"Mapping all resources");
+
+		for (int i = 0; i < (int) Resource::ResourceType::_Length; ++i)
+			if (!mapResourceFolder((Resource::ResourceType) i))
+			{
+				return false;
+			}
+
+		return true;
+	}
+
+	bool isResourcesMapped()
+	{
+	}
 }
 
 namespace Resource
 {
 	bool Interface::Initialize()
 	{
-		// iterate DEFAULT_RES_PATH
+		return mapAllResources();
+
+		// ...
+	}
+
+	bool Interface::RemapAllFiles()
+	{
+		return mapAllResources();
+	}
+
+	bool Interface::RemapFiles(
+		const ResourceType type)
+	{
+		Log::Section section(L"Mapping all '" + Translate(type) + L"' resources");
+
+		return mapResourceFolder;
+	}
+
+	bool Interface::SaveResource(
+		const Base* const resource, 
+		const ResourceType type, 
+		const std::wstring name)
+	{
+
+		return true;
+	}
+
+	Base* Interface::AllocateResource(
+		const ResourceType type,
+		const std::wstring name)
+	{
+		SubResources::iterator i mapedResources[type].find(name);
+
+
+		return nullptr;
+	}
+
+	const Definition* Interface::GetDefinition(
+		const ResourceType resource)
+	{
+		return &resourceDefinitions[(int) resource];
 	}
 
 	std::wstring Interface::Translate(
 		const ResourceType resource)
 	{
-		return resourceTypes[(int) resource];
+		return resourceDefinitions[(int) resource].name;
 	}
 }

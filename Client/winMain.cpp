@@ -20,7 +20,8 @@ bool (*handleError[(int) DEVICE::InitError::_Length])() =
 
 int main()
 {
-	Log::Output::Add(Log::Output::CONSOLE_OUT);
+	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Warning);
+	Log::Information(L"Starting Game...");
 
 Retry:
 	while (true)

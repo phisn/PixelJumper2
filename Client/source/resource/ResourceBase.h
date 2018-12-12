@@ -1,19 +1,29 @@
 #pragma once
 
-#include <Client/source/resource/ByteBuffer.h>
+#include <Client/source/resource/Common.h>
 
-#ifndef RESOURCE
-#define RESOURCE ::Resource
-#endif
+#include <string>
 
 namespace Resource
 {
-	struct Base
+	struct Definition
+	{
+		Definition(
+			const Magic magic,
+			const std::wstring name)
+			:
+			magic(magic),
+			name(name),
+			path(DEFAULT_RES_PATH + name + L"/")
+		{
+		}
+
+		const Magic magic;
+		const std::wstring name, path
+	};
+
+	class Base
 	{
 	public:
-		virtual bool writeToBuffer(
-			ByteWriter* buffer) = 0;
-		virtual bool readFromBuffer(
-			ByteReader* buffer) = 0;
 	};
 }

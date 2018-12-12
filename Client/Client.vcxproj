@@ -197,7 +197,9 @@
     <ClInclude Include="source\menu\RootBase.h" />
     <ClInclude Include="source\menu\style\DefaultStyles.h" />
     <ClInclude Include="source\resource\ByteBuffer.h" />
+    <ClInclude Include="source\resource\Common.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
+    <ClInclude Include="source\resource\_ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
     <ClInclude Include="source\resource\StaticResource.h" />
     <ClInclude Include="source\resource\TileResource.h" />
@@ -262,6 +264,7 @@
     <ClCompile Include="source\menu\element\ButtonBase.cpp" />
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
+    <ClCompile Include="source\resource\ResourceBase.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\StaticResource.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />

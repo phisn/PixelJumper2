@@ -135,9 +135,6 @@
     <ClInclude Include="source\resource\ByteBuffer.h">
       <Filter>source\resource\base</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\ResourceBase.h">
-      <Filter>source\resource\base</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\WorldResource.h">
       <Filter>source\resource\impl</Filter>
     </ClInclude>
@@ -307,6 +304,15 @@
       <Filter>source\editor\task</Filter>
     </ClInclude>
     <ClInclude Include="source\resource\ResourceInterface.h">
+      <Filter>source\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\_ResourceBase.h">
+      <Filter>source\resource\base</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ResourceBase.h">
+      <Filter>source\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\Common.h">
       <Filter>source\resource</Filter>
     </ClInclude>
   </ItemGroup>
@@ -495,6 +501,9 @@
       <Filter>source\resource\impl</Filter>
     </ClCompile>
     <ClCompile Include="source\resource\ResourceInterface.cpp">
+      <Filter>source\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\ResourceBase.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
   </ItemGroup>
