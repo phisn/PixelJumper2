@@ -2,17 +2,9 @@
 
 namespace
 {
-	Resource::MapedResources mapedResources;
+	Resource::MapedResources mappedResources;
 
-	const Resource::Definition resourceDefinitions[(int) Resource::ResourceType::_Length]
-	{
-		Resource::Definition(
-			0x0000'0000,
-			L"World"
-		)
-	};
-
-	void mapResource(
+	bool mapResource(
 		const Resource::ResourceType type,
 		const std::filesystem::path filename)
 	{
@@ -35,10 +27,10 @@ namespace
 				+ L'\')'
 			);
 
-			return;
+			return false;
 		}
 
-		sf::Uint64 magic;
+		Resource::Magic magic;
 		file.read(
 			(char*) &magic,
 			sizeof(magic)
@@ -52,7 +44,7 @@ namespace
 				+ L'\')'
 			);
 
-			return;
+			return false;
 		}
 
 		if (Resource::Interface::GetDefinition(type)->magic != magic) // TODO: is valid magic
@@ -63,17 +55,30 @@ namespace
 				+ L'\')'
 			);
 
-			return;
+			return false;
 		}
 
-		mapedResources[type].insert(  );
+		Resource::MappedResource* resource = &mappedResources[type][filename.filename.wstring()];
+		resource->path = filename.wstring();
+
+		return true;
+	}
+
+	bool mapResource(
+		const Resource::ResourceType type,
+		const std::wstring name)
+	{
+		mapResource(
+			type, 
+			Resource::Interface::GetDefinition(type)->path + name
+		);
 	}
 
 	bool mapResourceFolder(
 		const Resource::ResourceType type)
 	{
 		try {
-			mapedResources[type].clear();
+			mappedResources[type].clear();
 
 			for (const std::filesystem::directory_entry& entry
 				: std::filesystem::directory_iterator(
@@ -93,7 +98,7 @@ namespace
 				L"Total mapped '" 
 				+ Resource::Interface::Translate(type)
 				+ L"' resources: '"
-				+ std::to_wstring( mapedResources[type].size() )
+				+ std::to_wstring( mappedResources[type].size() )
 				+ L'\''
 			);
 
@@ -123,8 +128,14 @@ namespace
 		return true;
 	}
 
-	bool isResourcesMapped()
+	bool isResourcesMapped(
+		const Resource::ResourceType type,
+		const std::wstring name)
 	{
+		Resource::SubResources* subResources = &mappedResources[type];
+		Resource::SubResources::const_iterator it = subResources->find(name);
+
+		return it != subResources->cend();
 	}
 }
 
@@ -163,10 +174,29 @@ namespace Resource
 		const ResourceType type,
 		const std::wstring name)
 	{
-		SubResources::iterator i mapedResources[type].find(name);
+		const SubResources* const subResources = &mappedResources[type];
+		SubResources::const_iterator it = subResources->find(name);
 
+		if (it == subResources->cend())
+		{
+			if (mapResource(type, name))
+			{
+				it = mappedResources[type].find(name);
+			}
+			else
+			{
+				Log::Error(
+					L"Resource '"
+					+ name 
+					+ L"' not found"
+				);
 
-		return nullptr;
+				return NULL;
+			}
+		}
+
+		// TODO: argument == bytes (of file [it->path]) => some_cool_buffer
+		return GetDefinition(type)->create();
 	}
 
 	const Definition* Interface::GetDefinition(

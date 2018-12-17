@@ -12,7 +12,50 @@
 
 namespace Resource
 {
-	struct World
+	class World
+		:
+		public Resource::Base
+	{
+	public:
+		struct
+		{
+			sf::Uint32 magic = WORLD_MAGIC;
+			sf::Uint32 worldID = NULL;
+		} headerIntro;
+
+		struct
+		{
+			std::wstring authorName;
+			std::wstring mapName;
+		} headerAuth = { };
+
+		struct
+		{
+			sf::Uint16 width, height;
+
+			sf::Uint16 tileCount;
+			sf::Uint32 tileCheckSum;
+		} headerProperties = { };
+
+		std::vector<Resource::Tile> tiles;
+	private:
+		sf::Uint32 generateCheckSum()
+		{
+			sf::Uint32 result = (1 << 16) + (1 << 8) + 3;
+
+			for (Resource::Tile& tile : tiles)
+			{ // TODO: check if not bad
+				result *= (sf::Uint16) tile.Header.id;
+				result += tile.Header.height;
+				result *= tile.Header.width;
+				result += tile.Header.contentSize;
+			}
+
+			return result;
+		}
+	};
+
+	struct _N_World
 		:
 		public Base
 	{
@@ -42,7 +85,7 @@ namespace Resource
 
 		struct
 		{
-			std::vector<Tile> tileResources;
+			std::vector<_N_Tile> tileResources;
 
 		} content;
 
@@ -165,7 +208,7 @@ namespace Resource
 		bool writeContent(
 			RESOURCE::ByteWriter* buffer)
 		{
-			for (Tile& resource : content.tileResources)
+			for (_N_Tile& resource : content.tileResources)
 				if (!resource.writeToBuffer(
 						buffer))
 				{

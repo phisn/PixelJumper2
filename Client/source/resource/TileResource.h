@@ -7,7 +7,33 @@
 
 namespace Resource
 {
-	struct Tile
+	class Tile
+		:
+		public Resource::Base
+	{
+	public:
+		~Tile()
+		{
+			if (contentPtr)
+			{
+				delete[] contentPtr;
+			}
+		}
+
+		struct
+		{
+			Game::Tile::Id id;
+
+			sf::Uint8 width; // TODO: Do not forget
+			sf::Uint8 height;
+
+			sf::Uint16 contentSize;
+		} Header = { };
+
+		char* contentPtr = NULL;
+	};
+
+	struct _N_Tile
 		:
 		public Resource::Base
 	{

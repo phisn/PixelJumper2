@@ -31,7 +31,7 @@ namespace Editor
 		typedef std::vector<TileGroup> TileGroups;
 	public:
 		_Ret_maybenull_
-		RESOURCE::World* convert() const
+		RESOURCE::_N_World* convert() const
 		{
 			// init rand
 			static bool triggered = false;
@@ -43,7 +43,7 @@ namespace Editor
 			}
 			// ---------
 
-			RESOURCE::World* world = new RESOURCE::World();
+			RESOURCE::_N_World* world = new RESOURCE::_N_World();
 
 			world->header.begin.magic = WORLD_MAGIC;
 			world->header.begin.worldId = rand();
@@ -62,7 +62,7 @@ namespace Editor
 
 	private:
 		void saveTiles(
-			RESOURCE::World* const world) const
+			RESOURCE::_N_World* const world) const
 		{
 			ExtendedTiles tileGroups;
 
@@ -85,7 +85,7 @@ namespace Editor
 		}
 
 		void orderTiles(
-			RESOURCE::World* const world,
+			RESOURCE::_N_World* const world,
 			TileGroups* const groups) const
 		{
 			for (const TileBase* const tile : tiles)

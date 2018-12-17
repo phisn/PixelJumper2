@@ -36,15 +36,15 @@ namespace Game
 			const std::wstring fileName,
 			WorldSettings* settings);
 
-		RESOURCE::World* loadResourceFromFile(
+		RESOURCE::_N_World* loadResourceFromFile(
 			const std::wstring fileName);
 		bool saveResourceToFile(
 			const std::wstring fileName,
-			RESOURCE::World* world);
+			RESOURCE::_N_World* world);
 
-		RESOURCE::World* convertSettingsToResource(
+		RESOURCE::_N_World* convertSettingsToResource(
 			WorldSettings* settings);
 		WorldSettings* convertResourceToSettings(
-			RESOURCE::World* world);
+			RESOURCE::_N_World* world);
 	}
 }

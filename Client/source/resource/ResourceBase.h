@@ -6,24 +6,30 @@
 
 namespace Resource
 {
+	class Base
+	{
+	public:
+	};
+
 	struct Definition
 	{
+		typedef Base* (*Creator)(); // argument == some_cool_buffer
+
 		Definition(
 			const Magic magic,
-			const std::wstring name)
+			const std::wstring name,
+			const Creator create)
 			:
 			magic(magic),
 			name(name),
-			path(DEFAULT_RES_PATH + name + L"/")
+			path(DEFAULT_RES_PATH + name + L"/"),
+			create(create)
 		{
 		}
 
 		const Magic magic;
-		const std::wstring name, path
-	};
+		const std::wstring name, path;
 
-	class Base
-	{
-	public:
+		const Creator create;
 	};
 }

@@ -199,6 +199,7 @@
     <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\Common.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
+    <ClInclude Include="source\resource\ResourceDefinitions.h" />
     <ClInclude Include="source\resource\_ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
     <ClInclude Include="source\resource\StaticResource.h" />

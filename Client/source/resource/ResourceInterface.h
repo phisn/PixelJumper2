@@ -16,7 +16,7 @@ namespace Resource
 {
 	struct MappedResource
 	{
-		const std::wstring path;
+		std::wstring path;
 	};
 
 	typedef std::map<std::wstring, MappedResource> SubResources; // name, data
