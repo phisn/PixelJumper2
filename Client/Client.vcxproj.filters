@@ -525,6 +525,9 @@
     <Image Include="source\resource\IMAG0005.jpg">
       <Filter>source\resource</Filter>
     </Image>
+    <Image Include="source\resource\IMAG0011.jpg">
+      <Filter>source\resource</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\font.hbin">

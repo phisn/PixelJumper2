@@ -13,6 +13,27 @@ namespace Resource
 	{
 	public:
 		ByteBuffer(
+			const sf::Uint64 size)
+		{
+			buffer = new char[size];
+			memset(buffer, 0, size);
+
+
+		}
+
+		char* write()
+		{
+			return buffer;
+		}
+
+	private:
+		char* buffer;
+	};
+
+	class _ByteBuffer
+	{
+	public:
+		_ByteBuffer(
 			const sf::Uint32 size)
 		{
 			buffer = new char[size];
@@ -141,7 +162,7 @@ namespace Resource
 		}
 
 		void write(
-			const ByteBuffer* buffer)
+			const _ByteBuffer* buffer)
 		{
 			write(buffer->read(), buffer->getVirtualLength());
 		}
@@ -172,12 +193,12 @@ namespace Resource
 				(char*) value, sizeof(T));
 		}
 
-		ByteBuffer* writeBuffer()
+		_ByteBuffer* writeBuffer()
 		{
 			return &buffer;
 		}
 
-		const ByteBuffer* readBuffer() const
+		const _ByteBuffer* readBuffer() const
 		{
 			return &buffer;
 		}
@@ -188,14 +209,14 @@ namespace Resource
 		}
 
 	private:
-		ByteBuffer buffer;
+		_ByteBuffer buffer;
 	};
 
 	class ByteReader
 	{
 	public:
 		ByteReader(
-			const ByteBuffer* buffer)
+			const _ByteBuffer* buffer)
 			:
 			buffer(buffer)
 		{
@@ -289,7 +310,7 @@ namespace Resource
 			return position == buffer->getVirtualLength();
 		}
 
-		const ByteBuffer* getBuffer() const
+		const _ByteBuffer* getBuffer() const
 		{
 			return buffer;
 		}
@@ -308,6 +329,6 @@ namespace Resource
 
 		sf::Uint32 position = 0;
 
-		const ByteBuffer* buffer;
+		const _ByteBuffer* buffer;
 	};
 }

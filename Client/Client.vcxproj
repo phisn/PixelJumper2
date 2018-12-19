@@ -284,6 +284,7 @@
     <Image Include="..\..\..\..\OneDrive\Bilder\IMAG0001[323].jpg" />
     <Image Include="source\editor\manipulator\Manipulator.jpg" />
     <Image Include="source\resource\IMAG0005.jpg" />
+    <Image Include="source\resource\IMAG0011.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\font.hbin" />

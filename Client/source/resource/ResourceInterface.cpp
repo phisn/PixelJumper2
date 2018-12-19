@@ -59,7 +59,9 @@ namespace
 		}
 
 		Resource::MappedResource* resource = &mappedResources[type][filename.filename.wstring()];
+		resource->file = std::move(file);
 		resource->path = filename.wstring();
+		resource->size = std::filesystem::file_size( resource->path );
 
 		return true;
 	}
@@ -174,8 +176,8 @@ namespace Resource
 		const ResourceType type,
 		const std::wstring name)
 	{
-		const SubResources* const subResources = &mappedResources[type];
-		SubResources::const_iterator it = subResources->find(name);
+		SubResources* const subResources = &mappedResources[type];
+		SubResources::iterator it = subResources->find(name);
 
 		if (it == subResources->cend())
 		{
@@ -196,7 +198,20 @@ namespace Resource
 		}
 
 		// TODO: argument == bytes (of file [it->path]) => some_cool_buffer
-		return GetDefinition(type)->create();
+		ByteBuffer buffer(it->second.size);
+
+		it->second.file.seekg(0, std::ios::beg);
+		it->second.file.read(
+			buffer.write(),
+			it->second.size);
+
+		if (it->second.file.fail())
+		{
+			// ...
+		}
+
+		return GetDefinition(type)->create(); // <- buffer
+
 	}
 
 	const Definition* Interface::GetDefinition(

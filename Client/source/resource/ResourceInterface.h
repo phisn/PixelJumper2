@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/logger/Logger.h>
+#include <Client/source/resource/ByteBuffer.h>
 #include <Client/source/resource/Common.h>
 #include <Client/source/resource/ResourceBase.h>
 
@@ -16,7 +17,10 @@ namespace Resource
 {
 	struct MappedResource
 	{
+		std::ifstream file;
 		std::wstring path;
+
+		uintmax_t size;
 	};
 
 	typedef std::map<std::wstring, MappedResource> SubResources; // name, data
@@ -33,6 +37,7 @@ namespace Resource
 			const Base* resource,
 			const ResourceType type,
 			const std::wstring name);
+
 		Base* AllocateResource(
 			const ResourceType type, 
 			const std::wstring name);
