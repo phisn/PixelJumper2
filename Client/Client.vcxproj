@@ -198,6 +198,9 @@
     <ClInclude Include="source\menu\style\DefaultStyles.h" />
     <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\Common.h" />
+    <ClInclude Include="source\resource\FilePipe.h" />
+    <ClInclude Include="source\resource\MemoryPipe.h" />
+    <ClInclude Include="source\resource\PipeBase.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceDefinitions.h" />
     <ClInclude Include="source\resource\_ResourceBase.h" />
@@ -265,6 +268,9 @@
     <ClCompile Include="source\menu\element\ButtonBase.cpp" />
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp" />
     <ClCompile Include="source\resource\ByteBuffer.cpp" />
+    <ClCompile Include="source\resource\FilePipe.cpp" />
+    <ClCompile Include="source\resource\MemoryPipe.cpp" />
+    <ClCompile Include="source\resource\PipeBase.cpp" />
     <ClCompile Include="source\resource\ResourceBase.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\StaticResource.cpp" />

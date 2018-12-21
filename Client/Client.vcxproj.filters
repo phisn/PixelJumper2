@@ -82,6 +82,9 @@
     <Filter Include="source\menu\element_">
       <UniqueIdentifier>{6966766c-ff3d-45a9-a06f-fcf4bdca3e0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\resource\pipe">
+      <UniqueIdentifier>{713d3fec-01b0-46d3-9089-e2730258018c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -318,6 +321,15 @@
     <ClInclude Include="source\resource\TileResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
+    <ClInclude Include="source\resource\PipeBase.h">
+      <Filter>source\resource\pipe</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\MemoryPipe.h">
+      <Filter>source\resource\pipe</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\FilePipe.h">
+      <Filter>source\resource\pipe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -508,6 +520,15 @@
     </ClCompile>
     <ClCompile Include="source\resource\TileResource.cpp">
       <Filter>source\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\PipeBase.cpp">
+      <Filter>source\resource\pipe</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\MemoryPipe.cpp">
+      <Filter>source\resource\pipe</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\FilePipe.cpp">
+      <Filter>source\resource\pipe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

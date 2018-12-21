@@ -211,7 +211,6 @@ namespace Resource
 		}
 
 		return GetDefinition(type)->create(); // <- buffer
-
 	}
 
 	const Definition* Interface::GetDefinition(
