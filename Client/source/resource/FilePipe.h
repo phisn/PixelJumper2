@@ -45,9 +45,9 @@ namespace Resource
 			char* buffer,
 			const sf::Uint64 size) override
 		{
-			if (filled > 0)
+			if (consumed > 0)
 			{
-				if (FILE_BUFFER_SIZE - filled <= size)
+				if (FILE_BUFFER_SIZE - consumed <= size)
 				{
 					fillBuffer(
 						buffer,
@@ -73,6 +73,8 @@ namespace Resource
 					buffer + size - remain,
 					remain);
 			}
+
+			definition.size += size;
 		}
 
 		void setPosition(
@@ -104,10 +106,10 @@ namespace Resource
 		{
 			memcpy(
 				this->buffer,
-				buffer + filled,
+				buffer + consumed,
 				size);
 
-			filled += size;
+			consumed += size;
 		}
 
 		void flushBuffer(
@@ -117,7 +119,7 @@ namespace Resource
 				buffer,
 				size);
 
-			filled = 0;
+			consumed = 0;
 		}
 
 		void enforceContent(
@@ -133,7 +135,7 @@ namespace Resource
 		std::ofstream file;
 
 		char* buffer;
-		int filled = 0;
+		int consumed = 0;
 	};
 
 	class FileReadPipe
@@ -157,11 +159,58 @@ namespace Resource
 			return definition.size;
 		}
 		
-		void readContent(
+		int readContent(
 			char *buffer, 
-			const sf::Uint64 size)
+			const sf::Uint64 size) override
 		{
+			int position = 0;
 
+			if (filled > 0)
+			{
+				if (filled < size)
+				{
+					position = filled;
+					readBuffer(
+						buffer,
+						filled
+					);
+				}
+				else
+				{
+					readBuffer(
+						buffer,
+						size
+					);
+
+					return;
+				}
+			}
+
+			while (size - position > FILE_BUFFER_SIZE)
+			{
+				const sf::Uint64 result = readFile(
+					buffer + position,
+					FILE_BUFFER_SIZE);
+
+				if (result != FILE_BUFFER_SIZE)
+				{
+					return position + result;
+				}
+
+				position += FILE_BUFFER_SIZE;
+			}
+
+			fillBuffer();
+
+			if (size - position != 0)
+			{
+				readBuffer(
+					buffer,
+					size - position
+				);
+			}
+
+			return size;
 		}
 
 		bool isValid() const
@@ -170,7 +219,48 @@ namespace Resource
 		}
 
 	private:
+		void fillBuffer()
+		{
+			filled = readFile(
+				buffer,
+				FILE_BUFFER_SIZE);
+		}
+
+		int readFile(
+			char* buffer,
+			sf::Uint64 size)
+		{
+			const sf::Uint64 remainingFile = definition.size - file.tellg();
+
+			if (remainingFile < size)
+			{
+				size = remainingFile;
+			}
+
+			file.read(
+				buffer,
+				size);
+
+			return size;
+		}
+
+		void readBuffer(
+			char* buffer,
+			const sf::Uint64 size)
+		{
+			memcpy(
+				buffer,
+				this->buffer + (FILE_BUFFER_SIZE - filled),
+				size
+			);
+
+			filled -= size;
+		}
+
 		FileDefinition definition;
 		std::ifstream file;
+
+		char* buffer;
+		int filled;
 	};
 }

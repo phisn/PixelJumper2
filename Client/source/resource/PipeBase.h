@@ -2,6 +2,8 @@
 
 #include <SFML/Main.hpp>
 
+#include <string>
+
 namespace Resource
 {
 	class BasePipe // never used as plmp
@@ -44,8 +46,28 @@ namespace Resource
 
 		virtual void reserveSize(const sf::Uint64) = 0;
 		virtual void writeContent(
-			char* buffer,
+			char* const buffer,
 			const sf::Uint64 size) = 0;
+
+		bool writeContentSafe(
+			char* const buffer,
+			const sf::Uint64 size)
+		{
+			if (!isValid())
+			{
+				return false;
+			}
+
+			writeContent(buffer, size);
+
+			return isValid();
+		}
+
+		template <typename T>
+		bool writeValue(T* value)
+		{
+			return writeContentSafe(value, sizeof(T));
+		}
 	};
 
 	class ReadPipe
@@ -55,8 +77,45 @@ namespace Resource
 	public:
 		virtual ~ReadPipe() = 0 { }
 
-		virtual void readContent(
-			char* buffer,
+		// return == truncated
+		virtual int readContent(
+			char* const buffer,
 			const sf::Uint64 size) = 0;
+		
+		bool readContentForce(
+			char* const buffer,
+			const sf::Uint64 size)
+		{
+			return readContent(buffer, size) == size && isValid();
+		}
+		
+		template <typename T>
+		bool readValue(T* const value)
+		{
+			return readContentForce((char*) value, sizeof(T));
+		}
+
+		template <typename Size>
+		bool readString(
+			std::wstring* const str)
+		{
+			Size size;
+
+			if ( !readValue(&size) )
+			{
+				return false;
+			}
+
+			if (size <= 0)
+			{
+				return false;
+			}
+
+			str->resize(size);
+
+			return readContentForce(
+				(char*) str->c_str(), size
+			);
+		}
 	};
 }

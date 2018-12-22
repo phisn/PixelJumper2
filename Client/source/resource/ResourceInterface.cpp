@@ -163,7 +163,7 @@ namespace Resource
 		return mapResourceFolder;
 	}
 
-	bool Interface::SaveResource(
+	bool Interface::WriteResource(
 		const Base* const resource, 
 		const ResourceType type, 
 		const std::wstring name)
@@ -172,7 +172,8 @@ namespace Resource
 		return true;
 	}
 
-	Base* Interface::AllocateResource(
+	bool Interface::ReadResource(
+		Base* resource,
 		const ResourceType type,
 		const std::wstring name)
 	{
@@ -197,20 +198,13 @@ namespace Resource
 			}
 		}
 
-		// TODO: argument == bytes (of file [it->path]) => some_cool_buffer
-		ByteBuffer buffer(it->second.size);
+		FileReadPipe pipe = it->second;
 
-		it->second.file.seekg(0, std::ios::beg);
-		it->second.file.read(
-			buffer.write(),
-			it->second.size);
-
-		if (it->second.file.fail())
+		if ( !pipe.isValid() )
 		{
-			// ...
+			return false;
 		}
 
-		return GetDefinition(type)->create(); // <- buffer
 	}
 
 	const Definition* Interface::GetDefinition(

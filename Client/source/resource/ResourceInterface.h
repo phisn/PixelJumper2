@@ -3,6 +3,7 @@
 #include <Client/source/logger/Logger.h>
 #include <Client/source/resource/ByteBuffer.h>
 #include <Client/source/resource/Common.h>
+#include <Client/source/resource/FilePipe.h>
 #include <Client/source/resource/ResourceBase.h>
 
 #include <SFML/Main.hpp>
@@ -15,15 +16,7 @@
 
 namespace Resource
 {
-	struct MappedResource
-	{
-		std::ifstream file;
-		std::wstring path;
-
-		uintmax_t size;
-	};
-
-	typedef std::map<std::wstring, MappedResource> SubResources; // name, data
+	typedef std::map<std::wstring, FileDefinition> SubResources; // name, data
 	typedef std::map<ResourceType, SubResources> MapedResources; // type, list
 
 	namespace Interface
@@ -33,12 +26,12 @@ namespace Resource
 		bool RemapAllFiles();
 		bool RemapFiles(const ResourceType type);
 
-		bool SaveResource(
+		bool WriteResource(
 			const Base* resource,
 			const ResourceType type,
 			const std::wstring name);
-
-		Base* AllocateResource(
+		bool ReadResource(
+			Base* resource,
 			const ResourceType type, 
 			const std::wstring name);
 

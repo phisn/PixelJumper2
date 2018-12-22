@@ -16,6 +16,8 @@ namespace Resource
 		:
 		public Resource::Base
 	{
+		typedef unsigned char AuthorNameSize;	// 0 - 255
+		typedef unsigned char MapNameSize;		// 0 - 255
 	public:
 		struct
 		{
@@ -39,6 +41,11 @@ namespace Resource
 
 		std::vector<Resource::Tile> tiles;
 	private:
+		const sf::Uint64 HEADER_SIZE
+			= sizeof(headerIntro)
+			+ 4 // headerAuth
+			+ sizeof(headerProperties);
+
 		sf::Uint32 generateCheckSum()
 		{
 			sf::Uint32 result = (1 << 16) + (1 << 8) + 3;
@@ -52,6 +59,101 @@ namespace Resource
 			}
 
 			return result;
+		}
+
+		bool make(
+			ReadPipe* const pipe) override
+		{
+			if (pipe->getSize() < HEADER_SIZE)
+			{
+				return false;
+			}
+
+			pipe->goToBegin();
+
+			////////// Header
+			if (!readHeaderIntro(pipe))
+			{
+				return false;
+			}
+
+			if (!readHeaderAuth(pipe))
+			{
+				return false;
+			}
+
+			if (!readHeaderProperties(pipe))
+			{
+				return false;
+			}
+			////////// Conent
+
+			//////////
+			return headerProperties.tileCheckSum == generateCheckSum();
+		}
+
+		bool readHeaderIntro(
+			ReadPipe* const pipe)
+		{
+			if (!pipe->readValue( &headerIntro ))
+			{
+				return false;
+			}
+
+			return validateHeaderIntro();
+		}
+
+		bool readHeaderAuth(
+			ReadPipe* const pipe)
+		{
+			if (!pipe->readString<AuthorNameSize>( &headerAuth.authorName ))
+			{
+				return false;
+			}
+
+			if (!pipe->readString<MapNameSize>(&headerAuth.authorName))
+			{
+				return false;
+			}
+
+			return validateHeaderAuth();
+		}
+
+		bool readHeaderProperties(
+			ReadPipe* const pipe)
+		{
+			if (pipe->readValue( &headerProperties ))
+			{
+				return false;
+			}
+
+			return validateHeaderProperties();
+		}
+
+		bool validateHeaderIntro() const
+		{
+			return headerIntro.magic == WORLD_MAGIC
+				&& headerIntro.worldID != 0;
+		}
+
+		bool validateHeaderAuth() const
+		{
+			return headerAuth.authorName.size() > 0
+				&& headerAuth.mapName.size() > 0;
+		}
+
+		// checksum not tested
+		bool validateHeaderProperties() const
+		{
+			return headerProperties.width != 0
+				&& headerProperties.height != 0
+				&& headerProperties.tileCount != 0;
+		}
+
+		bool save(
+			WritePipe* const pipe) override
+		{
+
 		}
 	};
 
