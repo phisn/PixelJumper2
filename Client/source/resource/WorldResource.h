@@ -14,7 +14,7 @@ namespace Resource
 {
 	class World
 		:
-		public Resource::Base
+		public Resource::ResourceBase
 	{
 		typedef unsigned char AuthorNameSize;	// 0 - 255
 		typedef unsigned char MapNameSize;		// 0 - 255
@@ -23,13 +23,13 @@ namespace Resource
 		{
 			sf::Uint32 magic = WORLD_MAGIC;
 			sf::Uint32 worldID = NULL;
-		} headerIntro;
+		} HeaderIntro;
 
 		struct
 		{
 			std::wstring authorName;
 			std::wstring mapName;
-		} headerAuth = { };
+		} HeaderAuth = { };
 
 		struct
 		{
@@ -37,18 +37,26 @@ namespace Resource
 
 			sf::Uint16 tileCount;
 			sf::Uint32 tileCheckSum;
-		} headerProperties = { };
+		} HeaderProperties = { };
 
 		std::vector<Resource::Tile> tiles;
 	private:
 		const sf::Uint64 HEADER_SIZE
-			= sizeof(headerIntro)
+			= sizeof(HeaderIntro)
 			+ 4 // headerAuth
-			+ sizeof(headerProperties);
+			+ sizeof(HeaderProperties);
 
 		sf::Uint32 generateCheckSum()
 		{
 			sf::Uint32 result = (1 << 16) + (1 << 8) + 3;
+
+			result += HeaderProperties.width;
+			result -= HeaderProperties.height;
+			result += HeaderProperties.tileCount;
+
+			result *= HeaderIntro.worldID;
+			result /= HeaderAuth.authorName.size();
+			result -= HeaderAuth.mapName.size();
 
 			for (Resource::Tile& tile : tiles)
 			{ // TODO: check if not bad
@@ -69,8 +77,6 @@ namespace Resource
 				return false;
 			}
 
-			pipe->goToBegin();
-
 			////////// Header
 			if (!readHeaderIntro(pipe))
 			{
@@ -87,15 +93,29 @@ namespace Resource
 				return false;
 			}
 			////////// Conent
+			tiles.clear();
+			tiles.resize(HeaderProperties.tileCount);
+
+			for (Tile& tile : tiles)
+				if (!tile.make(pipe))
+				{
+					return false;
+				}
 
 			//////////
-			return headerProperties.tileCheckSum == generateCheckSum();
+			return HeaderProperties.tileCheckSum == generateCheckSum();
+		}
+
+		bool save(
+			WritePipe* const pipe) override
+		{
+
 		}
 
 		bool readHeaderIntro(
 			ReadPipe* const pipe)
 		{
-			if (!pipe->readValue( &headerIntro ))
+			if (!pipe->readValue( &HeaderIntro ))
 			{
 				return false;
 			}
@@ -106,12 +126,12 @@ namespace Resource
 		bool readHeaderAuth(
 			ReadPipe* const pipe)
 		{
-			if (!pipe->readString<AuthorNameSize>( &headerAuth.authorName ))
+			if (!pipe->readString<AuthorNameSize>( &HeaderAuth.authorName ))
 			{
 				return false;
 			}
 
-			if (!pipe->readString<MapNameSize>(&headerAuth.authorName))
+			if (!pipe->readString<MapNameSize>(&HeaderAuth.authorName))
 			{
 				return false;
 			}
@@ -122,7 +142,7 @@ namespace Resource
 		bool readHeaderProperties(
 			ReadPipe* const pipe)
 		{
-			if (pipe->readValue( &headerProperties ))
+			if (pipe->readValue( &HeaderProperties ))
 			{
 				return false;
 			}
@@ -132,34 +152,28 @@ namespace Resource
 
 		bool validateHeaderIntro() const
 		{
-			return headerIntro.magic == WORLD_MAGIC
-				&& headerIntro.worldID != 0;
+			return HeaderIntro.magic == WORLD_MAGIC
+				&& HeaderIntro.worldID != 0;
 		}
 
 		bool validateHeaderAuth() const
 		{
-			return headerAuth.authorName.size() > 0
-				&& headerAuth.mapName.size() > 0;
+			return HeaderAuth.authorName.size() > 0
+				&& HeaderAuth.mapName.size() > 0;
 		}
 
 		// checksum not tested
 		bool validateHeaderProperties() const
 		{
-			return headerProperties.width != 0
-				&& headerProperties.height != 0
-				&& headerProperties.tileCount != 0;
-		}
-
-		bool save(
-			WritePipe* const pipe) override
-		{
-
+			return HeaderProperties.width != 0
+				&& HeaderProperties.height != 0
+				&& HeaderProperties.tileCount != 0;
 		}
 	};
 
 	struct _N_World
 		:
-		public Base
+		public ResourceBase
 	{
 		struct
 		{

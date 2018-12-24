@@ -10,7 +10,7 @@ namespace Resource
 		Resource::Definition(
 			0x0000'0000,
 			L"World",
-			[]() -> Resource::Base* 
+			[]() -> Resource::ResourceBase* 
 		{
 			return new Resource::World();
 		})

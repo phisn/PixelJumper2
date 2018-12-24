@@ -80,19 +80,6 @@ namespace Game
 			Type type;
 		};
 
-		struct BaseResource
-			:
-			public RESOURCE::Base
-		{
-			virtual sf::Uint32 getSize() const = 0;
-
-			_Success_(return == true)
-			virtual bool loadFromTile(
-				Tile::Base* tile) = 0;
-
-			virtual Tile::Base* create() = 0;
-		};
-
 		inline sf::Vector2f Base::getSize() const
 		{
 			return shape.getSize();

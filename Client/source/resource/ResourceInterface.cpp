@@ -164,7 +164,7 @@ namespace Resource
 	}
 
 	bool Interface::WriteResource(
-		const Base* const resource, 
+		const ResourceBase* const resource, 
 		const ResourceType type, 
 		const std::wstring name)
 	{
@@ -173,7 +173,7 @@ namespace Resource
 	}
 
 	bool Interface::ReadResource(
-		Base* resource,
+		ResourceBase* resource,
 		const ResourceType type,
 		const std::wstring name)
 	{

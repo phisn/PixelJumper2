@@ -27,11 +27,11 @@ namespace Resource
 		bool RemapFiles(const ResourceType type);
 
 		bool WriteResource(
-			const Base* resource,
+			const ResourceBase* resource,
 			const ResourceType type,
 			const std::wstring name);
 		bool ReadResource(
-			Base* resource,
+			ResourceBase* resource,
 			const ResourceType type, 
 			const std::wstring name);
 

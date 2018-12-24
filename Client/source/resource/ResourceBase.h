@@ -1,13 +1,13 @@
 #pragma once
 
 #include <Client/source/resource/Common.h>
-#include <Client/source/resource/PipeBase.h>
+#include <Client/source/resource/pipes/PipeBase.h>
 
 #include <string>
 
 namespace Resource
 {
-	class Base
+	class ResourceBase
 	{
 	public:
 		virtual bool make(ReadPipe* const pipe) = 0;

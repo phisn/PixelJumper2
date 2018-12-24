@@ -1,0 +1,266 @@
+#pragma once
+
+#include <Client/source/resource/PipeBase.h>
+
+#include <filesystem>
+#include <fstream>
+
+#define FILE_BUFFER_SIZE 1024 * 16
+
+namespace Resource
+{
+	struct FileDefinition
+	{
+		FileDefinition(
+			const std::filesystem::path path)
+			:
+			path(path)
+		{
+			size = std::filesystem::file_size(path);
+		}
+
+		std::filesystem::path path;
+		uintmax_t size;
+	};
+
+	class FileWritePipe
+		:
+		public WritePipe
+	{
+	public:
+		FileWritePipe(
+			const FileDefinition fileDefinition)
+			:
+			definition(fileDefinition),
+			buffer(new char[FILE_BUFFER_SIZE])
+		{
+		}
+
+		~FileWritePipe() override
+		{
+			delete[] buffer;
+		}
+
+		void writeContent(
+			char* buffer,
+			const sf::Uint64 size) override
+		{
+			if (consumed > 0)
+			{
+				if (FILE_BUFFER_SIZE - consumed <= size)
+				{
+					fillBuffer(
+						buffer,
+						size);
+				}
+
+				flushBuffer();
+			}
+
+			sf::Uint64 remain = size;
+			while (remain >= FILE_BUFFER_SIZE)
+			{
+				enforceContent(
+					buffer + size - remain,
+					FILE_BUFFER_SIZE);
+
+				remain -= FILE_BUFFER_SIZE;
+			}
+
+			if (remain)
+			{
+				fillBuffer(
+					buffer + size - remain,
+					remain);
+			}
+
+			definition.size += size;
+		}
+
+		void setPosition(
+			const sf::Uint64 position) override
+		{
+			WritePipe::setPosition(position);
+			file.seekp(position);
+		}
+
+		sf::Uint64 getSize() const override
+		{
+			return definition.size;
+		}
+
+		void reserveSize(
+			const sf::Uint64 size) override
+		{
+		}
+
+		bool isValid() const
+		{
+			return file.good();
+		}
+
+	private:
+		void fillBuffer(
+			char* buffer,
+			const sf::Uint64 size)
+		{
+			memcpy(
+				this->buffer,
+				buffer + consumed,
+				size);
+
+			consumed += size;
+		}
+
+		void flushBuffer(
+			const sf::Uint64 size = FILE_BUFFER_SIZE)
+		{
+			enforceContent(
+				buffer,
+				size);
+
+			consumed = 0;
+		}
+
+		void enforceContent(
+			char* buffer,
+			const sf::Uint64 size)
+		{
+			file.write(
+				buffer,
+				size);
+		}
+
+		FileDefinition definition;
+		std::ofstream file;
+
+		char* buffer;
+		int consumed = 0;
+	};
+
+	class FileReadPipe
+		:
+		public ReadPipe
+	{
+	public:
+		FileReadPipe(
+			const FileDefinition fileDefinition)
+			:
+			definition(fileDefinition)
+		{
+		}
+
+		~FileReadPipe() override
+		{
+		}
+
+		sf::Uint64 getSize() const override
+		{
+			return definition.size;
+		}
+		
+		int readContent(
+			char *buffer, 
+			const sf::Uint64 size) override
+		{
+			int position = 0;
+
+			if (filled > 0)
+			{
+				if (filled < size)
+				{
+					position = filled;
+					readBuffer(
+						buffer,
+						filled
+					);
+				}
+				else
+				{
+					readBuffer(
+						buffer,
+						size
+					);
+
+					return;
+				}
+			}
+
+			while (size - position > FILE_BUFFER_SIZE)
+			{
+				const sf::Uint64 result = readFile(
+					buffer + position,
+					FILE_BUFFER_SIZE);
+
+				if (result != FILE_BUFFER_SIZE)
+				{
+					return position + result;
+				}
+
+				position += FILE_BUFFER_SIZE;
+			}
+
+			fillBuffer();
+
+			if (size - position != 0)
+			{
+				readBuffer(
+					buffer,
+					size - position
+				);
+			}
+
+			return size;
+		}
+
+		bool isValid() const
+		{
+			return file.good();
+		}
+
+	private:
+		void fillBuffer()
+		{
+			filled = readFile(
+				buffer,
+				FILE_BUFFER_SIZE);
+		}
+
+		int readFile(
+			char* buffer,
+			sf::Uint64 size)
+		{
+			const sf::Uint64 remainingFile = definition.size - file.tellg();
+
+			if (remainingFile < size)
+			{
+				size = remainingFile;
+			}
+
+			file.read(
+				buffer,
+				size);
+
+			return size;
+		}
+
+		void readBuffer(
+			char* buffer,
+			const sf::Uint64 size)
+		{
+			memcpy(
+				buffer,
+				this->buffer + (FILE_BUFFER_SIZE - filled),
+				size
+			);
+
+			filled -= size;
+		}
+
+		FileDefinition definition;
+		std::ifstream file;
+
+		char* buffer;
+		int filled;
+	};
+}

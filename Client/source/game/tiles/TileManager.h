@@ -20,9 +20,8 @@ namespace Game
 	{
 		namespace Manager
 		{
-			_Success_(return != NULL)
-			BaseResource* getTileResource(
-				const Id tileId);
+			_Ret_maybenull_
+			BaseResource* getTileResource(const Id tileId);
 			void registerTileResource(
 				const Id tileId, 
 				BaseResource* resource);
