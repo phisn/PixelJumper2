@@ -53,7 +53,7 @@ namespace Resource
 			char* const buffer,
 			const sf::Uint64 size)
 		{
-			if (!isValid())
+			if ( !isValid() )
 			{
 				return false;
 			}
@@ -66,7 +66,26 @@ namespace Resource
 		template <typename T>
 		bool writeValue(T* value)
 		{
-			return writeContentSafe(value, sizeof(T));
+			return writeContentSafe((char*) value, sizeof(T));
+		}
+
+		template <typename Size>
+		bool writeString(
+			std::wstring* const str)
+		{
+			Size size = str->size();
+
+			if (size <= 0)
+			{
+				return false;
+			}
+
+			if ( !writeValue(&size) )
+			{
+				return false;
+			}
+
+			return writeContentSafe(str->c_str, size * sizeof(wchar_t));
 		}
 	};
 

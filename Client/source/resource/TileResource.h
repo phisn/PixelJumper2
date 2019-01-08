@@ -16,22 +16,21 @@ namespace Resource
 	public:
 		~Tile()
 		{
-			if (content) delete content;
+			if (Content) delete Content;
 		}
 
 		struct
 		{
-			Game::Tile::Id id;
+			AUTO Game::Tile::Id id;
 
-			sf::Uint8 width; // TODO: Do not forget
-			sf::Uint8 height;
+			EDIT sf::Uint8 width;
+			EDIT sf::Uint8 height;
 
-			sf::Uint16 contentSize;
+			AUTO sf::Uint16 contentSize;
 		} Header = { };
 
 		_Maybenull_
-		TileBase* content = NULL;
-
+		EDIT TileBase* Content = NULL;
 
 		bool make(
 			ReadPipe* const pipe) override
@@ -46,26 +45,42 @@ namespace Resource
 				return false;
 			}
 
-			if (content != NULL)
+			if (Content != NULL &&
+				Content->getTileId() != Header.id)
 			{
-				if (content->getTileId() == Header.id)
+				delete Content;
+				Content = NULL;
+			}
+
+			if (Content == NULL)
+			{
+				Content = TileFactory::Create(Header.id);
+
+				if (Content == NULL)
 				{
-					return content->make(pipe);
-				}
-				else
-				{
-					delete content;
+					return false;
 				}
 			}
 
-			content = TileFactory::Create(Header.id);
+			Content->make(pipe);
+		}
 
-			if (content == NULL)
+		bool save(
+			WritePipe* const pipe) override
+		{
+			Header.id = Content->getTileId();
+
+			if ( !writeHeader(pipe) )
 			{
 				return false;
 			}
 
-			if (!content->make(pipe))
+			if (Content == NULL)
+			{
+				return false;
+			}
+
+			if (!Content->save(pipe))
 			{
 				return false;
 			}
@@ -73,22 +88,19 @@ namespace Resource
 			return true;
 		}
 
-		bool save(
-			WritePipe* const pipe) override
-		{
-
-		}
 	private:
-
 		bool readHeader(
 			ReadPipe* const pipe) const
 		{
-			if (pipe->readValue( &Header ))
-			{
-				return false;
-			}
+			return pipe->readValue(&Header)
+				&& validateHeader();
+		}
 
-			return validateHeader();
+		bool writeHeader(
+			WritePipe* const pipe)
+		{
+			return validateHeader() 
+				&& pipe->writeValue(&Header);
 		}
 
 		bool validateHeader() const
@@ -96,7 +108,7 @@ namespace Resource
 			return Header.id > Game::Tile::Id::Invalid
 				&& Header.width == 0
 				&& Header.height == 0
-				&& Header.contentSize == 0
+				&& Header.contentSize == 0;
 		}
 	};
 

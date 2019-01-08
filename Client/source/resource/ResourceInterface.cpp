@@ -173,7 +173,7 @@ namespace Resource
 	}
 
 	bool Interface::ReadResource(
-		ResourceBase* resource,
+		ResourceBase* const resource,
 		const ResourceType type,
 		const std::wstring name)
 	{
@@ -205,6 +205,7 @@ namespace Resource
 			return false;
 		}
 
+		return pipe.
 	}
 
 	const Definition* Interface::GetDefinition(

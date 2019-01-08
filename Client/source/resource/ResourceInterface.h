@@ -3,7 +3,7 @@
 #include <Client/source/logger/Logger.h>
 #include <Client/source/resource/ByteBuffer.h>
 #include <Client/source/resource/Common.h>
-#include <Client/source/resource/FilePipe.h>
+#include <Client/source/resource/pipes/FilePipe.h>
 #include <Client/source/resource/ResourceBase.h>
 
 #include <SFML/Main.hpp>
@@ -27,11 +27,11 @@ namespace Resource
 		bool RemapFiles(const ResourceType type);
 
 		bool WriteResource(
-			const ResourceBase* resource,
+			const ResourceBase* const resource,
 			const ResourceType type,
 			const std::wstring name);
 		bool ReadResource(
-			ResourceBase* resource,
+			ResourceBase* const resource,
 			const ResourceType type, 
 			const std::wstring name);
 

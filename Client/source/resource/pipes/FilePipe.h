@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/resource/PipeBase.h>
+#include <Client/source/resource/pipes/PipeBase.h>
 
 #include <filesystem>
 #include <fstream>
@@ -144,9 +144,10 @@ namespace Resource
 	{
 	public:
 		FileReadPipe(
-			const FileDefinition fileDefinition)
+			FileDefinition* const fileDefinition)
 			:
-			definition(fileDefinition)
+			definition(fileDefinition),
+			file(fileDefinition->path, )
 		{
 		}
 
@@ -156,7 +157,7 @@ namespace Resource
 
 		sf::Uint64 getSize() const override
 		{
-			return definition.size;
+			return definition->size;
 		}
 		
 		int readContent(
@@ -230,7 +231,7 @@ namespace Resource
 			char* buffer,
 			sf::Uint64 size)
 		{
-			const sf::Uint64 remainingFile = definition.size - file.tellg();
+			const sf::Uint64 remainingFile = definition->size - file.tellg();
 
 			if (remainingFile < size)
 			{
@@ -257,7 +258,7 @@ namespace Resource
 			filled -= size;
 		}
 
-		FileDefinition definition;
+		FileDefinition* definition;
 		std::ifstream file;
 
 		char* buffer;

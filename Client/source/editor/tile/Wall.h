@@ -12,7 +12,6 @@ namespace Editor
 			:
 			public TileBase
 		{
-			typedef TileState WallState;
 		public:
 			Wall(
 				const sf::Vector2f position)
@@ -23,14 +22,12 @@ namespace Editor
 			{
 			}
 
-			TileState* getState() const
+			Resource::TileBase* create(
+				const sf::Vector2f size,
+				const sf::Vector2f position) const override 
 			{
-				WallState* state = new WallState();
-				state->position = getShape()->getPosition();
-				return (TileState*)state;
+				return new Resource::WallTile();
 			}
-
-
 		};
 	}
 }

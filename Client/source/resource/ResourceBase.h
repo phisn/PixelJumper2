@@ -5,6 +5,9 @@
 
 #include <string>
 
+#define EDIT // Editable parameter
+#define AUTO // Non-Editable parameter
+
 namespace Resource
 {
 	class ResourceBase

@@ -16,5 +16,8 @@ namespace Resource
 				NULL)
 		{
 		}
+
+		bool make(ReadPipe*	 const pipe) override { return true; }
+		bool save(WritePipe* const pipe) override { return true; }
 	};
 }
