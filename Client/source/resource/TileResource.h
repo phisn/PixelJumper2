@@ -26,7 +26,10 @@ namespace Resource
 			EDIT sf::Uint8 width;
 			EDIT sf::Uint8 height;
 
-			AUTO sf::Uint16 contentSize;
+			EDIT sf::Uint16 x;
+			EDIT sf::Uint16 y;
+			
+			AUTO sf::Uint16 contentSize; // probably does not exceed
 		} Header = { };
 
 		_Maybenull_
@@ -45,6 +48,21 @@ namespace Resource
 				return false;
 			}
 
+			if (Header.contentSize == NULL)
+			{ // skip content generation
+				return true;
+			}
+
+			if (!allocateContent())
+			{
+				return false;
+			}
+
+			return Content->make(pipe);
+		}
+		
+		bool allocateContent()
+		{
 			if (Content != NULL &&
 				Content->getTileId() != Header.id)
 			{
@@ -62,13 +80,14 @@ namespace Resource
 				}
 			}
 
-			Content->make(pipe);
+			return true;
 		}
 
 		bool save(
 			WritePipe* const pipe) override
 		{
 			Header.id = Content->getTileId();
+			Header.contentSize = Content->getSize();
 
 			if ( !writeHeader(pipe) )
 			{
@@ -111,65 +130,4 @@ namespace Resource
 				&& Header.contentSize == 0;
 		}
 	};
-
-	struct _N_Tile
-		:
-		public Resource::ResourceBase
-	{
-		// NOT RESPONSIBLE FOR DELETING TILE
-		GAME::Tile::Base* tile;
-
-		struct
-		{
-			GAME::Tile::Id id;
-			sf::Uint32 size;
-
-		} data;
-
-		bool writeToBuffer(
-			ByteWriter* buffer) override
-		{
-			GAME::Tile::BaseResource* resource = GAME::Tile::Manager::getTileResource(
-				tile->getId());
-			if (resource == NULL)
-			{
-				return false;
-			}
-
-			data.id = tile->getId();
-			data.size = resource->getSize();
-
-			buffer->writeValue(&data);
-
-			resource->loadFromTile(tile);
-			return resource->writeToBuffer(buffer);
-		}
-
-		bool readFromBuffer(
-			ByteReader* buffer) override
-		{
-			if (!buffer->readValue(&data))
-			{
-				return false;
-			}
-
-			GAME::Tile::BaseResource* resource = GAME::Tile::Manager::getTileResource(
-				data.id);
-			if (resource == NULL)
-			{
-				return false;
-			}
-
-			if (!resource->readFromBuffer(buffer))
-			{
-				return false;
-			}
-
-			return NULL !=
-				(
-					tile = resource->create()
-				);
-		}
-	};
-
 }

@@ -32,14 +32,19 @@ namespace Editor
 			return true; // id == tile->id;
 		}
 
+		sf::Vector2u getPosition() const
+		{
+			return sf::Vector2u( shape.getPosition() );
+		}
+
 		const sf::RectangleShape* getShape() const
 		{
 			return &shape;
 		}
 
 		virtual Resource::TileBase* create(
-			const sf::Vector2f size,
-			const sf::Vector2f position) const = 0;
+			const sf::Vector2u size,
+			const sf::Vector2u position) const = 0;
 	private:
 		sf::RectangleShape shape;
 	};

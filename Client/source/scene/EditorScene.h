@@ -47,7 +47,7 @@ namespace Scene
 
 		void initialize() override 
 		{
-			EDITOR::Manipulator::initialize(&world);
+			EDITOR::Manipulator::initialize(  );
 
 			EDITOR::GridMenu* gridMenu = addRoot<EDITOR::GridMenu>(&world);
 			gridMenu->setViewport({ 0.0f, 0.0f, 0.9f, 1.0f });

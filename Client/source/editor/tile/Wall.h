@@ -23,8 +23,8 @@ namespace Editor
 			}
 
 			Resource::TileBase* create(
-				const sf::Vector2f size,
-				const sf::Vector2f position) const override 
+				const sf::Vector2u size,
+				const sf::Vector2u position) const override 
 			{
 				return new Resource::WallTile();
 			}

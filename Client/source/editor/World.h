@@ -9,14 +9,26 @@
 #include <Client/source/logger/Logger.h>
 #include <Client/source/resource/WorldResource.h>
 
+#include <limits>
 #include <vector>
+
+#define RTILE_TYPE_MAX(var) std::numeric_limits< decltype( decltype(Resource::Tile::Header):: ##var )>::max()
 
 namespace Editor
 {
 	class World
 	{
+		struct GroupedTile
+		{
+			sf::Vector2u position;
+			sf::Vector2u size;
+
+			Editor::TileBase* tile;
+		};
+
 		typedef std::vector<Editor::TileBase*> Tiles;
 		typedef std::vector<Tiles> TileGroups;
+		typedef std::vector<GroupedTile> GroupedTiles;
 	public:
 		_Ret_maybenull_
 		Resource::World* convert(
@@ -57,15 +69,47 @@ namespace Editor
 	private:
 		bool convertTiles(Resource::World* const world) const
 		{
-			Tiles groupedTiles;
+			GroupedTiles groupedTiles;
 
 			{	
 				TileGroups tileGroups;
 				
-				sortTiles(&tileGroups);
+				sortTiles(
+					&tileGroups);
+				groupTiles(
+					&groupedTiles,
+					&tileGroups);
 			}
-		}
 
+			for (GroupedTile& tile : groupedTiles)
+			{
+				if (tile.position.x > RTILE_TYPE_MAX(x) ||
+					tile.position.y > RTILE_TYPE_MAX(y))
+				{
+					return false;
+				}
+
+				if (tile.size.x > RTILE_TYPE_MAX(width) ||
+					tile.size.y > RTILE_TYPE_MAX(height))
+				{
+					return false;
+				}
+
+				world->TileContainer.emplace_back();
+				Resource::Tile* resourceTile = &world->TileContainer.back();
+
+				resourceTile->Content = tile.tile->create(tile.size, tile.position);
+
+				resourceTile->Header.width = tile.size.x;
+				resourceTile->Header.height = tile.size.y;
+
+				resourceTile->Header.x = tile.position.x;
+				resourceTile->Header.y = tile.position.y;
+			}
+
+			return groupedTiles.size() > 0; // TODO: pointless?
+		}
+		 
 		void sortTiles(TileGroups* const tileGroups) const
 		{
 			for (TileBase* const tile : tiles)
@@ -84,144 +128,46 @@ namespace Editor
 			}
 		}
 
-		std::vector<Editor::TileBase*> tiles;
-	};
-
-	class World
-	{
-		// group = NxN area (of tiles)
-		struct ExtendedTile
-		{
-			const TileState* primaryState;
-
-			sf::Vector2f position, size;
-		};
-
-		typedef std::vector<ExtendedTile> ExtendedTiles;
-
-		// Tile = TileGroup
-		typedef ExtendedTile Tile;
-
-		typedef std::vector<Tile> TileGroup;
-		typedef std::vector<TileGroup> TileGroups;
-	public:
-		_Ret_maybenull_
-		RESOURCE::_N_World* convert() const
-		{
-			// init rand
-			static bool triggered = false;
-
-			if (!triggered)
-			{
-				triggered = true;
-				srand(time(NULL));
-			}
-			// ---------
-
-			RESOURCE::_N_World* world = new RESOURCE::_N_World();
-
-			world->header.begin.magic = WORLD_MAGIC;
-			world->header.begin.worldId = rand();
-
-			saveTiles(world);
-
-			// TODO: Setup header and content
-
-			if (world->validateHeader() && world->validateContent())
-			{
-				return world;
-			}
-
-			return NULL;
-		}
-
-	private:
-		void saveTiles(
-			RESOURCE::World* const world) const
-		{
-			ExtendedTiles tileGroups;
-
-			{	TileGroups stateGroups;
-			
-				orderTiles(world, &stateGroups);
-				groupTiles(&stateGroups, &tileGroups);
-			} // delete stateGroups
-
-			for (ExtendedTile& const extendedTile : tileGroups)
-			{
-				world->TileContainer.emplace_back();
-				world->TileContainer.back().Content = 
-					/*
-					extendedTile.primaryState->create(
-						extendedTile.size,
-						extendedTile.position);
-				);*/
-
-				// convert to resource
-			}
-		}
-
-		void orderTiles(
-			RESOURCE::_N_World* const world,
-			TileGroups* const groups) const
-		{
-			for (const TileBase* const tile : tiles)
-			{
-			NEXT_TILE:
-				const TileState* const state = tile->getState();
-
-				for (TileGroup& group : *groups)
-					if (group.back().primaryState->isSameGroup(state))
-					{
-						pushTile(
-							tile,
-							state,
-							&group
-						);
-
-						goto NEXT_TILE; // continue replacement
-					}
-
-				groups->emplace_back();
-				pushTile(
-					tile,
-					state,
-					&groups->back()
-				);
-			}
-		}
-
-		void pushTile(
-			const TileBase* const tile,
-			const TileState* const state,
-
-			TileGroup* const group) const
-		{
-			group->emplace_back();
-
-			group->back().position = tile->getShape()->getPosition();
-			group->back().primaryState = state;
-			// ignore size
-		}
-
 		void groupTiles(
-			TileGroups* const stateGroups,
-			ExtendedTiles* const extendedTiles) const
+			GroupedTiles* const groupedTiles,
+			TileGroups* const tileGroups) const
 		{
-			for (const TileGroup& tileGroup : *stateGroups)
+			int totalTileCount = 0; // for logging
+
+			for (const Tiles& tileGroup : *tileGroups)
 			{
 				// for tests replace later
-				for (const Tile& tile : tileGroup)
+				for (const Tiles::value_type& tile : tileGroup)
 				{
-					extendedTiles->emplace_back();
-					extendedTiles->back() = tile;
+					++totalTileCount;
+					
+					groupedTiles->emplace_back();
+					GroupedTile* groupedTile = &groupedTiles->back();
+
+					groupedTile->tile = tile;
+
+					groupedTile->size = { 1u, 1u };
+					groupedTile->position = tile->getPosition();
 				}
 				// -----------------------
 
 				// group and push to tileGroups
 			}
+
+			Log::Information(
+				L"Single Tiles: "
+				+ std::to_wstring(totalTileCount)
+			);
+			Log::Information(
+				L"Grouped Tiles: "
+				+ std::to_wstring(groupedTiles->size())
+			);
+			Log::Information(
+				L"Tile Groups: "
+				+ std::to_wstring(tileGroups->size())
+			);
 		}
 
-		std::vector<TileBase*> tiles;
+		Tiles tiles;
 	};
 }

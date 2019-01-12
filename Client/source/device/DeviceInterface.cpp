@@ -15,7 +15,6 @@
 
 #include <Client/source/scene/EditorScene.h>
 #include <Client/source/scene/LocalGameScene.h>
-#include "..\..\ResourceInterface.h"
 
 
 namespace
@@ -138,24 +137,24 @@ namespace Device
 		Log::Independent::Information(L"Entering Game Loop");
 		while (true)
 		{
-			FW::Execution::DoTasks();
+			Framework::Execution::DoTasks();
 
-			if (!FW::Execution::IsRunning())
+			if (!Framework::Execution::IsRunning())
 			{
 				break;
 			}
 
 			while (screen->getWindow()->pollEvent(event))
 			{
-				FW::Execution::OnEvent(event);
+				Framework::Execution::OnEvent(event);
 			}
 
-			FW::Execution::OnUpdate(
+			Framework::Execution::OnUpdate(
 				clock.restart()
 			);
 
 			screen->getWindow()->clear();
-			FW::Execution::OnDraw();
+			Framework::Execution::OnDraw();
 			screen->getWindow()->display();
 		}
 
