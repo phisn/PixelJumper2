@@ -14,7 +14,7 @@ namespace Editor
 	namespace Manipulator
 	{
 		void initialize(
-			World_N* const world);
+			World* const world);
 		void uninitialize();
 
 		Cache* getCache();

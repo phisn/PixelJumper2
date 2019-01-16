@@ -105,9 +105,6 @@
     <ClInclude Include="source\device\ResourceDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\tiles\TileManager.h">
-      <Filter>source\game\tiles</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\tiles\CollidableTile.h">
       <Filter>source\game\tiles\base</Filter>
     </ClInclude>
@@ -140,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="source\resource\ByteBuffer.h">
       <Filter>source\resource\base</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\WorldManager.h">
-      <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiles\TileColor.h">
       <Filter>source\game\tiles</Filter>
@@ -362,9 +356,6 @@
     <ClCompile Include="source\device\ResourceDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\tiles\TileManager.cpp">
-      <Filter>source\game\tiles</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\tiles\CollidableTile.cpp">
       <Filter>source\game\tiles\base</Filter>
     </ClCompile>
@@ -397,9 +388,6 @@
     </ClCompile>
     <ClCompile Include="source\resource\ByteBuffer.cpp">
       <Filter>source\resource\base</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\WorldManager.cpp">
-      <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\tile\Wall.cpp">
       <Filter>source\editor\tile</Filter>
@@ -569,6 +557,9 @@
     </Image>
     <Image Include="source\resource\IMAG0011.jpg">
       <Filter>source\resource</Filter>
+    </Image>
+    <Image Include="source\editor\Editor_Design.jpg">
+      <Filter>source\editor</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

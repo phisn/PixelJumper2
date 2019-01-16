@@ -21,7 +21,7 @@ namespace Game
 		namespace Manager
 		{
 			_Ret_maybenull_
-			BaseResource* getTileResource(const Id tileId);
+			Resource::TileBase* getTileResource(const Id tileId);
 			void registerTileResource(
 				const Id tileId, 
 				BaseResource* resource);

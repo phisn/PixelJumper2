@@ -175,12 +175,10 @@
     <ClInclude Include="source\game\tiles\TileBase.h" />
     <ClInclude Include="source\game\tiles\TileColor.h" />
     <ClInclude Include="source\game\tiles\TileId.h" />
-    <ClInclude Include="source\game\tiles\TileManager.h" />
     <ClInclude Include="source\game\tiles\TimedTile.h" />
     <ClInclude Include="source\game\tiles\TouchableTile.h" />
     <ClInclude Include="source\game\tiles\Wall.h" />
     <ClInclude Include="source\game\World.h" />
-    <ClInclude Include="source\game\WorldManager.h" />
     <ClInclude Include="source\logger\Names.h" />
     <ClInclude Include="source\logger\SectionHost.h" />
     <ClInclude Include="source\logger\Level.h" />
@@ -256,12 +254,10 @@
     <ClCompile Include="source\game\PlayerBase.cpp" />
     <ClCompile Include="source\game\tiles\CollidableTile.cpp" />
     <ClCompile Include="source\game\tiles\TileBase.cpp" />
-    <ClCompile Include="source\game\tiles\TileManager.cpp" />
     <ClCompile Include="source\game\tiles\TimedTile.cpp" />
     <ClCompile Include="source\game\tiles\TouchableTile.cpp" />
     <ClCompile Include="source\game\tiles\Wall.cpp" />
     <ClCompile Include="source\game\World.cpp" />
-    <ClCompile Include="source\game\WorldManager.cpp" />
     <ClCompile Include="source\logger\SectionHost.cpp" />
     <ClCompile Include="source\logger\Output.cpp" />
     <ClCompile Include="source\logger\Section.cpp" />
@@ -294,6 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\OneDrive\Bilder\IMAG0001[323].jpg" />
+    <Image Include="source\editor\Editor_Design.jpg" />
     <Image Include="source\editor\manipulator\Manipulator.jpg" />
     <Image Include="source\resource\IMAG0005.jpg" />
     <Image Include="source\resource\IMAG0011.jpg" />

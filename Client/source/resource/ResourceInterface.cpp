@@ -145,6 +145,8 @@ namespace Resource
 {
 	bool Interface::Initialize()
 	{
+		Log::Section section(L"Initializing InterfaceResource");
+
 		return mapAllResources();
 
 		// ...

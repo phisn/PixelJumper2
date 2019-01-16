@@ -1,6 +1,7 @@
 #include "ResourceDevice.h"
 
 #include <Client/source/logger/Logger.h>
+#include <Client/source/resource/ResourceInterface.h>
 
 #include <fstream>
 
@@ -26,6 +27,11 @@ namespace Device
 
 				return false;
 			}
+
+		if (!::Resource::Interface::Initialize())
+		{
+			return false;
+		}
 
 		return true;
 	}

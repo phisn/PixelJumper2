@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Client/source/game/LocalPlayer.h>
-#include <Client/source/game/WorldManager.h>
 
 #include <Client/source/game/tiles/CollidableTile.h>
 #include <Client/source/game/tiles/TileBase.h>

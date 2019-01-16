@@ -34,7 +34,7 @@ namespace Resource
 
 		virtual bool isValid() const = 0;
 	private:
-		int position;
+		sf::Uint64 position;
 	};
 
 	class WritePipe
