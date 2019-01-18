@@ -1,5 +1,7 @@
 #include "ResourceInterface.h"
 
+#include <Client/source/resource/ResourceDefinitions.h>
+
 namespace
 {
 	Resource::MapedResources mappedResources;
@@ -58,8 +60,8 @@ namespace
 			return false;
 		}
 
-		Resource::MappedResource* resource = &mappedResources[type][filename.filename.wstring()];
-		resource->file = std::move(file);
+		Resource::FileDefinition* resource = &mappedResources[type][filename.filename.wstring()];
+		// resource->file = std::move(file); | do not store handle
 		resource->path = filename.wstring();
 		resource->size = std::filesystem::file_size( resource->path );
 
@@ -84,7 +86,7 @@ namespace
 
 			for (const std::filesystem::directory_entry& entry
 				: std::filesystem::directory_iterator(
-					resourceDefinitions[(int) type].path
+					Resource::Interface::GetDefinition(type)->path
 				))
 			{
 				const std::filesystem::path path = entry.path();
@@ -166,12 +168,35 @@ namespace Resource
 	}
 
 	bool Interface::WriteResource(
-		const ResourceBase* const resource, 
+		ResourceBase* const resource, 
 		const ResourceType type, 
 		const std::wstring name)
 	{
+		SubResources* const subResources = &mappedResources[type];
+		SubResources::iterator it = subResources->find(name);
 
-		return true;
+		FileDefinition* destination;
+
+		if (it == subResources->cend())
+		{
+			destination = &subResources->emplace(
+				name, 
+				GetDefinition(type)->path + name
+			).first->second;
+		}
+		else
+		{
+			destination = &it->second;
+		}
+
+		FileWritePipe fileWritePipe(*destination); // TODO: Ptr?
+
+		if (!fileWritePipe.isValid())
+		{
+			return false;
+		}
+
+		return resource->save(&fileWritePipe);
 	}
 
 	bool Interface::ReadResource(
@@ -200,25 +225,25 @@ namespace Resource
 			}
 		}
 
-		FileReadPipe pipe = it->second;
+		FileReadPipe pipe(&it->second);
 
 		if ( !pipe.isValid() )
 		{
 			return false;
 		}
 
-		return pipe.
+		return resource->make(&pipe);
 	}
 
 	const Definition* Interface::GetDefinition(
 		const ResourceType resource)
 	{
-		return &resourceDefinitions[(int) resource];
+		return &ResourceDefinitions[(int) resource];
 	}
 
 	std::wstring Interface::Translate(
 		const ResourceType resource)
 	{
-		return resourceDefinitions[(int) resource].name;
+		return ResourceDefinitions[(int) resource].name;
 	}
 }

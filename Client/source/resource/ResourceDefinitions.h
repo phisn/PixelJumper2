@@ -5,7 +5,7 @@
 
 namespace Resource
 {
-	const Resource::Definition resourceDefinitions[(int)Resource::ResourceType::_Length]
+	const Resource::Definition ResourceDefinitions[(int)Resource::ResourceType::_Length]
 	{
 		Resource::Definition(
 			0x0000'0000,
