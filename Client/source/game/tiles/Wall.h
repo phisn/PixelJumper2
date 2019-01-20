@@ -14,6 +14,7 @@ namespace Game
 			sf::Vector2f position, size;
 		};
 
+		/*
 		class Wall
 			:
 			public Collidable
@@ -73,7 +74,8 @@ namespace Game
 				return true;
 			}
 		};
-
+		*/
+		/*
 		class WallResource
 			:
 			public BaseResource
@@ -131,5 +133,6 @@ namespace Game
 		private:
 			WallSettings settings;
 		};
+		*/
 	}
 }

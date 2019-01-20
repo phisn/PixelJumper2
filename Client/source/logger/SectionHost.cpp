@@ -31,8 +31,7 @@ namespace Log
 		{
 			loggingContext.currentOutput = &output;
 			loggingContext.currentPrefix.clear();
-			loggingContext.sectionIterator = sections.begin();
-
+			
 			logSectionBegin(currentLevel, name);
 
 			loggingContext.currentPrefix = LOGGER_SECTION_SUBMESSAGE_PREFIX_END;
@@ -48,6 +47,8 @@ namespace Log
 			return;
 		}
 
+		sectionIterator = sections.cbegin();
+
 		for (const _Log& log : logs)
 		{
 			logBasicPrint(&log);
@@ -55,10 +56,10 @@ namespace Log
 			if (log.first == Level::Section)
 			{
 				extendPrefix();
-				loggingContext.sectionIterator->logAllMessagesRecursive();
+				sectionIterator->logAllMessagesRecursive();
 				reducePrefix();
 
-				++loggingContext.sectionIterator;
+				++sectionIterator;
 			}
 		}
 	}
@@ -75,8 +76,8 @@ namespace Log
 		if (log->first == Level::Section)
 		{
 			logSectionBegin(
-				loggingContext.sectionIterator->currentLevel,
-				loggingContext.sectionIterator->name
+				sectionIterator->currentLevel,
+				sectionIterator->name
 			);
 		}
 		else

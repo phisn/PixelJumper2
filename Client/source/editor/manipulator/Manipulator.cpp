@@ -13,13 +13,11 @@ namespace
 
 namespace Editor
 {
-	void Manipulator::initialize(
-		World_N* const world)
+	void Manipulator::initialize(World* const world)
 	{
 		cache = new Cache();
-		executor = new Executor();
-		manager = new CacheManager(
-			cache);
+		manager = new CacheManager(cache);
+		executor = new Executor(world);
 	}
 
 	void Manipulator::uninitialize()

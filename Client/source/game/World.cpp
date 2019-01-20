@@ -2,6 +2,7 @@
 
 namespace Game
 {
+	/*
 	bool World::validate() const
 	{
 		if (settings->tiles.size() == 0)
@@ -36,7 +37,7 @@ namespace Game
 				>= & <= only same nears and fars
 				to solve a bug (Tiles on the same position)
 
-				*/
+			    * /
 				return true;
 				if ((		// x
 					(		// 1. root x
@@ -74,4 +75,5 @@ namespace Game
 
 		return true;
 	}
+	*/
 }

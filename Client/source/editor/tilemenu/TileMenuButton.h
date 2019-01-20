@@ -10,6 +10,14 @@
 
 #include <functional>
 
+
+// TODO: remove
+#include <Client/source/editor/manipulator/Executor.h>
+#include <Client/source/editor/manipulator/Manipulator.h>
+#include <Client/source/editor/manipulator/tasks/TilePlace.h>
+
+#include <iostream>
+
 namespace Editor
 {
 	class TileMenuButton
@@ -91,6 +99,14 @@ namespace Editor
 
 		void onMouseClick() override
 		{
+			if (selected)
+			{
+				::std::cout << "Place" << std::endl;
+				Manipulator::getExecutor()->execute<TilePlace>();
+
+				return;
+			}
+
 			selected = true;
 
 			Manipulator::getCache()->writeInput()->tile.tile = tile;

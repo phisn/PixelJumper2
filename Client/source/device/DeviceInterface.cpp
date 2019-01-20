@@ -9,7 +9,6 @@
 
 #include <Client/source/game/tiles/TileManager.h>
 #include <Client/source/game/tiles/Wall.h>
-#include <Client/source/game/WorldManager.h>
 
 #include <Client/source/logger/Logger.h>
 
@@ -118,7 +117,7 @@ namespace Device
 		section.information(L"Pushing Starting Context");
 
 		if (!FW::Interface::PushContext(
-			makeStartingContext()
+				makeStartingContext()
 		))
 		{
 			return InitError::Scene;

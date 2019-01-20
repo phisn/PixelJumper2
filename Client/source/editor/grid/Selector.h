@@ -22,7 +22,7 @@ namespace Editor
 	{
 	public:
 		Selector(
-			const World_N* const world,
+			const World* const world,
 			GridView* const view)
 			:
 			view(view),

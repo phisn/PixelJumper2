@@ -11,6 +11,8 @@ namespace Resource
 {
 	struct FileDefinition
 	{
+		FileDefinition() { }
+
 		FileDefinition(
 			const std::filesystem::path path)
 			:
@@ -32,7 +34,8 @@ namespace Resource
 			const FileDefinition fileDefinition)
 			:
 			definition(fileDefinition),
-			buffer(new char[FILE_BUFFER_SIZE])
+			buffer(new char[FILE_BUFFER_SIZE]),
+			file(fileDefinition.path, std::ios::out | std::ios::binary)
 		{
 		}
 
@@ -147,7 +150,7 @@ namespace Resource
 			FileDefinition* const fileDefinition)
 			:
 			definition(fileDefinition),
-			file(fileDefinition->path, )
+			file(fileDefinition->path, std::ios::in | std::ios::binary)
 		{
 		}
 
@@ -183,7 +186,7 @@ namespace Resource
 						size
 					);
 
-					return;
+					return size;
 				}
 			}
 

@@ -39,7 +39,9 @@ namespace Editor
 	class Executor
 	{
 	public:
-		Executor()
+		Executor(World* const world)
+			:
+			world(world)
 		{
 		}
 
@@ -64,7 +66,7 @@ namespace Editor
 
 		void execute(Task* task)
 		{
-			if ( task->execute(&world) )
+			if ( task->execute(world) )
 			{
 				tasks.push_front(task);
 
@@ -116,10 +118,6 @@ namespace Editor
 			}
 		}
 
-		Game::WorldSettings* convertWorld()
-		{
-		}
-
 		const std::deque<Task*>* getUndoTasks() const
 		{
 			return &tasks;
@@ -134,6 +132,6 @@ namespace Editor
 		std::deque<Task*> tasks;
 		std::vector<Task*> redoTasks;
 
-		World world;
+		World* const world;
 	};
 }

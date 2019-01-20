@@ -13,7 +13,7 @@ namespace Editor
 	public:
 		SelectorElement(
 			const GridView* const view,
-			const World_N* const world)
+			const World* const world)
 			:
 			view(view),
 			world(world)
@@ -58,17 +58,17 @@ namespace Editor
 				));
 
 
-			output->area->offset = sf::Vector2f(
-				c_position1.x - fmod(c_position1.x, (float)view->getGridSize()) - (c_position1.x < 0 ? (float)view->getGridSize() : 0),
-				c_position1.y - fmod(c_position1.y, (float)view->getGridSize()) - (c_position1.y < 0 ? (float)view->getGridSize() : 0)
+			output->area->offset = VectorTilePosition(
+				(TilePosition) (c_position1.x - fmod(c_position1.x, (float)view->getGridSize()) - (c_position1.x < 0 ? (float)view->getGridSize() : 0)),
+				(TilePosition) (c_position1.y - fmod(c_position1.y, (float)view->getGridSize()) - (c_position1.y < 0 ? (float)view->getGridSize() : 0))
 			);
 
-			const sf::Vector2f c_real_position2 = sf::Vector2f(
-				c_position2.x - fmod(c_position2.x, (float)view->getGridSize()) - (c_position2.x < 0 ? (float)view->getGridSize() : 0) + (float)view->getGridSize(),
-				c_position2.y - fmod(c_position2.y, (float)view->getGridSize()) - (c_position2.y < 0 ? (float)view->getGridSize() : 0) + (float)view->getGridSize()
+			const VectorTilePosition c_real_position2 = VectorTilePosition(
+				(TilePosition) (c_position2.x - fmod(c_position2.x, (float)view->getGridSize()) - (c_position2.x < 0 ? (float)view->getGridSize() : 0) + (float)view->getGridSize()),
+				(TilePosition) (c_position2.y - fmod(c_position2.y, (float)view->getGridSize()) - (c_position2.y < 0 ? (float)view->getGridSize() : 0) + (float)view->getGridSize())
 			);
 
-			output->area->size = c_real_position2 - output->area->offset;
+			output->area->size = VectorTileSize( c_real_position2 - output->area->offset );
 		}
 
 		void determineType() // & load tile tiles
@@ -84,7 +84,7 @@ namespace Editor
 				2.  Add new tiles to existent tiles
 				
 			*/
-			for (_N_TileBase* tile : world->getTiles())
+			for (TileBase* tile : world->getTiles())
 				if (tile->getShape()->getPosition().x + tile->getShape()->getSize().x > input->offset.x &&
 					tile->getShape()->getPosition().y + tile->getShape()->getSize().y > input->offset.y &&
 
@@ -153,6 +153,6 @@ namespace Editor
 		}
 
 		const GridView* const view;
-		const World_N* const world;
+		const World* const world;
 	};
 }

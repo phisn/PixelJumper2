@@ -25,7 +25,7 @@ namespace
 		{
 			Log::Warning(
 				L"Unable to open file ('"
-				+ filename.filename.wstring()
+				+ filename.filename().wstring()
 				+ L'\')'
 			);
 
@@ -42,7 +42,7 @@ namespace
 		{
 			Log::Warning(
 				L"Invalid file size ('"
-				+ filename.filename.wstring()
+				+ filename.filename().wstring()
 				+ L'\')'
 			);
 
@@ -53,14 +53,14 @@ namespace
 		{
 			Log::Warning(
 				L"Invalid file format ('"
-				+ filename.filename.wstring()
+				+ filename.filename().wstring()
 				+ L'\')'
 			);
 
 			return false;
 		}
 
-		Resource::FileDefinition* resource = &mappedResources[type][filename.filename.wstring()];
+		Resource::FileDefinition* resource = &mappedResources[type][filename.filename().wstring()];
 		// resource->file = std::move(file); | do not store handle
 		resource->path = filename.wstring();
 		resource->size = std::filesystem::file_size( resource->path );
@@ -72,7 +72,7 @@ namespace
 		const Resource::ResourceType type,
 		const std::wstring name)
 	{
-		mapResource(
+		return mapResource(
 			type, 
 			Resource::Interface::GetDefinition(type)->path + name
 		);
@@ -112,7 +112,7 @@ namespace
 		{
 			Log::Error(
 				L"Failed to map files, Error Code: "
-				+ std::to_wstring(error.code)
+				+ std::to_wstring(error.code().value())
 			);
 
 			return false;
@@ -149,9 +149,18 @@ namespace Resource
 	{
 		Log::Section section(L"Initializing InterfaceResource");
 
-		return mapAllResources();
+		for (int i = 0; i < (int)Resource::ResourceType::_Length; ++i)
+		{
+			const std::filesystem::path& path = GetDefinition((Resource::ResourceType) i)->path;
 
-		// ...
+			if (!std::filesystem::exists(path))
+			{
+				Log::Warning(L"Path '" + path.wstring() + L"' did not exists. Creating new one");
+				std::filesystem::create_directory(path);
+			}
+		}
+
+		return mapAllResources();
 	}
 
 	bool Interface::RemapAllFiles()

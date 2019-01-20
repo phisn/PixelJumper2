@@ -3,7 +3,7 @@
 #include <Client/source/logger/Logger.h>
 #include <Client/source/resource/ResourceInterface.h>
 
-#include <fstream>
+#include <filesystem>
 
 namespace Device
 {
@@ -17,7 +17,7 @@ namespace Device
 
 		const wchar_t** translations = RESOURCE::GetTranslations();
 		for (int i = 0; i < RESOURCE::GetTranslationCount(); ++i)
-			if (std::wifstream(translations[i]).fail())
+			if (!std::filesystem::exists(translations[i]))
 			{
 				section.error(
 					std::wstring(L"File '")

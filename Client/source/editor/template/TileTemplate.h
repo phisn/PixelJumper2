@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/Common.h>
 #include <Client/source/editor/tile/TileBase.h>
 
 #include <SFML/Graphics.hpp>
@@ -20,8 +21,8 @@ namespace Editor
 		{
 		}
 
-		virtual _N_TileBase* create(
-			sf::Vector2f position) = 0;
+		virtual TileBase* create(
+			const VectorTilePosition position) = 0;
 
 		const sf::Color color;
 		const std::wstring name;

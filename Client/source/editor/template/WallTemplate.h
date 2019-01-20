@@ -23,15 +23,10 @@ namespace Editor
 		// onOpenContext ...
 
 		// ex. can be saved and shon in context menu (portal binding)
-		_N_TileBase* create(
-			sf::Vector2f position) override
+		TileBase* create(
+			VectorTilePosition position) override
 		{
-			TileSettings settings;
-
-			settings.color = color;
-			settings.position = position;
-
-			return new Wall(settings);
+			return new Tile::Wall(position);
 		}
 	};
 }

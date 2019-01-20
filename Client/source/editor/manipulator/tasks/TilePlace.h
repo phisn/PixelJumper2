@@ -11,19 +11,36 @@ namespace Editor
 		public Task
 	{
 	public:
-		bool execute() override
+		bool execute(World* const world) override
 		{
 			const Cache::Output* const cache = Manipulator::getCache()->readOutput();
 
 			if (cache->selection.type == SelectionCache::Output::Type::Area)
 			{
+				for (TilePosition x = cache->selection.area->offset.x / 20
+					; x < cache->selection.area->offset.x / 20
+					+ cache->selection.area->size.x / 20
+					; ++x)
+					for (TilePosition y = cache->selection.area->offset.y / 20
+						; y < cache->selection.area->offset.y / 20
+						+ cache->selection.area->size.y / 20
+						; ++y)
+					{
+						world->setTileSafe(
+							cache->tile.tile->create( VectorTilePosition(x, y) )
+						);
+					}
 
+				return true;
 			}
-			else
+			else // Type::Tile
 			{
-				for (_N_TileBase* tile : cache->selection.tile->tiles)
+				for (TileBase* const tile : cache->selection.tile->tiles)
 				{
+					world->replaceTileTemplate(tile, cache->tile.tile);
 				}
+
+				return true;
 			}
 		}
 
@@ -50,5 +67,5 @@ namespace Editor
 
 
 		} oldContent;
-	}
+	};
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/Common.h>
 #include <Client/source/editor/tile/TileBase.h>
 
 #include <SFML/Graphics.hpp>
@@ -20,14 +21,13 @@ namespace Editor
 		struct Area
 		{
 			// marking area (boxes)
-			sf::Vector2f
-				size,
-				offset;
+			VectorTileSize size;
+			VectorTilePosition offset;
 		};
 
 		struct Tile
 		{
-			std::vector<::Editor::TileBase*> tiles;
+			std::vector<TileBase*> tiles;
 		};
 
 		struct Output

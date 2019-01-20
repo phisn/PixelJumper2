@@ -14,6 +14,7 @@
 
 namespace Scene
 {
+	/*
 	class GameBase
 		:
 		public MainBase
@@ -105,4 +106,5 @@ namespace Scene
 	private:
 		bool isHidden = false;
 	};
+	*/
 }

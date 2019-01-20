@@ -24,7 +24,7 @@ namespace Editor
 	{
 	public:
 		GridMenu(
-			World_N* const world)
+			World* const world)
 			:
 			world(world),
 			gridView(getView()),
@@ -119,7 +119,7 @@ namespace Editor
 
 			gridView.draw();
 
-			for (_N_TileBase* const tile : world->getTiles())
+			for (TileBase* const tile : world->getTiles())
 			{
 				DEVICE::Interface::GetScreen()->onDraw(
 					tile->getShape()
@@ -139,7 +139,7 @@ namespace Editor
 		}
 
 	private:
-		World_N* const world;
+		World* const world;
 
 		GridView gridView;
 		Selector selector;

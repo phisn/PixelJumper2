@@ -7,6 +7,7 @@
 
 namespace Scene
 {
+	/*
 	struct LocalGameSettings
 	{
 		Game::WorldSettings* world;
@@ -133,4 +134,5 @@ namespace Scene
 
 		LocalGameSettings* settings;
 	};
+	*/
 }

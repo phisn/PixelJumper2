@@ -72,10 +72,11 @@ namespace Log
 		std::vector<SectionHost> sections;
 		std::vector<_Log> logs;
 
+		mutable decltype(sections)::const_iterator sectionIterator;
+
 		static struct LoggingContext
 		{
 			const Output* currentOutput;
-			decltype(sections)::const_iterator sectionIterator;
 			std::wstring currentPrefix;
 
 		} loggingContext;

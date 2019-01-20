@@ -66,24 +66,51 @@ namespace Log
 	void Error(
 		const std::wstring message)
 	{
-		SectionHost::getCurrent()->addLog(
-			Level::Error,
-			message);
+		SectionHost* host = SectionHost::getCurrent();
+
+		if (host)
+		{
+			host->addLog(
+				Level::Error,
+				message);
+		}
+		else
+		{
+			Independent::Error(message);
+		}
 	}
 	
 	void Information(
 		const std::wstring message)
 	{
-		SectionHost::getCurrent()->addLog(
-			Level::Information,
-			message);
+		SectionHost* host = SectionHost::getCurrent();
+
+		if (host)
+		{
+			host->addLog(
+				Level::Information,
+				message);
+		}
+		else
+		{
+			Independent::Information(message);
+		}
 	}
 
 	void Warning(
 		const std::wstring message)
 	{
-		SectionHost::getCurrent()->addLog(
-			Level::Warning,
-			message);
+		SectionHost* host = SectionHost::getCurrent();
+
+		if (host)
+		{
+			host->addLog(
+				Level::Warning,
+				message);
+		}
+		else
+		{
+			Independent::Warning(message);
+		}
 	}
 }

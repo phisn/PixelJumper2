@@ -87,7 +87,7 @@ namespace Resource
 			WritePipe* const pipe) override
 		{
 			Header.id = Content->getTileId();
-			Header.contentSize = Content->getSize();
+			Header.contentSize = (sf::Uint16) Content->getSize();
 
 			if ( !writeHeader(pipe) )
 			{

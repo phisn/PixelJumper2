@@ -14,6 +14,7 @@
 
 namespace Game
 {
+	/*
 	class World
 	{
 	public:
@@ -22,8 +23,8 @@ namespace Game
 			delete settings;
 		}
 
-		bool initialize(
-			_In_ WorldSettings* settings)
+		bool initialize()
+			//_In_ WorldSettings* settings)
 		{
 			this->settings = settings;
 
@@ -160,5 +161,5 @@ namespace Game
 
 		std::vector<Tile::Timed*> timed;
 		std::vector<Tile::Collidable*> collidable;
-	};
+	};*/
 }

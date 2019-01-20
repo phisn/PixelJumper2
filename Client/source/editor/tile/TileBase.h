@@ -7,23 +7,25 @@
 
 #include <Client/source/resource/TileResource.h>
 
+#include <Client/source/Common.h>
+
 namespace Editor
 {
 	class TileBase
 	{
-		const sf::Vector2f size =
+		const VectorTileSize size =
 		{
-			1.f, 1.f
+			1, 1
 		};
 
 	public:
 		TileBase(
 			const sf::Color color,
-			const sf::Vector2f position)
+			const VectorTilePosition position)
 		{
 			shape.setFillColor(color);
-			shape.setPosition(position);
-			shape.setSize(size);
+			setPosition(position);
+			shape.setSize( sf::Vector2f(size.x * 20, size.y * 20) );
 		}
 
 		virtual bool equals(
@@ -32,9 +34,14 @@ namespace Editor
 			return true; // id == tile->id;
 		}
 
-		sf::Vector2u getPosition() const
+		void setPosition(const VectorTilePosition position)
 		{
-			return sf::Vector2u( shape.getPosition() );
+			shape.setPosition( sf::Vector2f(position.x * 20, position.y * 20) );
+		}
+
+		VectorTilePosition getPosition() const
+		{
+			return VectorTilePosition( shape.getPosition().x / 20, shape.getPosition().y / 20 );
 		}
 
 		const sf::RectangleShape* getShape() const
@@ -43,8 +50,8 @@ namespace Editor
 		}
 
 		virtual Resource::TileBase* create(
-			const sf::Vector2u size,
-			const sf::Vector2u position) const = 0;
+			const Resource::VectorTileSize size,
+			const Resource::VectorTilePosition position) const = 0;
 	private:
 		sf::RectangleShape shape;
 	};

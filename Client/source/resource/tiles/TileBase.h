@@ -14,7 +14,7 @@ namespace Resource
 	public:
 		TileBase(
 			const Game::Tile::Id id,
-			const sf::Uint64 size)
+			const sf::Uint16 size)
 			:
 			id(id),
 			size(size)
@@ -26,13 +26,13 @@ namespace Resource
 			return id;
 		}
 
-		sf::Uint64 getSize() const
+		sf::Uint16 getSize() const
 		{
 			return size;
 		}
 
 	private:
 		const Game::Tile::Id id;
-		const sf::Uint64 size;
+		const sf::Uint16 size;
 	};
 }

@@ -1,912 +1,524 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen World.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\World.cpp, source\game\World.cpp.
-C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen TileBase.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\TileBase.cpp, source\game\tiles\TileBase.cpp.
-C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Mehrere Dateien mit dem Namen Wall.cpp führen zu Ausgaben am selben Speicherort. Dadurch kann ein falsches Buildergebnis entstehen. Die betroffenen Dateien sind source\editor\tile\Wall.cpp, source\game\tiles\Wall.cpp, source\resource\tiles\Wall.cpp.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Two or more files with the name of World.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are source\editor\World.cpp, source\game\World.cpp.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Two or more files with the name of TileBase.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are source\editor\tile\TileBase.cpp, source\game\tiles\TileBase.cpp.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Two or more files with the name of Wall.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are source\editor\tile\Wall.cpp, source\game\tiles\Wall.cpp, source\resource\tiles\Wall.cpp.
   DeviceInterface.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(80): error C2504: "BaseResource": Basisklasse undefiniert
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2039: "ByteWriter": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2061: Syntaxfehler: Bezeichner "ByteWriter"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2039: "ByteReader": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2061: Syntaxfehler: Bezeichner "ByteReader"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(87): error C3668: "Game::Tile::WallResource::writeToBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(95): error C3668: "Game::Tile::WallResource::readFromBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(107): error C3668: "Game::Tile::WallResource::loadFromTile": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(121): error C3668: "Game::Tile::WallResource::getSize": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(126): error C3668: "Game::Tile::WallResource::create": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(84): error C2660: "Game::Tile::Manager::registerTileResource": Funktion akzeptiert keine 2 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(25): note: Siehe Deklaration von "Game::Tile::Manager::registerTileResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(90): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(98): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(39): error C2039: "_N_World": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(13): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(39): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(39): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(40): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(43): error C2039: "_N_World": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(13): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(43): error C2061: Syntaxfehler: Bezeichner "_N_World"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(45): error C2039: "_N_World": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(13): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(45): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(45): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(45): error C2086: "int Game::WorldManager::_N_World": Neudefinition
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(39): note: Siehe Deklaration von "Game::WorldManager::_N_World"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(46): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(48): error C2039: "_N_World": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.h(13): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\worldmanager.h(48): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(82): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(90): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(14): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(16): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(20): error C2789: Editor::SelectorElement::World_N: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): note: Siehe Deklaration von "Editor::SelectorElement::World_N"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2614: "Editor::SelectorElement": Unzulässige Elementinitialisierung: "world" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ":"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(88): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(89): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(91): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(92): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(102): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(25): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(29): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(26): error C2061: Syntaxfehler: Bezeichner "World_N"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(142): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(142): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(142): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(29): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(32): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(29): error C2614: "Editor::GridMenu": Unzulässige Elementinitialisierung: "world" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(122): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(122): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(123): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(125): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(26): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(26): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(28): error C2334: Unerwartete(s) Token vor "{"; sichtbarer Funktionstext wird übersprungen
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(80): error C2039: "World_N": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenu.h(10): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(80): error C4596: "World_N": Unzulässiger vollständig angegebener Name in Elementdeklaration
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(80): error C3646: "world": Unbekannter Überschreibungsspezifizierer
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(80): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(50): error C2039: "initialize": Ist kein Element von "Editor::Manipulator"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(14): note: Siehe Deklaration von "Editor::Manipulator"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(52): error C2065: "world": nichtdeklarierter Bezeichner
-  InputDevice.cpp
-  ResourceDevice.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(112): warning C4244: "+=": Konvertierung von "const sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(150): error C2059: Syntaxfehler: ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(186): error C2561: "Resource::FileReadPipe::readContent": Funktion muss einen Wert zurückgeben
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(163): note: Siehe Deklaration von "Resource::FileReadPipe::readContent"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(198): warning C4244: "return": Konvertierung von "sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(214): warning C4244: "return": Konvertierung von "const sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(245): warning C4244: "return": Konvertierung von "sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(258): warning C4244: "-=": Konvertierung von "const sf::Uint64" in "int", möglicher Datenverlust
-  GridMenu.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(82): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(90): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(14): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(16): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(20): error C2789: Editor::SelectorElement::World_N: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): note: Siehe Deklaration von "Editor::SelectorElement::World_N"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2614: "Editor::SelectorElement": Unzulässige Elementinitialisierung: "world" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ":"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(88): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(89): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(91): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(92): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(102): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(25): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(29): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(26): error C2061: Syntaxfehler: Bezeichner "World_N"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(142): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(142): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(142): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(29): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(32): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(29): error C2614: "Editor::GridMenu": Unzulässige Elementinitialisierung: "world" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(122): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(122): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(123): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(125): error C2065: "tile": nichtdeklarierter Bezeichner
-  GridView.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-  SelectorComponent.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(82): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(90): error C2065: "tile": nichtdeklarierter Bezeichner
-  Selector.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(82): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(90): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(14): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(16): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(20): error C2789: Editor::SelectorElement::World_N: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): note: Siehe Deklaration von "Editor::SelectorElement::World_N"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2614: "Editor::SelectorElement": Unzulässige Elementinitialisierung: "world" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ":"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(88): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(89): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(91): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(92): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(102): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(25): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(29): error C2065: "world": nichtdeklarierter Bezeichner
-  SelectorElement.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(14): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(16): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(20): error C2789: Editor::SelectorElement::World_N: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): note: Siehe Deklaration von "Editor::SelectorElement::World_N"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2614: "Editor::SelectorElement": Unzulässige Elementinitialisierung: "world" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ":"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(88): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(89): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(91): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(92): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(102): error C2065: "tile": nichtdeklarierter Bezeichner
-  Cache.cpp
-  CacheManager.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-  Component.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-  Element.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-  Executor.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(119): error C2039: "WorldSettings": Ist kein Element von "Game"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(17): note: Siehe Deklaration von "Game"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(119): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(119): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(120): error C2334: Unerwartete(s) Token vor "{"; sichtbarer Funktionstext wird übersprungen
-  Manipulator.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(119): error C2039: "WorldSettings": Ist kein Element von "Game"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(17): note: Siehe Deklaration von "Game"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(119): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(119): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(120): error C2334: Unerwartete(s) Token vor "{"; sichtbarer Funktionstext wird übersprungen
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.cpp(16): error C2039: "initialize": Ist kein Element von "Editor::Manipulator"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(14): note: Siehe Deklaration von "Editor::Manipulator"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.cpp(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.cpp(17): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.cpp(18): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.cpp(18): error C2447: "{": Funktionsheader fehlt - Parameterliste im alten Stil?
-  TilePlace.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(119): error C2039: "WorldSettings": Ist kein Element von "Game"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(17): note: Siehe Deklaration von "Game"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(119): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(119): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\executor.h(120): error C2334: Unerwartete(s) Token vor "{"; sichtbarer Funktionstext wird übersprungen
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\tasks\tileplace.h(14): error C3668: "Editor::TilePlace::execute": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\tasks\tileplace.h(54): error C2059: Syntaxfehler: "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\tasks\tileplace.h(54): error C2143: Syntaxfehler: Es fehlt ";" vor "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\tasks\tileplace.h(24): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\tasks\tileplace.h(24): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\tasks\tileplace.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor ":"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\tasks\tileplace.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor ")"
-  TileTemplate.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-  WallTemplate.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(80): error C2504: "BaseResource": Basisklasse undefiniert
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2061: Syntaxfehler: Bezeichner "ByteWriter"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2061: Syntaxfehler: Bezeichner "ByteReader"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(87): error C3668: "Game::Tile::WallResource::writeToBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(95): error C3668: "Game::Tile::WallResource::readFromBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(107): error C3668: "Game::Tile::WallResource::loadFromTile": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(121): error C3668: "Game::Tile::WallResource::getSize": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(126): error C3668: "Game::Tile::WallResource::create": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(84): error C2660: "Game::Tile::Manager::registerTileResource": Funktion akzeptiert keine 2 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(25): note: Siehe Deklaration von "Game::Tile::Manager::registerTileResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(90): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(98): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(26): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(26): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(28): error C2334: Unerwartete(s) Token vor "{"; sichtbarer Funktionstext wird übersprungen
-  TileComponent.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-  TileContainer.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-  TileMenu.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(80): error C2504: "BaseResource": Basisklasse undefiniert
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2061: Syntaxfehler: Bezeichner "ByteWriter"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2061: Syntaxfehler: Bezeichner "ByteReader"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(87): error C3668: "Game::Tile::WallResource::writeToBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(95): error C3668: "Game::Tile::WallResource::readFromBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(107): error C3668: "Game::Tile::WallResource::loadFromTile": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(121): error C3668: "Game::Tile::WallResource::getSize": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(126): error C3668: "Game::Tile::WallResource::create": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(84): error C2660: "Game::Tile::Manager::registerTileResource": Funktion akzeptiert keine 2 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(25): note: Siehe Deklaration von "Game::Tile::Manager::registerTileResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(90): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(98): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(26): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(26): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(28): error C2334: Unerwartete(s) Token vor "{"; sichtbarer Funktionstext wird übersprungen
-  Code wird generiert...
-  Kompilieren...
-  TileMenuButton.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-  World.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-  TileBase.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-  Wall.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(80): error C2504: "BaseResource": Basisklasse undefiniert
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2061: Syntaxfehler: Bezeichner "ByteWriter"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2061: Syntaxfehler: Bezeichner "ByteReader"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(87): error C3668: "Game::Tile::WallResource::writeToBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(95): error C3668: "Game::Tile::WallResource::readFromBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(107): error C3668: "Game::Tile::WallResource::loadFromTile": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(121): error C3668: "Game::Tile::WallResource::getSize": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(126): error C3668: "Game::Tile::WallResource::create": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(84): error C2660: "Game::Tile::Manager::registerTileResource": Funktion akzeptiert keine 2 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(25): note: Siehe Deklaration von "Game::Tile::Manager::registerTileResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(90): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(98): error C2065: "buffer": nichtdeklarierter Bezeichner
-  CollidableTile.cpp
-  TileBase.cpp
-  TouchableTile.cpp
-  Wall.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(80): error C2504: "BaseResource": Basisklasse undefiniert
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2061: Syntaxfehler: Bezeichner "ByteWriter"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2061: Syntaxfehler: Bezeichner "ByteReader"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(87): error C3668: "Game::Tile::WallResource::writeToBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(95): error C3668: "Game::Tile::WallResource::readFromBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(107): error C3668: "Game::Tile::WallResource::loadFromTile": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(121): error C3668: "Game::Tile::WallResource::getSize": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(126): error C3668: "Game::Tile::WallResource::create": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(84): error C2660: "Game::Tile::Manager::registerTileResource": Funktion akzeptiert keine 2 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(25): note: Siehe Deklaration von "Game::Tile::Manager::registerTileResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(90): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(98): error C2065: "buffer": nichtdeklarierter Bezeichner
-  World.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(26): error C2061: Syntaxfehler: Bezeichner "WorldSettings"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(103): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(103): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(103): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(22): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(22): error C2541: "delete": Objekte, die keine Zeiger sind, können nicht gelöscht werden
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(28): error C2039: "settings": Ist kein Element von "Game::World"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(17): note: Siehe Deklaration von "Game::World"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(28): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(36): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(35): error C2661: "sf::Image::create": Keine überladene Funktion akzeptiert 1 Argumente
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(39): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(41): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(44): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(47): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(50): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(53): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(56): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): error C2660: "sf::Image::setPixel": Funktion akzeptiert keine 1 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\image.hpp(215): note: Siehe Deklaration von "sf::Image::setPixel"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(69): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(94): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(96): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(7): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(14): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(15): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(17): error C2065: "cold": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(17): error C2065: "root": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(22): error C2065: "root": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(22): error C2789: r_near_x: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(22): note: Siehe Deklaration von "r_near_x"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(23): error C2065: "root": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(23): error C2789: r_far_x: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(23): note: Siehe Deklaration von "r_far_x"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(25): error C2065: "cold": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(25): error C2789: c_near_x: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(25): note: Siehe Deklaration von "c_near_x"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(26): error C2065: "cold": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(26): error C2789: c_far_x: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(26): note: Siehe Deklaration von "c_far_x"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(28): error C2065: "root": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(28): error C2789: r_near_y: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(28): note: Siehe Deklaration von "r_near_y"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(29): error C2065: "root": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(29): error C2789: r_far_y: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(29): note: Siehe Deklaration von "r_far_y"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(31): error C2065: "cold": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(31): error C2789: c_near_y: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(31): note: Siehe Deklaration von "c_near_y"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(32): error C2065: "cold": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(32): error C2789: c_far_y: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.cpp(32): note: Siehe Deklaration von "c_far_y"
-  FilePipe.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(112): warning C4244: "+=": Konvertierung von "const sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(150): error C2059: Syntaxfehler: ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(186): error C2561: "Resource::FileReadPipe::readContent": Funktion muss einen Wert zurückgeben
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(163): note: Siehe Deklaration von "Resource::FileReadPipe::readContent"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(198): warning C4244: "return": Konvertierung von "sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(214): warning C4244: "return": Konvertierung von "const sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(245): warning C4244: "return": Konvertierung von "sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(258): warning C4244: "-=": Konvertierung von "const sf::Uint64" in "int", möglicher Datenverlust
-  PipeBase.cpp
-  ResourceBase.cpp
-  ResourceInterface.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(112): warning C4244: "+=": Konvertierung von "const sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(150): error C2059: Syntaxfehler: ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(186): error C2561: "Resource::FileReadPipe::readContent": Funktion muss einen Wert zurückgeben
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(163): note: Siehe Deklaration von "Resource::FileReadPipe::readContent"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(198): warning C4244: "return": Konvertierung von "sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(214): warning C4244: "return": Konvertierung von "const sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(245): warning C4244: "return": Konvertierung von "sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\pipes\filepipe.h(258): warning C4244: "-=": Konvertierung von "const sf::Uint64" in "int", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(27): warning C4066: Mit Ausnahme des ersten Zeichens werden die Zeichen in einer "breiten" Zeichenkonstante ignoriert
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(44): warning C4066: Mit Ausnahme des ersten Zeichens werden die Zeichen in einer "breiten" Zeichenkonstante ignoriert
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(55): warning C4066: Mit Ausnahme des ersten Zeichens werden die Zeichen in einer "breiten" Zeichenkonstante ignoriert
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(61): error C2039: "MappedResource": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.h(17): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(61): error C2065: "MappedResource": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(61): error C2065: "resource": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(62): error C2065: "resource": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(63): error C2065: "resource": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(64): error C2065: "resource": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(87): error C2065: "resourceDefinitions": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(113): error C3867: "std::system_error::code": Keine Standardsyntax; "&" zum Erstellen eines Verweises auf das Member verwenden
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(165): warning C4305: "return": Verkürzung von "bool (__cdecl *)(const Resource::ResourceType)" in "bool"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(203): error C2440: "Initialisierung": "_Ty2" kann nicht in "Resource::FileReadPipe" konvertiert werden
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
-              _Ty2=Resource::FileDefinition
+              T=float
           ]
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(203): note: Kein benutzerdefinierter Konvertierungsoperator verfügbar, der diese Konvertierung durchführen kann, oder der Operator kann nicht aufgerufen werden
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(211): error C2059: Syntaxfehler: "}"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(213): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(213): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(214): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(214): error C2146: Syntaxfehler: Fehlendes ")" vor Bezeichner "resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(214): error C3646: "resource": Unbekannter Überschreibungsspezifizierer
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(214): error C2059: Syntaxfehler: ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(215): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(215): error C2244: "GetDefinition": Keine Übereinstimmung für Funktionsdefinition mit vorhandener Deklaration gefunden
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(213): note: Siehe Deklaration von "GetDefinition"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(215): error C2059: Syntaxfehler: "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(215): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(215): error C2447: "{": Funktionsheader fehlt - Parameterliste im alten Stil?
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(220): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(220): error C2146: Syntaxfehler: Fehlendes ")" vor Bezeichner "resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(220): error C3646: "resource": Unbekannter Überschreibungsspezifizierer
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(220): error C2059: Syntaxfehler: ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(221): error C2244: "Translate": Keine Übereinstimmung für Funktionsdefinition mit vorhandener Deklaration gefunden
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourceinterface.cpp(219): note: Siehe Deklaration von "Translate"
-  TileFactory.cpp
-  TileResource.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-  Wall.cpp
-  WorldResource.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.cpp(14): warning C4267: "/=": Konvertierung von "size_t" nach "sf::Uint32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.cpp(15): warning C4267: "-=": Konvertierung von "size_t" nach "sf::Uint32", Datenverlust möglich
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\worldresource.cpp(81): warning C4267: "=": Konvertierung von "size_t" nach "sf::Uint16", Datenverlust möglich
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(34): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(33): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(41): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(40): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+  World.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  GridMenu.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  Selector.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  SelectorComponent.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  SelectorElement.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  Executor.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  Manipulator.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  CacheManager.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  TilePlace.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  TileComponent.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  TileContainer.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  TileMenu.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+  TileMenuButton.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
   EditorScene.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\resourcebase.h(11): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\resource\tileresource.h(90): warning C4244: "=": Konvertierung von "sf::Uint64" in "sf::Uint16", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2039: "_N_TileBase": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(9): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\cache\selectioncache.h(30): error C2059: Syntaxfehler: ">"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C2433: "Editor::TileTemplate::_N_TileBase": "virtual" bei der Deklaration von Daten nicht zulässig
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(23): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\tiletemplate.h(24): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2065: "World_N": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(17): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(81): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(82): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorcomponent.h(90): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(14): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(16): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(20): error C2789: Editor::SelectorElement::World_N: Ein Objekt eines durch eine Konstante qualifizierten Typs muss initialisiert werden.
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(156): note: Siehe Deklaration von "Editor::SelectorElement::World_N"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(19): error C2614: "Editor::SelectorElement": Unzulässige Elementinitialisierung: "world" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ":"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(87): error C2143: Syntaxfehler: Es fehlt ";" vor ")"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(88): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(89): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(91): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(92): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selectorelement.h(102): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(25): error C2143: Syntaxfehler: Es fehlt "," vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\selector.h(29): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(26): error C2061: Syntaxfehler: Bezeichner "World_N"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(142): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(142): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(142): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(29): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(32): error C2065: "world": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(29): error C2614: "Editor::GridMenu": Unzulässige Elementinitialisierung: "world" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(122): error C2065: "_N_TileBase": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(122): error C2059: Syntaxfehler: "const"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(123): error C2143: Syntaxfehler: Es fehlt ";" vor "{"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\grid\gridmenu.h(125): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(80): error C2504: "BaseResource": Basisklasse undefiniert
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2061: Syntaxfehler: Bezeichner "ByteWriter"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2653: "RESOURCE": Keine Klasse oder Namespace
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2061: Syntaxfehler: Bezeichner "ByteReader"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(87): error C3668: "Game::Tile::WallResource::writeToBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(95): error C3668: "Game::Tile::WallResource::readFromBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(107): error C3668: "Game::Tile::WallResource::loadFromTile": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(121): error C3668: "Game::Tile::WallResource::getSize": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(126): error C3668: "Game::Tile::WallResource::create": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(84): error C2660: "Game::Tile::Manager::registerTileResource": Funktion akzeptiert keine 2 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(25): note: Siehe Deklaration von "Game::Tile::Manager::registerTileResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(90): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(98): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(26): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(26): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\editor\template\walltemplate.h(28): error C2334: Unerwartete(s) Token vor "{"; sichtbarer Funktionstext wird übersprungen
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(34): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(33): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(41): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\menubasescene.h(40): warning C4244: "Argument": Konvertierung von "const int" in "const float", möglicher Datenverlust
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(80): error C2039: "World_N": Ist kein Element von "Editor"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\tilemenu\tilemenu.h(10): note: Siehe Deklaration von "Editor"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(80): error C4596: "World_N": Unzulässiger vollständig angegebener Name in Elementdeklaration
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(80): error C3646: "world": Unbekannter Überschreibungsspezifizierer
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(80): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(50): error C2039: "initialize": Ist kein Element von "Editor::Manipulator"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\editor\manipulator\manipulator.h(14): note: Siehe Deklaration von "Editor::Manipulator"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\editorscene.h(52): error C2065: "world": nichtdeklarierter Bezeichner
-  GameBaseScene.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(26): error C2061: Syntaxfehler: Bezeichner "WorldSettings"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(103): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(103): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(103): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(22): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(22): error C2541: "delete": Objekte, die keine Zeiger sind, können nicht gelöscht werden
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(28): error C2039: "settings": Ist kein Element von "Game::World"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(17): note: Siehe Deklaration von "Game::World"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(28): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(36): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(35): error C2661: "sf::Image::create": Keine überladene Funktion akzeptiert 1 Argumente
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(39): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(41): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(44): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(47): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(50): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(53): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(56): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): error C2660: "sf::Image::setPixel": Funktion akzeptiert keine 1 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\image.hpp(215): note: Siehe Deklaration von "sf::Image::setPixel"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(69): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(94): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(96): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(23): error C2039: "WorldSettings": Ist kein Element von "Game"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(15): note: Siehe Deklaration von "Game"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(22): error C2061: Syntaxfehler: Bezeichner "WorldSettings"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(101): error C2039: "WorldSettings": Ist kein Element von "Game"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(15): note: Siehe Deklaration von "Game"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(101): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(101): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(101): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(25): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(25): error C2614: "Scene::GameBase": Unzulässige Elementinitialisierung: "settings" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(34): error C2065: "settings": nichtdeklarierter Bezeichner
-  LocalGameScene.cpp
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(26): error C2061: Syntaxfehler: Bezeichner "WorldSettings"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(103): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(103): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(103): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(22): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(22): error C2541: "delete": Objekte, die keine Zeiger sind, können nicht gelöscht werden
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(28): error C2039: "settings": Ist kein Element von "Game::World"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(17): note: Siehe Deklaration von "Game::World"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(28): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(36): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(37): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(35): error C2661: "sf::Image::create": Keine überladene Funktion akzeptiert 1 Argumente
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(39): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(41): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(44): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(47): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(50): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(53): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(56): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(57): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(58): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(55): error C2660: "sf::Image::setPixel": Funktion akzeptiert keine 1 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\lib\include\sfml\graphics\image.hpp(215): note: Siehe Deklaration von "sf::Image::setPixel"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(69): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(94): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(96): error C2065: "tile": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(23): error C2039: "WorldSettings": Ist kein Element von "Game"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(15): note: Siehe Deklaration von "Game"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(22): error C2061: Syntaxfehler: Bezeichner "WorldSettings"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(101): error C2039: "WorldSettings": Ist kein Element von "Game"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\world.h(15): note: Siehe Deklaration von "Game"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(101): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(101): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(101): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(25): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(25): error C2614: "Scene::GameBase": Unzulässige Elementinitialisierung: "settings" ist weder Basis noch Element
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\gamebasescene.h(34): error C2065: "settings": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2039: "TileBase": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\staticresource.h(12): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(24): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(27): error C2061: Syntaxfehler: Bezeichner "BaseResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(80): error C2504: "BaseResource": Basisklasse undefiniert
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2039: "ByteWriter": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\staticresource.h(12): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(88): error C2061: Syntaxfehler: Bezeichner "ByteWriter"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2039: "ByteReader": Ist kein Element von "Resource"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\resource\staticresource.h(12): note: Siehe Deklaration von "Resource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(96): error C2061: Syntaxfehler: Bezeichner "ByteReader"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(87): error C3668: "Game::Tile::WallResource::writeToBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(95): error C3668: "Game::Tile::WallResource::readFromBuffer": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(107): error C3668: "Game::Tile::WallResource::loadFromTile": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(121): error C3668: "Game::Tile::WallResource::getSize": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(126): error C3668: "Game::Tile::WallResource::create": Die Methode mit dem Überschreibungsspezifizierer "override" hat keine Basisklassenmethoden überschrieben.
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(84): error C2660: "Game::Tile::Manager::registerTileResource": Funktion akzeptiert keine 2 Argumente
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\tilemanager.h(25): note: Siehe Deklaration von "Game::Tile::Manager::registerTileResource"
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(90): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(98): error C2065: "buffer": nichtdeklarierter Bezeichner
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\localgamescene.h(12): error C2039: "WorldSettings": Ist kein Element von "Game"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\game\tiles\wall.h(8): note: Siehe Deklaration von "Game"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\localgamescene.h(12): error C2143: Syntaxfehler: Es fehlt ";" vor "*"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\localgamescene.h(12): error C4430: Fehlender Typspezifizierer - int wird angenommen. Hinweis: "default-int" wird von C++ nicht unterstützt.
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\localgamescene.h(12): error C2238: Unerwartete(s) Token vor ";"
-c:\users\phisn\source\repos\pixeljumper2\client\source\scene\localgamescene.h(26): error C2039: "world": Ist kein Element von "Scene::LocalGameSettings"
-  c:\users\phisn\source\repos\pixeljumper2\client\source\scene\localgamescene.h(10): note: Siehe Deklaration von "Scene::LocalGameSettings"
-  Code wird generiert...
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(39): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(171): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\World.h(172): warning C4244: '=': conversion from 'T' to 'sf::Uint8', possible loss of data
+          with
+          [
+              T=Resource::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(34): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(33): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(41): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(40): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+  Generating Code...
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\grid\SelectorElement.h(43): warning C4715: 'Editor::SelectorElement::manipulate': not all control paths return a value
+  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

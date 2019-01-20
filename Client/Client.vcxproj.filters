@@ -339,6 +339,9 @@
     <ClInclude Include="source\resource\TileFactory.h">
       <Filter>source\resource</Filter>
     </ClInclude>
+    <ClInclude Include="source\Common.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">

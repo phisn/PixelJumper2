@@ -20,11 +20,12 @@ namespace Game
 	{
 		namespace Manager
 		{
+			/*
 			_Ret_maybenull_
 			Resource::TileBase* getTileResource(const Id tileId);
 			void registerTileResource(
 				const Id tileId, 
-				BaseResource* resource);
+				BaseResource* resource);*/
 			void clearTileResources();
 
 			// Private ex. Easter Eggs or hidden tiles

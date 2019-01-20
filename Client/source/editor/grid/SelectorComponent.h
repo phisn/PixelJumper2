@@ -67,12 +67,12 @@ namespace Editor
 				}
 
 				selections.back().setSize(sf::Vector2f(
-					selection->area->size.x,
-					selection->area->size.y
+					(float) selection->area->size.x,
+					(float) selection->area->size.y
 				));
 				selections.back().setPosition(
-					selection->area->offset.x,
-					selection->area->offset.y);
+					(float) selection->area->offset.x,
+					(float) selection->area->offset.y);
 			}
 			else // == SelectionCache::Output::Type::Tile
 			{

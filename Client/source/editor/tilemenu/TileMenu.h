@@ -33,9 +33,32 @@ namespace Editor
 		{
 			useOnLogic = false;
 
+			static class QElement
+				:
+				public Element
+			{
+			public:
+				bool manipulate(
+					Cache::Input* const input,
+					Cache::Output* const output,
+
+					const Cache::Sector sector) override
+				{
+					if (sector == Cache::Sector::Tile)
+					{
+						output->tile.tile = input->tile.tile;
+					}
+
+					return true;
+				}
+			} element;
+
 			Manipulator::getCacheManager()->registerComponent(
 				Cache::Sector::Tile,
 				&component);
+			Manipulator::getCacheManager()->registerElement(
+				Cache::Sector::Tile,
+				&element);
 
 			setupTileTemplates();
 		}

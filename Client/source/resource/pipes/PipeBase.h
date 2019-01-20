@@ -85,7 +85,7 @@ namespace Resource
 				return false;
 			}
 
-			return writeContentSafe(str->c_str, size * sizeof(wchar_t));
+			return writeContentSafe((char * const) str->c_str(), size * sizeof(wchar_t));
 		}
 	};
 

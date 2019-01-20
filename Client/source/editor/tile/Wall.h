@@ -14,7 +14,7 @@ namespace Editor
 		{
 		public:
 			Wall(
-				const sf::Vector2f position)
+				const VectorTilePosition position)
 				:
 				TileBase(
 					TILE_WALL_COLOR,
@@ -23,8 +23,8 @@ namespace Editor
 			}
 
 			Resource::TileBase* create(
-				const sf::Vector2u size,
-				const sf::Vector2u position) const override 
+				const Resource::VectorTileSize size,
+				const Resource::VectorTilePosition position) const override 
 			{
 				return new Resource::WallTile();
 			}

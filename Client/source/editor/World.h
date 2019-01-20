@@ -10,9 +10,10 @@
 #include <Client/source/resource/WorldResource.h>
 
 #include <limits>
+#include <set>
 #include <vector>
 
-#define RTILE_TYPE_MAX(var) std::numeric_limits< decltype( decltype(Resource::Tile::Header):: ##var )>::max()
+#define RTILE_TYPE_MAX(var) std::numeric_limits< decltype( decltype(Resource::Tile::Header):: ## var )>::max()
 
 namespace Editor
 {
@@ -20,16 +21,76 @@ namespace Editor
 	{
 		struct GroupedTile
 		{
-			sf::Vector2u position;
-			sf::Vector2u size;
+			Resource::VectorTileSize size;
+			Resource::VectorTilePosition position;
 
 			Editor::TileBase* tile;
 		};
 
-		typedef std::vector<Editor::TileBase*> Tiles;
-		typedef std::vector<Tiles> TileGroups;
+		typedef std::set<Editor::TileBase*> Tiles;
+		typedef std::vector<
+			std::vector<Editor::TileBase*>
+		> TileGroups;
 		typedef std::vector<GroupedTile> GroupedTiles;
 	public:
+		void replaceTileTemplate(
+			TileBase* const tile,
+			TileTemplate* const tileTemplate)
+		{
+			VectorTilePosition position = tile->getPosition();
+
+			deleteTile(tile);
+			setTileUnsafe(
+				tileTemplate->create( tile->getPosition() )
+			); // do not replace with 'replaceTileUnsafe' ! order !
+		}
+
+		void replaceTileSafe(
+			TileBase* const tile,
+			TileBase* const newTile)
+		{
+			newTile->setPosition( tile->getPosition() );
+			replaceTileUnsafe(tile, newTile);
+		}
+
+		void replaceTileUnsafe(
+			TileBase* const tile,
+			TileBase* const newTile)
+		{
+			deleteTile(tile);
+			setTileUnsafe(newTile);
+		}
+
+		// slow
+		void setTileSafe(TileBase* const newTile)
+		{
+			for (TileBase* const tile : tiles)
+				if (newTile->getPosition() == tile->getPosition())
+				{
+					replaceTileUnsafe(tile, newTile);
+					return;
+				}
+
+			setTileUnsafe(newTile);
+		}
+
+		// fast
+		void setTileUnsafe(TileBase* const newTile)
+		{
+			tiles.insert(newTile);
+		}
+
+		void deleteTile(TileBase* const tile)
+		{
+			removeTile(tile);
+			delete tile;
+		}
+
+		void removeTile(TileBase* const tile)
+		{
+			tiles.erase(tile);
+		}
+
 		_Ret_maybenull_
 		Resource::World* convert(
 			const sf::Uint32 worldID,
@@ -66,6 +127,11 @@ namespace Editor
 			return world;
 		}
 
+		const std::set<TileBase*>& getTiles() const
+		{
+			return tiles;
+		}
+
 	private:
 		bool convertTiles(Resource::World* const world) const
 		{
@@ -98,7 +164,9 @@ namespace Editor
 				world->TileContainer.emplace_back();
 				Resource::Tile* resourceTile = &world->TileContainer.back();
 
-				resourceTile->Content = tile.tile->create(tile.size, tile.position);
+				resourceTile->Content = tile.tile->create(
+					tile.size, 
+					tile.position);
 
 				resourceTile->Header.width = tile.size.x;
 				resourceTile->Header.height = tile.size.y;
@@ -115,7 +183,7 @@ namespace Editor
 			for (TileBase* const tile : tiles)
 			{
 			NEXT_TILE:
-				for (Tiles& group : *tileGroups)
+				for (std::vector<TileBase*>& group : *tileGroups)
 					if ( group.back()->equals(tile) )
 					{
 						group.push_back(tile);
@@ -134,10 +202,10 @@ namespace Editor
 		{
 			int totalTileCount = 0; // for logging
 
-			for (const Tiles& tileGroup : *tileGroups)
+			for (const std::vector<TileBase*>& tileGroup : *tileGroups)
 			{
 				// for tests replace later
-				for (const Tiles::value_type& tile : tileGroup)
+				for (TileBase* const tile : tileGroup)
 				{
 					++totalTileCount;
 					
@@ -147,12 +215,13 @@ namespace Editor
 					groupedTile->tile = tile;
 
 					groupedTile->size = { 1u, 1u };
-					groupedTile->position = tile->getPosition();
+					groupedTile->position = Resource::VectorTilePosition( tile->getPosition() );
 				}
 				// -----------------------
 
 				// group and push to tileGroups
 			}
+
 
 			Log::Information(
 				L"Single Tiles: "

@@ -25,7 +25,7 @@ namespace Resource
 		return result;
 	}
 
-	inline bool World::make(
+	bool World::make(
 		ReadPipe* const pipe)
 	{
 		if (pipe->getSize() < HEADER_SIZE)
@@ -167,7 +167,7 @@ namespace Resource
 	}
 
 	// checksum not tested
-	inline bool World::validateHeaderProperties() const
+	bool World::validateHeaderProperties() const
 	{
 		return HeaderProperties.width != 0
 			&& HeaderProperties.height != 0

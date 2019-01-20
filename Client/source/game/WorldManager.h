@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include <Client/source/game/tiles/TileBase.h>
 
 #include <Client/source/resource/WorldResource.h>
@@ -48,3 +48,4 @@ namespace Game
 			RESOURCE::_N_World* world);
 	}
 }
+*/
