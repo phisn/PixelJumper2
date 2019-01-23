@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Client/source/logger/Logger.h>
-#include <Client/source/resource/ByteBuffer.h>
 #include <Client/source/resource/Common.h>
 #include <Client/source/resource/pipes/FilePipe.h>
 #include <Client/source/resource/ResourceBase.h>

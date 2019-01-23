@@ -17,9 +17,9 @@ namespace Editor
 			background.imageSize);
 
 		generateBackground(
-			true);
+			true);  // generate horizontal
 		generateBackground(
-			false);
+			false); // generate vertical
 
 		background.texture.loadFromImage(
 			background.image);
@@ -32,6 +32,7 @@ namespace Editor
 	
 	void GridView::generateBackground(bool isHorizontal)
 	{
+
 		const int gridDistance = (background.imageSize / background.gridSize);
 
 		const int crossLength = (gridDistance / background.gridLengthDiv) * 2;
@@ -50,16 +51,19 @@ namespace Editor
 					background.color
 				);
 			}
+
 	}
 
 	void GridView::updateBackground()
 	{
 		const sf::Vector2f position1 = convertPtoC(
 			sf::Vector2i(0, 0)
-		); 
+		);
 
 		background.sprite.setPosition(
-			position1);
+			std::floorf(position1.x),
+			std::floorf(position1.y) // try offset
+		);
 
 		background.sprite.setTextureRect(
 			{

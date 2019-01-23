@@ -140,6 +140,7 @@
     <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
     <ClInclude Include="source\editor\grid\GridMenu.h" />
+    <ClInclude Include="source\editor\grid\GridProperties.h" />
     <ClInclude Include="source\editor\grid\GridView.h" />
     <ClInclude Include="source\editor\grid\SelectorComponent.h" />
     <ClInclude Include="source\editor\grid\Selector.h" />
@@ -196,7 +197,6 @@
     <ClInclude Include="source\menu\MenuBase.h" />
     <ClInclude Include="source\menu\RootBase.h" />
     <ClInclude Include="source\menu\style\DefaultStyles.h" />
-    <ClInclude Include="source\resource\ByteBuffer.h" />
     <ClInclude Include="source\resource\Common.h" />
     <ClInclude Include="source\resource\pipes\FilePipe.h" />
     <ClInclude Include="source\resource\pipes\MemoryPipe.h" />
@@ -206,7 +206,6 @@
     <ClInclude Include="source\resource\TileFactory.h" />
     <ClInclude Include="source\resource\tiles\TileBase.h" />
     <ClInclude Include="source\resource\tiles\Wall.h" />
-    <ClInclude Include="source\resource\_ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
     <ClInclude Include="source\resource\StaticResource.h" />
     <ClInclude Include="source\resource\TileResource.h" />
@@ -268,7 +267,6 @@
     <ClCompile Include="source\menu\container\ScrollContainer.cpp" />
     <ClCompile Include="source\menu\element\ButtonBase.cpp" />
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp" />
-    <ClCompile Include="source\resource\ByteBuffer.cpp" />
     <ClCompile Include="source\resource\pipes\FilePipe.cpp" />
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp" />
     <ClCompile Include="source\resource\pipes\PipeBase.cpp" />

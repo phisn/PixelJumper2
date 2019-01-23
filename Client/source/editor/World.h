@@ -35,97 +35,27 @@ namespace Editor
 	public:
 		void replaceTileTemplate(
 			TileBase* const tile,
-			TileTemplate* const tileTemplate)
-		{
-			VectorTilePosition position = tile->getPosition();
-
-			deleteTile(tile);
-			setTileUnsafe(
-				tileTemplate->create( tile->getPosition() )
-			); // do not replace with 'replaceTileUnsafe' ! order !
-		}
-
+			TileTemplate* const tileTemplate);
 		void replaceTileSafe(
 			TileBase* const tile,
-			TileBase* const newTile)
-		{
-			newTile->setPosition( tile->getPosition() );
-			replaceTileUnsafe(tile, newTile);
-		}
-
+			TileBase* const newTile);
 		void replaceTileUnsafe(
 			TileBase* const tile,
-			TileBase* const newTile)
-		{
-			deleteTile(tile);
-			setTileUnsafe(newTile);
-		}
+			TileBase* const newTile);
 
 		// slow
-		void setTileSafe(TileBase* const newTile)
-		{
-			for (TileBase* const tile : tiles)
-				if (newTile->getPosition() == tile->getPosition())
-				{
-					replaceTileUnsafe(tile, newTile);
-					return;
-				}
-
-			setTileUnsafe(newTile);
-		}
-
+		void setTileSafe(TileBase* const newTile);
 		// fast
-		void setTileUnsafe(TileBase* const newTile)
-		{
-			tiles.insert(newTile);
-		}
+		void setTileUnsafe(TileBase* const newTile);
 
-		void deleteTile(TileBase* const tile)
-		{
-			removeTile(tile);
-			delete tile;
-		}
-
-		void removeTile(TileBase* const tile)
-		{
-			tiles.erase(tile);
-		}
+		void deleteTile(TileBase* const tile);
+		void removeTile(TileBase* const tile);
 
 		_Ret_maybenull_
 		Resource::World* convert(
 			const sf::Uint32 worldID,
 			const std::wstring authorName,
-			const std::wstring mapName) const
-		{
-			Log::Section section(L"Converting World");
-
-			if (worldID == NULL)
-			{
-				Log::Error(L"Got invalid worldID: (NULL)");
-
-				return NULL;
-			}
-
-			Resource::World* world = new Resource::World();
-
-			world->HeaderIntro.worldID = worldID;
-			
-			world->HeaderAuth.authorName = authorName;
-			world->HeaderAuth.mapName = mapName;
-
-			Log::Information(
-				L"Converting '" 
-				+ std::to_wstring( tiles.size() )
-				+ L"' tiles");
-
-			if ( !convertTiles(world) )
-			{
-				delete world;
-				world = NULL;
-			}
-
-			return world;
-		}
+			const std::wstring mapName) const;
 
 		const std::set<TileBase*>& getTiles() const
 		{
@@ -133,110 +63,77 @@ namespace Editor
 		}
 
 	private:
-		bool convertTiles(Resource::World* const world) const
-		{
-			GroupedTiles groupedTiles;
-
-			{	
-				TileGroups tileGroups;
-				
-				sortTiles(
-					&tileGroups);
-				groupTiles(
-					&groupedTiles,
-					&tileGroups);
-			}
-
-			for (GroupedTile& tile : groupedTiles)
-			{
-				if (tile.position.x > RTILE_TYPE_MAX(x) ||
-					tile.position.y > RTILE_TYPE_MAX(y))
-				{
-					return false;
-				}
-
-				if (tile.size.x > RTILE_TYPE_MAX(width) ||
-					tile.size.y > RTILE_TYPE_MAX(height))
-				{
-					return false;
-				}
-
-				world->TileContainer.emplace_back();
-				Resource::Tile* resourceTile = &world->TileContainer.back();
-
-				resourceTile->Content = tile.tile->create(
-					tile.size, 
-					tile.position);
-
-				resourceTile->Header.width = tile.size.x;
-				resourceTile->Header.height = tile.size.y;
-
-				resourceTile->Header.x = tile.position.x;
-				resourceTile->Header.y = tile.position.y;
-			}
-
-			return groupedTiles.size() > 0; // TODO: pointless?
-		}
-		 
-		void sortTiles(TileGroups* const tileGroups) const
-		{
-			for (TileBase* const tile : tiles)
-			{
-			NEXT_TILE:
-				for (std::vector<TileBase*>& group : *tileGroups)
-					if ( group.back()->equals(tile) )
-					{
-						group.push_back(tile);
-
-						goto NEXT_TILE; // continue replacement
-					}
-
-				tileGroups->emplace_back();
-				tileGroups->back().push_back(tile);
-			}
-		}
-
+		bool convertTiles(
+			Resource::World* const world) const;
+		void sortTiles(
+			TileGroups* const tileGroups) const;
 		void groupTiles(
 			GroupedTiles* const groupedTiles,
-			TileGroups* const tileGroups) const
-		{
-			int totalTileCount = 0; // for logging
-
-			for (const std::vector<TileBase*>& tileGroup : *tileGroups)
-			{
-				// for tests replace later
-				for (TileBase* const tile : tileGroup)
-				{
-					++totalTileCount;
-					
-					groupedTiles->emplace_back();
-					GroupedTile* groupedTile = &groupedTiles->back();
-
-					groupedTile->tile = tile;
-
-					groupedTile->size = { 1u, 1u };
-					groupedTile->position = Resource::VectorTilePosition( tile->getPosition() );
-				}
-				// -----------------------
-
-				// group and push to tileGroups
-			}
-
-
-			Log::Information(
-				L"Single Tiles: "
-				+ std::to_wstring(totalTileCount)
-			);
-			Log::Information(
-				L"Grouped Tiles: "
-				+ std::to_wstring(groupedTiles->size())
-			);
-			Log::Information(
-				L"Tile Groups: "
-				+ std::to_wstring(tileGroups->size())
-			);
-		}
+			TileGroups* const tileGroups) const;
 
 		Tiles tiles;
 	};
+
+	inline void World::replaceTileTemplate(
+		TileBase* const tile, 
+		TileTemplate* const tileTemplate)
+	{
+		VectorTilePosition position = tile->getPosition();
+
+		deleteTile(tile);
+		setTileUnsafe(
+			tileTemplate->create(tile->getPosition())
+		); // do not replace with 'replaceTileUnsafe' ! order !
+	}
+
+	inline void World::replaceTileSafe(
+		TileBase* const tile, 
+		TileBase* const newTile)
+	{
+		newTile->setPosition(tile->getPosition());
+		replaceTileUnsafe(tile, newTile);
+	}
+
+	inline void World::replaceTileUnsafe(
+		TileBase* const tile, 
+		TileBase* const newTile)
+	{
+		deleteTile(tile);
+		setTileUnsafe(newTile);
+	}
+
+	// slow
+	inline void World::setTileSafe(
+		TileBase* const newTile)
+	{
+		for (TileBase* const tile : tiles)
+			if (newTile->getPosition() == tile->getPosition())
+			{
+				replaceTileUnsafe(tile, newTile);
+				return;
+			}
+
+		setTileUnsafe(newTile);
+	}
+
+
+	// fast
+	inline void World::setTileUnsafe(
+		TileBase* const newTile)
+	{
+		tiles.insert(newTile);
+	}
+
+	inline void World::deleteTile(
+		TileBase* const tile)
+	{
+		removeTile(tile);
+		delete tile;
+	}
+
+	inline void World::removeTile(
+		TileBase* const tile)
+	{
+		tiles.erase(tile);
+	}
 }

@@ -31,6 +31,12 @@ namespace Scene
 		public MenuBase
 	{
 	public:
+		Editor()
+			:
+			world() // grid size
+		{
+		}
+
 		bool onCreate() override
 		{	
 

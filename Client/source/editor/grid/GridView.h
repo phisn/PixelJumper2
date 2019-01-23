@@ -3,6 +3,7 @@
 #include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
+#include <Client/source/editor/grid/GridProperties.h>
 #include <Client/source/editor/tile/TileBase.h>
 
 #include <SFML/Graphics.hpp>
@@ -77,8 +78,8 @@ namespace Editor
 		void resetSize()
 		{
 			const sf::Vector2f size = sf::Vector2f(
-				(DEVICE::Interface::GetScreen()->getWindow()->getSize().x * view->getViewport().width) / 10.f,
-				(DEVICE::Interface::GetScreen()->getWindow()->getSize().y * view->getViewport().height) / 10.f
+				(DEVICE::Interface::GetScreen()->getWindow()->getSize().x * view->getViewport().width) / GridProperties.gridBeginZoom,
+				(DEVICE::Interface::GetScreen()->getWindow()->getSize().y * view->getViewport().height) / GridProperties.gridBeginZoom
 			);
 
 			view->setSize(size);
@@ -101,9 +102,9 @@ namespace Editor
 
 		struct
 		{
-			int imageSize = 200;
-			int gridSize = 10;
-			int gridLengthDiv = 5;
+			int imageSize = GridProperties.imageSize;
+			int gridSize = GridProperties.gridSize;
+			int gridLengthDiv = GridProperties.gridLengthDiv;
 
 			sf::Image image;
 			sf::Texture	texture;

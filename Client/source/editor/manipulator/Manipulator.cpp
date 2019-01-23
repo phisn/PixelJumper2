@@ -9,6 +9,7 @@ namespace
 	Editor::Cache* cache = NULL;
 	Editor::CacheManager* manager = NULL;
 	Editor::Executor* executor = NULL;
+	Editor::World* world;
 }
 
 namespace Editor
@@ -18,6 +19,7 @@ namespace Editor
 		cache = new Cache();
 		manager = new CacheManager(cache);
 		executor = new Executor(world);
+		::world = world;
 	}
 
 	void Manipulator::uninitialize()
@@ -51,5 +53,10 @@ namespace Editor
 	Executor* Manipulator::getExecutor()
 	{
 		return executor;
+	}
+
+	const World* Manipulator::getWorld()
+	{
+		return world;
 	}
 }

@@ -135,9 +135,6 @@
     <ClInclude Include="source\game\World.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\ByteBuffer.h">
-      <Filter>source\resource\base</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\tiles\TileColor.h">
       <Filter>source\game\tiles</Filter>
     </ClInclude>
@@ -300,9 +297,6 @@
     <ClInclude Include="source\resource\ResourceInterface.h">
       <Filter>source\resource</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\_ResourceBase.h">
-      <Filter>source\resource\base</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\ResourceBase.h">
       <Filter>source\resource</Filter>
     </ClInclude>
@@ -341,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="source\Common.h">
       <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\grid\GridProperties.h">
+      <Filter>source\editor\grid</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -388,9 +385,6 @@
     </ClCompile>
     <ClCompile Include="source\game\World.cpp">
       <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\ByteBuffer.cpp">
-      <Filter>source\resource\base</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\tile\Wall.cpp">
       <Filter>source\editor\tile</Filter>

@@ -5,6 +5,7 @@
 #include <Client/source/game/tiles/TileBase.h>
 #include <Client/source/game/tiles/TileId.h>
 
+#include <Client/source/editor/grid/GridProperties.h>
 #include <Client/source/resource/TileResource.h>
 
 #include <Client/source/Common.h>
@@ -25,7 +26,10 @@ namespace Editor
 		{
 			shape.setFillColor(color);
 			setPosition(position);
-			shape.setSize( sf::Vector2f(size.x * 20, size.y * 20) );
+			shape.setSize(sf::Vector2f(
+				size.x * GridProperties.tileSize, 
+				size.y * GridProperties.tileSize
+			));
 		}
 
 		virtual bool equals(
@@ -36,12 +40,18 @@ namespace Editor
 
 		void setPosition(const VectorTilePosition position)
 		{
-			shape.setPosition( sf::Vector2f(position.x * 20, position.y * 20) );
+			shape.setPosition(sf::Vector2f(
+				position.x * GridProperties.tileSize,
+				position.y * GridProperties.tileSize
+			));
 		}
 
 		VectorTilePosition getPosition() const
 		{
-			return VectorTilePosition( shape.getPosition().x / 20, shape.getPosition().y / 20 );
+			return VectorTilePosition(
+				shape.getPosition().x / GridProperties.tileSize,
+				shape.getPosition().y / GridProperties.tileSize
+			);
 		}
 
 		const sf::RectangleShape* getShape() const

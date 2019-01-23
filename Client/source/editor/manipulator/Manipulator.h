@@ -19,5 +19,6 @@ namespace Editor
 		Cache* getCache();
 		CacheManager* getCacheManager();
 		Executor* getExecutor();
+		const World* getWorld();
 	}
 }
