@@ -16,8 +16,6 @@
 #include <Client/source/editor/manipulator/Manipulator.h>
 #include <Client/source/editor/manipulator/tasks/TilePlace.h>
 
-#include <iostream>
-
 namespace Editor
 {
 	class TileMenuButton

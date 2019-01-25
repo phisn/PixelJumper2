@@ -33,9 +33,20 @@ namespace Framework
 		{
 		}
 
+		/*
+			
+			internal initialize, should allocate resources
+				and setup internal objects. it can fail 
+				but not call directly or indirectly any
+				framework methods
+			external initialize, should create new subscenes
+				or interact with other scenes. it can NOT fail
+				but can call framework methods
+		*/
+
 		_Success_(return == true)
-		bool quickInitialize();
-		void deepInitialize();
+		bool internalInitialize();
+		void externalInitialize();
 
 		void onHide();
 		void onShow();

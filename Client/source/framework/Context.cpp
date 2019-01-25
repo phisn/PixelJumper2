@@ -2,12 +2,12 @@
 
 namespace Framework
 {
-	bool Context::quickInitialize()
+	bool Context::internalInitialize()
 	{
 		return mainScene->onCreate();
 	}
 	
-	void Context::deepInitialize()
+	void Context::externalInitialize()
 	{
 		mainScene->initialize();
 	}

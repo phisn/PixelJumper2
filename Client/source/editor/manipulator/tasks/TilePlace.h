@@ -19,14 +19,26 @@ namespace Editor
 
 			if (cache->selection.type == SelectionCache::Output::Type::Area)
 			{
-				for (TilePosition x = cache->selection.area->offset.x / GridProperties.tileSize
-					; x < cache->selection.area->offset.x / GridProperties.tileSize
-					+ cache->selection.area->size.x / GridProperties.tileSize
-					; ++x)
-					for (TilePosition y = cache->selection.area->offset.y / GridProperties.tileSize
-						; y < cache->selection.area->offset.y / GridProperties.tileSize
-						+ cache->selection.area->size.y / GridProperties.tileSize
-						; ++y)
+				VectorTilePosition begin =
+				{
+					cache->selection.area->offset.x / GridProperties.tileSize,
+					cache->selection.area->offset.y / GridProperties.tileSize
+				};
+
+				VectorTilePosition end =
+				{
+					cache->selection.area->offset.x / GridProperties.tileSize + cache->selection.area->size.x / GridProperties.tileSize,
+					cache->selection.area->offset.y / GridProperties.tileSize + cache->selection.area->size.y / GridProperties.tileSize
+				};
+				std::cout << "A" << std::endl;
+				const sf::Uint64 expectedTiles = abs(begin.x - end.x) * abs(begin.y - end.y);
+				if (expectedTiles > 0xff)
+				{
+					return false;
+				}
+
+				for (TilePosition x = begin.x; x < end.x; ++x)
+					for (TilePosition y = begin.y; y < end.y; ++y)
 					{
 						world->setTileSafe(
 							cache->tile.tile->create( VectorTilePosition(x, y) )
@@ -44,6 +56,8 @@ namespace Editor
 
 				return true;
 			}
+
+			return false;
 		}
 
 		void redo() override

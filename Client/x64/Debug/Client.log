@@ -1,7 +1,7 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Two or more files with the name of World.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are source\editor\World.cpp, source\game\World.cpp.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Two or more files with the name of TileBase.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are source\editor\tile\TileBase.cpp, source\game\tiles\TileBase.cpp.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Two or more files with the name of Wall.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are source\editor\tile\Wall.cpp, source\game\tiles\Wall.cpp, source\resource\tiles\Wall.cpp.
-  GridView.cpp
+  DeviceInterface.cpp
 C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(31): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
@@ -48,4 +48,262 @@ C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(52
           [
               T=Editor::TilePosition
           ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(33): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(32): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(40): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(39): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+  TileComponent.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(31): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(30): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(45): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(53): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(52): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+  TileContainer.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(31): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(30): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(45): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(53): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(52): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+  TileMenu.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(31): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(30): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(45): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(53): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(52): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+  TileMenuButton.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(31): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(30): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(45): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(53): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(52): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+  World.cpp
+  ButtonBase.cpp
+  EditorScene.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(31): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(30): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(45): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(44): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=Editor::TilePosition
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(53): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\tile\TileBase.h(52): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=Editor::TilePosition
+          ]
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(33): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(32): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(40): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(39): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+  GameBaseScene.cpp
+  LocalGameScene.cpp
+  MenuBaseScene.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(33): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(32): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(40): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\scene\MenuBaseScene.h(39): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+  Generating Code...
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\grid\SelectorElement.h(43): warning C4715: 'Editor::SelectorElement::manipulate': not all control paths return a value
+x64\Debug\TileBase.obj : warning LNK4042: object specified more than once; extras ignored
+x64\Debug\Wall.obj : warning LNK4042: object specified more than once; extras ignored
+x64\Debug\World.obj : warning LNK4042: object specified more than once; extras ignored
+x64\Debug\Wall.obj : warning LNK4042: object specified more than once; extras ignored
   Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

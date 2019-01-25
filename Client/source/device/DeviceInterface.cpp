@@ -114,15 +114,6 @@ namespace Device
 			return InitError::Resource;
 		}
 
-		section.information(L"Pushing Starting Context");
-
-		if (!FW::Interface::PushContext(
-				makeStartingContext()
-		))
-		{
-			return InitError::Scene;
-		}
-
 		return InitError::Invalid;
 	}
 
@@ -133,7 +124,16 @@ namespace Device
 		sf::Clock clock;
 		sf::Event event;
 
-		Log::Independent::Information(L"Entering Game Loop");
+		if (!FW::Interface::PushContext(
+			makeStartingContext()
+		))
+		{
+			Log::Error(L"Failed to create starting context");
+
+			return 0;
+		}
+
+		Log::Information(L"Entering game loop");
 		while (true)
 		{
 			Framework::Execution::DoTasks();

@@ -33,14 +33,38 @@ namespace Scene
 	public:
 		Editor()
 			:
-			world() // grid size
+			world()
 		{
 		}
 
 		bool onCreate() override
-		{	
+		{
+			EDITOR::Manipulator::initialize(&world);
+
+			EDITOR::GridMenu* gridMenu = addRoot<EDITOR::GridMenu>(&world);
+			gridMenu->setViewport({ 0.0f, 0.0f, 0.9f, 1.0f });
+			if (!gridMenu->initialize())
+			{ // move to onCreate?
+				onFailedInitialize();
+
+				return false;
+			}
+
+			EDITOR::TileMenu* tileMenu = addRoot<EDITOR::TileMenu>();
+			tileMenu->setViewport({ 0.9f, 0.0f, 0.1f, 1.0f });
+			if (!tileMenu->initialize())
+			{ // move to onCreate?
+				onFailedInitialize();
+
+				return false;
+			}
 
 			return true;
+		}
+
+		void onDraw() override
+		{
+			MenuBase::onDraw();
 		}
 
 		void onRemove() override
@@ -53,25 +77,6 @@ namespace Scene
 
 		void initialize() override 
 		{
-			EDITOR::Manipulator::initialize( &world );
-
-			EDITOR::GridMenu* gridMenu = addRoot<EDITOR::GridMenu>(&world);
-			gridMenu->setViewport({ 0.0f, 0.0f, 0.9f, 1.0f });
-			if (!gridMenu->initialize())
-			{
-				onFailedInitialize();
-
-				return;
-			}
-
-			EDITOR::TileMenu* tileMenu = addRoot<EDITOR::TileMenu>();
-			tileMenu->setViewport({ 0.9f, 0.0f, 0.1f, 1.0f });
-			if (!tileMenu->initialize())
-			{
-				onFailedInitialize();
-
-				return;
-			}
 		}
 
 		void onShow() override { }

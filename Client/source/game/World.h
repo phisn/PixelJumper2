@@ -10,7 +10,6 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
-#include <iostream>
 
 namespace Game
 {

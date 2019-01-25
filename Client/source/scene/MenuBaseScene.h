@@ -5,7 +5,6 @@
 #include <Client/source/scene/MainSceneBase.h>
 
 #include <vector>
-#include <iostream>
 
 namespace Scene
 {

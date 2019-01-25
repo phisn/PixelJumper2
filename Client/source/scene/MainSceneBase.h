@@ -15,11 +15,11 @@ namespace Scene
 		virtual ~MainBase() { }
 
 		_Success_(return == true)
-		// Can fail & !!! MUST _NOT_ !!! use Interface
+		// can fail & must NOT call (framework) interface
 		virtual bool onCreate() = 0;
 		virtual void onRemove() = 0;
 
-		// Cant fail & can use Interface
+		// cant fail & can use Interface
 		virtual void initialize() = 0;
 
 		virtual void onShow() = 0;

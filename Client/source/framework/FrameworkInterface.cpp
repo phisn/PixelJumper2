@@ -31,7 +31,7 @@ namespace Framework
 			return false;
 		}
 
-		if (!context->quickInitialize())
+		if (!context->internalInitialize())
 		{
 			return false;
 		}
@@ -163,7 +163,7 @@ namespace Framework
 
 			break;
 		case Interface::Task::LoadContext:
-			contextStack.top()->deepInitialize();
+			contextStack.top()->externalInitialize();
 
 			break;
 		}

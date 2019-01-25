@@ -1,5 +1,5 @@
 #include "ButtonBase.h"
-#include <iostream>
+
 namespace Menu
 {
 	void ButtonBase::setEnterStyle()
