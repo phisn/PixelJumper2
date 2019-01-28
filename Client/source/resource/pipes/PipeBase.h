@@ -46,11 +46,11 @@ namespace Resource
 
 		virtual void reserveSize(const sf::Uint64) = 0;
 		virtual void writeContent(
-			char* const buffer,
+			const char* const buffer,
 			const sf::Uint64 size) = 0;
 
 		bool writeContentSafe(
-			char* const buffer,
+			const char* const buffer,
 			const sf::Uint64 size)
 		{
 			if ( !isValid() )
@@ -64,14 +64,14 @@ namespace Resource
 		}
 
 		template <typename T>
-		bool writeValue(T* value)
+		bool writeValue(const T* const value)
 		{
-			return writeContentSafe((char*) value, sizeof(T));
+			return writeContentSafe((const char* const) value, sizeof(T));
 		}
 
 		template <typename Size>
 		bool writeString(
-			std::wstring* const str)
+			const std::wstring* const str)
 		{
 			Size size = str->size();
 

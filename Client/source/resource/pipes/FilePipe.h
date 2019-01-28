@@ -43,20 +43,31 @@ namespace Resource
 
 		~FileWritePipe() override
 		{
+			if ( isValid() )
+			{
+				flushBuffer();
+			}
+
 			delete[] buffer;
 		}
 
 		void writeContent(
-			char* buffer,
+			const char* const buffer,
 			const sf::Uint64 size) override
 		{
 			if (consumed > 0)
 			{
-				if (FILE_BUFFER_SIZE - consumed <= size)
+				const sf::Uint64 storageRemain = FILE_BUFFER_SIZE - consumed;
+
+				fillBuffer(
+					buffer,
+					storageRemain < size ? storageRemain - size : size
+				);
+
+				if (storageRemain >= size)
 				{
-					fillBuffer(
-						buffer,
-						size);
+					definition.size += size;
+					return;
 				}
 
 				flushBuffer();
@@ -106,29 +117,28 @@ namespace Resource
 
 	private:
 		void fillBuffer(
-			char* buffer,
+			const char* const buffer,
 			const sf::Uint64 size)
 		{
 			memcpy(
-				this->buffer,
-				buffer + consumed,
+				this->buffer + consumed,
+				buffer,
 				size);
 
 			consumed += size;
 		}
 
-		void flushBuffer(
-			const sf::Uint64 size = FILE_BUFFER_SIZE)
+		void flushBuffer()
 		{
 			enforceContent(
 				buffer,
-				size);
+				consumed);
 
 			consumed = 0;
 		}
 
 		void enforceContent(
-			char* buffer,
+			const char* const buffer,
 			const sf::Uint64 size)
 		{
 			file.write(

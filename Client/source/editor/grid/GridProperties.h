@@ -4,7 +4,7 @@ namespace Editor
 {
 	static struct
 	{
-		int tileSize = 10;
+		int tileSize = 20;
 		int imageSize = 200; // 200;
 		int gridSize = 10;
 		int gridLengthDiv = 5;

@@ -401,9 +401,6 @@
     <ClCompile Include="source\editor\template\WallTemplate.cpp">
       <Filter>source\editor\template</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\World.cpp">
-      <Filter>source\editor</Filter>
-    </ClCompile>
     <ClCompile Include="source\editor\tilemenu\TileMenu.cpp">
       <Filter>source\editor\tilemenu</Filter>
     </ClCompile>
@@ -541,6 +538,9 @@
     </ClCompile>
     <ClCompile Include="source\device\RandomDevice.cpp">
       <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\World.cpp">
+      <Filter>source\editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -30,7 +30,7 @@ namespace Editor
 					cache->selection.area->offset.x / GridProperties.tileSize + cache->selection.area->size.x / GridProperties.tileSize,
 					cache->selection.area->offset.y / GridProperties.tileSize + cache->selection.area->size.y / GridProperties.tileSize
 				};
-				std::cout << "A" << std::endl;
+
 				const sf::Uint64 expectedTiles = abs(begin.x - end.x) * abs(begin.y - end.y);
 				if (expectedTiles > 0xff)
 				{

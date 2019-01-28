@@ -63,7 +63,7 @@ namespace Resource
 		return HeaderProperties.tileCheckSum == generateCheckSum();
 	}
 	
-	bool World::save(WritePipe * const pipe)
+	bool World::save(WritePipe* const pipe)
 	{
 		////////// Header
 		HeaderIntro.magic = WORLD_MAGIC;

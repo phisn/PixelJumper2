@@ -21,7 +21,11 @@ bool (*handleError[(int) DEVICE::InitError::_Length])() =
 #include <Client/source/device/RandomDevice.h>
 int main()
 {
+#ifdef _DEBUG
+	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Information);
+#else
 	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Warning);
+#endif
 	Log::Information(L"Starting Game...");
 
 Retry:

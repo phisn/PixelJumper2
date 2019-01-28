@@ -247,9 +247,9 @@
     <ClCompile Include="source\editor\tilemenu\TileContainer.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileMenu.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileMenuButton.cpp" />
-    <ClCompile Include="source\editor\World.cpp" />
     <ClCompile Include="source\editor\tile\TileBase.cpp" />
     <ClCompile Include="source\editor\tile\Wall.cpp" />
+    <ClCompile Include="source\editor\World.cpp" />
     <ClCompile Include="source\framework\Animation.cpp" />
     <ClCompile Include="source\framework\AsyncAnimation.cpp" />
     <ClCompile Include="source\framework\Context.cpp" />
