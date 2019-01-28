@@ -23,14 +23,10 @@ namespace Editor
 		public MENU::RootBase
 	{
 	public:
-		GridMenu(
-			World* const world)
+		GridMenu()
 			:
-			world(world),
 			gridView(getView()),
-			selector(
-				world,
-				&gridView)
+			selector(&gridView)
 		{
 		}
 
@@ -119,7 +115,7 @@ namespace Editor
 
 			gridView.draw();
 
-			for (TileBase* const tile : world->getTiles())
+			for (TileBase* const tile : Manipulator::GetWorld()->getTiles())
 			{
 				DEVICE::Interface::GetScreen()->onDraw(
 					tile->getShape()
@@ -139,8 +135,6 @@ namespace Editor
 		}
 
 	private:
-		World* const world;
-
 		GridView gridView;
 		Selector selector;
 

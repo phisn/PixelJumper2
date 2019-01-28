@@ -2,6 +2,7 @@
 
 #include <Client/source/editor/grid/GridView.h>
 #include <Client/source/editor/manipulator/Element.h>
+#include <Client/source/editor/manipulator/Manipulator.h>
 #include <Client/source/editor/World.h>
 
 namespace Editor
@@ -12,11 +13,9 @@ namespace Editor
 	{
 	public:
 		SelectorElement(
-			const GridView* const view,
-			const World* const world)
+			const GridView* const view)
 			:
-			view(view),
-			world(world)
+			view(view)
 		{
 		}
 
@@ -84,7 +83,7 @@ namespace Editor
 				2.  Add new tiles to existent tiles
 				
 			*/
-			for (TileBase* tile : world->getTiles())
+			for (Editor::TileBase* tile : Manipulator::GetWorld()->getTiles())
 				if (tile->getShape()->getPosition().x + tile->getShape()->getSize().x > input->offset.x &&
 					tile->getShape()->getPosition().y + tile->getShape()->getSize().y > input->offset.y &&
 
@@ -95,8 +94,7 @@ namespace Editor
 					{
 						tileFound = true;
 
-						changeType(
-							SelectionCache::Output::Type::Tile);
+						changeType(SelectionCache::Output::Type::Tile);
 					}
 
 					output->tile->tiles.push_back(tile);
@@ -153,6 +151,5 @@ namespace Editor
 		}
 
 		const GridView* const view;
-		const World* const world;
 	};
 }

@@ -18,6 +18,7 @@ bool (*handleError[(int) DEVICE::InitError::_Length])() =
 	handleResourceError
 };
 
+#include <Client/source/device/RandomDevice.h>
 int main()
 {
 	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Warning);
@@ -42,6 +43,13 @@ Retry:
 			Log::Information(L"Restarting Game...");
 		}
 	}
+
+	for (int i = 0; i < 16; ++i)
+	{
+		std::cout << ::Device::Random::MakeRandom<int>() << std::endl;
+	}
+
+	std::cout << ::Device::Random::MakeRandom<double>() << std::endl;
 
 	return DEVICE::Interface::Start();
 }

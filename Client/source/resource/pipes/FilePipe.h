@@ -18,7 +18,9 @@ namespace Resource
 			:
 			path(path)
 		{
-			size = std::filesystem::file_size(path);
+			size = std::filesystem::exists(path)
+				? std::filesystem::file_size(path)
+				: 0;
 		}
 
 		std::filesystem::path path;

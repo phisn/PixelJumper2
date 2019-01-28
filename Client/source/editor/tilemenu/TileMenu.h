@@ -53,10 +53,10 @@ namespace Editor
 				}
 			} element;
 
-			Manipulator::getCacheManager()->registerComponent(
+			Manipulator::GetCacheManager()->registerComponent(
 				Cache::Sector::Tile,
 				&component);
-			Manipulator::getCacheManager()->registerElement(
+			Manipulator::GetCacheManager()->registerElement(
 				Cache::Sector::Tile,
 				&element);
 

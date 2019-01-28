@@ -1,20 +1,20 @@
 #pragma once
 
 #include <Client/source/device/DeviceInterface.h>
+#include <Client/source/device/RandomDevice.h>
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/editor/grid/GridMenu.h>
-#include <Client/source/editor/tilemenu/TileMenu.h>
-
 #include <Client/source/editor/manipulator/Manipulator.h>
+#include <Client/source/editor/tilemenu/TileMenu.h>
 #include <Client/source/editor/World.h>
 
-#include <Client/source/scene/MainSceneBase.h>
+#include <Client/source/resource/ResourceInterface.h>
+#include <Client/source/resource/WorldResource.h>
+
 #include <Client/source/scene/MenuBaseScene.h>
 
-#include <SFML/Graphics.hpp>
-
-#include <windows.h>
+#include <random>
 
 namespace Scene
 {
@@ -32,21 +32,17 @@ namespace Scene
 	{
 	public:
 		Editor()
-			:
-			world()
 		{
 		}
 
 		bool onCreate() override
 		{
-			EDITOR::Manipulator::initialize(&world);
+			EDITOR::Manipulator::Initialize();
 
-			EDITOR::GridMenu* gridMenu = addRoot<EDITOR::GridMenu>(&world);
+			EDITOR::GridMenu* gridMenu = addRoot<EDITOR::GridMenu>();
 			gridMenu->setViewport({ 0.0f, 0.0f, 0.9f, 1.0f });
 			if (!gridMenu->initialize())
-			{ // move to onCreate?
-				onFailedInitialize();
-
+			{
 				return false;
 			}
 
@@ -54,8 +50,6 @@ namespace Scene
 			tileMenu->setViewport({ 0.9f, 0.0f, 0.1f, 1.0f });
 			if (!tileMenu->initialize())
 			{ // move to onCreate?
-				onFailedInitialize();
-
 				return false;
 			}
 
@@ -75,6 +69,45 @@ namespace Scene
 			}
 		}
 
+		void onEvent(const sf::Event event) override
+		{
+			MenuBase::onEvent(event);
+
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::S &&
+				event.key.control)
+			{
+				Log::Information(L"Saving world");
+
+				Resource::World* world = EDITOR::Manipulator::GetWorld()->convert(
+					Device::Random::MakeRandom<int>(),
+					L"Author Name",
+					L"Map Name");
+
+				if (world == NULL)
+				{
+					Log::Error(L"Failed to create world");
+
+					return;
+				}
+
+				if (Resource::Interface::WriteResource(
+						world, 
+						Resource::ResourceType::World, 
+						L"TestWorld")
+					)
+				{
+					Log::Information(L"Successfully saved world");
+				}
+				else
+				{
+					Log::Error(L"Failed to save world");
+				}
+
+				delete world;
+			}
+		}
+
 		void initialize() override 
 		{
 		}
@@ -82,12 +115,5 @@ namespace Scene
 		void onShow() override { }
 		void onHide() override { }
 	private:
-		void onFailedInitialize()
-		{
-			MessageBox(NULL, L"Failed", L"Error", MB_OK);
-		}
-
-		// TODO: make accessable to tasks
-		::Editor::World world;
 	};
 }

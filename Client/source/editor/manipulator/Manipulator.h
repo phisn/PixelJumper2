@@ -13,12 +13,12 @@ namespace Editor
 
 	namespace Manipulator
 	{
-		void initialize(World* const world);
-		void uninitialize();
+		void Initialize();
+		void Uninitialize();
 
-		Cache* getCache();
-		CacheManager* getCacheManager();
-		Executor* getExecutor();
-		const World* getWorld();
+		Cache* GetCache();
+		CacheManager* GetCacheManager();
+		Executor* GetExecutor();
+		const World* GetWorld();
 	}
 }

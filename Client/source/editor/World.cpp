@@ -2,6 +2,7 @@
 
 namespace Editor
 {
+	_Ret_maybenull_
 	Resource::World* World::convert(
 		const sf::Uint32 worldID, 
 		const std::wstring authorName, 
@@ -52,6 +53,8 @@ namespace Editor
 				&tileGroups);
 		}
 
+		sf::Vector2u worldSize;
+		
 		for (GroupedTile& tile : groupedTiles)
 		{
 			if (tile.position.x > RTILE_TYPE_MAX(x) ||
@@ -78,7 +81,23 @@ namespace Editor
 
 			resourceTile->Header.x = tile.position.x;
 			resourceTile->Header.y = tile.position.y;
+
+			// rewrite
+			sf::Uint32 x = tile.size.x + tile.position.x;
+			if (worldSize.x < x)
+			{
+				worldSize.x = x;
+			}
+
+			sf::Uint32 y = tile.size.y + tile.position.y;
+			if (worldSize.y < y)
+			{
+				worldSize.y = y;
+			}
 		}
+
+		world->HeaderProperties.width = worldSize.x;
+		world->HeaderProperties.height = worldSize.y;
 
 		return groupedTiles.size() > 0; // TODO: pointless?
 	}
@@ -86,13 +105,12 @@ namespace Editor
 	{
 		for (TileBase* const tile : tiles)
 		{
-		NEXT_TILE:
 			for (std::vector<TileBase*>& group : *tileGroups)
 				if (group.back()->equals(tile))
 				{
 					group.push_back(tile);
 
-					goto NEXT_TILE; // continue replacement
+					continue; 
 				}
 
 			tileGroups->emplace_back();

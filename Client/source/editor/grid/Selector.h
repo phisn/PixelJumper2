@@ -22,16 +22,15 @@ namespace Editor
 	{
 	public:
 		Selector(
-			const World* const world,
 			GridView* const view)
 			:
 			view(view),
-			element(view, world)
+			element(view)
 		{
-			Manipulator::getCacheManager()->registerComponent(
+			Manipulator::GetCacheManager()->registerComponent(
 				Cache::Sector::Selection,
 				&component);
-			Manipulator::getCacheManager()->registerElement(
+			Manipulator::GetCacheManager()->registerElement(
 				Cache::Sector::Selection,
 				&element);
 		}
@@ -64,12 +63,12 @@ namespace Editor
 			}
 
 			SelectionCache::Input* const selection = 
-				&Manipulator::getCache()->writeInput()->selection;
+				&Manipulator::GetCache()->writeInput()->selection;
 
 			selection->offset = offset;
 			selection->size = sf::Vector2i(x, y) - offset;
 
-			Manipulator::getCacheManager()->notify(	
+			Manipulator::GetCacheManager()->notify(	
 				Cache::Sector::Selection
 			);
 		}

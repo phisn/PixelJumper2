@@ -14,6 +14,18 @@ namespace Resource
 		public Resource::ResourceBase
 	{
 	public:
+		Tile() = default;
+		Tile(Tile&& tile) {
+			memcpy(
+				(char*) &Header, 
+				(char*) &tile.Header, 
+				sizeof(Header)
+			);
+
+			Content = tile.Content;
+			tile.Content = NULL;
+		}
+
 		~Tile()
 		{
 			if (Content) delete Content;

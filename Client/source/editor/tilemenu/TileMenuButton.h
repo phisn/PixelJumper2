@@ -100,15 +100,15 @@ namespace Editor
 			if (selected)
 			{
 				::std::cout << "Place" << std::endl;
-				Manipulator::getExecutor()->execute<TilePlace>();
+				Manipulator::GetExecutor()->execute<TilePlace>();
 
 				return;
 			}
 
 			selected = true;
 
-			Manipulator::getCache()->writeInput()->tile.tile = tile;
-			Manipulator::getCacheManager()->notify(
+			Manipulator::GetCache()->writeInput()->tile.tile = tile;
+			Manipulator::GetCacheManager()->notify(
 				Cache::Sector::Tile
 			); // container as component
 		} 

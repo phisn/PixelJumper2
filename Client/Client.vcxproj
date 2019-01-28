@@ -142,6 +142,7 @@
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
     <ClInclude Include="source\device\InputDevice.h" />
+    <ClInclude Include="source\device\RandomDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
     <ClInclude Include="source\editor\grid\GridMenu.h" />
@@ -225,6 +226,7 @@
   <ItemGroup>
     <ClCompile Include="source\device\DeviceInterface.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
+    <ClCompile Include="source\device\RandomDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
     <ClCompile Include="source\editor\grid\GridMenu.cpp" />

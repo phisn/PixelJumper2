@@ -1,5 +1,6 @@
 #include <Client/source/device/ScreenDevice.h>
 #include <Client/source/device/InputDevice.h>
+#include <Client/source/device/RandomDevice.h>
 #include <Client/source/device/ResourceDevice.h>
 
 #include "DeviceInterface.h"
@@ -78,6 +79,8 @@ namespace Device
 {
 	InitError Interface::Initialize()
 	{
+		Random::Initialize();
+
 		Log::Section section(L"Initializing Game");
 
 		if (input)

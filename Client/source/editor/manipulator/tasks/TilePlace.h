@@ -15,7 +15,7 @@ namespace Editor
 	public:
 		bool execute(World* const world) override
 		{
-			const Cache::Output* const cache = Manipulator::getCache()->readOutput();
+			const Cache::Output* const cache = Manipulator::GetCache()->readOutput();
 
 			if (cache->selection.type == SelectionCache::Output::Type::Area)
 			{

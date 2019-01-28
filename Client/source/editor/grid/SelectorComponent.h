@@ -16,7 +16,7 @@ namespace Editor
 	public:
 		SelectorComponent()
 			:
-			selection(&Manipulator::getCache()->readOutput()->selection)
+			selection(&Manipulator::GetCache()->readOutput()->selection)
 		{
 			marker.setFillColor(sf::Color::Transparent);
 

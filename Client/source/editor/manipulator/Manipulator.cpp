@@ -9,24 +9,25 @@ namespace
 	Editor::Cache* cache = NULL;
 	Editor::CacheManager* manager = NULL;
 	Editor::Executor* executor = NULL;
-	Editor::World* world;
+	Editor::World* world = NULL;
 }
 
 namespace Editor
 {
-	void Manipulator::initialize(World* const world)
+	void Manipulator::Initialize()
 	{
+		world = new World();
+
 		cache = new Cache();
 		manager = new CacheManager(cache);
 		executor = new Executor(world);
-		::world = world;
 	}
 
-	void Manipulator::uninitialize()
+	void Manipulator::Uninitialize()
 	{
-		if (cache)
+		if (manager)
 		{
-			delete cache;
+			delete manager;
 		}
 
 		if (executor)
@@ -34,28 +35,33 @@ namespace Editor
 			delete executor;
 		}
 
-		if (manager)
+		if (cache)
 		{
-			delete manager;
+			delete cache;
+		}
+
+		if (world)
+		{
+			delete world;
 		}
 	}
 
-	Cache* Manipulator::getCache()
+	Cache* Manipulator::GetCache()
 	{
 		return cache;
 	}
 
-	CacheManager* Manipulator::getCacheManager()
+	CacheManager* Manipulator::GetCacheManager()
 	{
 		return manager;
 	}
 
-	Executor* Manipulator::getExecutor()
+	Executor* Manipulator::GetExecutor()
 	{
 		return executor;
 	}
 
-	const World* Manipulator::getWorld()
+	const World* Manipulator::GetWorld()
 	{
 		return world;
 	}
