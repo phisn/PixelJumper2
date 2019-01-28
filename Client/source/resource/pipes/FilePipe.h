@@ -39,6 +39,7 @@ namespace Resource
 			buffer(new char[FILE_BUFFER_SIZE]),
 			file(fileDefinition.path, std::ios::out | std::ios::binary)
 		{
+			memset(buffer, 0xaa, FILE_BUFFER_SIZE);
 		}
 
 		~FileWritePipe() override

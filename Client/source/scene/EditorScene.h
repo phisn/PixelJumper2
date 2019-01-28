@@ -97,6 +97,12 @@ namespace Scene
 						L"TestWorld")
 					)
 				{
+					/*
+					
+						Tiles are not correctly saved
+					
+					*/
+
 					Log::Information(L"Successfully saved world");
 				}
 				else
