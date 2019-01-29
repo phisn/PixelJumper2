@@ -51,9 +51,9 @@ bool Editor::World::convertTiles(
 			&tileGroups);
 	}
 
-	sf::Vector2u worldSize;
-		
-	for (GroupedTile& tile : groupedTiles)
+	// World size cant be larger than tile position (ignore size)
+	TilePosition worldWidth = 0, worldHeight = 0;
+	for (const GroupedTile& tile : groupedTiles)
 	{
 		if (tile.position.x > RTILE_TYPE_MAX(x) ||
 			tile.position.y > RTILE_TYPE_MAX(y))
@@ -81,24 +81,25 @@ bool Editor::World::convertTiles(
 		resourceTile->Header.y = tile.position.y;
 
 		// rewrite
-		sf::Uint32 x = tile.size.x + tile.position.x;
-		if (worldSize.x < x)
+		const sf::Uint32 totalTileWidth = tile.size.x + tile.position.x;
+		if (worldWidth < totalTileWidth)
 		{
-			worldSize.x = x;
+			worldWidth = totalTileWidth;
 		}
 
-		sf::Uint32 y = tile.size.y + tile.position.y;
-		if (worldSize.y < y)
+		const sf::Uint32 totalTileHeight = tile.size.y + tile.position.y;
+		if (worldHeight < totalTileHeight)
 		{
-			worldSize.y = y;
+			worldHeight = totalTileHeight;
 		}
 	}
 
-	world->HeaderProperties.width = worldSize.x;
-	world->HeaderProperties.height = worldSize.y;
+	world->HeaderProperties.width = worldWidth;
+	world->HeaderProperties.height = worldHeight;
 
 	return groupedTiles.size() > 0; // TODO: pointless?
 }
+
 void Editor::World::sortTiles(TileGroups* const tileGroups) const
 {
 	for (TileBase* const tile : tiles)
@@ -123,26 +124,155 @@ void Editor::World::groupTiles(
 {
 	int totalTileCount = 0; // for logging
 
+	struct LocalTileStorage
+	{
+		TileBase* tile;
+		mutable bool consumed;
+	};
+
+	// start smallest from 0 in resource
+	Editor::VectorTilePosition smallestTilePosition = tileGroups->begin()->begin().operator*()->getPosition();
 	for (const std::vector<TileBase*>& tileGroup : *tileGroups)
 	{
-		// for tests replace later
-		for (TileBase* const tile : tileGroup)
+		Editor::VectorTilePosition smallestInGroup = std::min_element(tileGroup.begin(), tileGroup.end(),
+			[&totalTileCount](const TileBase* const tile1, const TileBase* const tile2)
 		{
-			++totalTileCount;
+				++totalTileCount;
 
-			groupedTiles->emplace_back();
-			GroupedTile* groupedTile = &groupedTiles->back();
+				return tile1->getPosition().x == tile2->getPosition().x
+					? tile1->getPosition().y < tile2->getPosition().y
+					: tile1->getPosition().x < tile2->getPosition().x;
+		}).operator*()->getPosition();
 
-			groupedTile->tile = tile;
-
-			groupedTile->size = { 1u, 1u };
-			groupedTile->position = Resource::VectorTilePosition(tile->getPosition());
+		if (smallestTilePosition.x == smallestInGroup.x
+				? smallestTilePosition.y > smallestInGroup.y
+: smallestTilePosition.x > smallestInGroup.x)
+		{
+		smallestTilePosition = smallestInGroup;
 		}
-		// -----------------------
-
-		// group and push to tileGroups
 	}
 
+	for (const std::vector<TileBase*>& tileGroup : *tileGroups)
+	{
+		std::set<LocalTileStorage, bool(*)(const LocalTileStorage, const LocalTileStorage)> orderedTiles(
+			[](const LocalTileStorage tile1, const LocalTileStorage tile2)
+			{
+				return tile1.tile->getPosition().x == tile2.tile->getPosition().x
+					? tile1.tile->getPosition().y < tile2.tile->getPosition().y
+					: tile1.tile->getPosition().x < tile2.tile->getPosition().x;
+			});
+
+		for (TileBase* tile : tileGroup)
+		{
+			orderedTiles.insert({ tile, false });
+		}
+
+		GroupedTile* current = NULL;
+		for (decltype(orderedTiles)::iterator tile = orderedTiles.begin()
+			; tile != orderedTiles.end(); ++tile)
+		{
+		AQUIRE_NEW_GROUP:
+			if (tile->consumed)
+			{
+				continue;
+			}
+
+			if (current == NULL)
+			{
+				groupedTiles->emplace_back();
+				current = &groupedTiles->back();
+
+				current->position = Resource::VectorTilePosition(
+					tile->tile->getPosition() - smallestTilePosition
+				);
+				current->realPosition = tile->tile->getPosition();
+				current->size = { 1, 1 };
+				current->tile = tile->tile;
+
+				continue;
+			}
+
+			// extend vertical
+			if (current->realPosition.x == tile->tile->getPosition().x &&					// same width
+				current->realPosition.y + current->size.y == tile->tile->getPosition().y)	// exact height
+			{
+				current->size.y++;
+				tile->consumed = true;
+
+				continue;
+			}
+
+			// extend horizontal
+			decltype(orderedTiles)::iterator currentTile = tile;
+			while (true)
+			{
+				while (currentTile != orderedTiles.end() // reached end
+					&& current->realPosition.x + current->size.x != currentTile->tile->getPosition().x)
+				{
+					++currentTile;
+				}  // goto expected x
+
+				while (currentTile != orderedTiles.end() // reached end
+					&& current->realPosition.x + current->size.x == currentTile->tile->getPosition().x
+					&& current->realPosition.y != currentTile->tile->getPosition().y)
+				{
+					++currentTile;
+				} // goto expected y
+
+				// reached end or invalid width
+				if (currentTile == orderedTiles.end())
+				{
+					current = NULL;
+					goto AQUIRE_NEW_GROUP;
+				}
+
+				// remark to set all consumed
+				decltype(orderedTiles)::iterator currentRowBegin = currentTile;
+
+				{	// check whole row if exists
+					int offset = 0;
+
+					while (true)
+					{
+						if (current->realPosition.x + current->size.x != currentTile->tile->getPosition().x)
+						{
+							current = NULL;
+							goto AQUIRE_NEW_GROUP;
+						}
+
+						if (current->realPosition.y + offset != currentTile->tile->getPosition().y)
+						{
+							current = NULL;
+							goto AQUIRE_NEW_GROUP; // failed
+						}
+
+						++currentTile;
+
+						if (++offset >= current->size.y)
+						{
+							break;
+						}
+
+						if (currentTile == orderedTiles.end())
+						{
+							current = NULL;
+							goto AQUIRE_NEW_GROUP;
+						}
+					}
+				}
+
+				// success -> set all consumed
+				for (int i = 0; i < current->size.y; ++i)
+				{
+					(currentRowBegin++)->consumed = true;
+				}
+
+				++current->size.x;
+			}
+
+			// unreachable
+		}
+	}
 
 	Log::Information(
 		L"Single Tiles: "

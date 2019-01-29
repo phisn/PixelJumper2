@@ -21,6 +21,8 @@ namespace Editor
 	{
 		struct GroupedTile
 		{
+			Editor::VectorTilePosition realPosition;
+
 			Resource::VectorTileSize size;
 			Resource::VectorTilePosition position;
 
