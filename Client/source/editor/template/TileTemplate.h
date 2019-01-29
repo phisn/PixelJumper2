@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/Common.h>
-#include <Client/source/editor/tile/TileBase.h>
+#include <Client/source/editor/tile/EditorTileBase.h>
 
 #include <SFML/Graphics.hpp>
 

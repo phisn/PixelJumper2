@@ -2,7 +2,7 @@
 
 #include <Client/source/editor/grid/GridView.h>
 #include <Client/source/editor/grid/Selector.h>
-#include <Client/source/editor/World.h>
+#include <Client/source/editor/EditorWorld.h>
 
 #include <Client/source/menu/RootBase.h>
 

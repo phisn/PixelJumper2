@@ -3,7 +3,8 @@
 #include <Client/source/editor/manipulator/cache/Cache.h>
 #include <Client/source/editor/manipulator/Component.h>
 #include <Client/source/editor/manipulator/Element.h>
-#include <Client/source/editor/World.h>
+
+#include <Client/source/editor/EditorWorld.h>
 
 #include <vector>
 

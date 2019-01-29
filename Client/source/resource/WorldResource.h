@@ -10,6 +10,8 @@
 
 #define WORLD_MAGIC 0xbb'22'cc'33
 
+#pragma pack(push, 1)
+
 namespace Resource
 {
 	class World
@@ -38,6 +40,8 @@ namespace Resource
 			AUTO sf::Uint16 tileCount;
 			AUTO sf::Uint32 tileCheckSum;
 		} HeaderProperties = { };
+
+		 int i = sizeof(HeaderProperties);
 
 		EDIT std::vector<Resource::Tile> TileContainer;
 	private:
@@ -70,3 +74,5 @@ namespace Resource
 		bool validateHeaderProperties() const;
 	};
 }
+
+#pragma pack(pop)

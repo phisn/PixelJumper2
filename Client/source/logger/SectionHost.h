@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/logger/Level.h>
+#include <Client/source/logger/LoggerLevel.h>
 #include <Client/source/logger/Names.h>
 #include <Client/source/logger/Output.h>
 

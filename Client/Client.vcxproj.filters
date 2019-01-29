@@ -138,20 +138,11 @@
     <ClInclude Include="source\game\tiles\TileColor.h">
       <Filter>source\game\tiles</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\tile\TileBase.h">
-      <Filter>source\editor\tile</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\tile\Wall.h">
-      <Filter>source\editor\tile</Filter>
-    </ClInclude>
     <ClInclude Include="source\editor\template\TileTemplate.h">
       <Filter>source\editor\template</Filter>
     </ClInclude>
     <ClInclude Include="source\editor\template\WallTemplate.h">
       <Filter>source\editor\template</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\World.h">
-      <Filter>source\editor</Filter>
     </ClInclude>
     <ClInclude Include="source\editor\tilemenu\TileMenu.h">
       <Filter>source\editor\tilemenu</Filter>
@@ -273,9 +264,6 @@
     <ClInclude Include="source\resource\StaticResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
-    <ClInclude Include="source\logger\Level.h">
-      <Filter>source\logger</Filter>
-    </ClInclude>
     <ClInclude Include="source\logger\Output.h">
       <Filter>source\logger</Filter>
     </ClInclude>
@@ -324,12 +312,6 @@
     <ClInclude Include="source\resource\pipes\PipeBase.h">
       <Filter>source\resource\pipes</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\tiles\TileBase.h">
-      <Filter>source\resource\tiles</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\tiles\Wall.h">
-      <Filter>source\resource\tiles</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\TileFactory.h">
       <Filter>source\resource</Filter>
     </ClInclude>
@@ -341,6 +323,24 @@
     </ClInclude>
     <ClInclude Include="source\device\RandomDevice.h">
       <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\tile\EditorWall.h">
+      <Filter>source\editor\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\EditorWorld.h">
+      <Filter>source\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\tile\EditorTileBase.h">
+      <Filter>source\editor\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="source\logger\LoggerLevel.h">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\tiles\ResourceWall.h">
+      <Filter>source\resource\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\tiles\ResourceTileBase.h">
+      <Filter>source\resource\tiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -388,12 +388,6 @@
     </ClCompile>
     <ClCompile Include="source\game\World.cpp">
       <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\tile\Wall.cpp">
-      <Filter>source\editor\tile</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\tile\TileBase.cpp">
-      <Filter>source\editor\tile</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\template\TileTemplate.cpp">
       <Filter>source\editor\template</Filter>
@@ -530,17 +524,23 @@
     <ClCompile Include="source\resource\pipes\PipeBase.cpp">
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
-    <ClCompile Include="source\resource\tiles\Wall.cpp">
-      <Filter>source\resource\tiles</Filter>
-    </ClCompile>
     <ClCompile Include="source\resource\TileFactory.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
     <ClCompile Include="source\device\RandomDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\World.cpp">
+    <ClCompile Include="source\editor\tile\EditorWall.cpp">
+      <Filter>source\editor\tile</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\EditorWorld.cpp">
       <Filter>source\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\tile\EditorTileBase.cpp">
+      <Filter>source\editor\tile</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\tiles\ResourceWall.cpp">
+      <Filter>source\resource\tiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

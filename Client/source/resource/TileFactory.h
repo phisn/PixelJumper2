@@ -2,8 +2,8 @@
 
 #include <Client/source/game/tiles/TileId.h>
 
-#include <Client/source/resource/tiles/TileBase.h>
-#include <Client/source/resource/tiles/Wall.h>
+#include <Client/source/resource/tiles/ResourceTileBase.h>
+#include <Client/source/resource/tiles/ResourceWall.h>
 
 #include <map>
 #include <sal.h>

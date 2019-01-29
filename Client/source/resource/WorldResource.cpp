@@ -6,20 +6,20 @@ namespace Resource
 	{
 		sf::Uint32 result = (1 << 16) + (1 << 8) + 3;
 
-		result += HeaderProperties.width;
-		result -= ~HeaderProperties.height;
-		result += HeaderProperties.tileCount;
+		result += (decltype(result)) HeaderProperties.width;
+		result -= (decltype(result)) ~HeaderProperties.height;
+		result += (decltype(result)) HeaderProperties.tileCount;
 
-		result *= HeaderIntro.worldID;
-		result /= HeaderAuth.authorName.size();
-		result -= ~HeaderAuth.mapName.size();
+		result *= (decltype(result)) HeaderIntro.worldID;
+		result /= (decltype(result)) HeaderAuth.authorName.size();
+		result -= (decltype(result)) ~HeaderAuth.mapName.size();
 
 		for (Resource::Tile& tile : TileContainer)
 		{ // TODO: check if not bad
-			result *= (sf::Uint16) tile.Header.id;
-			result += ~tile.Header.height;
-			result *= tile.Header.width;
-			result += ~tile.Header.contentSize >> 2;
+			result *= (decltype(result)) tile.Header.id;
+			result += (decltype(result)) ~tile.Header.height;
+			result *= (decltype(result)) tile.Header.width;
+			result += (decltype(result)) ~tile.Header.contentSize >> 2;
 		}
 
 		return result;
@@ -78,7 +78,8 @@ namespace Resource
 			return false;
 		}
 
-		HeaderProperties.tileCount = TileContainer.size();
+		// TODO: check overflow?
+		HeaderProperties.tileCount = (sf::Int16) TileContainer.size();
 		HeaderProperties.tileCheckSum = generateCheckSum();
 
 		if (!writeHeaderProperties(pipe))

@@ -26,7 +26,7 @@ namespace
 			Log::Warning(
 				L"Unable to open file ('"
 				+ filename.filename().wstring()
-				+ L'\')'
+				+ L"\')"
 			);
 
 			return false;
@@ -43,7 +43,7 @@ namespace
 			Log::Warning(
 				L"Invalid file size ('"
 				+ filename.filename().wstring()
-				+ L'\')'
+				+ L"\')"
 			);
 
 			return false;
@@ -54,7 +54,7 @@ namespace
 			Log::Warning(
 				L"Invalid file format ('"
 				+ filename.filename().wstring()
-				+ L'\')'
+				+ L"\')"
 			);
 
 			return false;
@@ -74,7 +74,9 @@ namespace
 	{
 		return mapResource(
 			type, 
-			Resource::Interface::GetDefinition(type)->path + name
+			std::filesystem::path(
+				Resource::Interface::GetDefinition(type)->path + name
+			)
 		);
 	}
 
@@ -173,7 +175,7 @@ namespace Resource
 	{
 		Log::Section section(L"Mapping all '" + Translate(type) + L"' resources");
 
-		return mapResourceFolder;
+		return mapResourceFolder(type);
 	}
 
 	bool Interface::WriteResource(

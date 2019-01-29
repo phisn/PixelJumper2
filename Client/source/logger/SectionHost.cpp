@@ -13,7 +13,7 @@ namespace Log
 		if (this == root)
 		{
 			logAllMessages();
-			root = NULL;
+			current = root = NULL;
 		}
 		else
 		{

@@ -73,7 +73,7 @@ namespace Resource
 		bool writeString(
 			const std::wstring* const str)
 		{
-			Size size = str->size();
+			Size size = (Size) str->size();
 
 			if (size <= 0)
 			{
@@ -97,7 +97,7 @@ namespace Resource
 		virtual ~ReadPipe() = 0 { }
 
 		// return == truncated
-		virtual int readContent(
+		virtual sf::Int64 readContent(
 			char* const buffer,
 			const sf::Uint64 size) = 0;
 		

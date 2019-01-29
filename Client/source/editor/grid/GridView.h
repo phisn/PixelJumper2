@@ -4,7 +4,7 @@
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/editor/grid/GridProperties.h>
-#include <Client/source/editor/tile/TileBase.h>
+#include <Client/source/editor/tile/EditorTileBase.h>
 
 #include <SFML/Graphics.hpp>
 

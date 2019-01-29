@@ -29,15 +29,16 @@ namespace Scene
 				!isInside(
 					selected,
 
-					event.mouseButton.x,
-					event.mouseButton.y)
+					(float) event.mouseButton.x,
+					(float) event.mouseButton.y)
 				)
 			{
 				for (MENU::RootBase* root : containers)
 					if (isInside(
-						root,
-						event.mouseButton.x,
-						event.mouseButton.y))
+							root,
+							(float) event.mouseButton.x,
+							(float) event.mouseButton.y)
+						)
 					{
 						selected = root;
 

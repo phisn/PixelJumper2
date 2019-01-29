@@ -151,7 +151,7 @@ namespace Resource
 		std::ofstream file;
 
 		char* buffer;
-		int consumed = 0;
+		sf::Uint64 consumed = 0;
 	};
 
 	class FileReadPipe
@@ -176,11 +176,11 @@ namespace Resource
 			return definition->size;
 		}
 		
-		int readContent(
+		sf::Int64 readContent(
 			char *buffer, 
 			const sf::Uint64 size) override
 		{
-			int position = 0;
+			sf::Uint64 position = 0;
 
 			if (filled > 0)
 			{
@@ -243,7 +243,7 @@ namespace Resource
 				FILE_BUFFER_SIZE);
 		}
 
-		int readFile(
+		sf::Uint64 readFile(
 			char* buffer,
 			sf::Uint64 size)
 		{
@@ -278,6 +278,6 @@ namespace Resource
 		std::ifstream file;
 
 		char* buffer;
-		int filled;
+		sf::Uint64 filled;
 	};
 }

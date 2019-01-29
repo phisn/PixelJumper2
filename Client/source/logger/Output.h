@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/logger/Level.h>
+#include <Client/source/logger/LoggerLevel.h>
 
 #include <string>
 #include <vector>

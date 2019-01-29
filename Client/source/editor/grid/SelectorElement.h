@@ -3,7 +3,7 @@
 #include <Client/source/editor/grid/GridView.h>
 #include <Client/source/editor/manipulator/Element.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
-#include <Client/source/editor/World.h>
+#include <Client/source/editor/EditorWorld.h>
 
 namespace Editor
 {
@@ -39,6 +39,8 @@ namespace Editor
 			{
 				createArea();
 			}
+
+			return true;
 		}
 	private:
 		SelectionCache::Input* input;

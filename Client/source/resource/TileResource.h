@@ -5,7 +5,11 @@
 #include <Client/source/resource/TileFactory.h>
 #include <Client/source/resource/ResourceBase.h>
 
-#include <Client/source/resource/tiles/TileBase.h>
+#include <Client/source/resource/tiles/ResourceTileBase.h>
+
+#include <Client/source/Common.h>
+
+#pragma pack(push, 1)
 
 namespace Resource
 {
@@ -35,11 +39,11 @@ namespace Resource
 		{
 			AUTO Game::Tile::Id id;
 
-			EDIT sf::Uint8 width;
-			EDIT sf::Uint8 height;
+			EDIT TileSize width;
+			EDIT TileSize height;
 
-			EDIT sf::Uint16 x;
-			EDIT sf::Uint16 y;
+			EDIT TilePosition x;
+			EDIT TilePosition y;
 			
 			AUTO sf::Uint16 contentSize; // probably does not exceed
 		} Header = { };
@@ -101,7 +105,7 @@ namespace Resource
 			Header.id = Content->getTileId();
 			Header.contentSize = (sf::Uint16) Content->getSize();
 
-			if ( !writeHeader(pipe) )
+			if (!writeHeader(pipe))
 			{
 				return false;
 			}
@@ -137,9 +141,10 @@ namespace Resource
 		bool validateHeader() const
 		{
 			return Header.id > Game::Tile::Id::Invalid
-				&& Header.width == 0
-				&& Header.height == 0
-				&& Header.contentSize == 0;
+				&& Header.width != 0
+				&& Header.height != 0;
 		}
 	};
 }
+
+#pragma pack(pop)

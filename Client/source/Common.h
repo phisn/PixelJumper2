@@ -14,7 +14,7 @@ namespace Editor
 namespace Resource
 {
 	typedef sf::Int16 TilePosition;
-	typedef sf::Int16 TileSize;
+	typedef sf::Int8 TileSize;
 
 	typedef sf::Vector2<TilePosition> VectorTilePosition;
 	typedef sf::Vector2<TileSize> VectorTileSize;

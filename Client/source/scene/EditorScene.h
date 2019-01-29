@@ -7,7 +7,7 @@
 #include <Client/source/editor/grid/GridMenu.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 #include <Client/source/editor/tilemenu/TileMenu.h>
-#include <Client/source/editor/World.h>
+#include <Client/source/editor/EditorWorld.h>
 
 #include <Client/source/resource/ResourceInterface.h>
 #include <Client/source/resource/WorldResource.h>
@@ -77,7 +77,7 @@ namespace Scene
 				event.key.code == sf::Keyboard::S &&
 				event.key.control)
 			{
-				Log::Information(L"Saving world");
+				Log::Section section(L"Saving world");
 
 				Resource::World* world = EDITOR::Manipulator::GetWorld()->convert(
 					Device::Random::MakeRandom<int>(),
