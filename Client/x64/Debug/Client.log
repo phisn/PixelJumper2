@@ -1,1 +1,4 @@
-﻿  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe
+﻿  EditorWorld.cpp
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\EditorWorld.cpp(97): warning C4244: '=': conversion from 'Editor::TilePosition' to 'sf::Uint16', possible loss of data
+C:\Users\phisn\source\repos\PixelJumper2\Client\source\editor\EditorWorld.cpp(98): warning C4244: '=': conversion from 'Editor::TilePosition' to 'sf::Uint16', possible loss of data
+  Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

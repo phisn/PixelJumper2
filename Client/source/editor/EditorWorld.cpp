@@ -131,24 +131,32 @@ void Editor::World::groupTiles(
 	};
 
 	// start smallest from 0 in resource
+	// TODO: fix -> split for x and y
 	Editor::VectorTilePosition smallestTilePosition = tileGroups->begin()->begin().operator*()->getPosition();
 	for (const std::vector<TileBase*>& tileGroup : *tileGroups)
 	{
-		Editor::VectorTilePosition smallestInGroup = std::min_element(tileGroup.begin(), tileGroup.end(),
+		const Editor::TilePosition smallestWidthInGroup = std::min_element(tileGroup.begin(), tileGroup.end(),
 			[&totalTileCount](const TileBase* const tile1, const TileBase* const tile2)
 		{
-				++totalTileCount;
+			return tile1->getPosition().x < tile2->getPosition().x;
 
-				return tile1->getPosition().x == tile2->getPosition().x
-					? tile1->getPosition().y < tile2->getPosition().y
-					: tile1->getPosition().x < tile2->getPosition().x;
-		}).operator*()->getPosition();
+		}).operator*()->getPosition().x;
 
-		if (smallestTilePosition.x == smallestInGroup.x
-				? smallestTilePosition.y > smallestInGroup.y
-: smallestTilePosition.x > smallestInGroup.x)
+		const Editor::TilePosition smallestHeightInGroup = std::min_element(tileGroup.begin(), tileGroup.end(),
+			[&totalTileCount](const TileBase* const tile1, const TileBase* const tile2)
 		{
-		smallestTilePosition = smallestInGroup;
+			return tile1->getPosition().y < tile2->getPosition().y;
+
+		}).operator*()->getPosition().y;
+
+		if (smallestWidthInGroup < smallestTilePosition.x)
+		{
+			smallestTilePosition.x = smallestWidthInGroup;
+		}
+
+		if (smallestHeightInGroup < smallestTilePosition.y)
+		{
+			smallestTilePosition.y = smallestHeightInGroup;
 		}
 	}
 
@@ -274,16 +282,13 @@ void Editor::World::groupTiles(
 		}
 	}
 
+
 	Log::Information(
-		L"Single Tiles: "
-		+ std::to_wstring(totalTileCount)
+		L"Tile Groups: "
+		+ std::to_wstring(tileGroups->size())
 	);
 	Log::Information(
 		L"Grouped Tiles: "
 		+ std::to_wstring(groupedTiles->size())
-	);
-	Log::Information(
-		L"Tile Groups: "
-		+ std::to_wstring(tileGroups->size())
 	);
 }
