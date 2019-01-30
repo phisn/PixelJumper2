@@ -10,7 +10,9 @@ namespace Game
 		{
 			Invalid = 0,
 
-			Wall
+			Wall,
+			
+			_Length
 		};
 	}
 }

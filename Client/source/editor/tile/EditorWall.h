@@ -28,6 +28,11 @@ namespace Editor
 			{
 				return new Resource::WallTile();
 			}
+
+			bool adopt(const Resource::TileBase* const tile) override
+			{
+				return true; // ignore
+			}
 		};
 	}
 }

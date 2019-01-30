@@ -31,7 +31,7 @@ namespace
 
 			return false;
 		}
-
+		/*
 		Resource::Magic magic;
 		file.read(
 			(char*) &magic,
@@ -58,7 +58,7 @@ namespace
 			);
 
 			return false;
-		}
+		}*/
 
 		Resource::FileDefinition* resource = &mappedResources[type][filename.filename().wstring()];
 		// resource->file = std::move(file); | do not store handle

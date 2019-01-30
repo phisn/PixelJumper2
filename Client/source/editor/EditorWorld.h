@@ -5,6 +5,7 @@
 
 #include <Client/source/editor/tile/EditorTileBase.h>
 #include <Client/source/editor/template/TileTemplate.h>
+#include <Client/source/editor/manipulator/Manipulator.h>
 
 #include <Client/source/logger/Logger.h>
 #include <Client/source/resource/WorldResource.h>
@@ -58,6 +59,28 @@ namespace Editor
 			const sf::Uint32 worldID,
 			const std::wstring authorName,
 			const std::wstring mapName) const;
+
+		bool adopt(const Resource::World* const world)
+		{
+			for (const Resource::Tile& resourceTile : world->TileContainer)
+			{
+				TileTemplate* tileTemplate = Manipulator::GetTemplate(resourceTile.Header.id);
+
+				for (int xoffset = 0; xoffset < resourceTile.Header.width; ++xoffset)
+					for (int yoffset = 0; yoffset < resourceTile.Header.height; ++yoffset)
+					{
+						TileBase* const editorTile = tileTemplate->create(Editor::VectorTilePosition(
+							resourceTile.Header.x + xoffset, 
+							resourceTile.Header.y + yoffset
+						));
+
+						tiles.insert(editorTile);
+						editorTile->adopt(resourceTile.Content);
+					}
+			}
+
+			return true;
+		}
 
 		const std::set<TileBase*>& getTiles() const
 		{

@@ -342,6 +342,9 @@
     <ClInclude Include="source\resource\tiles\ResourceTileBase.h">
       <Filter>source\resource\tiles</Filter>
     </ClInclude>
+    <ClInclude Include="source\editor\manipulator\tasks\LoadWorldTask.h">
+      <Filter>source\editor\task</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -541,6 +544,9 @@
     </ClCompile>
     <ClCompile Include="source\resource\tiles\ResourceWall.cpp">
       <Filter>source\resource\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\manipulator\tasks\LoadWorldTask.cpp">
+      <Filter>source\editor\task</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

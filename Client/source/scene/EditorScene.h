@@ -9,6 +9,8 @@
 #include <Client/source/editor/tilemenu/TileMenu.h>
 #include <Client/source/editor/EditorWorld.h>
 
+#include <Client/source/editor/manipulator/tasks/LoadWorldTask.h>
+
 #include <Client/source/resource/ResourceInterface.h>
 #include <Client/source/resource/WorldResource.h>
 
@@ -76,7 +78,7 @@ namespace Scene
 			if (event.type == sf::Event::KeyPressed &&
 				event.key.code == sf::Keyboard::S &&
 				event.key.control)
-			{
+			{ // propably does not need task
 				Log::Section section(L"Saving world");
 
 				Resource::World* world = EDITOR::Manipulator::GetWorld()->convert(
@@ -111,6 +113,15 @@ namespace Scene
 				}
 
 				delete world;
+			}
+			
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::L &&
+				event.key.control)
+			{
+				EDITOR::Manipulator::GetExecutor()->execute(
+					new EDITOR::LoadWorldTask(L"TestWorld")
+				);
 			}
 		}
 

@@ -4,13 +4,22 @@
 #include <Client/source/editor/manipulator/cache/CacheManager.h>
 #include <Client/source/editor/manipulator/Executor.h>
 
+#include <Client/source/editor/EditorWorld.h>
+#include <Client/source/editor/template/WallTemplate.h>
+
+#include <map>
+
 namespace
 {
 	Editor::Cache* cache = NULL;
 	Editor::CacheManager* manager = NULL;
 	Editor::Executor* executor = NULL;
 	Editor::World* world = NULL;
+
+	std::map<Game::Tile::Id, Editor::TileTemplate*> tileTemplates;
 }
+
+#define EMPLACE_TILE(tile) tileTemplates.emplace(Game::Tile::Id:: ## tile, new Editor:: ## tile ## Template())
 
 namespace Editor
 {
@@ -21,6 +30,9 @@ namespace Editor
 		cache = new Cache();
 		manager = new CacheManager(cache);
 		executor = new Executor(world);
+
+		// TILE_MARKER: extendable
+		EMPLACE_TILE(Wall);
 	}
 
 	void Manipulator::Uninitialize()
@@ -44,6 +56,13 @@ namespace Editor
 		{
 			delete world;
 		}
+
+		for (const std::pair<Game::Tile::Id, TileTemplate*>& tileTemplate : tileTemplates)
+		{
+			delete tileTemplate.second;
+		}
+
+		tileTemplates.clear();
 	}
 
 	Cache* Manipulator::GetCache()
@@ -64,5 +83,11 @@ namespace Editor
 	const World* Manipulator::GetWorld()
 	{
 		return world;
+	}
+
+	TileTemplate* Manipulator::GetTemplate(
+		const Game::Tile::Id tileId)
+	{
+		return tileTemplates[tileId];
 	}
 }

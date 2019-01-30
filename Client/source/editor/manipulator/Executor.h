@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#define TASK_LIMIT 1024
+#define TASK_LIMIT 32
 
 namespace Editor
 {
@@ -18,8 +18,8 @@ namespace Editor
 		virtual bool execute(
 			World* const world) = 0;
 
-		virtual void redo() = 0;
-		virtual void undo() = 0;
+		virtual void redo(World* const world) = 0;
+		virtual void undo(World* const world) = 0;
 
 		const std::wstring* getName() const
 		{
@@ -72,11 +72,17 @@ namespace Editor
 
 				if (tasks.size() > TASK_LIMIT)
 				{
+					delete tasks.back();
 					tasks.pop_back();
 				}
 
-				if (redoTasks.empty())
+				if (!redoTasks.empty())
 				{
+					for (Task* const task : redoTasks)
+					{
+						delete task;
+					}
+
 					redoTasks.clear(); 
 				}
 			}
@@ -94,7 +100,7 @@ namespace Editor
 				Task* const task = tasks.front();
 
 				redoTasks.push_back(task);
-				task->undo();
+				task->undo(world);
 
 				tasks.pop_front();
 			}
@@ -112,7 +118,7 @@ namespace Editor
 				Task* const task = redoTasks.back();
 
 				tasks.push_back(task);
-				task->redo();
+				task->redo(world);
 
 				redoTasks.pop_back();
 			}

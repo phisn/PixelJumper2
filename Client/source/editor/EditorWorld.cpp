@@ -131,7 +131,7 @@ void Editor::World::groupTiles(
 	};
 
 	// start smallest from 0 in resource
-	// TODO: fix -> split for x and y
+	// TODO: rewrite find smallest (quick and easy)
 	Editor::VectorTilePosition smallestTilePosition = tileGroups->begin()->begin().operator*()->getPosition();
 	for (const std::vector<TileBase*>& tileGroup : *tileGroups)
 	{

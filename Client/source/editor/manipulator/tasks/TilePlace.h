@@ -60,12 +60,12 @@ namespace Editor
 			return false;
 		}
 
-		void redo() override
+		void redo(World* const world) override
 		{
 
 		}
 
-		void undo() override
+		void undo(World* const world) override
 		{
 
 		}

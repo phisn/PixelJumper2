@@ -62,6 +62,8 @@ namespace Editor
 		virtual Resource::TileBase* create(
 			const Resource::VectorTileSize size,
 			const Resource::VectorTilePosition position) const = 0;
+		virtual bool adopt(
+			const Resource::TileBase* const tile) = 0;
 	private:
 		sf::RectangleShape shape;
 	};

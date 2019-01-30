@@ -65,10 +65,6 @@ namespace Editor
 
 		~TileMenu()
 		{
-			for (TileTemplate* const tile : tiles)
-			{
-				delete tile;
-			}
 		}
 
 		bool initialize() override
@@ -100,17 +96,14 @@ namespace Editor
 	private:
 		void setupTileTemplates()
 		{
-			addTileTemplate<WallTemplate>();
-		}
+			for (int i = 0; i < (int) Game::Tile::Id::_Length; ++i)
+			{
+				tiles.push_back(Manipulator::GetTemplate((Game::Tile::Id) i));
 
-		template <class Template>
-		void addTileTemplate()
-		{
-			tiles.push_back( new Template() );
-
-			component.addTileButton(
-				container.addTileTemplate( tiles.back() )
-			);
+				component.addTileButton(
+					container.addTileTemplate( tiles.back() )
+				);
+			}
 		}
 
 		TileComponent component;

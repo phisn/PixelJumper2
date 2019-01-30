@@ -165,10 +165,12 @@ namespace Resource
 			definition(fileDefinition),
 			file(fileDefinition->path, std::ios::in | std::ios::binary)
 		{
+			buffer = new char[FILE_BUFFER_SIZE];
 		}
 
 		~FileReadPipe() override
 		{
+			delete[] buffer;
 		}
 
 		sf::Uint64 getSize() const override
