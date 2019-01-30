@@ -133,7 +133,7 @@ namespace Resource
 			str->resize(size);
 
 			return readContentForce(
-				(char*) str->c_str(), size
+				(char*) str->c_str(), size * sizeof(wchar_t)
 			);
 		}
 	};

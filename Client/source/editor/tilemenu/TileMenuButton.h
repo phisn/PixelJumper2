@@ -99,7 +99,6 @@ namespace Editor
 		{
 			if (selected)
 			{
-				::std::cout << "Place" << std::endl;
 				Manipulator::GetExecutor()->execute<TilePlace>();
 
 				return;

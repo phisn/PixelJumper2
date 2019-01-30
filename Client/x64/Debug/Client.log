@@ -1,8 +1,8 @@
 ﻿  DeviceInterface.cpp
-  ResourceDevice.cpp
-  LoadWorldTask.cpp
-  ResourceInterface.cpp
-  FilePipe.cpp
+  TileComponent.cpp
+  TileContainer.cpp
+  TileMenu.cpp
+  TileMenuButton.cpp
   EditorScene.cpp
   Generating Code...
   Client.vcxproj -> C:\Users\phisn\source\repos\PixelJumper2\build\Debug\Client_x64.exe

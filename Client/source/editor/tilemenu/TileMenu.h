@@ -96,7 +96,7 @@ namespace Editor
 	private:
 		void setupTileTemplates()
 		{
-			for (int i = 0; i < (int) Game::Tile::Id::_Length; ++i)
+			for (int i = 1; i < (int) Game::Tile::Id::_Length; ++i)
 			{
 				tiles.push_back(Manipulator::GetTemplate((Game::Tile::Id) i));
 

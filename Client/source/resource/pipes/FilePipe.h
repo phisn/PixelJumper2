@@ -243,6 +243,7 @@ namespace Resource
 			filled = readFile(
 				buffer,
 				FILE_BUFFER_SIZE);
+			position = 0;
 		}
 
 		sf::Uint64 readFile(
@@ -269,17 +270,18 @@ namespace Resource
 		{
 			memcpy(
 				buffer,
-				this->buffer + (FILE_BUFFER_SIZE - filled),
+				this->buffer + position,
 				size
 			);
 
 			filled -= size;
+			position += size;
 		}
 
 		FileDefinition* definition;
 		std::ifstream file;
 
 		char* buffer;
-		sf::Uint64 filled;
+		sf::Uint64 filled, position;
 	};
 }

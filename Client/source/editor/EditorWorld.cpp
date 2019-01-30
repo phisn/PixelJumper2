@@ -80,6 +80,9 @@ bool Editor::World::convertTiles(
 		resourceTile->Header.x = tile.position.x;
 		resourceTile->Header.y = tile.position.y;
 
+		resourceTile->Header.contentSize = resourceTile->Content->getSize();
+		resourceTile->Header.id = resourceTile->Content->getTileId();
+
 		// rewrite
 		const sf::Uint32 totalTileWidth = tile.size.x + tile.position.x;
 		if (worldWidth < totalTileWidth)

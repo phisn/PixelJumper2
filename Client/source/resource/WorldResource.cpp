@@ -58,7 +58,7 @@ namespace Resource
 			{
 				return false;
 			}
-
+		return true;
 		//////////
 		return HeaderProperties.tileCheckSum == generateCheckSum();
 	}
@@ -114,7 +114,7 @@ namespace Resource
 			return false;
 		}
 
-		if (!pipe->readString<MapNameSize>(&HeaderAuth.authorName))
+		if (!pipe->readString<MapNameSize>(&HeaderAuth.mapName))
 		{
 			return false;
 		}
@@ -124,7 +124,7 @@ namespace Resource
 	
 	bool World::readHeaderProperties(ReadPipe * const pipe)
 	{
-		if (pipe->readValue(&HeaderProperties))
+		if (!pipe->readValue(&HeaderProperties))
 		{
 			return false;
 		}
