@@ -33,6 +33,7 @@ namespace Editor
 			this->input = &input->selection;
 			this->output = &output->selection;
 
+			convertRange();
 			determineType();
 
 			if (this->output->type == SelectionCache::Output::Type::Area)
@@ -46,27 +47,30 @@ namespace Editor
 		SelectionCache::Input* input;
 		SelectionCache::Output* output;
 
+		sf::Vector2f selectPosition1, selectPosition2;
+
+		void convertRange()
+		{
+			selectPosition1 = view->convertPtoC(sf::Vector2i(
+				input->offset.x + (input->size.x < 0 ? input->size.x : 0),
+				input->offset.y + (input->size.y < 0 ? input->size.y : 0)
+			)); // 2 is always bigger
+			selectPosition2 = view->convertPtoC(sf::Vector2i(
+				input->offset.x + (input->size.x >= 0 ? input->size.x : 0),
+				input->offset.y + (input->size.y >= 0 ? input->size.y : 0)
+			));
+		}
+
 		void createArea()
 		{
-			const sf::Vector2f
-				c_position1 = view->convertPtoC(sf::Vector2i(
-					input->offset.x + (input->size.x < 0 ? input->size.x : 0),
-					input->offset.y + (input->size.y < 0 ? input->size.y : 0)
-				)), // 2 is always bigger
-				c_position2 = view->convertPtoC(sf::Vector2i(
-					input->offset.x + (input->size.x >= 0 ? input->size.x : 0),
-					input->offset.y + (input->size.y >= 0 ? input->size.y : 0)
-				));
-
-
 			output->area->offset = VectorTilePosition(
-				(TilePosition) (c_position1.x - fmod(c_position1.x, (float)view->getGridSize()) - (c_position1.x < 0 ? (float)view->getGridSize() : 0)),
-				(TilePosition) (c_position1.y - fmod(c_position1.y, (float)view->getGridSize()) - (c_position1.y < 0 ? (float)view->getGridSize() : 0))
+				(TilePosition) (selectPosition1.x - fmod(selectPosition1.x, (float)view->getGridSize()) - (selectPosition1.x < 0 ? (float)view->getGridSize() : 0)),
+				(TilePosition) (selectPosition1.y - fmod(selectPosition1.y, (float)view->getGridSize()) - (selectPosition1.y < 0 ? (float)view->getGridSize() : 0))
 			);
 
 			const VectorTilePosition c_real_position2 = VectorTilePosition(
-				(TilePosition) (c_position2.x - fmod(c_position2.x, (float)view->getGridSize()) - (c_position2.x < 0 ? (float)view->getGridSize() : 0) + (float)view->getGridSize()),
-				(TilePosition) (c_position2.y - fmod(c_position2.y, (float)view->getGridSize()) - (c_position2.y < 0 ? (float)view->getGridSize() : 0) + (float)view->getGridSize())
+				(TilePosition) (selectPosition2.x - fmod(selectPosition2.x, (float)view->getGridSize()) - (selectPosition2.x < 0 ? (float)view->getGridSize() : 0) + (float)view->getGridSize()),
+				(TilePosition) (selectPosition2.y - fmod(selectPosition2.y, (float)view->getGridSize()) - (selectPosition2.y < 0 ? (float)view->getGridSize() : 0) + (float)view->getGridSize())
 			);
 
 			output->area->size = VectorTileSize( c_real_position2 - output->area->offset );
@@ -85,12 +89,13 @@ namespace Editor
 				2.  Add new tiles to existent tiles
 				
 			*/
-			for (Editor::TileBase* tile : Manipulator::GetWorld()->getTiles())
-				if (tile->getShape()->getPosition().x + tile->getShape()->getSize().x > input->offset.x &&
-					tile->getShape()->getPosition().y + tile->getShape()->getSize().y > input->offset.y &&
 
-					tile->getShape()->getPosition().x < input->offset.x + input->size.x &&
-					tile->getShape()->getPosition().y < input->offset.y + input->size.y)
+			for (Editor::TileBase* tile : Manipulator::GetWorld()->getTiles())
+				if (tile->getShape()->getPosition().x + tile->getShape()->getSize().x > selectPosition1.x &&
+					tile->getShape()->getPosition().y + tile->getShape()->getSize().y > selectPosition1.y &&
+
+					tile->getShape()->getPosition().x < selectPosition2.x &&
+					tile->getShape()->getPosition().y < selectPosition2.y)
 				{
 					if (!tileFound)
 					{
