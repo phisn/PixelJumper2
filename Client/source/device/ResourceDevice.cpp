@@ -28,10 +28,6 @@ namespace Device
 				return false;
 			}
 
-		if (!::Resource::Interface::Initialize())
-		{
-			return false;
-		}
 
 		return true;
 	}
