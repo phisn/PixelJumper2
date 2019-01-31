@@ -16,7 +16,8 @@ namespace Editor
 			:
 			TileTemplate(
 				TILE_WALL_COLOR,
-				L"Wall")
+				L"Wall",
+				Game::Tile::Id::Wall)
 		{
 		}
 

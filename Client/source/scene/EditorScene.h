@@ -75,6 +75,7 @@ namespace Scene
 		{
 			MenuBase::onEvent(event);
 
+			// save world | S + STRG
 			if (event.type == sf::Event::KeyPressed &&
 				event.key.code == sf::Keyboard::S &&
 				event.key.control)
@@ -115,6 +116,7 @@ namespace Scene
 				delete world;
 			}
 			
+			// load world | L + STRG
 			if (event.type == sf::Event::KeyPressed &&
 				event.key.code == sf::Keyboard::L &&
 				event.key.control)
@@ -122,6 +124,22 @@ namespace Scene
 				EDITOR::Manipulator::GetExecutor()->execute(
 					new EDITOR::LoadWorldTask(L"TestWorld")
 				);
+			}
+
+			// undo task | Z + STRG
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::Z &&
+				event.key.control)
+			{
+				EDITOR::Manipulator::GetExecutor()->undo();
+			}
+
+			// redo task | Y + STRG
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::Y &&
+				event.key.control)
+			{
+				EDITOR::Manipulator::GetExecutor()->redo();
 			}
 		}
 

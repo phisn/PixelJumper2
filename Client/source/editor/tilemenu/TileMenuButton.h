@@ -107,7 +107,7 @@ namespace Editor
 			selected = true;
 
 			Manipulator::GetCache()->writeInput()->tile.tile = tile;
-			Manipulator::GetCacheManager()->notify(
+			Manipulator::GetCacheManager()->notifyAll(
 				Cache::Sector::Tile
 			); // container as component
 		} 

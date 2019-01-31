@@ -68,7 +68,7 @@ namespace Editor
 			selection->offset = offset;
 			selection->size = sf::Vector2i(x, y) - offset;
 
-			Manipulator::GetCacheManager()->notify(	
+			Manipulator::GetCacheManager()->notifyAll(	
 				Cache::Sector::Selection
 			);
 		}

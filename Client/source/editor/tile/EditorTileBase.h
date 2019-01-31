@@ -22,7 +22,10 @@ namespace Editor
 	public:
 		TileBase(
 			const sf::Color color,
-			const VectorTilePosition position)
+			const VectorTilePosition position,
+			Game::Tile::Id id)
+			:
+			id(id)
 		{
 			shape.setFillColor(color);
 			setPosition(position);
@@ -35,7 +38,7 @@ namespace Editor
 		virtual bool equals(
 			TileBase* const tile) const
 		{
-			return true; // id == tile->id;
+			return id == tile->id;
 		}
 
 		void setPosition(const VectorTilePosition position)
@@ -64,6 +67,8 @@ namespace Editor
 			const Resource::VectorTilePosition position) const = 0;
 		virtual bool adopt(
 			const Resource::TileBase* const tile) = 0;
+
+		const Game::Tile::Id id;
 	private:
 		sf::RectangleShape shape;
 	};

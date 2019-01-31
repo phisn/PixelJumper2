@@ -18,7 +18,8 @@ namespace Editor
 				:
 				TileBase(
 					TILE_WALL_COLOR,
-					position)
+					position,
+					Game::Tile::Id::Wall)
 			{
 			}
 

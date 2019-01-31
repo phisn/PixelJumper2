@@ -3,6 +3,7 @@
 #include <Client/source/editor/grid/GridProperties.h>
 
 #include <Client/source/editor/manipulator/cache/Cache.h>
+#include <Client/source/editor/manipulator/cache/CacheManager.h>
 #include <Client/source/editor/manipulator/Executor.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 
@@ -40,48 +41,61 @@ namespace Editor
 				for (TilePosition x = begin.x; x < end.x; ++x)
 					for (TilePosition y = begin.y; y < end.y; ++y)
 					{
-						world->setTileSafe(
-							cache->tile.tile->create( VectorTilePosition(x, y) )
+						TileBase* const newTile = cache->tile.tile->create(
+							VectorTilePosition(x, y)
 						);
-					}
 
-				return true;
+						world->setTileSafe(newTile);
+						placedTiles.push_back(newTile);
+					}
 			}
 			else // Type::Tile
 			{
 				for (TileBase* const tile : cache->selection.tile->tiles)
 				{
-					world->replaceTileTemplate(tile, cache->tile.tile);
-				}
+					removedTiles.push_back(tile);
 
-				return true;
+					if (tile->id == cache->tile.tile->id)
+					{
+						world->removeTile(tile);
+					}
+					else
+					{
+						TileBase* const newTile = cache->tile.tile->create(
+							tile->getPosition()
+						);
+
+						world->setTileUnsafe(newTile);
+						placedTiles.push_back(newTile);
+					}
+				}
 			}
 
-			return false;
+			Manipulator::GetCacheManager()->notifyAll(Cache::Sector::Selection);
 		}
 
 		void redo(World* const world) override
 		{
-
+			undo(world);
 		}
 
 		void undo(World* const world) override
 		{
+			for (TileBase* placedTile : placedTiles)
+			{
+				world->removeTile(placedTile);
+			}
 
+			for (TileBase* removedTile : removedTiles)
+			{
+				world->setTileUnsafe(removedTile);
+			}
+
+			placedTiles.swap(removedTiles);
 		}
 
 	private:
-		struct
-		{
-			TileTemplate* tile;
-
-
-		} newContent;
-
-		struct
-		{
-
-
-		} oldContent;
+		std::vector<TileBase*> placedTiles;
+		std::vector<TileBase*> removedTiles;
 	};
 }

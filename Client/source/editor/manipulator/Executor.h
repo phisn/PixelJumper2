@@ -117,7 +117,7 @@ namespace Editor
 
 				Task* const task = redoTasks.back();
 
-				tasks.push_back(task);
+				tasks.push_front(task);
 				task->redo(world);
 
 				redoTasks.pop_back();

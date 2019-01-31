@@ -35,7 +35,7 @@ namespace Editor
 			elements[sector] = element;
 		}
 
-		void notify(
+		void notifyAll(
 			const Cache::Sector sector)
 		{
 			if ( notifyElement(sector) )
@@ -45,7 +45,6 @@ namespace Editor
 			}
 		}
 
-	private:
 		void notifyComponents(
 			const Cache::Sector sector)
 		{
@@ -54,6 +53,8 @@ namespace Editor
 				component->notify(sector);
 			}
 		}
+
+	private:
 
 		bool notifyElement(
 			const Cache::Sector sector)
