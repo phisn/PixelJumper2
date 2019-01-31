@@ -60,6 +60,7 @@
     <ClInclude Include="source\editor\manipulator\Manipulator.h" />
     <ClInclude Include="source\editor\manipulator\tasks\LoadWorldTask.h" />
     <ClInclude Include="source\editor\manipulator\tasks\TilePlace.h" />
+    <ClInclude Include="source\editor\subscene\GroupedTilePreview.h" />
     <ClInclude Include="source\editor\template\TileTemplate.h" />
     <ClInclude Include="source\editor\template\WallTemplate.h" />
     <ClInclude Include="source\editor\tilemenu\TileComponent.h" />
@@ -141,6 +142,7 @@
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
     <ClCompile Include="source\editor\manipulator\tasks\LoadWorldTask.cpp" />
     <ClCompile Include="source\editor\manipulator\tasks\TilePlace.cpp" />
+    <ClCompile Include="source\editor\subscene\GroupedTilePreview.cpp" />
     <ClCompile Include="source\editor\template\TileTemplate.cpp" />
     <ClCompile Include="source\editor\template\WallTemplate.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileComponent.cpp" />

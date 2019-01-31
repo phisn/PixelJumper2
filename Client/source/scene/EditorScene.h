@@ -4,19 +4,19 @@
 #include <Client/source/device/RandomDevice.h>
 #include <Client/source/device/ScreenDevice.h>
 
+#include <Client/source/editor/EditorWorld.h>
 #include <Client/source/editor/grid/GridMenu.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
-#include <Client/source/editor/tilemenu/TileMenu.h>
-#include <Client/source/editor/EditorWorld.h>
-
 #include <Client/source/editor/manipulator/tasks/LoadWorldTask.h>
+#include <Client/source/editor/subscene/GroupedTilePreview.h>
+#include <Client/source/editor/tilemenu/TileMenu.h>
+
+#include <Client/source/framework/FrameworkInterface.h>
 
 #include <Client/source/resource/ResourceInterface.h>
 #include <Client/source/resource/WorldResource.h>
 
 #include <Client/source/scene/MenuBaseScene.h>
-
-#include <random>
 
 namespace Scene
 {
@@ -35,6 +35,14 @@ namespace Scene
 	public:
 		Editor()
 		{
+		}
+
+		void onScenePopped(const int size) override
+		{
+			if (size == 0 && !running)
+			{
+				running = true;
+			}
 		}
 
 		bool onCreate() override
@@ -61,6 +69,12 @@ namespace Scene
 		void onDraw() override
 		{
 			MenuBase::onDraw();
+
+			Device::Interface::GetScreen()->resetView();
+			for (sf::RectangleShape& shape : test)
+			{
+				DEVICE::Interface::GetScreen()->onDraw(&shape);
+			}
 		}
 
 		void onRemove() override
@@ -141,6 +155,26 @@ namespace Scene
 			{
 				EDITOR::Manipulator::GetExecutor()->redo();
 			}
+
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::G &&
+				event.key.control)
+			{
+				if (!Framework::Interface::PushScene(
+						new EDITOR::GroupedTilePreview()
+					))
+				{
+					Log::Error(L"Unable to create GroupedTilePreview");
+				}
+
+				this->running = false;
+			}
+
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::Return)
+			{
+				EDITOR::Manipulator::GetExecutor()->execute<EDITOR::TilePlace>();
+			}
 		}
 
 		void initialize() override 
@@ -150,5 +184,6 @@ namespace Scene
 		void onShow() override { }
 		void onHide() override { }
 	private:
+		std::vector<sf::RectangleShape> test;
 	};
 }

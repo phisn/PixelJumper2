@@ -141,6 +141,7 @@ namespace Framework
 		delete subScenes.top();
 
 		subScenes.pop();
+		mainScene->onScenePopped(subScenes.size());
 	}
 	
 	void Context::pushAsyncAnimation(

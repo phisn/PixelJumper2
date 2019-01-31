@@ -88,6 +88,9 @@
     <Filter Include="source\resource\pipes">
       <UniqueIdentifier>{713d3fec-01b0-46d3-9089-e2730258018c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\editor\subscene">
+      <UniqueIdentifier>{7e83dd45-a7c3-4436-81a4-2e002ade6215}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -345,6 +348,9 @@
     <ClInclude Include="source\editor\manipulator\tasks\LoadWorldTask.h">
       <Filter>source\editor\task</Filter>
     </ClInclude>
+    <ClInclude Include="source\editor\subscene\GroupedTilePreview.h">
+      <Filter>source\editor\subscene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -547,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="source\editor\manipulator\tasks\LoadWorldTask.cpp">
       <Filter>source\editor\task</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\subscene\GroupedTilePreview.cpp">
+      <Filter>source\editor\subscene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

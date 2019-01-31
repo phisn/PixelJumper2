@@ -24,6 +24,8 @@ namespace Scene
 
 		virtual void onShow() = 0;
 		virtual void onHide() = 0;
+		
+		virtual void onScenePopped(const int size) = 0;
 
 		virtual void onEvent(
 			const sf::Event event) = 0;
