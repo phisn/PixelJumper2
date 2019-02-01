@@ -62,6 +62,7 @@
     <ClInclude Include="source\editor\manipulator\tasks\TilePlace.h" />
     <ClInclude Include="source\editor\subscene\GroupedTilePreview.h" />
     <ClInclude Include="source\editor\template\TileTemplate.h" />
+    <ClInclude Include="source\editor\template\TileTemplateFactory.h" />
     <ClInclude Include="source\editor\template\WallTemplate.h" />
     <ClInclude Include="source\editor\tilemenu\TileComponent.h" />
     <ClInclude Include="source\editor\tilemenu\TileContainer.h" />
@@ -75,10 +76,14 @@
     <ClInclude Include="source\framework\Context.h" />
     <ClInclude Include="source\framework\FrameworkInterface.h" />
     <ClInclude Include="source\framework\ResourceContext.h" />
+    <ClInclude Include="source\game\GameState.h" />
+    <ClInclude Include="source\game\GameTileBase.h" />
     <ClInclude Include="source\game\GameView.h" />
+    <ClInclude Include="source\game\GameWorld.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\Movement.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
+    <ClInclude Include="source\game\_PlayerBase.h" />
     <ClInclude Include="source\game\tiles\CollidableTile.h" />
     <ClInclude Include="source\game\tiles\TileBase.h" />
     <ClInclude Include="source\game\tiles\TileColor.h" />
@@ -107,6 +112,7 @@
     <ClInclude Include="source\resource\pipes\FilePipe.h" />
     <ClInclude Include="source\resource\pipes\MemoryPipe.h" />
     <ClInclude Include="source\resource\pipes\PipeBase.h" />
+    <ClInclude Include="source\resource\PlayerResource.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceDefinitions.h" />
     <ClInclude Include="source\resource\TileFactory.h" />
@@ -144,6 +150,7 @@
     <ClCompile Include="source\editor\manipulator\tasks\TilePlace.cpp" />
     <ClCompile Include="source\editor\subscene\GroupedTilePreview.cpp" />
     <ClCompile Include="source\editor\template\TileTemplate.cpp" />
+    <ClCompile Include="source\editor\template\TileTemplateFactory.cpp" />
     <ClCompile Include="source\editor\template\WallTemplate.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileComponent.cpp" />
     <ClCompile Include="source\editor\tilemenu\TileContainer.cpp" />
@@ -157,10 +164,13 @@
     <ClCompile Include="source\framework\Context.cpp" />
     <ClCompile Include="source\framework\FrameworkInterface.cpp" />
     <ClCompile Include="source\framework\ResourceContext.cpp" />
+    <ClCompile Include="source\game\GameTileBase.cpp" />
     <ClCompile Include="source\game\GameView.cpp" />
+    <ClCompile Include="source\game\GameWorld.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
     <ClCompile Include="source\game\Movement.cpp" />
     <ClCompile Include="source\game\PlayerBase.cpp" />
+    <ClCompile Include="source\game\_PlayerBase.cpp" />
     <ClCompile Include="source\game\tiles\CollidableTile.cpp" />
     <ClCompile Include="source\game\tiles\TileBase.cpp" />
     <ClCompile Include="source\game\tiles\TimedTile.cpp" />
@@ -179,6 +189,7 @@
     <ClCompile Include="source\resource\pipes\FilePipe.cpp" />
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp" />
     <ClCompile Include="source\resource\pipes\PipeBase.cpp" />
+    <ClCompile Include="source\resource\PlayerResource.cpp" />
     <ClCompile Include="source\resource\ResourceBase.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\StaticResource.cpp" />
@@ -205,6 +216,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\font.hbin" />
+    <None Include="source\shared\WallTile.cpp" />
+    <None Include="source\shared\WallTile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

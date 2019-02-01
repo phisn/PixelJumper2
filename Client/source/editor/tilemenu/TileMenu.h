@@ -5,7 +5,7 @@
 #include <Client/source/editor/tilemenu/TileComponent.h>
 #include <Client/source/editor/tilemenu/TileContainer.h>
 
-#include <Client/source/editor/template/WallTemplate.h>
+#include <Client/source/editor/template/TileTemplateFactory.h>
 
 namespace Editor
 {
@@ -98,7 +98,9 @@ namespace Editor
 		{
 			for (int i = 1; i < (int) Game::Tile::Id::_Length; ++i)
 			{
-				tiles.push_back(Manipulator::GetTemplate((Game::Tile::Id) i));
+				tiles.push_back(
+					TileTemplateFactory::GetTileTemplate((Game::Tile::Id) i)
+				);
 
 				component.addTileButton(
 					container.addTileTemplate( tiles.back() )

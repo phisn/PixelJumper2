@@ -18,14 +18,14 @@ namespace Resource
 		virtual bool save(WritePipe* const pipe) = 0;
 	};
 
-	struct Definition
+	struct ResourceDefinition
 	{
-		typedef std::function<Resource::ResourceBase*()> DefinitionCallback;
+		typedef std::function<Resource::ResourceBase*()> Callback;
 
-		Definition(
+		ResourceDefinition(
 			const Magic magic,
 			const std::wstring name,
-			const DefinitionCallback callback)
+			const Callback callback)
 			:
 			magic(magic),
 			name(name),
@@ -34,7 +34,7 @@ namespace Resource
 		{
 		}
 
-		const DefinitionCallback callback;
+		const Callback callback;
 		const Magic magic;
 		const std::wstring name, path;
 	};

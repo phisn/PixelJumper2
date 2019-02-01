@@ -5,9 +5,9 @@
 
 namespace Resource
 {
-	const Resource::Definition ResourceDefinitions[(int)Resource::ResourceType::_Length]
+	const Resource::ResourceDefinition ResourceDefinitions[(int)Resource::ResourceType::_Length]
 	{
-		Resource::Definition(
+		Resource::ResourceDefinition(
 			0x0000'0000,
 			L"World",
 			[]() -> Resource::ResourceBase* 

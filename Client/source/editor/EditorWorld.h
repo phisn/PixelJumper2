@@ -5,6 +5,7 @@
 
 #include <Client/source/editor/tile/EditorTileBase.h>
 #include <Client/source/editor/template/TileTemplate.h>
+#include <Client/source/editor/template/TileTemplateFactory.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 
 #include <Client/source/logger/Logger.h>
@@ -64,7 +65,7 @@ namespace Editor
 		{
 			for (const Resource::Tile& resourceTile : world->TileContainer)
 			{
-				TileTemplate* tileTemplate = Manipulator::GetTemplate(resourceTile.Header.id);
+				TileTemplate* tileTemplate = TileTemplateFactory::GetTileTemplate(resourceTile.Header.id);
 
 				for (int xoffset = 0; xoffset < resourceTile.Header.width; ++xoffset)
 					for (int yoffset = 0; yoffset < resourceTile.Header.height; ++yoffset)

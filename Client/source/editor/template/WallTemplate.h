@@ -3,7 +3,10 @@
 #include <Client/source/game/tiles/TileColor.h>
 
 #include <Client/source/editor/template/TileTemplate.h>
+#include <Client/source/editor/template/TileTemplateFactory.h>
 #include <Client/source/editor/tile/EditorWall.h>
+
+#include <iostream>
 
 namespace Editor
 {

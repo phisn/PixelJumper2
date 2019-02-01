@@ -28,12 +28,12 @@ namespace Scene
 	
 	*/
 
-	class Editor
+	class EditorScene
 		:
 		public MenuBase
 	{
 	public:
-		Editor()
+		EditorScene()
 		{
 		}
 
@@ -47,16 +47,16 @@ namespace Scene
 
 		bool onCreate() override
 		{
-			EDITOR::Manipulator::Initialize();
+			Editor::Manipulator::Initialize();
 
-			EDITOR::GridMenu* gridMenu = addRoot<EDITOR::GridMenu>();
+			Editor::GridMenu* gridMenu = addRoot<Editor::GridMenu>();
 			gridMenu->setViewport({ 0.0f, 0.0f, 0.9f, 1.0f });
 			if (!gridMenu->initialize())
 			{
 				return false;
 			}
 
-			EDITOR::TileMenu* tileMenu = addRoot<EDITOR::TileMenu>();
+			Editor::TileMenu* tileMenu = addRoot<Editor::TileMenu>();
 			tileMenu->setViewport({ 0.9f, 0.0f, 0.1f, 1.0f });
 			if (!tileMenu->initialize())
 			{ // move to onCreate?
@@ -73,13 +73,13 @@ namespace Scene
 			Device::Interface::GetScreen()->resetView();
 			for (sf::RectangleShape& shape : test)
 			{
-				DEVICE::Interface::GetScreen()->onDraw(&shape);
+				Device::Interface::GetScreen()->onDraw(&shape);
 			}
 		}
 
 		void onRemove() override
 		{
-			for (MENU::RootBase* const container : getContainers())
+			for (Menu::RootBase* const container : getContainers())
 			{
 				delete container;
 			}
@@ -96,7 +96,7 @@ namespace Scene
 			{ // propably does not need task
 				Log::Section section(L"Saving world");
 
-				Resource::World* world = EDITOR::Manipulator::GetWorld()->convert(
+				Resource::World* world = Editor::Manipulator::GetWorld()->convert(
 					Device::Random::MakeRandom<int>(),
 					L"Author Name",
 					L"Map Name");
@@ -135,8 +135,8 @@ namespace Scene
 				event.key.code == sf::Keyboard::L &&
 				event.key.control)
 			{
-				EDITOR::Manipulator::GetExecutor()->execute(
-					new EDITOR::LoadWorldTask(L"TestWorld")
+				Editor::Manipulator::GetExecutor()->execute(
+					new Editor::LoadWorldTask(L"TestWorld")
 				);
 			}
 
@@ -145,7 +145,7 @@ namespace Scene
 				event.key.code == sf::Keyboard::Z &&
 				event.key.control)
 			{
-				EDITOR::Manipulator::GetExecutor()->undo();
+				Editor::Manipulator::GetExecutor()->undo();
 			}
 
 			// redo task | Y + STRG
@@ -153,7 +153,7 @@ namespace Scene
 				event.key.code == sf::Keyboard::Y &&
 				event.key.control)
 			{
-				EDITOR::Manipulator::GetExecutor()->redo();
+				Editor::Manipulator::GetExecutor()->redo();
 			}
 
 			if (event.type == sf::Event::KeyPressed &&
@@ -161,7 +161,7 @@ namespace Scene
 				event.key.control)
 			{
 				if (!Framework::Interface::PushScene(
-						new EDITOR::GroupedTilePreview()
+						new Editor::GroupedTilePreview()
 					))
 				{
 					Log::Error(L"Unable to create GroupedTilePreview");
@@ -173,7 +173,7 @@ namespace Scene
 			if (event.type == sf::Event::KeyPressed &&
 				event.key.code == sf::Keyboard::Return)
 			{
-				EDITOR::Manipulator::GetExecutor()->execute<EDITOR::TilePlace>();
+				Editor::Manipulator::GetExecutor()->execute<Editor::TilePlace>();
 			}
 		}
 

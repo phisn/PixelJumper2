@@ -26,7 +26,7 @@ namespace
 #ifdef _DEBUG
 	FW::Context* makeStartingContext()
 	{
-		return FW::Context::create<SCENE::Editor>();
+		return FW::Context::create<SCENE::EditorScene>();
 
 		/*
 		GAME::Tile::Manager::registerAllPrivate();

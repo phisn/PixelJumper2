@@ -18,6 +18,11 @@ namespace Editor
 		{
 			const Cache::Output* const cache = Manipulator::GetCache()->readOutput();
 
+			if (cache->tile.tile == NULL)
+			{
+				return false;
+			}
+
 			if (cache->selection.type == SelectionCache::Output::Type::Area)
 			{
 				VectorTilePosition begin =
@@ -72,6 +77,7 @@ namespace Editor
 			}
 
 			Manipulator::GetCacheManager()->notifyAll(Cache::Sector::Selection);
+			return true;
 		}
 
 		void redo(World* const world) override
@@ -92,6 +98,7 @@ namespace Editor
 			}
 
 			placedTiles.swap(removedTiles);
+			Manipulator::GetCacheManager()->notifyAll(Cache::Sector::Selection);
 		}
 
 	private:

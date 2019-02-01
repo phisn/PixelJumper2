@@ -246,7 +246,7 @@ namespace Resource
 		return resource->make(&pipe);
 	}
 
-	const Definition* Interface::GetDefinition(
+	const ResourceDefinition* Interface::GetDefinition(
 		const ResourceType resource)
 	{
 		return &ResourceDefinitions[(int) resource];

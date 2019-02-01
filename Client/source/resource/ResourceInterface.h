@@ -34,7 +34,7 @@ namespace Resource
 			const ResourceType type, 
 			const std::wstring name);
 
-		const Definition* GetDefinition(const ResourceType resource);
+		const ResourceDefinition* GetDefinition(const ResourceType resource);
 		std::wstring Translate(const ResourceType resource);
 	}
 }

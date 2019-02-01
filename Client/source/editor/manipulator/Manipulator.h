@@ -3,8 +3,6 @@
 #include <Client/source/editor/manipulator/Component.h>
 #include <Client/source/editor/manipulator/Element.h>
 
-#include <Client/source/editor/template/TileTemplate.h>
-
 #include <Client/source/game/tiles/TileId.h>
 
 namespace Editor
@@ -22,8 +20,5 @@ namespace Editor
 		CacheManager* GetCacheManager();
 		Executor* GetExecutor();
 		const World* GetWorld();
-
-		TileTemplate* GetTemplate(
-			const Game::Tile::Id tileId);
 	}
 }

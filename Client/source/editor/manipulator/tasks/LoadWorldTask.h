@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/editor/template/TileTemplate.h>
+#include <Client/source/editor/manipulator/cache/CacheManager.h>
 #include <Client/source/editor/manipulator/Executor.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 #include <Client/source/editor/EditorWorld.h>
@@ -66,6 +67,7 @@ namespace Editor
 
 				return false;
 			}
+			Manipulator::GetCacheManager()->notifyAll(Cache::Sector::Selection);
 
 			return true;
 		}
@@ -93,6 +95,7 @@ namespace Editor
 				world->setTileUnsafe(tile);
 			}
 			tiles = temp;
+			Manipulator::GetCacheManager()->notifyAll(Cache::Sector::Selection);
 		}
 
 	private:
