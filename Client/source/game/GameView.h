@@ -9,6 +9,7 @@
 
 namespace Game
 {
+	/*
 	class View
 	{
 	public:
@@ -175,4 +176,5 @@ namespace Game
 		PlayerBase* target;
 		sf::View view;
 	};
+	*/
 }

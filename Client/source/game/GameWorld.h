@@ -1,8 +1,17 @@
 #pragma once
-class GameWorld
-{
-public:
-	GameWorld();
-	~GameWorld();
-};
 
+#include <Client/source/game/GameState.h>
+#include <Client/source/game/PlayerBase.h>
+
+namespace Game
+{
+	class World
+	{
+	public:
+	};
+
+	class WorldState
+	{
+
+	};
+}

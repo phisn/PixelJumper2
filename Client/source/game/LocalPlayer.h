@@ -9,19 +9,18 @@
 
 namespace Game
 {
+	
 	class LocalPlayer
 		:
 		public PlayerBase
 	{
 	public:
 		LocalPlayer(
-			const PlayerSettings settings,
 			DEVICE::LocalInput* input)
 			:
-			PlayerBase(settings),
 			input(input)
 		{
-			view.changeTarget(this);
+			//view.changeTarget(this);
 		}
 
 		~LocalPlayer()
@@ -38,7 +37,7 @@ namespace Game
 
 			if (input->isSymbolActive(Device::LocalInputSymbol::Reset))
 			{
-				setPosition(sf::Vector2f(6.f, 8.f));
+				//setPosition(sf::Vector2f(6.f, 8.f));
 
 				// ... (need to access world)
 			}
@@ -48,7 +47,6 @@ namespace Game
 				handling other keys elsewhere
 			
 			*/
-
 			logicMovement(time);
 		}
 
@@ -62,10 +60,10 @@ namespace Game
 			return &movement;
 		}
 
-		View* getView()
+		/*View* getView()
 		{
 			return &view;
-		}
+		}*/
 	private:
 		Movement movement;
 
@@ -104,7 +102,8 @@ namespace Game
 			movement.onLogic(time, x_changed);
 		}
 
-		Game::View view;
+		// Game::View view;
 		DEVICE::LocalInput* input;
 	};
+	
 }

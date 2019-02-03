@@ -375,6 +375,15 @@
     <ClInclude Include="source\resource\PlayerResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\PlayerState.h">
+      <Filter>source\game\new</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\WorldState.h">
+      <Filter>source\game\new</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameStateManager.h">
+      <Filter>source\game\new</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -595,6 +604,15 @@
     </ClCompile>
     <ClCompile Include="source\resource\PlayerResource.cpp">
       <Filter>source\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\PlayerState.cpp">
+      <Filter>source\game\new</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\WorldState.cpp">
+      <Filter>source\game\new</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameStateManager.cpp">
+      <Filter>source\game\new</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
