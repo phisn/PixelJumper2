@@ -25,6 +25,6 @@ namespace Game
 		void SyncTileState(TileStateId tileStateId);
 		void SyncWorldState();
 
-		void SyncEverything(); // :d
+		// void SyncEverything(); // :d
 	}
 }

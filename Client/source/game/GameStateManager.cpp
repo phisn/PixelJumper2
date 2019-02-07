@@ -14,41 +14,54 @@ namespace Game
 {
 	bool Game::GameStateManager::HasNextPlayerState()
 	{
-		return false;
+		return !playerStateIds.empty();
 	}
+
 	bool Game::GameStateManager::HasNextTileState()
 	{
-		return false;
+		return !tileStateIds.empty();
 	}
 
 	bool Game::GameStateManager::HasNextWorldState()
 	{
-		return false;
+		return hasWorldState;
 	}
 
 	PlayerId Game::GameStateManager::GetNextPlayerState()
 	{
-		return PlayerId();
+		const PlayerId psi = *tileStateIds.begin();
+		tileStateIds.erase(psi);
+
+		return psi;
 	}
 
 	TileStateId Game::GameStateManager::GetNextTileState()
 	{
-		return TileStateId();
+		const TileStateId tsi = *tileStateIds.begin();
+		tileStateIds.erase(tsi);
+
+		return tsi;
 	}
 
-	void Game::GameStateManager::SyncPlayerState(PlayerId playerStateId)
+	void Game::GameStateManager::SyncPlayerState(
+		PlayerId playerStateId)
 	{
+		playerStateIds.insert(playerStateId);
 	}
 
-	void Game::GameStateManager::SyncTileState(TileStateId tileStateId)
+	void Game::GameStateManager::SyncTileState(
+		TileStateId tileStateId)
 	{
+		tileStateIds.insert(tileStateId);
 	}
 
 	void Game::GameStateManager::SyncWorldState()
 	{
+		hasWorldState = true;
 	}
 
-	void Game::GameStateManager::SyncEverything()
+	/* void Game::GameStateManager::SyncEverything()
 	{
-	}
+		SyncWorldState
+	} */
 }

@@ -36,7 +36,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\device\DeviceInterface.h" />
     <ClInclude Include="source\device\InputDevice.h" />
@@ -76,15 +75,18 @@
     <ClInclude Include="source\framework\Context.h" />
     <ClInclude Include="source\framework\FrameworkInterface.h" />
     <ClInclude Include="source\framework\ResourceContext.h" />
+    <ClInclude Include="source\game\CollisionEngine.h" />
     <ClInclude Include="source\game\GameState.h" />
     <ClInclude Include="source\game\GameStateManager.h" />
     <ClInclude Include="source\game\GameTileBase.h" />
+    <ClInclude Include="source\game\GameTileFactory.h" />
     <ClInclude Include="source\game\GameView.h" />
     <ClInclude Include="source\game\GameWorld.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\Movement.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
     <ClInclude Include="source\game\PlayerState.h" />
+    <ClInclude Include="source\game\Simulator.h" />
     <ClInclude Include="source\game\WorldState.h" />
     <ClInclude Include="source\game\_PlayerBase.h" />
     <ClInclude Include="source\game\tiles\CollidableTile.h" />
@@ -167,14 +169,17 @@
     <ClCompile Include="source\framework\Context.cpp" />
     <ClCompile Include="source\framework\FrameworkInterface.cpp" />
     <ClCompile Include="source\framework\ResourceContext.cpp" />
+    <ClCompile Include="source\game\CollisionEngine.cpp" />
     <ClCompile Include="source\game\GameStateManager.cpp" />
     <ClCompile Include="source\game\GameTileBase.cpp" />
+    <ClCompile Include="source\game\GameTileFactory.cpp" />
     <ClCompile Include="source\game\GameView.cpp" />
     <ClCompile Include="source\game\GameWorld.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
     <ClCompile Include="source\game\Movement.cpp" />
     <ClCompile Include="source\game\PlayerBase.cpp" />
     <ClCompile Include="source\game\PlayerState.cpp" />
+    <ClCompile Include="source\game\Simulator.cpp" />
     <ClCompile Include="source\game\WorldState.cpp" />
     <ClCompile Include="source\game\_PlayerBase.cpp" />
     <ClCompile Include="source\game\tiles\CollidableTile.cpp" />
@@ -211,9 +216,6 @@
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Client.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="..\..\..\..\OneDrive\Bilder\IMAG0001[323].jpg" />
     <Image Include="source\editor\Editor_Design.jpg" />
     <Image Include="source\editor\manipulator\Manipulator.jpg" />
@@ -221,7 +223,6 @@
     <Image Include="source\resource\IMAG0011.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource\font.hbin" />
     <None Include="source\shared\WallTile.cpp" />
     <None Include="source\shared\WallTile.h" />
   </ItemGroup>

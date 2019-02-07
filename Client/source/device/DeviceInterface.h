@@ -9,9 +9,9 @@
 namespace Device
 {
 	/*
-	
+
 		[Device]Settings classes provided for config generation
-	
+
 	*/
 
 	class GlobalInput;

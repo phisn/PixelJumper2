@@ -24,7 +24,7 @@ namespace
 namespace Framework
 {
 	bool Interface::PushContext(
-		Context* context)
+		Context* const context)
 	{
 		if (isValid(Task::LoadContext))
 		{
@@ -61,7 +61,7 @@ namespace Framework
 	}
 
 	bool Interface::PushScene(
-		Scene::SubBase* scene)
+		Scene::SubBase* const scene)
 	{
 		if (isValid(Task::PopScene))
 		{
@@ -96,13 +96,13 @@ namespace Framework
 	}
 
 	void Interface::PushAsyncAnimation(
-		AsyncAnimation* animation)
+		AsyncAnimation* const animation)
 	{
 		contextStack.top()->pushAsyncAnimation(animation);
 	}
 
 	void Interface::PushSequentialAnimation(
-		Animation* animation)
+		Animation* const animation)
 	{
 		contextStack.top()->pushSequentialAnimation(animation);
 	}
@@ -182,7 +182,7 @@ namespace Framework
 	}
 
 	sf::MemoryInputStream Resource::Get(
-		RESOURCE::Static::Type type)
+		const RESOURCE::Static::Type type)
 	{
 		for (Framework::Context* context : contextStack._Get_container())
 			// quick because of 'ResourceContext' cache

@@ -4,6 +4,8 @@
 
 #include <SFML/System.hpp>
 
+#pragma pack(push, 1)
+
 namespace Game
 {
 	typedef sf::Uint32 PlayerId;
@@ -19,6 +21,8 @@ namespace Game
 
 			sf::Vector2f movement;
 			sf::Vector2f position;
+
+			bool isOnGround;
 		} Properties;
 
 	private:
@@ -49,3 +53,5 @@ namespace Game
 		}
 	};
 }
+
+#pragma pack(pop)

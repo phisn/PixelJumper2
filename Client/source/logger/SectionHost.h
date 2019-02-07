@@ -9,10 +9,9 @@
 
 namespace Log
 {
-	class Section;
 	class SectionHost
 	{
-		friend Section;
+		friend class Section;
 		typedef std::pair<Level, std::wstring> _Log;
 	public:
 		SectionHost(

@@ -20,6 +20,18 @@ namespace Game
 		sf::Uint32 milisecondsPassed;
 		sf::Uint16 playerCount;
 
+
+		bool writeState(
+			Resource::WritePipe* const writePipe) override
+		{
+
+		}
+
+		bool readState(
+			Resource::ReadPipe* const readPipe) override
+		{
+
+		}
 	};
 }
 

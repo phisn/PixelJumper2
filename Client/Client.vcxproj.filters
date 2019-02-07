@@ -99,9 +99,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>resource</Filter>
-    </ClInclude>
     <ClInclude Include="source\device\DeviceInterface.h">
       <Filter>source\device</Filter>
     </ClInclude>
@@ -384,6 +381,15 @@
     <ClInclude Include="source\game\GameStateManager.h">
       <Filter>source\game\new</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\GameTileFactory.h">
+      <Filter>source\game\new</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\Simulator.h">
+      <Filter>source\game\new</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\CollisionEngine.h">
+      <Filter>source\game\new</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -614,11 +620,15 @@
     <ClCompile Include="source\game\GameStateManager.cpp">
       <Filter>source\game\new</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Client.rc">
-      <Filter>resource</Filter>
-    </ResourceCompile>
+    <ClCompile Include="source\game\GameTileFactory.cpp">
+      <Filter>source\game\new</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\Simulator.cpp">
+      <Filter>source\game\new</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\CollisionEngine.cpp">
+      <Filter>source\game\new</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\editor\manipulator\Manipulator.jpg">
@@ -638,9 +648,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource\font.hbin">
-      <Filter>resource</Filter>
-    </None>
     <None Include="source\shared\WallTile.cpp">
       <Filter>source\shared</Filter>
     </None>

@@ -12,10 +12,9 @@
 
 namespace Editor
 {
-	class CacheManager;
 	class Cache
 	{
-		friend CacheManager;
+		friend class CacheManager;
 	public:
 		/*	
 			To change many you have

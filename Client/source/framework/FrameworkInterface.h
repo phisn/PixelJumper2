@@ -36,19 +36,19 @@ namespace Framework
 		};
 
 		bool PushContext(
-			Context* context);
+			Context* const context);
 		bool PopContext();
 		
 		bool PushScene(
-			Scene::SubBase* scene);
+			Scene::SubBase* const scene);
 		bool PopScene();
 
 		void Fallback();
 
 		void PushAsyncAnimation(
-			AsyncAnimation* animation);
+			AsyncAnimation* const animation);
 		void PushSequentialAnimation(
-			Animation* animation);
+			Animation* const animation);
 
 		void ResetAnimations();
 	}
@@ -70,6 +70,6 @@ namespace Framework
 	namespace Resource
 	{
 		sf::MemoryInputStream Get(
-			RESOURCE::Static::Type type);
+			const RESOURCE::Static::Type type);
 	}
 }
