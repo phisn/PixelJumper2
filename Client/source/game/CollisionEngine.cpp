@@ -1,11 +1,9 @@
 #include "CollisionEngine.h"
 
-#define OR_ENUM(e, v)  (int&) e |= (int) v
-#define AND_ENUM(e, v) (int&) e &= (int) v
-
 namespace
 {
 	const sf::Vector2f currentPlayerSize = { 1.f, 1.f };
+	Game::CollisionEngine::CollisionInformation lastCollision;
 
 	/*   __
   P1 -> *  * <- P2
@@ -71,6 +69,12 @@ namespace
 		{
 			// set value
 			// position: x = t_w; y = t_y
+			lastCollision.position.x = t_w;
+			lastCollision.position.y = t_y;
+			
+			lastCollision.type = Game::CollisionEngine::CollisionInformation::Horizontal;
+
+			lastCollision.remainingDistance = collisionContext->target.y - t_y;
 
 			return true;
 		}
@@ -111,6 +115,12 @@ namespace
 		{
 			// set value
 			// position: x = t_x; y = t_h
+			lastCollision.position.x = t_x;
+			lastCollision.position.y = t_h;
+
+			lastCollision.type = Game::CollisionEngine::CollisionInformation::Vertical;
+
+			lastCollision.remainingDistance = collisionContext->target.y - t_x;
 
 			return true;
 		}
@@ -130,6 +140,15 @@ namespace
 		if (collisionContext->begin.x >= w &&
 			collisionContext->end.x <= w)
 		{
+			// position.y == target.y == begin.y == end.y
+			lastCollision.position.x = w;
+			lastCollision.position.y = collisionContext->begin.y;
+
+			lastCollision.type = Game::CollisionEngine::CollisionInformation::Horizontal;
+
+			lastCollision.remainingDistance = 0.f;
+
+			return true;
 
 
 			return true;
@@ -150,6 +169,13 @@ namespace
 		if (collisionContext->begin.y >= h &&
 			collisionContext->end.y <= h)
 		{
+			// position.x == target.x == begin.x == end.x
+			lastCollision.position.x = collisionContext->begin.x;
+			lastCollision.position.y = h;
+
+			lastCollision.type = Game::CollisionEngine::CollisionInformation::Vertical;
+
+			lastCollision.remainingDistance = 0.f;
 
 
 			return true;
@@ -176,7 +202,10 @@ namespace
 			}
 			else
 			{
-
+				return FindStraightVerticalCollisionInPath(
+					collisionContext,
+					tileSize,
+					tilePosition);
 			}
 		}
 
@@ -395,5 +424,10 @@ namespace Game
 		const sf::Vector2f tilePosition)
 	{
 		return false;
+	}
+
+	CollisionEngine::CollisionInformation CollisionEngine::GetLastCollision()
+	{
+		return lastCollision;
 	}
 }

@@ -6,6 +6,23 @@ namespace Game
 {
 	namespace CollisionEngine
 	{
+		struct CollisionInformation
+		{
+			sf::Vector2f position;
+
+			enum Type
+			{
+				Horizontal,
+				Vertical
+			} type;
+
+			// if collision is vertical then the
+			// remaining distance, is the distance
+			// in the horizontal direction
+			// with vertical, the other way around
+			float remainingDistance;
+		};
+
 		struct CollisionContext
 		{
 			// collision function
@@ -13,6 +30,11 @@ namespace Game
 
 			// sorted position & target
 			sf::Vector2f begin, end;
+
+			// target position to determine
+			// remaining distance in
+			// collisionInformation
+			sf::Vector2f target;
 
 			// expected ways
 			sf::Vector2f primaryOffset;
@@ -42,5 +64,26 @@ namespace Game
 			const CollisionContext* const collisionContext,
 			const sf::Vector2f tileSize,
 			const sf::Vector2f tilePosition);
+
+		CollisionInformation GetLastCollision();
 	}
+
+	/*
+	
+		Usage:
+			CollisionContext cc = CollisionEngine::SetupEnterCollisionContext(
+				playerPosition,
+				playerDestination);
+
+			// would normaly do this for every tile
+			bool collisionFound = CollisionEngine::FindEnterCollision(
+				&cc,
+				tileSize,
+				tilePosition);
+			if (collisionFound)
+			{
+				CollisionEngine::CollisionInformation ci = CollisionEngine::GetLastCollision();
+				// use ci
+			}
+	*/
 }
