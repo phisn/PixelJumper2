@@ -8,14 +8,41 @@ namespace Game
 	{
 		struct CollisionContext
 		{
-			sf::Vector2f tilesSize;
-			sf::Vector2f position;
-			sf::Vector2f destination;
+			// collision function
+			float G_M, G_H;
+
+			// sorted position & target
+			sf::Vector2f begin, end;
+
+			// expected ways
+			sf::Vector2f primaryOffset;
+			sf::Vector2f secondary1, secondary2;
+
+			// px == dx | py == dy
+			bool isDiagonal;
+
+			// expected collision offsets
+			// | | <- hSide
+			//  =  <- vSide
+			float vSideOffset, hSideOffset;
 		};
 
-		void SetCurrentContext(const CollisionContext);
+		CollisionContext SetupEnterCollisionContext(
+			const sf::Vector2f tilesSize,
+			const sf::Vector2f position,
+			const sf::Vector2f destination);
+		CollisionContext SetupLeaveCollisionContext(
+			const sf::Vector2f tilesSize,
+			const sf::Vector2f position,
+			const sf::Vector2f destination);
 
-		bool FindEnterCollision();
-		bool FindLeaveCollision();
+		bool FindEnterCollision(
+			const CollisionContext* const collisionContext,
+			const sf::Vector2f tileSize,
+			const sf::Vector2f tilePosition);
+		bool FindLeaveCollision(
+			const CollisionContext* const collisionContext,
+			const sf::Vector2f tileSize,
+			const sf::Vector2f tilePosition);
 	}
 }

@@ -5,8 +5,7 @@
 
 namespace
 {
-	Game::CollisionEngine::CollisionContext collisionContext;
-	const sf::Vector2f defaultPlayerSize = { 1.f, 1.f };
+	const sf::Vector2f currentPlayerSize = { 1.f, 1.f };
 
 	/*   __
   P1 -> *  * <- P2
@@ -19,163 +18,258 @@ namespace
 		char P1, P2, P3, P4;
 	};
 
-
-	/*     | G2
-		   v
-		 _____
-		|     |
-  G1 ->	|     |  <- G3
-		|_____|
-		   ^
-		   | G4
-	*/
-
-	struct TileSides
-	{
-		char G1, G2, G3, G4;
-	};
-
-	struct CollisionOffsets
-	{
-		sf::Vector2f primary;
-		sf::Vector2f secondary1, secondary2;
-		int currentState = 0;
-		// 1 = secondary1 used; 2 = secondary2 used
-	};
-
 	inline void pushNextEntryCollisionPoint(
-		const int value,
 		const sf::Vector2f offset,
-		CollisionOffsets* const cp)
+		const int value,
+		Game::CollisionEngine::CollisionContext* const cp)
 	{
-		if (value == 2)
+		if (value == 2) // incremented 2x == primary corner
 		{
-			cp->primary = offset;
+			cp->primaryOffset = offset;
 		}
 		else
 		{
-			( cp->currentState
-				? cp->secondary1
-				: cp->secondary2
+			// ABUSING G_M to indicate if
+			// secondary1 is already used
+			( cp->G_M
+				? cp->secondary2
+				: cp->secondary1
 			) = offset;
+
+			cp->G_M = (float) true;
 		}
+	}
+
+	inline bool FindHorizontalCollisionInPath(
+		const Game::CollisionEngine::CollisionContext* const collisionContext,
+		const sf::Vector2f tileSize,
+		const sf::Vector2f tilePosition)
+	{
+		/*
+
+		horizontal collision
+
+		g(t_w) = t_y
+		1.	=> t_w < p_w_begin && t_w > p_w_end
+		2.	=> t_y < t_h_begin && t_y > t_h_end
+		t_y:
+		=> t_y = g_m * t_w + g_h
+
+		*/
+
+		const float t_w = collisionContext->hSideOffset
+			? tilePosition.x + tileSize.x
+			: tilePosition.x;
+		const float t_y =
+			collisionContext->G_M * t_w + collisionContext->G_H;
+
+		if (t_w <= collisionContext->begin.x &&
+			t_w >= collisionContext->end.x
+			&&
+			t_y >= tilePosition.y &&
+			t_y <= tilePosition.y + tileSize.y)
+		{
+			// set value
+			// position: x = t_w; y = t_y
+
+			return true;
+		}
+
+		return false;
+	}
+
+	inline bool FindVerticalCollisionInPath(
+		const Game::CollisionEngine::CollisionContext* const collisionContext,
+		const sf::Vector2f tileSize,
+		const sf::Vector2f tilePosition)
+	{
+		/*
+
+		vertical collision
+
+		g(t_x) = t_h
+		=> t_h < p_h_begin && t_h > p_h_end
+		=> t_x < t_w_begin && t_x > t_w_begin
+		t_x:
+		=> t_h = g_m * t_x + g_h
+		=> t_h - g_h = g_m * t_x
+		=> t_x = (t_h - g_h) / g_m
+
+		*/
+
+		const float t_h = collisionContext->vSideOffset
+			? tilePosition.y + tileSize.y
+			: tilePosition.y;
+		const float t_x = 
+			(t_h - collisionContext->G_H) / collisionContext->G_M;
+
+		if (t_h <= collisionContext->begin.y &&
+			t_h >= collisionContext->end.y
+			&&
+			t_x >= tilePosition.x &&
+			t_x <= tilePosition.x + tileSize.x)
+		{
+			// set value
+			// position: x = t_x; y = t_h
+
+			return true;
+		}
+		
+		return false;
 	}
 }
 
 namespace Game
 {
-	void CollisionEngine::SetCurrentContext(
-		const CollisionEngine::CollisionContext cc)
+	CollisionEngine::CollisionContext CollisionEngine::SetupEnterCollisionContext(
+		const sf::Vector2f tilesSize, 
+		const sf::Vector2f position, 
+		const sf::Vector2f destination)
 	{
-		collisionContext = cc;
-	}
-
-	bool Game::CollisionEngine::FindEnterCollision()
-	{
-		TileSides tileSides = { };
+		CollisionContext result = { };
 		PlayerCorner corner = { };
 
-		if (collisionContext.position.x < collisionContext.destination.x)
+		// find used corners & offsets
+		if (position.x < destination.x)
 		{
-			++tileSides.G1;
+			result.hSideOffset = 0.f;
 			++corner.P2;
 			++corner.P4;
 		}
-		else if(collisionContext.position.x > collisionContext.destination.x)
+		else if (position.x > destination.x)
 		{
-			++tileSides.G3;
+			result.hSideOffset = tilesSize.x;
 			++corner.P1;
 			++corner.P3;
 		}
 
-		if (collisionContext.position.y < collisionContext.destination.x)
+		if (position.y < destination.x)
 		{
-			++tileSides.G2;
+			result.vSideOffset = 0.f;
 			++corner.P3;
 			++corner.P4;
 		}
-		else if (collisionContext.position.y > collisionContext.destination.x)
+		else if (position.y > destination.x)
 		{
-			++tileSides.G4;
+			result.vSideOffset = tilesSize.y;
 			++corner.P1;
 			++corner.P2;
 		}
 
-		if (*(int*) &tileSides == NULL)
+		// prepush primary collision point if
+		// movement is not diagonal
+		if (position.x == destination.x)
 		{
-			return false;
-		}
+			result.isDiagonal = true;
 
-		CollisionOffsets collisionPoints = { };
-
-		if (collisionContext.position.x == collisionContext.destination.x)
-		{
-			collisionPoints.primary = sf::Vector2f(
-				collisionContext.position.x + defaultPlayerSize.x / 2.f,
-				tileSides.G2 
-				? collisionContext.position.y
-				: collisionContext.position.y + collisionContext.tilesSize.y
+			result.primaryOffset = sf::Vector2f(
+				position.x + currentPlayerSize.x / 2.f,
+				corner.P1 || corner.P2
+				? position.y
+				: position.y + currentPlayerSize.y
 			);
 		}
-		else if (collisionContext.position.y == collisionContext.destination.y)
+		else if (position.y == destination.y)
 		{
-			collisionPoints.primary = sf::Vector2f(
-				tileSides.G1
-				? collisionContext.position.x
-				: collisionContext.position.x + collisionContext.tilesSize.x,
-				collisionContext.position.y + defaultPlayerSize.y / 2.f
+			result.isDiagonal = true;
+
+			result.primaryOffset = sf::Vector2f(
+				corner.P1 || corner.P4
+				? position.x
+				: position.x + currentPlayerSize.x,
+				position.y + currentPlayerSize.y / 2.f
 			);
 		}
 
+		// abusing G_M in pushNextEntryCollisionPoint
+		// calculate to be used collision points
 		if (corner.P1)
 		{
 			pushNextEntryCollisionPoint(
-				corner.P1,
 				{ },
-				&collisionPoints);
+				corner.P1,
+				&result);
 		}
 
 		if (corner.P2)
 		{
 			pushNextEntryCollisionPoint(
-				corner.P2,
 				sf::Vector2f(
-					defaultPlayerSize.x,
-					0.f
-				),
-				&collisionPoints);
+					currentPlayerSize.x,
+					0.f),
+				corner.P1,
+				&result);
 		}
 
 		if (corner.P3)
 		{
 			pushNextEntryCollisionPoint(
-				corner.P3,
 				sf::Vector2f(
-					0.f,
-					defaultPlayerSize.y
-				),
-				&collisionPoints);
+					currentPlayerSize.x,
+					0.f),
+				corner.P1,
+				&result);
 		}
 
 		if (corner.P4)
 		{
 			pushNextEntryCollisionPoint(
-				corner.P4, 
 				sf::Vector2f(
-					defaultPlayerSize.x,
-					defaultPlayerSize.y
-				),
-				&collisionPoints);
+					currentPlayerSize.x,
+					currentPlayerSize.y),
+				corner.P1,
+				&result);
 		}
 
+		/*
 
+		g(x) = g_y = g_m * g_x + g_h
 
-		return true;
+		g_m:
+		P1(x1, y1),	    | y1 = g_m * x1 + g_h |
+		P2(x2, y2)	  -	| y2 = g_m * x2 + g_h | :
+		=> (y1 - y2) = g_m * x1 - g_m * x2
+		=> (y1 - y2) = g_m * (x1 - x2)
+		=> (y1 - y2) / (x1 - x2) = g_m
+		g_h:
+		=> y1 = g_m * x1 + g_h
+		=> y1 - g_m * x1 = g_h
+
+		*/
+
+		result.G_M =
+			(position.y - destination.y) /
+			(position.x - destination.y);
+		result.G_H =
+			position.y - result.G_M * position.x;
+		
+		// sort by x / y
+		if (position.x < destination.x)
+		{
+			result.begin.x = destination.x;
+			result.end.x = position.x;
+		}
+
+		if (position.y < destination.y)
+		{
+			result.begin.y = destination.y;
+			result.end.y = position.y;
+		}
+
+		return result;
+	}
+	
+	CollisionEngine::CollisionContext CollisionEngine::SetupLeaveCollisionContext(const sf::Vector2f tilesSize, const sf::Vector2f position, const sf::Vector2f destination)
+	{
 	}
 
-	bool Game::CollisionEngine::FindLeaveCollision()
+	bool CollisionEngine::FindEnterCollision(const CollisionContext * const collisionContext, const sf::Vector2f tileSize, const sf::Vector2f tilePosition)
 	{
+		return false;
+	}
 
-		return true;
+	bool CollisionEngine::FindLeaveCollision(const CollisionContext * const collisionContext, const sf::Vector2f tileSize, const sf::Vector2f tilePosition)
+	{
+		return false;
 	}
 }
