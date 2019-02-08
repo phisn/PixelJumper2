@@ -117,12 +117,92 @@ namespace
 		
 		return false;
 	}
+	
+	inline bool FindStraightHorizontalCollisionInPath(
+		const Game::CollisionEngine::CollisionContext* const collisionContext,
+		const sf::Vector2f tileSize,
+		const sf::Vector2f tilePosition)
+	{
+		const float w = collisionContext->hSideOffset
+			? tilePosition.x + tileSize.x
+			: tilePosition.x;
+
+		if (collisionContext->begin.x >= w &&
+			collisionContext->end.x <= w)
+		{
+
+
+			return true;
+		}
+
+		return false;
+	}
+
+	inline bool FindStraightVerticalCollisionInPath(
+		const Game::CollisionEngine::CollisionContext* const collisionContext,
+		const sf::Vector2f tileSize,
+		const sf::Vector2f tilePosition)
+	{
+		const float h = collisionContext->vSideOffset
+			? tilePosition.y + tileSize.y
+			: tilePosition.y;
+
+		if (collisionContext->begin.y >= h &&
+			collisionContext->end.y <= h)
+		{
+
+
+			return true;
+		}
+
+		return false;
+	}
+
+	bool FindCollisionInPath(
+		const Game::CollisionEngine::CollisionContext* const collisionContext,
+		const sf::Vector2f tileSize,
+		const sf::Vector2f tilePosition)
+	{
+		if (collisionContext->isDiagonal)
+		{
+			// G_M is abused to indicate if
+			// is horizontal == 1 or vertical == 0
+			if (collisionContext->G_M)
+			{
+				return FindStraightHorizontalCollisionInPath(
+					collisionContext,
+					tileSize,
+					tilePosition);
+			}
+			else
+			{
+
+			}
+		}
+
+		if (FindVerticalCollisionInPath(
+			collisionContext,
+			tileSize,
+			tilePosition))
+		{
+			return true;
+		}
+
+		if (FindHorizontalCollisionInPath(
+			collisionContext,
+			tileSize,
+			tilePosition))
+		{
+			return true;
+		}
+
+		return false;
+	}
 }
 
 namespace Game
 {
 	CollisionEngine::CollisionContext CollisionEngine::SetupEnterCollisionContext(
-		const sf::Vector2f tilesSize, 
 		const sf::Vector2f position, 
 		const sf::Vector2f destination)
 	{
@@ -132,33 +212,33 @@ namespace Game
 		// find used corners & offsets
 		if (position.x < destination.x)
 		{
-			result.hSideOffset = 0.f;
+			result.hSideOffset = false;
 			++corner.P2;
 			++corner.P4;
 		}
 		else if (position.x > destination.x)
 		{
-			result.hSideOffset = tilesSize.x;
+			result.hSideOffset = true;
 			++corner.P1;
 			++corner.P3;
 		}
 
 		if (position.y < destination.x)
 		{
-			result.vSideOffset = 0.f;
+			result.vSideOffset = false;
 			++corner.P3;
 			++corner.P4;
 		}
 		else if (position.y > destination.x)
 		{
-			result.vSideOffset = tilesSize.y;
+			result.vSideOffset = true;
 			++corner.P1;
 			++corner.P2;
 		}
 
 		// prepush primary collision point if
 		// movement is not diagonal
-		if (position.x == destination.x)
+		if (position.x == destination.x) // vertical
 		{
 			result.isDiagonal = true;
 
@@ -168,8 +248,11 @@ namespace Game
 				? position.y
 				: position.y + currentPlayerSize.y
 			);
+
+			// abuse G_M to indicate vertical movement
+			result.G_M = (float) false;
 		}
-		else if (position.y == destination.y)
+		else if (position.y == destination.y) // horizontal
 		{
 			result.isDiagonal = true;
 
@@ -179,6 +262,9 @@ namespace Game
 				: position.x + currentPlayerSize.x,
 				position.y + currentPlayerSize.y / 2.f
 			);
+
+			// abuse G_M to indicate horizontal movement
+			result.G_M = (float) true;
 		}
 
 		// abusing G_M in pushNextEntryCollisionPoint
@@ -237,11 +323,14 @@ namespace Game
 
 		*/
 
-		result.G_M =
-			(position.y - destination.y) /
-			(position.x - destination.y);
-		result.G_H =
-			position.y - result.G_M * position.x;
+		if (!result.isDiagonal) // skip for not diagonal (division by zero)
+		{
+			result.G_M =
+				(position.y - destination.y) /
+				(position.x - destination.y);
+			result.G_H =
+				position.y - result.G_M * position.x;
+		}
 		
 		// sort by x / y
 		if (position.x < destination.x)
@@ -259,16 +348,51 @@ namespace Game
 		return result;
 	}
 	
-	CollisionEngine::CollisionContext CollisionEngine::SetupLeaveCollisionContext(const sf::Vector2f tilesSize, const sf::Vector2f position, const sf::Vector2f destination)
+	CollisionEngine::CollisionContext CollisionEngine::SetupLeaveCollisionContext(
+		const sf::Vector2f position,
+		const sf::Vector2f destination)
 	{
 	}
 
-	bool CollisionEngine::FindEnterCollision(const CollisionContext * const collisionContext, const sf::Vector2f tileSize, const sf::Vector2f tilePosition)
+	bool CollisionEngine::FindEnterCollision(
+		const CollisionContext* const collisionContext, 
+		const sf::Vector2f tileSize, 
+		const sf::Vector2f tilePosition)
 	{
+		// instead of adding playerTile offsets to
+		// all player calulations, we just substract it 
+		// from the tile position -> easier and faster
+		if (FindCollisionInPath(
+				collisionContext,
+				tileSize,
+				tilePosition - collisionContext->primaryOffset))
+		{
+			return true;
+		}
+
+		if (FindCollisionInPath(
+				collisionContext,
+				tileSize,
+				tilePosition - collisionContext->secondary1))
+		{
+			return true;
+		}
+
+		if (FindCollisionInPath(
+				collisionContext,
+				tileSize,
+				tilePosition - collisionContext->secondary2))
+		{
+			return true;
+		}
+
 		return false;
 	}
 
-	bool CollisionEngine::FindLeaveCollision(const CollisionContext * const collisionContext, const sf::Vector2f tileSize, const sf::Vector2f tilePosition)
+	bool CollisionEngine::FindLeaveCollision(
+		const CollisionContext* const collisionContext, 
+		const sf::Vector2f tileSize, 
+		const sf::Vector2f tilePosition)
 	{
 		return false;
 	}

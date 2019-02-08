@@ -28,11 +28,9 @@ namespace Game
 		};
 
 		CollisionContext SetupEnterCollisionContext(
-			const sf::Vector2f tilesSize,
 			const sf::Vector2f position,
 			const sf::Vector2f destination);
 		CollisionContext SetupLeaveCollisionContext(
-			const sf::Vector2f tilesSize,
 			const sf::Vector2f position,
 			const sf::Vector2f destination);
 
