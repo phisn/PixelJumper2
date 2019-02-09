@@ -10,6 +10,12 @@ namespace Game
 {
 	typedef sf::Uint32 PlayerId;
 
+	enum class Direction
+	{
+		Left,
+		Right
+	};
+
 	class PlayerState
 		:
 		public GameState
@@ -21,6 +27,8 @@ namespace Game
 
 			sf::Vector2f movement;
 			sf::Vector2f position;
+
+			sf::Vector2f respawnPosition;
 
 			bool isOnGround;
 		} Properties;

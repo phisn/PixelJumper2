@@ -41,7 +41,7 @@ namespace Game
 			sf::Vector2f secondary1, secondary2;
 
 			// px == dx | py == dy
-			bool isDiagonal;
+			bool isStraight;
 
 			// expected collision offsets
 			// | | <- hSide

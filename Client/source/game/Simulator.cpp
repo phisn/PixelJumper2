@@ -4,8 +4,4 @@
 
 namespace Game
 {
-	const GameWorld* Game::Simulator::GetWorld()
-	{
-		return nullptr;
-	}
 }

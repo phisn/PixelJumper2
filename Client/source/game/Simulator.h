@@ -62,9 +62,8 @@ namespace Game
 
 		namespace PlayerAction
 		{
-			void OnJump(PlayerState* const);
-			void OnMove(PlayerState* const);
-			void OnRespawn(PlayerState* const);
+			// move to player itself
+			// but what to do with movement itself?
 		}
 
 		void HookPlayerEvent(
