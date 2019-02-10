@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/game/GameState.h>
+#include <Client/source/resource/WorldResource.h>
 
 #include <SFML/System.hpp>
 
@@ -31,6 +32,8 @@ namespace Game
 			sf::Vector2f respawnPosition;
 
 			bool isOnGround;
+
+			sf::Uint32 currentWorldId;
 		} Properties;
 
 	private:
