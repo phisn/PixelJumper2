@@ -112,6 +112,7 @@ namespace Game
 		{
 			std::set<GameTileBase*> moveableTiles;
 			std::set<GameTileBase*> collidableTiles;
+			std::set<GameTileBase*> leaveableTiles;
 
 		}& getSortedTiles() const
 		{
