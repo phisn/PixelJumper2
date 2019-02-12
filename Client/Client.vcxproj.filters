@@ -13,20 +13,8 @@
     <Filter Include="source\game">
       <UniqueIdentifier>{038f029f-f416-4f5f-adf3-02047141e720}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\game\tiles">
-      <UniqueIdentifier>{7ef2c45d-03ec-4b5b-b25a-9802ab32cc3f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\scene">
       <UniqueIdentifier>{82fc5087-42aa-4e96-8d10-f03557382342}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\game\tiles\impl">
-      <UniqueIdentifier>{197122a1-34fc-4932-9ca1-5cd442206336}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\game\tiles\base">
-      <UniqueIdentifier>{b8c3d781-b9b2-4447-97ba-72111593031b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\game\player">
-      <UniqueIdentifier>{61f686d4-2954-458f-bead-6997a1cdcb13}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\scene\base">
       <UniqueIdentifier>{d831bc2f-f995-4a94-8f2a-f3fb1637a4fe}</UniqueIdentifier>
@@ -94,8 +82,8 @@
     <Filter Include="source\shared">
       <UniqueIdentifier>{33b3d319-8e83-4b82-b14a-c1517ab66063}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\game\new">
-      <UniqueIdentifier>{ecbcdc28-1389-4da5-8697-6a273ce00479}</UniqueIdentifier>
+    <Filter Include="source\game\Tiles">
+      <UniqueIdentifier>{4b04e3b3-5bf8-4293-9869-7b51a45ae83b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -110,33 +98,6 @@
     </ClInclude>
     <ClInclude Include="source\device\ResourceDevice.h">
       <Filter>source\device</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiles\CollidableTile.h">
-      <Filter>source\game\tiles\base</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiles\TileBase.h">
-      <Filter>source\game\tiles\base</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiles\TimedTile.h">
-      <Filter>source\game\tiles\base</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiles\TouchableTile.h">
-      <Filter>source\game\tiles\base</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiles\Wall.h">
-      <Filter>source\game\tiles\impl</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\Movement.h">
-      <Filter>source\game\player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\LocalPlayer.h">
-      <Filter>source\game\player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameView.h">
-      <Filter>source\game\player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiles\TileColor.h">
-      <Filter>source\game\tiles</Filter>
     </ClInclude>
     <ClInclude Include="source\editor\template\TileTemplate.h">
       <Filter>source\editor\template</Filter>
@@ -300,9 +261,6 @@
     <ClInclude Include="source\resource\TileResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\tiles\TileId.h">
-      <Filter>source\game\tiles</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\pipes\FilePipe.h">
       <Filter>source\resource\pipes</Filter>
     </ClInclude>
@@ -351,44 +309,44 @@
     <ClInclude Include="source\editor\template\TileTemplateFactory.h">
       <Filter>source\editor\template</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\_PlayerBase.h">
-      <Filter>source\game\player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameTileBase.h">
-      <Filter>source\game\new</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameWorld.h">
-      <Filter>source\game\new</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\PlayerBase.h">
-      <Filter>source\game\new</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\World.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameState.h">
-      <Filter>source\game\new</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\PlayerResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\PlayerState.h">
-      <Filter>source\game\new</Filter>
+    <ClInclude Include="source\game\CollisionEngine.h">
+      <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\WorldState.h">
-      <Filter>source\game\new</Filter>
+    <ClInclude Include="source\game\GameState.h">
+      <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\GameStateManager.h">
-      <Filter>source\game\new</Filter>
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameTileBase.h">
+      <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\GameTileFactory.h">
-      <Filter>source\game\new</Filter>
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameWorld.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\PlayerBase.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\PlayerState.h">
+      <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\Simulator.h">
-      <Filter>source\game\new</Filter>
+      <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\CollisionEngine.h">
-      <Filter>source\game\new</Filter>
+    <ClInclude Include="source\game\WorldState.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\LeaveableTile.h">
+      <Filter>source\game\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\EnterableTile.h">
+      <Filter>source\game\Tiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -406,30 +364,6 @@
     </ClCompile>
     <ClCompile Include="source\device\ResourceDevice.cpp">
       <Filter>source\device</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiles\CollidableTile.cpp">
-      <Filter>source\game\tiles\base</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiles\TileBase.cpp">
-      <Filter>source\game\tiles\base</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiles\TimedTile.cpp">
-      <Filter>source\game\tiles\base</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiles\TouchableTile.cpp">
-      <Filter>source\game\tiles\base</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiles\Wall.cpp">
-      <Filter>source\game\tiles\impl</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\Movement.cpp">
-      <Filter>source\game\player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\LocalPlayer.cpp">
-      <Filter>source\game\player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GameView.cpp">
-      <Filter>source\game\player</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\template\TileTemplate.cpp">
       <Filter>source\editor\template</Filter>
@@ -593,41 +527,41 @@
     <ClCompile Include="source\editor\template\TileTemplateFactory.cpp">
       <Filter>source\editor\template</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\_PlayerBase.cpp">
-      <Filter>source\game\player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GameTileBase.cpp">
-      <Filter>source\game\new</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GameWorld.cpp">
-      <Filter>source\game\new</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\PlayerBase.cpp">
-      <Filter>source\game\new</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\World.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\resource\PlayerResource.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\PlayerState.cpp">
-      <Filter>source\game\new</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\WorldState.cpp">
-      <Filter>source\game\new</Filter>
+    <ClCompile Include="source\game\CollisionEngine.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\GameStateManager.cpp">
-      <Filter>source\game\new</Filter>
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameTileBase.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\GameTileFactory.cpp">
-      <Filter>source\game\new</Filter>
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameWorld.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\PlayerBase.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\PlayerState.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\Simulator.cpp">
-      <Filter>source\game\new</Filter>
+      <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\CollisionEngine.cpp">
-      <Filter>source\game\new</Filter>
+    <ClCompile Include="source\game\WorldState.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\LeaveableTile.cpp">
+      <Filter>source\game\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\EnterableTile.cpp">
+      <Filter>source\game\Tiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

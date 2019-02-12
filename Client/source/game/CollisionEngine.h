@@ -6,14 +6,23 @@ namespace Game
 {
 	namespace CollisionEngine
 	{
-		struct CollisionInformation
+		struct CollisionInfo
 		{
 			sf::Vector2f position;
 
+			/*
+			     G2
+			     __
+				+  +
+			 G1	|  | G3
+				+__+
+
+			     G4
+			*/
+
 			enum Type
 			{
-				Horizontal,
-				Vertical
+				G1, G2, G3, G4
 			} type;
 
 			// if collision is vertical then the
@@ -65,7 +74,7 @@ namespace Game
 			const sf::Vector2f tileSize,
 			const sf::Vector2f tilePosition);
 
-		CollisionInformation GetLastCollision();
+		CollisionInfo GetLastCollision();
 	}
 
 	/*

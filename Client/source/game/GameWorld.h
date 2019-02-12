@@ -3,10 +3,13 @@
 #include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
-#include <Client/source/game/GameTileBase.h>
 #include <Client/source/game/WorldState.h>
 
+#include <Client/source/game/GameTileBase.h>
 #include <Client/source/game/GameTileFactory.h>
+
+#include <Client/source/game/EnterableTile.h>
+#include <Client/source/game/LeaveableTile.h>
 
 #include <Client/source/resource/WorldResource.h>
 
@@ -20,6 +23,13 @@ namespace Game
 		GameWorld() = default;
 	public:
 		WorldState worldState;
+
+		struct SortedTiles
+		{
+			std::set<GameTileBase*> moveableTiles;
+			std::set<EnterableTile*> enterableTiles;
+			std::set<LeaveableTile*> leaveableTiles;
+		};
 
 		static GameWorld* Create(
 			Resource::World* const worldResource)
@@ -49,8 +59,7 @@ namespace Game
 
 			for (int i = 0; i < result->tiles.size(); ++i)
 			{
-				if (result->tiles[i]->getTileProperties()->isMoveable ||
-					result->tiles[i]->getTileProperties()->isColorChangeable)
+				if (result->tiles[i]->getTileProperties()->isStatic)
 				{
 					result->Visual.nonStaticTiles.insert(
 						result->tiles[i]
@@ -67,6 +76,16 @@ namespace Game
 								result->tiles[i]->getColor()
 							);
 						}
+				}
+
+				if (result->tiles[i]->getTileProperties()->isEnterable)
+				{
+					result->sortedTiles.enterableTiles.insert((EnterableTile*) result->tiles[i]);
+				}
+
+				if (result->tiles[i]->getTileProperties()->isLeaveable)
+				{
+					result->sortedTiles.leaveableTiles.insert((LeaveableTile*) result->tiles[i]);
 				}
 			}
 
@@ -108,21 +127,8 @@ namespace Game
 		const std::wstring& getAuthorName() const;
 		const std::wstring& getMapName() const;
 
-		const struct SortedTiles
-		{
-			std::set<GameTileBase*> moveableTiles;
-			std::set<GameTileBase*> collidableTiles;
-			std::set<GameTileBase*> leaveableTiles;
-
-		}& getSortedTiles() const
-		{
-			return sortedTiles;
-		}
-
-		const std::vector<GameTileBase*>& getTiles() const
-		{
-			return tiles;
-		}
+		const SortedTiles& getSortedTiles() const;
+		const std::vector<GameTileBase*>& getTiles() const;
 
 	private:
 		struct
@@ -160,6 +166,16 @@ namespace Game
 	inline const std::wstring& GameWorld::getMapName() const
 	{
 		return Properties.mapName;
+	}
+
+	inline const GameWorld::SortedTiles& GameWorld::getSortedTiles() const
+	{
+		return sortedTiles;
+	}
+
+	inline const std::vector<GameTileBase*>& GameWorld::getTiles() const
+	{
+		return tiles;
 	}
 
 }

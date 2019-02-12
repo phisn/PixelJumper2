@@ -1,11 +1,24 @@
 #pragma once
 
 #include <Client/source/game/PlayerState.h>
+#include <Client/source/game/CollisionEngine.h>
 
 namespace Game
 {
-	namespace PlayerEvents
+	namespace PlayerEvent
 	{
+		struct LeaveEvent
+		{
+			CollisionEngine::CollisionInfo collisionInfo;
+			PlayerState* playerState;
+		};
+
+		struct EnterEvent
+		{
+			CollisionEngine::CollisionInfo collisionInfo;
+			PlayerState* playerState;
+		};
+
 		// entry point defines default restart handler
 		typedef void (*RestartHandler)(PlayerState* const);
 		typedef void (*FinishHandler)(PlayerState* const);
@@ -59,12 +72,6 @@ namespace Game
 
 		bool Initialize(const Settings settings);
 		void Uninitialize();
-
-		namespace PlayerAction
-		{
-			// move to player itself
-			// but what to do with movement itself?
-		}
 
 		void HookPlayerEvent(
 			PlayerState* const player,

@@ -6,9 +6,9 @@ namespace Game
 {
 	struct StaticTileProperties
 	{
-		bool isCollidable;
-		bool isMoveable; // + effect as isColorChangeable
-		bool isColorChangeable; // independent from image
+		bool isEnterable;
+		bool isLeaveable;
+		bool isStatic;
 	};
 
 	class GameTileBase

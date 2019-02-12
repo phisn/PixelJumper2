@@ -3,7 +3,7 @@
 namespace
 {
 	const sf::Vector2f currentPlayerSize = { 1.f, 1.f };
-	Game::CollisionEngine::CollisionInformation lastCollision;
+	Game::CollisionEngine::CollisionInfo lastCollision;
 
 	/*   __
   P1 -> *  * <- P2
@@ -71,8 +71,10 @@ namespace
 			// position: x = t_w; y = t_y
 			lastCollision.position.x = t_w;
 			lastCollision.position.y = t_y;
-			
-			lastCollision.type = Game::CollisionEngine::CollisionInformation::Horizontal;
+
+			lastCollision.type = collisionContext->hSideOffset
+				? Game::CollisionEngine::CollisionInfo::G3
+				: Game::CollisionEngine::CollisionInfo::G1;
 
 			lastCollision.remainingDistance = collisionContext->target.y - t_y;
 
@@ -118,7 +120,9 @@ namespace
 			lastCollision.position.x = t_x;
 			lastCollision.position.y = t_h;
 
-			lastCollision.type = Game::CollisionEngine::CollisionInformation::Vertical;
+			lastCollision.type = collisionContext->vSideOffset
+				? Game::CollisionEngine::CollisionInfo::G4
+				: Game::CollisionEngine::CollisionInfo::G2;
 
 			lastCollision.remainingDistance = collisionContext->target.y - t_x;
 
@@ -144,7 +148,9 @@ namespace
 			lastCollision.position.x = w;
 			lastCollision.position.y = collisionContext->begin.y;
 
-			lastCollision.type = Game::CollisionEngine::CollisionInformation::Horizontal;
+			lastCollision.type = collisionContext->hSideOffset
+				? Game::CollisionEngine::CollisionInfo::G3
+				: Game::CollisionEngine::CollisionInfo::G1;
 
 			lastCollision.remainingDistance = 0.f;
 
@@ -170,7 +176,9 @@ namespace
 			lastCollision.position.x = collisionContext->begin.x;
 			lastCollision.position.y = h;
 
-			lastCollision.type = Game::CollisionEngine::CollisionInformation::Vertical;
+			lastCollision.type = collisionContext->vSideOffset
+				? Game::CollisionEngine::CollisionInfo::G4
+				: Game::CollisionEngine::CollisionInfo::G2;
 
 			lastCollision.remainingDistance = 0.f;
 
@@ -601,7 +609,7 @@ namespace Game
 		}
 	}
 
-	CollisionEngine::CollisionInformation CollisionEngine::GetLastCollision()
+	CollisionEngine::CollisionInfo CollisionEngine::GetLastCollision()
 	{
 		return lastCollision;
 	}
