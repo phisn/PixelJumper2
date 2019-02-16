@@ -6,9 +6,10 @@ namespace Game
 {
 	struct StaticTileProperties
 	{
-		bool isEnterable;
-		bool isLeaveable;
+		bool isCollidable;
+		bool isInitializable;
 		bool isStatic;
+		bool isDynamic;
 	};
 
 	class GameTileBase
@@ -21,16 +22,8 @@ namespace Game
 		{
 		}
 
-		virtual void onDraw() = 0;
-		virtual void onLogic(const sf::Time) = 0;
-
 		virtual const sf::Vector2f getPosition() const = 0;
 		virtual const sf::Vector2f getSize() const = 0;
-
-		const sf::Color getColor() const
-		{
-			return color;
-		} // non movable or changeable tiles
 
 		const StaticTileProperties* getTileProperties() const
 		{
@@ -39,7 +32,15 @@ namespace Game
 
 	private:
 		const StaticTileProperties* const stp;
-
-		const sf::Color color;
 	};
+}
+
+Game::StaticTileProperties operator|=(
+	const Game::StaticTileProperties& stp1, 
+	const Game::StaticTileProperties& stp2)
+{
+	for (int i = 0; i < sizeof(Game::StaticTileProperties); ++i)
+	{
+		((char*) &stp1)[i] |= ((char*) &stp2) [i];
+	}
 }

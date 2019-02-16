@@ -175,7 +175,7 @@ namespace
 		{
 			// G_M is abused to indicate if
 			// is horizontal == 1 or vertical == 0
-			if (collisionContext->G_M)
+			if ((bool) collisionContext->G_M)
 			{
 				return FindStraightHorizontalCollisionInPath(
 					collisionContext,
@@ -191,88 +191,20 @@ namespace
 			}
 		}
 
-		if (FindVerticalCollisionInPath(
-			collisionContext,
-			tileSize,
-			tilePosition))
-		{
-			return true;
-		}
-
-		if (FindHorizontalCollisionInPath(
-			collisionContext,
-			tileSize,
-			tilePosition))
-		{
-			return true;
-		}
-
-		return false;
+		return FindVerticalCollisionInPath(
+				collisionContext,
+				tileSize,
+				tilePosition)
+			||
+			FindHorizontalCollisionInPath(
+				collisionContext,
+				tileSize,
+				tilePosition);
 	}
 }
 
 namespace Game
 {
-	bool CollisionEngine::FindEnterCollision(
-		const CollisionContext* const collisionContext, 
-		const sf::Vector2f tileSize, 
-		const sf::Vector2f tilePosition)
-	{
-		// instead of adding playerTile offsets to
-		// all player calulations, we just substract it 
-		// from the tile position -> easier and faster
-		if (FindCollisionInPath(
-				collisionContext,
-				tileSize,
-				tilePosition - collisionContext->primaryOffset))
-		{
-			return true;
-		}
-
-		if (FindCollisionInPath(
-				collisionContext,
-				tileSize,
-				tilePosition - collisionContext->secondary1))
-		{
-			return true;
-		}
-
-		if (FindCollisionInPath(
-				collisionContext,
-				tileSize,
-				tilePosition - collisionContext->secondary2))
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	bool CollisionEngine::FindLeaveCollision(
-		const CollisionContext* const collisionContext, 
-		const sf::Vector2f tileSize, 
-		const sf::Vector2f tilePosition)
-	{
-		if (collisionContext->isStraight)
-		{
-			// abuse findentercollision because
-			// of identical function
-			return FindEnterCollision(
-				collisionContext,
-				tileSize,
-				tilePosition
-			);
-		}
-		else
-		{
-			return FindCollisionInPath(
-				collisionContext,
-				tileSize,
-				tilePosition - collisionContext->primaryOffset
-			);
-		}
-	}
-
 	CollisionEngine::CollisionContext CollisionEngine::SetupCollisionContext(
 		const sf::Vector2f position, 
 		const sf::Vector2f destination, 
@@ -440,6 +372,48 @@ namespace Game
 		}
 
 		return result;
+	}
+
+	bool CollisionEngine::FindCollision(
+		const CollisionContext* const collisionContext, 
+		const sf::Vector2f tileSize, 
+		const sf::Vector2f tilePosition)
+	{
+		// quick check if precise collision
+		// detection is necessary
+		if (tilePosition.x < collisionContext->begin.x ||
+			tilePosition.y < collisionContext->end.y ||
+
+			tilePosition.x + tileSize.x > collisionContext->end.x + currentPlayerSize.x ||
+			tilePosition.y + tileSize.y > collisionContext->end.y + currentPlayerSize.y)
+		{
+			return false;
+		}
+
+		if (collisionContext->isWeakCollision && !collisionContext->isStraight)
+		{
+			return FindCollisionInPath(
+				collisionContext,
+				tileSize,
+				tilePosition - collisionContext->primaryOffset);
+		}
+		else
+		{
+			return FindCollisionInPath(
+					collisionContext,
+					tileSize,
+					tilePosition - collisionContext->primaryOffset) 
+				|| 
+				FindCollisionInPath(
+					collisionContext,
+					tileSize,
+					tilePosition - collisionContext->secondary1)
+				||
+				FindCollisionInPath(
+					collisionContext,
+					tileSize,
+					tilePosition - collisionContext->secondary2);
+		}
 	}
 
 	CollisionEngine::CollisionInfo CollisionEngine::GetLastCollision()

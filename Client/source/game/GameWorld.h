@@ -6,15 +6,10 @@
 #include <Client/source/game/WorldState.h>
 
 #include <Client/source/game/GameTileBase.h>
+#include <Client/source/game/GameTileContainer.h>
 #include <Client/source/game/GameTileFactory.h>
 
-#include <Client/source/game/EnterableTile.h>
-#include <Client/source/game/LeaveableTile.h>
-
 #include <Client/source/resource/WorldResource.h>
-
-#include <set>
-#include <string>
 
 namespace Game
 {
@@ -22,14 +17,7 @@ namespace Game
 	{
 		GameWorld() = default;
 	public:
-		WorldState worldState;
-
-		struct SortedTiles
-		{
-			std::set<GameTileBase*> moveableTiles;
-			std::set<EnterableTile*> enterableTiles;
-			std::set<LeaveableTile*> leaveableTiles;
-		};
+		WorldState worldState; // TODO: Open?
 
 		static GameWorld* Create(
 			Resource::World* const worldResource)
@@ -46,7 +34,7 @@ namespace Game
 
 			for (Resource::Tile& tileResource : worldResource->TileContainer)
 			{
-				result->tiles.push_back(
+				result->tileContainer.insertTile(
 					GameTileFactory::Create(&tileResource)
 				);
 			}
@@ -126,10 +114,6 @@ namespace Game
 		sf::Vector2f getSize() const;
 		const std::wstring& getAuthorName() const;
 		const std::wstring& getMapName() const;
-
-		const SortedTiles& getSortedTiles() const;
-		const std::vector<GameTileBase*>& getTiles() const;
-
 	private:
 		struct
 		{
@@ -139,15 +123,12 @@ namespace Game
 			std::wstring mapName;
 		} Properties;
 
-		std::vector<GameTileBase*> tiles;
-		SortedTiles sortedTiles;
+		TileContainer tileContainer;
 
 		struct
 		{
 			sf::Texture texture;
 			sf::Sprite sprite;
-			
-			std::set<GameTileBase*> nonStaticTiles;
 
 			bool hasNonStatic;
 		} Visual;
@@ -167,15 +148,4 @@ namespace Game
 	{
 		return Properties.mapName;
 	}
-
-	inline const GameWorld::SortedTiles& GameWorld::getSortedTiles() const
-	{
-		return sortedTiles;
-	}
-
-	inline const std::vector<GameTileBase*>& GameWorld::getTiles() const
-	{
-		return tiles;
-	}
-
 }

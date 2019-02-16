@@ -321,9 +321,6 @@
     <ClInclude Include="source\game\GameStateManager.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\GameTileBase.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\GameTileFactory.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -342,10 +339,25 @@
     <ClInclude Include="source\game\WorldState.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\LeaveableTile.h">
+    <ClInclude Include="source\game\CollidableTile.h">
       <Filter>source\game\Tiles</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\EnterableTile.h">
+    <ClInclude Include="source\game\GameTileContainer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\InitializableTile.h">
+      <Filter>source\game\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameTileBase.h">
+      <Filter>source\game\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\StaticTile.h">
+      <Filter>source\game\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\DynamicTile.h">
+      <Filter>source\game\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\DrawableTile.h">
       <Filter>source\game\Tiles</Filter>
     </ClInclude>
   </ItemGroup>
@@ -536,9 +548,6 @@
     <ClCompile Include="source\game\GameStateManager.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\GameTileBase.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\GameTileFactory.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
@@ -557,10 +566,25 @@
     <ClCompile Include="source\game\WorldState.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\LeaveableTile.cpp">
+    <ClCompile Include="source\game\CollidableTile.cpp">
       <Filter>source\game\Tiles</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\EnterableTile.cpp">
+    <ClCompile Include="source\game\GameTileContainer.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\InitializableTile.cpp">
+      <Filter>source\game\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameTileBase.cpp">
+      <Filter>source\game\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\StaticTile.cpp">
+      <Filter>source\game\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\DrawableTile.cpp">
+      <Filter>source\game\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\DynamicTile.cpp">
       <Filter>source\game\Tiles</Filter>
     </ClCompile>
   </ItemGroup>
