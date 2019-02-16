@@ -16,28 +16,6 @@ namespace
 		char P1, P2, P3, P4;
 	};
 
-	inline void pushNextEntryCollisionPoint(
-		const sf::Vector2f offset,
-		const int value,
-		Game::CollisionEngine::CollisionContext* const cp)
-	{
-		if (value == 2) // incremented 2x == primary corner
-		{
-			cp->primaryOffset = offset;
-		}
-		else
-		{
-			// ABUSING G_M to indicate if
-			// secondary1 is already used
-			( cp->G_M
-				? cp->secondary2
-				: cp->secondary1
-			) = offset;
-
-			cp->G_M = (float) true;
-		}
-	}
-
 	inline bool FindHorizontalCollisionInPath(
 		const Game::CollisionEngine::CollisionContext* const collisionContext,
 		const sf::Vector2f tileSize,
@@ -235,320 +213,6 @@ namespace
 
 namespace Game
 {
-	CollisionEngine::CollisionContext CollisionEngine::SetupEnterCollisionContext(
-		const sf::Vector2f position, 
-		const sf::Vector2f destination)
-	{
-		CollisionContext result = { };
-		PlayerCorner corner = { };
-
-		// find used corners & offsets
-		if (position.x < destination.x)
-		{
-			result.hSideOffset = false;
-			++corner.P2;
-			++corner.P3;
-		}
-		else if (position.x > destination.x)
-		{
-			result.hSideOffset = true;
-			++corner.P1;
-			++corner.P4;
-		}
-
-		if (position.y < destination.y)
-		{
-			result.vSideOffset = false;
-			++corner.P3;
-			++corner.P4;
-		}
-		else if (position.y > destination.y)
-		{
-			result.vSideOffset = true;
-			++corner.P1;
-			++corner.P2;
-		}
-
-		// prepush primary collision point if
-		// movement is straight
-		if (position.x == destination.x) // vertical
-		{
-			result.isStraight = true;
-
-			result.primaryOffset = sf::Vector2f(
-				position.x + currentPlayerSize.x / 2.f,
-				corner.P1 || corner.P2 // == posy > desy
-				? position.y
-				: position.y + currentPlayerSize.y
-			);
-
-			// abuse G_M to indicate vertical movement
-			result.G_M = (float) false;
-		}
-		else if (position.y == destination.y) // horizontal
-		{
-			result.isStraight = true;
-
-			result.primaryOffset = sf::Vector2f(
-				corner.P1 || corner.P4 // == posx > desx
-				? position.x
-				: position.x + currentPlayerSize.x,
-				position.y + currentPlayerSize.y / 2.f
-			);
-
-			// abuse G_M to indicate horizontal movement
-			result.G_M = (float) true;
-		}
-
-		// abusing G_M in pushNextEntryCollisionPoint
-		// calculate to be used collision points
-		if (corner.P1)
-		{
-			pushNextEntryCollisionPoint(
-				{ },
-				corner.P1,
-				&result);
-		}
-
-		if (corner.P2)
-		{
-			pushNextEntryCollisionPoint(
-				sf::Vector2f(
-					currentPlayerSize.x,
-					0.f),
-				corner.P1,
-				&result);
-		}
-
-		if (corner.P3)
-		{
-			pushNextEntryCollisionPoint(
-				sf::Vector2f(
-					currentPlayerSize.x,
-					0.f),
-				corner.P1,
-				&result);
-		}
-
-		if (corner.P4)
-		{
-			pushNextEntryCollisionPoint(
-				sf::Vector2f(
-					currentPlayerSize.x,
-					currentPlayerSize.y),
-				corner.P1,
-				&result);
-		}
-
-		/*
-
-		g(x) = g_y = g_m * g_x + g_h
-
-		g_m:
-		P1(x1, y1),	    | y1 = g_m * x1 + g_h |
-		P2(x2, y2)	  -	| y2 = g_m * x2 + g_h | :
-		=> (y1 - y2) = g_m * x1 - g_m * x2
-		=> (y1 - y2) = g_m * (x1 - x2)
-		=> (y1 - y2) / (x1 - x2) = g_m
-		g_h:
-		=> y1 = g_m * x1 + g_h
-		=> y1 - g_m * x1 = g_h
-
-		*/
-
-		if (!result.isStraight) // skip for straight (division by zero)
-		{
-			result.G_M =
-				(position.y - destination.y) /
-				(position.x - destination.y);
-			result.G_H =
-				position.y - result.G_M * position.x;
-		}
-		
-		// sort by x / y
-		if (position.x < destination.x)
-		{
-			result.begin.x = destination.x;
-			result.end.x = position.x;
-		}
-		else
-		{
-			result.begin.x = position.x;
-			result.end.x = destination.x;
-		}
-
-		if (position.y < destination.y)
-		{
-			result.begin.y = destination.y;
-			result.end.y = position.y;
-		}
-		else
-		{
-			result.begin.y = position.y;
-			result.end.y = destination.y;
-		}
-
-		return result;
-	}
-	
-	CollisionEngine::CollisionContext CollisionEngine::SetupLeaveCollisionContext(
-		const sf::Vector2f position,
-		const sf::Vector2f destination)
-	{
-		CollisionContext result = { };
-		PlayerCorner corner = { };
-
-		// find used corners & offsets
-		if (position.x < destination.x)
-		{
-			result.hSideOffset = true;
-			++corner.P1;
-			++corner.P4;
-		}
-		else if (position.x > destination.x)
-		{
-			result.hSideOffset = false;
-			++corner.P2;
-			++corner.P3;
-		}
-
-		if (position.y < destination.y)
-		{
-			result.vSideOffset = true;
-			++corner.P1;
-			++corner.P2;
-		}
-		else if (position.y > destination.y)
-		{
-			result.vSideOffset = false;
-			++corner.P3;
-			++corner.P4;
-		}
-
-		// prepush primary collision point if
-		// movement is straight
-		if (position.x == destination.x) // vertical
-		{
-			result.isStraight = true;
-
-			result.primaryOffset = sf::Vector2f(
-				position.x + currentPlayerSize.x / 2.f,
-				corner.P1 || corner.P2 // == posy < desy
-				? position.y + currentPlayerSize.y
-				: position.y
-			);
-
-			// abuse G_M to indicate vertical movement
-			result.G_M = (float)false;
-		}
-		else if (position.y == destination.y) // horizontal
-		{
-			result.isStraight = true;
-
-			result.primaryOffset = sf::Vector2f(
-				corner.P1 || corner.P4 // == posx < desx
-				? position.x
-				: position.x + currentPlayerSize.x,
-				position.y + currentPlayerSize.y / 2.f
-			);
-
-			// abuse G_M to indicate horizontal movement
-			result.G_M = (float)true;
-		}
-
-		if (result.isStraight) // straight has normal 3 points
-		{
-			// abusing G_M in pushNextEntryCollisionPoint
-			// calculate to be used collision points
-			if (corner.P1)
-			{
-				pushNextEntryCollisionPoint(
-					{ },
-					corner.P1,
-					&result);
-			}
-
-			if (corner.P2)
-			{
-				pushNextEntryCollisionPoint(
-					sf::Vector2f(
-						currentPlayerSize.x,
-						0.f),
-					corner.P1,
-					&result);
-			}
-
-			if (corner.P3)
-			{
-				pushNextEntryCollisionPoint(
-					sf::Vector2f(
-						currentPlayerSize.x,
-						0.f),
-					corner.P1,
-					&result);
-			}
-
-			if (corner.P4)
-			{
-				pushNextEntryCollisionPoint(
-					sf::Vector2f(
-						currentPlayerSize.x,
-						currentPlayerSize.y),
-					corner.P1,
-					&result);
-			}
-		}
-		else // diagonal has only a single (primary) point
-		{
-			/*
-
-			g(x) = g_y = g_m * g_x + g_h
-
-			g_m:
-			P1(x1, y1),	    | y1 = g_m * x1 + g_h |
-			P2(x2, y2)	  -	| y2 = g_m * x2 + g_h | :
-			=> (y1 - y2) = g_m * x1 - g_m * x2
-			=> (y1 - y2) = g_m * (x1 - x2)
-			=> (y1 - y2) / (x1 - x2) = g_m
-			g_h:
-			=> y1 = g_m * x1 + g_h
-			=> y1 - g_m * x1 = g_h
-
-			*/
-
-			result.G_M =
-				(position.y - destination.y) /
-				(position.x - destination.y);
-			result.G_H =
-				position.y - result.G_M * position.x;
-		}
-
-		// sort by x / y
-		if (position.x < destination.x)
-		{
-			result.begin.x = destination.x;
-			result.end.x = position.x;
-		}
-		else
-		{
-			result.begin.x = position.x;
-			result.end.x = destination.x;
-		}
-
-		if (position.y < destination.y)
-		{
-			result.begin.y = destination.y;
-			result.end.y = position.y;
-		}
-		else
-		{
-			result.begin.y = position.y;
-			result.end.y = destination.y;
-		}
-
-		return result;
-	}
-
 	bool CollisionEngine::FindEnterCollision(
 		const CollisionContext* const collisionContext, 
 		const sf::Vector2f tileSize, 
@@ -607,6 +271,175 @@ namespace Game
 				tilePosition - collisionContext->primaryOffset
 			);
 		}
+	}
+
+	CollisionEngine::CollisionContext CollisionEngine::SetupCollisionContext(
+		const sf::Vector2f position, 
+		const sf::Vector2f destination, 
+		const bool invertTilePosition, 
+		const bool invertPlayerPosition, 
+		const bool weakCollision)
+	{
+		CollisionContext result = { };
+		PlayerCorner corner = { };
+
+		result.isWeakCollision = weakCollision;
+
+		// determine tile offsets
+		result.hSideOffset = !invertTilePosition ^ (position.x < destination.x);
+		result.vSideOffset = !invertTilePosition ^ (position.y < destination.y);
+
+		// prepare for futher compare
+		const bool xCmpPlayerResult = invertPlayerPosition ^ (position.x < destination.x);
+		const bool yCmpPlayerResult = invertPlayerPosition ^ (position.y < destination.y);
+
+		// prepush primary collision point if
+		// movement is straight
+		if (position.x == destination.x) // vertical
+		{
+			// abuse G_M to indicate vertical movement
+			result.G_M = (float) false;
+			result.isStraight = true;
+
+			result.primaryOffset =
+			{
+				currentPlayerSize.x / 2.f,
+				yCmpPlayerResult ? currentPlayerSize.y : 0
+			};
+
+			result.secondary1 =
+			{
+				yCmpPlayerResult ? currentPlayerSize.x : 0,
+				yCmpPlayerResult ? currentPlayerSize.y : 0,
+			};
+
+			result.secondary1 =
+			{
+				yCmpPlayerResult ? 0 : currentPlayerSize.x,
+				yCmpPlayerResult ? currentPlayerSize.y : 0,
+			};
+		}
+		else if (position.y == destination.y) // horizontal
+		{
+			// abuse G_M to indicate horizontal movement
+			result.G_M = (float) true;
+			result.isStraight = true;
+
+			result.primaryOffset =
+			{
+				xCmpPlayerResult ? currentPlayerSize.x : 0,
+				position.y + currentPlayerSize.y / 2.f
+			};
+
+			result.secondary1 =
+			{
+				xCmpPlayerResult ? currentPlayerSize.x : 0,
+				xCmpPlayerResult ? currentPlayerSize.y : 0,
+			};
+
+			result.secondary1 =
+			{
+				xCmpPlayerResult ? currentPlayerSize.x : 0,
+				xCmpPlayerResult ? 0 : currentPlayerSize.x,
+			};
+		}
+		else
+		{
+			if (!weakCollision)
+			{
+				/*
+					A = px < dx
+					B = py < dy
+
+					A B	=>   prim      sec1      sec2
+					0 0 => { 0, 0 }, { 0, 1 }, { 1, 0 }
+					0 1 => { 0, 1 }, { 0, 0 }, { 1, 1 }
+					1 0 => { 1, 0 }, { 0, 0 }, { 1, 1 }
+					1 1 => { 1, 1 }, { 0, 1 }, { 1, 0 }
+
+					-----------------------------------
+
+						prim = { A,      B }
+						sec1 = { 0,  A ^ B }
+						sec2 = { 1, !A ^ B }
+					
+					-----------------------------------
+				*/
+
+				result.secondary1 =
+				{
+					0.f,
+					xCmpPlayerResult ^ yCmpPlayerResult
+					? 0.f
+					: currentPlayerSize.y
+				};
+
+				result.secondary2 =
+				{
+					currentPlayerSize.x,
+					xCmpPlayerResult ^ yCmpPlayerResult
+					? currentPlayerSize.y
+					: 0.f
+				};
+			}
+
+			result.primaryOffset =
+			{
+				xCmpPlayerResult ? currentPlayerSize.x : 0,
+				yCmpPlayerResult ? currentPlayerSize.y : 0
+			};
+
+
+			/*
+				(Only for diagonal movement needed / possible)
+				Caluclating function to
+				represent player movement
+
+				g(x) = g_y = g_m * g_x + g_h
+
+				g_m:
+				P1(x1, y1),	    | y1 = g_m * x1 + g_h |
+				P2(x2, y2)	  -	| y2 = g_m * x2 + g_h | :
+				=> (y1 - y2) = g_m * x1 - g_m * x2
+				=> (y1 - y2) = g_m * (x1 - x2)
+				=> (y1 - y2) / (x1 - x2) = g_m
+				g_h:
+				=> y1 = g_m * x1 + g_h
+				=> y1 - g_m * x1 = g_h
+
+			*/
+
+			result.G_M =
+				(position.y - destination.y) /
+				(position.x - destination.y);
+			result.G_H =
+				position.y - result.G_M * position.x;
+		}
+
+		// sort by x / y
+		if (position.x < destination.x)
+		{
+			result.begin.x = destination.x;
+			result.end.x = position.x;
+		}
+		else
+		{
+			result.begin.x = position.x;
+			result.end.x = destination.x;
+		}
+
+		if (position.y < destination.y)
+		{
+			result.begin.y = destination.y;
+			result.end.y = position.y;
+		}
+		else
+		{
+			result.begin.y = position.y;
+			result.end.y = destination.y;
+		}
+
+		return result;
 	}
 
 	CollisionEngine::CollisionInfo CollisionEngine::GetLastCollision()

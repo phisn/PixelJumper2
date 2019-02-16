@@ -52,24 +52,58 @@ namespace Game
 			// px == dx | py == dy
 			bool isStraight;
 
+			// Diagonal:
+			// - use a single collision point
+			//   instead of three
+			// Straight:
+			// - Do everything like normal
+			bool isWeakCollision;
+
 			// expected collision offsets
 			// | | <- hSide
 			//  =  <- vSide
 			float vSideOffset, hSideOffset;
 		};
 
-		CollisionContext SetupEnterCollisionContext(
+		/*
+		
+			invertPosition:
+			- t = false & p = false => Enter Collision
+			- t = true  & p = true  => Leave Collision
+		
+		*/
+		CollisionContext SetupCollisionContext(
 			const sf::Vector2f position,
-			const sf::Vector2f destination);
-		CollisionContext SetupLeaveCollisionContext(
-			const sf::Vector2f position,
-			const sf::Vector2f destination);
+			const sf::Vector2f destination,
+			const bool invertTilePosition,
+			const bool invertPlayerPosition,
+			const bool weakCollision);
 
-		bool FindEnterCollision(
-			const CollisionContext* const collisionContext,
-			const sf::Vector2f tileSize,
-			const sf::Vector2f tilePosition);
-		bool FindLeaveCollision(
+		static CollisionContext SetupEnterCollisionContext(
+			const sf::Vector2f position,
+			const sf::Vector2f destination)
+		{
+			return SetupCollisionContext(
+				position,
+				destination,
+				false,
+				false,
+				false);
+		}
+
+		static CollisionContext SetupLeaveCollisionContext(
+			const sf::Vector2f position,
+			const sf::Vector2f destination)
+		{
+			return SetupCollisionContext(
+				position,
+				destination,
+				true,
+				true,
+				true);
+		}
+
+		bool FindCollision(
 			const CollisionContext* const collisionContext,
 			const sf::Vector2f tileSize,
 			const sf::Vector2f tilePosition);
