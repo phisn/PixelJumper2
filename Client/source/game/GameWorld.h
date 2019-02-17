@@ -3,6 +3,8 @@
 #include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
+#include <Client/source/logger/Logger.h>
+
 #include <Client/source/game/WorldState.h>
 
 #include <Client/source/game/GameTileBase.h>
@@ -22,6 +24,15 @@ namespace Game
 		static GameWorld* Create(
 			Resource::World* const worldResource)
 		{
+			Log::Section section(L"Creating world from WorldResource");
+			
+			section.information(L"Map: " + worldResource->HeaderAuth.mapName);
+			section.information(L"Author: " + worldResource->HeaderAuth.authorName);
+			section.information(L"ID: " + std::to_wstring(worldResource->HeaderIntro.worldID));
+			section.information(L"TileCount: " + std::to_wstring(worldResource->HeaderProperties.tileCount));
+			section.information(L"Width: " + std::to_wstring(worldResource->HeaderProperties.width));
+			section.information(L"Height: " + std::to_wstring(worldResource->HeaderProperties.height));
+
 			GameWorld* result = new GameWorld();
 
 			result->Properties.size = sf::Vector2f(
@@ -34,9 +45,16 @@ namespace Game
 
 			for (Resource::Tile& tileResource : worldResource->TileContainer)
 			{
-				result->tileContainer.insertTile(
-					GameTileFactory::Create(&tileResource)
-				);
+				GameTileBase* const tile = GameTileFactory::Create(&tileResource);
+
+				if (tile == NULL)
+				{
+					section.error(L"Failed to create tile");
+
+					return NULL;
+				}
+
+				result->tileContainer.insertTile(tile);
 			}
 
 			sf::Image image;
@@ -45,39 +63,27 @@ namespace Game
 				worldResource->HeaderProperties.height
 			);
 
-			for (int i = 0; i < result->tiles.size(); ++i)
+			for (StaticTile* const tile : result->tileContainer.getSortedTiles().staticTiles)
 			{
-				if (result->tiles[i]->getTileProperties()->isStatic)
+				const sf::Vector2i target = sf::Vector2i(tile->getPosition() + tile->getSize());
+
+				[[unlikely]] if (target.x > worldResource->HeaderProperties.width ||
+					target.y > worldResource->HeaderProperties.height ||
+					target.x < 0 || target.y < 0)
 				{
-					result->Visual.nonStaticTiles.insert(
-						result->tiles[i]
-					);
-				}
-				else
-				{
-					for (int x = 0; x < worldResource->TileContainer[i].Header.width; ++x)
-						for (int y = 0; y < worldResource->TileContainer[i].Header.height; ++y)
-						{
-							image.setPixel(
-								worldResource->TileContainer[i].Header.x + x,
-								worldResource->TileContainer[i].Header.y + y,
-								result->tiles[i]->getColor()
-							);
-						}
+					section.error(L"Tile is out of bounds");
+
+					return NULL;
 				}
 
-				if (result->tiles[i]->getTileProperties()->isEnterable)
-				{
-					result->sortedTiles.enterableTiles.insert((EnterableTile*) result->tiles[i]);
-				}
-
-				if (result->tiles[i]->getTileProperties()->isLeaveable)
-				{
-					result->sortedTiles.leaveableTiles.insert((LeaveableTile*) result->tiles[i]);
-				}
+				for (int x = tile->getPosition().x; x < target.x; ++x)
+					for (int y = tile->getPosition().y; y < target.y; ++y)
+					{
+						image.setPixel(x, y, tile->getColor());
+					}
 			}
 
-			result->Visual.hasNonStatic = result->Visual.nonStaticTiles.size() > 0;
+			result->Visual.hasNonStatic = result->tileContainer.getSortedTiles().staticTiles.size() > 0;
 
 			result->Visual.texture.loadFromImage(image);
 			result->Visual.sprite.setTexture(result->Visual.texture);

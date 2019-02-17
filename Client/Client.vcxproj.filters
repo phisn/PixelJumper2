@@ -345,9 +345,6 @@
     <ClInclude Include="source\game\GameTileContainer.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\InitializableTile.h">
-      <Filter>source\game\Tiles</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\GameTileBase.h">
       <Filter>source\game\Tiles</Filter>
     </ClInclude>
@@ -571,9 +568,6 @@
     </ClCompile>
     <ClCompile Include="source\game\GameTileContainer.cpp">
       <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\InitializableTile.cpp">
-      <Filter>source\game\Tiles</Filter>
     </ClCompile>
     <ClCompile Include="source\game\GameTileBase.cpp">
       <Filter>source\game\Tiles</Filter>

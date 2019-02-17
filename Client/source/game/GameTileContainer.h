@@ -2,8 +2,8 @@
 
 #include <Client/source/game/CollidableTile.h>
 #include <Client/source/game/GameTileBase.h>
-#include <Client/source/game/InitializableTile.h>
 #include <Client/source/game/StaticTile.h>
+#include <Client/source/game/DynamicTile.h>
 
 #include <map>
 #include <vector>
@@ -15,9 +15,12 @@ namespace Game
 	public:
 		struct SortedTiles
 		{
-			std::vector<GameTileBase*> staticTiles;
-			std::multimap<CollisionType, CollidableTile*> collidableTiles;
-			std::vector<InitializableTile*> initializableTiles;
+			std::vector<StaticTile*> staticTiles;
+			std::map<
+				CollisionType, 
+				std::vector<CollidableTile*>
+			> collidableTiles;
+			std::vector<DynamicTile*> dynamicTiles;
 		};
 
 		~TileContainer()
@@ -31,21 +34,22 @@ namespace Game
 		void insertTile(GameTileBase* const tile)
 		{
 			tiles.push_back(tile);
+			tile->initialize(this);
+		}
 
-			if (tile->getTileProperties()->isCollidable)
-			{
+		void insertCollidable(CollidableTile* const tile, CollisionType type)
+		{
+			sortedTiles.collidableTiles[type].push_back(tile);
+		}
 
-			}
+		void insertDynamic(DynamicTile* const tile)
+		{
+			sortedTiles.dynamicTiles.push_back(tile);
+		}
 
-			if (tile->getTileProperties()->isStatic)
-			{
-				sortedTiles.staticTiles.push_back(tile);
-			}
-
-			if (tile->getTileProperties()->isInitializable)
-			{
-
-			}
+		void insertStatic(StaticTile* const tile)
+		{
+			sortedTiles.staticTiles.push_back(tile);
 		}
 
 		const std::vector<GameTileBase*>& getTiles() const;

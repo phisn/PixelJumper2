@@ -12,12 +12,10 @@ namespace Game
 	{
 	public:
 		StaticTile(
-			const StaticTileProperties* const stp,
 			const sf::Color color,
 			const sf::Vector2f position,
 			const sf::Vector2f size)
 			:
-			GameTileBase(stp),
 			color(color),
 			position(position),
 			size(size)
