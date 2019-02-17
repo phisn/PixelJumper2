@@ -82,8 +82,11 @@
     <Filter Include="source\shared">
       <UniqueIdentifier>{33b3d319-8e83-4b82-b14a-c1517ab66063}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\game\Tiles">
+    <Filter Include="source\game\Tile">
       <UniqueIdentifier>{4b04e3b3-5bf8-4293-9869-7b51a45ae83b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game\TileTrait">
+      <UniqueIdentifier>{69b9c64d-ffe4-408e-ac6a-79f90bd91212}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -339,23 +342,27 @@
     <ClInclude Include="source\game\WorldState.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\CollidableTile.h">
-      <Filter>source\game\Tiles</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\GameTileContainer.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\GameTileBase.h">
-      <Filter>source\game\Tiles</Filter>
+    <ClInclude Include="WallTile.h" />
+    <ClInclude Include="source\game\tiletrait\CollidableTile.h">
+      <Filter>source\game\TileTrait</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\StaticTile.h">
-      <Filter>source\game\Tiles</Filter>
+    <ClInclude Include="source\game\tiletrait\DrawableTile.h">
+      <Filter>source\game\TileTrait</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\DynamicTile.h">
-      <Filter>source\game\Tiles</Filter>
+    <ClInclude Include="source\game\tiletrait\DynamicTile.h">
+      <Filter>source\game\TileTrait</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\DrawableTile.h">
-      <Filter>source\game\Tiles</Filter>
+    <ClInclude Include="source\game\tiletrait\StaticTile.h">
+      <Filter>source\game\TileTrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\GameTileBase.h">
+      <Filter>source\game\TileTrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tile\GameWallTile.h">
+      <Filter>source\game\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -563,23 +570,27 @@
     <ClCompile Include="source\game\WorldState.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\CollidableTile.cpp">
-      <Filter>source\game\Tiles</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\GameTileContainer.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\GameTileBase.cpp">
-      <Filter>source\game\Tiles</Filter>
+    <ClCompile Include="WallTile.cpp" />
+    <ClCompile Include="source\game\tiletrait\CollidableTile.cpp">
+      <Filter>source\game\TileTrait</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\StaticTile.cpp">
-      <Filter>source\game\Tiles</Filter>
+    <ClCompile Include="source\game\tiletrait\DrawableTile.cpp">
+      <Filter>source\game\TileTrait</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\DrawableTile.cpp">
-      <Filter>source\game\Tiles</Filter>
+    <ClCompile Include="source\game\tiletrait\DynamicTile.cpp">
+      <Filter>source\game\TileTrait</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\DynamicTile.cpp">
-      <Filter>source\game\Tiles</Filter>
+    <ClCompile Include="source\game\tiletrait\StaticTile.cpp">
+      <Filter>source\game\TileTrait</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tiletrait\GameTileBase.cpp">
+      <Filter>source\game\TileTrait</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tile\GameWallTile.cpp">
+      <Filter>source\game\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

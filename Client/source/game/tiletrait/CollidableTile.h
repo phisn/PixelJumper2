@@ -1,12 +1,22 @@
 #pragma once
 
-#include <Client/source/game/GameTileBase.h>
-#include <Client/source/game/InitializableTile.h>
-
 namespace Game
 {
+	class TileContainer;
+
 	struct CollisionType
 	{
+		CollisionType(
+			const bool isWeak,
+			const bool invertPlayer,
+			const bool invertTile)
+			:
+			isWeak(isWeak),
+			invertPlayer(invertPlayer),
+			invertTile(invertTile)
+		{
+		}
+
 		const bool isWeak;
 
 		const bool invertPlayer;
@@ -16,15 +26,9 @@ namespace Game
 	};
 
 	class CollidableTile
-		:
-		public InitializableTile
 	{
-	public:
-		CollidableTile()
-		{
-		}
-
-		
+	protected:
+		void addCollisionType(TileContainer* const container, const CollisionType type);
 	};
 }
 

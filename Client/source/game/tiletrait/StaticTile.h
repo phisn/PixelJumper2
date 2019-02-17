@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/System/Vector2.hpp>
 
-#include <Client/source/game/GameTileBase.h>
+#include <Client/source/game/tiletrait/GameTileBase.h>
 
 namespace Game
 {
@@ -37,6 +38,7 @@ namespace Game
 			return size;
 		}
 
+		virtual void initialize(TileContainer* const container) override;
 	protected:
 		const sf::Color color;
 

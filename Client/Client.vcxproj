@@ -75,20 +75,21 @@
     <ClInclude Include="source\framework\Context.h" />
     <ClInclude Include="source\framework\FrameworkInterface.h" />
     <ClInclude Include="source\framework\ResourceContext.h" />
-    <ClInclude Include="source\game\CollidableTile.h" />
     <ClInclude Include="source\game\CollisionEngine.h" />
-    <ClInclude Include="source\game\DrawableTile.h" />
-    <ClInclude Include="source\game\DynamicTile.h" />
     <ClInclude Include="source\game\GameState.h" />
     <ClInclude Include="source\game\GameStateManager.h" />
-    <ClInclude Include="source\game\GameTileBase.h" />
     <ClInclude Include="source\game\GameTileContainer.h" />
     <ClInclude Include="source\game\GameTileFactory.h" />
     <ClInclude Include="source\game\GameWorld.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
     <ClInclude Include="source\game\PlayerState.h" />
     <ClInclude Include="source\game\Simulator.h" />
-    <ClInclude Include="source\game\StaticTile.h" />
+    <ClInclude Include="source\game\tiletrait\CollidableTile.h" />
+    <ClInclude Include="source\game\tiletrait\DrawableTile.h" />
+    <ClInclude Include="source\game\tiletrait\DynamicTile.h" />
+    <ClInclude Include="source\game\tiletrait\GameTileBase.h" />
+    <ClInclude Include="source\game\tiletrait\StaticTile.h" />
+    <ClInclude Include="source\game\tile\GameWallTile.h" />
     <ClInclude Include="source\game\WorldState.h" />
     <ClInclude Include="source\logger\Names.h" />
     <ClInclude Include="source\logger\SectionHost.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="source\scene\MainSceneBase.h" />
     <ClInclude Include="source\scene\MenuBaseScene.h" />
     <ClInclude Include="source\scene\SubSceneBase.h" />
+    <ClInclude Include="WallTile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\DeviceInterface.cpp" />
@@ -162,19 +164,20 @@
     <ClCompile Include="source\framework\Context.cpp" />
     <ClCompile Include="source\framework\FrameworkInterface.cpp" />
     <ClCompile Include="source\framework\ResourceContext.cpp" />
-    <ClCompile Include="source\game\CollidableTile.cpp" />
     <ClCompile Include="source\game\CollisionEngine.cpp" />
-    <ClCompile Include="source\game\DrawableTile.cpp" />
-    <ClCompile Include="source\game\DynamicTile.cpp" />
     <ClCompile Include="source\game\GameStateManager.cpp" />
-    <ClCompile Include="source\game\GameTileBase.cpp" />
     <ClCompile Include="source\game\GameTileContainer.cpp" />
     <ClCompile Include="source\game\GameTileFactory.cpp" />
     <ClCompile Include="source\game\GameWorld.cpp" />
     <ClCompile Include="source\game\PlayerBase.cpp" />
     <ClCompile Include="source\game\PlayerState.cpp" />
     <ClCompile Include="source\game\Simulator.cpp" />
-    <ClCompile Include="source\game\StaticTile.cpp" />
+    <ClCompile Include="source\game\tiletrait\CollidableTile.cpp" />
+    <ClCompile Include="source\game\tiletrait\DrawableTile.cpp" />
+    <ClCompile Include="source\game\tiletrait\DynamicTile.cpp" />
+    <ClCompile Include="source\game\tiletrait\GameTileBase.cpp" />
+    <ClCompile Include="source\game\tiletrait\StaticTile.cpp" />
+    <ClCompile Include="source\game\tile\GameWallTile.cpp" />
     <ClCompile Include="source\game\WorldState.cpp" />
     <ClCompile Include="source\logger\SectionHost.cpp" />
     <ClCompile Include="source\logger\Output.cpp" />
@@ -201,6 +204,7 @@
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
+    <ClCompile Include="WallTile.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>

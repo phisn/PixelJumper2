@@ -7,7 +7,7 @@
 
 #include <Client/source/game/WorldState.h>
 
-#include <Client/source/game/GameTileBase.h>
+#include <Client/source/game/tiletrait/GameTileBase.h>
 #include <Client/source/game/GameTileContainer.h>
 #include <Client/source/game/GameTileFactory.h>
 
@@ -83,8 +83,6 @@ namespace Game
 					}
 			}
 
-			result->Visual.hasNonStatic = result->tileContainer.getSortedTiles().staticTiles.size() > 0;
-
 			result->Visual.texture.loadFromImage(image);
 			result->Visual.sprite.setTexture(result->Visual.texture);
 
@@ -100,18 +98,15 @@ namespace Game
 		{
 			Device::Interface::GetScreen()->onDraw(&Visual.sprite);
 
-			[[unlikely]] if (Visual.hasNonStatic) // unlikely for now
+			for (DynamicTile* const tile : tileContainer.getSortedTiles().dynamicTiles)
 			{
-				for (GameTileBase* const tile : Visual.nonStaticTiles)
-				{
-					tile->onDraw();
-				}
+				tile->onDraw();
 			}
 		}
 
 		void onLogic(const sf::Time time) const
 		{
-			for (GameTileBase* const tile : tiles)
+			for (DynamicTile* const tile : tileContainer.getSortedTiles().dynamicTiles)
 			{
 				tile->onLogic(time);
 			}
@@ -135,8 +130,6 @@ namespace Game
 		{
 			sf::Texture texture;
 			sf::Sprite sprite;
-
-			bool hasNonStatic;
 		} Visual;
 	};
 

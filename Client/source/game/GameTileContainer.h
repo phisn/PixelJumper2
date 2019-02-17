@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Client/source/game/CollidableTile.h>
-#include <Client/source/game/GameTileBase.h>
-#include <Client/source/game/StaticTile.h>
-#include <Client/source/game/DynamicTile.h>
+#include <Client/source/game/tiletrait/CollidableTile.h>
+#include <Client/source/game/tiletrait/GameTileBase.h>
+#include <Client/source/game/tiletrait/StaticTile.h>
+#include <Client/source/game/tiletrait/DynamicTile.h>
 
 #include <map>
 #include <vector>
