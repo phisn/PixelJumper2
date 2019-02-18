@@ -25,11 +25,15 @@ namespace Game
 				G1, G2, G3, G4
 			} type;
 
-			// if collision is vertical then the
-			// remaining distance, is the distance
-			// in the horizontal direction
-			// with vertical, the other way around
-			float remainingDistance;
+			bool isVertical() const
+			{
+				return type == G2 || type == G4;
+			}
+
+			bool isHorizontal() const
+			{
+				return !isVertical();
+			}
 		};
 
 		struct CollisionContext

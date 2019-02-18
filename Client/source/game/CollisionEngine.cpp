@@ -54,8 +54,6 @@ namespace
 				? Game::CollisionEngine::CollisionInfo::G3
 				: Game::CollisionEngine::CollisionInfo::G1;
 
-			lastCollision.remainingDistance = collisionContext->target.y - t_y;
-
 			return true;
 		}
 
@@ -102,8 +100,6 @@ namespace
 				? Game::CollisionEngine::CollisionInfo::G4
 				: Game::CollisionEngine::CollisionInfo::G2;
 
-			lastCollision.remainingDistance = collisionContext->target.y - t_x;
-
 			return true;
 		}
 		
@@ -130,8 +126,6 @@ namespace
 				? Game::CollisionEngine::CollisionInfo::G3
 				: Game::CollisionEngine::CollisionInfo::G1;
 
-			lastCollision.remainingDistance = 0.f;
-
 			return true;
 		}
 
@@ -157,8 +151,6 @@ namespace
 			lastCollision.type = collisionContext->vSideOffset
 				? Game::CollisionEngine::CollisionInfo::G4
 				: Game::CollisionEngine::CollisionInfo::G2;
-
-			lastCollision.remainingDistance = 0.f;
 
 			return true;
 		}
