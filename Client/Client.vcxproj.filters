@@ -366,6 +366,9 @@
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
       <Filter>source\game\TileTrait</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\LocalPlayer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -595,6 +598,9 @@
     </ClCompile>
     <ClCompile Include="source\game\tiletrait\SynchronizableTile.cpp">
       <Filter>source\game\TileTrait</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\LocalPlayer.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

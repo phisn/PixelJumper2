@@ -12,6 +12,18 @@ namespace Device
 		using files
 	
 	*/
+	
+	namespace Resource
+	{
+
+	}
+
+	/*
+	
+		TODO:
+		Export everything here to ResourceInterface
+	
+	*/
 
 	class Resource
 	{

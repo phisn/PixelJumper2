@@ -81,6 +81,7 @@
     <ClInclude Include="source\game\GameTileContainer.h" />
     <ClInclude Include="source\game\GameTileFactory.h" />
     <ClInclude Include="source\game\GameWorld.h" />
+    <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
     <ClInclude Include="source\game\PlayerState.h" />
     <ClInclude Include="source\game\Simulator.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="source\game\GameTileContainer.cpp" />
     <ClCompile Include="source\game\GameTileFactory.cpp" />
     <ClCompile Include="source\game\GameWorld.cpp" />
+    <ClCompile Include="source\game\LocalPlayer.cpp" />
     <ClCompile Include="source\game\PlayerBase.cpp" />
     <ClCompile Include="source\game\PlayerState.cpp" />
     <ClCompile Include="source\game\Simulator.cpp" />

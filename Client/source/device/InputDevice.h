@@ -4,6 +4,11 @@
 
 namespace Device
 {
+	namespace Input
+	{
+
+	}
+
 	// Same for all players
 	enum class GlobalInputSymbol
 	{

@@ -3,33 +3,15 @@
 #include <SFML/Graphics.hpp>
 
 #ifndef DEVICE
-#define DEVICE ::Device
+#define DEVICE ::Device // remove THIS
 #endif
 
 namespace Device
-{
-	/*
-
-		[Device]Settings classes provided for config generation
-
-	*/
-
-	class GlobalInput;
-	class Screen;
-	class Resource;
-
-	enum class InitError
+{	
+	namespace Interface
 	{
-		Invalid = -1,
-
-		Input,
-		Network,
-		Scene,
-		Screen,
-		Resource,
-
-		_Length
-	};
+		bool Initialize(); // think about other return [LATER]
+	}
 
 	namespace Interface
 	{

@@ -55,8 +55,10 @@ namespace Game
 			return currentWorld;
 		}
 
-	private:
+	protected:
 		GameWorld* currentWorld; // adjust world if player finished
+
+	private:
 		const float TIME_VALUE_STEP = 1.f;
 
 		sf::Vector2f getTargetOffset(const float timeValue) const
@@ -168,12 +170,6 @@ namespace Game
 			sf::RectangleShape basicShape;
 
 		} Visual;
-
-		struct
-		{
-			GameTileBase* currentlyOccupying[4];
-
-		} PrivateState;
 
 		std::wstring name;
 	};
