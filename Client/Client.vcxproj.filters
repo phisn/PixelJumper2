@@ -90,9 +90,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\device\DeviceInterface.h">
-      <Filter>source\device</Filter>
-    </ClInclude>
     <ClInclude Include="source\device\InputDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
@@ -369,13 +366,13 @@
     <ClInclude Include="source\game\LocalPlayer.h">
       <Filter>source\game</Filter>
     </ClInclude>
+    <ClInclude Include="source\device\CoreDevice.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
       <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\device\DeviceInterface.cpp">
-      <Filter>source\device</Filter>
     </ClCompile>
     <ClCompile Include="source\device\InputDevice.cpp">
       <Filter>source\device</Filter>
@@ -601,6 +598,9 @@
     </ClCompile>
     <ClCompile Include="source\game\LocalPlayer.cpp">
       <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\device\CoreDevice.cpp">
+      <Filter>source\device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

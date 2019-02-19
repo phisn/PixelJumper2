@@ -8,9 +8,17 @@
 
 namespace Device
 {	
-	namespace Interface
+	namespace Core
 	{
-		bool Initialize(); // think about other return [LATER]
+		enum class Error
+		{
+			InputError,
+			ResourceError,
+			ScreenError
+		};
+		
+		Error Initialize(); // think about other return [LATER]
+		void runGameLoop();
 	}
 
 	namespace Interface

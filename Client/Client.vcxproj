@@ -37,7 +37,7 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClInclude Include="source\Common.h" />
-    <ClInclude Include="source\device\DeviceInterface.h" />
+    <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\RandomDevice.h" />
     <ClInclude Include="source\device\ResourceDevice.h" />
@@ -131,7 +131,7 @@
     <ClInclude Include="source\scene\SubSceneBase.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\device\DeviceInterface.cpp" />
+    <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\RandomDevice.cpp" />
     <ClCompile Include="source\device\ResourceDevice.cpp" />
