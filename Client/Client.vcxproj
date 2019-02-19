@@ -89,6 +89,7 @@
     <ClInclude Include="source\game\tiletrait\DynamicTile.h" />
     <ClInclude Include="source\game\tiletrait\GameTileBase.h" />
     <ClInclude Include="source\game\tiletrait\StaticTile.h" />
+    <ClInclude Include="source\game\tiletrait\SynchronizableTile.h" />
     <ClInclude Include="source\game\tile\GameWallTile.h" />
     <ClInclude Include="source\game\WorldState.h" />
     <ClInclude Include="source\logger\Names.h" />
@@ -127,7 +128,6 @@
     <ClInclude Include="source\scene\MainSceneBase.h" />
     <ClInclude Include="source\scene\MenuBaseScene.h" />
     <ClInclude Include="source\scene\SubSceneBase.h" />
-    <ClInclude Include="WallTile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\DeviceInterface.cpp" />
@@ -177,6 +177,7 @@
     <ClCompile Include="source\game\tiletrait\DynamicTile.cpp" />
     <ClCompile Include="source\game\tiletrait\GameTileBase.cpp" />
     <ClCompile Include="source\game\tiletrait\StaticTile.cpp" />
+    <ClCompile Include="source\game\tiletrait\SynchronizableTile.cpp" />
     <ClCompile Include="source\game\tile\GameWallTile.cpp" />
     <ClCompile Include="source\game\WorldState.cpp" />
     <ClCompile Include="source\logger\SectionHost.cpp" />
@@ -204,7 +205,6 @@
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
-    <ClCompile Include="WallTile.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>

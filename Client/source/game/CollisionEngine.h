@@ -83,6 +83,7 @@ namespace Game
 			const bool invertPlayerPosition,
 			const bool weakCollision);
 
+		/*
 		static CollisionContext SetupEnterCollisionContext(
 			const sf::Vector2f position,
 			const sf::Vector2f destination)
@@ -106,6 +107,7 @@ namespace Game
 				true,
 				true);
 		}
+		*/
 
 		bool FindCollision(
 			const CollisionContext* const collisionContext,

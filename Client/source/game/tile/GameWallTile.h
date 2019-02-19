@@ -56,5 +56,15 @@ namespace Game
 				return { collision.target.x - collision.info.position.x, 0.0f };
 			}
 		}
+
+		const sf::Vector2f getPosition() const override
+		{
+			return StaticTile::getPosition();
+		}
+
+		const sf::Vector2f getSize() const override
+		{
+			return StaticTile::getSize();
+		}
 	};
 }

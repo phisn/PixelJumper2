@@ -112,6 +112,11 @@ namespace Game
 			}
 		}
 
+		const TileContainer* getTileContainer() const
+		{
+			return &tileContainer;
+		}
+
 		sf::Vector2f getSize() const;
 		const std::wstring& getAuthorName() const;
 		const std::wstring& getMapName() const;

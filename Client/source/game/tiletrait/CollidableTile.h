@@ -9,6 +9,7 @@ namespace Game
 
 	struct CollisionType
 	{
+		CollisionType() = default;
 		CollisionType(
 			const bool isWeak,
 			const bool invertPlayer,
@@ -46,6 +47,10 @@ namespace Game
 		virtual sf::Vector2f onCollision(
 			const CollisionType type,
 			const Collision collision) = 0;
+
+		// copied from / same as in GameTileBase.h
+		virtual const sf::Vector2f getPosition() const = 0;
+		virtual const sf::Vector2f getSize() const = 0;
 	protected:
 		void addCollisionType(TileContainer* const container, const CollisionType type);
 	};

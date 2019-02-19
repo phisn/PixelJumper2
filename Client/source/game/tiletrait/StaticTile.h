@@ -28,12 +28,12 @@ namespace Game
 			return color;
 		}
 
-		const sf::Vector2f getPosition() const
+		const sf::Vector2f getPosition() const override
 		{
 			return position;
 		}
 
-		const sf::Vector2f getSize() const
+		const sf::Vector2f getSize() const override
 		{
 			return size;
 		}

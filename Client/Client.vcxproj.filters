@@ -345,7 +345,6 @@
     <ClInclude Include="source\game\GameTileContainer.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="WallTile.h" />
     <ClInclude Include="source\game\tiletrait\CollidableTile.h">
       <Filter>source\game\TileTrait</Filter>
     </ClInclude>
@@ -363,6 +362,9 @@
     </ClInclude>
     <ClInclude Include="source\game\tile\GameWallTile.h">
       <Filter>source\game\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
+      <Filter>source\game\TileTrait</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -573,7 +575,6 @@
     <ClCompile Include="source\game\GameTileContainer.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="WallTile.cpp" />
     <ClCompile Include="source\game\tiletrait\CollidableTile.cpp">
       <Filter>source\game\TileTrait</Filter>
     </ClCompile>
@@ -591,6 +592,9 @@
     </ClCompile>
     <ClCompile Include="source\game\tile\GameWallTile.cpp">
       <Filter>source\game\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tiletrait\SynchronizableTile.cpp">
+      <Filter>source\game\TileTrait</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

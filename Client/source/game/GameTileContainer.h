@@ -1,9 +1,10 @@
 #pragma once
 
 #include <Client/source/game/tiletrait/CollidableTile.h>
+#include <Client/source/game/tiletrait/DynamicTile.h>
 #include <Client/source/game/tiletrait/GameTileBase.h>
 #include <Client/source/game/tiletrait/StaticTile.h>
-#include <Client/source/game/tiletrait/DynamicTile.h>
+#include <Client/source/game/tiletrait/SynchronizableTile.h>
 
 #include <map>
 #include <vector>
@@ -21,6 +22,7 @@ namespace Game
 				std::vector<CollidableTile*>
 			> collidableTiles;
 			std::vector<DynamicTile*> dynamicTiles;
+			std::vector<SynchronizableTile*> synchronizableTiles;
 		};
 
 		~TileContainer()
@@ -50,6 +52,11 @@ namespace Game
 		void insertStatic(StaticTile* const tile)
 		{
 			sortedTiles.staticTiles.push_back(tile);
+		}
+
+		void insertSynchronizable(SynchronizableTile* const tile)
+		{
+			sortedTiles.synchronizableTiles.push_back(tile);
 		}
 
 		const std::vector<GameTileBase*>& getTiles() const;

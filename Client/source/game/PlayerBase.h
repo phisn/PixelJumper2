@@ -80,126 +80,82 @@ namespace Game
 			GameTileBase* collisionTile;
 		};
 
-		void moveTo(const sf::Vector2f targetPosition)
+		void moveTo(sf::Vector2f targetPosition)
 		{
-			while (true)
-			{
-				const CustomCollisionResult result = findEnterCollisionTo(targetPosition);
+			using CollidableTiles = std::vector<CollidableTile*>;
+			using CollidableElement = std::pair<CollisionType, CollidableTiles>;
 
-				handleLeaveCollisionEventsTo()
-
-				if (result.collisionFound)
-				{
-					
-					
-
-					if (result.collisionInformation.remainingDistance == NULL)
-					{
-						break;
-					}
-				}
-				else
-				{
-					handleLeaveCollisionEventsTo(targetPosition);
-
-
-
-					break;
-				}
-			}
-		}
-
-		// does collision finding and event handling in one
-		void handleLeaveCollisionEventsTo(const sf::Vector2f targetPosition)
-		{ // TODO: can only be a single?
-			const CollisionEngine::CollisionContext collisionContext = CollisionEngine::SetupLeaveCollisionContext(
-				state.Properties.position,
-				targetPosition);
+			/*
 			
-			using LeavedTile = std::tuple<float, CollisionEngine::CollisionInfo, LeaveableTile*>;
-			using LeavedTileLess = bool (*)(const LeavedTile& l1, const LeavedTile& l2);
+				Very unoptimized
+			
+			*/
 
-			std::set<LeavedTile, LeavedTileLess> leavedTiles(
-				[](const LeavedTile& l1, const LeavedTile& l2) -> bool
+			struct
 			{
-					return std::get<float>(l1) < std::get<float>(l2);
-			});
+				CollidableTile* tile;
+				const CollisionType* type;
 
-			for (LeaveableTile* const tile : currentWorld->getSortedTiles().leaveableTiles)
-				if (CollisionEngine::FindLeaveCollision(
-						&collisionContext,
-						tile->getSize(),
-						tile->getPosition() ))
-				{
-					const CollisionEngine::CollisionInfo currentCollision = CollisionEngine::GetLastCollision();
-					const sf::Vector2f currentDistanceVector = state.Properties.position - currentCollision.position;
-					
-					leavedTiles.insert(std::make_tuple(
-						sqrtf(
-							currentDistanceVector.x * currentDistanceVector.x + // abs not needed (-1 * -1) == 1
-							currentDistanceVector.y * currentDistanceVector.y
-						),
-						currentCollision,
-						tile
-					));
-				}
+				CollisionEngine::CollisionInfo info;
+				float distance = 0x7fff'ffff;
 
-			for (const LeavedTile& leavedTile : leavedTiles)
+			} closestCollision;
+
+			closestCollision.tile = NULL; // == NOT_FOUND
+
+			do
 			{
-				PlayerEvent::LeaveEvent leaveEvent;
-
-				leaveEvent.collisionInfo = std::get<CollisionEngine::CollisionInfo>(leavedTile);
-				leaveEvent.playerState = &state;
-
-				std::get<LeaveableTile*>(leavedTile)->onLeave(leaveEvent);
-			}
-		}
-
-		CustomCollisionResult findEnterCollisionTo(const sf::Vector2f targetPosition)
-		{
-			CustomCollisionResult result = { }; // init to zero
-			const CollisionEngine::CollisionContext collisionContext = CollisionEngine::SetupEnterCollisionContext(
-				state.Properties.position,
-				targetPosition);
-
-			CollisionEngine::CollisionInfo closestCollision;
-			float closestDistance;
-
-			for (GameTileBase* const tile : currentWorld->getSortedTiles().enterableTiles)
-				if (CollisionEngine::FindEnterCollision(
-					&collisionContext,
-					tile->getSize(),
-					tile->getPosition() ))
+				for (const CollidableElement& element : currentWorld->getTileContainer()->getSortedTiles().collidableTiles)
 				{
-					const CollisionEngine::CollisionInfo currentCollision = CollisionEngine::GetLastCollision();
+					const CollisionEngine::CollisionContext collisionContext = CollisionEngine::SetupCollisionContext(
+						state.Properties.position,
+						targetPosition,
+						element.first.invertTile,
+						element.first.invertPlayer,
+						element.first.isWeak);
 
-					const sf::Vector2f currentDistanceVector = state.Properties.position - currentCollision.position;
-					const float currentDistance = sqrtf(
-						currentDistanceVector.x * currentDistanceVector.x + // abs not needed (-1 * -1) == 1
-						currentDistanceVector.y * currentDistanceVector.y
-					);
-
-					if (result.collisionFound)
-					{
-						if (currentDistance < closestDistance)
+					for (CollidableTile* const tile : element.second)
+						if (CollisionEngine::FindCollision(
+								&collisionContext,
+								tile->getSize(),
+								tile->getPosition() ))
 						{
-							result.collisionTile = tile;
-							result.collisionInformation = currentCollision;
+							const CollisionEngine::CollisionInfo currentInfo = CollisionEngine::GetLastCollision();
 
-							closestDistance = currentDistance;
+							const sf::Vector2f currentDistanceVector = state.Properties.position - currentInfo.position;
+							const float currentDistance = sqrtf(
+								currentDistanceVector.x * currentDistanceVector.x + // abs not needed (-1 * -1) == 1
+								currentDistanceVector.y * currentDistanceVector.y
+							);
+
+							if (currentDistance < closestCollision.distance)
+							{
+								closestCollision.distance = currentDistance;
+								closestCollision.tile = tile;
+								closestCollision.info = currentInfo;
+								closestCollision.type = &element.first;
+							}
 						}
+
+					if (closestCollision.tile != NULL)
+					{
+						Collision collision;
+
+						collision.info = closestCollision.info;
+						collision.player = &state;
+						collision.target = targetPosition;
+
+						targetPosition = closestCollision.tile->onCollision(*closestCollision.type, collision);
 					}
 					else
 					{
-						result.collisionFound = true;
-						result.collisionTile = tile;
-						result.collisionInformation = currentCollision;
-
-						closestDistance = currentDistance;
+						state.Properties.position = targetPosition;
+						
+						break;
 					}
 				}
 
-			return result;
+			} while (state.Properties.position != targetPosition);
 		}
 
 		void updateVisual()
