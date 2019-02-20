@@ -12,13 +12,15 @@ namespace Device
 	{
 		enum class Error
 		{
+			Success,
+
 			InputError,
 			ResourceError,
 			ScreenError
 		};
 		
 		Error Initialize(); // think about other return [LATER]
-		void RunGameLoop();
+		int RunGameLoop();
 	}
 
 	namespace Interface

@@ -26,31 +26,42 @@ namespace Device
 
 	bool Screen::RecreateWindow()
 	{
-		CloseWindow();
-		CreateWindow();
+		_CloseWindow();
+		_CreateWindow();
 	}
 
 	bool Screen::ReloadSettings()
 	{
+		if (window->isOpen())
+		{
+			_CloseWindow();
+		}
 
-		RecreateWindow();
+		// ... load settings
+		resource->Settings.antialiasing = 4;
+		resource->Settings.customVideoMode = sf::VideoMode(600, 400);
+		resource->Settings.framelimit = 60;
+		resource->Settings.hideCursor = true;
+		resource->Settings.pauseOnLeave = true;
+		resource->Settings.useCustomCursor = false;
+		resource->Settings.useDesktopVideoMode = false;
+		resource->Settings.useFramelimit = true;
+		resource->Settings.useFullscreen = false;
+		resource->Settings.useVSync = true;
+
+		_CreateWindow();
 	}
 
-	bool Screen::ApplySettings(
-		ScreenResource* const resource)
+	void Screen::_CloseWindow()
 	{
 	}
 
-	void Screen::CloseWindow()
-	{
-	}
-
-	void Screen::CloseWindow()
+	void Screen::_CloseWindow()
 	{
 		window->close();
 	}
 
-	void Screen::CreateWindow()
+	void Screen::_CreateWindow()
 	{
 		sf::VideoMode videoMode;
 
@@ -107,5 +118,10 @@ namespace Device
 		const sf::Drawable& drawable)
 	{
 		window->draw(drawable);
+	}
+
+	bool Screen::PollEvent(sf::Event& event)
+	{
+		return window->pollEvent(event);
 	}
 }

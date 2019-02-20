@@ -6,7 +6,8 @@ namespace Device
 {
 	namespace Input
 	{
-
+		bool Initialize();
+		void Uninitialize();
 	}
 
 	// Same for all players

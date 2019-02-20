@@ -3,13 +3,10 @@
 #include <Client/source/device/RandomDevice.h>
 #include <Client/source/device/ResourceDevice.h>
 
-#include "DeviceInterface.h"
+#include "CoreDevice.h"
 
 #include <Client/source/framework/Context.h>
 #include <Client/source/framework/FrameworkInterface.h>
-
-#include <Client/source/game/tiles/TileManager.h>
-#include <Client/source/game/tiles/Wall.h>
 
 #include <Client/source/logger/Logger.h>
 
@@ -19,121 +16,49 @@
 
 namespace
 {
-	Device::GlobalInput* input = NULL;
-	Device::Screen* screen = NULL;
-	Device::Resource* resource = NULL;
-
-#ifdef _DEBUG
-	FW::Context* makeStartingContext()
+	FW::Context* MakeMainContext()
 	{
 		return FW::Context::create<SCENE::EditorScene>();
-
-		/*
-		GAME::Tile::Manager::registerAllPrivate();
-
-		SCENE::LocalGameSettings* settings = new SCENE::LocalGameSettings();
-		// settings->world = new GAME::WorldSettings();
-
-		settings->playerCount = 2;
-
-		/*
-		settings->world->author = L"Phisn";
-		settings->world->name = L"TestMap";
-
-		settings->world->size = sf::Vector2f(
-			40.f, 18.f);
-
-		settings->world->tiles.push_back(
-			new GAME::Tile::Wall(
-				{
-					sf::Vector2f(16.f, 2.f),
-					sf::Vector2f(2.f, 14.f)
-				})); // wall
-
-		settings->world->tiles.push_back(
-			new GAME::Tile::Wall(
-				{
-					sf::Vector2f(1.f, 10.f),
-					sf::Vector2f(16.f, 2.f)
-				})); // floor
-
-		std::cout << GAME::WorldManager::saveSettingsToFile(
-			L"defaultWorld.pxjmpr",
-			settings->world) << std::endl;
-
-		settings->world = GAME::WorldManager::loadSettingsFromFile(
-			L"defaultWorld.pxjmpr");
-
-		std::cout << (int)settings->world << std::endl;
-		*/
 	}
-#else
-	FW::Context* makeStartingContext()
-	{
-
-	}
-#endif
 }
 
 namespace Device
 {
-	InitError Interface::Initialize()
+	Core::Error Core::Initialize()
 	{
-		Random::Initialize();
-
 		Log::Section section(L"Initializing Game");
 
-		if (input)
+		Random::Initialize();
+
+		if (!Screen::Initialize())
 		{
-			delete input;
+			return Core::Error::ScreenError;
 		}
 
-		if (screen)
+		if (!Input::Initialize())
 		{
-			delete screen;
+			return Core::Error::InputError;
 		}
-
-		if (resource)
-		{
-			delete resource;
-		}
-
-		input = new GlobalInput();
-		screen = new Screen();
-		resource = new Resource();
-
-		if (!input->initialize())
-		{
-			return InitError::Input;
-		}
-
-		if (!screen->initalize())
-		{
-			return InitError::Scene;
-		}
-
-		if (!resource->initialize())
-		{
-			return InitError::Resource;
-		}
-
-		return InitError::Invalid;
 	}
 
-	int Interface::Start()
+	int Core::RunGameLoop()
 	{
-		screen->onShow();
+		Screen::_CreateWindow();
 
 		sf::Clock clock;
 		sf::Event event;
 
-		if (!FW::Interface::PushContext(
-			makeStartingContext()
-		))
+		// Context must be pushed in RunGameLoop
+		// (after creating window) and not in Initialize
+		// because internal initializations inside
+		// contexts use window properties like size
+
+		Log::Information(L"Pushing main context");
+		if (!Framework::Interface::PushContext( MakeMainContext() ))
 		{
 			Log::Error(L"Failed to create starting context");
 
-			return 0;
+			return 1;
 		}
 
 		Log::Information(L"Entering game loop");
@@ -146,35 +71,18 @@ namespace Device
 				break;
 			}
 
-			while (screen->getWindow()->pollEvent(event))
+			while (Device::Screen::PollEvent(event))
 			{
 				Framework::Execution::OnEvent(event);
 			}
 
-			Framework::Execution::OnUpdate(
-				clock.restart()
-			);
+			Framework::Execution::OnUpdate( clock.restart() );
 
-			screen->getWindow()->clear();
+			Device::Screen::BeginDraw();
 			Framework::Execution::OnDraw();
-			screen->getWindow()->display();
+			Device::Screen::EndDraw();
 		}
 
 		return 0;
-	}
-
-	GlobalInput* Interface::GetInput()
-	{
-		return input;
-	}
-
-	Screen* Interface::GetScreen()
-	{
-		return screen;
-	}
-
-	Resource* Interface::GetResource()
-	{
-		return nullptr;
 	}
 }
