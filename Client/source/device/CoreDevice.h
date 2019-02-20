@@ -18,7 +18,7 @@ namespace Device
 		};
 		
 		Error Initialize(); // think about other return [LATER]
-		void runGameLoop();
+		void RunGameLoop();
 	}
 
 	namespace Interface

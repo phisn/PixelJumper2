@@ -52,19 +52,19 @@ namespace Device
 		bool Initialize();
 		void Uninitialize();
 
-		void RecreateWindow();
-		void ReloadSettings();
-		void ApplySettings(ScreenResource* const resource);
+		bool RecreateWindow();
+		bool ReloadSettings();
+		bool ApplySettings(ScreenResource* const resource);
 
 		void CloseWindow();
 
-		void HideWindow();
-		void ShowWindow();
+		void CloseWindow();
+		void CreateWindow();
 
 		const sf::RenderWindow* GetWindow();
 
-		void SetupDraw();
-		void FinishDraw();
+		void BeginDraw();
+		void EndDraw();
 		void Draw(const sf::Drawable& drawable);
 	}
 
