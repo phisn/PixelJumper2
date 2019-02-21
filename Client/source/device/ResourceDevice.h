@@ -13,10 +13,10 @@ namespace Device
 	
 	*/
 	
-	namespace Resource
-	{
+	//namespace Resource
+	//{
 
-	}
+	//}
 
 	/*
 	
@@ -24,7 +24,7 @@ namespace Device
 		Export everything here to ResourceInterface
 	
 	*/
-
+	/*
 	class Resource
 	{
 	public:
@@ -39,5 +39,5 @@ namespace Device
 			const std::wstring fileName);
 		Content obtain(
 			const std::wstring fileName);
-	};
+	};*/
 }

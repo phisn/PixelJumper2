@@ -19,7 +19,7 @@ namespace Framework
 	{
 	public:
 		template <typename T, class... Args>
-		static Context* create(Args&&... args)
+		static Context* Create(Args&&... args)
 		{
 			return new Context(
 				new T(args...)

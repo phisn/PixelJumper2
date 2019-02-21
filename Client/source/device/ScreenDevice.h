@@ -6,7 +6,7 @@
 
 namespace Device
 {
-	struct ScreenResource
+	struct ScreenSettings
 		:
 		public Resource::ResourceBase
 	{
@@ -33,17 +33,17 @@ namespace Device
 			// specific context settings
 			sf::Uint8 antialiasing;
 
-		} Settings;
+		} Content;
 
 	private:
 		bool make(Resource::ReadPipe* const pipe) override
 		{
-			return pipe->readValue(&Settings);
+			return pipe->readValue(&Content);
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
 		{
-			return pipe->writeValue(&Settings);
+			return pipe->writeValue(&Content);
 		}
 	};
 

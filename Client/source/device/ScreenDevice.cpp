@@ -5,7 +5,7 @@
 namespace
 {
 	sf::RenderWindow* window;
-	Device::ScreenResource* resource;
+	Device::ScreenSettings* resource;
 }
 
 namespace Device
@@ -13,7 +13,7 @@ namespace Device
 	bool Screen::Initialize()
 	{
 		window = new sf::RenderWindow();
-		resource = new Device::ScreenResource();
+		resource = new Device::ScreenSettings();
 
 		return ReloadSettings();
 	}
@@ -38,16 +38,16 @@ namespace Device
 		}
 
 		// ... load settings
-		resource->Settings.antialiasing = 4;
-		resource->Settings.customVideoMode = sf::VideoMode(600, 400);
-		resource->Settings.framelimit = 60;
-		resource->Settings.hideCursor = true;
-		resource->Settings.pauseOnLeave = true;
-		resource->Settings.useCustomCursor = false;
-		resource->Settings.useDesktopVideoMode = false;
-		resource->Settings.useFramelimit = true;
-		resource->Settings.useFullscreen = false;
-		resource->Settings.useVSync = true;
+		resource->Content.antialiasing = 4;
+		resource->Content.customVideoMode = sf::VideoMode(600, 400);
+		resource->Content.framelimit = 60;
+		resource->Content.hideCursor = true;
+		resource->Content.pauseOnLeave = true;
+		resource->Content.useCustomCursor = false;
+		resource->Content.useDesktopVideoMode = false;
+		resource->Content.useFramelimit = true;
+		resource->Content.useFullscreen = false;
+		resource->Content.useVSync = true;
 
 		_CreateWindow();
 	}
@@ -65,18 +65,18 @@ namespace Device
 	{
 		sf::VideoMode videoMode;
 
-		if (resource->Settings.useDesktopVideoMode)
+		if (resource->Content.useDesktopVideoMode)
 		{
 			videoMode = sf::VideoMode::getDesktopMode();
 		}
 		else
 		{
-			videoMode = resource->Settings.customVideoMode;
+			videoMode = resource->Content.customVideoMode;
 		}
 
 		sf::Uint32 style = 0;
 
-		if (resource->Settings.useFullscreen)
+		if (resource->Content.useFullscreen)
 		{
 			style = sf::Style::Fullscreen;
 		}
@@ -89,14 +89,14 @@ namespace Device
 			videoMode,
 			"Pixel Jumper 2",
 			style,
-			sf::ContextSettings(0U, 0U, resource->Settings.antialiasing));
+			sf::ContextSettings(0U, 0U, resource->Content.antialiasing));
 
-		if (resource->Settings.useFramelimit)
+		if (resource->Content.useFramelimit)
 		{
-			window->setFramerateLimit(resource->Settings.framelimit);
+			window->setFramerateLimit(resource->Content.framelimit);
 		}
 
-		window->setVerticalSyncEnabled(resource->Settings.useVSync);
+		window->setVerticalSyncEnabled(resource->Content.useVSync);
 	}
 
 	const sf::RenderWindow* Screen::GetWindow()

@@ -1,7 +1,7 @@
-#include <Client/source/device/ScreenDevice.h>
+#include <Client/source/device/DeviceSettings.h>
 #include <Client/source/device/InputDevice.h>
 #include <Client/source/device/RandomDevice.h>
-#include <Client/source/device/ResourceDevice.h>
+#include <Client/source/device/ScreenDevice.h>
 
 #include "CoreDevice.h"
 
@@ -10,15 +10,17 @@
 
 #include <Client/source/logger/Logger.h>
 
+#include <Client/source/resource/ResourceInterface.h>
+
 #include <Client/source/scene/EditorScene.h>
 #include <Client/source/scene/LocalGameScene.h>
 
 
 namespace
 {
-	FW::Context* MakeMainContext()
+	Framework::Context* MakeMainContext()
 	{
-		return FW::Context::create<SCENE::EditorScene>();
+		return Framework::Context::Create<Scene::EditorScene>();
 	}
 }
 
@@ -27,6 +29,16 @@ namespace Device
 	Core::Error Core::Initialize()
 	{
 		Log::Section section(L"Initializing Game");
+
+		if (!Resource::Interface::Initialize())
+		{
+			return Core::Error::ResourceError;
+		}
+
+		if (!Settings::Initialize())
+		{
+			return Core::Error::SettingsError;
+		}
 
 		Random::Initialize();
 
@@ -39,6 +51,18 @@ namespace Device
 		{
 			return Core::Error::InputError;
 		}
+
+		return Core::Error::Success;
+	}
+
+	void Core::Uninitialize()
+	{
+		Input::Uninitialize();
+		Screen::Uninitialize();
+
+		Settings::Uninitialize();
+
+		// ...
 	}
 
 	int Core::RunGameLoop()

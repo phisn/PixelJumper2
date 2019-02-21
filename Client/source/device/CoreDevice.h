@@ -16,20 +16,12 @@ namespace Device
 
 			InputError,
 			ResourceError,
-			ScreenError
+			ScreenError,
+			SettingsError
 		};
 		
 		Error Initialize(); // think about other return [LATER]
+		void Uninitialize();
 		int RunGameLoop();
-	}
-
-	namespace Interface
-	{
-		InitError Initialize();
-		int Start();
-
-		GlobalInput* GetInput();
-		Screen* GetScreen();
-		Resource* GetResource();
 	}
 }
