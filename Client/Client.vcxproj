@@ -41,7 +41,6 @@
     <ClInclude Include="source\device\DeviceSettings.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\RandomDevice.h" />
-    <ClInclude Include="source\device\ResourceDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
     <ClInclude Include="source\editor\grid\GridMenu.h" />
     <ClInclude Include="source\editor\grid\GridProperties.h" />
@@ -136,7 +135,6 @@
     <ClCompile Include="source\device\DeviceSettings.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\RandomDevice.cpp" />
-    <ClCompile Include="source\device\ResourceDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
     <ClCompile Include="source\editor\grid\GridMenu.cpp" />
     <ClCompile Include="source\editor\grid\GridView.cpp" />

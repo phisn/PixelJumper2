@@ -5,18 +5,17 @@ static const wchar_t* static_resource_names[] =
 	L"resource/font.ttf"
 };
 
-const int Resource::GetTranslationCount()
+const int Resource::Static::GetTranslationCount()
 {
 	return sizeof(static_resource_names) / sizeof(*static_resource_names);
 }
 
-const wchar_t** Resource::GetTranslations()
+const wchar_t** Resource::Static::GetTranslations()
 {
 	return static_resource_names;
 }
 
-const std::wstring Resource::Translate(
-	RESOURCE::Static::Type type)
+std::wstring Resource::Static::Translate(const Type type)
 {
 	return static_resource_names[(int) type];
 }

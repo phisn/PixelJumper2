@@ -1,95 +1,78 @@
 #include "InputDevice.h"
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/logger/Logger.h>
 
-#include <Windows.h>
+#include <cassert>
 
 namespace
 {
-	DEVICE::LocalInput* inputs[4] = { };
+	const int MAX_PLAYER_COUNT = 4;
+
+	sf::Keyboard::Key* globalKeys;
+	Device::GameInput* gameInputs;
 }
 
 namespace Device
 {
-	bool GlobalInput::initialize()
+	bool Device::Input::Initialize()
 	{
-		Log::Section section(L"Initializing InputDevice");
+		globalKeys = new sf::Keyboard::Key[Device::Input::_Length];
+		gameInputs = new Device::GameInput[MAX_PLAYER_COUNT];
 
-		if (inputs[0])
-		{ // Quicker than loop
-			delete inputs[0];
-			delete inputs[1];
-			// delete inputs[2];
-			// delete inputs[3];
-		}
+		LoadGlobalKeys();
 
-		// load from file
-		settings = defaultGlobalSettings;
-
-		// load from file
-		inputs[0] = new LocalInput(localInputSettings1);
-		inputs[1] = new LocalInput(localInputSettings2);
-
-		return true;
-	}
-
-	LocalInput* GlobalInput::loadLocalInput(
-		const int position) const
-	{
-		if (position >= 0 && position <= 4)
+		for (int i = 0; i < MAX_PLAYER_COUNT; ++i)
 		{
-			return inputs[position];
-		}
-
-		MessageBoxW(
-			NULL,
-			L"Attempted to load invalid input slot",
-			L"Error",
-			MB_OK);
-
-		return NULL;
-	}
-
-	void GlobalInput::saveLocalInput(
-		const int position, 
-		const LocalInput* input) const
-	{
-	}
-
-	void GlobalInput::saveSettings() const
-	{
-		if (changed)
-		{
-			changed = false;
-
-			// ...
+			gameInputs[i].load();
 		}
 	}
 
-	GlobalInputSymbol GlobalInput::codeToSymbol(
-		const sf::Keyboard::Key key)
+	void Device::Input::Uninitialize()
 	{
-		static_assert((int)GlobalInputSymbol::_Length > 1, L"Invalid GlobalInputSymbol Elements");
-
-		for (int i = 0; i < (int)GlobalInputSymbol::_Length; ++i)
-			if (settings.keys[i] == key)
-			{
-				return (GlobalInputSymbol)i;
-			}
-
-		return GlobalInputSymbol::Invalid;
+		delete[] globalKeys;
+		delete[] gameInputs;
 	}
 
-	void Device::LocalInput::saveSettings(
-		const int position) const
+	sf::Keyboard::Key Device::Input::GetGlobalKey(const GlobalSymbol symbol)
 	{
-		if (changed)
-		{
-			changed = false;
+		assert(symbol < 0);
+		assert(symbol >= Input::_Length);
 
-			Device::Interface::GetInput()->saveLocalInput(
-				position, this);
-		}
+		globalKeys[symbol];
+	}
+
+	bool Device::Input::IsGlobalKeyPressed(const GlobalSymbol symbol)
+	{
+		assert(symbol < 0);
+		assert(symbol >= Input::_Length);
+
+		return sf::Keyboard::isKeyPressed(globalKeys[symbol]);
+	}
+
+	void Device::Input::SetGlobalKey(const GlobalSymbol symbol, const sf::Keyboard::Key key)
+	{
+		assert(symbol < 0);
+		assert(symbol >= Input::_Length);
+
+		globalKeys[symbol] = key;
+	}
+
+	bool Device::Input::LoadGlobalKeys()
+	{
+		return false;
+	}
+
+	bool Device::Input::SaveGlobalKeys()
+	{
+		return false;
+	}
+
+	GameInput* const Device::Input::GetGameInput(
+		const int playerNumber)
+	{
+		assert(playerNumber > 0);
+		assert(playerNumber < MAX_PLAYER_COUNT);
+
+		return gameInputs + playerNumber;
 	}
 }

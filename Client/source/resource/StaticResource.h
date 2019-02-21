@@ -21,11 +21,10 @@ namespace Resource
 
 			_Length
 		};
+
+		const int GetTranslationCount();
+		const wchar_t** GetTranslations();
+
+		std::wstring Translate(const Static::Type type);
 	}
-
-	const int GetTranslationCount();
-	const wchar_t** GetTranslations();
-
-	const std::wstring Translate(
-		Static::Type type);
 }

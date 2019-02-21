@@ -96,9 +96,6 @@
     <ClInclude Include="source\device\ScreenDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\device\ResourceDevice.h">
-      <Filter>source\device</Filter>
-    </ClInclude>
     <ClInclude Include="source\editor\template\TileTemplate.h">
       <Filter>source\editor\template</Filter>
     </ClInclude>
@@ -381,9 +378,6 @@
       <Filter>source\device</Filter>
     </ClCompile>
     <ClCompile Include="source\device\ScreenDevice.cpp">
-      <Filter>source\device</Filter>
-    </ClCompile>
-    <ClCompile Include="source\device\ResourceDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\template\TileTemplate.cpp">

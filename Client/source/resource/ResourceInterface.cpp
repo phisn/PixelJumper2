@@ -31,6 +31,7 @@ namespace
 
 			return false;
 		}
+
 		/*
 		Resource::Magic magic;
 		file.read(
@@ -149,8 +150,9 @@ namespace Resource
 {
 	bool Interface::Initialize()
 	{
-		Log::Section section(L"Initializing InterfaceResource");
+		Log::Section section(L"Initializing resources");
 
+		// create missing folder
 		for (int i = 0; i < (int)Resource::ResourceType::_Length; ++i)
 		{
 			const std::filesystem::path& path = GetDefinition((Resource::ResourceType) i)->path;
@@ -161,6 +163,20 @@ namespace Resource
 				std::filesystem::create_directory(path);
 			}
 		}
+
+		// check that all static resource exist
+		const wchar_t** translations = Static::GetTranslations();
+		for (int i = 0; i < Static::GetTranslationCount(); ++i)
+			if (!std::filesystem::exists(translations[i]))
+			{
+				section.error(
+					std::wstring(L"Static resource '")
+					.append(translations[i])
+					.append(L"' not found")
+				);
+
+				return false;
+			}
 
 		return mapAllResources();
 	}
@@ -204,10 +220,24 @@ namespace Resource
 
 		if (!fileWritePipe.isValid())
 		{
+			Log::Error(L"Failed to open resource '" + name + L"'");
+			Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
+		
 			return false;
 		}
 
-		return resource->save(&fileWritePipe);
+		if (!resource->save(&fileWritePipe))
+		{
+			if (!fileWritePipe.isValid())
+			{
+				Log::Error(L"Failed to save resource '" + name + L"'");
+				Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
+			}
+
+			return false;
+		}
+
+		return true;
 	}
 
 	bool Interface::ReadResource(
@@ -244,6 +274,52 @@ namespace Resource
 		}
 
 		return resource->make(&pipe);
+	}
+
+	Static::Resource Interface::GetStaticResource(
+		const Static::Type type)
+	{
+		GetStaticResource( Static::Translate(type) );
+	}
+
+	Static::Resource Interface::GetStaticResource(
+		const std::filesystem::path resource)
+	{
+		Static::Resource result;
+
+		FileDefinition fileDefinition(resource);
+
+		if (fileDefinition.size == 0)
+		{
+			Log::Error(L"Static resource '" +
+				resource.wstring() +
+				L"' does not exist or is empty");
+
+			return { };
+		}
+
+		FileReadPipe filePipe(&fileDefinition);
+
+		result.first = new char[fileDefinition.size];
+		result.second = fileDefinition.size;
+
+		if (!filePipe.readContentForce(
+				result.first, 
+				result.second))
+		{
+			Log::Error(L"Unable to read static resource '"
+				+ resource.wstring() + L"'");
+
+			if (!filePipe.isValid())
+			{
+				Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
+			}
+
+			delete[] result.first;
+			return { };
+		}
+
+		return result;
 	}
 
 	const ResourceDefinition* Interface::GetDefinition(

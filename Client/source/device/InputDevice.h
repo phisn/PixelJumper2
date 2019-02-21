@@ -4,11 +4,63 @@
 
 namespace Device
 {
+	class GameInput;
 	namespace Input
 	{
+		enum GlobalSymbol
+		{
+			OpenMenu,
+			Pause,
+			Exit,
+
+			_Length
+		};
+
 		bool Initialize();
 		void Uninitialize();
+
+		sf::Keyboard::Key GetGlobalKey(const GlobalSymbol symbol);
+		bool IsGlobalKeyPressed(const GlobalSymbol symbol);
+		void SetGlobalKey(const GlobalSymbol symbol, const sf::Keyboard::Key key);
+
+		bool LoadGlobalKeys();
+		bool SaveGlobalKeys();
+
+		GameInput* const GetGameInput(const int playerNumber);
 	}
+
+	enum class GameCoreInputSymbol
+	{
+		Trigger,
+		Reset,
+
+		Up,
+		Left,
+		Down,
+		Right,
+
+		_Length
+	};
+
+	class GameInput
+	{
+	public:
+		bool load();
+		bool save();
+
+		sf::Keyboard::Key getKey(Game );
+	};
+
+	enum class GameViewInputSymbol
+	{
+		ChangeZoom,
+		ResetZoom,
+		WholeMapZoom,
+
+		NextPlayer,
+		PreviousPlayer,
+		ThisPlayer // local (real)
+	};
 
 	// Same for all players
 	enum class GlobalInputSymbol

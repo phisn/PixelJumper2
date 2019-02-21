@@ -1,8 +1,6 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
-#include <Client/source/device/ResourceDevice.h>
-#include <Client/source/resource/StaticResource.h>
+#include <Client/source/resource/ResourceInterface.h>
 
 #include <SFML/System/MemoryInputStream.hpp>
 
@@ -13,19 +11,19 @@ namespace Framework
 	class ResourceContext
 	{
 	public:
-		typedef RESOURCE::Static::Resource Resource;
-		typedef RESOURCE::Static::Type ResourceType;
+		typedef ::Resource::Static::Resource _Resource;
+		typedef ::Resource::Static::Type _ResourceType;
 
 		~ResourceContext()
 		{
-			for (const std::pair<ResourceType, Resource>& resource : resources)
+			for (const std::pair<_ResourceType, _Resource>& resource : resources)
 			{
 				delete[] resource.second.first;
 			}
 		}
 
 		bool has(
-			ResourceType type)
+			_ResourceType type)
 		{
 			if (cache.type == type)
 			{
@@ -47,7 +45,7 @@ namespace Framework
 		}
 
 		sf::MemoryInputStream get(
-			ResourceType type)
+			_ResourceType type)
 		{
 			if (cache.type == type)
 			{
@@ -63,10 +61,10 @@ namespace Framework
 		}
 
 		sf::MemoryInputStream obtain(
-			ResourceType type)
+			_ResourceType type)
 		{
 			
-			RESOURCE::Static::Resource resource = DEVICE::Interface::GetResource()->obtain(type);
+			::Resource::Static::Resource resource = ::Resource::Interface::GetStaticResource(type);
 			resources[type] = resource;
 
 			sf::MemoryInputStream mis;
@@ -88,11 +86,11 @@ namespace Framework
 
 		struct
 		{
-			Resource* resource;
-			ResourceType type;
+			_Resource* resource;
+			_ResourceType type;
 
 		} cache;
 
-		std::map<ResourceType, Resource> resources;
+		std::map<_ResourceType, _Resource> resources;
 	};
 }
