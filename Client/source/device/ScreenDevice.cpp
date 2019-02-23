@@ -1,6 +1,7 @@
 #include "ScreenDevice.h"
 
 #include <Client/source/logger/Logger.h>
+#include <Client/source/device/DeviceSettings.h>
 
 namespace
 {
@@ -15,7 +16,7 @@ namespace Device
 		window = new sf::RenderWindow();
 		resource = new Device::ScreenSettings();
 
-		return ReloadSettings();
+		return DefaultSettings();
 	}
 
 	void Screen::Uninitialize()
@@ -30,7 +31,7 @@ namespace Device
 		_CreateWindow();
 	}
 
-	bool Screen::ReloadSettings()
+	bool Screen::DefaultSettings()
 	{
 		if (window->isOpen())
 		{
@@ -50,10 +51,6 @@ namespace Device
 		resource->Content.useVSync = true;
 
 		_CreateWindow();
-	}
-
-	void Screen::_CloseWindow()
-	{
 	}
 
 	void Screen::_CloseWindow()
@@ -97,6 +94,21 @@ namespace Device
 		}
 
 		window->setVerticalSyncEnabled(resource->Content.useVSync);
+	}
+
+	bool Screen::LoadSettings()
+	{
+		return Settings::LoadScreenSettings(resource);
+	}
+
+	ScreenSettings* Screen::ChangeSettings()
+	{
+		return resource;
+	}
+
+	bool Screen::SaveSettings()
+	{
+		return Settings::SaveScreenSettings(resource);
 	}
 
 	const sf::RenderWindow* Screen::GetWindow()

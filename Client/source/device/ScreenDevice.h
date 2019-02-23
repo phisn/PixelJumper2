@@ -53,10 +53,14 @@ namespace Device
 		void Uninitialize();
 
 		bool RecreateWindow();
-		bool ReloadSettings();
+		bool DefaultSettings();
 
 		void _CloseWindow();
-		void _CreateWindow();
+		void _CreateWindow(); // _ prevent macro
+
+		bool LoadSettings();
+		ScreenSettings* ChangeSettings();
+		bool SaveSettings();
 
 		const sf::RenderWindow* GetWindow();
 

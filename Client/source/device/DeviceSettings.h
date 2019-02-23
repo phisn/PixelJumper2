@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/device/ScreenDevice.h>
+#include <Client/source/device/InputDevice.h>
 
 namespace Device
 {
@@ -12,9 +13,21 @@ namespace Device
 		bool Initialize();
 		void Uninitialize();
 
-		void LoadScreenSettings(ScreenSettings* const settings);
-		void SaveScreenSettings(const ScreenSettings* const settings);
+		bool LoadScreenSettings(
+			ScreenSettings* const settings);
+		bool SaveScreenSettings(
+			const ScreenSettings* const settings);
 
+		bool LoadGeneralInputSettings(
+			GeneralInputSettings* const settings);
+		bool SaveGeneralInputSettings(
+			const GeneralInputSettings* const settings);
 
+		bool LoadGameInputSettings(
+			GameInputSettings* const settings,
+			const int playerNumber);
+		bool SaveGameInputSettings(
+			const GameInputSettings* const settings,
+			const int playerNumber);
 	}
 }

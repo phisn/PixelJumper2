@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <Client/source/resource/ResourceBase.h>
+
 namespace Device
 {
 	class GameInput;
@@ -19,12 +21,21 @@ namespace Device
 		bool Initialize();
 		void Uninitialize();
 
-		sf::Keyboard::Key GetGlobalKey(const GlobalSymbol symbol);
-		bool IsGlobalKeyPressed(const GlobalSymbol symbol);
-		void SetGlobalKey(const GlobalSymbol symbol, const sf::Keyboard::Key key);
+		sf::Keyboard::Key GetGlobalKey(
+			const GlobalSymbol symbol);
+		bool IsGlobalKeyPressed(
+			const GlobalSymbol symbol);
+		void SetGlobalKey(
+			const GlobalSymbol symbol,
+			const sf::Keyboard::Key key);
+
+		int GetKeyUsageCount(
+			const sf::Keyboard::Key key);
 
 		bool LoadGlobalKeys();
 		bool SaveGlobalKeys();
+
+		void DefaultSettings();
 
 		GameInput* const GetGameInput(const int playerNumber);
 	}
@@ -42,14 +53,6 @@ namespace Device
 		_Length
 	};
 
-	class GameInput
-	{
-	public:
-		bool load();
-		bool save();
-
-		sf::Keyboard::Key getKey(Game );
-	};
 
 	enum class GameViewInputSymbol
 	{
@@ -59,7 +62,126 @@ namespace Device
 
 		NextPlayer,
 		PreviousPlayer,
-		ThisPlayer // local (real)
+		ThisPlayer, // local (real)
+
+		_Length
+	};
+
+
+	struct GeneralInputSettings
+		:
+		public Resource::ResourceBase
+	{
+		struct
+		{
+			sf::Keyboard::Key keys[Input::GlobalSymbol::_Length];
+
+		} GlobalKeys;
+
+		struct
+		{
+			bool needsCtrlForGlobalKeys; // ?
+
+		} Content;
+
+	private:
+		bool make(Resource::ReadPipe* const pipe) override
+		{
+			return pipe->readValue(&Content)
+				&& pipe->readValue(&GlobalKeys);
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return pipe->writeValue(&Content)
+				&& pipe->writeValue(&GlobalKeys);
+		}
+	};
+
+	struct GameInputSettings
+		:
+		public Resource::ResourceBase
+	{
+		struct
+		{
+			sf::Keyboard::Key keys[(int) GameCoreInputSymbol::_Length];
+
+		} CoreKeys;
+
+		struct
+		{
+			sf::Keyboard::Key keys[(int) GameViewInputSymbol::_Length];
+
+		} ViewKeys;
+
+	private:
+		bool make(Resource::ReadPipe* const pipe) override
+		{
+			return pipe->readValue(&CoreKeys)
+				&& pipe->readValue(&ViewKeys);
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return pipe->writeValue(&CoreKeys)
+				&& pipe->writeValue(&ViewKeys);
+		}
+	};
+
+	class GameInput
+	{
+	public:
+		GameInput(const int playerNumber)
+		{
+		}
+
+		bool load()
+		{
+
+		}
+
+		bool save()
+		{
+
+		}
+
+		sf::Keyboard::Key getCoreKey(const GameCoreInputSymbol symbol) const
+		{
+			return coreKeys[(int) symbol];
+		}
+
+		bool isCoreKeyPressed(const GameCoreInputSymbol symbol) const
+		{
+			return sf::Keyboard::isKeyPressed(coreKeys[(int) symbol]);
+		}
+
+		void setCoreKey(
+			const GameCoreInputSymbol symbol, 
+			const sf::Keyboard::Key key)
+		{
+			coreKeys[(int) symbol] = key;
+		}
+
+		sf::Keyboard::Key getViewKey(const GameViewInputSymbol symbol)
+		{
+			return viewKeys[(int) symbol];
+		}
+
+		bool isViewKeyPressed(const GameViewInputSymbol symbol) const
+		{
+			return sf::Keyboard::isKeyPressed(viewKeys[(int) symbol]);
+		}
+
+		void setViewKey(
+			const GameCoreInputSymbol symbol,
+			const sf::Keyboard::Key key)
+		{
+			viewKeys[(int) symbol] = key;
+		}
+
+	private:
+		sf::Keyboard::Key coreKeys[(int) GameCoreInputSymbol::_Length];
+		sf::Keyboard::Key viewKeys[(int) GameViewInputSymbol::_Length];
 	};
 
 	// Same for all players
@@ -150,98 +272,4 @@ namespace Device
 		sf::Keyboard::Key::RAlt,
 		sf::Keyboard::Key::RControl,
 	};
-
-	class LocalInput;
-	class GlobalInput
-	{
-	public:
-		bool initialize();
-
-		LocalInput* loadLocalInput(
-			const int position) const;
-		void saveLocalInput(
-			const int position,
-			const LocalInput* input) const;
-
-		void saveSettings() const;
-
-		GlobalInputSymbol codeToSymbol(
-			const sf::Keyboard::Key key);
-
-		void changeSettingsSymbol(
-			const GlobalInputSymbol symbol,
-			const sf::Keyboard::Key key);
-
-		sf::Keyboard::Key getSymbolKey(
-			const LocalInputSymbol symbol) const;
-	private:
-		GlobalInputSettings settings;
-
-		mutable bool changed = false;
-	};
-
-	inline void GlobalInput::changeSettingsSymbol(
-		const GlobalInputSymbol symbol,
-		const sf::Keyboard::Key key)
-	{
-		settings.keys[(int)symbol] = key;
-
-		changed = true;
-	}
-
-	inline sf::Keyboard::Key GlobalInput::getSymbolKey(
-		const LocalInputSymbol symbol) const
-	{
-		return settings.keys[(int)symbol];
-	}
-
-	class LocalInput
-	{
-	public:
-		LocalInput(
-			const LocalInputSettings settings)
-			:
-			settings(settings)
-		{
-		}
-
-		void saveSettings(
-			const int position) const;
-
-		void changeSettingsSymbol(
-			const LocalInputSymbol symbol,
-			const sf::Keyboard::Key key);
-
-		bool isSymbolActive(
-			const LocalInputSymbol symbol) const;
-		sf::Keyboard::Key getSymbolKey(
-			const LocalInputSymbol symbol) const;
-	private:
-		LocalInputSettings settings;
-
-		mutable bool changed;
-	};
-
-	inline bool LocalInput::isSymbolActive(
-		const LocalInputSymbol symbol) const
-	{
-		return sf::Keyboard::isKeyPressed(
-			settings.keys[(int) symbol]
-		);
-	}
-
-	inline void LocalInput::changeSettingsSymbol(
-		const LocalInputSymbol symbol,
-		const sf::Keyboard::Key key)
-	{
-		settings.keys[(int) symbol] = key;
-
-		changed = true;
-	}
-
-	inline sf::Keyboard::Key LocalInput::getSymbolKey(
-		const LocalInputSymbol symbol) const
-	{
-		return settings.keys[(int)symbol];
-	}
 }

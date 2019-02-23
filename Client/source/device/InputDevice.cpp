@@ -17,12 +17,13 @@ namespace Device
 	bool Device::Input::Initialize()
 	{
 		globalKeys = new sf::Keyboard::Key[Device::Input::_Length];
-		gameInputs = new Device::GameInput[MAX_PLAYER_COUNT];
+		gameInputs = (Device::GameInput*) new char[MAX_PLAYER_COUNT * sizeof(Device::GameInput)];
 
 		LoadGlobalKeys();
 
 		for (int i = 0; i < MAX_PLAYER_COUNT; ++i)
 		{
+			new(&gameInputs[i]) Device::GameInput(i);
 			gameInputs[i].load();
 		}
 	}
@@ -55,6 +56,34 @@ namespace Device
 		assert(symbol >= Input::_Length);
 
 		globalKeys[symbol] = key;
+	}
+
+	int Input::GetKeyUsageCount(const sf::Keyboard::Key key)
+	{
+		int usageCount = 0;
+
+		for (int i = 0; i < GlobalSymbol::_Length; ++i)
+			if (globalKeys[i] == key)
+			{
+				++usageCount;
+			}
+
+		for (int i = 0; i < MAX_PLAYER_COUNT; ++i)
+		{
+			for (int j = 0; j < (int) GameCoreInputSymbol::_Length; ++i)
+				if (gameInputs[i].getCoreKey((GameCoreInputSymbol) j) == key)
+				{
+					++usageCount;
+				}
+
+			for (int j = 0; j < (int) GameViewInputSymbol::_Length; ++i)
+				if (gameInputs[i].getViewKey((GameViewInputSymbol) j) == key)
+				{
+					++usageCount;
+				}
+		}
+
+		return usageCount;
 	}
 
 	bool Device::Input::LoadGlobalKeys()
