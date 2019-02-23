@@ -216,28 +216,20 @@ namespace Resource
 			destination = &it->second;
 		}
 
-		FileWritePipe fileWritePipe(*destination); // TODO: Ptr?
-
-		if (!fileWritePipe.isValid())
+		if (WriteRawResource(resource, destination))
 		{
-			Log::Error(L"Failed to open resource '" + name + L"'");
-			Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
-		
-			return false;
+			return true;
 		}
-
-		if (!resource->save(&fileWritePipe))
+		else
 		{
-			if (!fileWritePipe.isValid())
-			{
-				Log::Error(L"Failed to save resource '" + name + L"'");
-				Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
-			}
+			Log::Error(L"Failed write resource (type: '" 
+				+ GetDefinition(type)->name
+				+ L"', name: '"
+				+ name
+				+ L"')");
 
 			return false;
 		}
-
-		return true;
 	}
 
 	bool Interface::ReadResource(
@@ -266,14 +258,92 @@ namespace Resource
 			}
 		}
 
-		FileReadPipe pipe(&it->second);
-
-		if ( !pipe.isValid() )
+		if (ReadRawResource(resource, &it->second))
 		{
+			return true;
+		}
+		else
+		{
+			Log::Error(L"Failed read resource (type: '"
+				+ GetDefinition(type)->name
+				+ L"', name: '"
+				+ name
+				+ L"')");
+
+			return false;
+		}
+	}
+
+	bool Interface::ReadRawResource(
+		ResourceBase* const resource, 
+		const std::filesystem::path path)
+	{
+		FileDefinition fd(path);
+		return ReadRawResource(resource, &fd);
+	}
+
+	bool Interface::ReadRawResource(
+		ResourceBase* const resource, 
+		const FileDefinition* const file)
+	{
+		FileReadPipe fwp(file);
+
+		if (!fwp.isValid())
+		{
+			Log::Error(L"Failed to open file '" + file->path.filename().wstring() + L"'");
+			Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
+
 			return false;
 		}
 
-		return resource->make(&pipe);
+		if (!resource->make(&fwp))
+		{
+			if (!fwp.isValid())
+			{
+				Log::Error(L"Failed to read file '" + file->path.filename().wstring() + L"'");
+				Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
+	bool Interface::WriteRawResource(
+		ResourceBase* const resource, 
+		const std::filesystem::path path)
+	{
+		FileDefinition fd(path);
+		return WriteRawResource(resource, &fd);
+	}
+
+	bool Interface::WriteRawResource(
+		ResourceBase* const resource, 
+		FileDefinition* const file)
+	{
+		FileWritePipe fwp(file);
+
+		if (!fwp.isValid())
+		{
+			Log::Error(L"Failed to open file '" + file->path.filename().wstring() + L"'");
+			Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
+
+			return false;
+		}
+
+		if (!resource->save(&fwp))
+		{
+			if (!fwp.isValid())
+			{
+				Log::Error(L"Failed to write file '" + file->path.filename().wstring() + L"'");
+				Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
+			}
+
+			return false;
+		}
+
+		return true;
 	}
 
 	Static::Resource Interface::GetStaticResource(

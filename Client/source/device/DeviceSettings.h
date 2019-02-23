@@ -16,18 +16,18 @@ namespace Device
 		bool LoadScreenSettings(
 			ScreenSettings* const settings);
 		bool SaveScreenSettings(
-			const ScreenSettings* const settings);
+			ScreenSettings* const settings);
 
 		bool LoadGeneralInputSettings(
 			GeneralInputSettings* const settings);
 		bool SaveGeneralInputSettings(
-			const GeneralInputSettings* const settings);
+			GeneralInputSettings* const settings);
 
 		bool LoadGameInputSettings(
 			GameInputSettings* const settings,
 			const int playerNumber);
 		bool SaveGameInputSettings(
-			const GameInputSettings* const settings,
+			GameInputSettings* const settings,
 			const int playerNumber);
 	}
 }

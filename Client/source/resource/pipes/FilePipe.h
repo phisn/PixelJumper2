@@ -33,11 +33,11 @@ namespace Resource
 	{
 	public:
 		FileWritePipe(
-			const FileDefinition fileDefinition)
+			FileDefinition* const fileDefinition)
 			:
 			definition(fileDefinition),
 			buffer(new char[FILE_BUFFER_SIZE]),
-			file(fileDefinition.path, std::ios::out | std::ios::binary)
+			file(fileDefinition->path, std::ios::out | std::ios::binary)
 		{
 			memset(buffer, 0xaa, FILE_BUFFER_SIZE);
 		}
@@ -67,7 +67,7 @@ namespace Resource
 
 				if (storageRemain >= size)
 				{
-					definition.size += size;
+					definition->size += size;
 					return;
 				}
 
@@ -91,7 +91,7 @@ namespace Resource
 					remain);
 			}
 
-			definition.size += size;
+			definition->size += size;
 		}
 
 		void setPosition(
@@ -103,7 +103,7 @@ namespace Resource
 
 		sf::Uint64 getSize() const override
 		{
-			return definition.size;
+			return definition->size;
 		}
 
 		void reserveSize(
@@ -147,7 +147,7 @@ namespace Resource
 				size);
 		}
 
-		FileDefinition definition;
+		FileDefinition* const definition;
 		std::ofstream file;
 
 		char* buffer;
@@ -160,7 +160,7 @@ namespace Resource
 	{
 	public:
 		FileReadPipe(
-			FileDefinition* const fileDefinition)
+			const FileDefinition* const fileDefinition)
 			:
 			definition(fileDefinition),
 			file(fileDefinition->path, std::ios::in | std::ios::binary)
@@ -278,7 +278,7 @@ namespace Resource
 			position += size;
 		}
 
-		FileDefinition* definition;
+		const FileDefinition* definition;
 		std::ifstream file;
 
 		char* buffer;

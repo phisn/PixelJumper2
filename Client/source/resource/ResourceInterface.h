@@ -37,6 +37,19 @@ namespace Resource
 			const ResourceType type, 
 			const std::wstring name);
 
+		bool ReadRawResource(
+			ResourceBase* const resource,
+			const std::filesystem::path path);
+		bool ReadRawResource(
+			ResourceBase* const resource,
+			const FileDefinition* const file);
+		bool WriteRawResource(
+			ResourceBase* const resource,
+			const std::filesystem::path path);
+		bool WriteRawResource(
+			ResourceBase* const resource,
+			FileDefinition* const file);
+		
 		Static::Resource GetStaticResource(
 			const Static::Type type);
 		Static::Resource GetStaticResource(
