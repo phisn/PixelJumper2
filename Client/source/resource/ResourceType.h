@@ -6,7 +6,6 @@ namespace Resource
 {
 	enum class ResourceType
 	{
-		Static,
 		Dynamic,
 
 		World,

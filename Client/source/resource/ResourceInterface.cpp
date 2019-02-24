@@ -154,7 +154,7 @@ namespace
 
 namespace Resource
 {
-	bool Interface::Initialize()
+	bool _N_Interface::Initialize()
 	{
 		Log::Section section(L"Initializing resources");
 
@@ -189,12 +189,12 @@ namespace Resource
 		return mapAllResources();
 	}
 
-	bool Interface::RemapAllFiles()
+	bool _N_Interface::RemapAllFiles()
 	{
 		return mapAllResources();
 	}
 
-	bool Interface::RemapFiles(
+	bool _N_Interface::RemapFiles(
 		const ResourceType type)
 	{
 		Log::Section section(L"Mapping all '" + std::wstring(Resource::Definition::Get(type)->name) + L"' resources");
@@ -202,7 +202,7 @@ namespace Resource
 		return mapResourceFolder(type);
 	}
 
-	bool Interface::WriteResource(
+	bool _N_Interface::WriteResource(
 		ResourceBase* const resource, 
 		const ResourceType type, 
 		const std::wstring name)
@@ -240,7 +240,7 @@ namespace Resource
 		}
 	}
 
-	bool Interface::ReadResource(
+	bool _N_Interface::ReadResource(
 		ResourceBase* const resource,
 		const ResourceType type,
 		const std::wstring name)
@@ -282,7 +282,7 @@ namespace Resource
 		}
 	}
 
-	bool Interface::ReadRawResource(
+	bool _N_Interface::ReadRawResource(
 		ResourceBase* const resource, 
 		const std::filesystem::path path)
 	{
@@ -290,7 +290,7 @@ namespace Resource
 		return ReadRawResource(resource, &fd);
 	}
 
-	bool Interface::ReadRawResource(
+	bool _N_Interface::ReadRawResource(
 		ResourceBase* const resource, 
 		const FileDefinition* const file)
 	{
@@ -318,7 +318,7 @@ namespace Resource
 		return true;
 	}
 
-	bool Interface::WriteRawResource(
+	bool _N_Interface::WriteRawResource(
 		ResourceBase* const resource, 
 		const std::filesystem::path path)
 	{
@@ -326,7 +326,7 @@ namespace Resource
 		return WriteRawResource(resource, &fd);
 	}
 
-	bool Interface::WriteRawResource(
+	bool _N_Interface::WriteRawResource(
 		ResourceBase* const resource, 
 		FileDefinition* const file)
 	{
@@ -354,13 +354,13 @@ namespace Resource
 		return true;
 	}
 
-	Static::Resource Interface::GetStaticResource(
+	Static::Resource _N_Interface::GetStaticResource(
 		const Static::ID type)
 	{
 		GetStaticResource( Static::Translate(type) );
 	}
 
-	Static::Resource Interface::GetStaticResource(
+	Static::Resource _N_Interface::GetStaticResource(
 		const std::filesystem::path resource)
 	{
 		Static::Resource result;
@@ -400,13 +400,23 @@ namespace Resource
 		return result;
 	}
 
-	const std::wstring Interface::GetResourcePath()
+	const std::wstring _N_Interface::GetResourcePath()
 	{
 		return GENERAL_RESOURCE_PATH;
 	}
 
-	const std::wstring Interface::MakeResourcePath(const ResourceType type)
+	const std::wstring _N_Interface::MakeResourcePath(const ResourceType type)
 	{
 		return GetResourcePath() + L"/" + Definition::Get(type)->path;
 	}
+}
+
+bool Resource::Interface::SaveResource(ResourceBase * const resource, const ResourceType type, const std::wstring name)
+{
+	return false;
+}
+
+bool Resource::Interface::LoadResource(ResourceBase * const resource, const ResourceType type, const std::wstring name)
+{
+	return false;
 }

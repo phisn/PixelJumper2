@@ -30,7 +30,7 @@ namespace Device
 	{
 		Log::Section section(L"Initializing Game");
 
-		if (!Resource::Interface::Initialize())
+		if (!Resource::_N_Interface::Initialize())
 		{
 			return Core::Error::ResourceError;
 		}

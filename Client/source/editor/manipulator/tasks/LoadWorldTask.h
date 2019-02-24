@@ -38,7 +38,7 @@ namespace Editor
 			Log::Section section(L"Loading world '" + name + L"'");
 
 			Resource::World worldBuffer;
-			if (!Resource::Interface::ReadResource(
+			if (!Resource::_N_Interface::ReadResource(
 					&worldBuffer,
 					Resource::ResourceType::World,
 					name))

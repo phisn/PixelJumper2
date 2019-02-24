@@ -108,7 +108,7 @@ namespace Scene
 					return;
 				}
 
-				if (Resource::Interface::WriteResource(
+				if (Resource::_N_Interface::WriteResource(
 						world, 
 						Resource::ResourceType::World, 
 						L"TestWorld")

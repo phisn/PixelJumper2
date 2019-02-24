@@ -24,7 +24,7 @@ namespace Device
 	bool Settings::LoadScreenSettings(
 		ScreenSettings* const settings)
 	{
-		return Resource::Interface::ReadResource(
+		return Resource::_N_Interface::ReadResource(
 			settings, 
 			Resource::ResourceType::Dynamic, 
 			screenResourceName);
@@ -33,7 +33,7 @@ namespace Device
 	bool Settings::SaveScreenSettings(
 		ScreenSettings* const settings)
 	{
-		return Resource::Interface::WriteResource(
+		return Resource::_N_Interface::WriteResource(
 			settings,
 			Resource::ResourceType::Dynamic,
 			screenResourceName);

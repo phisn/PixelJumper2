@@ -18,15 +18,57 @@
 
 namespace Resource
 {
+	namespace Interface
+	{
+		bool Initialize();
+		void Uninitalize();
+
+		void MapResources();
+		void MapResourceType(const ResourceType type);
+
+		bool SaveResource(
+			ResourceBase* const resource,
+			const ResourceType type,
+			const std::wstring name);
+		bool LoadResource(
+			ResourceBase* const resource,
+			const ResourceType type,
+			const std::wstring name);
+
+		bool RawReadResource(
+			ResourceBase* const resource,
+			FileDefinition* const file);
+		bool RawWriteResource(
+			ResourceBase* const resource,
+			FileDefinition* const file);
+
+		bool ReadDynamicResource(
+			ResourceBase* const resource,
+			const std::wstring name);
+		bool WriteDynamicResource(
+			ResourceBase* const resource,
+			const std::wstring name);
+
+		Static::Resource GetStaticResource(
+			const Static::ID type);
+		Static::Resource GetStaticResource(
+			const std::filesystem::path resource);
+
+		const std::wstring GetResourcePath();
+		const std::wstring MakeResourcePath(const ResourceType type);
+	}
+
 	typedef std::map<std::wstring, FileDefinition> SubResources; // name, data
 	typedef std::map<ResourceType, SubResources> MapedResources; // type, list
 
-	namespace Interface
+	namespace _N_Interface
 	{
 		bool Initialize();
 
 		bool RemapAllFiles();
 		bool RemapFiles(const ResourceType type);
+
+		// TODO: rework internals
 
 		bool WriteResource(
 			ResourceBase* const resource,
