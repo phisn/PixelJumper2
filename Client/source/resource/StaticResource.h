@@ -15,7 +15,7 @@ namespace Resource
 	{
 		typedef std::pair<char*, sf::Int64> Resource;
 
-		enum Type
+		enum ID
 		{
 			DefaultFont,
 
@@ -25,6 +25,6 @@ namespace Resource
 		const int GetTranslationCount();
 		const wchar_t** GetTranslations();
 
-		std::wstring Translate(const Static::Type type);
+		std::wstring Translate(const Static::ID id);
 	}
 }

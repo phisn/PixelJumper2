@@ -15,7 +15,7 @@ const wchar_t** Resource::Static::GetTranslations()
 	return static_resource_names;
 }
 
-std::wstring Resource::Static::Translate(const Type type)
+std::wstring Resource::Static::Translate(const ID type)
 {
 	return static_resource_names[(int) type];
 }

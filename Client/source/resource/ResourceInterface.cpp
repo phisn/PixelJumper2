@@ -1,9 +1,11 @@
 #include "ResourceInterface.h"
 
-#include <Client/source/resource/ResourceDefinitions.h>
+#include <Client/source/resource/ResourceDefinition.h>
 
 namespace
 {
+	const wchar_t* const GENERAL_RESOURCE_PATH = L"resource";
+
 	Resource::MapedResources mappedResources;
 
 	bool mapResource(
@@ -76,7 +78,7 @@ namespace
 		return mapResource(
 			type, 
 			std::filesystem::path(
-				Resource::Interface::GetDefinition(type)->path + name
+				Resource::Definition::Get(type)->path + name
 			)
 		);
 	}
@@ -89,21 +91,25 @@ namespace
 
 			for (const std::filesystem::directory_entry& entry
 				: std::filesystem::directory_iterator(
-					Resource::Interface::GetDefinition(type)->path
+					Resource::Definition::Get(type)->path
 				))
 			{
 				const std::filesystem::path path = entry.path();
 
-				if (path.has_extension() &&
-					path.extension() == DEFAULT_RES_EXTENSION)
+				if (Resource::Definition::Get(type)->hasExtension && !(
+						path.has_extension() &&
+						path.extension() == Resource::Definition::Get(type)->extension
+					))
 				{
-					mapResource(type, path);
+					continue;
 				}
+
+				mapResource(type, path);
 			}
 
 			Log::Information(
 				L"Total mapped '" 
-				+ Resource::Interface::Translate(type)
+				+ std::wstring(Resource::Definition::Get(type)->name)
 				+ L"' resources: '"
 				+ std::to_wstring( mappedResources[type].size() )
 				+ L'\''
@@ -155,7 +161,9 @@ namespace Resource
 		// create missing folder
 		for (int i = 0; i < (int)Resource::ResourceType::_Length; ++i)
 		{
-			const std::filesystem::path& path = GetDefinition((Resource::ResourceType) i)->path;
+			const std::filesystem::path& path(
+				std::wstring(Resource::Definition::Get((Resource::ResourceType) i)->path)
+			);
 
 			if (!std::filesystem::exists(path))
 			{
@@ -189,7 +197,7 @@ namespace Resource
 	bool Interface::RemapFiles(
 		const ResourceType type)
 	{
-		Log::Section section(L"Mapping all '" + Translate(type) + L"' resources");
+		Log::Section section(L"Mapping all '" + std::wstring(Resource::Definition::Get(type)->name) + L"' resources");
 
 		return mapResourceFolder(type);
 	}
@@ -208,7 +216,7 @@ namespace Resource
 		{
 			destination = &subResources->emplace(
 				name, 
-				GetDefinition(type)->path + name
+				Resource::Definition::Get(type)->path + name
 			).first->second;
 		}
 		else
@@ -223,7 +231,7 @@ namespace Resource
 		else
 		{
 			Log::Error(L"Failed write resource (type: '" 
-				+ GetDefinition(type)->name
+				+ std::wstring(Resource::Definition::Get(type)->name)
 				+ L"', name: '"
 				+ name
 				+ L"')");
@@ -265,7 +273,7 @@ namespace Resource
 		else
 		{
 			Log::Error(L"Failed read resource (type: '"
-				+ GetDefinition(type)->name
+				+ std::wstring(Resource::Definition::Get(type)->name)
 				+ L"', name: '"
 				+ name
 				+ L"')");
@@ -347,7 +355,7 @@ namespace Resource
 	}
 
 	Static::Resource Interface::GetStaticResource(
-		const Static::Type type)
+		const Static::ID type)
 	{
 		GetStaticResource( Static::Translate(type) );
 	}
@@ -392,15 +400,13 @@ namespace Resource
 		return result;
 	}
 
-	const ResourceDefinition* Interface::GetDefinition(
-		const ResourceType resource)
+	const std::wstring Interface::GetResourcePath()
 	{
-		return &ResourceDefinitions[(int) resource];
+		return GENERAL_RESOURCE_PATH;
 	}
 
-	std::wstring Interface::Translate(
-		const ResourceType resource)
+	const std::wstring Interface::MakeResourcePath(const ResourceType type)
 	{
-		return ResourceDefinitions[(int) resource].name;
+		return GetResourcePath() + L"/" + Definition::Get(type)->path;
 	}
 }

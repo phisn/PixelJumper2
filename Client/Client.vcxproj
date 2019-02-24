@@ -109,13 +109,13 @@
     <ClInclude Include="source\menu\MenuBase.h" />
     <ClInclude Include="source\menu\RootBase.h" />
     <ClInclude Include="source\menu\style\DefaultStyles.h" />
-    <ClInclude Include="source\resource\Common.h" />
     <ClInclude Include="source\resource\pipes\FilePipe.h" />
     <ClInclude Include="source\resource\pipes\MemoryPipe.h" />
     <ClInclude Include="source\resource\pipes\PipeBase.h" />
     <ClInclude Include="source\resource\PlayerResource.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
-    <ClInclude Include="source\resource\ResourceDefinitions.h" />
+    <ClInclude Include="source\resource\ResourceDefinition.h" />
+    <ClInclude Include="source\resource\ResourceType.h" />
     <ClInclude Include="source\resource\TileFactory.h" />
     <ClInclude Include="source\resource\tiles\ResourceTileBase.h" />
     <ClInclude Include="source\resource\tiles\ResourceWall.h" />
@@ -196,6 +196,7 @@
     <ClCompile Include="source\resource\pipes\PipeBase.cpp" />
     <ClCompile Include="source\resource\PlayerResource.cpp" />
     <ClCompile Include="source\resource\ResourceBase.cpp" />
+    <ClCompile Include="source\resource\ResourceDefinition.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\StaticResource.cpp" />
     <ClCompile Include="source\resource\TileFactory.cpp" />

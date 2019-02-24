@@ -58,12 +58,6 @@
     <Filter Include="source\resource">
       <UniqueIdentifier>{66b67bfc-0010-45cc-80b8-4ec868cce6b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\resource\base">
-      <UniqueIdentifier>{435a618e-c781-4a13-8c32-b740fd450383}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\resource\impl">
-      <UniqueIdentifier>{63f0af3c-9df7-42b3-9623-58734ff35c55}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\editor\task">
       <UniqueIdentifier>{65cdccb2-1b14-46d9-a0cf-01a1aa41fa7e}</UniqueIdentifier>
     </Filter>
@@ -246,12 +240,6 @@
     <ClInclude Include="source\resource\ResourceBase.h">
       <Filter>source\resource</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\Common.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\ResourceDefinitions.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\WorldResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
@@ -368,6 +356,12 @@
     </ClInclude>
     <ClInclude Include="source\device\DeviceSettings.h">
       <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ResourceType.h">
+      <Filter>source\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ResourceDefinition.h">
+      <Filter>source\resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -601,6 +595,9 @@
     </ClCompile>
     <ClCompile Include="source\device\DeviceSettings.cpp">
       <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\ResourceDefinition.cpp">
+      <Filter>source\resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

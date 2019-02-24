@@ -182,7 +182,7 @@ namespace Framework
 	}
 
 	sf::MemoryInputStream Resource::Get(
-		const RESOURCE::Static::Type type)
+		const RESOURCE::Static::ID type)
 	{
 		for (Framework::Context* context : contextStack._Get_container())
 			// quick because of 'ResourceContext' cache

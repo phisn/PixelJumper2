@@ -8,7 +8,7 @@ namespace
 {
 	std::wstring settingsPath;
 
-	std::filesystem::path screenResourcePath;
+	std::wstring screenResourceName;
 }
 
 namespace Device
@@ -24,13 +24,19 @@ namespace Device
 	bool Settings::LoadScreenSettings(
 		ScreenSettings* const settings)
 	{
-		return Resource::Interface::ReadRawResource(settings, screenResourcePath);
+		return Resource::Interface::ReadResource(
+			settings, 
+			Resource::ResourceType::Dynamic, 
+			screenResourceName);
 	}
 
 	bool Settings::SaveScreenSettings(
 		ScreenSettings* const settings)
 	{
-		return Resource::Interface::WriteRawResource(settings, screenResourcePath);
+		return Resource::Interface::WriteResource(
+			settings,
+			Resource::ResourceType::Dynamic,
+			screenResourceName);
 	}
 
 	bool Settings::LoadGeneralInputSettings(GeneralInputSettings * const settings)

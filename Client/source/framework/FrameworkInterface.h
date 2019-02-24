@@ -70,6 +70,6 @@ namespace Framework
 	namespace Resource
 	{
 		sf::MemoryInputStream Get(
-			const RESOURCE::Static::Type type);
+			const RESOURCE::Static::ID type);
 	}
 }
