@@ -5,11 +5,11 @@
 
 namespace Resource
 {
-	struct Definition
+	struct ResourceDefinition
 	{
-		static const Definition* Get(const ResourceType type);
+		static const ResourceDefinition* Get(const ResourceType type);
 
-		Definition(
+		ResourceDefinition(
 			const sf::Uint32 magic,
 			const bool hasExtension,
 			const wchar_t* const extension,
@@ -17,6 +17,8 @@ namespace Resource
 			const wchar_t* const path)
 			:
 			magic(magic),
+			hasExtension(hasExtension),
+			extension(extension),
 			name(name),
 			path(path)
 		{

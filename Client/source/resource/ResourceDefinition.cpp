@@ -1,7 +1,7 @@
 #include "ResourceDefinition.h"
 
 #define CREATE_DEFINITION(name) \
-	Resource::Definition( \
+	Resource::ResourceDefinition( \
 		Resource::ResourceTypeMagic::##name, \
 		Resource::ResourceTypeExtension::HAS_##name, \
 		Resource::ResourceTypeExtension::##name, \
@@ -13,7 +13,7 @@
 
 namespace
 {
-	Resource::Definition definitions[(int) Resource::ResourceType::_Length] =
+	Resource::ResourceDefinition definitions[(int) Resource::ResourceType::_Length] =
 	{
 		CREATE_DEFINITION(SETTINGS),
 		CREATE_DEFINITION(WORLD),
@@ -27,7 +27,7 @@ namespace
 
 namespace Resource
 {
-	const Definition* Resource::Definition::Get(
+	const ResourceDefinition* Resource::ResourceDefinition::Get(
 		const ResourceType type)
 	{
 		return &definitions[(int)type];

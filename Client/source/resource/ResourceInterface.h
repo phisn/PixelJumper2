@@ -10,12 +10,6 @@
 
 #include <SFML/Main.hpp>
 
-#include <filesystem>
-#include <fstream>
-#include <map>
-#include <set>
-#include <string>
-
 namespace Resource
 {
 	namespace Interface
@@ -49,8 +43,11 @@ namespace Resource
 
 		const std::wstring GetResourcePath();
 		const std::wstring MakeResourcePath(const ResourceType type);
+		const std::wstring MakeFullResourcePath(
+			const ResourceType type,
+			const std::wstring name);
 	}
-
+	/*
 	typedef std::map<std::wstring, FileDefinition> SubResources; // name, data
 	typedef std::map<ResourceType, SubResources> MapedResources; // type, list
 
@@ -91,6 +88,5 @@ namespace Resource
 			const std::filesystem::path resource);
 
 		const std::wstring GetResourcePath();
-		const std::wstring MakeResourcePath(const ResourceType type);
-	}
+		const std::wstring MakeResourcePath(const ResourceType type);*/
 }

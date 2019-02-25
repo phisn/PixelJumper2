@@ -1,16 +1,176 @@
 #include "ResourceInterface.h"
 
 #include <cassert>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <string>
 
 #include <Client/source/resource/ResourceDefinition.h>
 
 namespace
 {
+	const wchar_t* RESOURCE_PATH = L"resource";
 
+	typedef std::wstring ResourceName;
+	typedef std::map<ResourceName, Resource::FileDefinition> ResourceMap;
+	typedef std::map<Resource::ResourceType, ResourceMap> ResourceTypeMap;
+
+	ResourceTypeMap resourceTypes;
 }
 
 namespace Resource
 {
+	std::wstring MakeDefaultResourceTypeFileError(
+		const ResourceType type,
+		const std::filesystem::path path)
+	{
+		return L"'" + path.filename().wstring() + L"' (resource path: '" + Interface::MakeResourcePath(type) + L"')";
+	}
+
+	std::wstring MakeErrorMessageError()
+	{
+		return L"(error message: '" + std::wstring( _wcserror(errno) ) + L"')";
+	}
+
+	bool MapResourceFile(
+		const ResourceType type,
+		const std::filesystem::path path)
+	{
+		FileDefinition fileDefinition(path);
+		
+		if (!fileDefinition.resetSize())
+		{
+			Log::Error(L"Failed to open file [definition] " 
+				+ MakeDefaultResourceTypeFileError(type, path)
+			);
+
+			return false;
+		}
+
+		FileReadPipe frp(&fileDefinition);
+
+		if (!frp.isValid())
+		{
+			Log::Error(L"Failed to open file [pipe] " 
+				+ MakeDefaultResourceTypeFileError(type, path)
+				+ L" "
+				+ MakeErrorMessageError()
+			);
+
+			return false;
+		}
+
+		ResourceTypeMagic::Type magic;
+
+		if (!frp.readValue(&magic))
+		{
+			Log::Error(L"Failed to read file [pipe] "
+				+ MakeDefaultResourceTypeFileError(type, path)
+				+ L" "
+				+ MakeErrorMessageError()
+			);
+
+			return false;
+		}
+
+		if (magic != ResourceDefinition::Get(type)->magic)
+		{
+			Log::Error(L"File with invalid content [magic] "
+				+ MakeDefaultResourceTypeFileError(type, path)
+			);
+
+			return false;
+		}
+
+		resourceTypes[type][path.filename().wstring()] = std::move(fileDefinition);
+
+		return true;
+	}
+
+	void Interface::MapResources()
+	{
+		static_assert((int) ResourceType::World == 1);
+
+		Log::Section section(L"Mapping all resource types");
+
+		for (int i = (int) ResourceType::World; i < (int) ResourceType::_Length; ++i)
+		{
+			MapResourceType((ResourceType) i);
+		}
+	}
+
+	void Interface::MapResourceType(const ResourceType type)
+	{
+		Log::Section section(std::wstring(L"Mapping resource type '")
+			+ ResourceDefinition::Get(type)->name + L"'");
+
+		resourceTypes[type].clear();
+
+		try {
+			for (std::filesystem::directory_entry directoryEntry
+				: std::filesystem::directory_iterator(MakeResourcePath(type))
+				)
+			{
+				if (directoryEntry.status().permissions() != std::filesystem::perms::all)
+				{
+					Log::Warning(L"Not enough permissions to open file "
+						+ MakeDefaultResourceTypeFileError(type, directoryEntry.path())
+					);
+
+					continue;
+				}
+
+				if (!directoryEntry.is_regular_file())
+				{
+					Log::Warning(L"File with irregular type "
+						+ MakeDefaultResourceTypeFileError(type, directoryEntry.path())
+					);
+
+					continue;
+				}
+
+				if (directoryEntry.file_size() < 4)
+				{
+					Log::Warning(L"Too small or empty file "
+						+ MakeDefaultResourceTypeFileError(type, directoryEntry.path())
+					);
+
+					continue;
+				}
+
+				if (ResourceDefinition::Get(type)->hasExtension && (directoryEntry.path().has_extension()
+					|| ResourceDefinition::Get(type)->extension != directoryEntry.path().extension()))
+				{
+					Log::Warning(L"File with invalid extension "
+						+ MakeDefaultResourceTypeFileError(type, directoryEntry.path())
+						+ L" (extension: '"
+						+ directoryEntry.path().extension().wstring()
+						+ L"')");
+
+					continue;
+				}
+
+				// TODO: return currently unused
+				MapResourceFile(type, directoryEntry.path());
+			}
+		}
+		catch (const std::filesystem::filesystem_error error)
+		{
+			Log::Error(std::wstring(L"Failed to map resource type '")
+				+ ResourceDefinition::Get(type)->name
+				+ L"' (error message: '"
+				+ _wcserror(error.code) + L"')");
+
+			return;
+		}
+
+		Log::Information(L"Mapped '"
+			+ std::to_wstring( resourceTypes.size() )
+			+ L"' files (resource type: '"
+			+ MakeResourcePath(type) + L"')");
+	}
+
 	bool Resource::Interface::SaveResource(
 		ResourceBase* const resource, 
 		const ResourceType type, 
@@ -18,7 +178,62 @@ namespace Resource
 	{
 		assert(type != ResourceType::Settings && type != ResourceType::_Length);
 
+		ResourceMap& resourceMap = resourceTypes[type];
+		ResourceMap::iterator mappedResource = resourceMap.find(name);
 
+		FileDefinition file;
+
+		if (mappedResource == resourceMap.end())
+		{
+			file.path = MakeFullResourcePath(type, name);
+			file.size = 0;
+		}
+		else
+		{
+			file = mappedResource->second;
+		}
+
+		{ // new memory block for pipe
+			FileWritePipe fwp(&file);
+
+			if (!fwp.isValid())
+			{
+				Log::Error(L"Failed to open resource "
+					+ MakeDefaultResourceTypeFileError(type, file.path)
+					+ L" "
+					+ MakeErrorMessageError()
+				);
+
+				return false;
+			}
+
+			if (!fwp.writeValue(&ResourceDefinition::Get(type)->magic))
+			{
+				Log::Error(L"Failed to write resource "
+					+ MakeDefaultResourceTypeFileError(type, file.path)
+					+ L" "
+					+ MakeErrorMessageError()
+				);
+
+				return false;
+			}
+
+			if (!resource->save(&fwp))
+			{
+				Log::Error(L"Failed to save resource "
+					+ MakeDefaultResourceTypeFileError(type, file.path)
+					+ L" [maybe invalid] "
+					+ MakeErrorMessageError()
+				);
+
+				return false;
+			}
+		}
+
+		file.resetSize();
+		resourceMap[name] = std::move(file);
+
+		return true;
 	}
 
 	bool Resource::Interface::LoadResource(
@@ -57,7 +272,7 @@ namespace Resource
 		return Static::Resource();
 	}
 }
-
+/*
 namespace
 {
 	const wchar_t* const GENERAL_RESOURCE_PATH = L"resource";
@@ -117,7 +332,7 @@ namespace
 			);
 
 			return false;
-		}*/
+		}
 
 		Resource::FileDefinition* resource = &mappedResources[type][filename.filename().wstring()];
 		// resource->file = std::move(file); | do not store handle
@@ -465,5 +680,5 @@ namespace Resource
 	{
 		return GetResourcePath() + L"/" + Definition::Get(type)->path;
 	}
-}
+} */
 

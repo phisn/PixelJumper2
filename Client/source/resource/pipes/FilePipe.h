@@ -13,6 +13,13 @@ namespace Resource
 {
 	struct FileDefinition
 	{
+		FileDefinition() = default;
+		FileDefinition(const std::filesystem::path path)
+			:
+			path(path)
+		{
+		}
+
 		std::filesystem::path path;
 		uintmax_t size;
 

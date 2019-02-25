@@ -16,10 +16,12 @@ namespace Resource
 
 	namespace ResourceTypeMagic
 	{
-		static constexpr sf::Uint32 SETTINGS	= 0x0000'0000;
+		typedef sf::Uint32 Type;
 
-		static constexpr sf::Uint32 WORLD	= 0x0000'0000;
-		static constexpr sf::Uint32 PLAYER	= 0x0000'0000;
+		static constexpr Type SETTINGS	= 0x0000'0000;
+
+		static constexpr Type WORLD		= 0x0000'0000;
+		static constexpr Type PLAYER	= 0x0000'0000;
 	}
 
 	namespace ResourceTypeName
