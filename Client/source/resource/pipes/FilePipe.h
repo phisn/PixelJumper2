@@ -5,26 +5,46 @@
 #include <filesystem>
 #include <fstream>
 
+#include <Client/source/logger/Logger.h>
+
 #define FILE_BUFFER_SIZE 1024 * 16
 
 namespace Resource
 {
 	struct FileDefinition
 	{
-		FileDefinition() { }
-
-		FileDefinition(
-			const std::filesystem::path path)
-			:
-			path(path)
-		{
-			size = std::filesystem::exists(path)
-				? std::filesystem::file_size(path)
-				: 0;
-		}
-
 		std::filesystem::path path;
 		uintmax_t size;
+
+		bool resetSize()
+		{
+			try 
+			{
+				size = std::filesystem::file_size(path);
+			}
+			catch (const std::filesystem::filesystem_error error)
+			{
+				Log::Error(_wcserror(error.code));
+
+				return false;
+			}
+
+			return true;
+		}
+
+		bool doesExists() const
+		{
+			try
+			{
+				return std::filesystem::exists(path);
+			}
+			catch (const std::filesystem::filesystem_error error)
+			{
+				Log::Error(_wcserror(error.code));
+
+				return false;
+			}
+		}
 	};
 
 	class FileWritePipe
@@ -37,7 +57,10 @@ namespace Resource
 			:
 			definition(fileDefinition),
 			buffer(new char[FILE_BUFFER_SIZE]),
-			file(fileDefinition->path, std::ios::out | std::ios::binary)
+			file(
+				fileDefinition->path, 
+				std::ios::out | std::ios::binary
+			)
 		{
 			memset(buffer, 0xaa, FILE_BUFFER_SIZE);
 		}
@@ -68,6 +91,7 @@ namespace Resource
 				if (storageRemain >= size)
 				{
 					definition->size += size;
+
 					return;
 				}
 

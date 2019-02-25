@@ -1,6 +1,62 @@
 #include "ResourceInterface.h"
 
+#include <cassert>
+
 #include <Client/source/resource/ResourceDefinition.h>
+
+namespace
+{
+
+}
+
+namespace Resource
+{
+	bool Resource::Interface::SaveResource(
+		ResourceBase* const resource, 
+		const ResourceType type, 
+		const std::wstring name)
+	{
+		assert(type != ResourceType::Settings && type != ResourceType::_Length);
+
+
+	}
+
+	bool Resource::Interface::LoadResource(
+		ResourceBase* const resource, 
+		const ResourceType type, 
+		const std::wstring name)
+	{
+		assert(type != ResourceType::Settings && type != ResourceType::_Length);
+
+
+	}
+
+	bool Resource::Interface::SaveSettings(
+		ResourceBase* const resource, 
+		const std::wstring name)
+	{
+		return false;
+	}
+
+	bool Resource::Interface::LoadSettings(
+		ResourceBase* const resource, 
+		const std::wstring name)
+	{
+		return false;
+	}
+
+	Static::Resource Resource::Interface::GetStaticResource(
+		const Static::ID type)
+	{
+		return Static::Resource();
+	}
+
+	Static::Resource Resource::Interface::GetStaticResource(
+		const std::filesystem::path resource)
+	{
+		return Static::Resource();
+	}
+}
 
 namespace
 {
@@ -411,12 +467,3 @@ namespace Resource
 	}
 }
 
-bool Resource::Interface::SaveResource(ResourceBase * const resource, const ResourceType type, const std::wstring name)
-{
-	return false;
-}
-
-bool Resource::Interface::LoadResource(ResourceBase * const resource, const ResourceType type, const std::wstring name)
-{
-	return false;
-}

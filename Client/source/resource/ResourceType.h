@@ -6,7 +6,7 @@ namespace Resource
 {
 	enum class ResourceType
 	{
-		Dynamic,
+		Settings,
 
 		World,
 		Player,
@@ -16,8 +16,7 @@ namespace Resource
 
 	namespace ResourceTypeMagic
 	{
-		static constexpr sf::Uint32 STATIC	= 0x0000'0000;
-		static constexpr sf::Uint32 DYNAMIC	= 0x0000'0000;
+		static constexpr sf::Uint32 SETTINGS	= 0x0000'0000;
 
 		static constexpr sf::Uint32 WORLD	= 0x0000'0000;
 		static constexpr sf::Uint32 PLAYER	= 0x0000'0000;
@@ -25,8 +24,7 @@ namespace Resource
 
 	namespace ResourceTypeName
 	{
-		static constexpr wchar_t STATIC[] = L"Static";
-		static constexpr wchar_t DYNAMIC[] = L"Dynamic";
+		static constexpr wchar_t SETTINGS[] = L"Dynamic";
 
 		static constexpr wchar_t WORLD[] = L"World";
 		static constexpr wchar_t PLAYER[] = L"Player";
@@ -34,8 +32,7 @@ namespace Resource
 
 	namespace ResourceTypePath
 	{
-		static constexpr wchar_t STATIC[]	= L"assests";
-		static constexpr wchar_t DYNAMIC[]	= L"settings";
+		static constexpr wchar_t SETTINGS[]	= L"settings";
 
 		static constexpr wchar_t WORLD[]	= L"world";
 		static constexpr wchar_t PLAYER[]	= L"player";
@@ -43,16 +40,13 @@ namespace Resource
 
 	namespace ResourceTypeExtension
 	{
-		static constexpr bool HAS_STATIC = false;
-		static constexpr bool HAS_DYNAMIC = true;
+		static constexpr bool HAS_SETTINGS = true;
+		static constexpr wchar_t SETTINGS[] = L"stg";
 
 		static constexpr bool HAS_WORLD = true;
-		static constexpr bool HAS_PLAYER = true;
-
-		static constexpr wchar_t STATIC[] = L"";
-		static constexpr wchar_t DYNAMIC[] = L"stg";
-
 		static constexpr wchar_t WORLD[] = L"wrld";
+
+		static constexpr bool HAS_PLAYER = true;
 		static constexpr wchar_t PLAYER[] = L"ply";
 	}
 }

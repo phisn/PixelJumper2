@@ -35,17 +35,10 @@ namespace Resource
 			const ResourceType type,
 			const std::wstring name);
 
-		bool RawReadResource(
-			ResourceBase* const resource,
-			FileDefinition* const file);
-		bool RawWriteResource(
-			ResourceBase* const resource,
-			FileDefinition* const file);
-
-		bool ReadDynamicResource(
+		bool SaveSettings(
 			ResourceBase* const resource,
 			const std::wstring name);
-		bool WriteDynamicResource(
+		bool LoadSettings(
 			ResourceBase* const resource,
 			const std::wstring name);
 
