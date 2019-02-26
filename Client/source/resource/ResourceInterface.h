@@ -18,7 +18,7 @@ namespace Resource
 		void Uninitalize();
 
 		void MapResources();
-		void MapResourceType(const ResourceType type);
+		bool MapResourceType(const ResourceType type);
 
 		bool SaveResource(
 			ResourceBase* const resource,

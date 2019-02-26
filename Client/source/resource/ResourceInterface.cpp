@@ -2,7 +2,6 @@
 
 #include <cassert>
 #include <filesystem>
-#include <fstream>
 #include <map>
 #include <string>
 
@@ -100,7 +99,7 @@ namespace Resource
 		}
 	}
 
-	void Interface::MapResourceType(const ResourceType type)
+	bool Interface::MapResourceType(const ResourceType type)
 	{
 		Log::Section section(std::wstring(L"Mapping resource type '")
 			+ ResourceDefinition::Get(type)->name + L"'");
@@ -162,13 +161,15 @@ namespace Resource
 				+ L"' (error message: '"
 				+ _wcserror(error.code) + L"')");
 
-			return;
+			return false;
 		}
 
 		Log::Information(L"Mapped '"
 			+ std::to_wstring( resourceTypes.size() )
 			+ L"' files (resource type: '"
 			+ MakeResourcePath(type) + L"')");
+
+		return true;
 	}
 
 	bool Resource::Interface::SaveResource(
@@ -187,6 +188,12 @@ namespace Resource
 		{
 			file.path = MakeFullResourcePath(type, name);
 			file.size = 0;
+
+			Log::Information(L"Resource '"
+				+ name
+				+ L"' not found, creating new one (resource path: '"
+				+ ResourceDefinition::Get(type)->path
+				+ L"')");
 		}
 		else
 		{
@@ -233,6 +240,12 @@ namespace Resource
 		file.resetSize();
 		resourceMap[name] = std::move(file);
 
+		Log::Information(L"Resource '"
+			+ name
+			+ L"' saved (resource path: '"
+			+ ResourceDefinition::Get(type)->path
+			+ L"')");
+
 		return true;
 	}
 
@@ -243,7 +256,41 @@ namespace Resource
 	{
 		assert(type != ResourceType::Settings && type != ResourceType::_Length);
 
+		ResourceMap resourceType = resourceTypes[type];
+		ResourceMap::iterator resourceFile = resourceType.find(name);
 
+		if (resourceFile == resourceType.end())
+		{
+			Log::Warning(L"Resource '"
+				+ name
+				+ L"' (resouce path: '"
+				+ ResourceDefinition::Get(type)->path
+				+ L"') not found mapping resource type (resource type: '"
+				+ ResourceDefinition::Get(type)->name
+				+ L"')");
+
+			if (!MapResourceType(type))
+			{
+				return false;
+			}
+
+			resourceFile = resourceType.find(name);
+		}
+
+		if (resourceFile == resourceType.end())
+		{
+			Log::Error(L"Resource '"
+				+ name
+				+ L"' (resouce path: '"
+				+ ResourceDefinition::Get(type)->path
+				+ L"') not found");
+
+			return false;
+		}
+
+
+
+		return true;
 	}
 
 	bool Resource::Interface::SaveSettings(
