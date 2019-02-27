@@ -1,21 +1,43 @@
 #include "StaticResource.h"
+#include <Client/source/resource/ResourceInterface.h>
 
-static const wchar_t* static_resource_names[] =
+namespace
 {
-	L"resource/font.ttf"
-};
-
-const int Resource::Static::GetTranslationCount()
-{
-	return sizeof(static_resource_names) / sizeof(*static_resource_names);
+	const wchar_t* STATIC_RES_FOLDER = L"static";
+	const wchar_t* STATIC_ID_TRANSLATION =
+	{
+		L"font.ttf"
+	};
 }
 
-const wchar_t** Resource::Static::GetTranslations()
+namespace Resource
 {
-	return static_resource_names;
-}
+	std::vector<std::wstring> Static::GetTranslations()
+	{
+		std::vector<std::wstring> result;
 
-std::wstring Resource::Static::Translate(const ID type)
-{
-	return static_resource_names[(int) type];
+		for (int i = 0; i < (int) ID::_Length; ++i)
+		{
+			result.push_back(
+				Translate((ID) i)
+			);
+		}
+		
+		return std::move(result);
+	}
+
+	std::wstring Static::GetFolderName()
+	{
+		return STATIC_RES_FOLDER;
+	}
+
+	std::wstring Static::GetPath()
+	{
+		return Interface::GetResourcePath() + L"/" + GetFolderName();
+	}
+
+	std::wstring Static::Translate(const ID type)
+	{
+		return GetPath() + STATIC_ID_TRANSLATION[(int) type];
+	}
 }

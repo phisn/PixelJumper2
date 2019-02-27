@@ -1,11 +1,15 @@
 #include "ResourceInterface.h"
 
+#include <Client/source/logger/Logger.h>
+
+#include <Client/source/resource/pipes/FilePipe.h>
+#include <Client/source/resource/ResourceDefinition.h>
+
 #include <cassert>
-#include <filesystem>
 #include <map>
 #include <string>
 
-#include <Client/source/resource/ResourceDefinition.h>
+#include <SFML/Main.hpp>
 
 namespace
 {
@@ -24,12 +28,112 @@ namespace Resource
 		const ResourceType type,
 		const std::filesystem::path path)
 	{
-		return L"'" + path.filename().wstring() + L"' (resource path: '" + Interface::MakeResourcePath(type) + L"')";
+		return L"'" + path.filename().wstring() + L"' (resource path: '" + Interface::MakeResourceTypePath(type) + L"')";
 	}
 
 	std::wstring MakeErrorMessageError()
 	{
 		return L"(error message: '" + std::wstring( _wcserror(errno) ) + L"')";
+	}
+
+	bool SaveResourceFile(
+		ResourceBase* const resource,
+		const ResourceType type,
+		FileDefinition* const file)
+	{
+		FileWritePipe fwp(file);
+
+		if (!fwp.isValid())
+		{
+			Log::Error(L"Failed to open resource "
+				+ MakeDefaultResourceTypeFileError(type, file->path)
+				+ L" "
+				+ MakeErrorMessageError()
+			);
+
+			return false;
+		}
+
+		if (!fwp.writeValue(&ResourceDefinition::Get(type)->magic))
+		{
+			Log::Error(L"Failed to write resource "
+				+ MakeDefaultResourceTypeFileError(type, file->path)
+				+ L" "
+				+ MakeErrorMessageError()
+			);
+
+			return false;
+		}
+
+		if (!resource->save(&fwp))
+		{
+			Log::Error(L"Failed to save resource "
+				+ MakeDefaultResourceTypeFileError(type, file->path)
+				+ L" [maybe invalid] "
+				+ MakeErrorMessageError()
+			);
+
+			return false;
+		}
+
+		Log::Information(L"Resource '"
+			+ file->path.filename().wstring()
+			+ L"' saved (resource path: '"
+			+ ResourceDefinition::Get(type)->path
+			+ L"')");
+
+		return true;
+	}
+
+	bool LoadResourceFile(
+		ResourceBase* const resource,
+		const ResourceType type,
+		FileDefinition* const file)
+	{
+		if (!file->doesExists())
+		{
+			Log::Error(L"Resource file not found "
+				+ MakeDefaultResourceTypeFileError(type, file->path)
+			);
+
+			return false;
+		}
+
+		FileReadPipe frp(file);
+
+		if (!frp.isValid())
+		{
+			Log::Error(L"Failed to open resource "
+				+ MakeDefaultResourceTypeFileError(type, file->path)
+				+ L" "
+				+ MakeErrorMessageError()
+			);
+
+			return false;
+		}
+
+		frp.setPosition(
+			sizeof(ResourceTypeMagic::Type)
+		);
+
+		if (!resource->make(&frp))
+		{
+			Log::Error(L"Failed to make resource "
+				+ MakeDefaultResourceTypeFileError(type, file->path)
+				+ L" [maybe invalid] "
+				+ MakeErrorMessageError()
+			);
+
+			return false;
+		}
+
+		Log::Information(L"Resource '"
+			+ file->path.filename().wstring()
+			+ L"' made (resource path: '"
+			+ ResourceDefinition::Get(type)->path
+			+ L"')");
+
+		return true;
 	}
 
 	bool MapResourceFile(
@@ -87,16 +191,96 @@ namespace Resource
 		return true;
 	}
 
-	void Interface::MapResources()
+	bool VerifyDirectories()
+	{
+		try 
+		{
+			for (int i = 0; i < (int)ResourceType::_Length; ++i)
+			{
+				const std::filesystem::path path = Interface::MakeResourceTypePath((ResourceType) i);
+
+				if (!std::filesystem::exists(path))
+				{
+					Log::Warning(std::wstring(L"Resource directory did not exists, creating new one '")
+						+ ResourceDefinition::Get((ResourceType) i)->name
+						+ L"' (resource path: '"
+						+ path.wstring() + L"')");
+
+					std::filesystem::create_directory(path);
+				}
+			}
+
+			return true;
+		}
+		catch (const std::filesystem::filesystem_error error)
+		{
+			Log::Error(std::wstring(L"Failed to verify resource directories (error message: '")
+				+ _wcserror(error.code) + L"')");
+
+			return false;
+		}
+	}
+
+	bool VerifyStaticResources()
+	{
+		for (const std::filesystem::path staticResource : Static::GetTranslations())
+			if (!std::filesystem::exists(staticResource))
+			{
+				Log::Error(L"Unable to find static resource '"
+					+ staticResource.filename().wstring()
+					+ L"' (resource path: '"
+					+ Static::GetPath() + L"')");
+
+				return false;
+			}
+
+		// fix by somehow downloading content?
+
+		return true;
+	}
+
+	bool Interface::Initialize()
+	{
+		Log::Section section(L"Initializing resource interface");
+
+		if (!VerifyDirectories())
+		{
+			return false;
+		}
+
+		if (!VerifyStaticResources())
+		{
+			Log::Error(L"Static resources are corrupted, reinstall the game");
+
+			return false;
+		}
+		
+		if (!MapResources())
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	void Interface::Uninitalize()
+	{
+		resourceTypes.clear();
+	}
+
+	bool Interface::MapResources()
 	{
 		static_assert((int) ResourceType::World == 1);
 
 		Log::Section section(L"Mapping all resource types");
 
 		for (int i = (int) ResourceType::World; i < (int) ResourceType::_Length; ++i)
-		{
-			MapResourceType((ResourceType) i);
-		}
+			if (!MapResourceType((ResourceType)i))
+			{
+				return false;
+			}
+
+		return true;
 	}
 
 	bool Interface::MapResourceType(const ResourceType type)
@@ -108,7 +292,7 @@ namespace Resource
 
 		try {
 			for (std::filesystem::directory_entry directoryEntry
-				: std::filesystem::directory_iterator(MakeResourcePath(type))
+				: std::filesystem::directory_iterator(MakeResourceTypePath(type))
 				)
 			{
 				if (directoryEntry.status().permissions() != std::filesystem::perms::all)
@@ -167,7 +351,7 @@ namespace Resource
 		Log::Information(L"Mapped '"
 			+ std::to_wstring( resourceTypes.size() )
 			+ L"' files (resource type: '"
-			+ MakeResourcePath(type) + L"')");
+			+ MakeResourceTypePath(type) + L"')");
 
 		return true;
 	}
@@ -186,7 +370,7 @@ namespace Resource
 
 		if (mappedResource == resourceMap.end())
 		{
-			file.path = MakeFullResourcePath(type, name);
+			file.path = MakeResourceFilePath(type, name);
 			file.size = 0;
 
 			Log::Information(L"Resource '"
@@ -200,53 +384,20 @@ namespace Resource
 			file = mappedResource->second;
 		}
 
-		{ // new memory block for pipe
-			FileWritePipe fwp(&file);
+		if (SaveResourceFile(
+				resource,
+				type,
+				&file))
+		{
+			file.resetSize();
+			resourceMap[name] = std::move(file);
 
-			if (!fwp.isValid())
-			{
-				Log::Error(L"Failed to open resource "
-					+ MakeDefaultResourceTypeFileError(type, file.path)
-					+ L" "
-					+ MakeErrorMessageError()
-				);
-
-				return false;
-			}
-
-			if (!fwp.writeValue(&ResourceDefinition::Get(type)->magic))
-			{
-				Log::Error(L"Failed to write resource "
-					+ MakeDefaultResourceTypeFileError(type, file.path)
-					+ L" "
-					+ MakeErrorMessageError()
-				);
-
-				return false;
-			}
-
-			if (!resource->save(&fwp))
-			{
-				Log::Error(L"Failed to save resource "
-					+ MakeDefaultResourceTypeFileError(type, file.path)
-					+ L" [maybe invalid] "
-					+ MakeErrorMessageError()
-				);
-
-				return false;
-			}
+			return true;
 		}
-
-		file.resetSize();
-		resourceMap[name] = std::move(file);
-
-		Log::Information(L"Resource '"
-			+ name
-			+ L"' saved (resource path: '"
-			+ ResourceDefinition::Get(type)->path
-			+ L"')");
-
-		return true;
+		else
+		{
+			return false;
+		}
 	}
 
 	bool Resource::Interface::LoadResource(
@@ -288,444 +439,123 @@ namespace Resource
 			return false;
 		}
 
-
-
-		return true;
+		FileDefinition* file = &resourceFile->second;
+		
+		return LoadResourceFile(
+			resource,
+			type,
+			&resourceFile->second);
 	}
 
 	bool Resource::Interface::SaveSettings(
 		ResourceBase* const resource, 
 		const std::wstring name)
 	{
-		return false;
+		FileDefinition fileDefinition(
+			MakeResourceFilePath(ResourceType::Settings, name)
+		);
+
+		return SaveResourceFile(
+			resource,
+			ResourceType::Settings,
+			&fileDefinition);
 	}
 
 	bool Resource::Interface::LoadSettings(
 		ResourceBase* const resource, 
 		const std::wstring name)
 	{
-		return false;
+		FileDefinition fileDefinition(
+			MakeResourceFilePath(ResourceType::Settings, name)
+		);
+
+		return LoadResourceFile(
+			resource,
+			ResourceType::Settings,
+			&fileDefinition);
 	}
 
 	Static::Resource Resource::Interface::GetStaticResource(
 		const Static::ID type)
 	{
-		return Static::Resource();
+		return GetStaticResource(
+			Static::Translate(type)
+		);
 	}
 
 	Static::Resource Resource::Interface::GetStaticResource(
-		const std::filesystem::path resource)
-	{
-		return Static::Resource();
-	}
-}
-/*
-namespace
-{
-	const wchar_t* const GENERAL_RESOURCE_PATH = L"resource";
-
-	Resource::MapedResources mappedResources;
-
-	bool mapResource(
-		const Resource::ResourceType type,
-		const std::filesystem::path filename)
-	{
-		Log::Information(
-			L"Mapping resource '" 
-			+ filename.filename().wstring() 
-			+ L"' as " 
-			+ std::to_wstring((int) type)
-		);
-
-		std::ifstream file(
-			filename,
-			std::ios::binary | std::ios::in);
-
-		if (!file)
-		{
-			Log::Warning(
-				L"Unable to open file ('"
-				+ filename.filename().wstring()
-				+ L"\')"
-			);
-
-			return false;
-		}
-
-		/*
-		Resource::Magic magic;
-		file.read(
-			(char*) &magic,
-			sizeof(magic)
-		);
-
-		if (!file || file.eof())
-		{
-			Log::Warning(
-				L"Invalid file size ('"
-				+ filename.filename().wstring()
-				+ L"\')"
-			);
-
-			return false;
-		}
-
-		if (Resource::Interface::GetDefinition(type)->magic != magic) // TODO: is valid magic
-		{
-			Log::Warning(
-				L"Invalid file format ('"
-				+ filename.filename().wstring()
-				+ L"\')"
-			);
-
-			return false;
-		}
-
-		Resource::FileDefinition* resource = &mappedResources[type][filename.filename().wstring()];
-		// resource->file = std::move(file); | do not store handle
-		resource->path = filename.wstring();
-		resource->size = std::filesystem::file_size( resource->path );
-
-		return true;
-	}
-
-	bool mapResource(
-		const Resource::ResourceType type,
-		const std::wstring name)
-	{
-		return mapResource(
-			type, 
-			std::filesystem::path(
-				Resource::Definition::Get(type)->path + name
-			)
-		);
-	}
-
-	bool mapResourceFolder(
-		const Resource::ResourceType type)
-	{
-		try {
-			mappedResources[type].clear();
-
-			for (const std::filesystem::directory_entry& entry
-				: std::filesystem::directory_iterator(
-					Resource::Definition::Get(type)->path
-				))
-			{
-				const std::filesystem::path path = entry.path();
-
-				if (Resource::Definition::Get(type)->hasExtension && !(
-						path.has_extension() &&
-						path.extension() == Resource::Definition::Get(type)->extension
-					))
-				{
-					continue;
-				}
-
-				mapResource(type, path);
-			}
-
-			Log::Information(
-				L"Total mapped '" 
-				+ std::wstring(Resource::Definition::Get(type)->name)
-				+ L"' resources: '"
-				+ std::to_wstring( mappedResources[type].size() )
-				+ L'\''
-			);
-
-			return true;
-		}
-		catch (const std::filesystem::filesystem_error error)
-		{
-			Log::Error(
-				L"Failed to map files, Error Code: "
-				+ std::to_wstring(error.code().value())
-			);
-
-			return false;
-		}
-	}
-
-	bool mapAllResources()
-	{
-		Log::Section section(L"Mapping all resources");
-
-		for (int i = 0; i < (int) Resource::ResourceType::_Length; ++i)
-			if (!mapResourceFolder((Resource::ResourceType) i))
-			{
-				return false;
-			}
-
-		return true;
-	}
-
-	bool isResourcesMapped(
-		const Resource::ResourceType type,
-		const std::wstring name)
-	{
-		Resource::SubResources* subResources = &mappedResources[type];
-		Resource::SubResources::const_iterator it = subResources->find(name);
-
-		return it != subResources->cend();
-	}
-}
-
-namespace Resource
-{
-	bool _N_Interface::Initialize()
-	{
-		Log::Section section(L"Initializing resources");
-
-		// create missing folder
-		for (int i = 0; i < (int)Resource::ResourceType::_Length; ++i)
-		{
-			const std::filesystem::path& path(
-				std::wstring(Resource::Definition::Get((Resource::ResourceType) i)->path)
-			);
-
-			if (!std::filesystem::exists(path))
-			{
-				Log::Warning(L"Path '" + path.wstring() + L"' did not exists. Creating new one");
-				std::filesystem::create_directory(path);
-			}
-		}
-
-		// check that all static resource exist
-		const wchar_t** translations = Static::GetTranslations();
-		for (int i = 0; i < Static::GetTranslationCount(); ++i)
-			if (!std::filesystem::exists(translations[i]))
-			{
-				section.error(
-					std::wstring(L"Static resource '")
-					.append(translations[i])
-					.append(L"' not found")
-				);
-
-				return false;
-			}
-
-		return mapAllResources();
-	}
-
-	bool _N_Interface::RemapAllFiles()
-	{
-		return mapAllResources();
-	}
-
-	bool _N_Interface::RemapFiles(
-		const ResourceType type)
-	{
-		Log::Section section(L"Mapping all '" + std::wstring(Resource::Definition::Get(type)->name) + L"' resources");
-
-		return mapResourceFolder(type);
-	}
-
-	bool _N_Interface::WriteResource(
-		ResourceBase* const resource, 
-		const ResourceType type, 
-		const std::wstring name)
-	{
-		SubResources* const subResources = &mappedResources[type];
-		SubResources::iterator it = subResources->find(name);
-
-		FileDefinition* destination;
-
-		if (it == subResources->cend())
-		{
-			destination = &subResources->emplace(
-				name, 
-				Resource::Definition::Get(type)->path + name
-			).first->second;
-		}
-		else
-		{
-			destination = &it->second;
-		}
-
-		if (WriteRawResource(resource, destination))
-		{
-			return true;
-		}
-		else
-		{
-			Log::Error(L"Failed write resource (type: '" 
-				+ std::wstring(Resource::Definition::Get(type)->name)
-				+ L"', name: '"
-				+ name
-				+ L"')");
-
-			return false;
-		}
-	}
-
-	bool _N_Interface::ReadResource(
-		ResourceBase* const resource,
-		const ResourceType type,
-		const std::wstring name)
-	{
-		SubResources* const subResources = &mappedResources[type];
-		SubResources::iterator it = subResources->find(name);
-
-		if (it == subResources->cend())
-		{
-			if (mapResource(type, name))
-			{
-				it = mappedResources[type].find(name);
-			}
-			else
-			{
-				Log::Error(
-					L"Resource '"
-					+ name 
-					+ L"' not found"
-				);
-
-				return NULL;
-			}
-		}
-
-		if (ReadRawResource(resource, &it->second))
-		{
-			return true;
-		}
-		else
-		{
-			Log::Error(L"Failed read resource (type: '"
-				+ std::wstring(Resource::Definition::Get(type)->name)
-				+ L"', name: '"
-				+ name
-				+ L"')");
-
-			return false;
-		}
-	}
-
-	bool _N_Interface::ReadRawResource(
-		ResourceBase* const resource, 
-		const std::filesystem::path path)
-	{
-		FileDefinition fd(path);
-		return ReadRawResource(resource, &fd);
-	}
-
-	bool _N_Interface::ReadRawResource(
-		ResourceBase* const resource, 
-		const FileDefinition* const file)
-	{
-		FileReadPipe fwp(file);
-
-		if (!fwp.isValid())
-		{
-			Log::Error(L"Failed to open file '" + file->path.filename().wstring() + L"'");
-			Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
-
-			return false;
-		}
-
-		if (!resource->make(&fwp))
-		{
-			if (!fwp.isValid())
-			{
-				Log::Error(L"Failed to read file '" + file->path.filename().wstring() + L"'");
-				Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
-			}
-
-			return false;
-		}
-
-		return true;
-	}
-
-	bool _N_Interface::WriteRawResource(
-		ResourceBase* const resource, 
-		const std::filesystem::path path)
-	{
-		FileDefinition fd(path);
-		return WriteRawResource(resource, &fd);
-	}
-
-	bool _N_Interface::WriteRawResource(
-		ResourceBase* const resource, 
-		FileDefinition* const file)
-	{
-		FileWritePipe fwp(file);
-
-		if (!fwp.isValid())
-		{
-			Log::Error(L"Failed to open file '" + file->path.filename().wstring() + L"'");
-			Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
-
-			return false;
-		}
-
-		if (!resource->save(&fwp))
-		{
-			if (!fwp.isValid())
-			{
-				Log::Error(L"Failed to write file '" + file->path.filename().wstring() + L"'");
-				Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
-			}
-
-			return false;
-		}
-
-		return true;
-	}
-
-	Static::Resource _N_Interface::GetStaticResource(
-		const Static::ID type)
-	{
-		GetStaticResource( Static::Translate(type) );
-	}
-
-	Static::Resource _N_Interface::GetStaticResource(
 		const std::filesystem::path resource)
 	{
 		Static::Resource result;
+		FileDefinition file(resource);
 
-		FileDefinition fileDefinition(resource);
-
-		if (fileDefinition.size == 0)
+		if (!file.doesExists() || !file.resetSize() || file.size == 0)
 		{
-			Log::Error(L"Static resource '" +
-				resource.wstring() +
-				L"' does not exist or is empty");
+			Log::Error(L"Static resource file not found or is empty '"
+				+ resource.filename().wstring()
+				+ L"' (resource path: '"
+				+ Static::GetPath() + L"')");
 
 			return { };
 		}
 
-		FileReadPipe filePipe(&fileDefinition);
+		FileReadPipe frp(&file);
 
-		result.first = new char[fileDefinition.size];
-		result.second = fileDefinition.size;
+		if (!frp.isValid())
+		{
+			Log::Error(L"Failed to open static resource '"
+				+ resource.filename().wstring()
+				+ L"' (resource path: '"
+				+ Static::GetPath()
+				+ L"') "
+				+ MakeErrorMessageError()
+			);
 
-		if (!filePipe.readContentForce(
-				result.first, 
+			return { };
+		}
+
+		result.first = new char[file.size];
+		result.second = file.size;
+
+		if (!frp.readContentForce(
+				result.first,
 				result.second))
 		{
-			Log::Error(L"Unable to read static resource '"
-				+ resource.wstring() + L"'");
-
-			if (!filePipe.isValid())
-			{
-				Log::Error(std::wstring(L"Error message: '") + _wcserror(errno) + L"'");
-			}
+			Log::Error(L"Failed to read static resource '"
+				+ resource.filename().wstring()
+				+ L"' (resource path: '"
+				+ Static::GetPath()
+				+ L"') [maybe invalid] "
+				+ MakeErrorMessageError()
+			);
 
 			delete[] result.first;
 			return { };
 		}
 
+		Log::Information(L"Resource '"
+			+ resource.filename().wstring()
+			+ L"' read (resource path: '"
+			+ Static::GetPath() + L"')");
+
 		return result;
 	}
 
-	const std::wstring _N_Interface::GetResourcePath()
+	const std::wstring Interface::GetResourcePath()
 	{
-		return GENERAL_RESOURCE_PATH;
+		return RESOURCE_PATH;
 	}
 
-	const std::wstring _N_Interface::MakeResourcePath(const ResourceType type)
+	const std::wstring Interface::MakeResourceTypePath(
+		const ResourceType type)
 	{
-		return GetResourcePath() + L"/" + Definition::Get(type)->path;
+		return RESOURCE_PATH + std::wstring(L"/") + ResourceDefinition::Get(type)->path;
 	}
-} */
-
+	
+	const std::wstring Interface::MakeResourceFilePath(
+		const ResourceType type, 
+		const std::wstring name)
+	{
+		return MakeResourceTypePath(type) + L"/" + name;
+	}
+}

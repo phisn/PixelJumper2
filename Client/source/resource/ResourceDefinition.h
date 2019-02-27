@@ -24,7 +24,7 @@ namespace Resource
 		{
 		}
 
-		const sf::Uint32 magic;
+		const ResourceTypeMagic::Type magic;
 
 		const bool hasExtension;
 		const wchar_t* const extension;

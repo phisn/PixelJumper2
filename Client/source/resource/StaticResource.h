@@ -3,11 +3,7 @@
 #include <SFML/Main.hpp>
 
 #include <string>
-#include <utility>
-
-#ifndef RESOURCE
-#define RESOURCE ::Resource
-#endif
+#include <vector>
 
 namespace Resource
 {
@@ -22,8 +18,10 @@ namespace Resource
 			_Length
 		};
 
-		const int GetTranslationCount();
-		const wchar_t** GetTranslations();
+		std::vector<std::wstring> GetTranslations();
+
+		std::wstring GetFolderName();
+		std::wstring GetPath();
 
 		std::wstring Translate(const Static::ID id);
 	}
