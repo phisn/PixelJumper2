@@ -38,7 +38,7 @@
   <ItemGroup>
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
-    <ClInclude Include="source\device\DeviceSettings.h" />
+    <ClInclude Include="source\device\DeviceConfig.h" />
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\RandomDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
@@ -132,7 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\CoreDevice.cpp" />
-    <ClCompile Include="source\device\DeviceSettings.cpp" />
+    <ClCompile Include="source\device\DeviceConfig.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\RandomDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />

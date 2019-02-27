@@ -1,61 +1,60 @@
 #include "InputDevice.h"
 
+#include <Client/source/device/DeviceConfig.h>
 #include <Client/source/logger/Logger.h>
 
 #include <cassert>
 
 namespace
 {
-	const int MAX_PLAYER_COUNT = 4;
-
-	sf::Keyboard::Key* globalKeys;
+	Device::GeneralInputSettings* generalInput;
 	Device::GameInput* gameInputs;
 }
 
 namespace Device
 {
-	bool Device::Input::Initialize()
+	bool Input::Initialize()
 	{
-		globalKeys = new sf::Keyboard::Key[Device::Input::_Length];
-		gameInputs = (Device::GameInput*) new char[MAX_PLAYER_COUNT * sizeof(Device::GameInput)];
+		generalInput = new GeneralInputSettings();
+		gameInputs = (GameInput*) new char[(int) Player::_Length * sizeof(GameInput)];
 
 		LoadGlobalKeys();
 
-		for (int i = 0; i < MAX_PLAYER_COUNT; ++i)
+		for (int i = 0; i < (int) Player::_Length; ++i)
 		{
-			new(&gameInputs[i]) Device::GameInput(i);
+			new(&gameInputs[i]) GameInput((Player) i);
 			gameInputs[i].load();
 		}
 	}
 
-	void Device::Input::Uninitialize()
+	void Input::Uninitialize()
 	{
-		delete[] globalKeys;
+		delete generalInput;
 		delete[] gameInputs;
 	}
 
-	sf::Keyboard::Key Device::Input::GetGlobalKey(const GlobalSymbol symbol)
+	sf::Keyboard::Key Input::GetGlobalKey(const GlobalSymbol symbol)
 	{
 		assert(symbol < 0);
 		assert(symbol >= Input::_Length);
 
-		globalKeys[symbol];
+		generalInput->GlobalKeys[symbol];
 	}
 
-	bool Device::Input::IsGlobalKeyPressed(const GlobalSymbol symbol)
+	bool Input::IsGlobalKeyPressed(const GlobalSymbol symbol)
 	{
 		assert(symbol < 0);
 		assert(symbol >= Input::_Length);
 
-		return sf::Keyboard::isKeyPressed(globalKeys[symbol]);
+		return sf::Keyboard::isKeyPressed(generalInput->GlobalKeys[symbol]);
 	}
 
-	void Device::Input::SetGlobalKey(const GlobalSymbol symbol, const sf::Keyboard::Key key)
+	void Input::SetGlobalKey(const GlobalSymbol symbol, const sf::Keyboard::Key key)
 	{
 		assert(symbol < 0);
 		assert(symbol >= Input::_Length);
 
-		globalKeys[symbol] = key;
+		generalInput->GlobalKeys[symbol] = key;
 	}
 
 	int Input::GetKeyUsageCount(const sf::Keyboard::Key key)
@@ -63,12 +62,12 @@ namespace Device
 		int usageCount = 0;
 
 		for (int i = 0; i < GlobalSymbol::_Length; ++i)
-			if (globalKeys[i] == key)
+			if (generalInput->GlobalKeys[i] == key)
 			{
 				++usageCount;
 			}
 
-		for (int i = 0; i < MAX_PLAYER_COUNT; ++i)
+		for (int i = 0; i < (int) Player::_Length; ++i)
 		{
 			for (int j = 0; j < (int) GameCoreInputSymbol::_Length; ++i)
 				if (gameInputs[i].getCoreKey((GameCoreInputSymbol) j) == key)
@@ -86,22 +85,23 @@ namespace Device
 		return usageCount;
 	}
 
-	bool Device::Input::LoadGlobalKeys()
+	bool Input::LoadGlobalKeys()
 	{
-		return false;
+		return Config::LoadType(
+			generalInput, 
+			Device::ConfigType::Input);
 	}
 
-	bool Device::Input::SaveGlobalKeys()
+	bool Input::SaveGlobalKeys()
 	{
-		return false;
+		return Config::SaveType(
+			generalInput,
+			Device::ConfigType::Input);
 	}
 
-	GameInput* const Device::Input::GetGameInput(
-		const int playerNumber)
+	GameInput* const Input::GetGameInput(
+		const Input::Player player)
 	{
-		assert(playerNumber > 0);
-		assert(playerNumber < MAX_PLAYER_COUNT);
-
-		return gameInputs + playerNumber;
+		return &gameInputs[(int) player];
 	}
 }

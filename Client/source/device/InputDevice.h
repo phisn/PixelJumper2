@@ -9,6 +9,14 @@ namespace Device
 	class GameInput;
 	namespace Input
 	{
+		enum class Player
+		{
+			P1, P2,
+			P3, P4,
+
+			_Length
+		};
+
 		enum GlobalSymbol
 		{
 			OpenMenu,
@@ -37,7 +45,7 @@ namespace Device
 
 		void DefaultSettings();
 
-		GameInput* const GetGameInput(const int playerNumber);
+		GameInput* const GetGameInput(const Player player);
 	}
 
 	enum class GameCoreInputSymbol
@@ -131,7 +139,7 @@ namespace Device
 	class GameInput
 	{
 	public:
-		GameInput(const int playerNumber)
+		GameInput(const Input::Player player)
 		{
 		}
 

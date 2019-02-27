@@ -549,7 +549,7 @@ namespace Resource
 	const std::wstring Interface::MakeResourceTypePath(
 		const ResourceType type)
 	{
-		return RESOURCE_PATH + std::wstring(L"/") + ResourceDefinition::Get(type)->path;
+		return GetResourcePath() + L"/" + ResourceDefinition::Get(type)->path;
 	}
 	
 	const std::wstring Interface::MakeResourceFilePath(

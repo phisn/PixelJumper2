@@ -354,14 +354,14 @@
     <ClInclude Include="source\device\CoreDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\device\DeviceSettings.h">
-      <Filter>source\device</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\ResourceType.h">
       <Filter>source\resource</Filter>
     </ClInclude>
     <ClInclude Include="source\resource\ResourceDefinition.h">
       <Filter>source\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\device\DeviceConfig.h">
+      <Filter>source\device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -593,11 +593,11 @@
     <ClCompile Include="source\device\CoreDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\device\DeviceSettings.cpp">
-      <Filter>source\device</Filter>
-    </ClCompile>
     <ClCompile Include="source\resource\ResourceDefinition.cpp">
       <Filter>source\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="source\device\DeviceConfig.cpp">
+      <Filter>source\device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

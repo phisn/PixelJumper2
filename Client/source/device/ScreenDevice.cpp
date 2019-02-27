@@ -1,7 +1,7 @@
 #include "ScreenDevice.h"
 
 #include <Client/source/logger/Logger.h>
-#include <Client/source/device/DeviceSettings.h>
+#include <Client/source/device/DeviceConfig.h>
 
 namespace
 {
@@ -98,7 +98,9 @@ namespace Device
 
 	bool Screen::LoadSettings()
 	{
-		return Settings::LoadScreenSettings(resource);
+		return Config::LoadType(
+			resource, 
+			ConfigType::Screen);
 	}
 
 	ScreenSettings* Screen::ChangeSettings()
@@ -108,7 +110,9 @@ namespace Device
 
 	bool Screen::SaveSettings()
 	{
-		return Settings::SaveScreenSettings(resource);
+		return Config::SaveType(
+			resource, 
+			ConfigType::Screen);
 	}
 
 	const sf::RenderWindow* Screen::GetWindow()
