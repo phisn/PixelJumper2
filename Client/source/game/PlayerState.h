@@ -21,29 +21,49 @@ namespace Game
 		:
 		public GameState
 	{
-	public:
-		struct
+		void onMovementChange(const sf::Vector2f old)
 		{
-			float speed;
+		}
 
-			sf::Vector2f movement;
-			sf::Vector2f position;
+		void onPositionChange(const sf::Vector2f old)
+		{
+		}
 
-			sf::Vector2f respawnPosition;
+		void onRespawnPositionChange(const sf::Vector2f old)
+		{
+		}
 
-			bool isOnGround;
+		void onIsOnGroundChange(const bool old)
+		{
+		}
 
-			sf::Uint32 currentWorldId;
-		} Properties;
+	public:
+		PlayerState()
+			:
+			movement(StateProperty<sf::Vector2f, PlayerState>(onMovementChange)),
+			position(StateProperty<sf::Vector2f, PlayerState>(onPositionChange)),
+			respawnPosition(StateProperty<sf::Vector2f, PlayerState>(onRespawnPositionChange)),
+			isOnGround(StateProperty<bool, PlayerState>(onIsOnGroundChange))
+		{
+		}
+
+		float speed;
+		
+		StateProperty<sf::Vector2f, PlayerState> movement;
+		StateProperty<sf::Vector2f, PlayerState> position;
+		StateProperty<sf::Vector2f, PlayerState> respawnPosition;
+		StateProperty<bool, PlayerState> isOnGround;
+
+		sf::Uint32 currentWorldId;
 
 	private:
 		bool writeState(
 			Resource::WritePipe* const writePipe) override
 		{
-			if (!writePipe->writeValue(&Properties))
+			if (!writePipe->writeValue(&movement.getValue()))
 			{
 				return false;
-			}
+			} // ...
 
 			// ...
 

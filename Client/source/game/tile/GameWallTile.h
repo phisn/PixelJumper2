@@ -45,13 +45,13 @@ namespace Game
 
 			if (collision.info.isHorizontal())
 			{
-				collision.player->Properties.movement.x = 0.0f;
+				collision.player->Properties.Movement.x = 0.0f;
 
 				return { 0.0f, collision.target.y - collision.info.position.y };
 			}
 			else
 			{
-				collision.player->Properties.movement.y = 0.0f;
+				collision.player->Properties.Movement.y = 0.0f;
 
 				return { collision.target.x - collision.info.position.x, 0.0f };
 			}

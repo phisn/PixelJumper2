@@ -63,7 +63,7 @@ namespace Game
 
 		sf::Vector2f getTargetOffset(const float timeValue) const
 		{
-			return	state.Properties.movement
+			return	state.Properties.Movement
 				*	state.Properties.speed
 				*	timeValue;
 		}
@@ -72,7 +72,7 @@ namespace Game
 		{
 			// get gravity from occupying tiles
 			// TODO: Implement correctly
-			state.Properties.movement.y -= timeValue * state.Properties.speed;
+			state.Properties.Movement.y -= timeValue * state.Properties.speed;
 		}
 
 		struct CustomCollisionResult
