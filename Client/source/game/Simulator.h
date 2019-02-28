@@ -5,21 +5,45 @@
 
 namespace Game
 {
-	enum class TileEventType // dependent from tile
-	{
-		Acceleration,
-		Jump,
-		Collision
-	};
-
-	enum class PlayerEventType // independent from tile
-	{
-		Restart,
-		Finish
-	};
-	
 	namespace Simulator
 	{
+		template <typename Target, typename Type>
+		class ExternTargetProperty
+		{
+		public:
+			typedef std::function<void(Target* const, const Type)> Listener;
+
+			void addListener(
+				const Listener listener)
+			{
+				listeners.insert(listener);
+			}
+
+			void removeListener(
+				const Listener listener)
+			{
+				listeners.erase(listener);
+			}
+
+			void callListeners(
+				Target* const target,
+				const Type oldValue) const
+			{
+				for (const Listener listener : listeners)
+				{
+					listener(target, oldValue);
+				}
+			}
+
+		private:
+			std::unordered_set<Listener> listeners;
+		};
+
+		template <typename Type>
+		using PlayerProperty = ExternTargetProperty<PlayerState, Type>;
+		template <typename Type>
+		using WorldProperty = ExternTargetProperty<WorldProperty, Type>;
+
 		struct Settings
 		{
 			/*
@@ -41,14 +65,15 @@ namespace Game
 		bool Initialize(const Settings settings);
 		void Uninitialize();
 
-		void HookPlayerEvent(
-			PlayerState* const player,
-			const PlayerEventType eventType);
-		void HookSinglePlayerEvent(
-			PlayerState* const player,
-			const PlayerEventType eventType);
-		void HookGlobalPlayerEvent(
-			const PlayerEventType eventType);
+		namespace Player
+		{
+			PlayerProperty<sf::Vector2f> GetPositionProperty();
+			PlayerProperty<sf::Vector2f> GetMovementProperty();
+		}
 
+		namespace World
+		{
+			WorldProperty<sf::Uint16> GetPlayerCountProperty();
+		}
 	}
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/game/CollisionEngine.h>
@@ -22,7 +21,7 @@ namespace Game
 
 		virtual void onDraw()
 		{
-			Device::Interface::GetScreen()->onDraw(&Visual.basicShape);
+			Device::Screen::Draw(Visual.basicShape);
 		}
 
 		virtual void onLogic(const sf::Time time)
@@ -63,7 +62,7 @@ namespace Game
 
 		sf::Vector2f getTargetOffset(const float timeValue) const
 		{
-			return	state.Properties.Movement
+			return	state.Properties.movement
 				*	state.Properties.speed
 				*	timeValue;
 		}
@@ -72,7 +71,10 @@ namespace Game
 		{
 			// get gravity from occupying tiles
 			// TODO: Implement correctly
-			state.Properties.Movement.y -= timeValue * state.Properties.speed;
+
+			const sf::Vector2f oldValue = state.Properties.movement;
+			state.Properties.movement.y -= timeValue * state.Properties.speed;
+			state.movement.callListeners(oldValue);
 		}
 
 		struct CustomCollisionResult
@@ -151,7 +153,7 @@ namespace Game
 					}
 					else
 					{
-						state.Properties.position = targetPosition;
+						state.position = targetPosition;
 						
 						break;
 					}

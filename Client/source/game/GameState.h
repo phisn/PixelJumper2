@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <functional>
+#include <unordered_set>
 
 namespace Game
 {
@@ -13,31 +14,44 @@ namespace Game
 		virtual bool readState(Resource::ReadPipe* const readPipe) = 0;
 	};
 
-	template <typename T, typename Special>
+	template <typename T>
 	class StateProperty
 	{
 	public:
-		typedef void(__thiscall Special::*OnChange)(const T oldValue);
+		typedef std::function<void(const T oldValue)> Listener;
 
-		StateProperty(const OnChange onChange)
-			:
-			onChange(onChange)
+		StateProperty(T& value)
 		{
+		}
+
+		void callListeners(const T oldValue)
+		{
+			for (const Listener& listener : listeners)
+			{
+				listener(oldValue);
+			}
+		}
+
+		void removeListener(
+			const Listener listener)
+		{
+			listeners.erase(listener);
+		}
+
+		void addListener(
+			const Listener listener)
+		{
+			listeners.insert(listener);
 		}
 
 		StateProperty& operator=(const T value)
 		{
 			const T oldValue = this->value;
-
 			this->value = value;
-			onChange(oldValue);
+
+			callListeners(value);
 
 			return *this;
-		}
-
-		operator const T() const
-		{
-			return value;
 		}
 
 		T getValue() const
@@ -45,8 +59,13 @@ namespace Game
 			return value;
 		}
 
+		operator const T() const
+		{
+			return value;
+		}
+
 	private:
-		const OnChange onChange;
-		T value;
+		std::unordered_set<Listener> listeners;
+		T& value;
 	};
 }

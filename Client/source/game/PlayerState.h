@@ -21,66 +21,43 @@ namespace Game
 		:
 		public GameState
 	{
-		void onMovementChange(const sf::Vector2f old)
-		{
-		}
+		friend class PlayerBase;
 
-		void onPositionChange(const sf::Vector2f old)
+		struct
 		{
-		}
+			float speed;
 
-		void onRespawnPositionChange(const sf::Vector2f old)
-		{
-		}
+			sf::Vector2f movement;
+			sf::Vector2f position;
+			sf::Vector2f respawnPosition;
 
-		void onIsOnGroundChange(const bool old)
-		{
-		}
+			bool isOnGround;
+
+			sf::Uint32 currentWorldId;
+
+		} Properties;
 
 	public:
-		PlayerState()
-			:
-			movement(StateProperty<sf::Vector2f, PlayerState>(onMovementChange)),
-			position(StateProperty<sf::Vector2f, PlayerState>(onPositionChange)),
-			respawnPosition(StateProperty<sf::Vector2f, PlayerState>(onRespawnPositionChange)),
-			isOnGround(StateProperty<bool, PlayerState>(onIsOnGroundChange))
-		{
-		}
-
-		float speed;
+		StateProperty<float> speed{ Properties.speed };
 		
-		StateProperty<sf::Vector2f, PlayerState> movement;
-		StateProperty<sf::Vector2f, PlayerState> position;
-		StateProperty<sf::Vector2f, PlayerState> respawnPosition;
-		StateProperty<bool, PlayerState> isOnGround;
+		StateProperty<sf::Vector2f> movement{ Properties.movement };
+		StateProperty<sf::Vector2f> position{ Properties.position };
+		StateProperty<sf::Vector2f> respawnPosition{ Properties.respawnPosition };
+		StateProperty<bool> isOnGround{ Properties.isOnGround };
 
-		sf::Uint32 currentWorldId;
+		StateProperty<sf::Uint32> currentWorldId{ Properties.currentWorldId };
 
 	private:
 		bool writeState(
 			Resource::WritePipe* const writePipe) override
 		{
-			if (!writePipe->writeValue(&movement.getValue()))
-			{
-				return false;
-			} // ...
-
-			// ...
-
-			return true;
+			return writePipe->writeValue(&Properties);
 		}
 
 		bool readState(
 			Resource::ReadPipe* const readPipe) override
 		{
-			if (!readPipe->readValue(&Properties))
-			{
-				return false;
-			}
-
-			// ...
-
-			return true;
+			return readPipe->readValue(&Properties);
 		}
 	};
 }
