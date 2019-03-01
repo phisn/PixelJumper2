@@ -38,22 +38,34 @@ namespace Game
 			const CollisionType type,
 			const Collision collision) override
 		{
-			collision.player->Properties.position = collision.info.position;
+			collision.player->position = collision.info.position;
 
-			// sync has not to be forces, because this action does not 
+			// sync has not to be forced, because this action does not 
 			// do any significant independet change (goes to none [same on all machines])
 
 			if (collision.info.isHorizontal())
 			{
-				collision.player->Properties.Movement.x = 0.0f;
+				collision.player->movement = 
+				{ 
+					0.f, collision.player->movement.getValue().y 
+				};
 
-				return { 0.0f, collision.target.y - collision.info.position.y };
+				return 
+				{ 
+					0.0f, collision.target.y - collision.info.position.y 
+				};
 			}
 			else
 			{
-				collision.player->Properties.Movement.y = 0.0f;
+				collision.player->movement =
+				{
+					collision.player->movement.getValue().x, 0.0f
+				};
 
-				return { collision.target.x - collision.info.position.x, 0.0f };
+				return 
+				{ 
+					collision.target.x - collision.info.position.x, 0.0f 
+				};
 			}
 		}
 

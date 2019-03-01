@@ -50,6 +50,8 @@ namespace Device
 
 	enum class GameCoreInputSymbol
 	{
+		_Invalid = -1,
+
 		Trigger,
 		Reset,
 
@@ -64,6 +66,8 @@ namespace Device
 
 	enum class GameViewInputSymbol
 	{
+		_Invalid = -1,
+
 		ChangeZoom,
 		ResetZoom,
 		WholeMapZoom,
@@ -153,14 +157,35 @@ namespace Device
 
 		}
 
+		GameCoreInputSymbol convertToCoreSymbol(
+			const sf::Keyboard::Key key)
+		{
+			for (GameCoreInputSymbol result = (GameCoreInputSymbol) 0
+				; (int) result < (int) GameCoreInputSymbol::_Length; ++(int&) result)
+				if (coreKeys[(int)result] == key)
+				{
+					return result;
+				}
+
+			return GameCoreInputSymbol::_Invalid;
+		}
+
+		GameViewInputSymbol convertToViewSymbol(
+			const sf::Keyboard::Key key)
+		{
+			for (GameViewInputSymbol result = (GameViewInputSymbol) 0
+				; (int) result < (int) GameViewInputSymbol::_Length; ++(int&) result)
+				if (coreKeys[(int)result] == key)
+				{
+					return result;
+				}
+
+			return GameViewInputSymbol::_Invalid;
+		}
+
 		sf::Keyboard::Key getCoreKey(const GameCoreInputSymbol symbol) const
 		{
 			return coreKeys[(int) symbol];
-		}
-
-		bool isCoreKeyPressed(const GameCoreInputSymbol symbol) const
-		{
-			return sf::Keyboard::isKeyPressed(coreKeys[(int) symbol]);
 		}
 
 		void setCoreKey(
@@ -175,11 +200,6 @@ namespace Device
 			return viewKeys[(int) symbol];
 		}
 
-		bool isViewKeyPressed(const GameViewInputSymbol symbol) const
-		{
-			return sf::Keyboard::isKeyPressed(viewKeys[(int) symbol]);
-		}
-
 		void setViewKey(
 			const GameCoreInputSymbol symbol,
 			const sf::Keyboard::Key key)
@@ -190,6 +210,46 @@ namespace Device
 	private:
 		sf::Keyboard::Key coreKeys[(int) GameCoreInputSymbol::_Length];
 		sf::Keyboard::Key viewKeys[(int) GameViewInputSymbol::_Length];
+	};
+
+	class GameInputUser
+	{
+	protected:
+		GameInputUser(const Input::Player player)
+			:
+			input(Input::GetGameInput(player))
+		{
+		}
+
+		void onEvent(const sf::Event event)
+		{
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (GameCoreInputSymbol symbol = input->convertToCoreSymbol(event.key.code)
+					; symbol != GameCoreInputSymbol::_Invalid)
+				{
+					onCoreSymbol(symbol);
+
+					return;
+				}
+
+				if (GameViewInputSymbol symbol = input->convertToViewSymbol(event.key.code)
+					; symbol != GameViewInputSymbol::_Invalid)
+				{
+					onViewSymbol(symbol);
+
+					return;
+				}
+
+			}
+		}
+
+	protected:
+		virtual void onCoreSymbol(const GameCoreInputSymbol) = 0;
+		virtual void onViewSymbol(const GameViewInputSymbol) = 0;
+
+	private:
+		GameInput* const input;
 	};
 
 	// Same for all players

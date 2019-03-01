@@ -13,7 +13,9 @@ namespace Game
 
 	enum class Direction
 	{
+		Up,
 		Left,
+		Down,
 		Right
 	};
 
