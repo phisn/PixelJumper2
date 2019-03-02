@@ -39,6 +39,10 @@ namespace Game
 					timeValueStep
 				);
 
+				applyDrag(
+					timeValueStep
+				);
+
 				moveTo(
 					state.Properties.position + getTargetOffset(timeValueStep)
 				);
@@ -69,11 +73,20 @@ namespace Game
 
 		void applyGravity(const float timeValue)
 		{
-			// get gravity from occupying tiles
-			// TODO: Implement correctly
-
 			const sf::Vector2f oldValue = state.Properties.movement;
-			state.Properties.movement.y -= timeValue * state.Properties.speed;
+			state.Properties.movement += currentWorld->worldState.gravity.getValue();
+			state.movement.callListeners(oldValue);
+		}
+
+		void applyDrag(const float timeValue)
+		{
+			const sf::Vector2f oldValue = state.Properties.movement;
+			const float lostMovementPercent = Simulator::CalculateDrag(
+				state.Properties.drag + currentWorld->worldState.drag,
+				state.Properties.weight);
+
+			state.Properties.movement *= lostMovementPercent;
+
 			state.movement.callListeners(oldValue);
 		}
 

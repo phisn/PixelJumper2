@@ -123,5 +123,17 @@ namespace Game
 		{
 			WorldProperty<sf::Uint16> GetPlayerCountProperty();
 		}
+
+		// return value is lost movement
+		// in percentage
+		static float CalculateMovementLose(
+			const float tileDragValue,
+			const float playerWeight)
+		{
+			const float positiveTileDragValue = fabs(tileDragValue);
+			const float positivePlayerWeight = fabs(playerWeight);
+
+			return positivePlayerWeight / (positiveTileDragValue + positivePlayerWeight);
+		}
 	}
 }

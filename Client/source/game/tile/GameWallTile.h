@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/game/Simulator.h>
+
 #include <Client/source/game/tiletrait/CollidableTile.h>
 #include <Client/source/game/tiletrait/StaticTile.h>
 
@@ -12,13 +14,15 @@ namespace Game
 	{
 	public:
 		WallTile(
+			const float drag,
 			const sf::Vector2f position,
 			const sf::Vector2f size)
 			:
 			StaticTile(
 				sf::Color::White,
 				position,
-				size)
+				size),
+			drag(drag)
 		{
 		}
 
@@ -34,39 +38,30 @@ namespace Game
 			StaticTile::initialize(container);
 		}
 
-		sf::Vector2f onCollision(
+		virtual sf::Vector2f onCollision(
 			const CollisionType type,
 			const Collision collision) override
 		{
 			collision.player->position = collision.info.position;
 
-			// sync has not to be forced, because this action does not 
-			// do any significant independet change (goes to none [same on all machines])
+			sf::Vector2f movement = { };
+			sf::Vector2f remainMove = { };
 
 			if (collision.info.isHorizontal())
 			{
-				collision.player->movement = 
-				{ 
-					0.f, collision.player->movement.getValue().y 
-				};
-
-				return 
-				{ 
-					0.0f, collision.target.y - collision.info.position.y 
-				};
+				movement.y = collision.player->movement.getValue().y;
+				remainMove.y = (collision.target.y - collision.info.position.y)
+					* Simulator::CalculateMovementLose(drag, collision.player->weight);
 			}
 			else
 			{
-				collision.player->movement =
-				{
-					collision.player->movement.getValue().x, 0.0f
-				};
-
-				return 
-				{ 
-					collision.target.x - collision.info.position.x, 0.0f 
-				};
+				movement.x = collision.player->movement.getValue().x;
+				remainMove.x = (collision.target.x - collision.info.position.x)
+					* Simulator::CalculateMovementLose(drag, collision.player->weight);
 			}
+
+			collision.player->movement = movement;
+			return remainMove;
 		}
 
 		const sf::Vector2f getPosition() const override
@@ -78,5 +73,7 @@ namespace Game
 		{
 			return StaticTile::getSize();
 		}
+	private:
+		const float drag;
 	};
 }

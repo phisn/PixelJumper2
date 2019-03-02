@@ -16,21 +16,37 @@ namespace Game
 		:
 		public GameState
 	{
+		struct
+		{
+			// addition
+			sf::Vector2f gravity = { 0.f, -1.f };
+			
+			float drag = 0.53f; // == 5% lose
+
+			sf::Uint32 milisecondsPassed;
+			sf::Uint16 playerCount;
+
+		} Properties;
+
 	public:
-		sf::Uint32 milisecondsPassed;
-		sf::Uint16 playerCount;
+		StateProperty<sf::Vector2f> gravity{ Properties.gravity };
 
+		StateProperty<float> drag{ Properties.drag };
 
+		StateProperty<sf::Uint32> milisecondsPassed{ Properties.milisecondsPassed };
+		StateProperty<sf::Uint16> playerCount{ Properties.playerCount };
+
+	private:
 		bool writeState(
 			Resource::WritePipe* const writePipe) override
 		{
-
+			return writePipe->writeValue(&Properties);
 		}
 
 		bool readState(
 			Resource::ReadPipe* const readPipe) override
 		{
-
+			return readPipe->readValue(&Properties);
 		}
 	};
 }

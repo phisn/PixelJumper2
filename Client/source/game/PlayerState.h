@@ -23,17 +23,26 @@ namespace Game
 		:
 		public GameState
 	{
+	public:
+		struct CollisionSides
+		{
+			bool up, left, down, right;
+		};
+
+	private:
 		friend class PlayerBase;
 
 		struct
 		{
 			float speed;
+			float weight = 10.f; // default == 10
+			float drag = 0.f;	 // 5% lose == 0.53 (norm done via world)
 
 			sf::Vector2f movement;
 			sf::Vector2f position;
 			sf::Vector2f respawnPosition;
 
-			bool isOnGround;
+			CollisionSides isOnGround;
 
 			sf::Uint32 currentWorldId;
 
@@ -41,11 +50,13 @@ namespace Game
 
 	public:
 		StateProperty<float> speed{ Properties.speed };
-		
+		StateProperty<float> weight{ Properties.weight };
+		StateProperty<float> drag{ Properties.drag };
+
 		StateProperty<sf::Vector2f> movement{ Properties.movement };
 		StateProperty<sf::Vector2f> position{ Properties.position };
 		StateProperty<sf::Vector2f> respawnPosition{ Properties.respawnPosition };
-		StateProperty<bool> isOnGround{ Properties.isOnGround };
+		StateProperty<CollisionSides> isOnGround{ Properties.isOnGround };
 
 		StateProperty<sf::Uint32> currentWorldId{ Properties.currentWorldId };
 
