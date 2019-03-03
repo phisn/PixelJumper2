@@ -14,7 +14,23 @@
 
 namespace Game
 {
-	class PlayerBase
+	class Player
+	{
+	public:
+		PlayerState state;
+
+		virtual void draw()
+		{
+			Device::Screen::Draw(shape);
+		}
+
+		virtual void onLogic(const sf::Time time) = 0;
+
+	private:
+		sf::RectangleShape shape;
+	};
+
+	class _N_PlayerBase
 	{
 	public:
 		PlayerState state;
@@ -70,7 +86,7 @@ namespace Game
 				*	state.Properties.speed
 				*	timeValue;
 		}
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 		void applyGravity(const float timeValue)
 		{
 			const sf::Vector2f oldValue = state.Properties.movement;
@@ -81,7 +97,7 @@ namespace Game
 		void applyDrag(const float timeValue)
 		{
 			const sf::Vector2f oldValue = state.Properties.movement;
-			const float lostMovementPercent = Simulator::CalculateDrag(
+			const float lostMovementPercent = _N_Simulator::CalculateDrag(
 				state.Properties.drag + currentWorld->worldState.drag,
 				state.Properties.weight);
 

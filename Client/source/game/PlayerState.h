@@ -30,7 +30,7 @@ namespace Game
 		};
 
 	private:
-		friend class PlayerBase;
+		friend class _N_PlayerBase;
 
 		struct
 		{

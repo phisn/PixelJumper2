@@ -7,7 +7,7 @@ namespace Game
 {
 	class LocalPlayer
 		:
-		public PlayerBase
+		public Player
 	{
 	public:
 		void onLogic(const sf::Time time) override
@@ -43,7 +43,7 @@ namespace Game
 			switch (symbol)
 			{
 			case Device::GameCoreInputSymbol::Trigger:
-				Simulator::Player::GetTriggerRoutineContainer()
+				_N_Simulator::Player::GetTriggerRoutineContainer()
 					->CallRoutine(&state);
 
 				break;
@@ -52,22 +52,22 @@ namespace Game
 
 				break;
 			case Device::GameCoreInputSymbol::Up:
-				Simulator::Player::GetMovementRoutineContainer()
+				_N_Simulator::Player::GetMovementRoutineContainer()
 					->CallRoutine(&state, Game::Direction::Up);
 
 				break;
 			case Device::GameCoreInputSymbol::Left:
-				Simulator::Player::GetMovementRoutineContainer()
+				_N_Simulator::Player::GetMovementRoutineContainer()
 					->CallRoutine(&state, Game::Direction::Left);
 
 				break;
 			case Device::GameCoreInputSymbol::Down:
-				Simulator::Player::GetMovementRoutineContainer()
+				_N_Simulator::Player::GetMovementRoutineContainer()
 					->CallRoutine(&state, Game::Direction::Down);
 
 				break;
 			case Device::GameCoreInputSymbol::Right:
-				Simulator::Player::GetMovementRoutineContainer()
+				_N_Simulator::Player::GetMovementRoutineContainer()
 					->CallRoutine(&state, Game::Direction::Right);
 
 				break;
@@ -78,6 +78,7 @@ namespace Game
 		{
 		}
 
+		sf::View view;
 		Device::GameInput* const input;
 	};
 }

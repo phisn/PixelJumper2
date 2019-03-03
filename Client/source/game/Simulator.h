@@ -5,6 +5,21 @@
 
 namespace Game
 {
+	class Simulator
+	{
+	public:
+		void addPlayer()
+		{
+		}
+
+		void removePlayer()
+		{
+		}
+
+	private:
+		std::vector<_N_PlayerBase*> players;
+	};
+
 	template <typename Target, typename Type>
 	class ExternTargetProperty
 	{
@@ -86,7 +101,7 @@ namespace Game
 	template <typename... Args>
 	using PlayerRoutineContainer = RoutineContainer<PlayerState, Args...>;
 
-	namespace Simulator
+	namespace _N_Simulator
 	{
 
 		struct Settings

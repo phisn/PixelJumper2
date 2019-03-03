@@ -51,13 +51,13 @@ namespace Game
 			{
 				movement.y = collision.player->movement.getValue().y;
 				remainMove.y = (collision.target.y - collision.info.position.y)
-					* Simulator::CalculateMovementLose(drag, collision.player->weight);
+					* _N_Simulator::CalculateMovementLose(drag, collision.player->weight);
 			}
 			else
 			{
 				movement.x = collision.player->movement.getValue().x;
 				remainMove.x = (collision.target.x - collision.info.position.x)
-					* Simulator::CalculateMovementLose(drag, collision.player->weight);
+					* _N_Simulator::CalculateMovementLose(drag, collision.player->weight);
 			}
 
 			collision.player->movement = movement;
