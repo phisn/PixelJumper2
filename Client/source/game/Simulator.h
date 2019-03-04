@@ -1,11 +1,16 @@
 #pragma once
 
 #include <Client/source/game/PlayerState.h>
+#include <Client/source/game/PlayerBase.h>
 #include <Client/source/game/CollisionEngine.h>
+
+#include <Client/source/game/GameState.h>
 
 namespace Game
 {
 	class Simulator
+		:
+		public GameState
 	{
 	public:
 		void addPlayer()
@@ -16,8 +21,34 @@ namespace Game
 		{
 		}
 
+
+		bool writeState(
+			Resource::WritePipe* const writePipe) override
+		{
+
+		}
+
+		bool readState(
+			Resource::ReadPipe* const readPipe) override
+		{
+
+		}
+
+		PlayerBase* getPlayerById(const PlayerId id) const
+		{
+			for (PlayerBase* const player : players)
+			{
+
+			}
+		}
+
+		void onLogic()
+		{
+		}
+
 	private:
-		std::vector<_N_PlayerBase*> players;
+		std::vector<PlayerBase*> players;
+		std::vector<PlayerBase*> localPlayers;
 	};
 
 	template <typename Target, typename Type>
@@ -53,7 +84,7 @@ namespace Game
 	};
 
 	template <typename Type>
-	using PlayerProperty = ExternTargetProperty<PlayerState, Type>;
+	using PlayerProperty = ExternTargetProperty<_N_PlayerState, Type>;
 	template <typename Type>
 	using WorldProperty = ExternTargetProperty<WorldState, Type>;
 
@@ -99,7 +130,7 @@ namespace Game
 	};
 
 	template <typename... Args>
-	using PlayerRoutineContainer = RoutineContainer<PlayerState, Args...>;
+	using PlayerRoutineContainer = RoutineContainer<_N_PlayerState, Args...>;
 
 	namespace _N_Simulator
 	{

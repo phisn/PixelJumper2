@@ -29,12 +29,11 @@ namespace Game
 		char padding = 0;
 	};
 
-	template <typename PlayerType>
 	struct Collision
 	{
 		CollisionEngine::CollisionInfo info;
 
-		PlayerType* player;
+		PlayerBase* player;
 		sf::Vector2f target; // expected destination
 	};
 
@@ -46,13 +45,10 @@ namespace Game
 			used for sliding or bouncing (normal walls slide too [ignores phyiscs])
 		*/
 
-		virtual sf::Vector2f onGeneralCollision(
+		virtual sf::Vector2f onCollision(
 			const CollisionType type,
-			const Collision<Player> collision) = 0;
-		virtual sf::Vector2f onLocalCollision(
-			const CollisionType type,
-			const Collision<LocalPlayer> collision) = 0;
-
+			const Collision collision) = 0;
+		
 		// copied from / same as in GameTileBase.h
 		virtual const sf::Vector2f getPosition() const = 0;
 		virtual const sf::Vector2f getSize() const = 0;

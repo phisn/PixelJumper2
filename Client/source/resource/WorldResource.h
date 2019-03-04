@@ -14,6 +14,8 @@
 
 namespace Resource
 {
+	typedef sf::Uint32 WorldId;
+
 	class World
 		:
 		public Resource::ResourceBase
@@ -24,7 +26,7 @@ namespace Resource
 		struct
 		{
 			AUTO sf::Uint32 magic = WORLD_MAGIC;
-			EDIT sf::Uint32 worldID = NULL;
+			EDIT WorldId worldID = NULL;
 		} HeaderIntro;
 
 		struct

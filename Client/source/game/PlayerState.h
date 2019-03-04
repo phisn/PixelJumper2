@@ -24,43 +24,37 @@ namespace Game
 		public GameState
 	{
 	public:
-		struct CollisionSides
+		struct _IsOnGround
 		{
 			bool up, left, down, right;
 		};
 
-	private:
-		friend class _N_PlayerBase;
-
 		struct
 		{
-			float speed;
-			float weight = 10.f; // default == 10
-			float drag = 0.f;	 // 5% lose == 0.53 (norm done via world)
-
-			sf::Vector2f movement;
 			sf::Vector2f position;
-			sf::Vector2f respawnPosition;
+			sf::Vector2f movement;
 
-			CollisionSides isOnGround;
+			float speed;
+			float weight;
+			float drag; // todo rename
 
-			sf::Uint32 currentWorldId;
+			_IsOnGround isOnGround;
+			sf::Vector2f respawnPoint;
 
+			Resource::WorldId world;
+
+			struct
+			{
+				float rotation;
+
+				bool useCustomPosition;
+				sf::Vector2f position;
+
+				sf::Vector2f size;
+
+			} View;
 		} Properties;
 
-	public:
-		StateProperty<float> speed{ Properties.speed };
-		StateProperty<float> weight{ Properties.weight };
-		StateProperty<float> drag{ Properties.drag };
-
-		StateProperty<sf::Vector2f> movement{ Properties.movement };
-		StateProperty<sf::Vector2f> position{ Properties.position };
-		StateProperty<sf::Vector2f> respawnPosition{ Properties.respawnPosition };
-		StateProperty<CollisionSides> isOnGround{ Properties.isOnGround };
-
-		StateProperty<sf::Uint32> currentWorldId{ Properties.currentWorldId };
-
-	private:
 		bool writeState(
 			Resource::WritePipe* const writePipe) override
 		{

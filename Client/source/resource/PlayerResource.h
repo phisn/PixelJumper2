@@ -6,6 +6,8 @@
 
 namespace Resource
 {
+	typedef sf::Uint64 PlayerId;
+
 	class PlayerResource
 		:
 		public ResourceBase
@@ -13,7 +15,15 @@ namespace Resource
 	public:
 		struct
 		{
+			PlayerId playerId;
+
+		} HeaderIntro;
+
+		struct
+		{
 			std::wstring UserName;
+
+
 		} HeaderAuth;
 
 	private:

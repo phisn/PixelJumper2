@@ -2,29 +2,124 @@
 
 #include <Client/source/device/ScreenDevice.h>
 
-#include <Client/source/game/CollisionEngine.h>
-#include <Client/source/game/GameWorld.h>
 #include <Client/source/game/PlayerState.h>
-#include <Client/source/game/Simulator.h>
 
-#include <set>
+#include <Client/source/resource/PlayerResource.h>
+
+#include <functional>
 #include <string>
+#include <unordered_set>
 
 #include <SFML/Graphics.hpp>
 
 namespace Game
 {
-	class Player
+	template <typename T>
+	class PropertyWriter
 	{
+		typedef std::function<void(const T)> Listener;
 	public:
+		PropertyWriter(T& value)
+			:
+			value(value)
+		{
+		}
+
+		T& operator=(const T value)
+		{
+			const T oldValue = this->value;
+			this->value = value;
+
+			for (const Listener& listener : listeners)
+			{
+				listener(oldValue);
+			}
+		}
+
+		void addListener(const Listener listener)
+		{
+			listeners.insert(listener);
+		}
+
+		void removeListener(const Listener listener)
+		{
+			listeners.erase(listener);
+		}
+
+	private:
+		T& value;
+		std::unordered_set<Listener> listeners;
+	};
+
+	class PlayerBase
+		:
+		public GameState
+	{
+		friend class Simulator;
+	protected:
 		PlayerState state;
 
+	public:
 		virtual void draw()
 		{
 			Device::Screen::Draw(shape);
 		}
 
-		virtual void onLogic(const sf::Time time) = 0;
+		bool writeState(
+			Resource::WritePipe* const writePipe) override
+		{
+			return state.writeState(writePipe);
+		}
+
+		bool readState(
+			Resource::ReadPipe* const readPipe) override
+		{
+			if (state.readState(readPipe))
+			{
+				initializeFromState();
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		//// Properties
+		PropertyWriter<sf::Vector2f> position{ state.Properties.position };
+		PropertyWriter<sf::Vector2f> movement{ state.Properties.movement };
+
+		PropertyWriter<float> speed{ state.Properties.speed };
+		PropertyWriter<float> weight{ state.Properties.weight };
+		PropertyWriter<float> drag{ state.Properties.drag };
+
+		PropertyWriter<PlayerState::_IsOnGround> isOnGround{ state.Properties.isOnGround };
+		PropertyWriter<sf::Vector2f> respawnPoint{ state.Properties.respawnPoint };
+
+		PropertyWriter<Resource::WorldId> worldId{ state.Properties.world };
+
+		//// View
+		PropertyWriter<float> view_rotation{ state.Properties.View.rotation };
+
+		// should set position before useCustomPosition
+		PropertyWriter<bool> view_useCustomPosition{ state.Properties.View.useCustomPosition };
+		PropertyWriter<sf::Vector2f> view_position{ state.Properties.View.position };
+
+		PropertyWriter<sf::Vector2f> view_size{ state.Properties.View.size };
+		////
+
+		const PlayerState* readState() const
+		{
+			return &state;
+		}
+
+	protected:
+		virtual void initializeFromState()
+		{
+			shape.setPosition(state.Properties.position);
+			shape.setSize({ 1, 1 });
+		}
 
 	private:
 		sf::RectangleShape shape;
@@ -33,7 +128,7 @@ namespace Game
 	class _N_PlayerBase
 	{
 	public:
-		PlayerState state;
+		_N_PlayerState state;
 
 		virtual void onDraw()
 		{
