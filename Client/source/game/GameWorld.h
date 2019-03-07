@@ -32,18 +32,6 @@ namespace Game
 		void onDraw() const;
 		void onLogic(const sf::Time time) const;
 
-		template <typename T>
-		const std::vector<T*>& getTileType()
-		{
-			return (const std::vector<T*>&) tiles[typeid(T).hash_code()];
-		}
-
-		template <typename T>
-		void insertTile(T* const tile)
-		{
-			tiles[typeid(T).hash_code()].push_back(tile);
-		}
-
 		sf::Vector2f getSize() const;
 		const std::wstring& getAuthorName() const;
 		const std::wstring& getMapName() const;
@@ -56,10 +44,7 @@ namespace Game
 			std::wstring mapName;
 		} Properties;
 
-		std::unordered_map<
-			size_t,
-			std::vector<GameTileBase*>
-		> tiles;
+
 
 		struct
 		{

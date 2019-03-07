@@ -36,7 +36,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClInclude Include="Environment.h" />
     <ClInclude Include="LocalSimulator.h" />
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
@@ -78,11 +77,14 @@
     <ClInclude Include="source\framework\FrameworkInterface.h" />
     <ClInclude Include="source\framework\ResourceContext.h" />
     <ClInclude Include="source\game\CollisionEngine.h" />
+    <ClInclude Include="source\game\Environment.h" />
     <ClInclude Include="source\game\GameState.h" />
     <ClInclude Include="source\game\GameStateManager.h" />
     <ClInclude Include="source\game\GameTileFactory.h" />
     <ClInclude Include="source\game\GameWorld.h" />
+    <ClInclude Include="source\game\HostWorld.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
+    <ClInclude Include="source\game\LocalSimulator.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
     <ClInclude Include="source\game\PlayerState.h" />
     <ClInclude Include="source\game\Simulator.h" />
@@ -94,6 +96,7 @@
     <ClInclude Include="source\game\tiletrait\StaticTile.h" />
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h" />
     <ClInclude Include="source\game\tile\GameWallTile.h" />
+    <ClInclude Include="source\game\WorldBase.h" />
     <ClInclude Include="source\game\WorldState.h" />
     <ClInclude Include="source\logger\Names.h" />
     <ClInclude Include="source\logger\SectionHost.h" />
@@ -133,7 +136,6 @@
     <ClInclude Include="source\scene\SubSceneBase.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="LocalSimulator.cpp" />
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DeviceConfig.cpp" />
@@ -170,10 +172,13 @@
     <ClCompile Include="source\framework\FrameworkInterface.cpp" />
     <ClCompile Include="source\framework\ResourceContext.cpp" />
     <ClCompile Include="source\game\CollisionEngine.cpp" />
+    <ClCompile Include="source\game\Environment.cpp" />
     <ClCompile Include="source\game\GameStateManager.cpp" />
     <ClCompile Include="source\game\GameTileFactory.cpp" />
     <ClCompile Include="source\game\GameWorld.cpp" />
+    <ClCompile Include="source\game\HostWorld.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
+    <ClCompile Include="source\game\LocalSimulator.cpp" />
     <ClCompile Include="source\game\PlayerBase.cpp" />
     <ClCompile Include="source\game\PlayerState.cpp" />
     <ClCompile Include="source\game\Simulator.cpp" />
@@ -185,6 +190,7 @@
     <ClCompile Include="source\game\tiletrait\StaticTile.cpp" />
     <ClCompile Include="source\game\tiletrait\SynchronizableTile.cpp" />
     <ClCompile Include="source\game\tile\GameWallTile.cpp" />
+    <ClCompile Include="source\game\WorldBase.cpp" />
     <ClCompile Include="source\game\WorldState.cpp" />
     <ClCompile Include="source\logger\SectionHost.cpp" />
     <ClCompile Include="source\logger\Output.cpp" />
@@ -218,6 +224,7 @@
     <Image Include="..\..\..\..\OneDrive\Bilder\IMAG0001[323].jpg" />
     <Image Include="source\editor\Editor_Design.jpg" />
     <Image Include="source\editor\manipulator\Manipulator.jpg" />
+    <Image Include="source\game\Small_Architecture.jpg" />
     <Image Include="source\resource\IMAG0005.jpg" />
     <Image Include="source\resource\IMAG0011.jpg" />
   </ItemGroup>

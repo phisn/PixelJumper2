@@ -364,7 +364,18 @@
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="LocalSimulator.h" />
-    <ClInclude Include="Environment.h" />
+    <ClInclude Include="source\game\LocalSimulator.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\WorldBase.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostWorld.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\Environment.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -602,7 +613,18 @@
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="LocalSimulator.cpp" />
-    <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="source\game\WorldBase.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostWorld.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\LocalSimulator.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\Environment.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\editor\manipulator\Manipulator.jpg">
@@ -619,6 +641,9 @@
     </Image>
     <Image Include="source\editor\Editor_Design.jpg">
       <Filter>source\editor</Filter>
+    </Image>
+    <Image Include="source\game\Small_Architecture.jpg">
+      <Filter>source\game</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

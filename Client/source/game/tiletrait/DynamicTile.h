@@ -11,6 +11,5 @@ namespace Game
 		void initialize(TileContainer* const);
 
 		virtual void onLogic(const sf::Time time) = 0;
-		virtual void onDraw() = 0;
 	};
 }
