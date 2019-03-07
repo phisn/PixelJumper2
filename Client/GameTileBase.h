@@ -1,9 +1,0 @@
-
-
-namespace Game
-{
-	class GameTileBase
-	{
-
-	};
-}

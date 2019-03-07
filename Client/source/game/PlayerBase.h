@@ -14,52 +14,14 @@
 
 namespace Game
 {
-	template <typename T>
-	class PropertyWriter
-	{
-		typedef std::function<void(const T)> Listener;
-	public:
-		PropertyWriter(T& value)
-			:
-			value(value)
-		{
-		}
-
-		T& operator=(const T value)
-		{
-			const T oldValue = this->value;
-			this->value = value;
-
-			for (const Listener& listener : listeners)
-			{
-				listener(oldValue);
-			}
-		}
-
-		void addListener(const Listener listener)
-		{
-			listeners.insert(listener);
-		}
-
-		void removeListener(const Listener listener)
-		{
-			listeners.erase(listener);
-		}
-
-	private:
-		T& value;
-		std::unordered_set<Listener> listeners;
-	};
-
 	class PlayerBase
 		:
 		public GameState
 	{
 		friend class Simulator;
-	protected:
+	public:
 		PlayerState state;
 
-	public:
 		virtual void draw()
 		{
 			Device::Screen::Draw(shape);
@@ -85,39 +47,13 @@ namespace Game
 				return false;
 			}
 		}
+		                                                                                      
 		
-		//// Properties
-		PropertyWriter<sf::Vector2f> position{ state.Properties.position };
-		PropertyWriter<sf::Vector2f> movement{ state.Properties.movement };
-
-		PropertyWriter<float> speed{ state.Properties.speed };
-		PropertyWriter<float> weight{ state.Properties.weight };
-		PropertyWriter<float> drag{ state.Properties.drag };
-
-		PropertyWriter<PlayerState::_IsOnGround> isOnGround{ state.Properties.isOnGround };
-		PropertyWriter<sf::Vector2f> respawnPoint{ state.Properties.respawnPoint };
-
-		PropertyWriter<Resource::WorldId> worldId{ state.Properties.world };
-
-		//// View
-		PropertyWriter<float> view_rotation{ state.Properties.View.rotation };
-
-		// should set position before useCustomPosition
-		PropertyWriter<bool> view_useCustomPosition{ state.Properties.View.useCustomPosition };
-		PropertyWriter<sf::Vector2f> view_position{ state.Properties.View.position };
-
-		PropertyWriter<sf::Vector2f> view_size{ state.Properties.View.size };
-		////
-
-		const PlayerState* readState() const
-		{
-			return &state;
-		}
 
 	protected:
 		virtual void initializeFromState()
 		{
-			shape.setPosition(state.Properties.position);
+			shape.setPosition(state.readProperties()->position);
 			shape.setSize({ 1, 1 });
 		}
 

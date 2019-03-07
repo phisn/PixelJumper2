@@ -38,11 +38,10 @@ namespace Game
 		{
 			for (PlayerBase* const player : players)
 			{
-
 			}
 		}
 
-		void onLogic()
+		void onLogic(const sf::Time time)
 		{
 		}
 

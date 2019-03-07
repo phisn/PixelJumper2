@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/game/GameTileBase.h>
+#include <Client/source/game/tiletrait/GameTileBase.h>
 #include <Client/source/resource/TileResource.h>
 
 namespace Game

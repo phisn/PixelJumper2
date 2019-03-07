@@ -5,14 +5,6 @@
 
 namespace Game
 {
-	/*
-	
-	
-		Routine :c
-	
-	
-	*/
-
 	class LocalPlayer
 		:
 		public PlayerBase
@@ -78,6 +70,12 @@ namespace Game
 		}
 
 	private:
+		void initializeFromState() override
+		{
+			PlayerBase::initializeFromState();
+			updateView();
+		}
+
 		void onCoreSymbol(const Device::GameCoreInputSymbol symbol)
 		{
 			switch (symbol)

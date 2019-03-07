@@ -68,4 +68,43 @@ namespace Game
 		std::unordered_set<Listener> listeners;
 		T& value;
 	};
+
+
+	template <typename T>
+	class PropertyWriter
+	{
+		typedef std::function<void(const T)> Listener;
+	public:
+		PropertyWriter(T& value)
+			:
+			value(value)
+		{
+		}
+
+		T& operator=(const T value)
+		{
+			const T oldValue = this->value;
+			this->value = value;
+
+			for (const Listener& listener : listeners)
+			{
+				listener(oldValue);
+			}
+		}
+
+		void addListener(const Listener listener)
+		{
+			listeners.insert(listener);
+		}
+
+		void removeListener(const Listener listener)
+		{
+			listeners.erase(listener);
+		}
+
+	private:
+		T& value;
+		std::unordered_set<Listener> listeners;
+	};
+
 }

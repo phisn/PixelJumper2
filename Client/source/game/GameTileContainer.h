@@ -14,6 +14,17 @@ namespace Game
 	class TileContainer
 	{
 	public:
+
+	private:
+		std::unordered_map<
+			size_t, 
+			std::vector<GameTileBase*>
+		> tiles;
+	};
+
+	class _TileContainer
+	{
+	public:
 		struct SortedTiles
 		{
 			std::vector<StaticTile*> staticTiles;
