@@ -83,11 +83,8 @@
     <ClInclude Include="source\game\GameWorld.h" />
     <ClInclude Include="source\game\HostWorld.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
-    <ClInclude Include="source\game\LocalSimulator.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
     <ClInclude Include="source\game\PlayerState.h" />
-    <ClInclude Include="source\game\Simulator.h" />
-    <ClInclude Include="source\game\SimulatorBase.h" />
     <ClInclude Include="source\game\tiletrait\CollidableTile.h" />
     <ClInclude Include="source\game\tiletrait\DrawableTile.h" />
     <ClInclude Include="source\game\tiletrait\DynamicTile.h" />
@@ -96,6 +93,7 @@
     <ClInclude Include="source\game\tiletrait\StaticTile.h" />
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h" />
     <ClInclude Include="source\game\tile\GameWallTile.h" />
+    <ClInclude Include="source\game\tile\TileId.h" />
     <ClInclude Include="source\game\WorldBase.h" />
     <ClInclude Include="source\game\WorldState.h" />
     <ClInclude Include="source\logger\Names.h" />
@@ -177,16 +175,14 @@
     <ClCompile Include="source\game\GameWorld.cpp" />
     <ClCompile Include="source\game\HostWorld.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
-    <ClCompile Include="source\game\LocalSimulator.cpp" />
     <ClCompile Include="source\game\PlayerBase.cpp" />
     <ClCompile Include="source\game\PlayerState.cpp" />
-    <ClCompile Include="source\game\Simulator.cpp" />
-    <ClCompile Include="source\game\SimulatorBase.cpp" />
     <ClCompile Include="source\game\tiletrait\CollidableTile.cpp" />
     <ClCompile Include="source\game\tiletrait\DrawableTile.cpp" />
     <ClCompile Include="source\game\tiletrait\DynamicTile.cpp" />
     <ClCompile Include="source\game\tiletrait\GameTileBase.cpp" />
     <ClCompile Include="source\game\tile\GameWallTile.cpp" />
+    <ClCompile Include="source\game\tile\TileColors.cpp" />
     <ClCompile Include="source\game\WorldBase.cpp" />
     <ClCompile Include="source\game\WorldState.cpp" />
     <ClCompile Include="source\logger\SectionHost.cpp" />

@@ -64,6 +64,9 @@ namespace Device
 
 		const sf::RenderWindow* GetWindow();
 
+		void SetView(const sf::View& view);
+		const sf::View& GetView();
+
 		void BeginDraw();
 		void EndDraw();
 		void Draw(const sf::Drawable& drawable);

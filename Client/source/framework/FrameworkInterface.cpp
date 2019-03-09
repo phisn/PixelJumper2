@@ -1,9 +1,7 @@
 #include "FrameworkInterface.h"
 
 #include <Client/source/framework/Context.h>
-
-#include <Client/source/device/DeviceInterface.h>
-#include <Client/source/device/ResourceDevice.h>
+#include <Client/source/device/CoreDevice.h>
 
 #include <stack>
 
@@ -182,7 +180,7 @@ namespace Framework
 	}
 
 	sf::MemoryInputStream Resource::Get(
-		const RESOURCE::Static::ID type)
+		const ::Resource::Static::Id type)
 	{
 		for (Framework::Context* context : contextStack._Get_container())
 			// quick because of 'ResourceContext' cache

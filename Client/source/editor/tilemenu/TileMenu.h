@@ -96,10 +96,10 @@ namespace Editor
 	private:
 		void setupTileTemplates()
 		{
-			for (int i = 1; i < (int) Game::Tile::Id::_Length; ++i)
+			for (int i = 1; i < (int) Game::TileId::_Length; ++i)
 			{
 				tiles.push_back(
-					TileTemplateFactory::GetTileTemplate((Game::Tile::Id) i)
+					TileTemplateFactory::GetTileTemplate((Game::TileId) i)
 				);
 
 				component.addTileButton(

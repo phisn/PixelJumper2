@@ -47,6 +47,11 @@ namespace Game
 			callListeners = true;
 		}
 
+		const Listener& getCore() const
+		{
+			return coreFunction;
+		}
+
 	private:
 		void call(Args... args)
 		{
@@ -88,17 +93,17 @@ namespace Game
 			PlayerBase(PlayerType::Local),
 			input(input),
 			triggerRoutine(
-				[this]() 
+				[this](const sf::Time time)
 				{ 
 					handleTrigger(); 
 				}),
 			movementRoutine(
-				[this](const Direction direction) 
+				[this](const sf::Time time, Direction direction) 
 				{ 
-					handleMovement(direction); 
+					handleMovement(time, direction); 
 				}),
 			respawnRoutine(
-				[this]() 
+				[this](const sf::Time time) 
 				{ 
 					handleRespawn(); 
 				})
@@ -124,30 +129,20 @@ namespace Game
 
 		void onEvent(const sf::Event event)
 		{
-			if (event.type == sf::Event::KeyPressed)
+			input->onEvent(event);
+		}
+
+		void onLogic(const sf::Time time)
+		{
+			while (input->hasNextCoreKey())
 			{
-				if (Device::GameCoreInputSymbol symbol = input->convertToCoreSymbol(event.key.code)
-					; symbol != Device::GameCoreInputSymbol::_Invalid)
-				{
-					onCoreSymbol(symbol);
-
-					return;
-				}
-
-				if (Device::GameViewInputSymbol symbol = input->convertToViewSymbol(event.key.code)
-					; symbol != Device::GameViewInputSymbol::_Invalid)
-				{
-					onViewSymbol(symbol);
-
-					return;
-				}
-
+				onCoreSymbol(input->popNextCoreKey(), time);
 			}
 		}
 
-		InputRoutine<> triggerRoutine;
-		InputRoutine<Direction> movementRoutine;
-		InputRoutine<> respawnRoutine;
+		InputRoutine<sf::Time> triggerRoutine;
+		InputRoutine<sf::Time, Direction> movementRoutine;
+		InputRoutine<sf::Time> respawnRoutine;
 
 	private:
 		void initializeFromState() override
@@ -156,32 +151,34 @@ namespace Game
 			updateView();
 		}
 
-		void onCoreSymbol(const Device::GameCoreInputSymbol symbol)
+		void onCoreSymbol(
+			const Device::GameCoreInputSymbol symbol, 
+			const sf::Time time)
 		{
 			switch (symbol)
 			{
 			case Device::GameCoreInputSymbol::Trigger:
-				triggerRoutine.call();
+				triggerRoutine.call(time);
 
 				break;
 			case Device::GameCoreInputSymbol::Reset:
-				respawnRoutine.call();
+				respawnRoutine.call(time);
 
 				break;
 			case Device::GameCoreInputSymbol::Up:
-				movementRoutine.call(Direction::Up);
+				movementRoutine.call(time, Direction::Up);
 
 				break;
 			case Device::GameCoreInputSymbol::Left:
-				movementRoutine.call(Direction::Left);
+				movementRoutine.call(time, Direction::Left);
 
 				break;
 			case Device::GameCoreInputSymbol::Down:
-				movementRoutine.call(Direction::Down);
+				movementRoutine.call(time, Direction::Down);
 
 				break;
 			case Device::GameCoreInputSymbol::Right:
-				movementRoutine.call(Direction::Right);
+				movementRoutine.call(time, Direction::Right);
 
 				break;
 			}
@@ -189,24 +186,28 @@ namespace Game
 		
 		void onViewSymbol(const Device::GameViewInputSymbol symbol)
 		{
-			Log::Warning(L"Trigger is not implemented yet");
+			Log::Warning(L"View keys are not implemented yet");
 		}
 
 		void handleTrigger()
 		{
+			Log::Warning(L"Trigger is not implemented yet");
 		}
 
 		void handleRespawn()
 		{
+			Log::Warning(L"Respawn is not implemented yet");
 		}
 
-		void handleMovement(const Direction direction)
+		void handleMovement(
+			const sf::Time time,
+			const Direction direction)
 		{
 			switch (direction)
 			{
 			case Direction::Left:
 			case Direction::Right:
-				onMovementHorizontal(direction);
+				onMovementHorizontal(time, direction);
 
 				break;
 			case Direction::Up:
@@ -220,7 +221,9 @@ namespace Game
 			}
 		}
 
-		void onMovementHorizontal(const Direction direction)
+		void onMovementHorizontal(
+			const sf::Time time,
+			const Direction direction)
 		{
 			Log::Warning(L"Movement Horizontal is not implemented yet");
 		}

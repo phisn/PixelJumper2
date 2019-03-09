@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
 #include <SFML/Graphics.hpp>
@@ -166,9 +165,7 @@ namespace Menu
 		const int x,
 		const int y) const
 	{
-		return DEVICE::Interface::GetScreen()->getWindow()->mapPixelToCoords(
-			sf::Vector2i(x, y), *view
-		);
+		return Device::Screen::GetWindow()->mapPixelToCoords(sf::Vector2i(x, y), *view);
 	}
 	
 	inline sf::Vector2f ElementBase::convertPosition(

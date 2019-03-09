@@ -2,16 +2,16 @@
 
 namespace Resource
 {
-	std::map<Game::Tile::Id, TileFactory::Creator> creators;
+	std::map<Game::TileId, TileFactory::Creator> creators;
 
 	TileBase* Resource::TileFactory::Create(
-		const Game::Tile::Id ID)
+		const Game::TileId ID)
 	{
 		return creators[ID]();
 	}
 
 	void Resource::TileFactory::Register(
-		const Game::Tile::Id ID, 
+		const Game::TileId ID, 
 		const Creator creator)
 	{
 		creators[ID] = creator;

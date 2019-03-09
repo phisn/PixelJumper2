@@ -476,7 +476,7 @@ namespace Resource
 	}
 
 	Static::Resource Resource::Interface::GetStaticResource(
-		const Static::ID type)
+		const Static::Id type)
 	{
 		return GetStaticResource(
 			Static::Translate(type)

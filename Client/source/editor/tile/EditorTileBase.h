@@ -2,8 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <Client/source/game/tiles/TileBase.h>
-#include <Client/source/game/tiles/TileId.h>
+#include <Client/source/game/tile/TileId.h>
 
 #include <Client/source/editor/grid/GridProperties.h>
 #include <Client/source/resource/TileResource.h>
@@ -23,7 +22,7 @@ namespace Editor
 		TileBase(
 			const sf::Color color,
 			const VectorTilePosition position,
-			Game::Tile::Id id)
+			Game::TileId id)
 			:
 			id(id)
 		{
@@ -68,7 +67,7 @@ namespace Editor
 		virtual bool adopt(
 			const Resource::TileBase* const tile) = 0;
 
-		const Game::Tile::Id id;
+		const Game::TileId id;
 	private:
 		sf::RectangleShape shape;
 	};

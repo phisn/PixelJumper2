@@ -4,6 +4,9 @@
 
 #include <Client/source/resource/ResourceBase.h>
 
+#include <cassert>
+#include <deque>
+
 namespace Device
 {
 	class GameInput;
@@ -157,6 +160,68 @@ namespace Device
 
 		}
 
+		bool hasNextCoreKey() const
+		{
+			return !coreSymbols.empty();
+		}
+
+		GameCoreInputSymbol popNextCoreKey()
+		{
+			assert(hasNextCoreKey());
+
+			const GameCoreInputSymbol result = coreSymbols.front();
+			coreSymbols.pop_front();
+
+			return result;
+		}
+
+		bool hasNextViewKey() const
+		{
+			return !viewSymbols.empty();
+		}
+
+		GameViewInputSymbol popNextViewKey()
+		{
+			assert(hasNextViewKey());
+
+			const GameViewInputSymbol result = viewSymbols.front();
+			viewSymbols.pop_front();
+
+			return result;
+		}
+
+		void onEvent(const sf::Event event)
+		{
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (const GameCoreInputSymbol coreSymbol = convertToCoreSymbol(event.key.code)
+					; coreSymbol != GameCoreInputSymbol::_Invalid)
+				{
+					for (const GameCoreInputSymbol symbol : coreSymbols)
+						if (symbol == coreSymbol)
+						{
+							return;
+						}
+
+					coreSymbols.push_back(coreSymbol);
+					return;
+				}
+
+				if (const GameViewInputSymbol viewSymbol = convertToViewSymbol(event.key.code)
+					; viewSymbol != GameViewInputSymbol::_Invalid)
+				{
+					for (const GameViewInputSymbol symbol : viewSymbols)
+						if (symbol == viewSymbol)
+						{
+							return;
+						}
+
+					viewSymbols.push_back(viewSymbol);
+					return;
+				}
+			}
+		}
+
 		GameCoreInputSymbol convertToCoreSymbol(
 			const sf::Keyboard::Key key)
 		{
@@ -208,6 +273,9 @@ namespace Device
 		}
 
 	private:
+		std::deque<GameCoreInputSymbol> coreSymbols;
+		std::deque<GameViewInputSymbol> viewSymbols;
+
 		sf::Keyboard::Key coreKeys[(int) GameCoreInputSymbol::_Length];
 		sf::Keyboard::Key viewKeys[(int) GameViewInputSymbol::_Length];
 	};

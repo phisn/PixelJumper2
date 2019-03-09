@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Client/source/game/tiles/TileManager.h>
-
 #include <Client/source/resource/TileFactory.h>
 #include <Client/source/resource/ResourceBase.h>
 
@@ -37,7 +35,7 @@ namespace Resource
 
 		struct
 		{
-			AUTO Game::Tile::Id id;
+			AUTO Game::TileId id;
 
 			EDIT TileSize width;
 			EDIT TileSize height;
@@ -140,7 +138,7 @@ namespace Resource
 
 		bool validateHeader() const
 		{
-			return Header.id > Game::Tile::Id::Invalid
+			return Header.id > Game::TileId::Invalid
 				&& Header.width != 0
 				&& Header.height != 0;
 		}

@@ -11,7 +11,7 @@ namespace Resource
 	{
 		typedef std::pair<char*, sf::Int64> Resource;
 
-		enum ID
+		enum Id
 		{
 			DefaultFont,
 
@@ -23,6 +23,6 @@ namespace Resource
 		std::wstring GetFolderName();
 		std::wstring GetPath();
 
-		std::wstring Translate(const Static::ID id);
+		std::wstring Translate(const Static::Id id);
 	}
 }

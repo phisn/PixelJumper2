@@ -3,7 +3,7 @@
 #include <Client/source/editor/manipulator/Component.h>
 #include <Client/source/editor/manipulator/Element.h>
 
-#include <Client/source/game/tiles/TileId.h>
+#include <Client/source/game/tile/TileId.h>
 
 namespace Editor
 {

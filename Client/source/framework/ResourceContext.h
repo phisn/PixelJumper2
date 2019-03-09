@@ -12,7 +12,7 @@ namespace Framework
 	{
 	public:
 		typedef ::Resource::Static::Resource _Resource;
-		typedef ::Resource::Static::ID _ResourceType;
+		typedef ::Resource::Static::Id _ResourceType;
 
 		~ResourceContext()
 		{

@@ -318,9 +318,6 @@
     <ClInclude Include="source\game\PlayerState.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\Simulator.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\WorldState.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -360,12 +357,6 @@
     <ClInclude Include="source\device\DeviceConfig.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\SimulatorBase.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\LocalSimulator.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\WorldBase.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -377,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="source\game\tiletrait\InitializableTile.h">
       <Filter>source\game\TileTrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tile\TileId.h">
+      <Filter>source\game\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -572,9 +566,6 @@
     <ClCompile Include="source\game\PlayerState.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\Simulator.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\WorldState.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
@@ -605,20 +596,17 @@
     <ClCompile Include="source\device\DeviceConfig.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\SimulatorBase.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\WorldBase.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\HostWorld.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\LocalSimulator.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\Environment.cpp">
       <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\tile\TileColors.cpp">
+      <Filter>source\game\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #pragma
 
-#include <Client/source/game/tiles/TileId.h>
+#include <Client/source/game/tile/TileId.h>
 
 #include <Client/source/resource/tiles/ResourceTileBase.h>
 #include <Client/source/resource/tiles/ResourceWall.h>
@@ -8,7 +8,7 @@
 #include <map>
 #include <sal.h>
 
-#define ADD_TILE(Name) Register(Game::Tile::Id:: ## Name, []() -> TileBase* { return new Name ## Tile(); })
+#define ADD_TILE(Name) Register(Game::TileId:: ## Name, []() -> TileBase* { return new Name ## Tile(); })
 
 namespace Resource
 {
@@ -18,9 +18,9 @@ namespace Resource
 
 		_Ret_maybenull_
 		TileBase* Create(
-			const Game::Tile::Id ID);
+			const Game::TileId Id);
 		void Register(
-			const Game::Tile::Id ID,
+			const Game::TileId Id,
 			const Creator creator);
 
 		static void RegisterAll()

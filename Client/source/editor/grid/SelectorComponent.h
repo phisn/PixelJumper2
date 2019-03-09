@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/editor/manipulator/cache/Cache.h>
@@ -40,15 +39,13 @@ namespace Editor
 		{
 			for (sf::RectangleShape& shape : selections)
 			{
-				DEVICE::Interface::GetScreen()->onDraw(
-					&shape);
+				Device::Screen::Draw(shape);
 			}
 		}
 
 		void drawMarker()
 		{
-			DEVICE::Interface::GetScreen()->onDraw(
-				&marker);
+			Device::Screen::Draw(marker);
 		}
 
 	private:

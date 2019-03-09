@@ -33,7 +33,7 @@ namespace Resource
 			const std::wstring name);
 
 		Static::Resource GetStaticResource(
-			const Static::ID type);
+			const Static::Id type);
 		Static::Resource GetStaticResource(
 			const std::filesystem::path resource);
 

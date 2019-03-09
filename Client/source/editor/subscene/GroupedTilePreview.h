@@ -3,7 +3,6 @@
 #include <Client/source/Common.h>
 #include <Client/source/framework/FrameworkInterface.h>
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/RandomDevice.h>
 #include <Client/source/device/ScreenDevice.h>
 
@@ -126,7 +125,7 @@ namespace Editor
 		
 		virtual void onDraw() override
 		{
-			Device::Interface::GetScreen()->onDraw(&groupedTilesSprite);
+			Device::Screen::Draw(groupedTilesSprite);
 		}
 
 	private:

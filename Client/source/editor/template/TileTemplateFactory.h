@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/editor/template/TileTemplate.h>
-#include <Client/source/game/tiles/TileId.h>
+#include <Client/source/game/tile/TileId.h>
 
 namespace Editor
 {
@@ -10,7 +10,6 @@ namespace Editor
 		void Initialize();
 		void Uninitialize();
 
-		TileTemplate* GetTileTemplate(
-			const Game::Tile::Id id);
+		TileTemplate* GetTileTemplate(const Game::TileId id);
 	}
 }

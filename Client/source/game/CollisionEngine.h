@@ -168,13 +168,13 @@ static bool operator>(
 	const Game::CollisionType& ct1,
 	const Game::CollisionType& ct2)
 {
-	return *(int*)&ct1 > *(int*)&ct2
+	return *(int*)&ct1 > *(int*)&ct2;
 }
 
 static bool operator==(
 	const Game::CollisionType& ct1,
 	const Game::CollisionType& ct2)
 {
-	return *(int*)&ct1 == *(int*)&ct2
+	return *(int*)&ct1 == *(int*)&ct2;
 }
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/editor/tile/EditorTileBase.h>
@@ -9,6 +8,8 @@
 #include <Client/source/editor/manipulator/Manipulator.h>
 
 #include <Client/source/logger/Logger.h>
+
+#include <Client/source/resource/TileResource.h>
 #include <Client/source/resource/WorldResource.h>
 
 #include <limits>
@@ -65,7 +66,7 @@ namespace Editor
 		{
 			for (const Resource::Tile& resourceTile : world->TileContainer)
 			{
-				TileTemplate* tileTemplate = TileTemplateFactory::GetTileTemplate(resourceTile.Header.id);
+				TileTemplate* const tileTemplate = TileTemplateFactory::GetTileTemplate(resourceTile.Header.id);
 
 				for (int xoffset = 0; xoffset < resourceTile.Header.width; ++xoffset)
 					for (int yoffset = 0; yoffset < resourceTile.Header.height; ++yoffset)

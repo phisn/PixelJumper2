@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/game/tiles/TileColor.h>
+#include <Client/source/game/tile/GameWallTile.h>
 
 #include <Client/source/editor/template/TileTemplate.h>
 #include <Client/source/editor/template/TileTemplateFactory.h>
@@ -18,9 +18,9 @@ namespace Editor
 		WallTemplate()
 			:
 			TileTemplate(
-				TILE_WALL_COLOR,
+				Game::WallTile::COLOR,
 				L"Wall",
-				Game::Tile::Id::Wall)
+				Game::TileId::Wall)
 		{
 		}
 

@@ -15,7 +15,7 @@ namespace Editor
 		TileTemplate(
 			const sf::Color color,
 			const std::wstring name,
-			const Game::Tile::Id id)
+			const Game::TileId id)
 			:
 			color(color),
 			name(name),
@@ -28,6 +28,6 @@ namespace Editor
 
 		const sf::Color color;
 		const std::wstring name;
-		const Game::Tile::Id id;
+		const Game::TileId id;
 	};
 }

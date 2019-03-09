@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/game/tiles/TileId.h>
+#include <Client/source/game/tile/TileId.h>
 #include <Client/source/resource/ResourceBase.h>
 
 #include <SFML/Main.hpp>
@@ -13,7 +13,7 @@ namespace Resource
 	{
 	public:
 		TileBase(
-			const Game::Tile::Id id,
+			const Game::TileId id,
 			const sf::Uint16 size)
 			:
 			id(id),
@@ -21,7 +21,7 @@ namespace Resource
 		{
 		}
 
-		Game::Tile::Id getTileId() const
+		Game::TileId getTileId() const
 		{
 			return id;
 		}
@@ -32,7 +32,7 @@ namespace Resource
 		}
 
 	private:
-		const Game::Tile::Id id;
+		const Game::TileId id;
 		const sf::Uint16 size;
 	};
 }

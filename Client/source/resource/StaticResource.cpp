@@ -16,10 +16,10 @@ namespace Resource
 	{
 		std::vector<std::wstring> result;
 
-		for (int i = 0; i < (int) ID::_Length; ++i)
+		for (int i = 0; i < (int) Id::_Length; ++i)
 		{
 			result.push_back(
-				Translate((ID) i)
+				Translate((Id) i)
 			);
 		}
 		
@@ -36,7 +36,7 @@ namespace Resource
 		return Interface::GetResourcePath() + L"/" + GetFolderName();
 	}
 
-	std::wstring Static::Translate(const ID type)
+	std::wstring Static::Translate(const Id type)
 	{
 		return GetPath() + STATIC_ID_TRANSLATION[(int) type];
 	}

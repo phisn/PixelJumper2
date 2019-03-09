@@ -35,6 +35,8 @@ namespace Game
 		{
 		}
 
+		virtual void onLogic(const sf::Time) = 0;
+
 		virtual void draw()
 		{
 			Device::Screen::Draw(shape);

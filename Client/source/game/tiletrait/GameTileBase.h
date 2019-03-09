@@ -4,12 +4,12 @@
 
 namespace Game
 {
+	class Environment;
 	struct RegisterableType
 	{
 		virtual void registerType(Environment* const) = 0;
 	};
 
-	class Environment;
 	class GameTileBase : public RegisterableType
 	{
 	public:

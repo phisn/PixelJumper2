@@ -1,9 +1,15 @@
 #pragma once
 
-#include <Client/source/game/Simulator.h>
-
 #include <Client/source/game/tiletrait/CollidableTile.h>
 #include <Client/source/game/tiletrait/StaticTile.h>
+
+#include <Client/source/game/WorldBase.h>
+
+
+
+
+// test
+#include <Client/source/game/LocalPlayer.h>
 
 namespace Game
 {
@@ -13,6 +19,8 @@ namespace Game
 		public CollidableTile
 	{
 	public:
+		static const sf::Color COLOR;
+
 		WallTile(
 			const float drag,
 			const sf::Vector2f position,
@@ -26,41 +34,63 @@ namespace Game
 		{
 		}
 
-		void initialize(TileContainer* const container) override
+		void registerType(Environment* const env) override
 		{
-			CollidableTile::addCollisionType(
-				container,
+			CollidableTile::registerCollisionType(
+				env,
 				CollisionType(
 					false,
 					false,
 					false)
 			);
-			StaticTile::initialize(container);
+			StaticTile::registerType(env);
 		}
 
 		virtual sf::Vector2f onCollision(
 			const CollisionType type,
 			const Collision collision) override
 		{
-			collision.player->position = collision.info.position;
+			collision.player->state.position = collision.info.position;
 
 			sf::Vector2f movement = { };
 			sf::Vector2f remainMove = { };
 
 			if (collision.info.isHorizontal())
 			{
-				movement.y = collision.player->movement.getValue().y;
+				movement.y = collision.player->state.readProperties()->movement.y;
 				remainMove.y = (collision.target.y - collision.info.position.y)
-					* _N_Simulator::CalculateMovementLose(drag, collision.player->weight);
+					* WorldBase::CalculateFrictionLose(drag, collision.player->state.readProperties()->weight);
 			}
 			else
 			{
-				movement.x = collision.player->movement.getValue().x;
+				movement.x = collision.player->state.readProperties()->movement.x;
 				remainMove.x = (collision.target.x - collision.info.position.x)
-					* _N_Simulator::CalculateMovementLose(drag, collision.player->weight);
+					* WorldBase::CalculateFrictionLose(drag, collision.player->state.readProperties()->weight);
 			}
 
-			collision.player->movement = movement;
+			if (collision.player->getType() == PlayerType::Local && collision.info.type == CollisionEngine::CollisionInfo::G3)
+			{
+				LocalPlayer* lp = (LocalPlayer*) collision.player;
+
+				lp->movementRoutine.hook(
+					[lp](const sf::Time time, const Direction direction)
+					{
+						if (direction == Direction::Up)
+						{
+							return;
+						}
+
+						if (direction == Direction::Down)
+						{
+							lp->movementRoutine.unhook();
+						}
+
+						lp->movementRoutine.getCore()(time, direction);
+					});
+
+			}
+
+			collision.player->state.movement = movement;
 			return remainMove;
 		}
 

@@ -2,7 +2,6 @@
 
 #include <Client/source/menu/MenuBase.h>
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
 #ifndef MENU
@@ -22,14 +21,14 @@ namespace Menu
 			const sf::Time time) = 0;
 		virtual void onDraw()
 		{
-			DEVICE::Interface::GetScreen()->applyView(&view);
+			Device::Screen::SetView(view);
 		}
 
 		void resetSize()
 		{
 			view.setSize(
-				DEVICE::Interface::GetScreen()->getWindow()->getSize().x * view.getViewport().width,
-				DEVICE::Interface::GetScreen()->getWindow()->getSize().y * view.getViewport().height
+				Device::Screen::GetWindow()->getSize().x * view.getViewport().width,
+				Device::Screen::GetWindow()->getSize().y * view.getViewport().height
 			);
 
 			view.setCenter(

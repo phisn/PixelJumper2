@@ -6,11 +6,11 @@
 
 namespace
 {
-	std::map<Game::Tile::Id, Editor::TileTemplate*> tileTemplates;
+	std::map<Game::TileId, Editor::TileTemplate*> tileTemplates;
 }
 
 #define INSERT_TILETEMPLATE_DIFFER(gname, ename) \
-	tileTemplates[Game::Tile::Id::##gname] = new ename##Template()
+	tileTemplates[Game::TileId::##gname] = new ename##Template()
 #define INSERT_TILETEMPLATE(name) INSERT_TILETEMPLATE_DIFFER(name, name)
 
 namespace Editor
@@ -22,7 +22,7 @@ namespace Editor
 
 	void TileTemplateFactory::Uninitialize()
 	{
-		for (const std::pair<Game::Tile::Id, Editor::TileTemplate*>& tt : tileTemplates)
+		for (const std::pair<Game::TileId, Editor::TileTemplate*>& tt : tileTemplates)
 		{
 			delete tt.second;
 		}
@@ -30,8 +30,7 @@ namespace Editor
 		tileTemplates.clear();
 	}
 
-	TileTemplate* TileTemplateFactory::GetTileTemplate(
-		const Game::Tile::Id id)
+	TileTemplate* TileTemplateFactory::GetTileTemplate(const Game::TileId id)
 	{
 		return tileTemplates[id];
 	}

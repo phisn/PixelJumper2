@@ -14,7 +14,7 @@ namespace Resource
 		WallTile()
 			:
 			TileBase(
-				Game::Tile::Id::Wall,
+				Game::TileId::Wall,
 				NULL)
 		{
 		}

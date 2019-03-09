@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
 #include <vector>
@@ -34,7 +33,7 @@ namespace Framework
 
 		void onDraw() const
 		{
-			DEVICE::Interface::GetScreen()->onDraw(&sprites[spriteCounter]);
+			Device::Screen::Draw(sprites[spriteCounter]);
 		}
 
 		void reset()

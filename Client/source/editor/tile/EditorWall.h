@@ -2,7 +2,7 @@
 
 #include <Client/source/editor/tile/EditorTileBase.h>
 
-#include <Client/source/game/tiles/Wall.h>
+#include <Client/source/game/tile/GameWallTile.h>
 
 namespace Editor
 {
@@ -17,9 +17,9 @@ namespace Editor
 				const VectorTilePosition position)
 				:
 				TileBase(
-					TILE_WALL_COLOR,
+					Game::WallTile::COLOR,
 					position,
-					Game::Tile::Id::Wall)
+					Game::TileId::Wall)
 			{
 			}
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/editor/grid/GridProperties.h>
@@ -78,8 +77,8 @@ namespace Editor
 		void resetSize()
 		{
 			const sf::Vector2f size = sf::Vector2f(
-				(DEVICE::Interface::GetScreen()->getWindow()->getSize().x * view->getViewport().width) / GridProperties.gridBeginZoom,
-				(DEVICE::Interface::GetScreen()->getWindow()->getSize().y * view->getViewport().height) / GridProperties.gridBeginZoom
+				(Device::Screen::GetWindow()->getSize().x * view->getViewport().width) / GridProperties.gridBeginZoom,
+				(Device::Screen::GetWindow()->getSize().y * view->getViewport().height) / GridProperties.gridBeginZoom
 			);
 
 			view->setSize(size);
