@@ -44,8 +44,6 @@ namespace Game
 			std::wstring mapName;
 		} Properties;
 
-
-
 		struct
 		{
 			sf::Texture texture;

@@ -18,7 +18,6 @@ namespace Game
 		:
 		public GameState
 	{
-		friend class Simulator;
 	public:
 		PlayerState state;
 

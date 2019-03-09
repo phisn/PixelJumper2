@@ -4,28 +4,18 @@
 
 namespace Game
 {
-	class TileContainer;
-	class GameTileBase
+	struct RegisterableType
+	{
+		virtual void registerType(Environment* const) = 0;
+	};
+
+	class Environment;
+	class GameTileBase : public RegisterableType
 	{
 	public:
-		/*
-			
-			initialize should call insert methods of tilecontainer
-			in upper classes
+		// should register itself into env
+		virtual void registerType(Environment* const) = 0;
 
-			-- Example --
-
-			TileContainer.initialize 
-			-> GameTileBase.initialize 
-			--> WallTile.initialize 
-			---> CollidableTile.initialize 
-			----> TileContainer.insertCollidable
-			---> StaticTile.initialize
-			----> TileContainer.insertStatic
-
-			-------------
-		*/
-		virtual void initialize(TileContainer* const) = 0;
 		virtual const sf::Vector2f getPosition() const = 0;
 		virtual const sf::Vector2f getSize() const = 0;
 	};

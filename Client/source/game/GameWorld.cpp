@@ -37,7 +37,7 @@ namespace Game
 			}
 
 			result->insertTile<GameTileBase>(tile);
-			tile->initialize(this);
+			tile->registerType(this);
 		}
 
 		sf::Image image;

@@ -12,42 +12,46 @@ namespace Game
 {
 	typedef sf::Uint16 TileStateId; // == index
 
+	struct WorldStateProperties
+	{
+		// addition
+		sf::Vector2f gravity = { 0.f, -1.f };
+
+		float friction = 0.53f; // == 5% lose
+
+		sf::Uint32 milisecondsPassed;
+		sf::Uint16 playerCount;
+	};
+
 	class WorldState
 		:
 		public GameState
 	{
-		struct
-		{
-			// addition
-			sf::Vector2f gravity = { 0.f, -1.f };
-			
-			float drag = 0.53f; // == 5% lose
-
-			sf::Uint32 milisecondsPassed;
-			sf::Uint16 playerCount;
-
-		} Properties;
-
+		WorldStateProperties properties;
 	public:
-		StateProperty<sf::Vector2f> gravity{ Properties.gravity };
-
-		StateProperty<float> drag{ Properties.drag };
-
-		StateProperty<sf::Uint32> milisecondsPassed{ Properties.milisecondsPassed };
-		StateProperty<sf::Uint16> playerCount{ Properties.playerCount };
-
-	private:
 		bool writeState(
 			Resource::WritePipe* const writePipe) override
 		{
-			return writePipe->writeValue(&Properties);
+			return writePipe->writeValue(&properties);
 		}
 
 		bool readState(
 			Resource::ReadPipe* const readPipe) override
 		{
-			return readPipe->readValue(&Properties);
+			return readPipe->readValue(&properties);
 		}
+
+		const WorldStateProperties* readProperties() const
+		{
+			return &properties;
+		}
+
+		PropertyWriter<sf::Vector2f> gravity{ properties.gravity };
+
+		PropertyWriter<float> drag{ properties.friction };
+
+		PropertyWriter<sf::Uint32> milisecondsPassed{ properties.milisecondsPassed };
+		PropertyWriter<sf::Uint16> playerCount{ properties.playerCount };
 	};
 }
 

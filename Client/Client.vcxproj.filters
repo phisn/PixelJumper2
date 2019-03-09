@@ -363,7 +363,6 @@
     <ClInclude Include="source\game\SimulatorBase.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="LocalSimulator.h" />
     <ClInclude Include="source\game\LocalSimulator.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -375,6 +374,9 @@
     </ClInclude>
     <ClInclude Include="source\game\Environment.h">
       <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\InitializableTile.h">
+      <Filter>source\game\TileTrait</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -585,17 +587,11 @@
     <ClCompile Include="source\game\tiletrait\DynamicTile.cpp">
       <Filter>source\game\TileTrait</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\tiletrait\StaticTile.cpp">
-      <Filter>source\game\TileTrait</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\tiletrait\GameTileBase.cpp">
       <Filter>source\game\TileTrait</Filter>
     </ClCompile>
     <ClCompile Include="source\game\tile\GameWallTile.cpp">
       <Filter>source\game\Tile</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiletrait\SynchronizableTile.cpp">
-      <Filter>source\game\TileTrait</Filter>
     </ClCompile>
     <ClCompile Include="source\game\LocalPlayer.cpp">
       <Filter>source\game</Filter>
@@ -612,7 +608,6 @@
     <ClCompile Include="source\game\SimulatorBase.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="LocalSimulator.cpp" />
     <ClCompile Include="source\game\WorldBase.cpp">
       <Filter>source\game</Filter>
     </ClCompile>

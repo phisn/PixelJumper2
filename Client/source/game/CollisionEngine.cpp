@@ -200,22 +200,20 @@ namespace Game
 	CollisionEngine::CollisionContext CollisionEngine::SetupCollisionContext(
 		const sf::Vector2f position, 
 		const sf::Vector2f destination, 
-		const bool invertTilePosition, 
-		const bool invertPlayerPosition, 
-		const bool weakCollision)
+		const CollisionType type)
 	{
 		CollisionContext result = { };
 		PlayerCorner corner = { };
 
-		result.isWeakCollision = weakCollision;
+		result.isWeakCollision = type.isWeak;
 
 		// determine tile offsets
-		result.hSideOffset = !invertTilePosition ^ (position.x < destination.x);
-		result.vSideOffset = !invertTilePosition ^ (position.y < destination.y);
+		result.hSideOffset = !type.invertTile ^ (position.x < destination.x);
+		result.vSideOffset = !type.invertTile ^ (position.y < destination.y);
 
 		// prepare for futher compare
-		const bool xCmpPlayerResult = invertPlayerPosition ^ (position.x < destination.x);
-		const bool yCmpPlayerResult = invertPlayerPosition ^ (position.y < destination.y);
+		const bool xCmpPlayerResult = type.invertPlayer ^ (position.x < destination.x);
+		const bool yCmpPlayerResult = type.invertPlayer ^ (position.y < destination.y);
 
 		// prepush primary collision point if
 		// movement is straight
@@ -269,7 +267,7 @@ namespace Game
 		}
 		else
 		{
-			if (!weakCollision)
+			if (!type.isWeak)
 			{
 				/*
 					A = px < dx

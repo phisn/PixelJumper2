@@ -4,6 +4,28 @@
 
 namespace Game
 {
+	struct CollisionType
+	{
+		CollisionType() = default;
+		CollisionType(
+			const bool isWeak,
+			const bool invertPlayer,
+			const bool invertTile)
+			:
+			isWeak(isWeak),
+			invertPlayer(invertPlayer),
+			invertTile(invertTile)
+		{
+		}
+
+		const bool isWeak;
+
+		const bool invertPlayer;
+		const bool invertTile;
+	private:
+		char padding = 0;
+	};
+
 	namespace CollisionEngine
 	{
 		struct CollisionInfo
@@ -79,9 +101,7 @@ namespace Game
 		CollisionContext SetupCollisionContext(
 			const sf::Vector2f position,
 			const sf::Vector2f destination,
-			const bool invertTilePosition,
-			const bool invertPlayerPosition,
-			const bool weakCollision);
+			const CollisionType type);
 
 		/*
 		static CollisionContext SetupEnterCollisionContext(
@@ -136,3 +156,25 @@ namespace Game
 			}
 	*/
 }
+
+static bool operator<(
+	const Game::CollisionType& ct1,
+	const Game::CollisionType& ct2)
+{
+	return *(int*)&ct1 < *(int*)&ct2;
+}
+
+static bool operator>(
+	const Game::CollisionType& ct1,
+	const Game::CollisionType& ct2)
+{
+	return *(int*)&ct1 > *(int*)&ct2
+}
+
+static bool operator==(
+	const Game::CollisionType& ct1,
+	const Game::CollisionType& ct2)
+{
+	return *(int*)&ct1 == *(int*)&ct2
+}
+

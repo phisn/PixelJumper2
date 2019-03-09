@@ -4,6 +4,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <Client/source/game/tiletrait/GameTileBase.h>
+#include <Client/source/game/Environment.h>
 
 namespace Game
 {
@@ -12,6 +13,11 @@ namespace Game
 		public GameTileBase
 	{
 	public:
+		virtual void registerType(Environment* const env) override
+		{
+			env->registerTile<StaticTile>(this);
+		}
+
 		StaticTile(
 			const sf::Color color,
 			const sf::Vector2f position,
@@ -38,7 +44,6 @@ namespace Game
 			return size;
 		}
 
-		virtual void initialize(TileContainer* const container) override;
 	protected:
 		const sf::Color color;
 

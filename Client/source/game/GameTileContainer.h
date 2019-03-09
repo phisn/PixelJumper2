@@ -47,7 +47,7 @@ namespace Game
 		void insertTile(GameTileBase* const tile)
 		{
 			tiles.push_back(tile);
-			tile->initialize(this);
+			tile->registerType(this);
 		}
 
 		void insertCollidable(CollidableTile* const tile, CollisionType type)

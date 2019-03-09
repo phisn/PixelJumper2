@@ -1,34 +1,14 @@
 #pragma once
 
 #include <Client/source/game/CollisionEngine.h>
-#include <Client/source/game/PlayerState.h>
+#include <Client/source/game/Environment.h>
+#include <Client/source/game/PlayerBase.h>
+
+#include <utility>
+#include <vector>
 
 namespace Game
 {
-	class TileContainer;
-
-	struct CollisionType
-	{
-		CollisionType() = default;
-		CollisionType(
-			const bool isWeak,
-			const bool invertPlayer,
-			const bool invertTile)
-			:
-			isWeak(isWeak),
-			invertPlayer(invertPlayer),
-			invertTile(invertTile)
-		{
-		}
-
-		const bool isWeak;
-
-		const bool invertPlayer;
-		const bool invertTile;
-	private:
-		char padding = 0;
-	};
-
 	struct Collision
 	{
 		CollisionEngine::CollisionInfo info;
@@ -53,27 +33,10 @@ namespace Game
 		virtual const sf::Vector2f getPosition() const = 0;
 		virtual const sf::Vector2f getSize() const = 0;
 	protected:
-		void addCollisionType(TileContainer* const container, const CollisionType type);
+		void registerCollisionType(
+			Environment* const env,
+			const CollisionType type) // alternative to register
+		{
+		}
 	};
-}
-
-static bool operator<(
-	const Game::CollisionType& ct1, 
-	const Game::CollisionType& ct2)
-{
-	return *(int*) &ct1 < *(int*) &ct2;
-}
-
-static bool operator>(
-	const Game::CollisionType& ct1,
-	const Game::CollisionType& ct2)
-{
-	return *(int*) &ct1 > *(int*) &ct2
-}
-
-static bool operator==(
-	const Game::CollisionType& ct1,
-	const Game::CollisionType& ct2)
-{
-	return *(int*)&ct1 == *(int*)&ct2
 }

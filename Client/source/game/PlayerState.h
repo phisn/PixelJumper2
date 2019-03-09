@@ -31,7 +31,7 @@ namespace Game
 
 		float speed;
 		float weight;
-		float drag; // todo rename
+		float friction;
 
 		_IsOnGround isOnGround;
 		sf::Vector2f respawnPoint;
@@ -78,7 +78,7 @@ namespace Game
 
 		PropertyWriter<float> speed{ properties.speed };
 		PropertyWriter<float> weight{ properties.weight };
-		PropertyWriter<float> drag{ properties.drag };
+		PropertyWriter<float> friction{ properties.friction };
 
 		PropertyWriter<PlayerStateProperties::_IsOnGround> isOnGround{ properties.isOnGround };
 		PropertyWriter<sf::Vector2f> respawnPoint{ properties.respawnPoint };

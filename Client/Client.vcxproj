@@ -36,7 +36,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClInclude Include="LocalSimulator.h" />
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DeviceConfig.h" />
@@ -93,6 +92,7 @@
     <ClInclude Include="source\game\tiletrait\DrawableTile.h" />
     <ClInclude Include="source\game\tiletrait\DynamicTile.h" />
     <ClInclude Include="source\game\tiletrait\GameTileBase.h" />
+    <ClInclude Include="source\game\tiletrait\InitializableTile.h" />
     <ClInclude Include="source\game\tiletrait\StaticTile.h" />
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h" />
     <ClInclude Include="source\game\tile\GameWallTile.h" />
@@ -136,7 +136,6 @@
     <ClInclude Include="source\scene\SubSceneBase.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LocalSimulator.cpp" />
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DeviceConfig.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
@@ -187,8 +186,6 @@
     <ClCompile Include="source\game\tiletrait\DrawableTile.cpp" />
     <ClCompile Include="source\game\tiletrait\DynamicTile.cpp" />
     <ClCompile Include="source\game\tiletrait\GameTileBase.cpp" />
-    <ClCompile Include="source\game\tiletrait\StaticTile.cpp" />
-    <ClCompile Include="source\game\tiletrait\SynchronizableTile.cpp" />
     <ClCompile Include="source\game\tile\GameWallTile.cpp" />
     <ClCompile Include="source\game\WorldBase.cpp" />
     <ClCompile Include="source\game\WorldState.cpp" />

@@ -1,21 +1,20 @@
 #pragma once
 
-#include <Client/source/game/GameState.h>
 #include <Client/source/game/Environment.h>
 
 namespace Game
 {
-	class TileContainer;
-	class SynchronizableTile
+	class WorldBase;
+	class InitializableTile
 		:
 		public RegisterableType
 	{
 	public:
 		void registerType(Environment* const env) override
 		{
-			env->registerTile<SynchronizableTile>(this);
+			env->registerTile<InitializableTile>(this);
 		}
 
-		virtual GameState* getState() = 0;
+		virtual void initialize(WorldBase* const world) = 0;
 	};
 }
