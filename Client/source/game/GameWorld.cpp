@@ -46,7 +46,7 @@ namespace Game
 			worldResource->HeaderProperties.height
 		);
 
-		for (StaticTile* const tile : result->getTileType<StaticTile>())
+		for (StaticTile* const tile : result-><StaticTile>())
 		{
 			const sf::Vector2i target = sf::Vector2i(tile->getPosition() + tile->getSize());
 

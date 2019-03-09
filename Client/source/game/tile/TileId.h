@@ -4,6 +4,8 @@ namespace Game
 {
 	enum class TileId
 	{
-		Wall
+		Wall,
+
+		_Length
 	};
 }

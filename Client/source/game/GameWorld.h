@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/logger/Logger.h>
@@ -8,7 +7,6 @@
 #include <Client/source/game/WorldState.h>
 
 #include <Client/source/game/tiletrait/GameTileBase.h>
-#include <Client/source/game/GameTileContainer.h>
 #include <Client/source/game/GameTileFactory.h>
 
 #include <Client/source/resource/WorldResource.h>

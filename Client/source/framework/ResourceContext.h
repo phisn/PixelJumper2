@@ -64,7 +64,7 @@ namespace Framework
 			_ResourceType type)
 		{
 			
-			::Resource::Static::Resource resource = ::Resource::_N_Interface::GetStaticResource(type);
+			::Resource::Static::Resource resource = ::Resource::Interface::GetStaticResource(type);
 			resources[type] = resource;
 
 			sf::MemoryInputStream mis;

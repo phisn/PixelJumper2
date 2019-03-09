@@ -3,6 +3,7 @@
 #include <Client/source/device/InputDevice.h>
 
 #include <Client/source/game/PlayerBase.h>
+#include <Client/source/game/WorldBase.h>
 
 #include <Client/source/logger/Logger.h>
 
@@ -127,6 +128,12 @@ namespace Game
 			state.view_size.addListener(listener);
 		}
 
+		void setCurrentWorld(WorldBase* const world)
+		{
+			currentWorld = world;
+			state.worldId = world->getWorldId();
+		}
+
 		void onEvent(const sf::Event event)
 		{
 			input->onEvent(event);
@@ -226,15 +233,55 @@ namespace Game
 			const Direction direction)
 		{
 			Log::Warning(L"Movement Horizontal is not implemented yet");
+
+			const float movementValue = time.asMicroseconds() / 1000 
+				* (1 / state.readProperties()->weight);
+
+			/*
+			
+				Movement distribution dependent on gravity
+				  
+				Dx
+			   +----+
+			   | D / 
+		    Dy |  /+---->
+			   | / |   gx
+			   |/  | 
+			   +   |  
+			       | 
+				   v gy
+
+
+				       D  * gx
+				  Dx = ------- = (D * gx) / (gx + gy)
+					   gx + gy
+				  
+				       D  * gy
+				  Dy = ------- = (D * gy) / (gx + gy)
+					   gx + gy 
+  
+			*/
+			const sf::Vector2f gravity = currentWorld->state.readProperties()->gravity;
+			const sf::Vector2f movement = 
+			{
+				(movementValue * gravity.x) / (gravity.x + gravity.y),
+				(movementValue * gravity.y) / (gravity.x + gravity.y),
+			};
+
+			state.movement = state.readProperties()->movement 
+				+ movement * (direction == Direction::Right ? 1.f : -1.f);
 		}
 
 		void onMovementJump()
 		{
 			Log::Warning(L"Jump is not implemented yet");
+
+			// get current collision and do stuff
 		}
 
 		sf::View view;
 		Device::GameInput* const input;
+		WorldBase* currentWorld;
 
 		void updateView()
 		{

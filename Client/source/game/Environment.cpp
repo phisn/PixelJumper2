@@ -2,6 +2,7 @@
 
 #include <Client/source/device/ScreenDevice.h>
 
+#include <Client/source/game/tiletrait/StaticTile.h>
 #include <Client/source/game/tiletrait/DrawableTile.h>
 #include <Client/source/game/tiletrait/DynamicTile.h>
 

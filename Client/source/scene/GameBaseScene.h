@@ -1,11 +1,10 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/InputDevice.h>
 
 #include <Client/source/game/LocalPlayer.h>
 #include <Client/source/game/PlayerBase.h>
-#include <Client/source/game/World.h>
+#include <Client/source/game/GameWorld.h>
 
 #include <Client/source/scene/MainSceneBase.h>
 #include <Client/source/framework/FrameworkInterface.h>

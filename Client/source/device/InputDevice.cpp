@@ -38,7 +38,7 @@ namespace Device
 		assert(symbol < 0);
 		assert(symbol >= Input::_Length);
 
-		generalInput->GlobalKeys[symbol];
+		generalInput->GlobalKeys.keys[(int) symbol];
 	}
 
 	bool Input::IsGlobalKeyPressed(const GlobalSymbol symbol)
@@ -46,7 +46,7 @@ namespace Device
 		assert(symbol < 0);
 		assert(symbol >= Input::_Length);
 
-		return sf::Keyboard::isKeyPressed(generalInput->GlobalKeys[symbol]);
+		return sf::Keyboard::isKeyPressed(generalInput->GlobalKeys.keys[symbol]);
 	}
 
 	void Input::SetGlobalKey(const GlobalSymbol symbol, const sf::Keyboard::Key key)
@@ -54,7 +54,7 @@ namespace Device
 		assert(symbol < 0);
 		assert(symbol >= Input::_Length);
 
-		generalInput->GlobalKeys[symbol] = key;
+		generalInput->GlobalKeys.keys[symbol] = key;
 	}
 
 	int Input::GetKeyUsageCount(const sf::Keyboard::Key key)
@@ -62,7 +62,7 @@ namespace Device
 		int usageCount = 0;
 
 		for (int i = 0; i < GlobalSymbol::_Length; ++i)
-			if (generalInput->GlobalKeys[i] == key)
+			if (generalInput->GlobalKeys.keys[i] == key)
 			{
 				++usageCount;
 			}

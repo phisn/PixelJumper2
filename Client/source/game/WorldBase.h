@@ -16,6 +16,8 @@ namespace Game
 	class WorldBase
 	{
 	public:
+		WorldState state;
+
 		// return in percent lose of movement
 		static float CalculateFrictionLose(const float friction, const float weight)
 		{
@@ -86,8 +88,6 @@ namespace Game
 	protected:
 		Environment environment;
 		std::vector<PlayerBase*> players;
-
-		WorldState state;
 
 	private:
 		static const sf::Uint64 TIME_STEP = 1000;

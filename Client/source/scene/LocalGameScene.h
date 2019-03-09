@@ -3,7 +3,7 @@
 #include <Client/source/device/InputDevice.h>
 #include <Client/source/scene/GameBaseScene.h>
 
-#include <Client/source/game/tiles/Wall.h>
+#include <Client/source/game/tile/GameWallTile.h>
 
 namespace Scene
 {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/device/DeviceInterface.h>
 #include <Client/source/device/RandomDevice.h>
 #include <Client/source/device/ScreenDevice.h>
 
@@ -69,11 +68,11 @@ namespace Scene
 		void onDraw() override
 		{
 			MenuBase::onDraw();
-
-			Device::Interface::GetScreen()->resetView();
+			
+			// TODO: normally resets view, make it obsolete
 			for (sf::RectangleShape& shape : test)
 			{
-				Device::Interface::GetScreen()->onDraw(&shape);
+				Device::Screen::Draw(shape);
 			}
 		}
 
@@ -108,7 +107,7 @@ namespace Scene
 					return;
 				}
 
-				if (Resource::_N_Interface::WriteResource(
+				if (Resource::Interface::SaveResource(
 						world, 
 						Resource::ResourceType::World, 
 						L"TestWorld")
