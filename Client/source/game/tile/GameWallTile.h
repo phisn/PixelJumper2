@@ -22,6 +22,7 @@ namespace Game
 		static const sf::Color COLOR;
 
 		WallTile(
+			const float density,
 			const float drag,
 			const sf::Vector2f position,
 			const sf::Vector2f size)
@@ -30,7 +31,8 @@ namespace Game
 				sf::Color::White,
 				position,
 				size),
-			drag(drag)
+			drag(drag),
+			CollidableTile(density)
 		{
 		}
 

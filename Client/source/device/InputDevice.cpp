@@ -25,7 +25,7 @@ namespace Device
 			new(&gameInputs[i]) GameInput((Player) i);
 			gameInputs[i].load();
 		}
-	}
+ 	}
 
 	void Input::Uninitialize()
 	{

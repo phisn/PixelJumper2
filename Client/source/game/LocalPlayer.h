@@ -1,5 +1,7 @@
 #pragma once
 
+#define __TEXT(s) L##s "_"
+
 #include <Client/source/device/InputDevice.h>
 
 #include <Client/source/game/PlayerBase.h>
@@ -79,7 +81,7 @@ namespace Game
 	public:
 		static LocalPlayer* Create(
 			Device::GameInput* const input,
-			const sf::FloatRect viewPort,	
+			const sf::FloatRect viewPort,
 			const Resource::PlayerResource resource)
 		{
 			LocalPlayer* localPlayer = new LocalPlayer(input);
@@ -92,22 +94,7 @@ namespace Game
 		LocalPlayer(Device::GameInput* const input)
 			:
 			PlayerBase(PlayerType::Local),
-			input(input),
-			triggerRoutine(
-				[this](const sf::Time time)
-				{ 
-					handleTrigger(); 
-				}),
-			movementRoutine(
-				[this](const sf::Time time, Direction direction) 
-				{ 
-					handleMovement(time, direction); 
-				}),
-			respawnRoutine(
-				[this](const sf::Time time) 
-				{ 
-					handleRespawn(); 
-				})
+			input(input)
 		{
 			state.view_rotation.addListener([this](const float)
 				{
@@ -147,11 +134,30 @@ namespace Game
 			}
 		}
 
-		InputRoutine<sf::Time> triggerRoutine;
-		InputRoutine<sf::Time, Direction> movementRoutine;
-		InputRoutine<sf::Time> respawnRoutine;
+		InputRoutine<sf::Time> triggerRoutine{
+				[this](const sf::Time time)
+				{
+					handleTrigger();
+				} };
+		InputRoutine<sf::Time, Direction> movementRoutine{
+				[this](const sf::Time time, Direction direction)
+				{
+					handleMovement(time, direction);
+				} };
+		InputRoutine<sf::Time> respawnRoutine{ 
+				[this](const sf::Time time)
+				{
+					handleRespawn();
+				} };
+
+		void setInputCorrection(const bool mode)
+		{
+			inputCorrection = mode;
+		}
 
 	private:
+		bool inputCorrection = true;
+
 		void initializeFromState() override
 		{
 			PlayerBase::initializeFromState();
@@ -244,39 +250,88 @@ namespace Game
 				Dx
 			   +----+
 			   | D / 
-		    Dy |  /+---->
-			   | / |   gx
+		    Dy |  /+-------->       [Dy] scales with [gx]
+			   | / |       gx       [Dx] scales with [gy]
 			   |/  | 
-			   +   |  
-			       | 
-				   v gy
+			   +   v gy    
+				   
 
 
-				       D  * gx
-				  Dx = ------- = (D * gx) / (gx + gy)
-					   gx + gy
+				         D  * gx
+				  Dy = ----------- = (D * gx) / (gx + gy)
+					   |gx| + |gy|
 				  
-				       D  * gy
-				  Dy = ------- = (D * gy) / (gx + gy)
-					   gx + gy 
+				         D  * gy
+				  Dx = ----------- = (D * gy) / (gx + gy)
+					   |gx| + |gy| 
   
 			*/
 			const sf::Vector2f gravity = currentWorld->state.readProperties()->gravity;
-			const sf::Vector2f movement = 
+			const float gravitySum = fabsf(gravity.x) + fabsf(gravity.y);
+
+			sf::Vector2f movement = 
 			{
-				(movementValue * gravity.x) / (gravity.x + gravity.y),
-				(movementValue * gravity.y) / (gravity.x + gravity.y),
+				(movementValue * gravity.y) / gravitySum,
+				(movementValue * gravity.x) / gravitySum
 			};
 
-			state.movement = state.readProperties()->movement 
-				+ movement * (direction == Direction::Right ? 1.f : -1.f);
+			if (inputCorrection && gravity.y < 0)
+			{
+				movement.x = -movement.x;
+			}
+
+			state.movement = state.readProperties()->movement + movement
+				* (direction == Direction::Right ? 1.f : -1.f);
 		}
 
 		void onMovementJump()
 		{
-			Log::Warning(L"Jump is not implemented yet");
+			const sf::Vector2f jumpForce = getTileJumpForce();
 
-			// get current collision and do stuff
+			if (jumpForce.x == 0 && jumpForce.y == 0)
+			{
+				return;
+			}
+
+			// jumping against gravity, negative gravity
+			const sf::Vector2f gravityForce = -currentWorld->state.readProperties()->gravity;
+
+			const float jumpForceSum = fabs(jumpForce.x) + fabs(jumpForce.y);
+			const float forceSum = jumpForceSum + fabs(gravityForce.x) + fabs(gravityForce.y);
+
+			const sf::Vector2f gravityDist = gravityForce / forceSum;
+			const sf::Vector2f jumpDist = jumpForce / forceSum;
+
+			const sf::Vector2f force = gravityDist * jumpForceSum + jumpDist * jumpForceSum;
+
+			state.movement = state.readProperties()->movement + force / state.readProperties()->weight;
+		}
+
+		sf::Vector2f getTileJumpForce() const
+		{
+			sf::Vector2f result = { };
+
+			if (collisionContainer[CollisionEngine::CollisionInfo::G3])
+			{
+				result.x = collisionContainer[CollisionEngine::CollisionInfo::G3]->getDensity();
+			}
+
+			if (collisionContainer[CollisionEngine::CollisionInfo::G4])
+			{
+				result.y = collisionContainer[CollisionEngine::CollisionInfo::G4]->getDensity();
+			}
+
+			if (collisionContainer[CollisionEngine::CollisionInfo::G1])
+			{
+				result.x -= collisionContainer[CollisionEngine::CollisionInfo::G1]->getDensity();
+			}
+
+			if (collisionContainer[CollisionEngine::CollisionInfo::G2])
+			{
+				result.y -= collisionContainer[CollisionEngine::CollisionInfo::G2]->getDensity();
+			}
+
+			return result;
 		}
 
 		sf::View view;

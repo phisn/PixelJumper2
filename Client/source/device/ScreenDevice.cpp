@@ -29,6 +29,8 @@ namespace Device
 	{
 		_CloseWindow();
 		_CreateWindow();
+
+		return true;
 	}
 
 	bool Screen::DefaultSettings()
@@ -51,6 +53,8 @@ namespace Device
 		resource->Content.useVSync = true;
 
 		_CreateWindow();
+
+		return true;
 	}
 
 	void Screen::_CloseWindow()

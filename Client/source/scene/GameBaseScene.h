@@ -91,7 +91,7 @@ namespace Scene
 		{
 			if (isHidden)
 			{
-				DEVICE::Interface::GetScreen()->onDraw(&background);
+				Device::Screen::Draw(background);
 			}
 		}
 

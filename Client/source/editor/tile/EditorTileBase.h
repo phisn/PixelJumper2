@@ -56,9 +56,9 @@ namespace Editor
 			);
 		}
 
-		const sf::RectangleShape* getShape() const
+		const sf::RectangleShape& getShape() const
 		{
-			return &shape;
+			return shape;
 		}
 
 		virtual Resource::TileBase* create(

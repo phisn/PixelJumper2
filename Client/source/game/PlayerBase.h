@@ -2,6 +2,7 @@
 
 #include <Client/source/device/ScreenDevice.h>
 
+#include <Client/source/game/CollisionEngine.h>
 #include <Client/source/game/PlayerState.h>
 
 #include <Client/source/resource/PlayerResource.h>
@@ -21,10 +22,41 @@ namespace Game
 		Ghost
 	};
 
+	class CollidableTile;
+	class CollisionContainer
+	{
+	public:
+		CollidableTile* operator[](
+			const CollisionEngine::CollisionInfo::Type type) const
+		{
+			return infos[type];
+		}
+
+
+		void clear()
+		{
+			infos[0] = { };
+			infos[1] = { };
+			infos[2] = { };
+			infos[3] = { };
+		}
+
+		void setCollision(
+			const CollisionEngine::CollisionInfo::Type type,
+			CollidableTile* const tile)
+		{
+			infos[type] = tile;
+		}
+
+	private:
+		CollidableTile* infos[4];
+	};
+
 	class PlayerBase
 		:
 		public GameState
 	{
+		friend class WorldBase;
 		const PlayerType type;
 	public:
 		PlayerState state;
@@ -74,6 +106,8 @@ namespace Game
 			shape.setPosition(state.readProperties()->position);
 			shape.setSize({ 1, 1 });
 		}
+
+		CollisionContainer collisionContainer;
 
 	private:
 		sf::RectangleShape shape;

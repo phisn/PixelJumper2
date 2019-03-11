@@ -20,6 +20,12 @@ namespace Game
 	class CollidableTile
 	{
 	public:
+		CollidableTile(const float density)
+			:
+			density(density)
+		{
+		}
+
 		/*
 			Return: repeated movement without physics,
 			used for sliding or bouncing (normal walls slide too [ignores phyiscs])
@@ -32,11 +38,20 @@ namespace Game
 		// copied from / same as in GameTileBase.h
 		virtual const sf::Vector2f getPosition() const = 0;
 		virtual const sf::Vector2f getSize() const = 0;
+
+		float getDensity() const
+		{
+			return density;
+		}
+
 	protected:
 		void registerCollisionType(
 			Environment* const env,
 			const CollisionType type) // alternative to register
 		{
+			env->registerCollisionType(type, this);
 		}
+
+		const float density;
 	};
 }

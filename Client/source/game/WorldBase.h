@@ -44,6 +44,8 @@ namespace Game
 			{
 				tile->initialize(this);
 			}
+
+			worldProperties.worldId = resource->HeaderIntro.worldID;
 		}
 
 		virtual void onDraw()
@@ -64,15 +66,24 @@ namespace Game
 				fullTimeValue -= TIME_STEP;
 
 				for (PlayerBase* const player : players)
+				{
+					player->collisionContainer.clear();
+					
 					simulatePlayers(
 						player,
 						fullTimeValue < 0
 							? fullTimeValue + TIME_STEP
 							: TIME_STEP
 					);
+				}
 			} while (fullTimeValue > 0);
 
 			environment.onLogic(time);
+		}
+
+		Resource::WorldId getWorldId() const
+		{
+
 		}
 
 		const Environment* getEnvironment() const
@@ -91,6 +102,12 @@ namespace Game
 
 	private:
 		static const sf::Uint64 TIME_STEP = 1000;
+
+		struct
+		{
+			Resource::WorldId worldId;
+
+		} worldProperties;
 
 		void simulatePlayers(PlayerBase* const player, const float timeValue)
 		{
@@ -183,7 +200,11 @@ namespace Game
 						collision.player = player;
 						collision.target = target;
 
-						target = closestCollision.tile->onCollision(*closestCollision.type, collision);
+						target = closestCollision.tile->onCollision(
+							*closestCollision.type, collision);
+						player->collisionContainer.setCollision(
+							collision.info.type, 
+							closestCollision.tile);
 					}
 					else
 					{

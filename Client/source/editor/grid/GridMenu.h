@@ -117,11 +117,10 @@ namespace Editor
 
 			for (TileBase* const tile : Manipulator::GetWorld()->getTiles())
 			{
-				DEVICE::Interface::GetScreen()->onDraw(
-					tile->getShape()
-				);
+				Device::Screen::Draw(tile->getShape());
 			}
 
+			Device::Screen::
 			DEVICE::Interface::GetScreen()->getWindow()->setView(
 				DEVICE::Interface::GetScreen()->getWindow()->getDefaultView()
 			);

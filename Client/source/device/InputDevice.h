@@ -152,7 +152,7 @@ namespace Device
 
 		bool load()
 		{
-
+			
 		}
 
 		bool save()

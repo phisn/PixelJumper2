@@ -122,7 +122,7 @@ namespace Editor
 
 	inline void GridView::draw() const
 	{
-		DEVICE::Interface::GetScreen()->onDraw(&background.sprite);
+		Device::Screen::Draw(background.sprite);
 	}
 
 	inline sf::Vector2f GridView::convertPtoC(
