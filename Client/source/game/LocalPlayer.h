@@ -155,13 +155,54 @@ namespace Game
 			inputCorrection = mode;
 		}
 
+		void setJumpAssist(const bool mode)
+		{
+
+		}
+
 	private:
 		bool inputCorrection = true;
+		bool jumpAssist = true;
 
 		void initializeFromState() override
 		{
 			PlayerBase::initializeFromState();
 			updateView();
+		}
+
+		CollisionEngine::CollisionInfo::Type convertCollisionByGravity(
+			const CollisionEngine::CollisionInfo::Type type)
+		{
+			const sf::Vector2f gravity = currentWorld->state.readProperties()->gravity;
+
+			if (fabs(gravity.x) < fabs(gravity.y))
+			{
+				if (gravity.y < 0)
+				{
+					return (CollisionEngine::CollisionInfo::Type) (
+						(type + 2) % 4
+					);
+				}
+				else
+				{
+					return type;
+				}
+			}
+			else
+			{
+				if (gravity.x < 0)
+				{
+					return (CollisionEngine::CollisionInfo::Type) (
+						(type + 1) % 4
+					);
+				}
+				else
+				{
+					return (CollisionEngine::CollisionInfo::Type) (
+						(type + 3) % 4
+					);
+				}
+			}
 		}
 
 		void onCoreSymbol(
@@ -238,8 +279,6 @@ namespace Game
 			const sf::Time time,
 			const Direction direction)
 		{
-			Log::Warning(L"Movement Horizontal is not implemented yet");
-
 			const float movementValue = time.asMicroseconds() / 1000 
 				* (1 / state.readProperties()->weight);
 
@@ -286,25 +325,31 @@ namespace Game
 
 		void onMovementJump()
 		{
-			const sf::Vector2f jumpForce = getTileJumpForce();
+			const sf::Vector2f tileForce = getTileJumpForce();
 
-			if (jumpForce.x == 0 && jumpForce.y == 0)
+			if (tileForce.x == 0 && tileForce.y == 0)
 			{
 				return;
 			}
 
-			// jumping against gravity, negative gravity
-			const sf::Vector2f gravityForce = -currentWorld->state.readProperties()->gravity;
+			state.movement = state.readProperties()->movement
+				+ (jumpAssist
+					? adjustForceJumpAssist(tileForce)
+					: tileForce
+				) / state.readProperties()->weight;
+		}
 
-			const float jumpForceSum = fabs(jumpForce.x) + fabs(jumpForce.y);
-			const float forceSum = jumpForceSum + fabs(gravityForce.x) + fabs(gravityForce.y);
+		sf::Vector2f adjustForceJumpAssist(const sf::Vector2f tileForce) const
+		{	// jumping against gravity, negative gravity
+			const sf::Vector2f counterGravityForce = -currentWorld->state.readProperties()->gravity;
 
-			const sf::Vector2f gravityDist = gravityForce / forceSum;
-			const sf::Vector2f jumpDist = jumpForce / forceSum;
+			const float tileForceSum = fabs(tileForce.x) + fabs(tileForce.y);
+			const float completeForceSum = tileForceSum + fabs(counterGravityForce.x) + fabs(counterGravityForce.y);
 
-			const sf::Vector2f force = gravityDist * jumpForceSum + jumpDist * jumpForceSum;
+			const sf::Vector2f gravityDist = counterGravityForce / completeForceSum;
+			const sf::Vector2f tileDist = tileForce / completeForceSum;
 
-			state.movement = state.readProperties()->movement + force / state.readProperties()->weight;
+			return gravityDist * tileForceSum + tileDist * tileForceSum;
 		}
 
 		sf::Vector2f getTileJumpForce() const
