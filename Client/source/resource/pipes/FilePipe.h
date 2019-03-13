@@ -31,7 +31,7 @@ namespace Resource
 			}
 			catch (const std::filesystem::filesystem_error error)
 			{
-				Log::Error(_wcserror(error.code));
+				Log::Error(_wcserror(error.code().value()));
 
 				return false;
 			}
@@ -47,7 +47,7 @@ namespace Resource
 			}
 			catch (const std::filesystem::filesystem_error error)
 			{
-				Log::Error(_wcserror(error.code));
+				Log::Error(_wcserror(error.code().value()));
 
 				return false;
 			}

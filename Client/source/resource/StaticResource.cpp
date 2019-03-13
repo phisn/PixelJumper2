@@ -4,7 +4,7 @@
 namespace
 {
 	const wchar_t* STATIC_RES_FOLDER = L"static";
-	const wchar_t* STATIC_ID_TRANSLATION =
+	const wchar_t* STATIC_ID_TRANSLATION[] =
 	{
 		L"font.ttf"
 	};
@@ -38,6 +38,6 @@ namespace Resource
 
 	std::wstring Static::Translate(const Id type)
 	{
-		return GetPath() + STATIC_ID_TRANSLATION[(int) type];
+		return GetPath() + L"/" + STATIC_ID_TRANSLATION[(int) type];
 	}
 }

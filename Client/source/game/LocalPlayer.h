@@ -1,7 +1,5 @@
 #pragma once
 
-#define __TEXT(s) L##s "_"
-
 #include <Client/source/device/InputDevice.h>
 
 #include <Client/source/game/PlayerBase.h>
@@ -10,7 +8,7 @@
 #include <Client/source/logger/Logger.h>
 
 #include <functional>
-#include <unordered_set>
+#include <vector>
 
 namespace Game
 {
@@ -28,12 +26,19 @@ namespace Game
 
 		void addListener(const Listener listener)
 		{
-			listeners.insert(listener);
+			listeners.push_back(listener);
 		}
 
 		void removeListener(const Listener listener)
 		{
-			listeners.erase(listener);
+			for (decltype(listeners)::iterator iterator = listeners.begin()
+				; iterator != listeners.end(); ++iterator)
+				if (iterator->target<void>() == listener.target<void>())
+				{
+					listeners.erase(iterator);
+
+					break;
+				}
 		}
 
 		void hook(
@@ -71,7 +76,7 @@ namespace Game
 		const Listener defaultFunction;
 
 		bool callListeners;
-		std::unordered_set<Listener> listeners;
+		std::vector<Listener> listeners;
 	};
 
 	class LocalPlayer
@@ -170,39 +175,20 @@ namespace Game
 			updateView();
 		}
 
-		CollisionEngine::CollisionInfo::Type convertCollisionByGravity(
+		// converts sides to correct, real sides dependent
+		// on current gravity; { 2; -1 }, (G2) -> (G1)
+		CollisionEngine::CollisionInfo::Type correctCollisionTypeByGravity(
 			const CollisionEngine::CollisionInfo::Type type)
 		{
 			const sf::Vector2f gravity = currentWorld->state.readProperties()->gravity;
-
-			if (fabs(gravity.x) < fabs(gravity.y))
-			{
-				if (gravity.y < 0)
-				{
-					return (CollisionEngine::CollisionInfo::Type) (
-						(type + 2) % 4
-					);
-				}
-				else
-				{
-					return type;
-				}
-			}
-			else
-			{
-				if (gravity.x < 0)
-				{
-					return (CollisionEngine::CollisionInfo::Type) (
-						(type + 1) % 4
-					);
-				}
-				else
-				{
-					return (CollisionEngine::CollisionInfo::Type) (
-						(type + 3) % 4
-					);
-				}
-			}
+			const int condition = fabs(gravity.x) > fabs(gravity.y);
+			
+			return (CollisionEngine::CollisionInfo::Type) ((	
+				type + condition + 
+					(
+						condition ? gravity.x > 0 : gravity.y < 0
+					) << 1
+				) % 4);
 		}
 
 		void onCoreSymbol(
@@ -356,22 +342,22 @@ namespace Game
 		{
 			sf::Vector2f result = { };
 
-			if (collisionContainer[CollisionEngine::CollisionInfo::G3])
+			if (collisionContainer.has(CollisionEngine::CollisionInfo::G3))
 			{
 				result.x = collisionContainer[CollisionEngine::CollisionInfo::G3]->getDensity();
 			}
 
-			if (collisionContainer[CollisionEngine::CollisionInfo::G4])
+			if (collisionContainer.has(CollisionEngine::CollisionInfo::G4))
 			{
 				result.y = collisionContainer[CollisionEngine::CollisionInfo::G4]->getDensity();
 			}
 
-			if (collisionContainer[CollisionEngine::CollisionInfo::G1])
+			if (collisionContainer.has(CollisionEngine::CollisionInfo::G1))
 			{
 				result.x -= collisionContainer[CollisionEngine::CollisionInfo::G1]->getDensity();
 			}
 
-			if (collisionContainer[CollisionEngine::CollisionInfo::G2])
+			if (collisionContainer.has(CollisionEngine::CollisionInfo::G2))
 			{
 				result.y -= collisionContainer[CollisionEngine::CollisionInfo::G2]->getDensity();
 			}

@@ -56,7 +56,7 @@ namespace Editor
 
 	void GridView::updateBackground()
 	{
-		const sf::Vector2f position1 = convertPtoC(
+		const sf::Vector2f position1 = mapPixelToCoords(
 			sf::Vector2i(0, 0)
 		);
 

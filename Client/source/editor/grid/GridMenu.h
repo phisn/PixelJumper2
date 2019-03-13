@@ -120,11 +120,6 @@ namespace Editor
 				Device::Screen::Draw(tile->getShape());
 			}
 
-			Device::Screen::
-			DEVICE::Interface::GetScreen()->getWindow()->setView(
-				DEVICE::Interface::GetScreen()->getWindow()->getDefaultView()
-			);
-
 			selector.draw();
 		}
 

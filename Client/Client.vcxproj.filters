@@ -515,9 +515,6 @@
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp">
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
-    <ClCompile Include="source\resource\pipes\PipeBase.cpp">
-      <Filter>source\resource\pipes</Filter>
-    </ClCompile>
     <ClCompile Include="source\resource\TileFactory.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
@@ -607,6 +604,9 @@
     </ClCompile>
     <ClCompile Include="source\game\tile\TileColors.cpp">
       <Filter>source\game\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\pipes\PipeBase.cpp">
+      <Filter>source\resource\tiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

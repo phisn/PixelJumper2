@@ -24,7 +24,7 @@ namespace Device
 {
 	bool VerifySettings(const ConfigType type)
 	{
-		
+		return true;
 	}
 
 	bool Config::Initialize()
@@ -62,20 +62,23 @@ namespace Device
 		Resource::ResourceBase* const resource, 
 		const ConfigType type)
 	{
+		return Resource::Interface::SaveSettings(
+			resource,
+			TranslateConfigType(type));
 	}
 
 	bool Config::LoadPlayerInput(
 		GameInput* const input, 
 		const Input::Player player)
 	{
-		return false;
+		return true;
 	}
 
 	bool Config::SavePlayerInput(
 		GameInput* const input, 
 		const Input::Player player)
 	{
-		return false;
+		return true;
 	}
 
 	std::wstring Device::Config::TranslateConfigType(const ConfigType type)

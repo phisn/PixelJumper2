@@ -40,9 +40,9 @@ namespace Editor
 		void zoom(
 			const float zoom);
 
-		sf::Vector2f convertPtoC(
+		sf::Vector2f mapPixelToCoords(
 			const sf::Vector2i position) const;
-		sf::Vector2i convertCtoP(
+		sf::Vector2i mapCoordsToPixel(
 			const sf::Vector2f position) const;
 
 		void beginMovment(
@@ -59,11 +59,11 @@ namespace Editor
 			const int x,
 			const int y)
 		{
-			const sf::Vector2f destination = convertPtoC(sf::Vector2i(
+			const sf::Vector2f destination = mapPixelToCoords(sf::Vector2i(
 				x, y
 			));
 
-			const sf::Vector2f source = convertPtoC(sf::Vector2i(
+			const sf::Vector2f source = mapPixelToCoords(sf::Vector2i(
 				movementOffset.x,
 				movementOffset.y
 			));
@@ -117,7 +117,7 @@ namespace Editor
 
 	inline void GridView::applyView() const
 	{
-		DEVICE::Interface::GetScreen()->applyView(view);
+		Device::Screen::SetView(*view);
 	}
 
 	inline void GridView::draw() const
@@ -125,16 +125,16 @@ namespace Editor
 		Device::Screen::Draw(background.sprite);
 	}
 
-	inline sf::Vector2f GridView::convertPtoC(
+	inline sf::Vector2f GridView::mapPixelToCoords(
 		const sf::Vector2i position) const
 	{
-		return DEVICE::Interface::GetScreen()->getWindow()->mapPixelToCoords(position, *view);
+		return Device::Screen::GetWindow()->mapPixelToCoords(position, *view);
 	}
 
-	inline sf::Vector2i GridView::convertCtoP(
+	inline sf::Vector2i GridView::mapCoordsToPixel(
 		const sf::Vector2f position) const
 	{
-		return DEVICE::Interface::GetScreen()->getWindow()->mapCoordsToPixel(position, *view);
+		return Device::Screen::GetWindow()->mapCoordsToPixel(position, *view);
 	}
 
 	inline const sf::Sprite* GridView::getSprite() const

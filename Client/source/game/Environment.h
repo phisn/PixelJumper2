@@ -27,7 +27,9 @@ namespace Game
 		template <typename HashType, typename ValueType = HashType>
 		const std::vector<ValueType*>& getTileType() const
 		{
-			return (const std::vector<ValueType*>&) tiles[typeid(HashType).hash_code()];
+			decltype(tiles)::const_iterator iterator = tiles.find(typeid(HashType).hash_code());
+			assert(iterator != tiles.cend());
+			return (const std::vector<ValueType*>&) iterator->second;
 		}
 
 		const std::vector<CollidableTile*>& getCollisionTileType(const CollisionType type)
@@ -40,7 +42,7 @@ namespace Game
 		template <typename HashType, typename ValueType = HashType>
 		void registerTile(ValueType* const tile)
 		{
-			tiles[typeid(HashType).hash_code()].push_back(tile);
+			tiles[typeid(HashType).hash_code()].push_back((GameTileBase*) tile);
 		}
 
 		bool initialize(

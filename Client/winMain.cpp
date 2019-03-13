@@ -1,6 +1,8 @@
 #include <Client/source/device/CoreDevice.h>
 #include <Client/source/logger/Logger.h>
 
+#include <iostream>
+
 #ifdef _DEBUG or not _WIN32
 	int main()
 #else
@@ -19,6 +21,8 @@
 
 	if (error != Device::Core::Error::Success)
 	{
+		std::cin.ignore();
+
 		return (int) error;
 	}
 	

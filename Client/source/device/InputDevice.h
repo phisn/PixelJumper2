@@ -113,52 +113,19 @@ namespace Device
 		}
 	};
 
-	struct GameInputSettings
+	class GameInput
 		:
 		public Resource::ResourceBase
 	{
-		struct
-		{
-			sf::Keyboard::Key keys[(int) GameCoreInputSymbol::_Length];
-
-		} CoreKeys;
-
-		struct
-		{
-			sf::Keyboard::Key keys[(int) GameViewInputSymbol::_Length];
-
-		} ViewKeys;
-
-	private:
-		bool make(Resource::ReadPipe* const pipe) override
-		{
-			return pipe->readValue(&CoreKeys)
-				&& pipe->readValue(&ViewKeys);
-		}
-
-		bool save(Resource::WritePipe* const pipe) override
-		{
-			return pipe->writeValue(&CoreKeys)
-				&& pipe->writeValue(&ViewKeys);
-		}
-	};
-
-	class GameInput
-	{
 	public:
 		GameInput(const Input::Player player)
+			:
+			player(player)
 		{
 		}
 
-		bool load()
-		{
-			
-		}
-
-		bool save()
-		{
-
-		}
+		bool load();
+		bool save();
 
 		bool hasNextCoreKey() const
 		{
@@ -278,6 +245,20 @@ namespace Device
 
 		sf::Keyboard::Key coreKeys[(int) GameCoreInputSymbol::_Length];
 		sf::Keyboard::Key viewKeys[(int) GameViewInputSymbol::_Length];
+
+		const Input::Player player;
+
+		bool make(Resource::ReadPipe* const pipe) override
+		{
+			return pipe->readContentForce((char*) coreKeys, sizeof(coreKeys) * sizeof(*coreKeys))
+				&& pipe->readContentForce((char*) viewKeys, sizeof(viewKeys) * sizeof(*viewKeys));
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return pipe->writeContentSafe((char*) coreKeys, sizeof(coreKeys) * sizeof(*coreKeys))
+				&& pipe->writeContentSafe((char*) viewKeys, sizeof(viewKeys) * sizeof(*viewKeys));
+		}
 	};
 
 	class GameInputUser

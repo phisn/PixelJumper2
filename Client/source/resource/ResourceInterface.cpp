@@ -215,7 +215,7 @@ namespace Resource
 		catch (const std::filesystem::filesystem_error error)
 		{
 			Log::Error(std::wstring(L"Failed to verify resource directories (error message: '")
-				+ _wcserror(error.code) + L"')");
+				+ _wcserror(error.code().value()) + L"')");
 
 			return false;
 		}
@@ -223,6 +223,8 @@ namespace Resource
 
 	bool VerifyStaticResources()
 	{
+		Log::Information(Static::GetTranslations()[0]);
+
 		for (const std::filesystem::path staticResource : Static::GetTranslations())
 			if (!std::filesystem::exists(staticResource))
 			{
@@ -343,7 +345,7 @@ namespace Resource
 			Log::Error(std::wstring(L"Failed to map resource type '")
 				+ ResourceDefinition::Get(type)->name
 				+ L"' (error message: '"
-				+ _wcserror(error.code) + L"')");
+				+ _wcserror(error.code().value()) + L"')");
 
 			return false;
 		}
@@ -556,6 +558,6 @@ namespace Resource
 		const ResourceType type, 
 		const std::wstring name)
 	{
-		return MakeResourceTypePath(type) + L"/" + name;
+		return MakeResourceTypePath(type) + L"/" + name; // add extension
 	}
 }

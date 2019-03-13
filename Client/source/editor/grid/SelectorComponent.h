@@ -81,10 +81,10 @@ namespace Editor
 
 					selections.back().setFillColor(selectionColor);
 					selections.back().setSize(
-						tile->getShape()->getSize()
+						tile->getShape().getSize()
 					);
 					selections.back().setPosition(
-						tile->getShape()->getPosition()
+						tile->getShape().getPosition()
 					);
 				}
 			}

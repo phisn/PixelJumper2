@@ -64,6 +64,7 @@ namespace Device
 
 		const sf::RenderWindow* GetWindow();
 
+		void ResetView();
 		void SetView(const sf::View& view);
 		const sf::View& GetView();
 

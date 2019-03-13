@@ -26,12 +26,17 @@ namespace Game
 	class CollisionContainer
 	{
 	public:
+		bool has(
+			const CollisionEngine::CollisionInfo::Type type) const
+		{
+			return !!infos[type];
+		}
+
 		CollidableTile* operator[](
 			const CollisionEngine::CollisionInfo::Type type) const
 		{
 			return infos[type];
 		}
-
 
 		void clear()
 		{

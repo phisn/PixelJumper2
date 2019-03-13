@@ -51,11 +51,11 @@ namespace Editor
 
 		void convertRange()
 		{
-			selectPosition1 = view->convertPtoC(sf::Vector2i(
+			selectPosition1 = view->mapPixelToCoords(sf::Vector2i(
 				input->offset.x + (input->size.x < 0 ? input->size.x : 0),
 				input->offset.y + (input->size.y < 0 ? input->size.y : 0)
 			)); // 2 is always bigger
-			selectPosition2 = view->convertPtoC(sf::Vector2i(
+			selectPosition2 = view->mapPixelToCoords(sf::Vector2i(
 				input->offset.x + (input->size.x >= 0 ? input->size.x : 0),
 				input->offset.y + (input->size.y >= 0 ? input->size.y : 0)
 			));
@@ -91,11 +91,11 @@ namespace Editor
 			*/
 
 			for (Editor::TileBase* tile : Manipulator::GetWorld()->getTiles())
-				if (tile->getShape()->getPosition().x + tile->getShape()->getSize().x > selectPosition1.x &&
-					tile->getShape()->getPosition().y + tile->getShape()->getSize().y > selectPosition1.y &&
+				if (tile->getShape().getPosition().x + tile->getShape().getSize().x > selectPosition1.x &&
+					tile->getShape().getPosition().y + tile->getShape().getSize().y > selectPosition1.y &&
 
-					tile->getShape()->getPosition().x < selectPosition2.x &&
-					tile->getShape()->getPosition().y < selectPosition2.y)
+					tile->getShape().getPosition().x < selectPosition2.x &&
+					tile->getShape().getPosition().y < selectPosition2.y)
 				{
 					if (!tileFound)
 					{

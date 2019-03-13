@@ -124,6 +124,22 @@ namespace Device
 		return window;
 	}
 
+	void Screen::ResetView()
+	{
+		window->setView(window->getDefaultView());
+	}
+
+	void Screen::SetView(
+		const sf::View& view)
+	{
+		window->setView(view);
+	}
+
+	const sf::View& Screen::GetView()
+	{
+		return window->getView();
+	}
+
 	void Screen::BeginDraw()
 	{
 		window->clear();

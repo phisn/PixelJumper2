@@ -6,6 +6,8 @@ namespace Game
 
 	GameWorld* GameWorld::Create(Resource::World * const worldResource)
 	{
+		return NULL;
+		/*
 		Log::Section section(L"Creating world from WorldResource");
 
 		section.information(L"Map: " + worldResource->HeaderAuth.mapName);
@@ -36,7 +38,7 @@ namespace Game
 				return NULL;
 			}
 
-			result->insertTile<GameTileBase>(tile);
+			result-><GameTileBase>(tile);
 			tile->registerType(this);
 		}
 
@@ -70,6 +72,7 @@ namespace Game
 		result->Visual.sprite.setTexture(result->Visual.texture);
 
 		return result;
+		*/
 	}
 
 }

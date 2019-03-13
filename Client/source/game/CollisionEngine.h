@@ -22,6 +22,12 @@ namespace Game
 
 		const bool invertPlayer;
 		const bool invertTile;
+
+		bool operator==(const CollisionType& info) const
+		{
+			return *(int*)this == *(int*)&info;
+		}
+
 	private:
 		char padding = 0;
 	};
@@ -178,3 +184,11 @@ static bool operator==(
 	return *(int*)&ct1 == *(int*)&ct2;
 }
 
+template <>
+struct std::hash<Game::CollisionType>
+{
+	size_t operator()(const Game::CollisionType& type) const
+	{
+		return *(int*) &type;
+	}
+};

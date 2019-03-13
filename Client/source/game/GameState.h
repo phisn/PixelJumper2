@@ -15,62 +15,6 @@ namespace Game
 	};
 
 	template <typename T>
-	class StateProperty
-	{
-	public:
-		typedef std::function<void(const T oldValue)> Listener;
-
-		StateProperty(T& value)
-		{
-		}
-
-		void callListeners(const T oldValue)
-		{
-			for (const Listener& listener : listeners)
-			{
-				listener(oldValue);
-			}
-		}
-
-		void removeListener(
-			const Listener listener)
-		{
-			listeners.erase(listener);
-		}
-
-		void addListener(
-			const Listener listener)
-		{
-			listeners.insert(listener);
-		}
-
-		StateProperty& operator=(const T value)
-		{
-			const T oldValue = this->value;
-			this->value = value;
-
-			callListeners(value);
-
-			return *this;
-		}
-
-		T getValue() const
-		{
-			return value;
-		}
-
-		operator const T() const
-		{
-			return value;
-		}
-
-	private:
-		std::unordered_set<Listener> listeners;
-		T& value;
-	};
-
-
-	template <typename T>
 	class PropertyWriter
 	{
 		typedef std::function<void(const T)> Listener;
@@ -94,17 +38,24 @@ namespace Game
 
 		void addListener(const Listener listener)
 		{
-			listeners.insert(listener);
+			listeners.push_back(listener);
 		}
 
 		void removeListener(const Listener listener)
 		{
-			listeners.erase(listener);
+			for (decltype(listeners)::iterator iterator = listeners.begin()
+				; iterator != listeners.end(); ++iterator)
+				if (iterator->target<void>() == listener.target<void>())
+				{
+					listeners.erase(iterator);
+
+					break;
+				}
 		}
 
 	private:
 		T& value;
-		std::unordered_set<Listener> listeners;
+		std::vector<Listener> listeners;
 	};
 
 }

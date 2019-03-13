@@ -37,13 +37,12 @@ namespace Editor
 
 		void draw()
 		{
-			DEVICE::Interface::GetScreen()->resetView();
-
 			component.drawMarker();
 
 			view->applyView();
-
 			component.drawSelection();
+
+			Device::Screen::ResetView();
 		}
 
 		void begin(

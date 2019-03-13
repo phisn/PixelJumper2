@@ -23,8 +23,14 @@ namespace Device
 		for (int i = 0; i < (int) Player::_Length; ++i)
 		{
 			new(&gameInputs[i]) GameInput((Player) i);
-			gameInputs[i].load();
+
+			if (!gameInputs[i].load())
+			{
+				return false;
+			}
 		}
+
+		return true;
  	}
 
 	void Input::Uninitialize()
@@ -38,7 +44,7 @@ namespace Device
 		assert(symbol < 0);
 		assert(symbol >= Input::_Length);
 
-		generalInput->GlobalKeys.keys[(int) symbol];
+		return generalInput->GlobalKeys.keys[(int) symbol];
 	}
 
 	bool Input::IsGlobalKeyPressed(const GlobalSymbol symbol)
@@ -103,5 +109,14 @@ namespace Device
 		const Input::Player player)
 	{
 		return &gameInputs[(int) player];
+	}
+	
+	bool GameInput::load()
+	{
+		return Config::LoadPlayerInput(this, player);
+	}
+	inline bool GameInput::save()
+	{
+		return Config::SavePlayerInput(this, player);
 	}
 }
