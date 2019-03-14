@@ -21,6 +21,11 @@ namespace Game
 	public:
 		static const sf::Color COLOR;
 
+		static GameTileBase* Create(
+			Resource::Tile* const tile)
+		{
+		}
+
 		WallTile(
 			const float density,
 			const float drag,

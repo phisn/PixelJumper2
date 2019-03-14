@@ -25,7 +25,7 @@ namespace Game
 		{
 		}
 
-		T& operator=(const T value)
+		PropertyWriter<T>& operator=(const T value)
 		{
 			const T oldValue = this->value;
 			this->value = value;
@@ -34,6 +34,8 @@ namespace Game
 			{
 				listener(oldValue);
 			}
+
+			return *this;
 		}
 
 		void addListener(const Listener listener)

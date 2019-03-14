@@ -162,7 +162,12 @@ namespace Game
 
 		void setJumpAssist(const bool mode)
 		{
+			jumpAssist = mode;
+		}
 
+		void applyView() const
+		{
+			Device::Screen::SetView(view);
 		}
 
 	private:

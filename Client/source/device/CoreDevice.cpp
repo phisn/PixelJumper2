@@ -12,14 +12,14 @@
 
 #include <Client/source/resource/ResourceInterface.h>
 
-#include <Client/source/scene/EditorScene.h>
+#include <Client/source/scene/TestGameScene.h>
 #include <Client/source/scene/LocalGameScene.h>
 
 namespace Device
 {
 	Framework::Context* MakeMainContext()
 	{
-		return Framework::Context::Create<Scene::EditorScene>();
+		return Framework::Context::Create<Scene::TestGameScene>();
 	}
 
 	Core::Error Core::Initialize()

@@ -53,7 +53,7 @@ namespace Game
 		return true;
 	}
 
-	void Environment::draw()
+	void Environment::draw() const
 	{
 		for (DrawableTile* const tile : getTileType<DrawableTile>())
 		{

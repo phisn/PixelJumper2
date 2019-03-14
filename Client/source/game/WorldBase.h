@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/game/GameTileFactory.h>
 #include <Client/source/game/Environment.h>
 #include <Client/source/game/PlayerBase.h>
 #include <Client/source/game/WorldState.h>
@@ -8,6 +9,8 @@
 #include <Client/source/game/tiletrait/InitializableTile.h>
 
 #include <Client/source/resource/WorldResource.h>
+
+#include <Client/source/logger/Logger.h>
 
 #include <vector>
 
@@ -35,6 +38,32 @@ namespace Game
 		bool initialize(
 			Resource::World* const resource)
 		{
+			Log::Section section(L"Creating world from WorldResource");
+
+			section.information(L"Map: " + resource->HeaderAuth.mapName);
+			section.information(L"Author: " + resource->HeaderAuth.authorName);
+			section.information(L"ID: " + std::to_wstring(resource->HeaderIntro.worldID));
+			section.information(L"TileCount: " + std::to_wstring(resource->HeaderProperties.tileCount));
+			section.information(L"Width: " + std::to_wstring(resource->HeaderProperties.width));
+			section.information(L"Height: " + std::to_wstring(resource->HeaderProperties.height));
+
+			worldProperties.authorName = resource->HeaderAuth.authorName;
+			worldProperties.mapName = resource->HeaderAuth.mapName;
+
+			for (Resource::Tile& tileResource : resource->TileContainer)
+			{
+				GameTileBase* const tile = GameTileFactory::Create(&tileResource);
+
+				if (tile == NULL)
+				{
+					delete tile;
+					section.error(L"Failed to create tile");
+					return false;
+				}
+
+				environment.registerTile<GameTileBase>(tile);
+			}
+
 			for (GameTileBase* const tile : environment.getTileType<GameTileBase>())
 			{
 				tile->registerType(&environment);
@@ -46,9 +75,11 @@ namespace Game
 			}
 
 			worldProperties.worldId = resource->HeaderIntro.worldID;
+
+			return true;
 		}
 
-		virtual void onDraw()
+		virtual void draw()
 		{
 			environment.draw();
 
@@ -96,7 +127,7 @@ namespace Game
 			return &environment;
 		}
 
-		const std::vector<PlayerBase*>& getPalyers() const
+		const std::vector<PlayerBase*>& getPlayers() const
 		{
 			return players;
 		}
@@ -110,7 +141,11 @@ namespace Game
 
 		struct
 		{
+			std::wstring authorName;
+			std::wstring mapName;
+
 			Resource::WorldId worldId;
+			sf::Vector2f size;
 
 		} worldProperties;
 

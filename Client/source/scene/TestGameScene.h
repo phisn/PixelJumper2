@@ -92,8 +92,9 @@ namespace Scene
 
 		void onDraw() override
 		{
-			hostWorld.onDraw(); // TODO: draw inside player? !!!
-			player->draw();
+			player->applyView();
+			hostWorld.draw();
+			Device::Screen::ResetView();
 		}
 
 	private:

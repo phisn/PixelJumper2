@@ -9,15 +9,15 @@ namespace
 	std::map<Game::TileId, Editor::TileTemplate*> tileTemplates;
 }
 
-#define INSERT_TILETEMPLATE_DIFFER(gname, ename) \
+#define INSERT_TILE_TEMPLATE_DIFFER(gname, ename) \
 	tileTemplates[Game::TileId::##gname] = new ename##Template()
-#define INSERT_TILETEMPLATE(name) INSERT_TILETEMPLATE_DIFFER(name, name)
+#define INSERT_TILE_TEMPLATE(name) INSERT_TILE_TEMPLATE_DIFFER(name, name)
 
 namespace Editor
 {
 	void TileTemplateFactory::Initialize()
 	{
-		INSERT_TILETEMPLATE(Wall);
+		INSERT_TILE_TEMPLATE(Wall);
 	}
 
 	void TileTemplateFactory::Uninitialize()
