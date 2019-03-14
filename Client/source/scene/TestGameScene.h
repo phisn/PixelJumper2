@@ -23,6 +23,8 @@ namespace Scene
 
 		bool onCreate() override
 		{
+			Game::GameTileFactory::Initialize();
+
 			Resource::World world;
 
 			if (!Resource::Interface::LoadResource(

@@ -29,9 +29,9 @@ namespace Game
 		sf::Vector2f position;
 		sf::Vector2f movement;
 
-		float speed;
-		float weight;
-		float friction;
+		float speed = 5;
+		float weight = 10;
+		float friction = 1;
 
 		_IsOnGround isOnGround;
 		sf::Vector2f respawnPoint;
@@ -54,7 +54,8 @@ namespace Game
 		:
 		public GameState
 	{
-		PlayerStateProperties properties;
+		PlayerStateProperties properties = { };
+
 	public:
 		bool writeState(
 			Resource::WritePipe* const writePipe) override

@@ -27,7 +27,12 @@ namespace Editor
 				const Resource::VectorTileSize size,
 				const Resource::VectorTilePosition position) const override 
 			{
-				return new Resource::WallTile();
+				Resource::WallTile* const tile = new Resource::WallTile();
+				
+				tile->Content.density = 1.f; // TODO: Make Variable
+				tile->Content.drag = 1.f;
+
+				return tile;
 			}
 
 			bool adopt(const Resource::TileBase* const tile) override

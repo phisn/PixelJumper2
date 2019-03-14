@@ -309,9 +309,6 @@
     <ClInclude Include="source\game\GameTileFactory.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\GameWorld.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\PlayerBase.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -555,9 +552,6 @@
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\GameTileFactory.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GameWorld.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\PlayerBase.cpp">

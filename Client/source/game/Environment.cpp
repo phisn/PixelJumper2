@@ -17,8 +17,8 @@ namespace Game
 
 		for (StaticTile* const tile : getTileType<StaticTile>())
 		{
-			sf::VertexBuffer vertexBuffer(sf::VertexBuffer::Static);
-			
+			sf::VertexBuffer vertexBuffer(sf::PrimitiveType::Quads);
+		
 			if (!vertexBuffer.create(4))
 			{
 				Log::Error(L"Failed to create vertex buffer");
@@ -35,15 +35,10 @@ namespace Game
 
 			vertices[0].position = tile->getPosition();
 			vertices[1].position = tile->getPosition() + sf::Vector2f(tile->getSize().x, 0);
-			vertices[2].position = tile->getPosition() + sf::Vector2f(0, tile->getSize().y);
-			vertices[3].position = tile->getPosition() + tile->getSize();
+			vertices[2].position = tile->getPosition() + tile->getSize();
+			vertices[3].position = tile->getPosition() + sf::Vector2f(0, tile->getSize().y);
 
-			if (!vertexBuffer.update(vertexBuffer))
-			{
-				Log::Error(L"Failed to update vertex buffer");
-
-				return false;
-			}
+			vertexBuffer.update((const sf::Vertex*) &vertices);
 
 			vertexWorld.push_back(
 				std::move(vertexBuffer)

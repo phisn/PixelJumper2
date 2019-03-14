@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28407.52
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{F1517242-DD6D-44E5-A612-6E6401BDA83D}"
 EndProject
@@ -34,9 +34,11 @@ Global
 		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.DebugDynamic|x64.Build.0 = DebugDynamic|x64
 		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.DebugDynamic|x86.ActiveCfg = DebugDynamic|x64
 		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.DebugStatic|Any CPU.ActiveCfg = DebugStatic|x64
+		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.DebugStatic|Any CPU.Build.0 = DebugStatic|x64
 		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.DebugStatic|x64.ActiveCfg = DebugStatic|x64
 		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.DebugStatic|x64.Build.0 = DebugStatic|x64
 		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.DebugStatic|x86.ActiveCfg = DebugStatic|x64
+		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.DebugStatic|x86.Build.0 = DebugStatic|x64
 		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.Release|Any CPU.ActiveCfg = DebugDynamic|x64
 		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.Release|Any CPU.Build.0 = DebugDynamic|x64
 		{F1517242-DD6D-44E5-A612-6E6401BDA83D}.Release|x64.ActiveCfg = DebugDynamic|x64
@@ -56,10 +58,10 @@ Global
 		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugDynamic|x86.Build.0 = Debug|Win32
 		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|Any CPU.ActiveCfg = Release|x64
 		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|Any CPU.Build.0 = Release|x64
-		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|x64.ActiveCfg = Debug|x64
-		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|x64.Build.0 = Debug|x64
-		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|x86.ActiveCfg = Debug|Win32
-		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|x86.Build.0 = Debug|Win32
+		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|x64.ActiveCfg = Release|x64
+		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|x64.Build.0 = Release|x64
+		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|x86.ActiveCfg = Release|x64
+		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.DebugStatic|x86.Build.0 = Release|x64
 		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.Release|Any CPU.ActiveCfg = Release|Win32
 		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.Release|x64.ActiveCfg = Release|x64
 		{7892CFFC-AC3A-46E2-A38A-EC3A5FFADD8E}.Release|x64.Build.0 = Release|x64

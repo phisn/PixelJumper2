@@ -27,5 +27,7 @@
 	}
 	
 	Log::Information(L"Starting game");
-	return Device::Core::RunGameLoop();
+	int result = Device::Core::RunGameLoop();
+	std::cin.ignore();
+	return result;
 }

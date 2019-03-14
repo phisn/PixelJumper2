@@ -2,5 +2,5 @@
 
 namespace Game
 {
-	const sf::Color WallTile::COLOR = sf::Color(20, 20, 20);
+	const sf::Color WallTile::COLOR = sf::Color(170, 170, 170);
 }

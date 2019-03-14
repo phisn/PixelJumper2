@@ -12,8 +12,8 @@
 
 #include <Client/source/resource/ResourceInterface.h>
 
+#include <Client/source/scene/EditorScene.h>
 #include <Client/source/scene/TestGameScene.h>
-#include <Client/source/scene/LocalGameScene.h>
 
 namespace Device
 {

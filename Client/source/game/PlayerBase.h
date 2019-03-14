@@ -70,6 +70,9 @@ namespace Game
 			:
 			type(type)
 		{
+			shape.setSize({ 1, 1 });
+			shape.setPosition({ 1, 1 });
+			shape.setFillColor(sf::Color::Red);
 		}
 
 		virtual void onLogic(const sf::Time) = 0;

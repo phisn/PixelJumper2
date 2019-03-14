@@ -76,6 +76,11 @@ namespace Game
 
 			worldProperties.worldId = resource->HeaderIntro.worldID;
 
+			if (!environment.initialize(resource))
+			{
+				return false;
+			}
+
 			return true;
 		}
 
@@ -91,7 +96,7 @@ namespace Game
 
 		virtual void onLogic(const sf::Time time)
 		{
-			sf::Uint64 fullTimeValue = time.asMicroseconds() / 1000;
+			sf::Int64 fullTimeValue = time.asMicroseconds() / 1000;
 
 			do {
 				fullTimeValue -= TIME_STEP;
@@ -115,6 +120,7 @@ namespace Game
 		void addPlayer(PlayerBase* const player)
 		{
 			players.push_back(player);
+			player->initializeFromState();
 		}
 
 		Resource::WorldId getWorldId() const

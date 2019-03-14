@@ -10,7 +10,7 @@ namespace
 }
 
 #define INSERT_TILE_CREATOR_DIFFER(gname, ename) \
-	tileCreators[Game::TileId::##gname] = Game::ename##Tile::Creates
+	tileCreators[Game::TileId::##gname] = Game::ename##Tile::Create
 #define INSERT_TILE_CREATOR(name) \
 	INSERT_TILE_CREATOR_DIFFER(name, name)
 
@@ -25,11 +25,12 @@ namespace Game
 
 	void GameTileFactory::Uninitialize()
 	{
+		tileCreators.clear();
 	}
 
 	GameTileBase* GameTileFactory::Create(
 		Resource::Tile* const tileResource)
 	{
-
+		return tileCreators[tileResource->Header.id](tileResource);
 	}
 }

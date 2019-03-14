@@ -28,15 +28,25 @@ namespace Game
 		const std::vector<ValueType*>& getTileType() const
 		{
 			decltype(tiles)::const_iterator iterator = tiles.find(typeid(HashType).hash_code());
-			assert(iterator != tiles.cend());
+
+			if (iterator == tiles.cend())
+			{
+				return (const std::vector<ValueType*>&) emptyVector;
+			}
+
 			return (const std::vector<ValueType*>&) iterator->second;
 		}
 
 		const std::vector<CollidableTile*>& getCollisionTileType(const CollisionType type)
 		{
-			decltype(collisionTypeTiles)::iterator result = collisionTypeTiles.find(type);
-			assert(result != collisionTypeTiles.cend());
-			return result->second;
+			decltype(collisionTypeTiles)::iterator iterator = collisionTypeTiles.find(type);
+
+			if (iterator == collisionTypeTiles.cend())
+			{
+				return (const std::vector<CollidableTile*>&) emptyVector;
+			}
+
+			return iterator->second;
 		}
 
 		template <typename HashType, typename ValueType = HashType>
@@ -83,6 +93,7 @@ namespace Game
 		> collisionTypeTiles;
 
 		std::vector<CollisionType> collisionTypes;
+		std::vector<GameTileBase*> emptyVector;
 
 		std::vector<
 			sf::VertexBuffer

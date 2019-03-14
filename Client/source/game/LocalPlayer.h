@@ -133,10 +133,10 @@ namespace Game
 
 		void onLogic(const sf::Time time)
 		{
-			while (input->hasNextCoreKey())
-			{
-				onCoreSymbol(input->popNextCoreKey(), time);
-			}
+		//	while (input->hasNextCoreKey())
+		//	{
+		//		onCoreSymbol(input->popNextCoreKey(), time);
+		//	}
 		}
 
 		InputRoutine<sf::Time> triggerRoutine{
@@ -392,7 +392,8 @@ namespace Game
 
 		void update_default_view()
 		{
-
+			view.setCenter({ 0, 0 });
+			view.setSize({ 30, 20 });
 		}
 	};
 }

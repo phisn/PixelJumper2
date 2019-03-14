@@ -5,7 +5,7 @@
 
 #include <Client/source/game/WorldBase.h>
 
-
+#include <Client/source/resource/tiles/ResourceWall.h>
 
 
 // test
@@ -24,6 +24,26 @@ namespace Game
 		static GameTileBase* Create(
 			Resource::Tile* const tile)
 		{
+			Resource::WallTile* resource = (Resource::WallTile*) tile->Content;
+
+			if (tile->Header.contentSize != sizeof(Resource::WallTile::Content))
+			{
+				return NULL;
+			}
+
+			return new WallTile(
+				resource->Content.density,
+				resource->Content.drag,
+
+				sf::Vector2f(
+					tile->Header.x,
+					tile->Header.y
+				),
+				sf::Vector2f(
+					tile->Header.width,
+					tile->Header.height
+				)
+			);
 		}
 
 		WallTile(
@@ -33,7 +53,7 @@ namespace Game
 			const sf::Vector2f size)
 			:
 			StaticTile(
-				sf::Color::White,
+				COLOR,
 				position,
 				size),
 			drag(drag),

@@ -15,12 +15,26 @@ namespace Resource
 			:
 			TileBase(
 				Game::TileId::Wall,
-				NULL)
+				sizeof(Content))
 		{
 		}
 
-		bool make(ReadPipe*	 const pipe) override { return true; }
-		bool save(WritePipe* const pipe) override { return true; }
+		bool make(ReadPipe*	const pipe) override 
+		{ 
+			return pipe->readValue(&Content);
+		}
+
+		bool save(WritePipe* const pipe) override 
+		{ 
+			return pipe->writeValue(&Content);
+		}
+
+		struct
+		{
+			float density;
+			float drag;
+
+		} Content;
 	};
 }
 
