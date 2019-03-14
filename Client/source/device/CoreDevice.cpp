@@ -42,11 +42,12 @@ namespace Device
 		{
 			return Core::Error::ScreenError;
 		}
-
+		/*
 		if (!Input::Initialize())
 		{
 			return Core::Error::InputError;
 		}
+		*/
 
 		return Core::Error::Success;
 	}

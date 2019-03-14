@@ -9,10 +9,10 @@
 
 namespace Scene
 {
-	class MainBase
+	class MainSceneBase
 	{
 	public:
-		virtual ~MainBase() { }
+		virtual ~MainSceneBase() { }
 
 		_Success_(return == true)
 		// can fail & must NOT call (framework) interface

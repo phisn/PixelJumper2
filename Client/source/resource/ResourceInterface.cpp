@@ -186,7 +186,7 @@ namespace Resource
 			return false;
 		}
 
-		resourceTypes[type][path.filename().wstring()] = std::move(fileDefinition);
+		resourceTypes[type][path.stem().wstring()] = std::move(fileDefinition);
 
 		return true;
 	}
@@ -324,7 +324,7 @@ namespace Resource
 					continue;
 				}
 
-				if (ResourceDefinition::Get(type)->hasExtension && (directoryEntry.path().has_extension()
+				if (ResourceDefinition::Get(type)->hasExtension && (!directoryEntry.path().has_extension()
 					|| ResourceDefinition::Get(type)->extension != directoryEntry.path().extension()))
 				{
 					Log::Warning(L"File with invalid extension "
@@ -558,6 +558,13 @@ namespace Resource
 		const ResourceType type, 
 		const std::wstring name)
 	{
-		return MakeResourceTypePath(type) + L"/" + name; // add extension
+		if (ResourceDefinition::Get(type)->hasExtension)
+		{
+			return MakeResourceTypePath(type) + L"/" + name + ResourceDefinition::Get(type)->extension;
+		}
+		else
+		{
+			return MakeResourceTypePath(type) + L"/" + name; // add extension
+		}
 	}
 }

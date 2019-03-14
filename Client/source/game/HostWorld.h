@@ -1,11 +1,14 @@
 #pragma once
 
-namespace World
+#include <Client/source/game/WorldBase.h>
+
+namespace Game
 {
 	class HostWorld
+		:
+		public WorldBase
 	{
 	public:
-		HostWorld();
-		~HostWorld();
+		using WorldBase::WorldBase;
 	};
 }

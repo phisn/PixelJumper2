@@ -33,8 +33,8 @@ namespace Resource
 		}
 
 		virtual bool isValid() const = 0;
-	private:
-		sf::Uint64 position;
+	protected:
+		sf::Uint64 position = 0;
 	};
 
 	class WritePipe

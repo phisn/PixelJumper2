@@ -27,7 +27,7 @@ namespace Framework
 		}
 
 		Context(
-			SCENE::MainBase* mainScene)
+			SCENE::MainSceneBase* mainScene)
 			:
 			mainScene(mainScene)
 		{
@@ -79,7 +79,7 @@ namespace Framework
 		ResourceContext resourceContext;
 
 		std::stack<SCENE::SubBase*> subScenes;
-		SCENE::MainBase* mainScene;
+		SCENE::MainSceneBase* mainScene;
 
 		void updateSeqAnimation(
 			const sf::Time time);

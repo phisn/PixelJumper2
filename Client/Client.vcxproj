@@ -142,6 +142,7 @@
     <ClInclude Include="source\scene\MainSceneBase.h" />
     <ClInclude Include="source\scene\MenuBaseScene.h" />
     <ClInclude Include="source\scene\SubSceneBase.h" />
+    <ClInclude Include="source\scene\TestGameScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\CoreDevice.cpp" />
@@ -221,6 +222,7 @@
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
+    <ClCompile Include="source\scene\TestGameScene.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>

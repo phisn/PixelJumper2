@@ -43,12 +43,12 @@ namespace Resource
 	namespace ResourceTypeExtension
 	{
 		static constexpr bool HAS_SETTINGS = true;
-		static constexpr wchar_t SETTINGS[] = L"stg";
+		static constexpr wchar_t SETTINGS[] = L".stg";
 
 		static constexpr bool HAS_WORLD = true;
-		static constexpr wchar_t WORLD[] = L"wrld";
+		static constexpr wchar_t WORLD[] = L".wrld";
 
 		static constexpr bool HAS_PLAYER = true;
-		static constexpr wchar_t PLAYER[] = L"ply";
+		static constexpr wchar_t PLAYER[] = L".ply";
 	}
 }

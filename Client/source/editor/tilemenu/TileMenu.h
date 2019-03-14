@@ -86,6 +86,8 @@ namespace Editor
 			MENU::RootBase::onDraw();
 
 			container.onDraw();
+
+			Device::Screen::ResetView();
 		}
 
 		void resetLayout()

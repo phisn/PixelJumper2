@@ -7,7 +7,7 @@
 
 #include <Client/source/logger/Logger.h>
 
-#define FILE_BUFFER_SIZE 1024 * 16
+#define FILE_BUFFER_SIZE (1024 * 16)
 
 namespace Resource
 {
@@ -194,7 +194,9 @@ namespace Resource
 			const FileDefinition* const fileDefinition)
 			:
 			definition(fileDefinition),
-			file(fileDefinition->path, std::ios::in | std::ios::binary)
+			file(fileDefinition->path, std::ios::in | std::ios::binary),
+			filled(0),
+			bufferPosition(0)
 		{
 			buffer = new char[FILE_BUFFER_SIZE];
 		}
@@ -274,7 +276,8 @@ namespace Resource
 			filled = readFile(
 				buffer,
 				FILE_BUFFER_SIZE);
-			position = 0;
+
+			this->bufferPosition = this->position % FILE_BUFFER_SIZE;
 		}
 
 		sf::Uint64 readFile(
@@ -301,11 +304,12 @@ namespace Resource
 		{
 			memcpy(
 				buffer,
-				this->buffer + position,
+				this->buffer + bufferPosition,
 				size
 			);
 
 			filled -= size;
+			bufferPosition += size;
 			position += size;
 		}
 
@@ -313,6 +317,6 @@ namespace Resource
 		std::ifstream file;
 
 		char* buffer;
-		sf::Uint64 filled, position;
+		sf::Uint64 filled, bufferPosition;
 	};
 }

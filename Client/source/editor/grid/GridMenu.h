@@ -121,6 +121,8 @@ namespace Editor
 			}
 
 			selector.draw();
+
+			Device::Screen::ResetView();
 		}
 
 		void resetLayout() override

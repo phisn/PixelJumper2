@@ -83,19 +83,6 @@ namespace Game
 		:
 		public PlayerBase
 	{
-	public:
-		static LocalPlayer* Create(
-			Device::GameInput* const input,
-			const sf::FloatRect viewPort,
-			const Resource::PlayerResource resource)
-		{
-			LocalPlayer* localPlayer = new LocalPlayer(input);
-
-			localPlayer->view.setViewport(viewPort);
-
-			return localPlayer;
-		}
-
 		LocalPlayer(Device::GameInput* const input)
 			:
 			PlayerBase(PlayerType::Local),
@@ -118,6 +105,19 @@ namespace Game
 
 			state.view_position.addListener(listener);
 			state.view_size.addListener(listener);
+		}
+
+	public:
+		static LocalPlayer* Create(
+			Device::GameInput* const input,
+			const sf::FloatRect viewPort,
+			Resource::PlayerResource* const resource)
+		{
+			LocalPlayer* localPlayer = new LocalPlayer(input);
+
+			localPlayer->view.setViewport(viewPort);
+
+			return localPlayer;
 		}
 
 		void setCurrentWorld(WorldBase* const world)

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#ifdef _DEBUG or not _WIN32
+#if defined(_DEBUG) or not _WIN32
 	int main()
 #else
 	#include <Windows.h>

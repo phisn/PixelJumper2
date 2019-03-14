@@ -81,9 +81,14 @@ namespace Game
 			environment.onLogic(time);
 		}
 
+		void addPlayer(PlayerBase* const player)
+		{
+			players.push_back(player);
+		}
+
 		Resource::WorldId getWorldId() const
 		{
-
+			return worldProperties.worldId;
 		}
 
 		const Environment* getEnvironment() const

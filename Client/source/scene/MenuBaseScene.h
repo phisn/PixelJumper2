@@ -10,7 +10,7 @@ namespace Scene
 {
 	class MenuBase
 		:
-		public MainBase
+		public MainSceneBase
 	{
 	public:
 		virtual ~MenuBase() { };
