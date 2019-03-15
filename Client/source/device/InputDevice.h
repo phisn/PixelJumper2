@@ -194,7 +194,7 @@ namespace Device
 		{
 			for (GameCoreInputSymbol result = (GameCoreInputSymbol) 0
 				; (int) result < (int) GameCoreInputSymbol::_Length; ++(int&) result)
-				if (coreKeys[(int)result] == key)
+				if (coreKeys[(int) result] == key)
 				{
 					return result;
 				}

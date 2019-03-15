@@ -371,11 +371,11 @@ namespace Game
 	{
 		// quick check if precise collision
 		// detection is necessary
-		if (tilePosition.x < collisionContext->begin.x ||
-			tilePosition.y < collisionContext->end.y ||
+		if (tilePosition.x + tileSize.x < collisionContext->end.x ||
+			tilePosition.y + tileSize.y < collisionContext->end.y ||
 
-			tilePosition.x + tileSize.x > collisionContext->end.x + currentPlayerSize.x ||
-			tilePosition.y + tileSize.y > collisionContext->end.y + currentPlayerSize.y)
+			tilePosition.x > collisionContext->begin.x + currentPlayerSize.x ||
+			tilePosition.y > collisionContext->begin.y + currentPlayerSize.y)
 		{
 			return false;
 		}

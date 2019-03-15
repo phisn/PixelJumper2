@@ -113,9 +113,17 @@ namespace Device
 	
 	bool GameInput::load()
 	{
+		coreKeys[0] = sf::Keyboard::E;
+		coreKeys[1] = sf::Keyboard::R;
+		coreKeys[2] = sf::Keyboard::W;
+		coreKeys[3] = sf::Keyboard::A;
+		coreKeys[4] = sf::Keyboard::S;
+		coreKeys[5] = sf::Keyboard::D;
+
 		return Config::LoadPlayerInput(this, player);
 	}
-	inline bool GameInput::save()
+
+	bool GameInput::save()
 	{
 		return Config::SavePlayerInput(this, player);
 	}

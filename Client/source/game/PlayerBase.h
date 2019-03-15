@@ -73,12 +73,23 @@ namespace Game
 			shape.setSize({ 1, 1 });
 			shape.setPosition({ 1, 1 });
 			shape.setFillColor(sf::Color::Red);
+
+			state.position.addListener(
+				[this](const sf::Vector2f old)
+				{
+					this->isRepresentationInvalid = true;
+				});
 		}
 
 		virtual void onLogic(const sf::Time) = 0;
 
 		virtual void draw()
 		{
+			if (isRepresentationInvalid)
+			{
+				updateRepresentation();
+			}
+
 			Device::Screen::Draw(shape);
 		}
 
@@ -118,6 +129,12 @@ namespace Game
 		CollisionContainer collisionContainer;
 
 	private:
+		void updateRepresentation()
+		{
+			shape.setPosition(state.readProperties()->position);
+		}
+
+		bool isRepresentationInvalid = true;
 		sf::RectangleShape shape;
 	};
 }

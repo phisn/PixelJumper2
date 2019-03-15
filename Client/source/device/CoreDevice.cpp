@@ -42,12 +42,12 @@ namespace Device
 		{
 			return Core::Error::ScreenError;
 		}
-		/*
+		
 		if (!Input::Initialize())
 		{
 			return Core::Error::InputError;
 		}
-		*/
+		
 
 		return Core::Error::Success;
 	}
@@ -101,6 +101,8 @@ namespace Device
 			Device::Screen::BeginDraw();
 			Framework::Execution::OnDraw();
 			Device::Screen::EndDraw();
+
+			sf::sleep(sf::milliseconds(20));
 		}
 
 		return 0;

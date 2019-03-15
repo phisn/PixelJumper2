@@ -15,9 +15,9 @@ namespace Game
 	struct WorldStateProperties
 	{
 		// addition
-		sf::Vector2f gravity = { 0.f, -1.f };
+		sf::Vector2f gravity = { 0.f, 1.f };
 
-		float friction = 0.53f; // == 5% lose
+		float friction = 0.f; // 0.53f; // == 5% lose
 
 		sf::Uint32 milisecondsPassed;
 		sf::Uint16 playerCount;

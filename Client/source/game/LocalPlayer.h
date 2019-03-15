@@ -20,6 +20,7 @@ namespace Game
 	public:
 		InputRoutine(const Listener core)
 			:
+			defaultCoreFunction(core),
 			coreFunction(core)
 		{
 		}
@@ -51,13 +52,18 @@ namespace Game
 
 		void unhook()
 		{
-			coreFunction = defaultFunction;
+			coreFunction = defaultCoreFunction;
 			callListeners = true;
 		}
 
 		const Listener& getCore() const
 		{
 			return coreFunction;
+		}
+
+		const Listener& getDefaultCore() const
+		{
+			return defaultCoreFunction;
 		}
 
 	private:
@@ -69,11 +75,11 @@ namespace Game
 					listener(args...);
 				}
 
-			defaultFunction(args...);
+			coreFunction(args...);
 		}
 
 		Listener coreFunction;
-		const Listener defaultFunction;
+		const Listener defaultCoreFunction;
 
 		bool callListeners;
 		std::vector<Listener> listeners;
@@ -133,10 +139,10 @@ namespace Game
 
 		void onLogic(const sf::Time time)
 		{
-		//	while (input->hasNextCoreKey())
-		//	{
-		//		onCoreSymbol(input->popNextCoreKey(), time);
-		//	}
+			while (input->hasNextCoreKey())
+			{
+				onCoreSymbol(input->popNextCoreKey(), time);
+			}
 		}
 
 		InputRoutine<sf::Time> triggerRoutine{
@@ -270,8 +276,10 @@ namespace Game
 			const sf::Time time,
 			const Direction direction)
 		{
-			const float movementValue = time.asMicroseconds() / 1000 
-				* (1 / state.readProperties()->weight);
+			const float movementValue = time.asMicroseconds() / 1000.f
+				* 20.f
+				* state.readProperties()->speed
+				* (1.f / (1.f + state.readProperties()->weight / 1000.f));
 
 			/*
 			

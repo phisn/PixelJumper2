@@ -56,6 +56,7 @@ namespace Scene
 			}
 
 			hostWorld.addPlayer(player);
+			player->setCurrentWorld(&hostWorld);
 
 			return true;
 		}

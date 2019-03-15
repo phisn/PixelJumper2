@@ -120,6 +120,11 @@ namespace Game
 		void addPlayer(PlayerBase* const player)
 		{
 			players.push_back(player);
+
+			player->state.speed = 0.001f;
+			player->state.weight = 10.f;
+			player->state.friction = 0.f;
+
 			player->initializeFromState();
 		}
 
@@ -161,7 +166,7 @@ namespace Game
 			applyFriction(player, timeValue);
 			moveTo(
 				player,
-				player->state.readProperties()->position
+				player->state.readProperties()->movement
 				* player->state.readProperties()->speed
 				* timeValue);
 		}
@@ -186,7 +191,7 @@ namespace Game
 					timeValue);
 		}
 		
-		void moveTo(PlayerBase* const player, sf::Vector2f target)
+		void moveTo(PlayerBase* const player, sf::Vector2f targetOffset)
 		{
 			/*
 
@@ -205,14 +210,20 @@ namespace Game
 			} closestCollision;
 
 			closestCollision.tile = NULL; // == NOT_FOUND
+			/*if (player->state.readProperties()->movement.x > 0)
+			{
+				Log::Information(L"");
+			}*/
 
 			do
 			{
+				const sf::Vector2f currentTarget = player->state.readProperties()->position + targetOffset;
+
 				for (const CollisionType& collisionType : environment.getCollisionTypes())
 				{
 					const CollisionEngine::CollisionContext collisionContext = CollisionEngine::SetupCollisionContext(
 						player->state.readProperties()->position,
-						target,
+						currentTarget,
 						collisionType);
 
 					for (CollidableTile* const tile : environment.getCollisionTileType(collisionType))
@@ -237,30 +248,30 @@ namespace Game
 								closestCollision.type = &collisionType;
 							}
 						}
-
-					if (closestCollision.tile != NULL)
-					{
-						Collision collision;
-
-						collision.info = closestCollision.info;
-						collision.player = player;
-						collision.target = target;
-
-						target = closestCollision.tile->onCollision(
-							*closestCollision.type, collision);
-						player->collisionContainer.setCollision(
-							collision.info.type, 
-							closestCollision.tile);
-					}
-					else
-					{
-						player->state.position = target;
-
-						break;
-					}
 				}
 
-			} while (player->state.readProperties()->position != target);
+				if (closestCollision.tile != NULL)
+				{
+					Collision collision;
+
+					collision.info = closestCollision.info;
+					collision.player = player;
+					collision.target = currentTarget;
+
+					targetOffset = closestCollision.tile->onCollision(
+						*closestCollision.type, collision);
+					player->collisionContainer.setCollision(
+						collision.info.type,
+						closestCollision.tile);
+				}
+				else
+				{
+					player->state.position = currentTarget;
+
+					break;
+				}
+
+			} while (targetOffset.x != 0 && targetOffset.y != 0);
 		}
 	};
 }

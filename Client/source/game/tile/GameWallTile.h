@@ -91,6 +91,7 @@ namespace Game
 			else
 			{
 				movement.x = collision.player->state.readProperties()->movement.x;
+
 				remainMove.x = (collision.target.x - collision.info.position.x)
 					* WorldBase::CalculateFrictionLose(drag, collision.player->state.readProperties()->weight);
 			}
