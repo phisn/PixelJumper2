@@ -14,7 +14,8 @@ namespace Framework
 	
 	void Context::onHide()
 	{
-		delete sequentialAnimation;
+		if (sequentialAnimation)
+			delete sequentialAnimation;
 
 		for (AsyncAnimation* animation : asyncAnimations)
 		{

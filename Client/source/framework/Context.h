@@ -84,7 +84,7 @@ namespace Framework
 		void updateSeqAnimation(
 			const sf::Time time);
 		bool seqAnimRunning = false;
-		Animation* sequentialAnimation;
+		Animation* sequentialAnimation = NULL;
 
 		void updateAsyncAnimations(
 			const sf::Time time);

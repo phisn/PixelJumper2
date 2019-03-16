@@ -8,6 +8,9 @@
 
 #include <Client/source/scene/MainSceneBase.h>
 
+#include <Client/source/framework/FrameworkInterface.h>
+
+
 namespace Scene
 {
 	class TestGameScene
@@ -28,9 +31,9 @@ namespace Scene
 			Resource::World world;
 
 			if (!Resource::Interface::LoadResource(
-					&world,
-					Resource::ResourceType::World,
-					L"TestWorld"))
+				&world,
+				Resource::ResourceType::World,
+				L"TestWorld"))
 			{
 				return false;
 			}
@@ -85,6 +88,13 @@ namespace Scene
 		void onEvent(const sf::Event event) override
 		{
 			player->onEvent(event);
+
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::Key::T &&
+				event.key.control)
+			{
+				Framework::Interface::PopContext();
+			}
 		}
 
 		void onLogic(const sf::Time time) override

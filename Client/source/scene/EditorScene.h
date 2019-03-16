@@ -11,11 +11,15 @@
 #include <Client/source/editor/tilemenu/TileMenu.h>
 
 #include <Client/source/framework/FrameworkInterface.h>
+#include <Client/source/framework/Context.h>
 
 #include <Client/source/resource/ResourceInterface.h>
 #include <Client/source/resource/WorldResource.h>
 
 #include <Client/source/scene/MenuBaseScene.h>
+
+// test
+#include <Client/source/scene/TestGameScene.h>
 
 namespace Scene
 {
@@ -167,6 +171,48 @@ namespace Scene
 				}
 
 				this->running = false;
+			}
+
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::R)
+			{
+
+				Resource::World* world = Editor::Manipulator::GetWorld()->convert(
+					Device::Random::MakeRandom<int>(),
+					L"Author Name",
+					L"Map Name");
+
+				if (world == NULL)
+				{
+					Log::Error(L"Failed to create world");
+
+					return;
+				}
+
+				if (Resource::Interface::SaveResource(
+					world,
+					Resource::ResourceType::World,
+					L"TestWorld")
+					)
+				{
+					/*
+
+						Tiles are not correctly saved
+
+					*/
+
+					Log::Information(L"Successfully saved world");
+				}
+				else
+				{
+					Log::Error(L"Failed to save world");
+				}
+
+				delete world;
+
+				Framework::Interface::PushContext(
+					Framework::Context::Create<Scene::TestGameScene>()
+				);
 			}
 
 			if (event.type == sf::Event::KeyPressed &&

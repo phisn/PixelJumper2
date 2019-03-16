@@ -333,7 +333,7 @@ namespace Game
 
 			result.G_M =
 				(position.y - destination.y) /
-				(position.x - destination.y);
+				(position.x - destination.x);
 			result.G_H =
 				position.y - result.G_M * position.x;
 		}
@@ -392,7 +392,7 @@ namespace Game
 			return FindCollisionInPath(
 					collisionContext,
 					tileSize,
-					tilePosition - collisionContext->primaryOffset) 
+					tilePosition - collisionContext->primaryOffset)
 				|| 
 				FindCollisionInPath(
 					collisionContext,

@@ -134,15 +134,11 @@ namespace Game
 
 		void onEvent(const sf::Event event)
 		{
-			input->onEvent(event);
 		}
 
 		void onLogic(const sf::Time time)
 		{
-			while (input->hasNextCoreKey())
-			{
-				onCoreSymbol(input->popNextCoreKey(), time);
-			}
+			onCoreSymbol(time);
 		}
 
 		InputRoutine<sf::Time> triggerRoutine{
@@ -166,9 +162,9 @@ namespace Game
 			inputCorrection = mode;
 		}
 
-		void setJumpAssist(const bool mode)
+		void setJumpAssist(const int level)
 		{
-			jumpAssist = mode;
+			jumpAssistLevel = level;
 		}
 
 		void applyView() const
@@ -178,7 +174,7 @@ namespace Game
 
 	private:
 		bool inputCorrection = true;
-		bool jumpAssist = true;
+		int jumpAssistLevel = 3;
 
 		void initializeFromState() override
 		{
@@ -203,36 +199,26 @@ namespace Game
 		}
 
 		void onCoreSymbol(
-			const Device::GameCoreInputSymbol symbol, 
 			const sf::Time time)
 		{
-			switch (symbol)
-			{
-			case Device::GameCoreInputSymbol::Trigger:
+			if (input->isKeyPressed(Device::GameCoreInputSymbol::Trigger))
 				triggerRoutine.call(time);
 
-				break;
-			case Device::GameCoreInputSymbol::Reset:
+			if (input->isKeyPressed(Device::GameCoreInputSymbol::Reset))
 				respawnRoutine.call(time);
 
-				break;
-			case Device::GameCoreInputSymbol::Up:
+			if (input->isKeyPressed(Device::GameCoreInputSymbol::Up))
 				movementRoutine.call(time, Direction::Up);
 
-				break;
-			case Device::GameCoreInputSymbol::Left:
+			if (input->isKeyPressed(Device::GameCoreInputSymbol::Left))
 				movementRoutine.call(time, Direction::Left);
 
-				break;
-			case Device::GameCoreInputSymbol::Down:
+			if (input->isKeyPressed(Device::GameCoreInputSymbol::Down))
 				movementRoutine.call(time, Direction::Down);
 
-				break;
-			case Device::GameCoreInputSymbol::Right:
+			if (input->isKeyPressed(Device::GameCoreInputSymbol::Right))
 				movementRoutine.call(time, Direction::Right);
 
-				break;
-			}
 		}
 		
 		void onViewSymbol(const Device::GameViewInputSymbol symbol)
@@ -318,7 +304,7 @@ namespace Game
 				movement.x = -movement.x;
 			}
 
-			state.movement = state.readProperties()->movement + movement
+			state.movement = state.readProperties()->movement + sf::Vector2f{ movementValue, 0.f }
 				* (direction == Direction::Right ? 1.f : -1.f);
 		}
 
@@ -332,7 +318,7 @@ namespace Game
 			}
 
 			state.movement = state.readProperties()->movement
-				+ (jumpAssist
+				+ (jumpAssistLevel
 					? adjustForceJumpAssist(tileForce)
 					: tileForce
 				) / state.readProperties()->weight;
@@ -340,7 +326,7 @@ namespace Game
 
 		sf::Vector2f adjustForceJumpAssist(const sf::Vector2f tileForce) const
 		{	// jumping against gravity, negative gravity
-			const sf::Vector2f counterGravityForce = -currentWorld->state.readProperties()->gravity;
+			const sf::Vector2f counterGravityForce = -currentWorld->state.readProperties()->gravity * (float) jumpAssistLevel;
 
 			const float tileForceSum = fabs(tileForce.x) + fabs(tileForce.y);
 			const float completeForceSum = tileForceSum + fabs(counterGravityForce.x) + fabs(counterGravityForce.y);

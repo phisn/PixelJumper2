@@ -124,6 +124,7 @@ namespace Game
 			player->state.speed = 0.001f;
 			player->state.weight = 10.f;
 			player->state.friction = 0.f;
+			player->state.position = { 2, 0 };
 
 			player->initializeFromState();
 		}

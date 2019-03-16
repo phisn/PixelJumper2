@@ -19,7 +19,7 @@ namespace Device
 {
 	Framework::Context* MakeMainContext()
 	{
-		return Framework::Context::Create<Scene::TestGameScene>();
+		return Framework::Context::Create<Scene::EditorScene>();
 	}
 
 	Core::Error Core::Initialize()
@@ -102,7 +102,7 @@ namespace Device
 			Framework::Execution::OnDraw();
 			Device::Screen::EndDraw();
 
-			sf::sleep(sf::milliseconds(20));
+			// sf::sleep(sf::milliseconds(200));
 		}
 
 		return 0;

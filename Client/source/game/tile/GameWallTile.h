@@ -56,8 +56,8 @@ namespace Game
 				COLOR,
 				position,
 				size),
-			drag(drag),
-			CollidableTile(density)
+			drag(0.5f),
+			CollidableTile(100.f)
 		{
 		}
 
@@ -96,6 +96,7 @@ namespace Game
 					* WorldBase::CalculateFrictionLose(drag, collision.player->state.readProperties()->weight);
 			}
 
+			/*
 			if (collision.player->getType() == PlayerType::Local && collision.info.type == CollisionEngine::CollisionInfo::G3)
 			{
 				LocalPlayer* lp = (LocalPlayer*) collision.player;
@@ -117,7 +118,7 @@ namespace Game
 					});
 
 			}
-
+			*/
 			collision.player->state.movement = movement;
 			return remainMove;
 		}
