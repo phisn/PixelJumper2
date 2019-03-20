@@ -56,8 +56,7 @@ namespace Game
 				COLOR,
 				position,
 				size),
-			drag(0.5f),
-			CollidableTile(100.f)
+			CollidableTile(6.f, 0.01f)
 		{
 		}
 
@@ -77,6 +76,8 @@ namespace Game
 			const CollisionType type,
 			const Collision collision) override
 		{
+			CollidableTile::onCollision(type, collision);
+
 			collision.player->state.position = collision.info.position;
 
 			sf::Vector2f movement = { };
@@ -84,16 +85,35 @@ namespace Game
 
 			if (collision.info.isHorizontal())
 			{
+				Log::Information(L"Vertical Collision");
+
 				movement.y = collision.player->state.readProperties()->movement.y;
-				remainMove.y = (collision.target.y - collision.info.position.y)
-					* WorldBase::CalculateFrictionLose(drag, collision.player->state.readProperties()->weight);
+				/*remainMove = WorldBase::ApplyFriction(
+					&collision.player->state,
+					drag,
+					collision.timeValue,
+					true,
+					{
+						0,
+						(collision.target.y - collision.info.position.y)
+					});*/
+
+				remainMove.y = (collision.target.y - collision.info.position.y);
 			}
 			else
 			{
 				movement.x = collision.player->state.readProperties()->movement.x;
+				/*remainMove = WorldBase::ApplyFriction(
+					&collision.player->state,
+					drag,
+					collision.timeValue,
+					true,
+					{
+						(collision.target.x - collision.info.position.x),
+						0
+					});*/
 
-				remainMove.x = (collision.target.x - collision.info.position.x)
-					* WorldBase::CalculateFrictionLose(drag, collision.player->state.readProperties()->weight);
+				remainMove.x = (collision.target.x - collision.info.position.x);
 			}
 
 			/*
@@ -132,7 +152,5 @@ namespace Game
 		{
 			return StaticTile::getSize();
 		}
-	private:
-		const float drag;
 	};
 }

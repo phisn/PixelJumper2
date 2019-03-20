@@ -29,6 +29,11 @@ namespace Resource
 			return pipe->writeValue(&Content);
 		}
 
+		bool setup() override
+		{
+			return true;
+		}
+
 		struct
 		{
 			float density;

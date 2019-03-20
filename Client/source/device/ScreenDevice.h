@@ -45,6 +45,11 @@ namespace Device
 		{
 			return pipe->writeValue(&Content);
 		}
+
+		bool setup() override
+		{
+			return true;
+		}
 	};
 
 	namespace Screen

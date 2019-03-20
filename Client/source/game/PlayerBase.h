@@ -10,11 +10,80 @@
 #include <functional>
 #include <string>
 #include <unordered_set>
-
+#include <Client/source/logger/Logger.h>
 #include <SFML/Graphics.hpp>
 
 namespace Game
 {
+	// return in percent lose of movement
+	static float CalculateFrictionLose(const float friction, const float weight)
+	{
+		const float positiveTileDragValue = fabs(friction);
+		const float positivePlayerWeight = fabs(weight);
+
+		return positivePlayerWeight / (positiveTileDragValue + positivePlayerWeight);
+	}
+
+	static float FrictionLoseOverTime(const float lose, const float timeValue)
+	{
+		return std::powf(lose, timeValue);
+	}
+
+	static sf::Vector2f ApplyFriction(
+		const PlayerState* const player,
+		const float additionalFriction,
+		const float timeValue)
+	{
+		const PlayerStateProperties* const properties = player->readProperties();
+		const float friction = additionalFriction + properties->friction;
+
+		sf::Vector2f movement = properties->movement;
+
+		movement *= FrictionLoseOverTime(
+			CalculateFrictionLose(
+				friction,
+				properties->weight),
+			timeValue / 70);
+
+		const float static_lose = friction * timeValue * 3.f;
+
+		if (!player->readProperties()->hasForceLeft && !player->readProperties()->hasForceRight)
+		{
+			if (timeValue == 0.f)
+			{
+				Log::Information(std::to_wstring(static_lose));
+				Log::Information(std::to_wstring(movement.x));
+				Log::Information(std::to_wstring(friction));
+				Log::Information(std::to_wstring(timeValue == 0.f));
+				Log::Information(L"----------------");
+			}
+
+			if (fabsf(movement.x) < static_lose)
+			{
+				movement.x = 0;
+			}
+			else
+			{
+				movement.x += movement.x < 0
+					? static_lose
+					: -static_lose;
+			}
+
+			if (fabsf(movement.y) < static_lose)
+			{
+				movement.y = 0;
+			}
+			else
+			{
+				movement.y += movement.y < 0
+					? static_lose
+					: -static_lose;
+			}
+		}
+
+		return movement;
+	}
+
 	enum class PlayerType
 	{
 		Local,

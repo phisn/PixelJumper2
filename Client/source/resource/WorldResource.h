@@ -43,7 +43,35 @@ namespace Resource
 			AUTO sf::Uint32 tileCheckSum;
 		} HeaderProperties = { };
 
-		 int i = sizeof(HeaderProperties);
+		bool make(ReadPipe* const pipe) override;
+		bool save(WritePipe* const pipe) override;
+
+		bool setup()
+		{
+			HeaderIntro.magic = WORLD_MAGIC;
+
+			if (!validateHeaderIntro() ||
+				!validateHeaderAuth())
+			{
+				return false;
+			}
+
+			HeaderProperties.tileCount = (sf::Int16) TileContainer.size();
+			HeaderProperties.tileCheckSum = generateCheckSum();
+
+			if (!validateHeaderProperties())
+			{
+				return false;
+			}
+
+			for (Tile& tile : TileContainer)
+				if (!tile.setup())
+				{
+					return false;
+				}
+
+			return true;
+		}
 
 		EDIT std::vector<Resource::Tile> TileContainer;
 	private:
@@ -54,22 +82,12 @@ namespace Resource
 
 		sf::Uint32 generateCheckSum();
 
-		bool make(ReadPipe* const pipe) override;
-		bool save(WritePipe* const pipe) override;
-
 		bool readHeaderIntro(
 			ReadPipe* const pipe);
 		bool readHeaderAuth(
 			ReadPipe* const pipe);
 		bool readHeaderProperties(
 			ReadPipe* const pipe);
-
-		bool writeHeaderIntro(
-			WritePipe* const pipe);
-		bool writeHeaderAuth(
-			WritePipe* const pipe);
-		bool writeHeaderProperties(
-			WritePipe* const pipe);
 
 		bool validateHeaderIntro() const;
 		bool validateHeaderAuth() const;

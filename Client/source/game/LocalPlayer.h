@@ -12,16 +12,31 @@
 
 namespace Game
 {
+	enum class InputMode
+	{
+		Active,  // (pull  based) repeated with time
+		Passive  // (event based) not repeated without time
+	};
+
 	template <typename... Args>
 	class InputRoutine
 	{
 		friend class LocalPlayer;
-		typedef std::function<void(Args...)> Listener;
+		typedef std::function<void(const bool, Args...)> Listener;
+
 	public:
-		InputRoutine(const Listener core)
+		struct FunctionContainer
+		{
+			Listener function;
+
+			InputMode mode = Passive;
+			bool callListeners = true;
+		};
+
+		InputRoutine(const FunctionContainer defaultFunction)
 			:
-			defaultCoreFunction(core),
-			coreFunction(core)
+			defaultFunction(defaultFunction),
+			currentFunction(defaultFunction)
 		{
 		}
 
@@ -42,47 +57,51 @@ namespace Game
 				}
 		}
 
-		void hook(
-			const Listener function,
-			const bool callListeners = true)
+		void hook(FunctionContainer function)
 		{
-			coreFunction = function;
-			this->callListeners = callListeners;
+			currentFunction = function;
 		}
 
 		void unhook()
 		{
-			coreFunction = defaultCoreFunction;
-			callListeners = true;
+			currentFunction = defaultFunction;
 		}
 
-		const Listener& getCore() const
+		const FunctionContainer& getCurrentContainer() const
 		{
-			return coreFunction;
+			return currentFunction;
 		}
 
-		const Listener& getDefaultCore() const
+		const FunctionContainer& getDefaultContainer() const
 		{
-			return defaultCoreFunction;
+			return defaultFunction;
+		}
+
+		bool getCurrentState() const
+		{
+			return currentState;
 		}
 
 	private:
-		void call(Args... args)
+		void call(const bool state, Args... args)
 		{
-			if (callListeners)
+			currentState = state;
+
+			if (currentFunction.callListeners)
 				for (const Listener& listener : listeners)
 				{
-					listener(args...);
+					listener(state, args...);
 				}
 
-			coreFunction(args...);
+			currentFunction.function(state, args...);
 		}
 
-		Listener coreFunction;
-		const Listener defaultCoreFunction;
-
-		bool callListeners;
 		std::vector<Listener> listeners;
+
+		const FunctionContainer defaultFunction;
+		FunctionContainer currentFunction;
+
+		bool currentState;
 	};
 
 	class LocalPlayer
@@ -142,20 +161,29 @@ namespace Game
 		}
 
 		InputRoutine<sf::Time> triggerRoutine{
-				[this](const sf::Time time)
+			{
+				[this](const bool state, const sf::Time time)
 				{
 					handleTrigger();
-				} };
+				},
+				InputMode::Passive
+			} };
 		InputRoutine<sf::Time, Direction> movementRoutine{
-				[this](const sf::Time time, Direction direction)
+			{
+				[this](const bool state, const sf::Time time, Direction direction)
 				{
-					handleMovement(time, direction);
-				} };
+					handleMovement(state, time, direction);
+				},
+				InputMode::Active
+			} };
 		InputRoutine<sf::Time> respawnRoutine{ 
-				[this](const sf::Time time)
+			{
+				[this](const bool state, const sf::Time time)
 				{
 					handleRespawn();
-				} };
+				},
+				InputMode::Passive
+			} };
 
 		void setInputCorrection(const bool mode)
 		{
@@ -174,7 +202,7 @@ namespace Game
 
 	private:
 		bool inputCorrection = true;
-		int jumpAssistLevel = 3;
+		int jumpAssistLevel = 1;
 
 		void initializeFromState() override
 		{
@@ -201,24 +229,31 @@ namespace Game
 		void onCoreSymbol(
 			const sf::Time time)
 		{
-			if (input->isKeyPressed(Device::GameCoreInputSymbol::Trigger))
-				triggerRoutine.call(time);
+#define INPUT_STATE_DEF(symbolName, routineName, ...) \
+	if (routineName.getCurrentContainer().mode == InputMode::Active) \
+	{ \
+		routineName.call( \
+			input->isKeyPressed(Device::GameCoreInputSymbol::symbolName), \
+			time, \
+			## __VA_ARGS__); \
+	} \
+	else \
+	{ \
+		if (const bool state = input->isKeyPressed(Device::GameCoreInputSymbol::symbolName) \
+			; state != routineName.getCurrentState()) \
+		{ \
+			routineName.call(state, sf::Time(), ## __VA_ARGS__); \
+		} \
+	}
 
-			if (input->isKeyPressed(Device::GameCoreInputSymbol::Reset))
-				respawnRoutine.call(time);
+			INPUT_STATE_DEF(Trigger, triggerRoutine);
+			
+			INPUT_STATE_DEF(Up, movementRoutine, Direction::Up);
+			INPUT_STATE_DEF(Down, movementRoutine, Direction::Down);
+			INPUT_STATE_DEF(Left, movementRoutine, Direction::Left);
+			INPUT_STATE_DEF(Right, movementRoutine, Direction::Right);
 
-			if (input->isKeyPressed(Device::GameCoreInputSymbol::Up))
-				movementRoutine.call(time, Direction::Up);
-
-			if (input->isKeyPressed(Device::GameCoreInputSymbol::Left))
-				movementRoutine.call(time, Direction::Left);
-
-			if (input->isKeyPressed(Device::GameCoreInputSymbol::Down))
-				movementRoutine.call(time, Direction::Down);
-
-			if (input->isKeyPressed(Device::GameCoreInputSymbol::Right))
-				movementRoutine.call(time, Direction::Right);
-
+			INPUT_STATE_DEF(Reset, respawnRoutine);
 		}
 		
 		void onViewSymbol(const Device::GameViewInputSymbol symbol)
@@ -237,6 +272,7 @@ namespace Game
 		}
 
 		void handleMovement(
+			const bool active,
 			const sf::Time time,
 			const Direction direction)
 		{
@@ -244,84 +280,97 @@ namespace Game
 			{
 			case Direction::Left:
 			case Direction::Right:
-				onMovementHorizontal(time, direction);
+				onMovementHorizontal(active, time, direction);
 
 				break;
 			case Direction::Up:
-				onMovementJump();
+				onMovementJump(active);
 
 				break;
 			case Direction::Down:
-				Log::Warning(L"Down is not implemented yet");
+				// Log::Warning(L"Down is not implemented yet");
 
 				break;
 			}
 		}
 
 		void onMovementHorizontal(
+			const bool active,
 			const sf::Time time,
 			const Direction direction)
 		{
-			const float movementValue = time.asMicroseconds() / 1000.f
-				* 20.f
-				* state.readProperties()->speed
-				* (1.f / (1.f + state.readProperties()->weight / 1000.f));
-
-			/*
-			
-				Movement distribution dependent on gravity
-				  
-				Dx
-			   +----+
-			   | D / 
-		    Dy |  /+-------->       [Dy] scales with [gx]
-			   | / |       gx       [Dx] scales with [gy]
-			   |/  | 
-			   +   v gy    
-				   
-
-
-				         D  * gx
-				  Dy = ----------- = (D * gx) / (gx + gy)
-					   |gx| + |gy|
-				  
-				         D  * gy
-				  Dx = ----------- = (D * gy) / (gx + gy)
-					   |gx| + |gy| 
-  
-			*/
-			const sf::Vector2f gravity = currentWorld->state.readProperties()->gravity;
-			const float gravitySum = fabsf(gravity.x) + fabsf(gravity.y);
-
-			sf::Vector2f movement = 
+			if (active)
 			{
-				(movementValue * gravity.y) / gravitySum,
-				(movementValue * gravity.x) / gravitySum
-			};
+				(direction == Direction::Left ? state.hasForceLeft : state.hasForceRight) = true;
 
-			if (inputCorrection && gravity.y < 0)
-			{
-				movement.x = -movement.x;
+				const float movementValue = time.asMicroseconds() / 1000.f
+					* 20.f
+					* state.readProperties()->speed
+					* (1.f / (1.f + state.readProperties()->weight / 1000.f));
+
+				/*
+
+					Movement distribution dependent on gravity
+
+					Dx
+				   +----+
+				   | D /
+				Dy |  /+-------->       [Dy] scales with [gx]
+				   | / |       gx       [Dx] scales with [gy]
+				   |/  |
+				   +   v gy
+
+
+
+							 D  * gx
+					  Dy = ----------- = (D * gx) / (gx + gy)
+						   |gx| + |gy|
+
+							 D  * gy
+					  Dx = ----------- = (D * gy) / (gx + gy)
+						   |gx| + |gy|
+
+				*/
+				const sf::Vector2f gravity = currentWorld->state.readProperties()->gravity;
+				const float gravitySum = fabsf(gravity.x) + fabsf(gravity.y);
+
+				sf::Vector2f movement =
+				{
+					(movementValue * gravity.y) / gravitySum,
+					(movementValue * gravity.x) / gravitySum
+				};
+
+				if (inputCorrection && gravity.y < 0)
+				{
+					movement.x = -movement.x;
+				}
+
+				state.movement = state.readProperties()->movement + movement * movementValue
+					* (direction == Direction::Right ? 1.f : -1.f);
 			}
-
-			state.movement = state.readProperties()->movement + sf::Vector2f{ movementValue, 0.f }
-				* (direction == Direction::Right ? 1.f : -1.f);
+			else
+			{
+				(direction == Direction::Left ? state.hasForceLeft : state.hasForceRight) = false;
+			}
 		}
 
-		void onMovementJump()
+		void onMovementJump(const bool bstate)
 		{
-			const sf::Vector2f tileForce = getTileJumpForce();
-
-			if (tileForce.x == 0 && tileForce.y == 0)
+			if (bstate)
 			{
-				return;
-			}
+				const sf::Vector2f tileForce = getTileJumpForce();
 
-			state.movement = state.readProperties()->movement
-				+ (jumpAssistLevel
-					? adjustForceJumpAssist(tileForce)
-					: tileForce
-				) / state.readProperties()->weight;
+				if (tileForce.x == 0 && tileForce.y == 0)
+				{
+					return;
+				}
+
+				state.movement = state.readProperties()->movement
+					+ (jumpAssistLevel
+						? adjustForceJumpAssist(tileForce)
+						: tileForce
+						) / state.readProperties()->weight;
+			}
 		}
 
 		sf::Vector2f adjustForceJumpAssist(const sf::Vector2f tileForce) const
@@ -364,8 +413,9 @@ namespace Game
 			return result;
 		}
 
-		sf::View view;
 		Device::GameInput* const input;
+
+		sf::View view;
 		WorldBase* currentWorld;
 
 		void updateView()

@@ -100,15 +100,12 @@ namespace Resource
 		bool save(
 			WritePipe* const pipe) override
 		{
-			Header.id = Content->getTileId();
-			Header.contentSize = (sf::Uint16) Content->getSize();
-
-			if (!writeHeader(pipe))
+			if (!setup())
 			{
 				return false;
 			}
 
-			if (Content == NULL)
+			if (!pipe->writeValue(&Header))
 			{
 				return false;
 			}
@@ -121,19 +118,25 @@ namespace Resource
 			return true;
 		}
 
+		bool setup() override
+		{
+			if (Content == NULL)
+			{
+				return false;
+			}
+
+			Header.id = Content->getTileId();
+			Header.contentSize = (sf::Uint16) Content->getSize();
+
+			return validateHeader();
+		}
+
 	private:
 		bool readHeader(
 			ReadPipe* const pipe) const
 		{
 			return pipe->readValue(&Header)
 				&& validateHeader();
-		}
-
-		bool writeHeader(
-			WritePipe* const pipe)
-		{
-			return validateHeader() 
-				&& pipe->writeValue(&Header);
 		}
 
 		bool validateHeader() const

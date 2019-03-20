@@ -65,24 +65,24 @@ namespace Resource
 	
 	bool World::save(WritePipe* const pipe)
 	{
+		if (!setup())
+		{
+			return false;
+		}
+
 		////////// Header
-		HeaderIntro.magic = WORLD_MAGIC;
-
-		if (!writeHeaderIntro(pipe))
+		if (!pipe->writeValue(&HeaderIntro))
 		{
 			return false;
 		}
 
-		if (!writeHeaderAuth(pipe))
+		if (!pipe->writeString<AuthorNameSize>(&HeaderAuth.authorName) ||
+			!pipe->writeString<MapNameSize>(&HeaderAuth.mapName))
 		{
 			return false;
 		}
 
-		// TODO: check overflow?
-		HeaderProperties.tileCount = (sf::Int16) TileContainer.size();
-		HeaderProperties.tileCheckSum = generateCheckSum();
-
-		if (!writeHeaderProperties(pipe))
+		if (!pipe->writeValue(&HeaderProperties))
 		{
 			return false;
 		}
@@ -130,29 +130,6 @@ namespace Resource
 		}
 
 		return validateHeaderProperties();
-	}
-	
-	bool World::writeHeaderIntro(WritePipe * const pipe)
-	{
-		return validateHeaderIntro() &&
-			pipe->writeValue(&HeaderIntro);
-	}
-	
-	bool World::writeHeaderAuth(WritePipe * const pipe)
-	{
-		if (!validateHeaderAuth())
-		{
-			return false;
-		}
-
-		return pipe->writeString<AuthorNameSize>(&HeaderAuth.authorName) &&
-			pipe->writeString<MapNameSize>(&HeaderAuth.mapName);
-	}
-	
-	bool World::writeHeaderProperties(WritePipe * const pipe)
-	{
-		return validateHeaderProperties() &&
-			pipe->writeValue(&HeaderProperties);
 	}
 	
 	bool World::validateHeaderIntro() const

@@ -176,8 +176,7 @@ namespace Scene
 			if (event.type == sf::Event::KeyPressed &&
 				event.key.code == sf::Keyboard::R)
 			{
-
-				Resource::World* world = Editor::Manipulator::GetWorld()->convert(
+				Resource::World* const world = Editor::Manipulator::GetWorld()->convert(
 					Device::Random::MakeRandom<int>(),
 					L"Author Name",
 					L"Map Name");
@@ -185,33 +184,19 @@ namespace Scene
 				if (world == NULL)
 				{
 					Log::Error(L"Failed to create world");
-
 					return;
 				}
 
-				if (Resource::Interface::SaveResource(
-					world,
-					Resource::ResourceType::World,
-					L"TestWorld")
-					)
+				if (!world->setup())
 				{
-					/*
+					Log::Error(L"Invalid world");
 
-						Tiles are not correctly saved
-
-					*/
-
-					Log::Information(L"Successfully saved world");
+					delete world;
+					return;
 				}
-				else
-				{
-					Log::Error(L"Failed to save world");
-				}
-
-				delete world;
 
 				Framework::Interface::PushContext(
-					Framework::Context::Create<Scene::TestGameScene>()
+					Framework::Context::Create<Scene::TestGameScene>(world)
 				);
 			}
 

@@ -29,6 +29,9 @@ namespace Game
 		sf::Vector2f position;
 		sf::Vector2f movement;
 
+		bool hasForceLeft;
+		bool hasForceRight;
+
 		float speed = 5;
 		float weight = 10;
 		float friction = 1;
@@ -76,6 +79,9 @@ namespace Game
 
 		PropertyWriter<sf::Vector2f> position{ properties.position };
 		PropertyWriter<sf::Vector2f> movement{ properties.movement };
+
+		PropertyWriter<bool> hasForceLeft{ properties.hasForceLeft };
+		PropertyWriter<bool> hasForceRight{ properties.hasForceRight };
 
 		PropertyWriter<float> speed{ properties.speed };
 		PropertyWriter<float> weight{ properties.weight };

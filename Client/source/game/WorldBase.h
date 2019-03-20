@@ -21,20 +21,6 @@ namespace Game
 	public:
 		WorldState state;
 
-		// return in percent lose of movement
-		static float CalculateFrictionLose(const float friction, const float weight)
-		{
-			const float positiveTileDragValue = fabs(friction);
-			const float positivePlayerWeight = fabs(weight);
-
-			return positivePlayerWeight / (positiveTileDragValue + positivePlayerWeight);
-		}
-		
-		static float FrictionLoseOverTime(const float lose, const float timeValue)
-		{
-			return std::powf(lose, timeValue);
-		}
-
 		bool initialize(
 			Resource::World* const resource)
 		{
@@ -121,8 +107,8 @@ namespace Game
 		{
 			players.push_back(player);
 
-			player->state.speed = 0.001f;
-			player->state.weight = 10.f;
+			player->state.speed = 0.0012f;
+			player->state.weight = 1.f;
 			player->state.friction = 0.f;
 			player->state.position = { 2, 0 };
 
@@ -161,15 +147,14 @@ namespace Game
 
 		} worldProperties;
 
-		void simulatePlayers(PlayerBase* const player, const float timeValue)
+		void simulatePlayers(
+			PlayerBase* const player, 
+			const float timeValue)
 		{
 			applyGravity(player, timeValue);
-			applyFriction(player, timeValue);
-			moveTo(
-				player,
-				player->state.readProperties()->movement
-				* player->state.readProperties()->speed
-				* timeValue);
+			applyAirResistance(player, timeValue);
+
+			moveTo(player, timeValue);
 		}
 
 		void applyGravity(PlayerBase* const player, const float timeValue)
@@ -180,20 +165,23 @@ namespace Game
 				* player->state.readProperties()->speed;
 		}
 
-		void applyFriction(PlayerBase* const player, const float timeValue)
+		void applyAirResistance(
+			PlayerBase* const player,
+			const float timeValue)
 		{
 			player->state.movement = player->state.readProperties()->movement
-				* FrictionLoseOverTime(
-					CalculateFrictionLose(
-						player->state.readProperties()->friction
-						+ state.readProperties()->friction,
-						player->state.readProperties()->weight
-					),
-					timeValue);
+				* CalculateFrictionLose(
+					state.readProperties()->airResistance,
+					player->state.readProperties()->weight
+				);
 		}
 		
-		void moveTo(PlayerBase* const player, sf::Vector2f targetOffset)
+		void moveTo(PlayerBase* const player, const float timeValue)
 		{
+			sf::Vector2f targetOffset = player->state.readProperties()->movement
+				* player->state.readProperties()->speed
+				* timeValue;
+
 			/*
 
 				Very unoptimized
@@ -210,11 +198,7 @@ namespace Game
 
 			} closestCollision;
 
-			closestCollision.tile = NULL; // == NOT_FOUND
-			/*if (player->state.readProperties()->movement.x > 0)
-			{
-				Log::Information(L"");
-			}*/
+			closestCollision.tile = NULL;
 
 			do
 			{
@@ -259,11 +243,32 @@ namespace Game
 					collision.player = player;
 					collision.target = currentTarget;
 
+					const sf::Vector2f deltaCollision = player->state.readProperties()->position 
+						- closestCollision.info.position;
+
+					if (deltaCollision.x != 0)
+					{
+						collision.timeValue = timeValue - (deltaCollision.x / targetOffset.x) * timeValue;
+					}
+					else if (deltaCollision.y != 0)
+					{
+						collision.timeValue = timeValue - (deltaCollision.y / targetOffset.y) * timeValue;
+					}
+					else
+					{
+						collision.timeValue = 0;
+					}
+
 					targetOffset = closestCollision.tile->onCollision(
 						*closestCollision.type, collision);
 					player->collisionContainer.setCollision(
 						collision.info.type,
 						closestCollision.tile);
+
+
+					// replace
+					closestCollision.tile = NULL;
+					closestCollision.distance = std::numeric_limits<float>::max();
 				}
 				else
 				{
@@ -272,7 +277,7 @@ namespace Game
 					break;
 				}
 
-			} while (targetOffset.x != 0 && targetOffset.y != 0);
+			} while (targetOffset.x != 0 || targetOffset.y != 0);
 		}
 	};
 }

@@ -38,5 +38,10 @@ namespace Resource
 		{
 
 		}
+
+		bool setup() override
+		{
+
+		}
 	};
 }

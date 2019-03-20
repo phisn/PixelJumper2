@@ -111,6 +111,11 @@ namespace Device
 			return pipe->writeValue(&Content)
 				&& pipe->writeValue(&GlobalKeys);
 		}
+
+		bool setup() override
+		{
+			return true;
+		}
 	};
 
 	class GameInput
@@ -126,6 +131,95 @@ namespace Device
 
 		bool load();
 		bool save();
+
+
+		bool hasNextCoreKey() const
+		{
+			return !coreSymbols.empty();
+		}
+
+		GameCoreInputSymbol popNextCoreKey()
+		{
+			assert(hasNextCoreKey());
+
+			const GameCoreInputSymbol result = coreSymbols.front();
+			coreSymbols.pop_front();
+
+			return result;
+		}
+
+		bool hasNextViewKey() const
+		{
+			return !viewSymbols.empty();
+		}
+
+		GameViewInputSymbol popNextViewKey()
+		{
+			assert(hasNextViewKey());
+
+			const GameViewInputSymbol result = viewSymbols.front();
+			viewSymbols.pop_front();
+
+			return result;
+		}
+
+		void onEvent(const sf::Event event)
+		{
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (const GameCoreInputSymbol coreSymbol = convertToCoreSymbol(event.key.code)
+					; coreSymbol != GameCoreInputSymbol::_Invalid)
+				{
+					for (const GameCoreInputSymbol symbol : coreSymbols)
+						if (symbol == coreSymbol)
+						{
+							return;
+						}
+
+					coreSymbols.push_back(coreSymbol);
+					return;
+				}
+
+				if (const GameViewInputSymbol viewSymbol = convertToViewSymbol(event.key.code)
+					; viewSymbol != GameViewInputSymbol::_Invalid)
+				{
+					for (const GameViewInputSymbol symbol : viewSymbols)
+						if (symbol == viewSymbol)
+						{
+							return;
+						}
+
+					viewSymbols.push_back(viewSymbol);
+					return;
+				}
+			}
+		}
+
+		GameCoreInputSymbol convertToCoreSymbol(
+			const sf::Keyboard::Key key)
+		{
+			for (GameCoreInputSymbol result = (GameCoreInputSymbol)0
+				; (int)result < (int)GameCoreInputSymbol::_Length; ++(int&)result)
+				if (coreKeys[(int)result] == key)
+				{
+					return result;
+				}
+
+			return GameCoreInputSymbol::_Invalid;
+		}
+
+		GameViewInputSymbol convertToViewSymbol(
+			const sf::Keyboard::Key key)
+		{
+			for (GameViewInputSymbol result = (GameViewInputSymbol)0
+				; (int)result < (int)GameViewInputSymbol::_Length; ++(int&)result)
+				if (coreKeys[(int)result] == key)
+				{
+					return result;
+				}
+
+			return GameViewInputSymbol::_Invalid;
+		}
 
 		bool isKeyPressed(const GameCoreInputSymbol symbol)
 		{
@@ -163,8 +257,6 @@ namespace Device
 		sf::Keyboard::Key coreKeys[(int) GameCoreInputSymbol::_Length];
 		sf::Keyboard::Key viewKeys[(int) GameViewInputSymbol::_Length];
 
-		bool keysPressed[(int)GameCoreInputSymbol::_Length] = { }; // test
-
 		const Input::Player player;
 
 		bool make(Resource::ReadPipe* const pipe) override
@@ -177,6 +269,11 @@ namespace Device
 		{
 			return pipe->writeContentSafe((char*) coreKeys, sizeof(coreKeys) * sizeof(*coreKeys))
 				&& pipe->writeContentSafe((char*) viewKeys, sizeof(viewKeys) * sizeof(*viewKeys));
+		}
+
+		bool setup() override
+		{
+			return true;
 		}
 	};
 

@@ -15,14 +15,19 @@ namespace Game
 
 		PlayerBase* player;
 		sf::Vector2f target; // expected destination
+
+		float timeValue;
 	};
 
 	class CollidableTile
 	{
 	public:
-		CollidableTile(const float density)
+		CollidableTile(
+			const float density,
+			const float friction)
 			:
-			density(density)
+			density(density),
+			friction(friction)
 		{
 		}
 
@@ -33,7 +38,15 @@ namespace Game
 
 		virtual sf::Vector2f onCollision(
 			const CollisionType type,
-			const Collision collision) = 0;
+			const Collision collision) = 0
+		{
+			collision.player->state.movement = ApplyFriction(
+				&collision.player->state,
+				friction,
+				collision.timeValue);
+
+			return { };
+		}
 		
 		// copied from / same as in GameTileBase.h
 		virtual const sf::Vector2f getPosition() const = 0;
@@ -53,5 +66,6 @@ namespace Game
 		}
 
 		const float density;
+		const float friction;
 	};
 }

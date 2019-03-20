@@ -15,9 +15,9 @@ namespace Game
 	struct WorldStateProperties
 	{
 		// addition
-		sf::Vector2f gravity = { 0.f, 10.f };
+		sf::Vector2f gravity = { 0.f, 8.f };
 
-		float friction = 0.01f; // 0.53f; // == 5% lose
+		float airResistance = 0.004f; // 0.53f; // == 5% lose
 
 		sf::Uint32 milisecondsPassed;
 		sf::Uint16 playerCount;
@@ -48,7 +48,7 @@ namespace Game
 
 		PropertyWriter<sf::Vector2f> gravity{ properties.gravity };
 
-		PropertyWriter<float> drag{ properties.friction };
+		PropertyWriter<float> airResistance{ properties.airResistance };
 
 		PropertyWriter<sf::Uint32> milisecondsPassed{ properties.milisecondsPassed };
 		PropertyWriter<sf::Uint16> playerCount{ properties.playerCount };

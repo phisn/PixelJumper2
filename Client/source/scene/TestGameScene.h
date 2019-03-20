@@ -18,9 +18,10 @@ namespace Scene
 		public MainSceneBase
 	{
 	public:
-		TestGameScene()
+		TestGameScene(Resource::World* const world = NULL)
 			:
-			hostWorld()
+			hostWorld(),
+			worldResource(world)
 		{
 		}
 
@@ -28,19 +29,29 @@ namespace Scene
 		{
 			Game::GameTileFactory::Initialize();
 
-			Resource::World world;
-
-			if (!Resource::Interface::LoadResource(
-				&world,
-				Resource::ResourceType::World,
-				L"TestWorld"))
+			if (worldResource == NULL)
 			{
-				return false;
+				Resource::World world;
+
+				if (!Resource::Interface::LoadResource(
+					&world,
+					Resource::ResourceType::World,
+					L"TestWorld"))
+				{
+					return false;
+				}
+
+				if (!hostWorld.initialize(&world))
+				{
+					return false;
+				}
 			}
-
-			if (!hostWorld.initialize(&world))
+			else
 			{
-				return false;
+				if (!hostWorld.initialize(worldResource))
+				{
+					return false;
+				}
 			}
 
 			player = Game::LocalPlayer::Create(
@@ -54,7 +65,6 @@ namespace Scene
 			if (player == NULL)
 			{
 				delete player; // TODO: delete?
-
 				return false;
 			}
 
@@ -113,5 +123,7 @@ namespace Scene
 	private:
 		Game::HostWorld hostWorld;
 		Game::LocalPlayer* player;
+
+		Resource::World* const worldResource;
 	};
 }
