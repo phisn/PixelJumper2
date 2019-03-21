@@ -33,7 +33,7 @@ namespace Game
 
 			return new WallTile(
 				resource->Content.density,
-				resource->Content.drag,
+				resource->Content.friction,
 
 				sf::Vector2f(
 					tile->Header.x,
@@ -85,8 +85,6 @@ namespace Game
 
 			if (collision.info.isHorizontal())
 			{
-				Log::Information(L"Vertical Collision");
-
 				movement.y = collision.player->state.readProperties()->movement.y;
 				/*remainMove = WorldBase::ApplyFriction(
 					&collision.player->state,

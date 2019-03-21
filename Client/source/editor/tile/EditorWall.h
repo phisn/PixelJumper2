@@ -30,7 +30,7 @@ namespace Editor
 				Resource::WallTile* const tile = new Resource::WallTile();
 				
 				tile->Content.density = 1.f; // TODO: Make Variable
-				tile->Content.drag = 1.f;
+				tile->Content.friction = 1.f;
 
 				return tile;
 			}

@@ -20,6 +20,9 @@ namespace Device
 	Framework::Context* MakeMainContext()
 	{
 		return Framework::Context::Create<Scene::EditorScene>();
+		/*
+		return Framework::Context::Create<Scene::EditorScene>();
+		*/
 	}
 
 	Core::Error Core::Initialize()

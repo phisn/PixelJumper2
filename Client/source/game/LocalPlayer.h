@@ -128,6 +128,7 @@ namespace Game
 				updateView();
 			};
 
+			state.position.addListener(listener);
 			state.view_position.addListener(listener);
 			state.view_size.addListener(listener);
 		}
@@ -190,7 +191,7 @@ namespace Game
 			inputCorrection = mode;
 		}
 
-		void setJumpAssist(const int level)
+		void setJumpAssist(const float level)
 		{
 			jumpAssistLevel = level;
 		}
@@ -202,12 +203,11 @@ namespace Game
 
 	private:
 		bool inputCorrection = true;
-		int jumpAssistLevel = 1;
+		float jumpAssistLevel = 0.5f;
 
 		void initializeFromState() override
 		{
 			PlayerBase::initializeFromState();
-			updateView();
 		}
 
 		// converts sides to correct, real sides dependent
@@ -377,6 +377,12 @@ namespace Game
 		{	// jumping against gravity, negative gravity
 			const sf::Vector2f counterGravityForce = -currentWorld->state.readProperties()->gravity * (float) jumpAssistLevel;
 
+			/*if (counterGravityForce.x > 0 ^ tileForce.x > 0 ||
+				counterGravityForce.y > 0 ^ tileForce.y > 0)
+			{
+				return tileForce;
+			}*/
+
 			const float tileForceSum = fabs(tileForce.x) + fabs(tileForce.y);
 			const float completeForceSum = tileForceSum + fabs(counterGravityForce.x) + fabs(counterGravityForce.y);
 
@@ -436,8 +442,8 @@ namespace Game
 
 		void update_default_view()
 		{
-			view.setCenter({ 0, 0 });
-			view.setSize({ 30, 20 });
+			view.setCenter(state.readProperties()->position);
+			view.setSize({ 50, 50 });
 		}
 	};
 }

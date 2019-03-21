@@ -42,7 +42,7 @@ namespace Device
 
 		// ... load settings
 		resource->Content.antialiasing = 4;
-		resource->Content.customVideoMode = sf::VideoMode(600, 400);
+		resource->Content.customVideoMode = sf::VideoMode(900, 900);
 		resource->Content.framelimit = 60;
 		resource->Content.hideCursor = true;
 		resource->Content.pauseOnLeave = true;

@@ -37,7 +37,7 @@ namespace Resource
 		struct
 		{
 			float density;
-			float drag;
+			float friction;
 
 		} Content;
 	};
