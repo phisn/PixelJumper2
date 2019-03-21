@@ -245,7 +245,7 @@ namespace Game
 
 					const sf::Vector2f deltaCollision = player->state.readProperties()->position 
 						- closestCollision.info.position;
-
+					/*
 					if (deltaCollision.x != 0)
 					{
 						collision.timeValue = timeValue - (deltaCollision.x / targetOffset.x) * timeValue;
@@ -257,7 +257,9 @@ namespace Game
 					else
 					{
 						collision.timeValue = 0;
-					}
+					}*/
+
+					collision.timeValue = timeValue;
 
 					targetOffset = closestCollision.tile->onCollision(
 						*closestCollision.type, collision);

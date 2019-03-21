@@ -30,7 +30,7 @@ namespace Game
 		sf::Vector2f movement;
 
 		bool hasForceLeft;
-		bool hasForceRight;
+		bool hasForceRight; // TODO: replace
 
 		float speed = 5;
 		float weight = 10;

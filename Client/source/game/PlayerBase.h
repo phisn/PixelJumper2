@@ -45,17 +45,17 @@ namespace Game
 				properties->weight),
 			timeValue / 70);
 
-		const float static_lose = friction * timeValue * 3.f;
+		const float static_lose = friction * timeValue * 1.f;
 
 		if (!player->readProperties()->hasForceLeft && !player->readProperties()->hasForceRight)
 		{
 			if (timeValue == 0.f)
 			{
-				Log::Information(std::to_wstring(static_lose));
-				Log::Information(std::to_wstring(movement.x));
-				Log::Information(std::to_wstring(friction));
-				Log::Information(std::to_wstring(timeValue == 0.f));
-				Log::Information(L"----------------");
+	//			Log::Information(L"OOOOO");
+			}
+			else
+			{
+	//			Log::Information(L"XXXXX");
 			}
 
 			if (fabsf(movement.x) < static_lose)
