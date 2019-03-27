@@ -1,4 +1,7 @@
 #include "CollisionEngine.h"
+#include <Client/source/logger/Logger.h>
+
+#define PRECISION 1'000
 
 namespace
 {
@@ -19,7 +22,8 @@ namespace
 	inline bool FindHorizontalCollisionInPath(
 		const Game::CollisionEngine::CollisionContext* const collisionContext,
 		const sf::Vector2f tileSize,
-		const sf::Vector2f tilePosition)
+		const sf::Vector2f tilePosition,
+		const bool isWeak)
 	{
 		/*
 
@@ -39,16 +43,23 @@ namespace
 		const float t_y =
 			collisionContext->G_M * t_w + collisionContext->G_H;
 
-		if (t_w <= collisionContext->begin.x &&
-			t_w >= collisionContext->end.x
-			&&
-			t_y >= tilePosition.y &&
-			t_y <= tilePosition.y + tileSize.y)
+		if (isWeak
+			? t_w < collisionContext->begin.x &&
+			  t_w > collisionContext->end.x
+			  &&
+			  t_y > tilePosition.y &&
+			  t_y < tilePosition.y + tileSize.y
+
+			: t_w <= collisionContext->begin.x &&
+  			  t_w >= collisionContext->end.x
+			  &&
+			  t_y >= tilePosition.y &&
+			  t_y <= tilePosition.y + tileSize.y)
 		{
 			// set value
 			// position: x = t_w; y = t_y
 			lastCollision.position.x = t_w;
-			lastCollision.position.y = t_y;
+			lastCollision.position.y = std::roundf(t_y * PRECISION) / PRECISION;;
 
 			lastCollision.type = collisionContext->hSideOffset
 				? Game::CollisionEngine::CollisionInfo::G3
@@ -63,7 +74,8 @@ namespace
 	inline bool FindVerticalCollisionInPath(
 		const Game::CollisionEngine::CollisionContext* const collisionContext,
 		const sf::Vector2f tileSize,
-		const sf::Vector2f tilePosition)
+		const sf::Vector2f tilePosition,
+		const bool isWeak)
 	{
 		/*
 
@@ -85,15 +97,22 @@ namespace
 		const float t_x = 
 			(t_h - collisionContext->G_H) / collisionContext->G_M;
 
-		if (t_h <= collisionContext->begin.y &&
-			t_h >= collisionContext->end.y
-			&&
-			t_x >= tilePosition.x &&
-			t_x <= tilePosition.x + tileSize.x)
+		if (isWeak
+			? t_h < collisionContext->begin.y &&
+			  t_h > collisionContext->end.y
+			  &&
+			  t_x > tilePosition.x &&
+			  t_x < tilePosition.x + tileSize.x
+
+			: t_h <= collisionContext->begin.y &&
+			  t_h >= collisionContext->end.y
+			  &&
+			  t_x >= tilePosition.x &&
+			  t_x <= tilePosition.x + tileSize.x)
 		{
 			// set value
 			// position: x = t_x; y = t_h
-			lastCollision.position.x = t_x;
+			lastCollision.position.x = std::roundf(t_x * PRECISION) / PRECISION;
 			lastCollision.position.y = t_h;
 
 			lastCollision.type = collisionContext->vSideOffset
@@ -109,14 +128,25 @@ namespace
 	inline bool FindStraightHorizontalCollisionInPath(
 		const Game::CollisionEngine::CollisionContext* const collisionContext,
 		const sf::Vector2f tileSize,
-		const sf::Vector2f tilePosition)
+		const sf::Vector2f tilePosition,
+		const bool isWeak)
 	{
+		const float h = collisionContext->vSideOffset
+			? tilePosition.y + tileSize.y
+			: tilePosition.y;
 		const float w = collisionContext->hSideOffset
 			? tilePosition.x + tileSize.x
 			: tilePosition.x;
 
-		if (collisionContext->begin.x >= w &&
-			collisionContext->end.x <= w)
+		if (collisionContext->begin.x >= w && collisionContext->end.x <= w
+			&& (isWeak
+			? collisionContext->begin.y > tilePosition.y
+			  && 
+			  collisionContext->begin.y < tilePosition.y + tileSize.y
+			: collisionContext->begin.y >= tilePosition.y
+			  && 
+			  collisionContext->begin.y <= tilePosition.y + tileSize.y
+			))
 		{
 			// position.y == target.y == begin.y == end.y
 			lastCollision.position.x = w;
@@ -135,14 +165,25 @@ namespace
 	inline bool FindStraightVerticalCollisionInPath(
 		const Game::CollisionEngine::CollisionContext* const collisionContext,
 		const sf::Vector2f tileSize,
-		const sf::Vector2f tilePosition)
+		const sf::Vector2f tilePosition,
+		const bool isWeak)
 	{
 		const float h = collisionContext->vSideOffset
 			? tilePosition.y + tileSize.y
 			: tilePosition.y;
+		const float w = collisionContext->hSideOffset
+			? tilePosition.x + tileSize.x
+			: tilePosition.x;
 
-		if (collisionContext->begin.y >= h &&
-			collisionContext->end.y <= h)
+		if (collisionContext->begin.y >= h && collisionContext->end.y <= h
+			&& (isWeak
+			? collisionContext->begin.x > tilePosition.x 
+			  && 
+			  collisionContext->begin.x < tilePosition.x + tileSize.x
+			: collisionContext->begin.x >= tilePosition.x
+  			  && 
+			  collisionContext->begin.x <= tilePosition.x + tileSize.x
+			))
 		{
 			// position.x == target.x == begin.x == end.x
 			lastCollision.position.x = collisionContext->begin.x;
@@ -158,10 +199,13 @@ namespace
 		return false;
 	}
 
+
+
 	bool FindCollisionInPath(
 		const Game::CollisionEngine::CollisionContext* const collisionContext,
 		const sf::Vector2f tileSize,
-		const sf::Vector2f tilePosition)
+		const sf::Vector2f tilePosition,
+		const bool isWeak)
 	{
 		if (collisionContext->isStraight)
 		{
@@ -172,26 +216,30 @@ namespace
 				return FindStraightHorizontalCollisionInPath(
 					collisionContext,
 					tileSize,
-					tilePosition);
+					tilePosition,
+					isWeak);
 			}
 			else
 			{
 				return FindStraightVerticalCollisionInPath(
 					collisionContext,
 					tileSize,
-					tilePosition);
+					tilePosition,
+					isWeak);
 			}
 		}
 
 		return FindVerticalCollisionInPath(
 				collisionContext,
 				tileSize,
-				tilePosition)
+				tilePosition,
+				false)
 			||
 			FindHorizontalCollisionInPath(
 				collisionContext,
 				tileSize,
-				tilePosition);
+				tilePosition,
+				false);
 	}
 }
 
@@ -235,7 +283,7 @@ namespace Game
 				yCmpPlayerResult ? currentPlayerSize.y : 0,
 			};
 
-			result.secondary1 =
+			result.secondary2 =
 			{
 				yCmpPlayerResult ? 0 : currentPlayerSize.x,
 				yCmpPlayerResult ? currentPlayerSize.y : 0,
@@ -250,7 +298,7 @@ namespace Game
 			result.primaryOffset =
 			{
 				xCmpPlayerResult ? currentPlayerSize.x : 0,
-				position.y + currentPlayerSize.y / 2.f
+				currentPlayerSize.y / 2.f
 			};
 
 			result.secondary1 =
@@ -259,10 +307,10 @@ namespace Game
 				xCmpPlayerResult ? currentPlayerSize.y : 0,
 			};
 
-			result.secondary1 =
+			result.secondary2 =
 			{
 				xCmpPlayerResult ? currentPlayerSize.x : 0,
-				xCmpPlayerResult ? 0 : currentPlayerSize.x,
+				xCmpPlayerResult ? 0 : currentPlayerSize.y,
 			};
 		}
 		else
@@ -361,6 +409,26 @@ namespace Game
 			result.end.y = destination.y;
 		}
 
+		/*
+		Log::Information(L"Begin x: " + std::to_wstring(result.begin.x));
+		Log::Information(L"Begin y: " + std::to_wstring(result.begin.y));
+		Log::Information(L"End x: " + std::to_wstring(result.end.x));
+		Log::Information(L"End y: " + std::to_wstring(result.end.y));
+		Log::Information(L"GH: " + std::to_wstring(result.G_H));
+		Log::Information(L"GM: " + std::to_wstring(result.G_M));
+		Log::Information(L"hSideOffset: " + std::to_wstring(result.hSideOffset));
+		Log::Information(L"isStraight: " + std::to_wstring(result.isStraight));
+		Log::Information(L"isWeakCollision: " + std::to_wstring(result.isWeakCollision));
+		Log::Information(L"P Offset x: " + std::to_wstring(result.primaryOffset.x));
+		Log::Information(L"P Offset y: " + std::to_wstring(result.primaryOffset.y));
+		Log::Information(L"S1 Offset x: " + std::to_wstring(result.secondary1.x));
+		Log::Information(L"S1 Offset y: " + std::to_wstring(result.secondary1.y));
+		Log::Information(L"S2 Offset x: " + std::to_wstring(result.secondary2.x));
+		Log::Information(L"S2 Offset y: " + std::to_wstring(result.secondary2.y));
+		Log::Information(L"Target x: " + std::to_wstring(result.target.x));
+		Log::Information(L"Target y: " + std::to_wstring(result.target.y));
+		Log::Information(L"vSideOffset: " + std::to_wstring(result.vSideOffset));
+		*/
 		return result;
 	}
 
@@ -385,24 +453,68 @@ namespace Game
 			return FindCollisionInPath(
 				collisionContext,
 				tileSize,
-				tilePosition - collisionContext->primaryOffset);
+				tilePosition - collisionContext->primaryOffset,
+				false);
 		}
 		else
 		{
 			return FindCollisionInPath(
 					collisionContext,
 					tileSize,
-					tilePosition - collisionContext->primaryOffset)
+					tilePosition - collisionContext->primaryOffset,
+					false)
 				|| 
 				FindCollisionInPath(
 					collisionContext,
 					tileSize,
-					tilePosition - collisionContext->secondary1)
+					tilePosition - collisionContext->secondary1,
+					true)
 				||
 				FindCollisionInPath(
 					collisionContext,
 					tileSize,
-					tilePosition - collisionContext->secondary2);
+					tilePosition - collisionContext->secondary2,
+					true);
+
+			/*
+			Log::Information(L"---------");
+			if (FindCollisionInPath(
+					collisionContext,
+					tileSize,
+					tilePosition - collisionContext->primaryOffset,
+					false))
+			{
+				Log::Information(L"x: " + std::to_wstring(collisionContext->primaryOffset.x));
+				Log::Information(L"y: " + std::to_wstring(collisionContext->primaryOffset.y));
+
+				return true;
+			}
+
+			if (FindCollisionInPath(
+					collisionContext,
+					tileSize,
+					tilePosition - collisionContext->secondary1,
+					true))
+			{
+				Log::Information(L"x: " + std::to_wstring(collisionContext->secondary1.x));
+				Log::Information(L"y: " + std::to_wstring(collisionContext->secondary1.y));
+
+				return true;
+			}
+
+			if (FindCollisionInPath(
+					collisionContext,
+					tileSize,
+					tilePosition - collisionContext->secondary2,
+					true))
+			{
+				Log::Information(L"x: " + std::to_wstring(collisionContext->secondary2.x));
+				Log::Information(L"y: " + std::to_wstring(collisionContext->secondary2.y));
+
+				return true;
+			}
+
+			return false;*/
 		}
 	}
 

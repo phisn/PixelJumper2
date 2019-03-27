@@ -385,8 +385,9 @@ namespace Game
 
 			const float tileForceSum = fabs(tileForce.x) + fabs(tileForce.y);
 			const float completeForceSum = tileForceSum + fabs(counterGravityForce.x) + fabs(counterGravityForce.y);
+			const float movementForce = fabsf(state.readProperties()->movement.x) + fabsf(state.readProperties()->movement.y);
 
-			const sf::Vector2f gravityDist = counterGravityForce / completeForceSum;
+			const sf::Vector2f gravityDist = counterGravityForce / (completeForceSum + movementForce);
 			const sf::Vector2f tileDist = tileForce / completeForceSum;
 
 			return gravityDist * tileForceSum + tileDist * tileForceSum;

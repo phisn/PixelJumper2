@@ -49,15 +49,6 @@ namespace Game
 
 		if (!player->readProperties()->hasForceLeft && !player->readProperties()->hasForceRight)
 		{
-			if (timeValue == 0.f)
-			{
-	//			Log::Information(L"OOOOO");
-			}
-			else
-			{
-	//			Log::Information(L"XXXXX");
-			}
-
 			if (fabsf(movement.x) < static_lose)
 			{
 				movement.x = 0;

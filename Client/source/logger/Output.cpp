@@ -8,7 +8,7 @@ namespace Log
 	const Output::Out Output::FILE_OUT =
 		[](const std::wstring message) -> void
 	{
-		std::wofstream file(
+		static std::wofstream file(
 			path,
 			std::ios::out | std::ios::app);
 
