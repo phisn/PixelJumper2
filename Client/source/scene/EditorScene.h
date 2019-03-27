@@ -90,6 +90,13 @@ namespace Scene
 
 		void onEvent(const sf::Event event) override
 		{
+			if (event.type == sf::Event::Closed)
+			{
+				Framework::Interface::PopContext();
+
+				return;
+			}
+
 			MenuBase::onEvent(event);
 
 			// save world | S + STRG
@@ -176,6 +183,11 @@ namespace Scene
 			if (event.type == sf::Event::KeyPressed &&
 				event.key.code == sf::Keyboard::R)
 			{
+				if (Editor::Manipulator::GetWorld()->getTiles().size() == 0)
+				{
+					return;
+				}
+
 				Resource::World* const world = Editor::Manipulator::GetWorld()->convert(
 					Device::Random::MakeRandom<int>(),
 					L"Author Name",

@@ -39,6 +39,12 @@ namespace Editor
 			{
 				return true; // ignore
 			}
+
+			bool equals(
+				TileBase* const tile) const override
+			{
+				return id == tile->id; // && ((Wall*)tile)->;
+			}
 		};
 	}
 }

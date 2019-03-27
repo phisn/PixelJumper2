@@ -60,7 +60,7 @@ namespace Editor
 					selections.clear();
 					selections.emplace_back();
 
-					selections.back().setFillColor(selectionColor);
+					selections.back().setFillColor(tileSelectionColor);
 				}
 
 				selections.back().setSize(sf::Vector2f(
@@ -78,8 +78,7 @@ namespace Editor
 				for (TileBase* const tile : selection->tile->tiles)
 				{
 					selections.emplace_back();
-
-					selections.back().setFillColor(selectionColor);
+					selections.back().setFillColor(tile->getShape().getFillColor() - areaSelectionColor);
 					selections.back().setSize(
 						tile->getShape().getSize()
 					);
@@ -99,7 +98,8 @@ namespace Editor
 		std::vector<
 			sf::RectangleShape> selections;
 
-		const sf::Color selectionColor = sf::Color(150, 150, 150, 100);
+		const sf::Color areaSelectionColor = sf::Color(50, 50, 50, 0);
+		const sf::Color tileSelectionColor = sf::Color(180, 180, 180, 100);
 		const sf::Color markerColor = sf::Color(50, 50, 50, 100);
 	};
 }

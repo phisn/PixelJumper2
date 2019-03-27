@@ -86,6 +86,13 @@ namespace Editor
 
 		void onEvent(const sf::Event event) override
 		{
+			if (event.type == sf::Event::Closed)
+			{
+				Framework::Interface::PopScene();
+
+				return;
+			}
+
 			if (event.type == sf::Event::KeyPressed)
 			{
 				switch (event.key.code)

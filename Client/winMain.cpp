@@ -13,7 +13,7 @@
 #ifdef _DEBUG
 	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Information);
 #else
-	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Warning);
+	Log::Output::Add(Log::Output::FILE_OUT, Log::Level::Warning);
 #endif
 	Log::Information(L"Initializing game");
 

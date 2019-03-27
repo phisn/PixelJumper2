@@ -97,6 +97,13 @@ namespace Scene
 
 		void onEvent(const sf::Event event) override
 		{
+			if (event.type == sf::Event::Closed)
+			{
+				Framework::Interface::PopContext();
+
+				return;
+			}
+
 			player->onEvent(event);
 
 			if (event.type == sf::Event::KeyPressed &&
@@ -109,8 +116,8 @@ namespace Scene
 
 		void onLogic(const sf::Time time) override
 		{
-			hostWorld.onLogic(time);
 			player->onLogic(time);
+			hostWorld.onLogic(time);
 		}
 
 		void onDraw() override

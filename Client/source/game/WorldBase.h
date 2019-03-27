@@ -110,7 +110,8 @@ namespace Game
 			player->state.speed = 0.0012f;
 			player->state.weight = 1.f;
 			player->state.friction = 0.f;
-			player->state.position = { 2, 0 };
+			player->state.position = { 2, 2 };
+			player->state.respawnPoint = { 2, 2 };
 
 			player->initializeFromState();
 		}

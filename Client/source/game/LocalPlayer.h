@@ -181,7 +181,7 @@ namespace Game
 			{
 				[this](const bool state, const sf::Time time)
 				{
-					handleRespawn();
+					handleRespawn(state);
 				},
 				InputMode::Passive
 			} };
@@ -242,7 +242,7 @@ namespace Game
 		if (const bool state = input->isKeyPressed(Device::GameCoreInputSymbol::symbolName) \
 			; state != routineName.getCurrentState()) \
 		{ \
-			routineName.call(state, sf::Time(), ## __VA_ARGS__); \
+			routineName.call(state, time, ## __VA_ARGS__); \
 		} \
 	}
 
@@ -266,9 +266,17 @@ namespace Game
 			Log::Warning(L"Trigger is not implemented yet");
 		}
 
-		void handleRespawn()
+		void handleRespawn(const bool isActive)
 		{
-			Log::Warning(L"Respawn is not implemented yet");
+			if (isActive)
+			{
+				state.position = state.readProperties()->respawnPoint;
+				state.movement = { 0.f, 0.f };
+				state.isOnGround = { };
+				state.hasForceLeft = false;
+				state.hasForceRight = false;
+			}
+
 		}
 
 		void handleMovement(
@@ -304,7 +312,7 @@ namespace Game
 				(direction == Direction::Left ? state.hasForceLeft : state.hasForceRight) = true;
 
 				const float movementValue = time.asMicroseconds() / 1000.f
-					* 20.f
+					* 10.f
 					* state.readProperties()->speed
 					* (1.f / (1.f + state.readProperties()->weight / 1000.f));
 
@@ -345,7 +353,7 @@ namespace Game
 					movement.x = -movement.x;
 				}
 
-				state.movement = state.readProperties()->movement + movement * movementValue
+				state.movement = state.readProperties()->movement + movement
 					* (direction == Direction::Right ? 1.f : -1.f);
 			}
 			else

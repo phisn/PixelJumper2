@@ -1,0 +1,5 @@
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Warning] : Resource directory did not exists, creating new one 'Dynamic' (resource path: 'resource/settings')
+---> [Error] : Failed to verify resource directories (error message: 'No such process')

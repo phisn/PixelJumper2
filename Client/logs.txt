@@ -70070,4 +70070,72 @@
 [Information] : Begin x: 1.000000
 [Information] : Begin y: 4.003316
 [Information] : End x: 0.996622
-[Information] : End
+[Information] : End[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Trigger is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Trigger is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Section] : Converting World ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success

@@ -1,0 +1,86 @@
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Warning] : Resource directory did not exists, creating new one 'Dynamic' (resource path: 'resource/settings')
+---> [Error] : Failed to verify resource directories (error message: 'No such process')
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Warning] : Trigger is not implemented yet
+[Warning] : Trigger is not implemented yet
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Warning] : Respawn is not implemented yet
+[Section] : Converting World ... Success
+[Section] : Saving world ... Success
+[Section] : Converting World ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Saving world ... Success
+[Section] : Saving world ... Success
+[Section] : Saving world ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success

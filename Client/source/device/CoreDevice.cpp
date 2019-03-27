@@ -104,8 +104,6 @@ namespace Device
 			Device::Screen::BeginDraw();
 			Framework::Execution::OnDraw();
 			Device::Screen::EndDraw();
-
-			// sf::sleep(sf::milliseconds(200));
 		}
 
 		return 0;
