@@ -15,7 +15,7 @@ namespace Game
 	struct WorldStateProperties
 	{
 		// addition
-		sf::Vector2f gravity = { 0.f, 8.f };
+		sf::Vector2f gravity = { 0.f, 18.f };
 
 		float airResistance = 0.004f; // 0.53f; // == 5% lose
 

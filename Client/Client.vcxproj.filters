@@ -37,17 +37,11 @@
     <Filter Include="source\menu">
       <UniqueIdentifier>{173be716-58fa-45c2-88ec-bbae6ac60ee8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\menu\style">
-      <UniqueIdentifier>{6ddc637d-501a-4851-bab9-000f8a04d3aa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\editor\manipulator">
       <UniqueIdentifier>{2cd07ebf-c0da-4f4e-9d5f-6a8903f74912}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\editor\manipulator\cache">
       <UniqueIdentifier>{35661510-c28b-4826-9ed5-0642be31d455}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\menu\container_">
-      <UniqueIdentifier>{c0fa9da4-1b5f-4eb6-afb3-b41bc156f0bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\framework">
       <UniqueIdentifier>{e6571033-ad24-4860-8fad-429aaa5b6a10}</UniqueIdentifier>
@@ -60,9 +54,6 @@
     </Filter>
     <Filter Include="source\editor\task">
       <UniqueIdentifier>{65cdccb2-1b14-46d9-a0cf-01a1aa41fa7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\menu\element_">
-      <UniqueIdentifier>{6966766c-ff3d-45a9-a06f-fcf4bdca3e0c}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\resource\tiles">
       <UniqueIdentifier>{aa2b9b41-6fee-432a-b232-0bb21ade2e05}</UniqueIdentifier>
@@ -81,6 +72,18 @@
     </Filter>
     <Filter Include="source\game\TileTrait">
       <UniqueIdentifier>{69b9c64d-ffe4-408e-ac6a-79f90bd91212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\menu\old">
+      <UniqueIdentifier>{1d7a69f0-b462-45cc-8a90-a1c0b28314a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\menu\old\container_">
+      <UniqueIdentifier>{c0fa9da4-1b5f-4eb6-afb3-b41bc156f0bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\menu\old\element_">
+      <UniqueIdentifier>{6966766c-ff3d-45a9-a06f-fcf4bdca3e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\menu\old\style">
+      <UniqueIdentifier>{6ddc637d-501a-4851-bab9-000f8a04d3aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,7 +118,7 @@
       <Filter>source\menu</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\style\DefaultStyles.h">
-      <Filter>source\menu\style</Filter>
+      <Filter>source\menu\old\style</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\RootBase.h">
       <Filter>source\menu</Filter>
@@ -157,22 +160,22 @@
       <Filter>source\menu</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\element\ScrollBarBase.h">
-      <Filter>source\menu\element_</Filter>
+      <Filter>source\menu\old\element_</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\element\ElementBase.h">
-      <Filter>source\menu\element_</Filter>
+      <Filter>source\menu\old\element_</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\element\ButtonBase.h">
-      <Filter>source\menu\element_</Filter>
+      <Filter>source\menu\old\element_</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\container\ScrollContainer.h">
-      <Filter>source\menu\container_</Filter>
+      <Filter>source\menu\old\container_</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\container\RowContainerBase.h">
-      <Filter>source\menu\container_</Filter>
+      <Filter>source\menu\old\container_</Filter>
     </ClInclude>
     <ClInclude Include="source\menu\container\ContainerBase.h">
-      <Filter>source\menu\container_</Filter>
+      <Filter>source\menu\old\container_</Filter>
     </ClInclude>
     <ClInclude Include="source\editor\tilemenu\TileComponent.h">
       <Filter>source\editor\tilemenu</Filter>
@@ -372,6 +375,18 @@
     <ClInclude Include="source\scene\TestGameScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
+    <ClInclude Include="source\menu\MenuElementBase.h">
+      <Filter>source\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\MenuLabel.h">
+      <Filter>source\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\MenuRootBase.h">
+      <Filter>source\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\TestMenuScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -429,19 +444,19 @@
       <Filter>source\editor\manipulator\cache</Filter>
     </ClCompile>
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp">
-      <Filter>source\menu\element_</Filter>
+      <Filter>source\menu\old\element_</Filter>
     </ClCompile>
     <ClCompile Include="source\menu\element\ButtonBase.cpp">
-      <Filter>source\menu\element_</Filter>
+      <Filter>source\menu\old\element_</Filter>
     </ClCompile>
     <ClCompile Include="source\menu\container\ScrollContainer.cpp">
-      <Filter>source\menu\container_</Filter>
+      <Filter>source\menu\old\container_</Filter>
     </ClCompile>
     <ClCompile Include="source\menu\container\RowContainerBase.cpp">
-      <Filter>source\menu\container_</Filter>
+      <Filter>source\menu\old\container_</Filter>
     </ClCompile>
     <ClCompile Include="source\menu\container\ContainerBase.cpp">
-      <Filter>source\menu\container_</Filter>
+      <Filter>source\menu\old\container_</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\tilemenu\TileComponent.cpp">
       <Filter>source\editor\tilemenu</Filter>
@@ -606,6 +621,18 @@
       <Filter>source\resource\tiles</Filter>
     </ClCompile>
     <ClCompile Include="source\scene\TestGameScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\MenuElementBase.cpp">
+      <Filter>source\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\MenuLabel.cpp">
+      <Filter>source\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\MenuRootBase.cpp">
+      <Filter>source\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\TestMenuScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
   </ItemGroup>

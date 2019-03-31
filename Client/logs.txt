@@ -70139,3 +70139,143 @@
 [Section] : Loading world 'TestWorld' ... Success
 [Section] : Converting World ... Success
 [Section] : Creating world from WorldResource ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Trigger is not implemented yet
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Warning] : Trigger is not implemented yet
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Converting World ... Success
+[Section] : Creating world from WorldResource ... Success
+[Section] : Saving world ... Success
+[Information] : Initializing game
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Section] : Loading world 'TestWorld' ... Success

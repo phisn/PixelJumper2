@@ -56,7 +56,7 @@ namespace Game
 				COLOR,
 				position,
 				size),
-			CollidableTile(6.f, 0.01f)
+			CollidableTile(10.f, 0.01f)
 		{
 		}
 

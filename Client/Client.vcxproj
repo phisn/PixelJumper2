@@ -142,6 +142,9 @@
     <ClInclude Include="source\menu\element\ElementBase.h" />
     <ClInclude Include="source\menu\element\ScrollBarBase.h" />
     <ClInclude Include="source\menu\MenuBase.h" />
+    <ClInclude Include="source\menu\MenuElementBase.h" />
+    <ClInclude Include="source\menu\MenuLabel.h" />
+    <ClInclude Include="source\menu\MenuRootBase.h" />
     <ClInclude Include="source\menu\RootBase.h" />
     <ClInclude Include="source\menu\style\DefaultStyles.h" />
     <ClInclude Include="source\resource\pipes\FilePipe.h" />
@@ -165,6 +168,7 @@
     <ClInclude Include="source\scene\MenuBaseScene.h" />
     <ClInclude Include="source\scene\SubSceneBase.h" />
     <ClInclude Include="source\scene\TestGameScene.h" />
+    <ClInclude Include="source\scene\TestMenuScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\CoreDevice.cpp" />
@@ -226,6 +230,9 @@
     <ClCompile Include="source\menu\container\ScrollContainer.cpp" />
     <ClCompile Include="source\menu\element\ButtonBase.cpp" />
     <ClCompile Include="source\menu\element\ScrollBarBase.cpp" />
+    <ClCompile Include="source\menu\MenuElementBase.cpp" />
+    <ClCompile Include="source\menu\MenuLabel.cpp" />
+    <ClCompile Include="source\menu\MenuRootBase.cpp" />
     <ClCompile Include="source\resource\pipes\FilePipe.cpp" />
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp" />
     <ClCompile Include="source\resource\pipes\PipeBase.cpp" />
@@ -244,6 +251,7 @@
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
     <ClCompile Include="source\scene\TestGameScene.cpp" />
+    <ClCompile Include="source\scene\TestMenuScene.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>

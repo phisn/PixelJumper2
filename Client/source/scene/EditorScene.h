@@ -72,12 +72,6 @@ namespace Scene
 		void onDraw() override
 		{
 			MenuBase::onDraw();
-			
-			// TODO: normally resets view, make it obsolete
-			for (sf::RectangleShape& shape : test)
-			{
-				Device::Screen::Draw(shape);
-			}
 		}
 
 		void onRemove() override
@@ -226,6 +220,6 @@ namespace Scene
 		void onShow() override { }
 		void onHide() override { }
 	private:
-		std::vector<sf::RectangleShape> test;
+		
 	};
 }
