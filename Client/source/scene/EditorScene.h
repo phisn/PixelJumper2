@@ -86,7 +86,7 @@ namespace Scene
 		{
 			if (event.type == sf::Event::Closed)
 			{
-				Framework::Interface::PopContext();
+				Framework::Context::Pop();
 
 				return;
 			}
@@ -164,7 +164,7 @@ namespace Scene
 				event.key.code == sf::Keyboard::G &&
 				event.key.control)
 			{
-				if (!Framework::Interface::PushScene(
+				if (!Framework::Context::PushScene(
 						new Editor::GroupedTilePreview()
 					))
 				{
@@ -201,9 +201,7 @@ namespace Scene
 					return;
 				}
 
-				Framework::Interface::PushContext(
-					Framework::Context::Create<Scene::TestGameScene>(world)
-				);
+				Framework::Context::Push<TestGameScene>(world);
 			}
 
 			if (event.type == sf::Event::KeyPressed &&

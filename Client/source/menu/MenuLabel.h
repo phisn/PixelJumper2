@@ -6,9 +6,9 @@
 #include <Client/source/logger/Logger.h>
 #include <Client/source/resource/ResourceInterface.h>
 #include <Client/source/framework/FrameworkInterface.h>
-
 #include <SFML/Graphics.hpp>
 
+#include <fstream>
 #include <string>
 
 namespace Menu
@@ -41,21 +41,20 @@ namespace Menu
 				});
 		}
 
+		Property<const sf::Font*> font = NULL;
 		Property<std::wstring> text;
 
+		sf::MemoryInputStream mis;
 		bool initialize() override
 		{
-
-			if (!font.loadFromFile("font.ttf")) // loadFromStream(Framework::Resource::Get(Resource::Static::Id::DefaultFont)))
+			if (font.getValue() == NULL)
 			{
-				Log::Error(L"Failed to load font");
+				Log::Error(L"No font selected");
 
 				return false;
 			}
 
-			glText.setFont(font);
-			glText.setFillColor(sf::Color::White);
-			glText.setString(L"Hello World");
+			glText.setFont(*font.getValue());
 
 			return true;
 		}
@@ -73,7 +72,6 @@ namespace Menu
 			);
 		}
 
-		sf::Font font;
 		sf::Text glText;
 	};
 }

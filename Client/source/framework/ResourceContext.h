@@ -1,95 +1,88 @@
 #pragma once
 
+#include <Client/source/logger/Logger.h>
 #include <Client/source/resource/ResourceInterface.h>
 
-#include <SFML/System/MemoryInputStream.hpp>
-
+#include <any>
 #include <map>
+
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/System/MemoryInputStream.hpp>
 
 namespace Framework
 {
 	class ResourceContext
 	{
-	public:
-		typedef ::Resource::Static::Resource _Resource;
-		typedef ::Resource::Static::Id _ResourceType;
+		typedef Resource::Static::Id _ResourceType;
+		typedef std::pair<Resource::Static::Resource, std::any> _Resource;
 
-		~ResourceContext()
+	public:
+		bool has(const _ResourceType type) const
 		{
-			for (const std::pair<_ResourceType, _Resource>& resource : resources)
-			{
-				delete[] resource.second.first;
-			}
+			return !!resources.count(type);
 		}
 
-		bool has(
-			_ResourceType type)
+		_Ret_maybenull_
+		template <typename T>
+		const T* get(const _ResourceType type)
 		{
-			if (cache.type == type)
-			{
-				return true;
-			}
+			decltype(resources)::const_iterator iterator = resources.find(type);
 
-			decltype(resources)::iterator it = resources.find(type);
-			if (it == resources.end())
+			if (iterator == resources.cend())
 			{
-				return false;
+				return obtain(type);
 			}
 			else
 			{
-				cache.type = it->first;
-				cache.resource = &it->second;
-
-				return true;
+				return std::any_cast<const T>(&iterator->second);
 			}
 		}
 
-		sf::MemoryInputStream get(
-			_ResourceType type)
+		template <typename T>
+		const T* read(const _ResourceType type) const
 		{
-			if (cache.type == type)
-			{
-				return getCache();
-			}
-
-			if ( !has(type) )
-			{
-				obtain(type);
-			}
-
-			return getCache();
+			return std::any_cast<const T>(&resources.at(type).second);
 		}
 
-		sf::MemoryInputStream obtain(
-			_ResourceType type)
+		_Ret_maybenull_
+		template <typename T>
+		const T* obtain(const _ResourceType type)
 		{
-			
-			::Resource::Static::Resource resource = ::Resource::Interface::GetStaticResource(type);
-			resources[type] = resource;
-
-			sf::MemoryInputStream mis;
-			mis.open(
-				resource.first,
-				resource.second);
-			return mis;
+			return emplace<T>(type, Resource::Interface::GetStaticResource(type));
 		}
 
 	private:
-		sf::MemoryInputStream getCache()
+		_Ret_maybenull_
+		template <typename T>
+		const T* emplace(
+			const _ResourceType type,
+			const Resource::Static::Resource resource)
 		{
-			sf::MemoryInputStream mis;
-			mis.open(
-				cache.resource->first, 
-				cache.resource->second);
-			return mis;
+			Log::Error(L"Invalid type in (ResourceContext -> emplace)");
 		}
 
-		struct
+		_Ret_maybenull_
+		template<>
+		const sf::Font* emplace<sf::Font>(
+			const _ResourceType type,
+			const Resource::Static::Resource resource)
 		{
-			_Resource* resource;
-			_ResourceType type;
+			sf::Font font;
 
-		} cache;
+			if (!font.loadFromMemory(resource.first, resource.second))
+			{
+				Log::Error(L"Failed to load font");
+			
+				// try somehow to fix it
+				
+				return NULL;
+			}
+
+			return std::any_cast<const sf::Font>(
+				&(resources[type]
+					= std::make_pair(resource, std::move(font))
+				 ).second);
+		}
 
 		std::map<_ResourceType, _Resource> resources;
 	};

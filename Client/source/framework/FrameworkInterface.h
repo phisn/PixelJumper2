@@ -1,75 +1,60 @@
 #pragma once
 
-#include <Client/source/resource/StaticResource.h>
-#include <Client/source/scene/SubSceneBase.h>
+#include <Client/source/framework/Context.h>
 
-#include <SFML/System/MemoryInputStream.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 
-#ifndef FW
-#define FW ::Framework
-#endif
-
 namespace Framework
 {
-	class Animation;
-	class AsyncAnimation;
-
-	class Context;
+	namespace
+	{
+		static bool running = true;
+	}
 
 	namespace Interface
 	{
-		enum class Task
+		static void Draw()
 		{
-			Empty,
+			Context::GetStack().back()->draw();
+		}
 
-			LoadScene,
-			PopScene,
+		static void Event(const sf::Event event)
+		{
+			Context::GetStack().back()->Event(event);
+		}
 
-			Fallback, // removes all subscenes
+		static void Update(const sf::Time time)
+		{
+			Context::GetStack().back()->update(time);
+		}
 
-			LoadContext,
-			PopContext,
+		static void ProcessTask()
+		{
+			Context::ProcessTask();
+		}
 
-			Termination
-		};
+		static bool IsRunning()
+		{
+			return running;
+		}
 
-		bool PushContext(
-			Context* const context);
-		bool PopContext();
-		
-		bool PushScene(
-			Scene::SubBase* const scene);
-		bool PopScene();
+		static void Shutdown()
+		{
+			running = false;
+		}
 
-		void Fallback();
+		_Ret_maybenull_
+		template <typename T>
+		const T* GetResource(const Resource::Static::Id type)
+		{
+			for (Context* const context : Context::GetStack())
+				if (context->getResource()->has(type))
+				{
+					return context->getResource()->read<T>(type);
+				}
 
-		void PushAsyncAnimation(
-			AsyncAnimation* const animation);
-		void PushSequentialAnimation(
-			Animation* const animation);
-
-		void ResetAnimations();
-	}
-
-	namespace Execution
-	{
-		void OnDraw();
-		void OnEvent(
-			const sf::Event event);
-		void OnUpdate(
-			const sf::Time time);
-
-		void DoTasks();
-
-		void Shutdown();
-		bool IsRunning();
-	}
-
-	namespace Resource
-	{
-		sf::MemoryInputStream Get(
-			const ::Resource::Static::Id type);
+			return Context::GetStack().back()->getResource()->obtain<T>(type);
+		}
 	}
 }

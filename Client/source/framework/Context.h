@@ -7,6 +7,7 @@
 #include <Client/source/scene/MainSceneBase.h>
 #include <Client/source/scene/SubSceneBase.h>
 
+#include <deque>
 #include <stack>
 #include <vector>
 
@@ -17,19 +18,140 @@ namespace Framework
 {
 	class Context
 	{
-	public:
-		template <typename T, class... Args>
-		static Context* Create(Args&&... args)
+		static std::deque<Context*> contextStack;
+		static enum class InternalTask
 		{
-			return new Context(
-				new T(args...)
-			);
+			Empty,
+
+			LoadScene,
+			PopScene,
+
+			Fallback,
+
+			LoadContext,
+			PopContext
+
+		} currentTask;
+
+		static bool isValidTask(const InternalTask task)
+		{
+			return (int) currentTask < (int) task;
 		}
 
+	public:
+		static const std::deque<Context*>& GetStack()
+		{
+			return contextStack;
+		}
+
+		template <typename T, class... Args>
+		static bool Push(Args... args)
+		{
+			Context* const newContext = new Context(new T(args...));
+
+			// TODO: prepush and pop? (to fix resource problem [no on stack])
+
+			if (!isValidTask(InternalTask::LoadContext) ||
+				!newContext->internInit())
+			{
+				return false;
+			}
+
+			currentTask = InternalTask::LoadContext;
+
+			if (!contextStack.empty())
+			{
+				contextStack.back()->hide();
+			}
+
+			contextStack.push_back(newContext);
+
+			return true;
+		}
+
+		static bool Pop()
+		{
+			if (!isValidTask(InternalTask::PopContext))
+			{
+				return false;
+			}
+
+			currentTask = InternalTask::PopContext;
+
+			return true;
+		}
+
+		static bool PushScene(Scene::SubBase* const scene)
+		{
+			if (!isValidTask(InternalTask::LoadScene) ||
+				!scene->onCreate())
+			{
+				return false;
+			}
+
+			currentTask = InternalTask::LoadScene;
+
+			contextStack.back()->subScenes.push_back(scene);
+
+			return true;
+		}
+
+		static bool PopScene()
+		{
+			std::deque<Scene::SubBase*>& scenes = contextStack.back()->subScenes;
+			if (scenes.size() == 0 || !isValidTask(InternalTask::PopScene))
+			{
+				return false;
+			}
+
+			currentTask = InternalTask::PopContext;
+
+			scenes.back()->onRemove();
+			scenes.pop_back();
+
+			return true;
+		}
+
+		static void ProcessTask()
+		{
+			switch (currentTask)
+			{
+			case InternalTask::Empty:
+				return;
+			case InternalTask::Fallback:
+				contextStack.back()->fallback();
+
+				break;
+			case InternalTask::LoadContext:
+				contextStack.back()->internInit();
+
+				break;
+			case InternalTask::LoadScene:
+				break;
+			case InternalTask::PopContext:
+				contextStack.back()->cleanup();
+				contextStack.pop_back();
+
+				if (contextStack.empty())
+				{
+					// TODO: Shutdown
+				}
+				else
+				{
+					contextStack.back()->show();
+				}
+
+				break;
+			case InternalTask::PopScene:
+				break;
+			}
+		}
+
+	private:
 		Context(
-			SCENE::MainSceneBase* mainScene)
+			Scene::MainSceneBase* mainScene)
 			:
-			mainScene(mainScene)
+			scene(mainScene)
 		{
 		}
 
@@ -44,31 +166,106 @@ namespace Framework
 				but can call framework methods
 		*/
 
-		_Success_(return == true)
-		bool internalInitialize();
-		void externalInitialize();
+		bool internInit() const
+		{
+			return scene->onCreate();
+		}
 
-		void onHide();
-		void onShow();
-		void cleanup();
+		void externInit() const
+		{
+			scene->initialize();
+		}
 
-		void fallback();
+		void hide()
+		{
+			fallback();
+			scene->onHide();
+		}
 
-		void onDraw() const;
-		void onEvent(
-			const sf::Event event);
-		void onUpdate(
-			const sf::Time time);
+		void show() const
+		{
+			scene->onShow();
+		}
 
-		bool pushScene(
-			SCENE::SubBase* scene);
-		void popScene();
+		void cleanup()
+		{
+			fallback();
 
-		void pushAsyncAnimation(
-			AsyncAnimation* animation);
-		void pushSequentialAnimation(
-			Animation* animation);
-		void removeAnimations();
+			if (scene)
+			{
+				scene->onRemove();
+				delete scene;
+			}
+		}
+
+		void fallback()
+		{
+			while (!subScenes.empty())
+			{
+				popScene();
+			}
+		}
+
+		bool pushScene(Scene::SubBase* scene)
+		{
+			if (!scene->onCreate())
+			{
+				return false;
+			}
+
+			subScenes.push_back(scene);
+
+			return true;
+		}
+
+		void popScene()
+		{
+			subScenes.back()->onRemove();
+			delete subScenes.back();
+
+			subScenes.pop_back();
+			scene->onScenePopped(subScenes.size());
+		}
+
+	public:
+		void draw() const
+		{
+			if (!subScenes.empty())
+			{
+				subScenes.back()->onDraw();
+			}
+
+			if (scene->isRunning())
+			{
+				scene->onDraw();
+			}
+		}
+
+		void Event(const sf::Event event) const
+		{
+			if (!subScenes.empty())
+			{
+				subScenes.back()->onEvent(event);
+			}
+
+			if (scene->isRunning())
+			{
+				scene->onEvent(event);
+			}
+		}
+
+		void update(const sf::Time time) const
+		{
+			if (!subScenes.empty())
+			{
+				subScenes.back()->onLogic(time);
+			}
+
+			if (scene->isRunning())
+			{
+				scene->onLogic(time);
+			}
+		}
 
 		ResourceContext* getResource()
 		{
@@ -78,18 +275,7 @@ namespace Framework
 	private:
 		ResourceContext resourceContext;
 
-		std::stack<SCENE::SubBase*> subScenes;
-		SCENE::MainSceneBase* mainScene;
-
-		void updateSeqAnimation(
-			const sf::Time time);
-		bool seqAnimRunning = false;
-		Animation* sequentialAnimation = NULL;
-
-		void updateAsyncAnimations(
-			const sf::Time time);
-
-		std::vector<AsyncAnimation*> asyncAnimations;
+		std::deque<Scene::SubBase*> subScenes;
+		Scene::MainSceneBase* const scene;
 	};
-
 }

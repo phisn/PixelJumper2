@@ -99,7 +99,7 @@ namespace Scene
 		{
 			if (event.type == sf::Event::Closed)
 			{
-				Framework::Interface::PopContext();
+				Framework::Context::Pop();
 
 				return;
 			}
@@ -110,7 +110,7 @@ namespace Scene
 				event.key.code == sf::Keyboard::Key::T &&
 				event.key.control)
 			{
-				Framework::Interface::PopContext();
+				Framework::Context::Pop();
 			}
 		}
 

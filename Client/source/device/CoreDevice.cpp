@@ -18,12 +18,9 @@
 
 namespace Device
 {
-	Framework::Context* MakeMainContext()
+	bool PushMainContext()
 	{
-		return Framework::Context::Create<Scene::TestMenuScene>();
-		/*
-		return Framework::Context::Create<Scene::EditorScene>();
-		*/
+		return Framework::Context::Push<Scene::TestMenuScene>();
 	}
 
 	Core::Error Core::Initialize()
@@ -78,7 +75,7 @@ namespace Device
 		// contexts use window properties like size
 
 		Log::Information(L"Pushing main context");
-		if (!Framework::Interface::PushContext( MakeMainContext() ))
+		if (!PushMainContext())
 		{
 			Log::Error(L"Failed to create starting context");
 
@@ -88,22 +85,22 @@ namespace Device
 		Log::Information(L"Entering game loop");
 		while (true)
 		{
-			Framework::Execution::DoTasks();
+			Framework::Interface::ProcessTask();
 
-			if (!Framework::Execution::IsRunning())
+			if (!Framework::Interface::IsRunning())
 			{
 				break;
 			}
 
 			while (Device::Screen::PollEvent(event))
 			{
-				Framework::Execution::OnEvent(event);
+				Framework::Interface::Event(event);
 			}
 
-			Framework::Execution::OnUpdate( clock.restart() );
+			Framework::Interface::Update(clock.restart());
 
 			Device::Screen::BeginDraw();
-			Framework::Execution::OnDraw();
+			Framework::Interface::Draw();
 			Device::Screen::EndDraw();
 		}
 

@@ -63,72 +63,26 @@ namespace Resource
 			FileDefinition* const fileDefinition)
 			:
 			definition(fileDefinition),
-			buffer(new char[FILE_BUFFER_SIZE]),
 			file(
 				fileDefinition->path, 
 				std::ios::out | std::ios::binary
 			)
 		{
-			memset(buffer, 0xaa, FILE_BUFFER_SIZE);
 		}
 
 		~FileWritePipe() override
 		{
-			if ( isValid() )
-			{
-				flushBuffer();
-			}
-
-			delete[] buffer;
 		}
 
 		void writeContent(
 			const char* const buffer,
 			const sf::Uint64 size) override
 		{
-			if (consumed > 0)
-			{
-				const sf::Uint64 storageRemain = FILE_BUFFER_SIZE - consumed;
-
-				fillBuffer(
-					buffer,
-					storageRemain < size ? storageRemain - size : size
-				);
-
-				if (storageRemain >= size)
-				{
-					definition->size += size;
-
-					return;
-				}
-
-				flushBuffer();
-			}
-
-			sf::Uint64 remain = size;
-			while (remain >= FILE_BUFFER_SIZE)
-			{
-				enforceContent(
-					buffer + size - remain,
-					FILE_BUFFER_SIZE);
-
-				remain -= FILE_BUFFER_SIZE;
-			}
-
-			if (remain)
-			{
-				fillBuffer(
-					buffer + size - remain,
-					remain);
-			}
-
-			definition->size += size;
 		}
 
 		void setPosition(
 			const sf::Uint64 position) override
 		{
-			WritePipe::setPosition(position);
 			file.seekp(position);
 		}
 
@@ -148,41 +102,8 @@ namespace Resource
 		}
 
 	private:
-		void fillBuffer(
-			const char* const buffer,
-			const sf::Uint64 size)
-		{
-			memcpy(
-				this->buffer + consumed,
-				buffer,
-				size);
-
-			consumed += size;
-		}
-
-		void flushBuffer()
-		{
-			enforceContent(
-				buffer,
-				consumed);
-
-			consumed = 0;
-		}
-
-		void enforceContent(
-			const char* const buffer,
-			const sf::Uint64 size)
-		{
-			file.write(
-				buffer,
-				size);
-		}
-
 		FileDefinition* const definition;
 		std::ofstream file;
-
-		char* buffer;
-		sf::Uint64 consumed = 0;
 	};
 
 	class FileReadPipe
@@ -194,16 +115,12 @@ namespace Resource
 			const FileDefinition* const fileDefinition)
 			:
 			definition(fileDefinition),
-			file(fileDefinition->path, std::ios::in | std::ios::binary),
-			filled(0),
-			bufferPosition(0)
+			file(fileDefinition->path, std::ios::in | std::ios::binary)
 		{
-			buffer = new char[FILE_BUFFER_SIZE];
 		}
 
 		~FileReadPipe() override
 		{
-			delete[] buffer;
 		}
 
 		sf::Uint64 getSize() const override
@@ -215,54 +132,18 @@ namespace Resource
 			char *buffer, 
 			const sf::Uint64 size) override
 		{
-			sf::Uint64 position = 0;
+			const sf::Uint64 diff = definition->size - file.tellg();
 
-			if (filled > 0)
+			if (diff < size)
 			{
-				if (filled < size)
-				{
-					position = filled;
-					readBuffer(
-						buffer,
-						filled
-					);
-				}
-				else
-				{
-					readBuffer(
-						buffer,
-						size
-					);
-
-					return size;
-				}
+				file.read(buffer, diff);
+				return diff;
 			}
-
-			while (size - position > FILE_BUFFER_SIZE)
+			else
 			{
-				const sf::Uint64 result = readFile(
-					buffer + position,
-					FILE_BUFFER_SIZE);
-
-				if (result != FILE_BUFFER_SIZE)
-				{
-					return position + result;
-				}
-
-				position += FILE_BUFFER_SIZE;
+				file.read(buffer, size);
+				return size;
 			}
-
-			fillBuffer();
-
-			if (size - position != 0)
-			{
-				readBuffer(
-					buffer,
-					size - position
-				);
-			}
-
-			return size;
 		}
 
 		bool isValid() const
@@ -271,52 +152,7 @@ namespace Resource
 		}
 
 	private:
-		void fillBuffer()
-		{
-			filled = readFile(
-				buffer,
-				FILE_BUFFER_SIZE);
-
-			this->bufferPosition = this->position % FILE_BUFFER_SIZE;
-		}
-
-		sf::Uint64 readFile(
-			char* buffer,
-			sf::Uint64 size)
-		{
-			const sf::Uint64 remainingFile = definition->size - file.tellg();
-
-			if (remainingFile < size)
-			{
-				size = remainingFile;
-			}
-
-			file.read(
-				buffer,
-				size);
-
-			return size;
-		}
-
-		void readBuffer(
-			char* buffer,
-			const sf::Uint64 size)
-		{
-			memcpy(
-				buffer,
-				this->buffer + bufferPosition,
-				size
-			);
-
-			filled -= size;
-			bufferPosition += size;
-			position += size;
-		}
-
 		const FileDefinition* definition;
 		std::ifstream file;
-
-		char* buffer;
-		sf::Uint64 filled, bufferPosition;
 	};
 }

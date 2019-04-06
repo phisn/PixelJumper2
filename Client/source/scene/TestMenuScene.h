@@ -63,7 +63,6 @@ namespace Scene
 		void onDraw() override
 		{
 			root.onDraw();
-			sf::Font::GetD
 		}
 
 	private:

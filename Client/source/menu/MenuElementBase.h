@@ -15,6 +15,16 @@ namespace Menu
 			void(const T oldValue, const T newValue)
 		> Listener;
 	public:
+		Property()
+		{
+		}
+
+		Property(const T value)
+			:
+			value(value)
+		{
+		}
+
 		void addListener(const Listener listener)
 		{
 			listeners.push_back(listener);
@@ -48,10 +58,7 @@ namespace Menu
 			const T temp = this->value;
 			this->value = T(value);
 
-			for (const Listener& listener : listeners)
-			{
-				listener(temp, value);
-			}
+			valueChanged(temp);
 
 			return *this;
 		}
@@ -64,6 +71,21 @@ namespace Menu
 		const T getValue() const
 		{
 			return value;
+		}
+
+#ifdef DANGEROUS // TODO: ?
+		T& writeValue()
+		{
+			return value;
+		}
+#endif
+
+		void valueChanged(const T oldValue) const
+		{
+			for (const Listener& listener : listeners)
+			{
+				listener(oldValue, value);
+			}
 		}
 
 	private:
@@ -195,11 +217,11 @@ namespace Menu
 				? position
 				: parent->convertPositionVTR(position);
 
-			base.x + innerOffset.getValue().left;
-			base.y + innerOffset.getValue().top;
+			base.x += innerOffset.getValue().left;
+			base.y += innerOffset.getValue().top;
 
-			base.x + this->position.getValue().x;
-			base.y + this->position.getValue().y;
+			base.x += this->position.getValue().x;
+			base.y += this->position.getValue().y;
 
 			return base;
 		}
@@ -209,11 +231,11 @@ namespace Menu
 		{
 			sf::Vector2f base = position;
 
-			base.x - innerOffset.getValue().left;
-			base.y - innerOffset.getValue().top;
+			base.x -= innerOffset.getValue().left;
+			base.y -= innerOffset.getValue().top;
 
-			base.x - this->position.getValue().x;
-			base.y - this->position.getValue().y;
+			base.x -= this->position.getValue().x;
+			base.y -= this->position.getValue().y;
 
 			return parent == NULL
 				? base

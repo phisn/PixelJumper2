@@ -18,6 +18,7 @@
 
 #include <SFML/Graphics.hpp>
 
+
 namespace Editor
 {
 	class GroupedTilePreview
@@ -25,7 +26,6 @@ namespace Editor
 		public Scene::SubBase
 	{
 	public:
-
 		bool onCreate() override
 		{
 			sf::Image groupedTiles;
@@ -88,7 +88,7 @@ namespace Editor
 		{
 			if (event.type == sf::Event::Closed)
 			{
-				Framework::Interface::PopScene();
+				Framework::Context::PopScene();
 
 				return;
 			}
@@ -99,7 +99,7 @@ namespace Editor
 				{
 				case sf::Keyboard::Escape:
 				case sf::Keyboard::Return:
-					Framework::Interface::PopScene();
+					Framework::Context::PopScene();
 
 					break;
 				case sf::Keyboard::W:
