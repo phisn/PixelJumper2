@@ -23,6 +23,22 @@ namespace Menu
 					   const std::wstring newText)
 				{
 					glText.setString(newText);
+					size =
+					{
+						glText.getGlobalBounds().width,
+						glText.getGlobalBounds().height
+					};
+				});
+			font.addListener(
+				[this](const sf::Font* const oldFont,
+   					   const sf::Font* const newFont)
+				{
+					glText.setFont(*font);
+					size =
+					{
+						glText.getGlobalBounds().width,
+						glText.getGlobalBounds().height
+					};
 				});
 			size.addListener(
 				[this](const sf::Vector2f oldSize,
@@ -33,28 +49,20 @@ namespace Menu
 						+ std::to_wstring(newSize.y) + L"' (text: '"
 						+ glText.getString() + L"')");
 				});
-			position.addListener(
-				[this](const sf::Vector2f oldPosition,
-					   const sf::Vector2f newPosition)
-				{
-					updateOwnGraphics();
-				});
 		}
 
-		Property<const sf::Font*> font = NULL;
-		Property<std::wstring> text;
+		Property<const sf::Font*> font { NULL };
+		Property<std::wstring> text { L"" };
 
-		sf::MemoryInputStream mis;
 		bool initialize() override
 		{
 			if (font.getValue() == NULL)
 			{
-				Log::Error(L"No font selected");
+				Log::Warning(L"No font selected, using default");
+				font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
 
 				return false;
 			}
-
-			glText.setFont(*font.getValue());
 
 			return true;
 		}
@@ -68,8 +76,13 @@ namespace Menu
 		void updateOwnGraphics() override
 		{
 			glText.setPosition(
-				convertPositionVTR(position.getValue())
+				convertPositionVTR({ 0.f, 0.f })
 			);
+
+			/*
+				static int counter = 0;
+				Log::Information(std::to_wstring(++counter));
+			*/
 		}
 
 		sf::Text glText;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/device/ScreenDevice.h>
 #include <Client/source/menu/MenuElementBase.h>
 
 #include <SFML/Graphics/View.hpp>
@@ -24,7 +25,17 @@ namespace Menu
 					   const sf::FloatRect newViewPort)
 				{
 					view.setViewport(newViewPort);
-					size = view.getSize();
+
+					const sf::Vector2u windowSize = Device::Screen::GetWindow()->getSize();
+
+					size = sf::Vector2f(
+						windowSize.x * newViewPort.width,
+						windowSize.y * newViewPort.height
+					);
+					position = sf::Vector2f(
+						windowSize.x * newViewPort.left,
+						windowSize.y * newViewPort.top
+					);
 				});
 
 			viewPort = { 0.f, 0.f, 1.f, 1.f };

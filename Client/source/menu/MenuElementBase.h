@@ -108,10 +108,17 @@ namespace Menu
 						position.getValue().y + (newOffset.top  - oldOffset.top)
 					};
 
-					parent->updateGraphics();
+					if (parent == NULL)
+					{
+						updateGraphics();
+					}
+					else
+					{
+						parent->updateGraphics();
+					}
 				});
 
-			outerOffset.addListener(
+			innerOffset.addListener(
 				[this](const Offset oldOffset,
 					   const Offset newOffset)
 				{
@@ -143,16 +150,16 @@ namespace Menu
 			element->onParentChanged();
 		}
 
-		Property<sf::Vector2f> size = { };
-		Property<sf::Vector2f> position = { };
+		Property<sf::Vector2f> size;
+		Property<sf::Vector2f> position;
 		
 		struct Offset
 		{
-			float left, top, right, bottom;
+			float left = 0.f, top = 0.f, right = 0.f, bottom = 0.f;
 		};
 
-		Property<Offset> outerOffset = { };
-		Property<Offset> innerOffset = { };
+		Property<Offset> outerOffset;
+		Property<Offset> innerOffset;
 
 		virtual void updateGraphics()
 		{
@@ -245,6 +252,13 @@ namespace Menu
 	private:
 		ElementBase* parent = NULL;
 		std::vector<ElementBase*> staticChildren;
+	};
+
+	enum class CommonControlEffect
+	{
+		Default,
+		Hover,
+		Pressed
 	};
 }
 

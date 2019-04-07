@@ -46,9 +46,6 @@
     <Filter Include="source\framework">
       <UniqueIdentifier>{e6571033-ad24-4860-8fad-429aaa5b6a10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\logger">
-      <UniqueIdentifier>{e27b5282-e150-43bb-a9a9-0172ea1c17bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\resource">
       <UniqueIdentifier>{66b67bfc-0010-45cc-80b8-4ec868cce6b1}</UniqueIdentifier>
     </Filter>
@@ -85,6 +82,9 @@
     <Filter Include="source\menu\old\style">
       <UniqueIdentifier>{6ddc637d-501a-4851-bab9-000f8a04d3aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\logger">
+      <UniqueIdentifier>{e27b5282-e150-43bb-a9a9-0172ea1c17bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\device\InputDevice.h">
@@ -119,9 +119,6 @@
     </ClInclude>
     <ClInclude Include="source\menu\style\DefaultStyles.h">
       <Filter>source\menu\old\style</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\RootBase.h">
-      <Filter>source\menu</Filter>
     </ClInclude>
     <ClInclude Include="source\editor\manipulator\Element.h">
       <Filter>source\editor\manipulator</Filter>
@@ -386,6 +383,9 @@
     </ClInclude>
     <ClInclude Include="source\scene\TestMenuScene.h">
       <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\menu\RootBase.h">
+      <Filter>source\menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -662,6 +662,18 @@
     </None>
     <None Include="source\shared\WallTile.h">
       <Filter>source\shared</Filter>
+    </None>
+    <None Include="source\menu\MenuButton.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuButton.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuSlideBar.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuSlideBar.h">
+      <Filter>source\menu</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -263,6 +263,10 @@
     <Image Include="source\resource\IMAG0011.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="source\menu\MenuButton.cpp" />
+    <None Include="source\menu\MenuButton.h" />
+    <None Include="source\menu\MenuSlideBar.cpp" />
+    <None Include="source\menu\MenuSlideBar.h" />
     <None Include="source\shared\WallTile.cpp" />
     <None Include="source\shared\WallTile.h" />
   </ItemGroup>

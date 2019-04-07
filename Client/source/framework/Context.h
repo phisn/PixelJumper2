@@ -16,6 +16,12 @@
 
 namespace Framework
 {
+	/*
+	
+		TODO: new feature -> asynchronous scenes
+	
+	*/
+
 	class Context
 	{
 		static std::deque<Context*> contextStack;
@@ -123,7 +129,7 @@ namespace Framework
 
 				break;
 			case InternalTask::LoadContext:
-				contextStack.back()->internInit();
+				contextStack.back()->externInit();
 
 				break;
 			case InternalTask::LoadScene:
@@ -145,6 +151,8 @@ namespace Framework
 			case InternalTask::PopScene:
 				break;
 			}
+
+			currentTask = InternalTask::Empty;
 		}
 
 	private:
