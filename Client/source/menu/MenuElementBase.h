@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window/Event.hpp>
 
@@ -134,7 +135,14 @@ namespace Menu
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
 				{
-					updateGraphics();
+					if (parent == NULL)
+					{
+						updateGraphics();
+					}
+					else
+					{
+						parent->updateGraphics();
+					}
 				});
 		}
 
@@ -259,6 +267,11 @@ namespace Menu
 		Default,
 		Hover,
 		Pressed
+	};
+
+	struct CommonControlStyleSingle
+	{
+		sf::Color default, hover, pressed;
 	};
 }
 

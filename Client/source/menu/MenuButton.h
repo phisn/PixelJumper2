@@ -7,66 +7,146 @@
 
 namespace Menu
 {
-	class DefaultButtonMaterial
+	namespace ButtonMaterial
 	{
-	public:
-		struct Style
+		class DefaultCircle
 		{
-			sf::Color innerColor;
-			sf::Color outerColor;
+		public:
+			struct Style
+			{
+				sf::Color innerColor;
+				sf::Color outerColor;
 
-			int outlineThickness;
+				int outlineThickness;
+			};
+
+			DefaultCircle()
+			{
+				applyEffect(CommonControlEffect::Default);
+				rect.setPointCount(100);
+			}
+
+			bool contains(const sf::Vector2f point)
+			{
+				const float xDiff = point.x - (rect.getPosition().x + realSize.x / 2.f);
+				const float yDiff = point.y - (rect.getPosition().y + realSize.y / 2.f);
+				
+				const float xDivR = (realSize.x * realSize.x) / 4.f;
+				const float yDivR = (realSize.y * realSize.y) / 4.f;
+
+				return (xDiff * xDiff) / xDivR + (yDiff * yDiff) / yDivR < 1;
+			}
+
+			void setPosition(const sf::Vector2f position)
+			{
+				rect.setPosition(position);
+			}
+
+			void setSize(const sf::Vector2f size)
+			{
+				rect.setRadius(
+					std::min(size.x, size.y) / 2.f
+				);
+				rect.setScale(
+					size.x < size.y ? 1 : size.x / size.y,
+					size.y < size.x ? 1 : size.y / size.x
+				);
+
+				realSize = size;
+			}
+
+			void applyEffect(const CommonControlEffect effect)
+			{
+				rect.setFillColor(styles[(int)effect].innerColor);
+				rect.setOutlineColor(styles[(int)effect].outerColor);
+				rect.setOutlineThickness(styles[(int)effect].outlineThickness);
+			}
+
+			void draw() const
+			{
+				Device::Screen::Draw(rect);
+			}
+
+		private:
+			sf::Vector2f realSize;
+
+			Style styles[3] =
+			{
+				{ sf::Color::Color(50, 50, 50), sf::Color::Color(), 0 },
+				{ sf::Color::Color(50, 50, 50), sf::Color::Color(100, 100, 100), 3 },
+				{ sf::Color::Color(80, 80, 80), sf::Color::Color(), 0 }
+			};
+
+			sf::CircleShape rect;
 		};
 
-		DefaultButtonMaterial()
+		class DefaultRectangle
 		{
-			applyEffect(CommonControlEffect::Default);
-		}
+		public:
+			struct Style
+			{
+				sf::Color innerColor;
+				sf::Color outerColor;
 
-		bool contains(const sf::Vector2f point)
-		{
-			return rect.getGlobalBounds().contains(point);
-		}
+				int outlineThickness;
+			};
 
-		void setPosition(const sf::Vector2f position)
-		{
-			rect.setPosition(position);
-		}
+			DefaultRectangle()
+			{
+				applyEffect(CommonControlEffect::Default);
+			}
 
-		void setSize(const sf::Vector2f size)
-		{
-			rect.setSize(size);
-		}
+			bool contains(const sf::Vector2f point)
+			{
+				return rect.getGlobalBounds().contains(point);
+			}
 
-		void applyEffect(const CommonControlEffect effect)
-		{
-			rect.setFillColor(styles[(int) effect].innerColor);
-			rect.setOutlineColor(styles[(int) effect].outerColor);
-			rect.setOutlineThickness(styles[(int) effect].outlineThickness);
-		}
+			void setPosition(const sf::Vector2f position)
+			{
+				rect.setPosition(position);
+			}
 
-		void draw() const
-		{
-			Device::Screen::Draw(rect);
-		}
+			void setSize(const sf::Vector2f size)
+			{
+				rect.setSize(size);
+			}
 
-	private:
-		Style styles[3] = 
-		{
-			{ sf::Color::Color(50, 50, 50), sf::Color::Color(), 0 },
-			{ sf::Color::Color(50, 50, 50), sf::Color::Color(100, 100, 100), 3 },
-			{ sf::Color::Color(80, 80, 80), sf::Color::Color(), 0 }
+			void applyEffect(const CommonControlEffect effect)
+			{
+				rect.setFillColor(styles[(int)effect].innerColor);
+				rect.setOutlineColor(styles[(int)effect].outerColor);
+				rect.setOutlineThickness(styles[(int)effect].outlineThickness);
+			}
+
+			void draw() const
+			{
+				Device::Screen::Draw(rect);
+			}
+
+		private:
+			Style styles[3] =
+			{
+				{ sf::Color::Color(50, 50, 50), sf::Color::Color(), 0 },
+				{ sf::Color::Color(50, 50, 50), sf::Color::Color(100, 100, 100), 3 },
+				{ sf::Color::Color(80, 80, 80), sf::Color::Color(), 0 }
+			};
+
+			sf::RectangleShape rect;
 		};
+	}
 
-		sf::RectangleShape rect;
-	};
-
-	template <typename Material = DefaultButtonMaterial>
+	template <typename Material = ButtonMaterial::DefaultRectangle>
 	class Button
 		:
 		public ElementBase
 	{
 	public:
+		virtual bool initialize() override
+		{
+			onGraphicsDefault();
+			return ElementBase::initialize();
+		}
+
 		virtual void onEvent(const sf::Event event)
 		{
 			ElementBase::onEvent(event);
@@ -80,8 +160,9 @@ namespace Menu
 						event.mouseButton.y))
 					)
 				{
-					material.applyEffect(CommonControlEffect::Pressed);
 					buttonPressedInside = true;
+
+					onGraphicsPressed();
 				}
 
 				break;
@@ -92,12 +173,12 @@ namespace Menu
 						event.mouseButton.y))
 					)
 				{
-					material.applyEffect(CommonControlEffect::Hover);
 					onButtonPressed();
+					onGraphicsHovered();
 				}
 				else
 				{
-					material.applyEffect(CommonControlEffect::Default);
+					onGraphicsDefault();
 				}
 
 				buttonPressedInside = false;
@@ -114,14 +195,14 @@ namespace Menu
 						event.mouseMove.y))
 					)
 				{
-					material.applyEffect(CommonControlEffect::Hover);
 					buttonMovedInside = true;
+					onGraphicsHovered();
 				}
 				else
 				{
 					if (buttonMovedInside)
 					{
-						material.applyEffect(CommonControlEffect::Default);
+						onGraphicsDefault();
 					}
 				}
 
@@ -141,13 +222,8 @@ namespace Menu
 			ElementBase::onDraw();
 		}
 
-	private:
-		bool buttonPressedInside = false;
-		bool buttonMovedInside = false;
-
+	protected:
 		virtual void onButtonPressed() = 0;
-		virtual void onButtonHovered() = 0;
-		virtual void onButtonDefault() = 0;
 
 		void updateOwnGraphics() override
 		{
@@ -158,5 +234,24 @@ namespace Menu
 		}
 
 		Material material;
+
+		virtual void onGraphicsDefault()
+		{
+			material.applyEffect(CommonControlEffect::Default);
+		}
+
+		virtual void onGraphicsHovered()
+		{
+			material.applyEffect(CommonControlEffect::Hover);
+		}
+
+		virtual void onGraphicsPressed()
+		{
+			material.applyEffect(CommonControlEffect::Pressed);
+		}
+
+	private:
+		bool buttonPressedInside = false;
+		bool buttonMovedInside = false;
 	};
 }

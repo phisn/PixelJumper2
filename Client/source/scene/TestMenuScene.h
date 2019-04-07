@@ -2,6 +2,7 @@
 
 #include <Client/source/menu/MenuLabel.h>
 #include <Client/source/menu/MenuButton.h>
+#include <Client/source/menu/MenuButtonWithLabel.h>
 #include <Client/source/menu/MenuRootBase.h>
 
 #include <Client/source/scene/MainSceneBase.h>
@@ -19,13 +20,12 @@ namespace Scene
 
 		bool onCreate() override
 		{
-			button.addStaticChild(&label);
 			root.addElement(&button);
 
-			label.text = L"Hello World";
+			button.label.text = L"Hello World";
 			
 			button.position = { 100, 100 };
-			button.size = { 300, 150 };
+			button.size = { 500, 250 };
 
 			return true;
 		}
@@ -37,9 +37,8 @@ namespace Scene
 
 		void initialize() override
 		{
-			label.font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
-			label.position = (button.size.getValue() - label.size.getValue()) / 2.f - sf::Vector2f(0.f, 8.f);
-
+			button.label.font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
+			
 			root.initialize();
 		}
 
@@ -65,6 +64,19 @@ namespace Scene
 
 		void onLogic(const sf::Time time) override
 		{
+			static sf::Time counter;
+
+			counter += time;
+
+			if ((int) counter.asMilliseconds() % 1000 > 500)
+			{
+				button.label.text = L"World";
+			}
+			else
+			{
+				button.label.text = L"Hello";
+			}
+
 			root.onLogic(time);
 		}
 
@@ -75,22 +87,14 @@ namespace Scene
 
 	private:
 		Menu::RootBase root;
-		Menu::Label label;
 		
-		class _Button : public Menu::Button<Menu::DefaultButtonMaterial>
+		class _Button : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangle>
 		{
 			void onButtonPressed() override
 			{
 				Log::Information(L"Button Pressed");
 			}
 
-			void onButtonHovered() override
-			{
-			}
-
-			void onButtonDefault() override
-			{
-			}
 		} button;
 	};
 }

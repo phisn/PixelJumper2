@@ -40,17 +40,23 @@ namespace Menu
 						glText.getGlobalBounds().height
 					};
 				});
-			size.addListener(
-				[this](const sf::Vector2f oldSize,
-					const sf::Vector2f newSize)
+			color.addListener(
+				[this](const sf::Color oldColor,
+					   const sf::Color newColor)
 				{
-					Log::Warning(L"Someone tried to change a Label size to '" 
-						+ std::to_wstring(newSize.x) + L"|"
-						+ std::to_wstring(newSize.y) + L"' (text: '"
-						+ glText.getString() + L"')");
+					glText.setFillColor(newColor);
 				});
+			/* TODO: Cope with that
+
+				size.addListener(
+					[this](const sf::Vector2f oldSize,
+						const sf::Vector2f newSize)
+					{
+					});
+			*/
 		}
 
+		Property<sf::Color> color { sf::Color() };
 		Property<const sf::Font*> font { NULL };
 		Property<std::wstring> text { L"" };
 

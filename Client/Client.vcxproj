@@ -265,6 +265,8 @@
   <ItemGroup>
     <None Include="source\menu\MenuButton.cpp" />
     <None Include="source\menu\MenuButton.h" />
+    <None Include="source\menu\MenuButtonWithLabel.cpp" />
+    <None Include="source\menu\MenuButtonWithLabel.h" />
     <None Include="source\menu\MenuSlideBar.cpp" />
     <None Include="source\menu\MenuSlideBar.h" />
     <None Include="source\shared\WallTile.cpp" />

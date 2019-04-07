@@ -675,5 +675,11 @@
     <None Include="source\menu\MenuSlideBar.h">
       <Filter>source\menu</Filter>
     </None>
+    <None Include="source\menu\MenuButtonWithLabel.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuButtonWithLabel.cpp">
+      <Filter>source\menu</Filter>
+    </None>
   </ItemGroup>
 </Project>
