@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Client/source/menu/MenuLabel.h>
-#include <Client/source/menu/MenuButton.h>
+#include <Client/source/menu/MenuButtonMaterial.h>
 #include <Client/source/menu/MenuButtonWithLabel.h>
 #include <Client/source/menu/MenuRootBase.h>
+#include <Client/source/menu/MenuSlideBar.h>
 
 #include <Client/source/scene/MainSceneBase.h>
 
@@ -15,17 +15,30 @@ namespace Scene
 	{
 	public:
 		TestMenuScene()
+			:
+			slideBar(Menu::CommonControlDirection::Vertical)
 		{
 		}
 
 		bool onCreate() override
 		{
 			root.addElement(&button);
+			root.addElement(&button2);
+
+			root.addElement(&slideBar);
 
 			button.label.text = L"Hello World";
 			
 			button.position = { 100, 100 };
-			button.size = { 500, 250 };
+			button.size = { 300, 150 };
+
+			button2.label.text = L"Hello World";
+
+			button2.position = { 100, 300 };
+			button2.size = { 300, 150 };
+
+			slideBar.position = { 500, 100 };
+			slideBar.size = { 40, 500 };
 
 			return true;
 		}
@@ -38,7 +51,6 @@ namespace Scene
 		void initialize() override
 		{
 			button.label.font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
-			
 			root.initialize();
 		}
 
@@ -68,7 +80,7 @@ namespace Scene
 
 			counter += time;
 
-			if ((int) counter.asMilliseconds() % 1000 > 500)
+			if ((int) counter.asMilliseconds() % 1200 > 600)
 			{
 				button.label.text = L"World";
 			}
@@ -88,13 +100,38 @@ namespace Scene
 	private:
 		Menu::RootBase root;
 		
-		class _Button : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangle>
+		class : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize>
 		{
+		public:
 			void onButtonPressed() override
 			{
 				Log::Information(L"Button Pressed");
 			}
 
 		} button;
+		
+		class : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangle>
+		{
+		public:
+			void onButtonPressed() override
+			{
+				Log::Information(L"Button Pressed");
+			}
+
+		} button2;
+
+		class : public Menu::SlideBar<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle>
+		{
+		public:
+			using SlideBar::SlideBar;
+
+			void onSliderPressed(const float distance) override
+			{
+			}
+
+			void onSliderMoved(const float distance) override
+			{
+			}
+		} slideBar;
 	};
 }

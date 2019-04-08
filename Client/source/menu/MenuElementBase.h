@@ -1,99 +1,17 @@
 #pragma once
 
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window/Event.hpp>
+#include <Client/source/menu/MenuCommon.h>
+#include <Client/source/menu/MenuProperty.h>
 
 #include <functional>
 #include <vector>
 
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window/Event.hpp>
+
 namespace Menu
 {
-	template <typename T>
-	class Property
-	{
-		typedef std::function<
-			void(const T oldValue, const T newValue)
-		> Listener;
-	public:
-		Property()
-		{
-		}
-
-		Property(const T value)
-			:
-			value(value)
-		{
-		}
-
-		void addListener(const Listener listener)
-		{
-			listeners.push_back(listener);
-		}
-
-		bool popListener(const Listener listener)
-		{
-			decltype(listeners)::const_iterator iterator = listeners.cbegin();
-
-			do
-			{
-				if (iterator->target<std::size_t>() == listener.target<std::size_t>())
-				{
-					listeners.erase(iterator);
-					return true;
-				}
-
-			} while (++iterator != listeners.cend());
-
-			return false;
-		}
-		
-		Property& operator=(const T value)
-		{
-			return operator=<T>(value);
-		}
-
-		template <typename S>
-		Property& operator=(const S value)
-		{
-			const T temp = this->value;
-			this->value = T(value);
-
-			valueChanged(temp);
-
-			return *this;
-		}
-
-		operator const T() const
-		{
-			return value;
-		}
-
-		const T getValue() const
-		{
-			return value;
-		}
-
-#ifdef DANGEROUS // TODO: ?
-		T& writeValue()
-		{
-			return value;
-		}
-#endif
-
-		void valueChanged(const T oldValue) const
-		{
-			for (const Listener& listener : listeners)
-			{
-				listener(oldValue, value);
-			}
-		}
-
-	private:
-		std::vector<Listener> listeners;
-		T value;
-	};
-
 	class ElementBase
 	{
 	public:
@@ -166,8 +84,8 @@ namespace Menu
 			float left = 0.f, top = 0.f, right = 0.f, bottom = 0.f;
 		};
 
-		Property<Offset> outerOffset;
-		Property<Offset> innerOffset;
+		Property<Offset> outerOffset{ };
+		Property<Offset> innerOffset{ };
 
 		virtual void updateGraphics()
 		{
@@ -187,6 +105,11 @@ namespace Menu
 					return false;
 				}
 
+			return true;
+		}
+
+		virtual bool create()
+		{
 			return true;
 		}
 
@@ -260,18 +183,6 @@ namespace Menu
 	private:
 		ElementBase* parent = NULL;
 		std::vector<ElementBase*> staticChildren;
-	};
-
-	enum class CommonControlEffect
-	{
-		Default,
-		Hover,
-		Pressed
-	};
-
-	struct CommonControlStyleSingle
-	{
-		sf::Color default, hover, pressed;
 	};
 }
 

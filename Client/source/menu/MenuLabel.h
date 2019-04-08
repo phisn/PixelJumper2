@@ -84,11 +84,6 @@ namespace Menu
 			glText.setPosition(
 				convertPositionVTR({ 0.f, 0.f })
 			);
-
-			/*
-				static int counter = 0;
-				Log::Information(std::to_wstring(++counter));
-			*/
 		}
 
 		sf::Text glText;

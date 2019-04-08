@@ -681,5 +681,23 @@
     <None Include="source\menu\MenuButtonWithLabel.cpp">
       <Filter>source\menu</Filter>
     </None>
+    <None Include="source\menu\MenuButtonMaterial.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuButtonMaterial.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuCommon.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuCommon.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuProperty.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuProperty.cpp">
+      <Filter>source\menu</Filter>
+    </None>
   </ItemGroup>
 </Project>

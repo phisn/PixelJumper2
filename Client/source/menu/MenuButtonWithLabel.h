@@ -63,7 +63,7 @@ namespace Menu
 			label.color = labelStyle.pressed;
 		}
 
-		CommonControlStyleSingle labelStyle =
+		CommonControlStyle<sf::Color> labelStyle =
 		{
 			sf::Color::Color(255, 255, 255),
 			sf::Color::Color(255, 255, 255),
