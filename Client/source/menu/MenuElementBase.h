@@ -10,6 +10,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Window/Event.hpp>
 
+#include <Client/source/logger/Logger.h>
+
 namespace Menu
 {
 	class ElementBase

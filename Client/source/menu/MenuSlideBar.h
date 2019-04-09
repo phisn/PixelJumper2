@@ -41,6 +41,11 @@ namespace Menu
 
 	namespace SliderMaterial
 	{
+		struct Style : public CommonShapeStyle
+		{
+			float innerOffset;
+		};
+
 		class DefaultRectangle
 		{
 		public:
@@ -59,35 +64,37 @@ namespace Menu
 			void setPosition(const sf::Vector2f position)
 			{
 				this->position = position;
-				setDistance(distance);
+				updatePosition();
 			}
 
 			void setSize(const sf::Vector2f size)
 			{
-				rect.setSize(size);
+				this->size = size;
+				updateSize();
+			}
+
+			void setConsumption(const float consumption)
+			{
+				this->consumption = consumption;
+				updateSize();
 			}
 
 			void setDistance(const float distance)
 			{
 				this->distance = distance;
-				
-				rect.setPosition(
-					direction == CommonControlDirection::Horizontal 
-					? position.x + distance
-					: position.x,
-					direction == CommonControlDirection::Horizontal
-					? position.y
-					: position.y + distance);
+				updatePosition();
 			}
 
 			void applyEffect(const CommonControlEffect effect)
 			{
-				rect.setFillColor(
-					styles[(int)effect].innerColor);
-				rect.setOutlineColor(
-					styles[(int)effect].outerColor);
-				rect.setOutlineThickness(
-					styles[(int)effect].outlineThickness);
+				style = styles + (int) effect;
+
+				rect.setFillColor(style->innerColor);
+				rect.setOutlineColor(style->outerColor);
+				rect.setOutlineThickness(style->outlineThickness);
+
+				updateSize();
+				updatePosition();
 			}
 
 			void draw() const
@@ -96,16 +103,45 @@ namespace Menu
 			}
 
 		private:
-			const CommonControlDirection direction;
-			const CommonShapeStyle styles[3] =
+			void updatePosition()
 			{
-				{ sf::Color::Color(100, 100, 100), sf::Color::Color(), 0 },
-				{ sf::Color::Color(150, 150, 150), sf::Color::Color(), 0 },
-				{ sf::Color::Color(200, 200, 200), sf::Color::Color(), 0 }
-			};
+				sf::Vector2f position = this->position + sf::Vector2f(
+					style->innerOffset, 
+					style->innerOffset);
 
-			float distance = 0.f;
-			sf::Vector2f position;
+				(direction == CommonControlDirection::Horizontal
+					? position.x
+					: position.y) += distance;
+
+				rect.setPosition(position);
+			}
+
+			void updateSize()
+			{
+				sf::Vector2f size = this->size;
+
+				(direction == CommonControlDirection::Horizontal
+					? size.y
+					: size.x) -= style->innerOffset * 2;
+				(direction == CommonControlDirection::Horizontal
+					? size.x
+					: size.y) *= consumption;
+
+				rect.setSize(size);
+			}
+
+			const CommonControlDirection direction;
+
+			const Style styles[3] =
+			{
+				{ sf::Color::Color(100, 100, 100), sf::Color::Color(), 0, -5.f },
+				{ sf::Color::Color(150, 150, 150), sf::Color::Color(), 0, -5.f },
+				{ sf::Color::Color(200, 200, 200), sf::Color::Color(), 0, -5.f }
+			};
+			const Style* style = styles;
+
+			float distance = 0.f, consumption;
+			sf::Vector2f position, size;
 
 			sf::RectangleShape rect;
 		};
@@ -129,9 +165,20 @@ namespace Menu
 				[this](const float oldDistance,
 					   const float newDistance)
 				{
+					sliderMaterial.setDistance(distance);
+					onSliderMoved(distance);
+
 					updateGraphics();
-				}
-			);
+				});
+			consumption.addListener(
+				[this](const float oldConsumption,
+					const float newConsumption)
+				{
+					sliderMaterial.setConsumption(newConsumption);
+					updateGraphics();
+				});
+
+			consumption = 0.1f;
 		}
 
 		bool initialize() override
@@ -153,7 +200,7 @@ namespace Menu
 					sliderPressedInside = true;
 					sliderPositionBegin = takeByDirection(
 						event.mouseButton.x, 
-						event.mouseButton.y);
+						event.mouseButton.y) - distance.getValue();
 
 					onGraphicsPressed();
 				}
@@ -189,9 +236,6 @@ namespace Menu
 						event.mouseMove.x,
 						event.mouseMove.y)
 						- sliderPositionBegin;
-
-					sliderMaterial.setDistance(distance);
-					onSliderMoved(distance);
 
 					this->distance = distance;
 				}
@@ -232,6 +276,7 @@ namespace Menu
 		}
 
 		Property<float> distance{ 0.f };
+		Property<float> consumption{ 0.1f };
 
 	private:
 		virtual void onSliderPressed(const float distance) = 0;

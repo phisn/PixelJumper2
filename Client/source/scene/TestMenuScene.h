@@ -38,7 +38,7 @@ namespace Scene
 			button2.size = { 300, 150 };
 
 			slideBar.position = { 500, 100 };
-			slideBar.size = { 40, 500 };
+			slideBar.size = { 30, 500 };
 
 			return true;
 		}
@@ -51,6 +51,8 @@ namespace Scene
 		void initialize() override
 		{
 			button.label.font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
+			button2.label.font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
+
 			root.initialize();
 		}
 
@@ -77,16 +79,22 @@ namespace Scene
 		void onLogic(const sf::Time time) override
 		{
 			static sf::Time counter;
+			static bool isWorld = true;
 
 			counter += time;
 
 			if ((int) counter.asMilliseconds() % 1200 > 600)
 			{
-				button.label.text = L"World";
+				if (!isWorld)
+				{
+						button.label.text = L"World";
+						isWorld = true;
+				}
 			}
-			else
+			else if (isWorld)
 			{
 				button.label.text = L"Hello";
+				isWorld = false;
 			}
 
 			root.onLogic(time);
