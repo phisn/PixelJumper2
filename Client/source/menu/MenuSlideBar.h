@@ -3,6 +3,8 @@
 #include <Client/source/menu/MenuElementBase.h>
 #include <Client/source/menu/MenuButtonMaterial.h>
 
+#include <functional>
+
 namespace Menu
 {
 	namespace BarMaterial
@@ -10,21 +12,45 @@ namespace Menu
 		class DefaultRectangle
 		{
 		public:
-			DefaultRectangle()
+			DefaultRectangle(const CommonControlDirection direction)
+				:
+				direction(direction)
 			{
 				rect.setFillColor(style.innerColor);
 				rect.setOutlineColor(style.outerColor);
 				rect.setOutlineThickness(style.outlineThickness);
 			}
 
-			void setPosition(const sf::Vector2f position)
+			void setPosition(sf::Vector2f position)
 			{
+				this->position = position;
+				
+				/*(direction == CommonControlDirection::Horizontal
+					? position.y
+					: position.x) +=
+					(
+						(direction == CommonControlDirection::Horizontal
+							? size.y
+							: size.x) / 2.f
+						- 
+						(direction == CommonControlDirection::Horizontal
+							? size.y
+							: size.x) / 8.f
+					);*/
+
 				rect.setPosition(position);
 			}
 
-			void setSize(const sf::Vector2f size)
+			void setSize(sf::Vector2f size)
 			{
+				this->size = size;
+
+				/*(direction == CommonControlDirection::Horizontal
+					? size.y
+					: size.x) /= 4.f;*/
+
 				rect.setSize(size);
+				setPosition(position);
 			}
 
 			void draw() const
@@ -33,6 +59,10 @@ namespace Menu
 			}
 
 		private:
+			sf::Vector2f size;
+			sf::Vector2f position;
+
+			const CommonControlDirection direction;
 			const CommonShapeStyle style = { sf::Color::Color(50, 50, 50), sf::Color::Color(), 0 };
 
 			sf::RectangleShape rect;
@@ -147,6 +177,48 @@ namespace Menu
 		};
 	}
 
+	class PercentValue
+	{
+	public:
+		typedef std::function<const float(const float)> Converter;
+
+		PercentValue(
+			const Converter convertPercentToValue,
+			const Converter convertValueToPercent)
+			:
+			convertPercentToValue(convertPercentToValue),
+			convertValueToPercent(convertValueToPercent),
+			value(0.f)
+		{
+		}
+
+		float getPercent() const
+		{
+			return convertValueToPercent(value);
+		}
+
+		float getValue() const
+		{
+			return value;
+		}
+
+		void setPercent(const float percent)
+		{
+			value = convertPercentToValue(percent);
+		}
+
+		void setValue(const float value)
+		{
+			this->value = value;
+		}
+
+	private:
+		float value;
+
+		const Converter convertPercentToValue;
+		const Converter convertValueToPercent;
+	};
+
 	template <
 		typename TBarMaterial,
 		typename TSliderMaterial
@@ -159,26 +231,29 @@ namespace Menu
 		SlideBar(const CommonControlDirection direction)
 			:
 			direction(direction),
-			sliderMaterial(direction)
+			sliderMaterial(direction),
+			barMaterial(direction)
 		{
 			distance.addListener(
-				[this](const float oldDistance,
-					   const float newDistance)
+				[this](const PercentValue oldDistance,
+					   const PercentValue newDistance)
 				{
-					sliderMaterial.setDistance(distance);
-					onSliderMoved(distance);
+					sliderMaterial.setDistance(newDistance.getValue());
+					onSliderMoved(newDistance.getValue());
 
 					updateGraphics();
 				});
-			consumption.addListener(
-				[this](const float oldConsumption,
-					const float newConsumption)
+			length.addListener(
+				[this](const PercentValue oldLength,
+					   const PercentValue newLength)
 				{
-					sliderMaterial.setConsumption(newConsumption);
+					sliderMaterial.setConsumption(newLength.getPercent());
+
 					updateGraphics();
 				});
 
-			consumption = 0.1f;
+			distance->setValue(0.f);
+			length->setValue(0.f);
 		}
 
 		bool initialize() override
@@ -199,8 +274,8 @@ namespace Menu
 				{
 					sliderPressedInside = true;
 					sliderPositionBegin = takeByDirection(
-						event.mouseButton.x, 
-						event.mouseButton.y) - distance.getValue();
+						event.mouseButton.x,
+						event.mouseButton.y) - distance->getValue();
 
 					onGraphicsPressed();
 				}
@@ -237,7 +312,7 @@ namespace Menu
 						event.mouseMove.y)
 						- sliderPositionBegin;
 
-					this->distance = distance;
+					this->distance->setValue(distance);
 				}
 				else
 				{
@@ -275,8 +350,40 @@ namespace Menu
 			ElementBase::onDraw();
 		}
 
-		Property<float> distance{ 0.f };
-		Property<float> consumption{ 0.1f };
+		Property<PercentValue> distance
+		{
+			PercentValue(
+				[this](const float value) -> const float
+				{ // convert to Value
+					return value * (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue());
+				},
+				[this](const float value) -> const float
+				{ // convert to Percent
+					return value / (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue());
+				})
+		};
+		Property<PercentValue> length
+		{ 
+			PercentValue(
+				[this](const float value) -> const float
+				{ // convert to Value
+					return value * takeByDirection(this->size.getValue().x, this->size.getValue().y);
+				},
+				[this](const float value) -> const float
+				{ // convert to Percent
+					return value / takeByDirection(this->size.getValue().x, this->size.getValue().y);
+				})
+		};
+
+		float convertPositionToPercent(const float position) const
+		{
+			return position / takeByDirection(size.getValue().x, size.getValue().y);
+		}
+
+		float convertPercentToPosition(const float percent) const
+		{
+			return percent * takeByDirection(size.getValue().x, size.getValue().y);
+		}
 
 	private:
 		virtual void onSliderPressed(const float distance) = 0;

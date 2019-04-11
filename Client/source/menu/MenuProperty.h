@@ -3,13 +3,17 @@
 #include <functional>
 #include <vector>
 
+#include <type_traits>
+
 namespace Menu
 {
 	template <typename T>
 	class Property
 	{
-		typedef std::function<
-			void(const T oldValue, const T newValue)
+		//typedef std::conditional<std::is_scalar_v<T>, T, T>::type ListenerType;  
+		typedef std::function<void(
+			T oldValue,
+			T newValue)
 		> Listener;
 	public:
 		Property()
@@ -52,12 +56,19 @@ namespace Menu
 		template <typename S>
 		Property& operator=(const S value)
 		{
-			const T temp = this->value;
+			const T temp = std::move(this->value);
 			this->value = T(value);
 
-			valueChanged(temp);
+			valueChanged(
+				std::move(temp)
+			);
 
 			return *this;
+		}
+
+		T* operator->()
+		{
+			return &value;
 		}
 
 		operator const T() const
@@ -77,11 +88,11 @@ namespace Menu
 		}
 #endif
 
-		void valueChanged(const T oldValue) const
+		void valueChanged(const T&& oldValue) const
 		{
 			for (const Listener& listener : listeners)
 			{
-				listener(oldValue, value);
+				listener(std::move(oldValue), value);
 			}
 		}
 

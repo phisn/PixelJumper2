@@ -54,6 +54,9 @@ namespace Scene
 			button2.label.font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
 
 			root.initialize();
+
+			slideBar.length->setPercent(0.5f);
+			slideBar.length.valueChanged(slideBar.length.getValue());
 		}
 
 		void onShow() override
