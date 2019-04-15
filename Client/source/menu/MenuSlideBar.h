@@ -2,6 +2,7 @@
 
 #include <Client/source/menu/MenuElementBase.h>
 #include <Client/source/menu/MenuButtonMaterial.h>
+#include <Client/source/menu/PercentValue.h>
 
 #include <functional>
 
@@ -177,48 +178,6 @@ namespace Menu
 		};
 	}
 
-	class PercentValue
-	{
-	public:
-		typedef std::function<const float(const float)> Converter;
-
-		PercentValue(
-			const Converter convertPercentToValue,
-			const Converter convertValueToPercent)
-			:
-			convertPercentToValue(convertPercentToValue),
-			convertValueToPercent(convertValueToPercent),
-			value(0.f)
-		{
-		}
-
-		float getPercent() const
-		{
-			return convertValueToPercent(value);
-		}
-
-		float getValue() const
-		{
-			return value;
-		}
-
-		void setPercent(const float percent)
-		{
-			value = convertPercentToValue(percent);
-		}
-
-		void setValue(const float value)
-		{
-			this->value = value;
-		}
-
-	private:
-		float value;
-
-		const Converter convertPercentToValue;
-		const Converter convertValueToPercent;
-	};
-
 	template <
 		typename TBarMaterial,
 		typename TSliderMaterial
@@ -235,25 +194,19 @@ namespace Menu
 			barMaterial(direction)
 		{
 			distance.addListener(
-				[this](const PercentValue oldDistance,
-					   const PercentValue newDistance)
+				[this](const PercentValue& distance)
 				{
-					sliderMaterial.setDistance(newDistance.getValue());
-					onSliderMoved(newDistance.getValue());
-
+					sliderMaterial.setDistance(distance.getValue());
+					onSliderMoved(0.f);
+					
 					updateGraphics();
 				});
 			length.addListener(
-				[this](const PercentValue oldLength,
-					   const PercentValue newLength)
+				[this](const PercentValue& length)
 				{
-					sliderMaterial.setConsumption(newLength.getPercent());
-
+					sliderMaterial.setConsumption(length.getPercent());
 					updateGraphics();
 				});
-
-			distance->setValue(0.f);
-			length->setValue(0.f);
 		}
 
 		bool initialize() override
@@ -352,27 +305,25 @@ namespace Menu
 
 		Property<PercentValue> distance
 		{
-			PercentValue(
-				[this](const float value) -> const float
-				{ // convert to Value
-					return value * (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue());
-				},
-				[this](const float value) -> const float
-				{ // convert to Percent
-					return value / (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue());
-				})
+			[this](const float value) -> const float
+			{ // convert to Value
+				return value * (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue());
+			},
+			[this](const float value) -> const float
+			{ // convert to Percent
+				return value / (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue());
+			}
 		};
 		Property<PercentValue> length
 		{ 
-			PercentValue(
-				[this](const float value) -> const float
-				{ // convert to Value
-					return value * takeByDirection(this->size.getValue().x, this->size.getValue().y);
-				},
-				[this](const float value) -> const float
-				{ // convert to Percent
-					return value / takeByDirection(this->size.getValue().x, this->size.getValue().y);
-				})
+			[this](const float value) -> const float
+			{ // convert to Value
+				return value * takeByDirection(this->size.getValue().x, this->size.getValue().y);
+			},
+			[this](const float value) -> const float
+			{ // convert to Percent
+				return value / takeByDirection(this->size.getValue().x, this->size.getValue().y);
+			}
 		};
 
 		float convertPositionToPercent(const float position) const

@@ -7,25 +7,18 @@
 
 namespace Menu
 {
-	template <typename T>
-	class Property
+	struct CustomProperty
 	{
-		//typedef std::conditional<std::is_scalar_v<T>, T, T>::type ListenerType;  
-		typedef std::function<void(
-			T oldValue,
-			T newValue)
-		> Listener;
+		virtual void onValueChanged() const noexcept = 0;
+	};
+
+	template <typename ListenerT>
+	class PropertyBase
+	{
+	protected:
+		typedef ListenerT Listener;
+
 	public:
-		Property()
-		{
-		}
-
-		Property(const T value)
-			:
-			value(value)
-		{
-		}
-
 		void addListener(const Listener listener)
 		{
 			listeners.push_back(listener);
@@ -48,6 +41,28 @@ namespace Menu
 			return false;
 		}
 
+	protected:
+		std::vector<Listener> listeners;
+	};
+
+	template <typename T, bool UseCustomProperty = std::is_base_of_v<CustomProperty, T>>
+	class Property
+		:
+		public PropertyBase<std::function<void(
+			T oldValue,
+			T newValue)>>
+	{
+	public:
+		Property()
+		{
+		}
+
+		Property(const T value)
+			:
+			value(value)
+		{
+		}
+
 		Property& operator=(const T value)
 		{
 			return operator=<T>(value);
@@ -64,11 +79,6 @@ namespace Menu
 			);
 
 			return *this;
-		}
-
-		T* operator->()
-		{
-			return &value;
 		}
 
 		operator const T() const
@@ -88,6 +98,7 @@ namespace Menu
 		}
 #endif
 
+	private:
 		void valueChanged(const T&& oldValue) const
 		{
 			for (const Listener& listener : listeners)
@@ -96,8 +107,58 @@ namespace Menu
 			}
 		}
 
-	private:
-		std::vector<Listener> listeners;
 		T value;
+	};
+
+	template <typename T>
+	class Property<T, true>
+		:
+		public PropertyBase<
+			std::function<void(const T&)>
+		>
+	{
+		class Value : public T
+		{
+		public:
+			template <typename... Args>
+			Value(Property<T, true>* const parent, Args... args)
+				:
+				T(args...),
+				parent(parent)
+			{
+			}
+
+			void onValueChanged() const noexcept override
+			{
+				parent->onValueChanged();
+			}
+
+		private:
+			Property<T, true>* parent;
+		};
+
+	public:
+		template <typename... Args>
+		Property(Args... args)
+			:
+			value(this, args...)
+		{
+		}
+
+		T* operator->()
+		{
+			return &value;
+		}
+
+	public:
+		void onValueChanged()
+		{
+			for (const Listener& listener : listeners)
+			{
+				listener(value);
+			}
+		}
+
+		Value value;
 	};
 }

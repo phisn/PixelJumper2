@@ -56,7 +56,6 @@ namespace Scene
 			root.initialize();
 
 			slideBar.length->setPercent(0.5f);
-			slideBar.length.valueChanged(slideBar.length.getValue());
 		}
 
 		void onShow() override

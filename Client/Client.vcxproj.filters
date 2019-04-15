@@ -699,5 +699,11 @@
     <None Include="source\menu\MenuProperty.cpp">
       <Filter>source\menu</Filter>
     </None>
+    <None Include="source\menu\PercentValue.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\PercentValue.cpp">
+      <Filter>source\menu</Filter>
+    </None>
   </ItemGroup>
 </Project>

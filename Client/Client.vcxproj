@@ -275,6 +275,8 @@
     <None Include="source\menu\MenuProperty.h" />
     <None Include="source\menu\MenuSlideBar.cpp" />
     <None Include="source\menu\MenuSlideBar.h" />
+    <None Include="source\menu\PercentValue.cpp" />
+    <None Include="source\menu\PercentValue.h" />
     <None Include="source\shared\WallTile.cpp" />
     <None Include="source\shared\WallTile.h" />
   </ItemGroup>
