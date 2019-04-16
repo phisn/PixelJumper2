@@ -55,7 +55,8 @@ namespace Scene
 
 			root.initialize();
 
-			slideBar.length->setPercent(0.5f);
+			slideBar.length->setPercent(0.1f);
+			slideBar.limitOffset = 10.f;
 		}
 
 		void onShow() override

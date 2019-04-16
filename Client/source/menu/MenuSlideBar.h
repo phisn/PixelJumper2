@@ -10,6 +10,7 @@ namespace Menu
 {
 	namespace BarMaterial
 	{
+		// TODO: Correct position
 		class DefaultRectangle
 		{
 		public:
@@ -165,9 +166,9 @@ namespace Menu
 
 			const Style styles[3] =
 			{
-				{ sf::Color::Color(100, 100, 100), sf::Color::Color(), 0, -5.f },
-				{ sf::Color::Color(150, 150, 150), sf::Color::Color(), 0, -5.f },
-				{ sf::Color::Color(200, 200, 200), sf::Color::Color(), 0, -5.f }
+				{ sf::Color::Color(100, 100, 100), sf::Color::Color(), 0, 4 },
+				{ sf::Color::Color(150, 150, 150), sf::Color::Color(), 0, 4 },
+				{ sf::Color::Color(200, 200, 200), sf::Color::Color(), 0, 4 }
 			};
 			const Style* style = styles;
 
@@ -196,8 +197,24 @@ namespace Menu
 			distance.addListener(
 				[this](const PercentValue& distance)
 				{
-					sliderMaterial.setDistance(distance.getValue());
-					onSliderMoved(0.f);
+					float value = distance.getValue();
+
+					if (limitDistance.getValue())
+					{
+						const float offset = limitOffset.getValue();
+						const float limit = takeByDirection(
+							this->size.getValue().x, 
+							this->size.getValue().y) - offset - length->getValue();
+
+						value = value < offset
+							? offset
+							: value > limit
+							? limit
+							: value;
+					}
+
+					sliderMaterial.setDistance(value);
+					onSliderMoved(value);
 					
 					updateGraphics();
 				});
@@ -307,11 +324,11 @@ namespace Menu
 		{
 			[this](const float value) -> const float
 			{ // convert to Value
-				return value * (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue());
+				return value * (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue() - limitOffset.getValue());
 			},
 			[this](const float value) -> const float
 			{ // convert to Percent
-				return value / (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue());
+				return value / (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue() - limitOffset.getValue());
 			}
 		};
 		Property<PercentValue> length
@@ -325,6 +342,8 @@ namespace Menu
 				return value / takeByDirection(this->size.getValue().x, this->size.getValue().y);
 			}
 		};
+		Property<bool> limitDistance{ true };
+		Property<float> limitOffset{ 0.f };
 
 		float convertPositionToPercent(const float position) const
 		{
