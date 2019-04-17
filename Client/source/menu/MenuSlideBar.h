@@ -75,7 +75,8 @@ namespace Menu
 	{
 		struct Style : public CommonShapeStyle
 		{
-			float innerOffset;
+			float innerOffsetSide;
+			float innerOffsetLimit;
 		};
 
 		class DefaultRectangle
@@ -137,9 +138,9 @@ namespace Menu
 		private:
 			void updatePosition()
 			{
-				sf::Vector2f position = this->position + sf::Vector2f(
-					style->innerOffset, 
-					style->innerOffset);
+				sf::Vector2f position = this->position + (direction == CommonControlDirection::Horizontal
+					? sf::Vector2f(style->innerOffsetLimit, style->innerOffsetSide)
+					: sf::Vector2f(style->innerOffsetSide, style->innerOffsetLimit));
 
 				(direction == CommonControlDirection::Horizontal
 					? position.x
@@ -153,11 +154,14 @@ namespace Menu
 				sf::Vector2f size = this->size;
 
 				(direction == CommonControlDirection::Horizontal
-					? size.y
-					: size.x) -= style->innerOffset * 2;
-				(direction == CommonControlDirection::Horizontal
 					? size.x
 					: size.y) *= consumption;
+				(direction == CommonControlDirection::Horizontal
+					? size.y
+					: size.x) -= style->innerOffsetSide * 2;
+				(direction == CommonControlDirection::Horizontal
+					? size.x
+					: size.y) -= style->innerOffsetLimit * 2;
 
 				rect.setSize(size);
 			}
@@ -166,9 +170,9 @@ namespace Menu
 
 			const Style styles[3] =
 			{
-				{ sf::Color::Color(100, 100, 100), sf::Color::Color(), 0, 4 },
-				{ sf::Color::Color(150, 150, 150), sf::Color::Color(), 0, 4 },
-				{ sf::Color::Color(200, 200, 200), sf::Color::Color(), 0, 4 }
+				{ sf::Color::Color(100, 100, 100), sf::Color::Color(), 0, 4, 4 },
+				{ sf::Color::Color(150, 150, 150), sf::Color::Color(), 0, 4, 4 },
+				{ sf::Color::Color(200, 200, 200), sf::Color::Color(), 0, 4, 4 }
 			};
 			const Style* style = styles;
 
@@ -197,24 +201,8 @@ namespace Menu
 			distance.addListener(
 				[this](const PercentValue& distance)
 				{
-					float value = distance.getValue();
-
-					if (limitDistance.getValue())
-					{
-						const float offset = limitOffset.getValue();
-						const float limit = takeByDirection(
-							this->size.getValue().x, 
-							this->size.getValue().y) - offset - length->getValue();
-
-						value = value < offset
-							? offset
-							: value > limit
-							? limit
-							: value;
-					}
-
-					sliderMaterial.setDistance(value);
-					onSliderMoved(value);
+					sliderMaterial.setDistance(distance.getValue());
+					onSliderMoved(distance.getValue());
 					
 					updateGraphics();
 				});
@@ -223,6 +211,22 @@ namespace Menu
 				{
 					sliderMaterial.setConsumption(length.getPercent());
 					updateGraphics();
+				});
+			limitDistance.addListener(
+				[this](const bool oldValue,
+					   const bool newValue)
+				{
+					distance->setValue(
+						applyDistanceLimit(distance->getValue())
+					);
+				});
+			limitOffset.addListener(
+				[this](const float oldLimit,
+					   const float limit)
+				{
+					distance->setValue(
+						applyDistanceLimit(distance->getValue())
+					);
 				});
 		}
 
@@ -277,12 +281,12 @@ namespace Menu
 			case sf::Event::MouseMoved:
 				if (sliderPressedInside)
 				{
-					const float distance = takeByDirection(
-						event.mouseMove.x,
-						event.mouseMove.y)
-						- sliderPositionBegin;
-
-					this->distance->setValue(distance);
+					this->distance->setValue(applyDistanceLimit(
+						takeByDirection(
+							event.mouseMove.x,
+							event.mouseMove.y)
+						- sliderPositionBegin
+					));
 				}
 				else
 				{
@@ -324,22 +328,36 @@ namespace Menu
 		{
 			[this](const float value) -> const float
 			{ // convert to Value
-				return value * (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue() - limitOffset.getValue());
+				return value * (takeByDirection(
+					this->size.getValue().x, 
+					this->size.getValue().y) 
+					
+					- length->getValue() 
+					- limitOffset.getValue() * 2);
 			},
 			[this](const float value) -> const float
 			{ // convert to Percent
-				return value / (takeByDirection(this->size.getValue().x, this->size.getValue().y) - length->getValue() - limitOffset.getValue());
+				return value / (takeByDirection(
+					this->size.getValue().x, 
+					this->size.getValue().y) 
+
+					- length->getValue() 
+					- limitOffset.getValue() * 2);
 			}
 		};
 		Property<PercentValue> length
 		{ 
 			[this](const float value) -> const float
 			{ // convert to Value
-				return value * takeByDirection(this->size.getValue().x, this->size.getValue().y);
+				return value * takeByDirection(
+					this->size.getValue().x, 
+					this->size.getValue().y);
 			},
 			[this](const float value) -> const float
 			{ // convert to Percent
-				return value / takeByDirection(this->size.getValue().x, this->size.getValue().y);
+				return value / takeByDirection(
+					this->size.getValue().x, 
+					this->size.getValue().y);
 			}
 		};
 		Property<bool> limitDistance{ true };
@@ -347,12 +365,16 @@ namespace Menu
 
 		float convertPositionToPercent(const float position) const
 		{
-			return position / takeByDirection(size.getValue().x, size.getValue().y);
+			return position / takeByDirection(
+				size.getValue().x, 
+				size.getValue().y);
 		}
 
 		float convertPercentToPosition(const float percent) const
 		{
-			return percent * takeByDirection(size.getValue().x, size.getValue().y);
+			return percent * takeByDirection(
+				size.getValue().x, 
+				size.getValue().y);
 		}
 
 	private:
@@ -364,13 +386,14 @@ namespace Menu
 			barMaterial.setPosition(
 				convertPositionVTR({ 0.f, 0.f })
 			);
-			sliderMaterial.setPosition(
-				convertPositionVTR(
-					{ 
-						0,
-						0
-					})
-			);
+
+			sliderMaterial.setPosition(convertPositionVTR(
+				limitDistance
+				?	direction == CommonControlDirection::Horizontal
+					? sf::Vector2f(limitOffset, 0.f)
+					: sf::Vector2f(0.f, limitOffset)
+				:	sf::Vector2f(0, 0)
+			));
 
 			barMaterial.setSize(size);
 			sliderMaterial.setSize(size);
@@ -397,6 +420,35 @@ namespace Menu
 		}
 
 	private:
+		float applyDistanceLimit(const float distance)
+		{
+			if (limitDistance)
+			{
+				if (distance < 0.f)
+				{
+					return 0.f;
+				}
+				else
+				{
+					const float limit = takeByDirection(
+						this->size.getValue().x,
+						this->size.getValue().y) 
+						
+						- length->getValue() 
+						- limitOffset.getValue() * 2;
+
+					if (distance > limit)
+					{
+						return limit;
+					}
+				}
+			}
+			else
+			{
+				return distance;
+			}
+		}
+
 		float takeByDirection(float x, float y) const
 		{
 			return direction == CommonControlDirection::Horizontal ? x : y;

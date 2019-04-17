@@ -27,6 +27,10 @@ namespace Scene
 
 			root.addElement(&slideBar);
 
+			root.addElement(&label);
+			root.addElement(&label2);
+			
+
 			button.label.text = L"Hello World";
 			
 			button.position = { 100, 100 };
@@ -39,6 +43,19 @@ namespace Scene
 
 			slideBar.position = { 500, 100 };
 			slideBar.size = { 30, 500 };
+
+			label.position = { 570, 100 };
+			label.text = L"0.000000";
+
+			label2.position = { 570, 150 };
+			label2.text = L"0.000000";
+
+			slideBar.distance.addListener(
+				[this](const Menu::PercentValue& value)
+				{
+					label.text = std::to_wstring(slideBar.distance->getValue());
+					label2.text = std::to_wstring(slideBar.distance->getPercent());
+				});
 
 			return true;
 		}
@@ -56,7 +73,9 @@ namespace Scene
 			root.initialize();
 
 			slideBar.length->setPercent(0.1f);
-			slideBar.limitOffset = 10.f;
+			slideBar.limitOffset = 0.f;
+
+			slideBar.limitOffset = 15.f;
 		}
 
 		void onShow() override
@@ -144,5 +163,7 @@ namespace Scene
 			{
 			}
 		} slideBar;
+
+		Menu::Label label, label2;
 	};
 }

@@ -67,7 +67,7 @@ namespace Menu
 				Log::Warning(L"No font selected, using default");
 				font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
 
-				return false;
+				return true;
 			}
 
 			return true;
