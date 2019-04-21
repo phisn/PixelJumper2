@@ -4,6 +4,7 @@
 #include <Client/source/menu/MenuButtonWithLabel.h>
 #include <Client/source/menu/MenuRootBase.h>
 #include <Client/source/menu/MenuSlideBar.h>
+#include <Client/source/menu/MenuRowContainer.h>
 
 #include <Client/source/scene/MainSceneBase.h>
 
@@ -16,46 +17,29 @@ namespace Scene
 	public:
 		TestMenuScene()
 			:
-			slideBar(Menu::CommonControlDirection::Vertical)
+			slideBar(Menu::CommonControlDirection::Horizontal),
+			container(Menu::CommonControlDirection::Horizontal)
 		{
 		}
 
 		bool onCreate() override
 		{
-			root.addElement(&button);
-			root.addElement(&button2);
+			root.addElement(&container);
 
-			root.addElement(&slideBar);
+			button.size = { 300, 200 };
+			button.label.text = L"Button1";
 
-			root.addElement(&label);
-			root.addElement(&label2);
-			
+			button2.size = { 200, 300 };
+			button.label.text = L"Button2";
 
-			button.label.text = L"Hello World";
-			
-			button.position = { 100, 100 };
-			button.size = { 300, 150 };
+			label2.text = L"Hello World";
 
-			button2.label.text = L"Hello World";
+			container.addElement(&button);
+			container.addElement(&label2);
+			container.addElement(&button2);
 
-			button2.position = { 100, 300 };
-			button2.size = { 300, 150 };
-
-			slideBar.position = { 500, 100 };
-			slideBar.size = { 30, 500 };
-
-			label.position = { 570, 100 };
-			label.text = L"0.000000";
-
-			label2.position = { 570, 150 };
-			label2.text = L"0.000000";
-
-			slideBar.distance.addListener(
-				[this](const Menu::PercentValue& value)
-				{
-					label.text = std::to_wstring(slideBar.distance->getValue());
-					label2.text = std::to_wstring(slideBar.distance->getPercent());
-				});
+			container.autoSize();
+			container.position = { 100, 100 };
 
 			return true;
 		}
@@ -67,15 +51,7 @@ namespace Scene
 
 		void initialize() override
 		{
-			button.label.font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
-			button2.label.font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
-
 			root.initialize();
-
-			slideBar.length->setPercent(0.1f);
-			slideBar.limitOffset = 0.f;
-
-			slideBar.limitOffset = 15.f;
 		}
 
 		void onShow() override
@@ -100,25 +76,6 @@ namespace Scene
 
 		void onLogic(const sf::Time time) override
 		{
-			static sf::Time counter;
-			static bool isWorld = true;
-
-			counter += time;
-
-			if ((int) counter.asMilliseconds() % 1200 > 600)
-			{
-				if (!isWorld)
-				{
-						button.label.text = L"World";
-						isWorld = true;
-				}
-			}
-			else if (isWorld)
-			{
-				button.label.text = L"Hello";
-				isWorld = false;
-			}
-
 			root.onLogic(time);
 		}
 
@@ -164,6 +121,7 @@ namespace Scene
 			}
 		} slideBar;
 
+		Menu::RowContainer container;
 		Menu::Label label, label2;
 	};
 }

@@ -64,6 +64,12 @@ namespace Menu
 						parent->updateGraphics();
 					}
 				});
+			area.addListener(
+				[this](const CommonArea oldArea,
+					   const CommonArea newArea)
+				{
+					parent->updateGraphics();
+				});
 		}
 
 		ElementBase* getParent() const
@@ -71,15 +77,10 @@ namespace Menu
 			return parent;
 		}
 
-		void addStaticChild(ElementBase* const element)
-		{
-			element->parent = this;
-			staticChildren.push_back(element);
-			element->onParentChanged();
-		}
-
 		Property<sf::Vector2f> size;
 		Property<sf::Vector2f> position;
+
+		Property<CommonArea> area = CommonArea::Center;
 		
 		struct Offset
 		{
@@ -138,6 +139,8 @@ namespace Menu
 		}
 
 	protected:
+		typedef std::vector<ElementBase*> Container;
+
 		virtual void updateOwnGraphics() = 0;
 
 		virtual void onParentChanged()
@@ -148,6 +151,27 @@ namespace Menu
 			}
 
 			updateOwnGraphics();
+		}
+
+		void addStaticChild(ElementBase* const element)
+		{
+			element->parent = this;
+			staticChildren.push_back(element);
+			element->onParentChanged();
+		}
+
+		void insertStaticChild(
+			Container::const_iterator position,
+			ElementBase* const element)
+		{
+			element->parent = this;
+			staticChildren.insert(position, element);
+			element->onParentChanged();
+		}
+
+		const std::vector<ElementBase*>& getStaticChildren() const
+		{
+			return staticChildren;
 		}
 
 		// virtual to real

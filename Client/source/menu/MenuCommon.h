@@ -30,4 +30,14 @@ namespace Menu
 	{
 		T default, hover, pressed;
 	};
+
+	enum class CommonArea
+	{
+		Center = 0, // default
+
+		Top,
+		Bottom,
+		Left,
+		Right
+	};
 }

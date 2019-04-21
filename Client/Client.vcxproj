@@ -273,6 +273,10 @@
     <None Include="source\menu\MenuCommon.h" />
     <None Include="source\menu\MenuProperty.cpp" />
     <None Include="source\menu\MenuProperty.h" />
+    <None Include="source\menu\MenuRowContainer.cpp" />
+    <None Include="source\menu\MenuRowContainer.h" />
+    <None Include="source\menu\MenuScrollContainer.cpp" />
+    <None Include="source\menu\MenuScrollContainer.h" />
     <None Include="source\menu\MenuSlideBar.cpp" />
     <None Include="source\menu\MenuSlideBar.h" />
     <None Include="source\menu\PercentValue.cpp" />

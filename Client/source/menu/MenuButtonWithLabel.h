@@ -45,19 +45,19 @@ namespace Menu
 			label.position = (size.getValue() - label.size.getValue()) / 2.f + labelOffset.getValue();
 		}
 
-		virtual void onGraphicsHovered()
+		virtual void onGraphicsHovered() override
 		{
 			Button::onGraphicsHovered();
 			label.color = labelStyle.hover;
 		}
 
-		virtual void onGraphicsDefault()
+		virtual void onGraphicsDefault() override
 		{
 			Button::onGraphicsDefault();
 			label.color = labelStyle.default;
 		}
 
-		virtual void onGraphicsPressed()
+		virtual void onGraphicsPressed() override
 		{
 			Button::onGraphicsPressed();
 			label.color = labelStyle.pressed;

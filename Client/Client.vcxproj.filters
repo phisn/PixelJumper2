@@ -153,9 +153,6 @@
     <ClInclude Include="source\editor\manipulator\cache\ModeCache.h">
       <Filter>source\editor\manipulator\cache</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\Common.h">
-      <Filter>source\menu</Filter>
-    </ClInclude>
     <ClInclude Include="source\menu\element\ScrollBarBase.h">
       <Filter>source\menu\old\element_</Filter>
     </ClInclude>
@@ -384,8 +381,11 @@
     <ClInclude Include="source\scene\TestMenuScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
+    <ClInclude Include="source\menu\Common.h">
+      <Filter>source\menu\old</Filter>
+    </ClInclude>
     <ClInclude Include="source\menu\RootBase.h">
-      <Filter>source\menu</Filter>
+      <Filter>source\menu\old</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -666,9 +666,6 @@
     <None Include="source\menu\MenuButton.cpp">
       <Filter>source\menu</Filter>
     </None>
-    <None Include="source\menu\MenuButton.h">
-      <Filter>source\menu</Filter>
-    </None>
     <None Include="source\menu\MenuSlideBar.cpp">
       <Filter>source\menu</Filter>
     </None>
@@ -703,6 +700,21 @@
       <Filter>source\menu</Filter>
     </None>
     <None Include="source\menu\PercentValue.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuButton.h">
+      <Filter>source\menu\old</Filter>
+    </None>
+    <None Include="source\menu\MenuRowContainer.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuRowContainer.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuScrollContainer.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuScrollContainer.h">
       <Filter>source\menu</Filter>
     </None>
   </ItemGroup>
