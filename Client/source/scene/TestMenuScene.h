@@ -4,7 +4,7 @@
 #include <Client/source/menu/MenuButtonWithLabel.h>
 #include <Client/source/menu/MenuRootBase.h>
 #include <Client/source/menu/MenuSlideBar.h>
-#include <Client/source/menu/MenuRowContainer.h>
+#include <Client/source/menu/MenuScrollContainer.h>
 
 #include <Client/source/scene/MainSceneBase.h>
 
@@ -18,27 +18,27 @@ namespace Scene
 		TestMenuScene()
 			:
 			slideBar(Menu::CommonControlDirection::Horizontal),
-			container(Menu::CommonControlDirection::Horizontal)
+			container(Menu::CommonControlDirection::Vertical)
 		{
 		}
 
 		bool onCreate() override
 		{
 			root.addElement(&container);
-
+;
 			button.size = { 300, 200 };
 			button.label.text = L"Button1";
 
 			button2.size = { 200, 300 };
 			button.label.text = L"Button2";
 
-			label2.text = L"Hello World";
+
+			label2.text = L"Hello World"
 
 			container.addElement(&button);
 			container.addElement(&label2);
 			container.addElement(&button2);
 
-			container.autoSize();
 			container.position = { 100, 100 };
 
 			return true;
@@ -121,7 +121,7 @@ namespace Scene
 			}
 		} slideBar;
 
-		Menu::RowContainer container;
+		Menu::ScrollContainer<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle> container;
 		Menu::Label label, label2;
 	};
 }

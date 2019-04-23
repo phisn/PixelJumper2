@@ -4,6 +4,7 @@
 #include <Client/source/menu/MenuElementBase.h>
 
 #include <cassert>
+#include <functional>
 
 namespace Menu
 {
@@ -19,7 +20,7 @@ namespace Menu
 		}
 
 		void addElement(
-			ElementBase* const element, 
+			ElementBase* const element,
 			const size_t position)
 		{
 			const Container& container = getStaticChildren();
@@ -47,53 +48,39 @@ namespace Menu
 				updateSingleElementPosition(element);
 				addStaticChild(element);
 			}
+
+			element->size.addListener(elementSizeListener);
+			recalculateSize();
 		}
 
-		void autoSize(
-			const bool autoSizeX = true,
-			const bool autoSizeY = true)
+		void removeElement(
+			const size_t position)
 		{
-			sf::Vector2f size = { };
+			removeElement(getStaticChildren().begin() + position);
+		}
 
-			if (autoSizeX || autoSizeY)
+		void removeElement(
+			const ElementBase* const element)
+		{
+			Container::const_iterator iterator = std::find(
+				getStaticChildren().cbegin(), 
+				getStaticChildren().cend(), 
+				element);
+
+			if (iterator != getStaticChildren().cend())
 			{
-				for (ElementBase* const element : getStaticChildren())
-				{
-					const sf::Vector2f elementSize = element->size.getValue();
+				removeElement(iterator);
+			}
+		}
 
-					if (direction == CommonControlDirection::Horizontal)
-					{
-						size.x += elementSize.x;
-
-						if (elementSize.y > size.y)
-						{
-							size.y = elementSize.y;
-						}
-					}
-					else
-					{
-
-						size.y += elementSize.y;
-
-						if (elementSize.x > size.x)
-						{
-							size.x = elementSize.x;
-						}
-					}
-				}
+		void removeAllElements()
+		{
+			for (ElementBase* const element : getStaticChildren())
+			{
+				element->size.popListener(elementSizeListener);
 			}
 
-			if (!autoSizeX)
-			{
-				size.x = this->size.getValue().x;
-			}
-
-			if (!autoSizeY)
-			{
-				size.y = this->size.getValue().y;
-			}
-
-			this->size = size;
+			removeAllStaticChilds();
 		}
 
 		void addElement(ElementBase* const element)
@@ -118,6 +105,19 @@ namespace Menu
 		}
 
 	private:
+		std::function<void(const sf::Vector2f, const sf::Vector2f)> elementSizeListener =
+			[this](const sf::Vector2f oldSize,
+			       const sf::Vector2f newSize)
+		{
+			recalculateSize();
+		};
+
+		void removeElement(const Container::const_iterator element)
+		{
+			element.operator*()->size.popListener(elementSizeListener);
+			removeStaticChild(element);
+		}
+
 		void updateElementPosition()
 		{
 			const size_t size = ElementBase::getStaticChildren().size();
@@ -191,6 +191,53 @@ namespace Menu
 						? (size.getValue().y - element->size.getValue().y) / 2.f
 						: 0.f);
 			}
+		}
+
+		void recalculateSize(
+			const bool autoSizeX = true,
+			const bool autoSizeY = true)
+		{
+			sf::Vector2f size = { };
+
+			if (autoSizeX || autoSizeY)
+			{
+				for (ElementBase* const element : getStaticChildren())
+				{
+					const sf::Vector2f elementSize = element->size.getValue();
+
+					if (direction == CommonControlDirection::Horizontal)
+					{
+						size.x += elementSize.x;
+
+						if (elementSize.y > size.y)
+						{
+							size.y = elementSize.y;
+						}
+					}
+					else
+					{
+
+						size.y += elementSize.y;
+
+						if (elementSize.x > size.x)
+						{
+							size.x = elementSize.x;
+						}
+					}
+				}
+			}
+
+			if (!autoSizeX)
+			{
+				size.x = this->size.getValue().x;
+			}
+
+			if (!autoSizeY)
+			{
+				size.y = this->size.getValue().y;
+			}
+
+			this->size = size;
 		}
 
 		float takeByDirection(float x, float y) const

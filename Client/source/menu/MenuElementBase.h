@@ -169,6 +169,31 @@ namespace Menu
 			element->onParentChanged();
 		}
 
+		void removeStaticChild(Container::const_iterator element)
+		{
+			element.operator*()->parent = NULL;
+			staticChildren.erase(element);
+		}
+
+		void removeLastStaticChild()
+		{
+			staticChildren.back()->parent = NULL;
+			staticChildren.pop_back();
+
+			// parent did not change, it just went away :)
+			// staticChildren.back()->onParentChanged();
+		}
+
+		void removeAllStaticChilds()
+		{
+			for (ElementBase* const element : staticChildren)
+			{
+				element->parent = NULL;
+			}
+
+			staticChildren.clear();
+		}
+
 		const std::vector<ElementBase*>& getStaticChildren() const
 		{
 			return staticChildren;
