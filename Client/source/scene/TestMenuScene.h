@@ -18,28 +18,29 @@ namespace Scene
 		TestMenuScene()
 			:
 			slideBar(Menu::CommonControlDirection::Horizontal),
-			container(Menu::CommonControlDirection::Vertical)
+			container(Menu::CommonControlDirection::Horizontal)
 		{
 		}
 
 		bool onCreate() override
 		{
 			root.addElement(&container);
-;
+			root.viewPort = { 0.f, 0.f, 0.3f, 0.2f };
+
 			button.size = { 300, 200 };
 			button.label.text = L"Button1";
 
 			button2.size = { 200, 300 };
 			button.label.text = L"Button2";
 
-
-			label2.text = L"Hello World"
-
 			container.addElement(&button);
 			container.addElement(&label2);
 			container.addElement(&button2);
 
-			container.position = { 100, 100 };
+			container.position = { 0, 0 };
+			container.size = { root.size.getValue().x, 0 };
+
+			label2.text = L"Hello World";
 
 			return true;
 		}

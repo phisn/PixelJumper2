@@ -18,6 +18,9 @@ namespace Menu
 		using ElementBase::onDraw;
 		using ElementBase::innerOffset;
 
+		using ElementBase::size;
+		using ElementBase::position;
+
 		RootBase()
 		{
 			viewPort.addListener(
@@ -51,6 +54,12 @@ namespace Menu
 		const sf::View& readView() const
 		{
 			return view;
+		}
+
+		void onDraw() const
+		{
+			Device::Screen::SetView(view);
+			ElementBase::onDraw();
 		}
 
 	private:
