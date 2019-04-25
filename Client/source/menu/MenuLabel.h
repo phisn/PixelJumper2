@@ -36,8 +36,8 @@ namespace Menu
 					glText.setFont(*font);
 					size =
 					{
-						glText.getGlobalBounds().width,
-						glText.getGlobalBounds().height
+						glText.getLocalBounds().width,
+						glText.getLocalBounds().height * 2
 					};
 				});
 			color.addListener(

@@ -201,16 +201,34 @@ namespace Menu
 			distance.addListener(
 				[this](const PercentValue& distance)
 				{
+
 					sliderMaterial.setDistance(distance.getValue());
 					onSliderMoved(distance.getValue());
-					
+
 					updateGraphics();
+				});
+			distance.addListener(
+				[this](const PercentValue& distance)
+				{
+					// protect distance from NAN caused by converting to percent
+					if (std::isnan(distance.getValue()))
+					{
+						this->distance->setValue(0.f);
+					}
 				});
 			length.addListener(
 				[this](const PercentValue& length)
 				{
+					// restore old distance as percent / relative
+					static float oldLength = 0.f;
+					distance->setPercent(
+						getDistancePercent(distance->getValue(), oldLength)
+					);
+
 					sliderMaterial.setConsumption(length.getPercent());
 					updateGraphics();
+
+					oldLength = length.getValue();
 				});
 			limitDistance.addListener(
 				[this](const bool oldValue,
@@ -337,12 +355,9 @@ namespace Menu
 			},
 			[this](const float value) -> const float
 			{ // convert to Percent
-				return value / (takeByDirection(
-					this->size.getValue().x, 
-					this->size.getValue().y) 
-
-					- length->getValue() 
-					- limitOffset.getValue() * 2);
+				return getDistancePercent(
+					value,
+					length->getValue());
 			}
 		};
 		Property<PercentValue> length
@@ -420,6 +435,18 @@ namespace Menu
 		}
 
 	private:
+		float getDistancePercent(
+			const float value,
+			const float length)
+		{
+			return value / (takeByDirection(
+				this->size.getValue().x,
+				this->size.getValue().y)
+
+				- length
+				- limitOffset.getValue() * 2);
+		}
+
 		float applyDistanceLimit(const float distance)
 		{
 			if (limitDistance)

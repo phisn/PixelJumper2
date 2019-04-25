@@ -25,7 +25,6 @@ namespace Scene
 		bool onCreate() override
 		{
 			root.addElement(&container);
-			root.viewPort = { 0.f, 0.f, 0.3f, 0.2f };
 
 			button.size = { 300, 200 };
 			button.label.text = L"Button1";
@@ -38,9 +37,13 @@ namespace Scene
 			container.addElement(&button2);
 
 			container.position = { 0, 0 };
-			container.size = { root.size.getValue().x, 0 };
+			container.size = { 400, 400 };
 
-			label2.text = L"Hello World";
+			label2.text = L"Hello";
+
+			root.viewPort = root.convertToPortRect(
+				container.position,
+				container.size.getValue());
 
 			return true;
 		}
@@ -77,6 +80,23 @@ namespace Scene
 
 		void onLogic(const sf::Time time) override
 		{
+			static sf::Time old;
+			static bool world = false;
+
+			if ((old += time) > sf::milliseconds(500))
+			{
+				if (world = !world)
+				{
+					label2.text = L"World";
+				}
+				else
+				{
+					label2.text = L"Hello";
+				}
+
+				old = sf::microseconds(0);
+			}
+
 			root.onLogic(time);
 		}
 
@@ -88,7 +108,7 @@ namespace Scene
 	private:
 		Menu::RootBase root;
 		
-		class : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize>
+		class : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultCircle>
 		{
 		public:
 			void onButtonPressed() override
@@ -98,7 +118,7 @@ namespace Scene
 
 		} button;
 		
-		class : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangle>
+		class : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize>
 		{
 		public:
 			void onButtonPressed() override

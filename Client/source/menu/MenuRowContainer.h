@@ -188,7 +188,7 @@ namespace Menu
 				return element->area.getValue() == CommonArea::Right
 					? size.getValue().x - element->size.getValue().x
 					: (element->area.getValue() == CommonArea::Center
-						? (size.getValue().y - element->size.getValue().y) / 2.f
+						? (size.getValue().x - element->size.getValue().x) / 2.f
 						: 0.f);
 			}
 		}

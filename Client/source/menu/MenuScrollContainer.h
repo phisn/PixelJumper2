@@ -143,11 +143,17 @@ namespace Menu
 			container.position =
 			{
 				direction == CommonControlDirection::Horizontal
-				? -distance
+				? -slideBar.distance->getPercent() * 
+				(
+					container.size.getValue().x - slideBar.size.getValue().x
+				)
 				: slideBarWidth.getValue(),
 				direction == CommonControlDirection::Horizontal
 				? slideBarWidth.getValue()
-				: -distance
+				: -slideBar.distance->getPercent() *
+				(
+					container.size.getValue().y - slideBar.size.getValue().y
+				)
 			};
 		}
 
@@ -168,6 +174,14 @@ namespace Menu
 				{
 					container.size.getValue().x,
 					slideBarWidth
+				};
+			}
+			else
+			{
+				slideBar.size =
+				{
+					slideBarWidth,
+					container.size.getValue().y
 				};
 			}
 		}
@@ -196,6 +210,7 @@ namespace Menu
 		private:
 			TThis* const parent;
 		};
+
 		CustomSlideBar slideBar;
 	};
 }

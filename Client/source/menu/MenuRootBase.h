@@ -39,6 +39,9 @@ namespace Menu
 						windowSize.x * newViewPort.left,
 						windowSize.y * newViewPort.top
 					);
+
+					view.setSize(size.getValue());
+					view.setCenter(size.getValue() / 2.f);
 				});
 
 			viewPort = { 0.f, 0.f, 1.f, 1.f };
@@ -56,10 +59,68 @@ namespace Menu
 			return view;
 		}
 
-		void onDraw() const
+		void onDraw() const override
 		{
 			Device::Screen::SetView(view);
 			ElementBase::onDraw();
+			Device::Screen::ResetView();
+		}
+
+		void onEvent(sf::Event event) override
+		{
+			switch (event.type)
+			{
+			case sf::Event::MouseMoved:
+			{
+				const sf::Vector2f position = Device::Screen::GetWindow()->mapPixelToCoords(sf::Vector2i(
+					event.mouseMove.x,
+					event.mouseMove.y),
+					view);
+
+				event.mouseMove.x = position.x;
+				event.mouseMove.y = position.y;
+			}
+				break;
+			case sf::Event::MouseButtonPressed:
+			{
+				const sf::Vector2f position = Device::Screen::GetWindow()->mapPixelToCoords(sf::Vector2i(
+					event.mouseButton.x,
+					event.mouseButton.y),
+					view);
+
+				event.mouseButton.x = position.x;
+				event.mouseButton.y = position.y;
+			}
+				break;
+			case sf::Event::MouseButtonReleased:
+			{
+				const sf::Vector2f position = Device::Screen::GetWindow()->mapPixelToCoords(sf::Vector2i(
+					event.mouseButton.x,
+					event.mouseButton.y),
+					view);
+
+				event.mouseButton.x = position.x;
+				event.mouseButton.y = position.y;
+			}
+				break;
+			}
+
+			ElementBase::onEvent(event);
+		}
+
+		sf::FloatRect convertToPortRect(
+			const sf::Vector2f position,
+			const sf::Vector2f size)
+		{
+			const sf::Vector2u windowSize = Device::Screen::GetWindow()->getSize();
+
+			return
+			{
+				position.x / windowSize.x,
+				position.y / windowSize.y,
+				size.x / windowSize.x,
+				size.y / windowSize.y
+			};
 		}
 
 	private:
