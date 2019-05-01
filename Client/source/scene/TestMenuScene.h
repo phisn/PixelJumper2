@@ -17,8 +17,7 @@ namespace Scene
 	public:
 		TestMenuScene()
 			:
-			slideBar(Menu::CommonControlDirection::Horizontal),
-			container(Menu::CommonControlDirection::Horizontal)
+			container(Menu::CommonControlDirection::Vertical)
 		{
 		}
 
@@ -26,24 +25,30 @@ namespace Scene
 		{
 			root.addElement(&container);
 
-			button.size = { 300, 200 };
-			button.label.text = L"Button1";
-
-			button2.size = { 200, 300 };
-			button.label.text = L"Button2";
-
-			container.addElement(&button);
-			container.addElement(&label2);
-			container.addElement(&button2);
+			root.viewPort = { 0.7f, 0.0f, 0.3f, 1.f };
 
 			container.position = { 0, 0 };
-			container.size = { 400, 400 };
+			
+			buttons.reserve(100);
 
-			label2.text = L"Hello";
+			for (int i = 0; i < 100; ++i)
+			{
+				buttons.emplace_back(i + 1);
 
-			root.viewPort = root.convertToPortRect(
-				container.position,
-				container.size.getValue());
+				buttons[i].label.text = std::to_wstring(i + 1);
+				buttons[i].size = { 100.0f, 65.0f };
+
+				container.addElement(&buttons[i]);
+			}
+
+			sf::FloatRect rect = root.convertToPortRect(
+				{ 0, 0 },
+				container.size);
+
+			rect.left = 1.f - rect.width;
+			rect.height = 1.f;
+
+			root.viewPort = rect;
 
 			return true;
 		}
@@ -80,24 +85,6 @@ namespace Scene
 
 		void onLogic(const sf::Time time) override
 		{
-			static sf::Time old;
-			static bool world = false;
-
-			if ((old += time) > sf::milliseconds(500))
-			{
-				if (world = !world)
-				{
-					label2.text = L"World";
-				}
-				else
-				{
-					label2.text = L"Hello";
-				}
-
-				old = sf::microseconds(0);
-			}
-
-			root.onLogic(time);
 		}
 
 		void onDraw() override
@@ -108,41 +95,25 @@ namespace Scene
 	private:
 		Menu::RootBase root;
 		
-		class : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultCircle>
+		class CButton : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize>
 		{
 		public:
+			CButton(int i)
+				:
+				i(i)
+			{
+			}
+
 			void onButtonPressed() override
 			{
-				Log::Information(L"Button Pressed");
+				Log::Information(L"Button Pressed: " + std::to_wstring(i));
 			}
 
-		} button;
-		
-		class : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize>
-		{
-		public:
-			void onButtonPressed() override
-			{
-				Log::Information(L"Button Pressed");
-			}
-
-		} button2;
-
-		class : public Menu::SlideBar<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle>
-		{
-		public:
-			using SlideBar::SlideBar;
-
-			void onSliderPressed(const float distance) override
-			{
-			}
-
-			void onSliderMoved(const float distance) override
-			{
-			}
-		} slideBar;
+		private:
+			int i;
+		};
 
 		Menu::ScrollContainer<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle> container;
-		Menu::Label label, label2;
+		std::vector<CButton> buttons;
 	};
 }

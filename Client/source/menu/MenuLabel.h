@@ -37,7 +37,7 @@ namespace Menu
 					size =
 					{
 						glText.getLocalBounds().width,
-						glText.getLocalBounds().height * 2
+						glText.getLocalBounds().height
 					};
 				});
 			color.addListener(
@@ -54,6 +54,8 @@ namespace Menu
 					{
 					});
 			*/
+
+			glText.setCharacterSize(18);
 		}
 
 		Property<sf::Color> color { sf::Color() };

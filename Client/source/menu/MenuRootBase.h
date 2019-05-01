@@ -41,7 +41,7 @@ namespace Menu
 					);
 
 					view.setSize(size.getValue());
-					view.setCenter(size.getValue() / 2.f);
+					view.setCenter(size.getValue() / 2.f + position.getValue());
 				});
 
 			viewPort = { 0.f, 0.f, 1.f, 1.f };

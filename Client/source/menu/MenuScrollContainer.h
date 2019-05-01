@@ -25,29 +25,6 @@ namespace Menu
 			ElementBase::addStaticChild(&slideBar);
 			ElementBase::addStaticChild(&container);
 
-			container.size.addListener(
-				[this](const sf::Vector2f oldSize,
-					   const sf::Vector2f newSize)
-				{
-					if (this->direction == CommonControlDirection::Horizontal)
-					{
-						size =
-						{
-							size.getValue().x,
-							slideBarWidth.getValue() + newSize.y
-						};
-					}
-					else
-					{
-						size =
-						{
-							slideBarWidth.getValue() + newSize.x,
-							size.getValue().y
-						};
-					}
-
-					updateSliderConsumption();
-				});
 			slideBarWidth.addListener(
 				[this](const float oldWitdh,
 					   const float newWidth)
@@ -75,19 +52,42 @@ namespace Menu
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
 				{
-					slideBar.size =
+					if (this->direction == CommonControlDirection::Horizontal)
 					{
-						this->direction == CommonControlDirection::Horizontal
-						? newSize.x
-						: slideBarWidth.getValue(),
-						this->direction == CommonControlDirection::Horizontal
-						? slideBarWidth.getValue()
-						: newSize.y
-					};
+						container.size =
+						{
+							newSize.x,
+							size.getValue().x - slideBarWidth.getValue()
+						};
+
+						if (newSize.x != oldSize.x)
+							slideBar.size =
+							{
+								newSize.x,
+								slideBarWidth.getValue()
+							};
+					}
+					else
+					{
+						container.size =
+						{
+							size.getValue().y - slideBarWidth.getValue(),
+							newSize.y
+						};
+
+						if (newSize.y != oldSize.y)
+						{
+							slideBar.size =
+							{
+								slideBarWidth.getValue(),
+								newSize.y
+							};
+					}
+
+					updateSliderConsumption();
 				});
 
 			slideBar.length->setPercent(1.f);
-			slideBarWidth = 30.f;
 		}
 
 		void addElement(

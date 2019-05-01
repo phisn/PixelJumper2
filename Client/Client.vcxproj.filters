@@ -702,9 +702,6 @@
     <None Include="source\menu\PercentValue.cpp">
       <Filter>source\menu</Filter>
     </None>
-    <None Include="source\menu\MenuButton.h">
-      <Filter>source\menu\old</Filter>
-    </None>
     <None Include="source\menu\MenuRowContainer.cpp">
       <Filter>source\menu</Filter>
     </None>
@@ -715,6 +712,9 @@
       <Filter>source\menu</Filter>
     </None>
     <None Include="source\menu\MenuScrollContainer.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuButton.h">
       <Filter>source\menu</Filter>
     </None>
   </ItemGroup>

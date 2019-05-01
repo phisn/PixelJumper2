@@ -12,6 +12,8 @@
 
 #include <Client/source/logger/Logger.h>
 
+#include <iostream>
+
 namespace Menu
 {
 	class ElementBase

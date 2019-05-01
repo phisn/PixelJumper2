@@ -15,6 +15,9 @@ namespace Menu
 	template <typename ListenerT>
 	class PropertyBase
 	{
+		PropertyBase& operator=(PropertyBase&) = delete;
+		PropertyBase& operator=(const PropertyBase&) = delete;
+
 	protected:
 		typedef ListenerT Listener;
 

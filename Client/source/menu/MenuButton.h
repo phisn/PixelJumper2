@@ -45,7 +45,11 @@ namespace Menu
 						event.mouseButton.y))
 					)
 				{
-					onButtonPressed();
+					if (buttonPressedInside)
+					{
+						onButtonPressed();
+					}
+
 					onGraphicsHovered();
 				}
 				else
