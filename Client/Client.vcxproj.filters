@@ -696,12 +696,6 @@
     <None Include="source\menu\MenuProperty.cpp">
       <Filter>source\menu</Filter>
     </None>
-    <None Include="source\menu\PercentValue.h">
-      <Filter>source\menu</Filter>
-    </None>
-    <None Include="source\menu\PercentValue.cpp">
-      <Filter>source\menu</Filter>
-    </None>
     <None Include="source\menu\MenuRowContainer.cpp">
       <Filter>source\menu</Filter>
     </None>
@@ -715,6 +709,12 @@
       <Filter>source\menu</Filter>
     </None>
     <None Include="source\menu\MenuButton.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\PercentProperty.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\PercentProperty.cpp">
       <Filter>source\menu</Filter>
     </None>
   </ItemGroup>

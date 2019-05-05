@@ -2,7 +2,7 @@
 
 #include <Client/source/menu/MenuElementBase.h>
 #include <Client/source/menu/MenuButtonMaterial.h>
-#include <Client/source/menu/PercentValue.h>
+#include <Client/source/menu/PercentProperty.h>
 
 #include <functional>
 
@@ -199,16 +199,15 @@ namespace Menu
 			barMaterial(direction)
 		{
 			distance.addListener(
-				[this](const PercentValue& distance)
+				[this](const PercentProperty& distance)
 				{
-
 					sliderMaterial.setDistance(distance.getValue());
 					onSliderMoved(distance.getValue());
 
 					updateGraphics();
 				});
 			distance.addListener(
-				[this](const PercentValue& distance)
+				[this](const PercentProperty& distance)
 				{
 					// protect distance from NAN caused by converting to percent
 					if (std::isnan(distance.getValue()))
@@ -217,7 +216,7 @@ namespace Menu
 					}
 				});
 			length.addListener(
-				[this](const PercentValue& length)
+				[this](const PercentProperty& length)
 				{
 					// restore old distance as percent / relative
 					static float oldLength = 0.f;
@@ -342,7 +341,7 @@ namespace Menu
 			ElementBase::onDraw();
 		}
 
-		Property<PercentValue> distance
+		Property<PercentProperty> distance
 		{
 			[this](const float value) -> const float
 			{ // convert to Value
@@ -360,7 +359,7 @@ namespace Menu
 					length->getValue());
 			}
 		};
-		Property<PercentValue> length
+		Property<PercentProperty> length
 		{ 
 			[this](const float value) -> const float
 			{ // convert to Value

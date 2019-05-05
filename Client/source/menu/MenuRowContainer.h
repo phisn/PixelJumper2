@@ -48,9 +48,6 @@ namespace Menu
 				updateSingleElementPosition(element);
 				addStaticChild(element);
 			}
-
-			element->size.addListener(elementSizeListener);
-			recalculateSize();
 		}
 
 		void removeElement(
@@ -75,11 +72,6 @@ namespace Menu
 
 		void removeAllElements()
 		{
-			for (ElementBase* const element : getStaticChildren())
-			{
-				element->size.popListener(elementSizeListener);
-			}
-
 			removeAllStaticChilds();
 		}
 
@@ -114,7 +106,6 @@ namespace Menu
 
 		void removeElement(const Container::const_iterator element)
 		{
-			element.operator*()->size.popListener(elementSizeListener);
 			removeStaticChild(element);
 		}
 

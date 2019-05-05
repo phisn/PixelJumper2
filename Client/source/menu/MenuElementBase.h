@@ -2,7 +2,9 @@
 
 #include <Client/source/menu/MenuCommon.h>
 #include <Client/source/menu/MenuProperty.h>
+#include <Client/source/logger/Logger.h>
 
+#include <cassert>
 #include <functional>
 #include <vector>
 
@@ -10,15 +12,80 @@
 #include <SFML/System.hpp>
 #include <SFML/Window/Event.hpp>
 
-#include <Client/source/logger/Logger.h>
-
-#include <iostream>
-
 namespace Menu
 {
+	class SpaceProperty
+		:
+		public CustomProperty
+	{
+	public:
+		void enable(const sf::Vector2<bool> use)
+		{
+			this->use = use;
+			onValueChanged();
+		}
+
+		void update(
+			const sf::Vector2f size,
+			const sf::Vector2f innerOffset)
+		{
+			space = size - innerOffset;
+			onValueChanged();
+		}
+
+		sf::Vector2<bool> getUse() const
+		{
+			return use;
+		}
+
+		sf::Vector2f get() const
+		{
+			return space;
+		}
+		
+		bool validate(
+			const sf::Vector2f position,
+			const sf::Vector2f size)
+		{
+			return correctSize(position, size) == size;
+		}
+
+		sf::Vector2f correctSize(
+			const sf::Vector2f position,
+			const sf::Vector2f size)
+		{
+			sf::Vector2f result = size;
+
+			if (position.x + size.x > space.x)
+			{
+				result.x = space.x - position.x;
+			}
+
+			if (position.y + size.y > space.y)
+			{
+				result.y = space.y - position.y;
+			}
+
+			return result;
+		}
+
+	private:
+		sf::Vector2<bool> use;
+		sf::Vector2f space;
+	};
+
+	/*class ScreenDependentProperty
+		:
+		public PercentProperty
+	{
+	public:
+	};*/
+
 	class ElementBase
 	{
 	public:
+		Property<ElementBase*> parent{ NULL };
+
 		ElementBase()
 		{
 			outerOffset.addListener(
@@ -27,8 +94,8 @@ namespace Menu
 				{
 					position =
 					{
-						position.getValue().x + (newOffset.left - oldOffset.left),
-						position.getValue().y + (newOffset.top  - oldOffset.top)
+						position->x + (newOffset.left - oldOffset.left),
+						position->y + (newOffset.top  - oldOffset.top)
 					};
 
 					if (parent == NULL)
@@ -46,6 +113,7 @@ namespace Menu
 					   const Offset newOffset)
 				{
 					updateGraphics();
+					space->update(size.getValue(), { newOffset.left, newOffset.top });
 				});
 			position.addListener(
 				[this](const sf::Vector2f oldPosition,
@@ -57,14 +125,20 @@ namespace Menu
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
 				{
-					if (parent == NULL)
+					if (parent.getValue() == NULL)
 					{
 						updateGraphics();
 					}
 					else
 					{
+						assert(
+							parent->size->x - position->x >= size->x &&
+							parent->size->y - position->y >= size->y);
+
 						parent->updateGraphics();
 					}
+
+					space->update(newSize, { innerOffset->left, innerOffset->top });
 				});
 			area.addListener(
 				[this](const CommonArea oldArea,
@@ -72,6 +146,33 @@ namespace Menu
 				{
 					parent->updateGraphics();
 				});
+			parent.addListener(
+				[this](ElementBase* const oldElement,
+					   ElementBase* const newElement)
+				{
+					if (oldElement)
+					{
+						oldElement->space.addListener(onParentSpaceChangedLambda);
+					}
+
+					if (newElement)
+					{
+						newElement->space.addListener(onParentSpaceChangedLambda);
+						onParentSpaceChanged(*newElement->space);
+					}
+
+					updateGraphics();
+				});
+		}
+
+		~ElementBase()
+		{
+			Container::const_iterator iterator = getStaticChildren().cbegin();
+			for (; iterator != getStaticChildren().cend(); ++iterator)
+			{
+				removeStaticChild(iterator);
+				delete *iterator;
+			}
 		}
 
 		ElementBase* getParent() const
@@ -79,10 +180,11 @@ namespace Menu
 			return parent;
 		}
 
+		Property<SpaceProperty> space;
 		Property<sf::Vector2f> size;
 		Property<sf::Vector2f> position;
 
-		Property<CommonArea> area = CommonArea::Center;
+		Property<CommonArea> area{ CommonArea::Center };
 		
 		struct Offset
 		{
@@ -145,52 +247,43 @@ namespace Menu
 
 		virtual void updateOwnGraphics() = 0;
 
-		virtual void onParentChanged()
+		// providing virtual function for EASY access
+		virtual void onParentSpaceChanged(const SpaceProperty& space)
 		{
-			for (ElementBase* const element : staticChildren)
-			{
-				element->onParentChanged();
-			}
 
-			updateOwnGraphics();
 		}
 
 		void addStaticChild(ElementBase* const element)
 		{
-			element->parent = this;
+			element->parent.setValue(this);
 			staticChildren.push_back(element);
-			element->onParentChanged();
 		}
 
 		void insertStaticChild(
 			Container::const_iterator position,
 			ElementBase* const element)
 		{
-			element->parent = this;
+			element->parent.setValue(this);
 			staticChildren.insert(position, element);
-			element->onParentChanged();
 		}
 
 		void removeStaticChild(Container::const_iterator element)
 		{
-			element.operator*()->parent = NULL;
+			element.operator*()->parent.setValue(NULL);
 			staticChildren.erase(element);
 		}
 
 		void removeLastStaticChild()
 		{
-			staticChildren.back()->parent = NULL;
+			staticChildren.back()->parent.setValue(NULL);
 			staticChildren.pop_back();
-
-			// parent did not change, it just went away :)
-			// staticChildren.back()->onParentChanged();
 		}
 
 		void removeAllStaticChilds()
 		{
 			for (ElementBase* const element : staticChildren)
 			{
-				element->parent = NULL;
+				element->parent.setValue(NULL);
 			}
 
 			staticChildren.clear();
@@ -234,7 +327,12 @@ namespace Menu
 		}
 
 	private:
-		ElementBase* parent = NULL;
+		decltype(space)::Listener onParentSpaceChangedLambda = [this](
+			const SpaceProperty& space)
+		{
+			this->onParentSpaceChanged(space);
+		};
+
 		std::vector<ElementBase*> staticChildren;
 	};
 }

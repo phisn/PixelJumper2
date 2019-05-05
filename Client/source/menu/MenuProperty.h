@@ -18,10 +18,9 @@ namespace Menu
 		PropertyBase& operator=(PropertyBase&) = delete;
 		PropertyBase& operator=(const PropertyBase&) = delete;
 
-	protected:
+	public:
 		typedef ListenerT Listener;
 
-	public:
 		void addListener(const Listener listener)
 		{
 			listeners.push_back(listener);
@@ -48,39 +47,33 @@ namespace Menu
 		std::vector<Listener> listeners;
 	};
 
-	template <typename T, bool UseCustomProperty = std::is_base_of_v<CustomProperty, T>>
-	class Property
+	template <typename T>
+	class ValuePropertyBase
 		:
 		public PropertyBase<std::function<void(
 			T oldValue,
 			T newValue)>>
 	{
 	public:
-		Property()
+		ValuePropertyBase()
 		{
 		}
 
-		Property(const T value)
+		ValuePropertyBase(const T value)
 			:
 			value(value)
 		{
 		}
 
-		Property& operator=(const T value)
+		ValuePropertyBase& operator=(const T value)
 		{
 			return operator=<T>(value);
 		}
 
 		template <typename S>
-		Property& operator=(const S value)
+		ValuePropertyBase& operator=(const S value)
 		{
-			const T temp = std::move(this->value);
-			this->value = T(value);
-
-			valueChanged(
-				std::move(temp)
-			);
-
+			setValue(value);
 			return *this;
 		}
 
@@ -100,6 +93,20 @@ namespace Menu
 			return value;
 		}
 #endif
+		// enable workarounds for indirect properties
+		// like size
+		virtual void setValue(const T value)
+		{
+			const T temp = std::move(this->value);
+			this->value = T(value);
+
+			valueChanged(
+				std::move(temp)
+			);
+		}
+
+
+		T value;
 
 	private:
 		void valueChanged(const T&& oldValue) const
@@ -109,8 +116,47 @@ namespace Menu
 				listener(std::move(oldValue), value);
 			}
 		}
+	};
 
-		T value;
+	template <typename T,
+		bool UseCustomProperty = std::is_base_of_v<CustomProperty, T>
+	>
+	class Property
+	{
+	};
+
+	template <typename T>
+	class Property<T, false>
+		:
+		public ValuePropertyBase<T>
+	{
+	public:
+		using ValuePropertyBase::ValuePropertyBase;
+
+		const T* operator->() const
+		{
+			return &value;
+		}
+
+		using ValuePropertyBase::operator const T;
+		using ValuePropertyBase::operator=;
+	};
+
+	template <typename T>
+	class Property<T*, false>
+		:
+		public ValuePropertyBase<T*>
+	{
+	public:
+		using ValuePropertyBase::ValuePropertyBase;
+
+		T* operator->() const
+		{
+			return value;
+		}
+
+	//	using ValuePropertyBase::operator const T;
+		using ValuePropertyBase::operator=;
 	};
 
 	template <typename T>
@@ -151,6 +197,11 @@ namespace Menu
 		T* operator->()
 		{
 			return &value;
+		}
+
+		T& operator*()
+		{
+			return value;
 		}
 
 	public:

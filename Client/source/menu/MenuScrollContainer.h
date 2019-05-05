@@ -82,6 +82,7 @@ namespace Menu
 								slideBarWidth.getValue(),
 								newSize.y
 							};
+						}
 					}
 
 					updateSliderConsumption();
