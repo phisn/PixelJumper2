@@ -16,7 +16,18 @@ namespace Menu
 		RowContainer(const CommonControlDirection direction)
 			:
 			direction(direction)
-		{
+		{	
+			space->enable(
+			{
+				direction == CommonControlDirection::Vertical,
+				direction == CommonControlDirection::Horizontal
+			});
+			size.addListener([this](
+				const sf::Vector2f oldSize,
+				const sf::Vector2f newSize)
+				{
+					updateElementPosition();
+				});
 		}
 
 		void addElement(
@@ -48,6 +59,9 @@ namespace Menu
 				updateSingleElementPosition(element);
 				addStaticChild(element);
 			}
+
+			element->size.addListener(elementSizeListener);
+			updateSizeByElementSize(element->size);
 		}
 
 		void removeElement(
@@ -66,12 +80,21 @@ namespace Menu
 
 			if (iterator != getStaticChildren().cend())
 			{
+				(*iterator)->size.popListener(elementSizeListener);
+				updateSizeByElementSize(
+					-(*iterator)->size.getValue()
+				);
 				removeElement(iterator);
 			}
 		}
 
 		void removeAllElements()
 		{
+			for (ElementBase* const element : getStaticChildren())
+			{
+				element->size.popListener(elementSizeListener);
+			}
+
 			removeAllStaticChilds();
 		}
 
@@ -88,7 +111,7 @@ namespace Menu
 		virtual void updateGraphics() override
 		{
 			ElementBase::updateGraphics();
-			updateElementPosition();
+			// updateElementPosition();
 		}
 
 	protected:
@@ -101,8 +124,51 @@ namespace Menu
 			[this](const sf::Vector2f oldSize,
 			       const sf::Vector2f newSize)
 		{
-			recalculateSize();
+			if (direction == CommonControlDirection::Horizontal)
+			{
+				if (oldSize.x != newSize.x)
+					size =
+					{
+						size->x + newSize.x - oldSize.x,
+						size->y
+					};
+			}
+			else
+			{
+				if (oldSize.y != newSize.y)
+					size =
+					{
+						size->x,
+						size->y + newSize.y - oldSize.y
+					};
+			}
 		};
+
+		void updateSizeByElementSize(
+			const sf::Vector2f elementSize)
+		{
+			if (elementSize.x == 0.f && elementSize.y == 0.f)
+			{
+				return;
+			}
+
+			if (direction == CommonControlDirection::Horizontal)
+			{
+				size =
+				{
+					size->x + elementSize.x,
+					size->y
+				};
+			}
+			else
+			{
+				size =
+				{
+					size->x,
+					size->y + elementSize.y
+				};
+			}
+		}
 
 		void removeElement(const Container::const_iterator element)
 		{
@@ -182,53 +248,6 @@ namespace Menu
 						? (size.getValue().x - element->size.getValue().x) / 2.f
 						: 0.f);
 			}
-		}
-
-		void recalculateSize(
-			const bool autoSizeX = true,
-			const bool autoSizeY = true)
-		{
-			sf::Vector2f size = { };
-
-			if (autoSizeX || autoSizeY)
-			{
-				for (ElementBase* const element : getStaticChildren())
-				{
-					const sf::Vector2f elementSize = element->size.getValue();
-
-					if (direction == CommonControlDirection::Horizontal)
-					{
-						size.x += elementSize.x;
-
-						if (elementSize.y > size.y)
-						{
-							size.y = elementSize.y;
-						}
-					}
-					else
-					{
-
-						size.y += elementSize.y;
-
-						if (elementSize.x > size.x)
-						{
-							size.x = elementSize.x;
-						}
-					}
-				}
-			}
-
-			if (!autoSizeX)
-			{
-				size.x = this->size.getValue().x;
-			}
-
-			if (!autoSizeY)
-			{
-				size.y = this->size.getValue().y;
-			}
-
-			this->size = size;
 		}
 
 		float takeByDirection(float x, float y) const

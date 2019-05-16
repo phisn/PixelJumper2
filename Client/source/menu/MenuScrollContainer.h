@@ -22,6 +22,12 @@ namespace Menu
 			container(direction),
 			slideBar(this, direction)
 		{
+			space->enable(
+				{
+					direction == CommonControlDirection::Vertical,
+					direction == CommonControlDirection::Horizontal
+				});
+
 			ElementBase::addStaticChild(&slideBar);
 			ElementBase::addStaticChild(&container);
 
@@ -57,7 +63,7 @@ namespace Menu
 						container.size =
 						{
 							newSize.x,
-							size.getValue().x - slideBarWidth.getValue()
+							size.getValue().y - slideBarWidth.getValue()
 						};
 
 						if (newSize.x != oldSize.x)
@@ -71,7 +77,7 @@ namespace Menu
 					{
 						container.size =
 						{
-							size.getValue().y - slideBarWidth.getValue(),
+							size.getValue().x - slideBarWidth.getValue(),
 							newSize.y
 						};
 
@@ -87,8 +93,19 @@ namespace Menu
 
 					updateSliderConsumption();
 				});
+			container.size.addListener(
+				[this](const sf::Vector2f oldSize,
+					   const sf::Vector2f newSize)
+				{
+					if (oldSize.x != newSize.x && this->direction == CommonControlDirection::Horizontal ||
+						oldSize.y != newSize.y && this->direction == CommonControlDirection::Vertical)
+					{
+						updateSliderConsumption();
+					}
+				});
 
 			slideBar.length->setPercent(1.f);
+			slideBar.distance->setValue(0.f);
 		}
 
 		void addElement(
@@ -131,8 +148,8 @@ namespace Menu
 		virtual void updateSliderConsumption()
 		{
 			const float consumption = direction == CommonControlDirection::Horizontal
-				? (size.getValue().x / container.size.getValue().x)
-				: (size.getValue().y / container.size.getValue().y);
+				? (size->x / container.size->x)
+				: (size->y / container.size->y);
 
 			slideBar.length->setPercent(
 				consumption < 1.f ? consumption : 1.f
@@ -146,14 +163,14 @@ namespace Menu
 				direction == CommonControlDirection::Horizontal
 				? -slideBar.distance->getPercent() * 
 				(
-					container.size.getValue().x - slideBar.size.getValue().x
+					container.size.getValue().x - slideBar.size.getValue().x * 2
 				)
 				: slideBarWidth.getValue(),
 				direction == CommonControlDirection::Horizontal
 				? slideBarWidth.getValue()
 				: -slideBar.distance->getPercent() *
 				(
-					container.size.getValue().y - slideBar.size.getValue().y
+					container.size.getValue().y - slideBar.size.getValue().y * 2
 				)
 			};
 		}

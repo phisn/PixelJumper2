@@ -131,9 +131,9 @@ namespace Menu
 					}
 					else
 					{
-						assert(
+						/*assert(
 							parent->size->x - position->x >= size->x &&
-							parent->size->y - position->y >= size->y);
+							parent->size->y - position->y >= size->y);*/
 
 						parent->updateGraphics();
 					}
@@ -182,7 +182,7 @@ namespace Menu
 
 		Property<SpaceProperty> space;
 		Property<sf::Vector2f> size;
-		Property<sf::Vector2f> position;
+		Property<sf::Vector2f> position{ sf::Vector2f(0, 0) };
 
 		Property<CommonArea> area{ CommonArea::Center };
 		
@@ -196,6 +196,9 @@ namespace Menu
 
 		virtual void updateGraphics()
 		{
+			static int c = 0;
+			if (++c % 1000 == 0)
+				Log::Information(std::to_wstring(c));
 			for (ElementBase* const element : staticChildren)
 			{
 				element->updateGraphics();
@@ -204,15 +207,10 @@ namespace Menu
 			updateOwnGraphics();
 		}
 
-		virtual bool initialize()
+		virtual void initialize()
 		{
 			for (ElementBase* const element : staticChildren)
-				if (!element->initialize())
-				{
-					return false;
-				}
-
-			return true;
+				element->initialize();
 		}
 
 		virtual bool create()

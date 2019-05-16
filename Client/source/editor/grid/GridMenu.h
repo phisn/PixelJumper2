@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #include <Client/source/editor/grid/GridView.h>
 #include <Client/source/editor/grid/Selector.h>
 #include <Client/source/editor/EditorWorld.h>
@@ -20,7 +21,7 @@ namespace Editor
 
 	class GridMenu
 		:
-		public MENU::RootBase
+		public MENU::MenuRootBase
 	{
 	public:
 		GridMenu()
@@ -111,7 +112,7 @@ namespace Editor
 
 		void onDraw() override
 		{
-			MENU::RootBase::onDraw();
+			MENU::MenuRootBase::onDraw();
 
 			gridView.draw();
 
@@ -137,3 +138,4 @@ namespace Editor
 		Pressed pressed;
 	};
 }
+*/

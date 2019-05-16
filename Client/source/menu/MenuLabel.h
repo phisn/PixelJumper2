@@ -23,11 +23,15 @@ namespace Menu
 					   const std::wstring newText)
 				{
 					glText.setString(newText);
-					size =
+
+					if (glText.getFont() != NULL)
 					{
-						glText.getGlobalBounds().width,
-						glText.getGlobalBounds().height
-					};
+						size =
+						{
+							glText.getGlobalBounds().width,
+							glText.getGlobalBounds().height
+						};
+					}
 				});
 			font.addListener(
 				[this](const sf::Font* const oldFont,
@@ -62,17 +66,15 @@ namespace Menu
 		Property<const sf::Font*> font { NULL };
 		Property<std::wstring> text { L"" };
 
-		bool initialize() override
+		void initialize() override
 		{
 			if (font.getValue() == NULL)
 			{
 				Log::Warning(L"No font selected, using default");
-				font = Framework::Interface::GetResource<sf::Font>(Resource::Static::DefaultFont);
-
-				return true;
+				font = Framework::Interface::GetResource<sf::Font>(
+					Resource::Static::DefaultFont
+				);
 			}
-
-			return true;
 		}
 
 		void onDraw() const override

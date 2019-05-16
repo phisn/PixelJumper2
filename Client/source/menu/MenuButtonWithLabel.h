@@ -35,7 +35,7 @@ namespace Menu
 		
 		void updateGraphics() override
 		{
-			updateLabelPosition();
+			label.updateGraphics();
 			updateOwnGraphics();
 		}
 

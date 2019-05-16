@@ -1,5 +1,27 @@
 #pragma once
 
+#include <Client/source/scene/MenuBaseScene.h>
+
+namespace Scene
+{
+	class SelectorRoot
+		:
+		public Menu::MenuRootBase
+	{
+	public:
+	};
+
+	class EditorScene
+		:
+		public MenuBaseScene
+	{
+	public:
+		virtual void onScenePopped(const int size) override
+		{
+		}
+	};
+}
+/*
 #include <Client/source/device/RandomDevice.h>
 #include <Client/source/device/ScreenDevice.h>
 
@@ -23,7 +45,7 @@
 
 namespace Scene
 {
-	/*
+	/* 
 	
 		Codebase information:
 		-	Only add methods provided because there
@@ -31,9 +53,10 @@ namespace Scene
 	
 	*/
 
+	/*
 	class EditorScene
 		:
-		public MenuBase
+		public _MenuBase
 	{
 	public:
 		EditorScene()
@@ -71,7 +94,7 @@ namespace Scene
 
 		void onDraw() override
 		{
-			MenuBase::onDraw();
+			_MenuBase::onDraw();
 		}
 
 		void onRemove() override
@@ -91,7 +114,7 @@ namespace Scene
 				return;
 			}
 
-			MenuBase::onEvent(event);
+			_MenuBase::onEvent(event);
 
 			// save world | S + STRG
 			if (event.type == sf::Event::KeyPressed &&
@@ -122,7 +145,7 @@ namespace Scene
 					
 						Tiles are not correctly saved
 					
-					*/
+					
 
 					Log::Information(L"Successfully saved world");
 				}
@@ -220,4 +243,6 @@ namespace Scene
 	private:
 		
 	};
+	
 }
+*/

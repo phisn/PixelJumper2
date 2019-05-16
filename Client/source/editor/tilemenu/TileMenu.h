@@ -23,12 +23,12 @@ namespace Editor
 	*/
 	class TileMenu
 		:
-		public MENU::RootBase
+		public MENU::MenuRootBase
 	{
 	public:
 		TileMenu()
 			:
-			MENU::RootBase(),
+			MENU::MenuRootBase(),
 			container( getView() )
 		{
 			useOnLogic = false;
@@ -83,7 +83,7 @@ namespace Editor
 
 		void onDraw()
 		{
-			MENU::RootBase::onDraw();
+			MENU::MenuRootBase::onDraw();
 
 			container.onDraw();
 

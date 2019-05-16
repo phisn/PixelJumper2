@@ -65,7 +65,7 @@ namespace Menu
 			sf::Vector2f position;
 
 			const CommonControlDirection direction;
-			const CommonShapeStyle style = { sf::Color::Color(50, 50, 50), sf::Color::Color(), 0 };
+			const CommonShapeStyle style = { sf::Color::Color(35, 35, 35), sf::Color::Color(), 0 };
 
 			sf::RectangleShape rect;
 		};
@@ -247,9 +247,10 @@ namespace Menu
 				});
 		}
 
-		bool initialize() override
+		void initialize() override
 		{
-			return ElementBase::initialize();
+			onGraphicsDefault();
+			ElementBase::initialize();
 		}
 
 		void onEvent(const sf::Event event)

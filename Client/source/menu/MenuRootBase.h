@@ -7,11 +7,17 @@
 
 namespace Menu
 {
-	class RootBase
+	class MenuRootBase
 		:
 		private ElementBase
 	{
 	public:
+		void initialize() override
+		{
+			ElementBase::initialize();
+			updateGraphics();
+		}
+
 		using ElementBase::initialize;
 		using ElementBase::onEvent;
 		using ElementBase::onLogic;
@@ -21,7 +27,7 @@ namespace Menu
 		using ElementBase::size;
 		using ElementBase::position;
 
-		RootBase()
+		MenuRootBase()
 		{
 			viewPort.addListener(
 				[this](const sf::FloatRect oldViewPort, 
@@ -108,23 +114,38 @@ namespace Menu
 			ElementBase::onEvent(event);
 		}
 
-		sf::FloatRect convertToPortRect(
-			const sf::Vector2f position,
-			const sf::Vector2f size)
+		static sf::FloatRect ConvertRealToPort(const sf::FloatRect rect)
 		{
 			const sf::Vector2u windowSize = Device::Screen::GetWindow()->getSize();
 
 			return
 			{
-				position.x / windowSize.x,
-				position.y / windowSize.y,
-				size.x / windowSize.x,
-				size.y / windowSize.y
+				rect.left / windowSize.x,
+				rect.top / windowSize.y,
+				rect.width / windowSize.x,
+				rect.height / windowSize.y
 			};
 		}
 
-	private:
-		void updateOwnGraphics() override
+		static sf::FloatRect ConvertPortToReal(const sf::FloatRect rect)
+		{
+			const sf::Vector2u windowSize = Device::Screen::GetWindow()->getSize();
+
+			return
+			{
+				rect.left * windowSize.x,
+				rect.top * windowSize.y,
+				rect.width * windowSize.x,
+				rect.height * windowSize.y
+			};
+		}
+
+		// called in Scene::onCreate
+		// to build the super ui
+		virtual bool build() = 0;
+
+	protected:
+		virtual void updateOwnGraphics() override
 		{
 		}
 

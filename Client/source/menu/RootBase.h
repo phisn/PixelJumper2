@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #include <Client/source/menu/MenuBase.h>
 
 #include <Client/source/device/ScreenDevice.h>
@@ -10,7 +11,7 @@
 
 namespace Menu
 {
-	class RootBase
+	class MenuRootBase
 	{
 	public:
 		virtual bool initialize() = 0;
@@ -60,3 +61,4 @@ namespace Menu
 		sf::View view;
 	};
 }
+*/

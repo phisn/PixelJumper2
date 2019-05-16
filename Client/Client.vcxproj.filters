@@ -19,29 +19,8 @@
     <Filter Include="source\scene\base">
       <UniqueIdentifier>{d831bc2f-f995-4a94-8f2a-f3fb1637a4fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\editor">
-      <UniqueIdentifier>{c56ab57d-2621-4dcd-8eab-476c9e143afe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\editor\tile">
-      <UniqueIdentifier>{e4da38ce-ae04-406a-8015-81ef0beb4d25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\editor\template">
-      <UniqueIdentifier>{ca240b51-d38e-4fe4-a459-004fb99c2d25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\editor\grid">
-      <UniqueIdentifier>{7e92e53b-7a34-4152-a73b-09f54c86b2d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\editor\tilemenu">
-      <UniqueIdentifier>{cb3718d4-976b-4488-8ba9-278e56146a0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\menu">
       <UniqueIdentifier>{173be716-58fa-45c2-88ec-bbae6ac60ee8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\editor\manipulator">
-      <UniqueIdentifier>{2cd07ebf-c0da-4f4e-9d5f-6a8903f74912}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\editor\manipulator\cache">
-      <UniqueIdentifier>{35661510-c28b-4826-9ed5-0642be31d455}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\framework">
       <UniqueIdentifier>{e6571033-ad24-4860-8fad-429aaa5b6a10}</UniqueIdentifier>
@@ -49,20 +28,11 @@
     <Filter Include="source\resource">
       <UniqueIdentifier>{66b67bfc-0010-45cc-80b8-4ec868cce6b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\editor\task">
-      <UniqueIdentifier>{65cdccb2-1b14-46d9-a0cf-01a1aa41fa7e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\resource\tiles">
       <UniqueIdentifier>{aa2b9b41-6fee-432a-b232-0bb21ade2e05}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\resource\pipes">
       <UniqueIdentifier>{713d3fec-01b0-46d3-9089-e2730258018c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\editor\subscene">
-      <UniqueIdentifier>{7e83dd45-a7c3-4436-81a4-2e002ade6215}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\shared">
-      <UniqueIdentifier>{33b3d319-8e83-4b82-b14a-c1517ab66063}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\game\Tile">
       <UniqueIdentifier>{4b04e3b3-5bf8-4293-9869-7b51a45ae83b}</UniqueIdentifier>
@@ -70,20 +40,20 @@
     <Filter Include="source\game\TileTrait">
       <UniqueIdentifier>{69b9c64d-ffe4-408e-ac6a-79f90bd91212}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\menu\old">
-      <UniqueIdentifier>{1d7a69f0-b462-45cc-8a90-a1c0b28314a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\menu\old\container_">
-      <UniqueIdentifier>{c0fa9da4-1b5f-4eb6-afb3-b41bc156f0bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\menu\old\element_">
-      <UniqueIdentifier>{6966766c-ff3d-45a9-a06f-fcf4bdca3e0c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\menu\old\style">
-      <UniqueIdentifier>{6ddc637d-501a-4851-bab9-000f8a04d3aa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\logger">
       <UniqueIdentifier>{e27b5282-e150-43bb-a9a9-0172ea1c17bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\shared">
+      <UniqueIdentifier>{33b3d319-8e83-4b82-b14a-c1517ab66063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\editor">
+      <UniqueIdentifier>{628248fe-c861-4381-a3e2-2b8889a04681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\editor\selector">
+      <UniqueIdentifier>{3657d4bb-b934-4e21-b0a3-5d10d0713d16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\menu\shape">
+      <UniqueIdentifier>{43256ef1-e7c9-4fff-9aea-5308e0e9b5a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,89 +63,8 @@
     <ClInclude Include="source\device\ScreenDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\template\TileTemplate.h">
-      <Filter>source\editor\template</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\template\WallTemplate.h">
-      <Filter>source\editor\template</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\tilemenu\TileMenu.h">
-      <Filter>source\editor\tilemenu</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\tilemenu\TileMenuButton.h">
-      <Filter>source\editor\tilemenu</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\grid\GridMenu.h">
-      <Filter>source\editor\grid</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\grid\GridView.h">
-      <Filter>source\editor\grid</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\grid\Selector.h">
-      <Filter>source\editor\grid</Filter>
-    </ClInclude>
     <ClInclude Include="source\menu\MenuBase.h">
       <Filter>source\menu</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\style\DefaultStyles.h">
-      <Filter>source\menu\old\style</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\Element.h">
-      <Filter>source\editor\manipulator</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\Component.h">
-      <Filter>source\editor\manipulator</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\Manipulator.h">
-      <Filter>source\editor\manipulator</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\Executor.h">
-      <Filter>source\editor\manipulator</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\grid\SelectorComponent.h">
-      <Filter>source\editor\grid</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\grid\SelectorElement.h">
-      <Filter>source\editor\grid</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\cache\Cache.h">
-      <Filter>source\editor\manipulator\cache</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\cache\CacheManager.h">
-      <Filter>source\editor\manipulator\cache</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\cache\SelectionCache.h">
-      <Filter>source\editor\manipulator\cache</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\cache\TileCache.h">
-      <Filter>source\editor\manipulator\cache</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\cache\ModeCache.h">
-      <Filter>source\editor\manipulator\cache</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\element\ScrollBarBase.h">
-      <Filter>source\menu\old\element_</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\element\ElementBase.h">
-      <Filter>source\menu\old\element_</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\element\ButtonBase.h">
-      <Filter>source\menu\old\element_</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\container\ScrollContainer.h">
-      <Filter>source\menu\old\container_</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\container\RowContainerBase.h">
-      <Filter>source\menu\old\container_</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\container\ContainerBase.h">
-      <Filter>source\menu\old\container_</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\tilemenu\TileComponent.h">
-      <Filter>source\editor\tilemenu</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\tilemenu\TileContainer.h">
-      <Filter>source\editor\tilemenu</Filter>
     </ClInclude>
     <ClInclude Include="source\scene\SubSceneBase.h">
       <Filter>source\scene\base</Filter>
@@ -228,9 +117,6 @@
     <ClInclude Include="source\logger\Names.h">
       <Filter>source\logger</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\manipulator\tasks\TilePlace.h">
-      <Filter>source\editor\task</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\ResourceInterface.h">
       <Filter>source\resource</Filter>
     </ClInclude>
@@ -258,20 +144,8 @@
     <ClInclude Include="source\Common.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor\grid\GridProperties.h">
-      <Filter>source\editor\grid</Filter>
-    </ClInclude>
     <ClInclude Include="source\device\RandomDevice.h">
       <Filter>source\device</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\tile\EditorWall.h">
-      <Filter>source\editor\tile</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\EditorWorld.h">
-      <Filter>source\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\tile\EditorTileBase.h">
-      <Filter>source\editor\tile</Filter>
     </ClInclude>
     <ClInclude Include="source\logger\LoggerLevel.h">
       <Filter>source\logger</Filter>
@@ -281,15 +155,6 @@
     </ClInclude>
     <ClInclude Include="source\resource\tiles\ResourceTileBase.h">
       <Filter>source\resource\tiles</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\manipulator\tasks\LoadWorldTask.h">
-      <Filter>source\editor\task</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\subscene\GroupedTilePreview.h">
-      <Filter>source\editor\subscene</Filter>
-    </ClInclude>
-    <ClInclude Include="source\editor\template\TileTemplateFactory.h">
-      <Filter>source\editor\template</Filter>
     </ClInclude>
     <ClInclude Include="source\resource\PlayerResource.h">
       <Filter>source\resource</Filter>
@@ -381,12 +246,6 @@
     <ClInclude Include="source\scene\TestMenuScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\Common.h">
-      <Filter>source\menu\old</Filter>
-    </ClInclude>
-    <ClInclude Include="source\menu\RootBase.h">
-      <Filter>source\menu\old</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -397,72 +256,6 @@
     </ClCompile>
     <ClCompile Include="source\device\ScreenDevice.cpp">
       <Filter>source\device</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\template\TileTemplate.cpp">
-      <Filter>source\editor\template</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\template\WallTemplate.cpp">
-      <Filter>source\editor\template</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\tilemenu\TileMenu.cpp">
-      <Filter>source\editor\tilemenu</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\tilemenu\TileMenuButton.cpp">
-      <Filter>source\editor\tilemenu</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\grid\GridMenu.cpp">
-      <Filter>source\editor\grid</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\grid\GridView.cpp">
-      <Filter>source\editor\grid</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\grid\Selector.cpp">
-      <Filter>source\editor\grid</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\manipulator\Element.cpp">
-      <Filter>source\editor\manipulator</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\manipulator\Component.cpp">
-      <Filter>source\editor\manipulator</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\manipulator\Manipulator.cpp">
-      <Filter>source\editor\manipulator</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\manipulator\Executor.cpp">
-      <Filter>source\editor\manipulator</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\grid\SelectorComponent.cpp">
-      <Filter>source\editor\grid</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\grid\SelectorElement.cpp">
-      <Filter>source\editor\grid</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\manipulator\cache\Cache.cpp">
-      <Filter>source\editor\manipulator\cache</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\manipulator\cache\CacheManager.cpp">
-      <Filter>source\editor\manipulator\cache</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\element\ScrollBarBase.cpp">
-      <Filter>source\menu\old\element_</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\element\ButtonBase.cpp">
-      <Filter>source\menu\old\element_</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\container\ScrollContainer.cpp">
-      <Filter>source\menu\old\container_</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\container\RowContainerBase.cpp">
-      <Filter>source\menu\old\container_</Filter>
-    </ClCompile>
-    <ClCompile Include="source\menu\container\ContainerBase.cpp">
-      <Filter>source\menu\old\container_</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\tilemenu\TileComponent.cpp">
-      <Filter>source\editor\tilemenu</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\tilemenu\TileContainer.cpp">
-      <Filter>source\editor\tilemenu</Filter>
     </ClCompile>
     <ClCompile Include="source\scene\SubSceneBase.cpp">
       <Filter>source\scene\base</Filter>
@@ -509,9 +302,6 @@
     <ClCompile Include="source\logger\SectionHost.cpp">
       <Filter>source\logger</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\manipulator\tasks\TilePlace.cpp">
-      <Filter>source\editor\task</Filter>
-    </ClCompile>
     <ClCompile Include="source\resource\ResourceInterface.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
@@ -536,26 +326,8 @@
     <ClCompile Include="source\device\RandomDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\tile\EditorWall.cpp">
-      <Filter>source\editor\tile</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\EditorWorld.cpp">
-      <Filter>source\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\tile\EditorTileBase.cpp">
-      <Filter>source\editor\tile</Filter>
-    </ClCompile>
     <ClCompile Include="source\resource\tiles\ResourceWall.cpp">
       <Filter>source\resource\tiles</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\manipulator\tasks\LoadWorldTask.cpp">
-      <Filter>source\editor\task</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\subscene\GroupedTilePreview.cpp">
-      <Filter>source\editor\subscene</Filter>
-    </ClCompile>
-    <ClCompile Include="source\editor\template\TileTemplateFactory.cpp">
-      <Filter>source\editor\template</Filter>
     </ClCompile>
     <ClCompile Include="source\resource\PlayerResource.cpp">
       <Filter>source\resource</Filter>
@@ -637,20 +409,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="source\editor\manipulator\Manipulator.jpg">
-      <Filter>source\editor\manipulator</Filter>
-    </Image>
-    <Image Include="..\..\..\..\OneDrive\Bilder\IMAG0001[323].jpg">
-      <Filter>source\editor</Filter>
-    </Image>
     <Image Include="source\resource\IMAG0005.jpg">
       <Filter>source\resource</Filter>
     </Image>
     <Image Include="source\resource\IMAG0011.jpg">
       <Filter>source\resource</Filter>
-    </Image>
-    <Image Include="source\editor\Editor_Design.jpg">
-      <Filter>source\editor</Filter>
     </Image>
     <Image Include="source\game\Small_Architecture.jpg">
       <Filter>source\game</Filter>
@@ -716,6 +479,18 @@
     </None>
     <None Include="source\menu\PercentProperty.cpp">
       <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\editor\selector\SelectorRoot.h">
+      <Filter>source\editor\selector</Filter>
+    </None>
+    <None Include="source\editor\selector\SelectorRoot.cpp">
+      <Filter>source\editor\selector</Filter>
+    </None>
+    <None Include="source\menu\shape\CrossShape.h">
+      <Filter>source\menu\shape</Filter>
+    </None>
+    <None Include="source\menu\shape\CrossShape.cpp">
+      <Filter>source\menu\shape</Filter>
     </None>
   </ItemGroup>
 </Project>

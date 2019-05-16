@@ -3,6 +3,7 @@
 #include <Client/source/menu/MenuProperty.h>
 
 #include <functional>
+#include <utility>
 
 namespace Menu
 {
@@ -24,7 +25,8 @@ namespace Menu
 
 		float getPercent() const
 		{
-			return convertValueToPercent(value);
+			const float result = convertValueToPercent(value);
+			return std::isnan(result) ? 0.f : result;
 		}
 
 		float getValue() const
@@ -34,7 +36,9 @@ namespace Menu
 
 		void setPercent(const float percent)
 		{
-			value = convertPercentToValue(percent);
+			const float result = convertPercentToValue(percent);
+			value = std::isnan(result) ? 0.f : result;
+
 			onValueChanged();
 		}
 

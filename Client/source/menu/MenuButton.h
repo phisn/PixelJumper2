@@ -13,10 +13,10 @@ namespace Menu
 		public ElementBase
 	{
 	public:
-		virtual bool initialize() override
+		virtual void initialize() override
 		{
 			onGraphicsDefault();
-			return ElementBase::initialize();
+			ElementBase::initialize();
 		}
 
 		virtual void onEvent(const sf::Event event)

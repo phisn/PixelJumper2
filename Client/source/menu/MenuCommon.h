@@ -40,4 +40,10 @@ namespace Menu
 		Left,
 		Right
 	};
+
+	enum class CommonContainerType
+	{
+		Raw,
+		Compressed
+	};
 }

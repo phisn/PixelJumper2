@@ -1,5 +1,6 @@
 #pragma once
 
+/**
 #include <Client/source/device/ScreenDevice.h>
 
 #include <SFML/Graphics.hpp>
@@ -32,7 +33,7 @@ namespace Menu
 				VerticalScrollContainer 
 				or as raw elements
 	
-	*/
+	
 
 	class ElementBase
 	{
@@ -200,3 +201,4 @@ namespace Menu
 		return view;
 	}
 }
+*/

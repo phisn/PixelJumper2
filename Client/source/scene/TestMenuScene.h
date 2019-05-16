@@ -6,7 +6,11 @@
 #include <Client/source/menu/MenuSlideBar.h>
 #include <Client/source/menu/MenuScrollContainer.h>
 
+#include <Client/source/menu/shape/CrossShape.h>
+
 #include <Client/source/scene/MainSceneBase.h>
+
+#include <iostream>
 
 namespace Scene
 {
@@ -23,44 +27,40 @@ namespace Scene
 
 		bool onCreate() override
 		{
+			cs.position = { 100, 100 };
+			cs.size = { 50, 50 };
+			cs.consumption = 0.075f;
+
 			root.addElement(&container);
 
-			root.viewPort = { 0.7f, 0.0f, 0.3f, 1.f };
+			const float width = 0.2f;
+			root.viewPort = { 1.f - width, 0.0f, width, 1.f };
 
-			container.position = { 0, 0 };
+			container.slideBarWidth = 30.f;
+			container.size = root.size.getValue();
 			
-			buttons.reserve(100);
+			buttons.reserve(20);
 
-			for (int i = 0; i < 100; ++i)
+			for (int i = 0; i < 20; ++i)
 			{
 				buttons.emplace_back(i + 1);
 
-				buttons[i].label.text = std::to_wstring(i + 1);
-				buttons[i].size = { 100.0f, 65.0f };
-
 				container.addElement(&buttons[i]);
+
+				buttons[i].label.text = std::to_wstring(i + 1);
+				buttons[i].size = { buttons[i].parent->space->get().x, 100.f };
 			}
-
-			sf::FloatRect rect = root.convertToPortRect(
-				{ 0, 0 },
-				container.size);
-
-			rect.left = 1.f - rect.width;
-			rect.height = 1.f;
-
-			root.viewPort = rect;
 
 			return true;
 		}
 
 		void onRemove() override
 		{
-
+			root.initialize();
 		}
 
 		void initialize() override
 		{
-			root.initialize();
 		}
 
 		void onShow() override
@@ -90,10 +90,18 @@ namespace Scene
 		void onDraw() override
 		{
 			root.onDraw();
+			Device::Screen::Draw(cs);
 		}
 
 	private:
-		Menu::RootBase root;
+		class Root : public Menu::MenuRootBase
+		{
+			bool build()
+			{
+				return true;
+			}
+
+		} root;
 		
 		class CButton : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize>
 		{
@@ -112,6 +120,8 @@ namespace Scene
 		private:
 			int i;
 		};
+
+		Menu::CrossShape cs;
 
 		Menu::ScrollContainer<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle> container;
 		std::vector<CButton> buttons;
