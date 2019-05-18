@@ -93,7 +93,7 @@ namespace Scene
 		virtual void onDraw() override
 		{
 			for (Menu::MenuRootBase* const root : roots)
-				root->onDraw();
+				root->draw();
 		}
 
 	protected:

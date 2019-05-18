@@ -138,6 +138,11 @@ namespace Menu
 			return &value;
 		}
 
+		const T& operator*() const
+		{
+			return value;
+		}
+
 		using ValuePropertyBase::operator const T;
 		using ValuePropertyBase::operator=;
 	};
@@ -153,6 +158,11 @@ namespace Menu
 		T* operator->() const
 		{
 			return value;
+		}
+
+		T& operator*() const
+		{
+			return *value;
 		}
 
 	//	using ValuePropertyBase::operator const T;

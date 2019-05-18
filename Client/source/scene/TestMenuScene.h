@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/editor/selector/SelectorRoot.h>
+
 #include <Client/source/menu/MenuButtonMaterial.h>
 #include <Client/source/menu/MenuButtonWithLabel.h>
 #include <Client/source/menu/MenuRootBase.h>
@@ -27,6 +29,8 @@ namespace Scene
 
 		bool onCreate() override
 		{
+			sr.build();
+			/*
 			cs.position = { 100, 100 };
 			cs.size = { 50, 50 };
 			cs.consumption = 0.075f;
@@ -50,17 +54,19 @@ namespace Scene
 				buttons[i].label.text = std::to_wstring(i + 1);
 				buttons[i].size = { buttons[i].parent->space->get().x, 100.f };
 			}
+			*/
 
 			return true;
 		}
 
 		void onRemove() override
 		{
-			root.initialize();
 		}
 
 		void initialize() override
 		{
+			// root.initialize();
+			sr.initialize();
 		}
 
 		void onShow() override
@@ -80,7 +86,7 @@ namespace Scene
 
 		void onEvent(const sf::Event event) override
 		{
-			root.onEvent(event);
+			sr.onEvent(event);
 		}
 
 		void onLogic(const sf::Time time) override
@@ -89,8 +95,7 @@ namespace Scene
 
 		void onDraw() override
 		{
-			root.onDraw();
-			Device::Screen::Draw(cs);
+			sr.draw();
 		}
 
 	private:
@@ -122,6 +127,7 @@ namespace Scene
 		};
 
 		Menu::CrossShape cs;
+		Editor::SelectorRoot sr;
 
 		Menu::ScrollContainer<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle> container;
 		std::vector<CButton> buttons;

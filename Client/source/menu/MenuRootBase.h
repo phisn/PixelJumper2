@@ -9,7 +9,7 @@ namespace Menu
 {
 	class MenuRootBase
 		:
-		private ElementBase
+		protected ElementBase
 	{
 	public:
 		void initialize() override
@@ -21,7 +21,6 @@ namespace Menu
 		using ElementBase::initialize;
 		using ElementBase::onEvent;
 		using ElementBase::onLogic;
-		using ElementBase::onDraw;
 		using ElementBase::innerOffset;
 
 		using ElementBase::size;
@@ -65,10 +64,10 @@ namespace Menu
 			return view;
 		}
 
-		void onDraw() const override
+		void draw() const
 		{
 			Device::Screen::SetView(view);
-			ElementBase::onDraw();
+			onDraw();
 			Device::Screen::ResetView();
 		}
 

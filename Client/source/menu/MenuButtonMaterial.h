@@ -176,7 +176,7 @@ namespace Menu::ButtonMaterial
 
 		const CommonShapeStyle styles[3] =
 		{
-			{ sf::Color::Color(50, 50, 50), sf::Color::Color(), 0 },
+			{ sf::Color::Color(50, 50, 50), sf::Color::Color(40, 40, 40), 0.5f },
 			{ sf::Color::Color(50, 50, 50), sf::Color::Color(100, 100, 100), 3 },
 			{ sf::Color::Color(80, 80, 80), sf::Color::Color(), 0 }
 		};
