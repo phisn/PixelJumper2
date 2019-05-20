@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Client/source/editor/manipulator/cache/Cache.h>
-#include <Client/source/editor/EditorWorld.h>
+#include <Client/source/editor/manipulator/EditorTask.h>
 
 #include <deque>
 #include <string>
@@ -11,31 +10,6 @@
 
 namespace Editor
 {
-	class Task
-	{
-	public:
-		_Success_(return == true) 
-		virtual bool execute(
-			World* const world) = 0;
-
-		virtual void redo(World* const world) = 0;
-		virtual void undo(World* const world) = 0;
-
-		const std::wstring* getName() const
-		{
-			return &name;
-		}
-
-		const std::wstring* getDescription() const
-		{
-			return &description;
-		}
-
-	protected:
-		std::wstring name;
-		std::wstring description;
-	};
-
 	class Executor
 	{
 	public:

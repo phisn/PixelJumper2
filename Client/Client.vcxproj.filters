@@ -55,6 +55,12 @@
     <Filter Include="source\menu\shape">
       <UniqueIdentifier>{43256ef1-e7c9-4fff-9aea-5308e0e9b5a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\editor\manipulator">
+      <UniqueIdentifier>{86566cb8-0fb0-4860-9df7-0cb76d15c92b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\editor\manipulator\tasks">
+      <UniqueIdentifier>{33fdd967-3b63-45f0-a178-5f22b4bee91b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\device\InputDevice.h">
@@ -491,6 +497,77 @@
     </None>
     <None Include="source\menu\shape\CrossShape.cpp">
       <Filter>source\menu\shape</Filter>
+    </None>
+    <None Include="source\editor\selector\SelectorView.h">
+      <Filter>source\editor\selector</Filter>
+    </None>
+    <None Include="source\editor\selector\SelectorView.cpp">
+      <Filter>source\editor\selector</Filter>
+    </None>
+    <None Include="source\editor\manipulator\Executor.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\Executor.h">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\Manipulator.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\Manipulator.h">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\Manipulator.jpg">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\tasks\LoadWorldTask.cpp">
+      <Filter>source\editor\manipulator\tasks</Filter>
+    </None>
+    <None Include="source\editor\manipulator\tasks\LoadWorldTask.h">
+      <Filter>source\editor\manipulator\tasks</Filter>
+    </None>
+    <None Include="source\editor\manipulator\tasks\TilePlace.cpp">
+      <Filter>source\editor\manipulator\tasks</Filter>
+    </None>
+    <None Include="source\editor\manipulator\tasks\TilePlace.h">
+      <Filter>source\editor\manipulator\tasks</Filter>
+    </None>
+    <None Include="resource1.h" />
+    <None Include="Client1.rc" />
+    <None Include="source\editor\selector\SelectorCache.cpp">
+      <Filter>source\editor\selector</Filter>
+    </None>
+    <None Include="source\editor\selector\SelectorCache.h">
+      <Filter>source\editor\selector</Filter>
+    </None>
+    <None Include="source\editor\manipulator\CacheElement.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\CacheElement.h">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\EditorCache.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\EditorCache.h">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\EditorTask.h">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\EditorTask.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\EditorWorld.h">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\EditorWorld.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\selector\SelectorMarker.h">
+      <Filter>source\editor\selector</Filter>
+    </None>
+    <None Include="source\editor\selector\SelectorMarker.cpp">
+      <Filter>source\editor\selector</Filter>
     </None>
   </ItemGroup>
 </Project>

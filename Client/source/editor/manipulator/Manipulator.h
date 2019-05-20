@@ -1,13 +1,10 @@
 #pragma once
 
-#include <Client/source/editor/manipulator/Component.h>
-#include <Client/source/editor/manipulator/Element.h>
-
-#include <Client/source/game/tile/TileId.h>
+#include <Client/source/editor/manipulator/EditorCache.h>
 
 namespace Editor
 {
-	class CacheManager;
+	class Cache;
 	class Executor;
 	class World;
 
@@ -17,7 +14,6 @@ namespace Editor
 		void Uninitialize();
 
 		Cache* GetCache();
-		CacheManager* GetCacheManager();
 		Executor* GetExecutor();
 		const World* GetWorld();
 	}

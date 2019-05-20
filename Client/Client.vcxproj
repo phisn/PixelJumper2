@@ -194,8 +194,33 @@
     <Image Include="source\resource\IMAG0011.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Client1.rc" />
+    <None Include="resource1.h" />
+    <None Include="source\editor\manipulator\CacheElement.cpp" />
+    <None Include="source\editor\manipulator\CacheElement.h" />
+    <None Include="source\editor\manipulator\EditorCache.cpp" />
+    <None Include="source\editor\manipulator\EditorCache.h" />
+    <None Include="source\editor\manipulator\EditorTask.cpp" />
+    <None Include="source\editor\manipulator\EditorTask.h" />
+    <None Include="source\editor\manipulator\EditorWorld.cpp" />
+    <None Include="source\editor\manipulator\EditorWorld.h" />
+    <None Include="source\editor\manipulator\Executor.cpp" />
+    <None Include="source\editor\manipulator\Executor.h" />
+    <None Include="source\editor\manipulator\Manipulator.cpp" />
+    <None Include="source\editor\manipulator\Manipulator.h" />
+    <None Include="source\editor\manipulator\Manipulator.jpg" />
+    <None Include="source\editor\manipulator\tasks\LoadWorldTask.cpp" />
+    <None Include="source\editor\manipulator\tasks\LoadWorldTask.h" />
+    <None Include="source\editor\manipulator\tasks\TilePlace.cpp" />
+    <None Include="source\editor\manipulator\tasks\TilePlace.h" />
+    <None Include="source\editor\selector\SelectorCache.cpp" />
+    <None Include="source\editor\selector\SelectorCache.h" />
+    <None Include="source\editor\selector\SelectorMarker.cpp" />
+    <None Include="source\editor\selector\SelectorMarker.h" />
     <None Include="source\editor\selector\SelectorRoot.cpp" />
     <None Include="source\editor\selector\SelectorRoot.h" />
+    <None Include="source\editor\selector\SelectorView.cpp" />
+    <None Include="source\editor\selector\SelectorView.h" />
     <None Include="source\menu\MenuButton.cpp" />
     <None Include="source\menu\MenuButton.h" />
     <None Include="source\menu\MenuButtonMaterial.cpp" />
