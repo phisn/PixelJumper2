@@ -4,7 +4,11 @@
 
 #include <Client/source/editor/template/TileTemplate.h>
 #include <Client/source/editor/template/TileTemplateFactory.h>
+
 #include <Client/source/editor/tile/EditorWall.h>
+
+#include <Client/source/menu/MenuButtonMaterial.h>
+#include <Client/source/menu/MenuButtonWithLabel.h>
 
 #include <iostream>
 
@@ -16,11 +20,6 @@ namespace Editor
 	{
 	public:
 		WallTemplate()
-			:
-			TileTemplate(
-				Game::WallTile::COLOR,
-				L"Wall",
-				Game::TileId::Wall)
 		{
 		}
 
@@ -32,5 +31,31 @@ namespace Editor
 		{
 			return new Tile::Wall(position);
 		}
+
+		const std::wstring& getName() const override
+		{
+			return name;
+		}
+		
+		const std::wstring& getDescription() const override
+		{
+			return description;
+		}
+
+		Game::TileId getId() const override
+		{
+			return Game::TileId::Wall;
+		}
+
+		// get?
+		Menu::ElementBase* createRepresentation() override
+		{
+			static Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize> button;
+			return &button;
+		}
+
+	private:
+		std::wstring name = L"Wall";
+		std::wstring description = L"A solid tile";
 	};
 }

@@ -8,6 +8,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <Client/source/logger/Logger.h>
+
 namespace Editor
 {
 	class SelectorView
@@ -53,16 +55,6 @@ namespace Editor
 				Device::Screen::GetWindow()->mapPixelToCoords(nextPosition, view);
 			const sf::Vector2f beginCoordsPosition =
 				Device::Screen::GetWindow()->mapPixelToCoords(beginMouseOffset, view);
-
-			Manipulator::GetCache()->selection.writeInput()->selectRect =
-			{
-				beginCoordsPosition.x,
-				beginCoordsPosition.y,
-
-				nextCoordsPosition.x,
-				nextCoordsPosition.y
-			};
-			Manipulator::GetCache()->selection.notify(); // ignore return
 
 			view.setCenter(
 				beginViewCenterOffset + (beginCoordsPosition - nextCoordsPosition)

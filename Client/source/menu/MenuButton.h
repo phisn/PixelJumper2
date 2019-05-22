@@ -1,7 +1,9 @@
 #pragma once
 
 #include <Client/source/device/ScreenDevice.h>
+
 #include <Client/source/menu/MenuElementBase.h>
+#include <Client/source/menu/MenuEvent.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -86,6 +88,8 @@ namespace Menu
 			}
 		}
 
+		Menu::MenuEvent<Button> buttonPressedEvent;
+
 		virtual void onLogic(const sf::Time time)
 		{
 			ElementBase::onLogic(time);
@@ -99,7 +103,10 @@ namespace Menu
 		}
 
 	protected:
-		virtual void onButtonPressed() = 0;
+		virtual void onButtonPressed()
+		{
+			buttonPressedEvent.notify();
+		}
 
 		void updateOwnGraphics() override
 		{

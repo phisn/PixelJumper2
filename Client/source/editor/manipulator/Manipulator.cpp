@@ -2,8 +2,8 @@
 
 #include <Client/source/editor/manipulator/EditorCache.h>
 #include <Client/source/editor/manipulator/Executor.h>
-
 #include <Client/source/editor/manipulator/EditorWorld.h>
+
 #include <Client/source/editor/template/TileTemplateFactory.h>
 
 namespace

@@ -43,9 +43,6 @@
     <Filter Include="source\logger">
       <UniqueIdentifier>{e27b5282-e150-43bb-a9a9-0172ea1c17bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\shared">
-      <UniqueIdentifier>{33b3d319-8e83-4b82-b14a-c1517ab66063}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\editor">
       <UniqueIdentifier>{628248fe-c861-4381-a3e2-2b8889a04681}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,18 @@
     </Filter>
     <Filter Include="source\editor\manipulator\tasks">
       <UniqueIdentifier>{33fdd967-3b63-45f0-a178-5f22b4bee91b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\editor\template">
+      <UniqueIdentifier>{f22cd78b-9689-4862-adc5-768f4fd02c18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\editor\tiles">
+      <UniqueIdentifier>{39b2cea4-20c9-44ea-9f0c-b6e0ab663e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\shared">
+      <UniqueIdentifier>{33b3d319-8e83-4b82-b14a-c1517ab66063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\editor\tilechoice">
+      <UniqueIdentifier>{49e6bfc2-000c-4a69-903f-d1fdbddacc72}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -510,9 +519,6 @@
     <None Include="source\editor\manipulator\Executor.h">
       <Filter>source\editor\manipulator</Filter>
     </None>
-    <None Include="source\editor\manipulator\Manipulator.cpp">
-      <Filter>source\editor\manipulator</Filter>
-    </None>
     <None Include="source\editor\manipulator\Manipulator.h">
       <Filter>source\editor\manipulator</Filter>
     </None>
@@ -545,12 +551,6 @@
     <None Include="source\editor\manipulator\CacheElement.h">
       <Filter>source\editor\manipulator</Filter>
     </None>
-    <None Include="source\editor\manipulator\EditorCache.cpp">
-      <Filter>source\editor\manipulator</Filter>
-    </None>
-    <None Include="source\editor\manipulator\EditorCache.h">
-      <Filter>source\editor\manipulator</Filter>
-    </None>
     <None Include="source\editor\manipulator\EditorTask.h">
       <Filter>source\editor\manipulator</Filter>
     </None>
@@ -568,6 +568,63 @@
     </None>
     <None Include="source\editor\selector\SelectorMarker.cpp">
       <Filter>source\editor\selector</Filter>
+    </None>
+    <None Include="source\editor\manipulator\EditorCache.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\manipulator\EditorCache.h">
+      <Filter>source\editor\manipulator</Filter>
+    </None>
+    <None Include="source\editor\template\TileTemplate.cpp">
+      <Filter>source\editor\template</Filter>
+    </None>
+    <None Include="source\editor\template\TileTemplate.h">
+      <Filter>source\editor\template</Filter>
+    </None>
+    <None Include="source\editor\template\TileTemplateFactory.h">
+      <Filter>source\editor\template</Filter>
+    </None>
+    <None Include="source\editor\template\WallTemplate.cpp">
+      <Filter>source\editor\template</Filter>
+    </None>
+    <None Include="source\editor\template\WallTemplate.h">
+      <Filter>source\editor\template</Filter>
+    </None>
+    <None Include="source\editor\tile\EditorTileBase.cpp">
+      <Filter>source\editor\tiles</Filter>
+    </None>
+    <None Include="source\editor\tile\EditorTileBase.h">
+      <Filter>source\editor\tiles</Filter>
+    </None>
+    <None Include="source\editor\tile\EditorWall.cpp">
+      <Filter>source\editor\tiles</Filter>
+    </None>
+    <None Include="source\editor\tile\EditorWall.h">
+      <Filter>source\editor\tiles</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileCoiceCache.cpp">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileCoiceCache.h">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileChoiceRoot.h">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileChoiceRoot.cpp">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileSearchRoot.h">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileSearchRoot.cpp">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\menu\MenuEvent.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuEvent.h">
+      <Filter>source\menu</Filter>
     </None>
   </ItemGroup>
 </Project>

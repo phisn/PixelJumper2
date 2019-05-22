@@ -14,6 +14,8 @@
 
 #include <iostream>
 
+#include <Client/source/editor/manipulator/Manipulator.h>
+
 namespace Scene
 {
 	class TestMenuScene
@@ -29,7 +31,9 @@ namespace Scene
 
 		bool onCreate() override
 		{
-			sr.build();
+			Editor::Manipulator::Initialize();
+			sr = new Editor::SelectorRoot();
+			sr->build();
 			/*
 			cs.position = { 100, 100 };
 			cs.size = { 50, 50 };
@@ -66,7 +70,7 @@ namespace Scene
 		void initialize() override
 		{
 			// root.initialize();
-			sr.initialize();
+			sr->initialize();
 		}
 
 		void onShow() override
@@ -86,7 +90,7 @@ namespace Scene
 
 		void onEvent(const sf::Event event) override
 		{
-			sr.onEvent(event);
+			sr->onEvent(event);
 		}
 
 		void onLogic(const sf::Time time) override
@@ -95,7 +99,7 @@ namespace Scene
 
 		void onDraw() override
 		{
-			sr.draw();
+			sr->draw();
 		}
 
 	private:
@@ -126,8 +130,7 @@ namespace Scene
 			int i;
 		};
 
-		Menu::CrossShape cs;
-		Editor::SelectorRoot sr;
+		Editor::SelectorRoot* sr;
 
 		Menu::ScrollContainer<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle> container;
 		std::vector<CButton> buttons;

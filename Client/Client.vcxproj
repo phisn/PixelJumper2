@@ -156,6 +156,7 @@
     <ClCompile Include="source\game\tiletrait\DrawableTile.cpp" />
     <ClCompile Include="source\game\tiletrait\DynamicTile.cpp" />
     <ClCompile Include="source\game\tiletrait\GameTileBase.cpp" />
+    <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
     <ClCompile Include="source\game\tile\GameWallTile.cpp" />
     <ClCompile Include="source\game\tile\TileColors.cpp" />
     <ClCompile Include="source\game\WorldBase.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
+    <ClCompile Include="source\editor\template\TileTemplateFactory.cpp" />
     <ClCompile Include="source\scene\TestGameScene.cpp" />
     <ClCompile Include="source\scene\TestMenuScene.cpp" />
     <ClCompile Include="winMain.cpp" />
@@ -206,7 +208,6 @@
     <None Include="source\editor\manipulator\EditorWorld.h" />
     <None Include="source\editor\manipulator\Executor.cpp" />
     <None Include="source\editor\manipulator\Executor.h" />
-    <None Include="source\editor\manipulator\Manipulator.cpp" />
     <None Include="source\editor\manipulator\Manipulator.h" />
     <None Include="source\editor\manipulator\Manipulator.jpg" />
     <None Include="source\editor\manipulator\tasks\LoadWorldTask.cpp" />
@@ -221,6 +222,21 @@
     <None Include="source\editor\selector\SelectorRoot.h" />
     <None Include="source\editor\selector\SelectorView.cpp" />
     <None Include="source\editor\selector\SelectorView.h" />
+    <None Include="source\editor\template\TileTemplate.cpp" />
+    <None Include="source\editor\template\TileTemplate.h" />
+    <None Include="source\editor\template\TileTemplateFactory.h" />
+    <None Include="source\editor\template\WallTemplate.cpp" />
+    <None Include="source\editor\template\WallTemplate.h" />
+    <None Include="source\editor\tilechoice\TileChoiceRoot.cpp" />
+    <None Include="source\editor\tilechoice\TileChoiceRoot.h" />
+    <None Include="source\editor\tilechoice\TileCoiceCache.cpp" />
+    <None Include="source\editor\tilechoice\TileCoiceCache.h" />
+    <None Include="source\editor\tilechoice\TileSearchRoot.cpp" />
+    <None Include="source\editor\tilechoice\TileSearchRoot.h" />
+    <None Include="source\editor\tile\EditorTileBase.cpp" />
+    <None Include="source\editor\tile\EditorTileBase.h" />
+    <None Include="source\editor\tile\EditorWall.cpp" />
+    <None Include="source\editor\tile\EditorWall.h" />
     <None Include="source\menu\MenuButton.cpp" />
     <None Include="source\menu\MenuButton.h" />
     <None Include="source\menu\MenuButtonMaterial.cpp" />
@@ -229,6 +245,8 @@
     <None Include="source\menu\MenuButtonWithLabel.h" />
     <None Include="source\menu\MenuCommon.cpp" />
     <None Include="source\menu\MenuCommon.h" />
+    <None Include="source\menu\MenuEvent.cpp" />
+    <None Include="source\menu\MenuEvent.h" />
     <None Include="source\menu\MenuProperty.cpp" />
     <None Include="source\menu\MenuProperty.h" />
     <None Include="source\menu\MenuRowContainer.cpp" />

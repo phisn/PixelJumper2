@@ -10,6 +10,7 @@ namespace Editor
 
 	enum class SelectorType
 	{
+		None,
 		Area,
 		Tiles
 	};
@@ -18,7 +19,8 @@ namespace Editor
 	{
 	public:
 		SelectorType type;
-		sf::FloatRect selectRect;
+
+		sf::Vector2f beginCorner, nextCorner;
 	};
 
 	class SelectorOutput
@@ -26,7 +28,7 @@ namespace Editor
 	public:
 		SelectorType type;
 
-		std::vector<void> tiles;
+		// std::vector<void> tiles;
 		sf::FloatRect area;
 	};
 }

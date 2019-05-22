@@ -1,10 +1,9 @@
 #pragma once
 
+#include <Client/source/editor/selector/SelectorMarker.h>
 #include <Client/source/editor/selector/SelectorView.h>
-#include <Client/source/menu/MenuRootBase.h>
 
-#include <Client/source/editor/manipulator/cache/CacheManager.h>
-#include <Client/source/editor/manipulator/Manipulator.h>
+#include <Client/source/menu/MenuRootBase.h>
 
 namespace Editor
 {
@@ -16,6 +15,7 @@ namespace Editor
 		SelectorRoot()
 			:
 			MenuRootBase(),
+			selectorMarker(view),
 			selectorView(view)
 		{
 		}
@@ -32,14 +32,7 @@ namespace Editor
 		{
 			MenuRootBase::onDraw();
 			selectorView.draw();
-
-			sf::RectangleShape rect;
-			rect.setPosition({ 0, 0 });
-			rect.setSize({ selectorView.GridRectSize, selectorView.GridRectSize });
-
-			rect.setFillColor(sf::Color::Color(255, 255, 255, 150));
-
-			Device::Screen::Draw(rect);
+			selectorMarker.draw();
 		}
 
 		void onEvent(const sf::Event event) override
@@ -50,39 +43,71 @@ namespace Editor
 			{
 			case sf::Event::MouseWheelMoved:
 				selectorView.zoom(1.f - 0.1f / (float) event.mouseWheel.delta);
+				mouse.right = false; // bug by view movement and cursor handling
 
 				break;
 			case sf::Event::MouseButtonPressed:
-				if (event.mouseButton.button == sf::Mouse::Left)
+				if (event.mouseButton.button == sf::Mouse::Right)
 				{
-					isMouseLeftPressed = true;
+					mouse.right = true;
 					selectorView.beginMouseMovement(
 						sf::Vector2i(event.mouseButton.x, event.mouseButton.y)
 					);
+
+					break;
+				}
+
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					mouse.left = true;
+					selectorMarker.beginMouseMovement(
+						sf::Vector2i(event.mouseButton.x, event.mouseButton.y)
+					);
+
+					break;
 				}
 
 				break;
 			case sf::Event::MouseMoved:
-				if (isMouseLeftPressed)
+				if (mouse.right)
 				{
 					selectorView.nextMouseMovement(
 						sf::Vector2i(event.mouseMove.x, event.mouseMove.y)
 					);
 				}
 
+				if (mouse.left)
+				{
+					selectorMarker.nextMouseMovement(
+						sf::Vector2i(event.mouseMove.x, event.mouseMove.y)
+					);
+				}
+
 				break;
 			case sf::Event::MouseButtonReleased:
+				if (event.mouseButton.button == sf::Mouse::Right)
+				{
+					mouse.right = false;
+					break;
+				}
+
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
-					isMouseLeftPressed = false;
+					mouse.left = false;
+					break;
 				}
 
 				break;
 			}
+
 		}
 
 	private:
-		bool isMouseLeftPressed = false;
+		struct Mouse
+		{
+			bool left, right;
+
+		} mouse = { };
 
 		SelectorView selectorView;
 		SelectorMarker selectorMarker;

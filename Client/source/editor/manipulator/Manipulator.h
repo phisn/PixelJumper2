@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Client/source/editor/manipulator/EditorCache.h>
-
 namespace Editor
 {
 	class Cache;

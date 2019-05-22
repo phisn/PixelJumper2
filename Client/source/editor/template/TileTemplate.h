@@ -2,8 +2,9 @@
 
 #include <Client/source/Common.h>
 #include <Client/source/editor/tile/EditorTileBase.h>
+#include <Client/source/menu/MenuElementBase.h>
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
 
 #include <string>
 
@@ -12,22 +13,13 @@ namespace Editor
 	class TileTemplate
 	{
 	public:
-		TileTemplate(
-			const sf::Color color,
-			const std::wstring name,
-			const Game::TileId id)
-			:
-			color(color),
-			name(name),
-			id(id)
-		{
-		}
+		virtual TileBase* create(const VectorTilePosition position) = 0;
 
-		virtual TileBase* create(
-			const VectorTilePosition position) = 0;
+		virtual const std::wstring& getName() const = 0;
+		virtual const std::wstring& getDescription() const = 0;
+		virtual Game::TileId getId() const = 0;
 
-		const sf::Color color;
-		const std::wstring name;
-		const Game::TileId id;
+		// usally a button
+		virtual Menu::ElementBase* createRepresentation() = 0;
 	};
 }

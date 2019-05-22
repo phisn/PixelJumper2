@@ -1,8 +1,10 @@
 #pragma once
 
+
 #include <Client/source/editor/manipulator/CacheElement.h>
 
 #include <Client/source/editor/selector/SelectorCache.h>
+#include <Client/source/editor/tilechoice/TileCoiceCache.h>
 
 namespace Editor
 {
@@ -10,5 +12,6 @@ namespace Editor
 	{
 	public:
 		CacheElement<SelectorInput, SelectorOutput> selection;
+		CacheElement<TileChoiceInput, TileChoiceOutput> tileChoice;
 	};
 }

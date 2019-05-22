@@ -2,8 +2,7 @@
 
 #include <Client/source/editor/grid/GridProperties.h>
 
-#include <Client/source/editor/manipulator/cache/Cache.h>
-#include <Client/source/editor/manipulator/cache/CacheManager.h>
+#include <Client/source/editor/manipulator/EditorCache.h>
 #include <Client/source/editor/manipulator/Executor.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 
