@@ -31,12 +31,16 @@ namespace Menu
 		T default, hover, pressed;
 	};
 
-	enum class CommonArea
+	enum class CommonVerticalArea
 	{
-		Center = 0, // default
-
+		Center,
 		Top,
-		Bottom,
+		Bottom
+	};
+
+	enum class CommonHorizontalArea
+	{
+		Center,
 		Left,
 		Right
 	};

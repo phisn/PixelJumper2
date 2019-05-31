@@ -14,12 +14,27 @@
 
 namespace Menu
 {
-	/*class ScreenDependentProperty
+	template <typename T>
+	class AutomaticProperty
 		:
-		public PercentProperty
+		public Property<T>
 	{
 	public:
-	};*/
+		using Property::operator=;
+		using Property::operator->;
+		using Property::operator*;
+
+		Property<bool> automatic;
+
+		template <typename S>
+		AutomaticProperty& operator=(const S value)
+		{
+			automatic.setValue(false);
+			Property<T>::operator=(value);
+		}
+
+		// use setValue for automatic define
+	};
 
 	class ElementBase
 	{
@@ -28,103 +43,34 @@ namespace Menu
 
 		ElementBase()
 		{
-			outerOffset.addListener(
-				[this](const Offset oldOffset,
-					   const Offset newOffset)
-				{
-					position =
-					{
-						position->x + (newOffset.left - oldOffset.left),
-						position->y + (newOffset.top  - oldOffset.top)
-					};
-
-					if (parent == NULL)
-					{
-						updateGraphics();
-					}
-					else
-					{
-						parent->updateGraphics();
-					}
-				});
-
 			innerOffset.addListener(
 				[this](const Offset oldOffset,
 					   const Offset newOffset)
 				{
-					if (space->x == 0 || space->y == 0)
-					{
-						updateGraphics();
-					}
-					else
-					{
-						updateWithPreferredSize(); // -> updateGraphics
-					}
-				});
-			position.addListener(
-				[this](const sf::Vector2f oldPosition,
-					   const sf::Vector2f newPosition)
-				{
-					if (space->x == 0 || space->y == 0)
-					{
-						updateGraphics();
-					}
-					else
-					{
-						updateWithPreferredSize(); // -> updateGraphics
-					}
-				});
-			sizePreferred.addListener(
-				[this](const sf::Vector2f oldSize,
-					   const sf::Vector2f newSize)
-				{
-					if (space->x == 0 || space->y == 0)
-					{
-						size = newSize;
-					}
-					else
-					{
-						updateWithPreferredSize();
-					}
+					for (ElementBase* const child : staticChildren)
+						child->updateAutomaticSpace();
 				});
 			size.addListener(
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
 				{
-					if (parent.getValue() == NULL)
-					{
-						updateGraphics();
-					}
-					else
-					{
-						/*assert(
-							parent->size->x - position->x >= size->x &&
-							parent->size->y - position->y >= size->y);*/
-
-						parent->updateGraphics();
-					}
+					for (ElementBase* const child : staticChildren)
+						if (*child->space.automatic)
+						{
+							child->updateAutomaticSpace();
+						}
 				});
 			space.addListener(
-				[this](const sf::Vector2f oldSize,
-					   const sf::Vector2f newSize)
+				[this](const sf::Vector2f oldSpace,
+					   const sf::Vector2f newSpace)
 				{
-					if (newSize.x != 0 && newSize.y != 0)
-					{
-						updateWithPreferredSize();
-					}
+					updateSizeWithSpace();
 				});
-			area.addListener(
-				[this](const CommonArea oldArea,
-					   const CommonArea newArea)
+			position.addListener(
+				[this](const sf::Vector2f oldPosition,
+					   const sf::Vector2f newPosition)
 				{
-					if (parent != NULL)
-						parent->updateGraphics();
-				});
-			parent.addListener(
-				[this](ElementBase* const oldElement,
-					   ElementBase* const newElement)
-				{
-					updateGraphics();
+					updateSizeWithSpace();
 				});
 		}
 
@@ -143,13 +89,13 @@ namespace Menu
 			return parent;
 		}
 
-		Property<sf::Vector2f> space;
+		AutomaticProperty<sf::Vector2f> space;
 
 		Property<sf::Vector2f> sizePreferred;
 		Property<sf::Vector2f> size;
 		Property<sf::Vector2f> position{ sf::Vector2f(0, 0) };
 
-		Property<CommonArea> area{ CommonArea::Center };
+		// Property<CommonArea> area{ CommonArea::Center };
 		
 		struct Offset
 		{
@@ -159,7 +105,7 @@ namespace Menu
 		Property<Offset> outerOffset{ };
 		Property<Offset> innerOffset{ };
 
-		virtual void updateGraphics()
+		/*virtual void updateGraphics()
 		{
 			static int c = 0;
 			if (++c % 1000 == 0)
@@ -171,7 +117,7 @@ namespace Menu
 			}
 
 			updateOwnGraphics();
-		}
+		}*/
 
 		virtual void initialize()
 		{
@@ -211,7 +157,7 @@ namespace Menu
 	protected:
 		typedef std::vector<ElementBase*> Container;
 
-		virtual void updateOwnGraphics() = 0;
+		// virtual void updateOwnGraphics() = 0;
 
 		void addStaticChild(ElementBase* const element)
 		{
@@ -254,18 +200,31 @@ namespace Menu
 			return staticChildren;
 		}
 
-		virtual void updateWithPreferredSize()
+		virtual void updateSizeWithSpace()
 		{
-			const sf::Vector2f goal = *sizePreferred;
-			const sf::Vector2f possible = *space - *position - sf::Vector2f(
-				parent->innerOffset->left + parent->innerOffset->right,
-				parent->innerOffset->top + parent->innerOffset->bottom);
+			const sf::Vector2f realSpace = *space - *position;
 
-			size = 
+			// use max space as default size
+			if (sizePreferred->x == 0 || sizePreferred->y == 0)
 			{
-				possible.x < goal.x ? possible.x : goal.x,
-				possible.y < goal.y ? possible.y : goal.y
-			};
+				size = realSpace;
+			}
+			else
+			{
+				size =
+				{
+					realSpace.x < sizePreferred->x ? realSpace.x : sizePreferred->x,
+					realSpace.y < sizePreferred->y ? realSpace.y : sizePreferred->y,
+				};
+			}
+		}
+
+		virtual void updateAutomaticSpace()
+		{
+			space.setValue(*parent->size - sf::Vector2f(
+				parent->innerOffset->left + parent->innerOffset->right,
+				parent->innerOffset->top + parent->innerOffset->bottom
+			));
 		}
 
 		// precent to real
