@@ -21,50 +21,9 @@ namespace Menu
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
 				{
-					if (!elementSpace.isEnabled())
-					{
-						elementSpace = newSize;
-					}
+					//  change area
 				});
-			elementSpace.addListener(
-				[this](const sf::Vector2f oldSpace,
-					   const sf::Vector2f newSpace)
-				{
-					for (ElementBase* const element : getStaticChildren())
-						element->space = newSpace;
-				});
-
 		}
-
-		class ElementSpace
-			:
-			public Property<sf::Vector2f>
-		{
-		public:
-			using Property::Property;
-			using Property::operator=;
-			using Property::operator->;
-			using Property::operator*;
-
-			void enable()
-			{
-				enabled = true;
-			}
-
-			void disable()
-			{
-				enabled = false;
-			}
-
-			bool isEnabled() const
-			{
-				return enabled;
-			}
-
-		private:
-			bool enabled = false;
-
-		} elementSpace;
 
 		void addElement(
 			ElementBase* const element,
@@ -72,8 +31,6 @@ namespace Menu
 		{
 			const Container& container = getStaticChildren();
 			assert(position <= container.size());
-
-			element->area = CommonArea::Left;
 
 			if (container.size() > 0)
 			{
@@ -99,7 +56,6 @@ namespace Menu
 			}
 
 			element->size.addListener(elementSizeListener);
-			element->space = *elementSpace;
 			updateSizeByElementSize(element->size);
 		}
 
@@ -147,16 +103,11 @@ namespace Menu
 			return ElementBase::getStaticChildren();
 		}
 
-		virtual void updateGraphics() override
+		/*virtual void updateGraphics() override
 		{
 			ElementBase::updateGraphics();
 			// updateElementPosition();
-		}
-
-	protected:
-		virtual void updateOwnGraphics() override
-		{
-		}
+		}*/
 
 	private:
 		std::function<void(const sf::Vector2f, const sf::Vector2f)> elementSizeListener =
@@ -166,19 +117,19 @@ namespace Menu
 			if (direction == CommonControlDirection::Horizontal)
 			{
 				if (oldSize.x != newSize.x)
-					size =
+					sizePreferred =
 					{
-						size->x + newSize.x - oldSize.x,
-						size->y
+						sizePreferred->x + newSize.x - oldSize.x,
+						sizePreferred->y
 					};
 			}
 			else
 			{
 				if (oldSize.y != newSize.y)
-					size =
+					sizePreferred =
 					{
-						size->x,
-						size->y + newSize.y - oldSize.y
+						sizePreferred->x,
+						sizePreferred->y + newSize.y - oldSize.y
 					};
 			}
 		};
@@ -186,25 +137,30 @@ namespace Menu
 		void updateSizeByElementSize(
 			const sf::Vector2f elementSize)
 		{
-			if (elementSize.x == 0.f && elementSize.y == 0.f)
-			{
-				return;
-			}
-
 			if (direction == CommonControlDirection::Horizontal)
 			{
-				size =
+				if (elementSize.x == 0)
 				{
-					size->x + elementSize.x,
-					size->y
+					return;
+				}
+
+				sizePreferred =
+				{
+					sizePreferred->x + elementSize.x,
+					sizePreferred->y
 				};
 			}
 			else
 			{
-				size = // TODO: PreferredSize ?
+				if (elementSize.y == 0)
 				{
-					size->x,
-					size->y + elementSize.y
+					return;
+				}
+
+				sizePreferred = // TODO: PreferredSize ?
+				{
+					sizePreferred->x,
+					sizePreferred->y + elementSize.y
 				};
 			}
 		}
@@ -270,7 +226,7 @@ namespace Menu
 		}
 
 		inline float calculateElementAreaOffset(ElementBase* const element)
-		{
+		{/*
 			if (direction == CommonControlDirection::Horizontal)
 			{
 				return element->area.getValue() == CommonArea::Bottom
@@ -287,6 +243,8 @@ namespace Menu
 						? (size.getValue().x - element->size.getValue().x) / 2.f
 						: 0.f);
 			}
+			*/
+			return 0.f;
 		}
 
 		float takeByDirection(float x, float y) const

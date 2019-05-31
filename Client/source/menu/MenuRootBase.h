@@ -34,7 +34,7 @@ namespace Menu
 				{
 					view.setViewport(newViewPort);
 					const sf::FloatRect realView = ConvertPortToReal(newViewPort);
-					
+
 					size = sf::Vector2f(
 						realView.width,
 						realView.height
@@ -43,12 +43,11 @@ namespace Menu
 						realView.left,
 						realView.top
 					);
-					view.setSize(*size);
-						/*
-					{
-						size.getValue().x,
-						size.getValue().y
-					});*/
+
+					view.setSize(
+						viewPort->width * viewSize->x,
+						viewPort->height * viewSize->y
+					);
 
 					view.setCenter(*size / 2.f + *position);
 				});
@@ -63,6 +62,9 @@ namespace Menu
 				});
 
 			viewPort = { 0.f, 0.f, 1.f, 1.f };
+			viewSize = sf::Vector2f(
+				Device::Screen::GetWindow()->getSize()
+			);
 		}
 
 		void addElement(ElementBase* const element)
@@ -71,7 +73,7 @@ namespace Menu
 		}
 
 		Property<sf::FloatRect> viewPort;
-		Property<sf::Vector2f> viewSize;
+		Property<sf::Vector2f> viewSize{ sf::Vector2f(0.f, 0.f) };
 
 		const sf::View& readView() const
 		{
@@ -157,11 +159,11 @@ namespace Menu
 		// to build the super ui
 		virtual bool build() = 0;
 
-	protected:
-		virtual void updateOwnGraphics() override
+		void updateSizeWithSpace() override
 		{
 		}
 
+	protected:
 		sf::View view;
 	};
 }

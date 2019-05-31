@@ -2,13 +2,14 @@
 
 #include "MenuElementBase.h"
 
-#include <Client/source/device/ScreenDevice.h>
 #include <Client/source/logger/Logger.h>
-#include <Client/source/resource/ResourceInterface.h>
+
+#include <Client/source/device/ScreenDevice.h>
 #include <Client/source/framework/FrameworkInterface.h>
+#include <Client/source/resource/ResourceInterface.h>
+
 #include <SFML/Graphics.hpp>
 
-#include <fstream>
 #include <string>
 
 namespace Menu
@@ -62,7 +63,7 @@ namespace Menu
 			glText.setCharacterSize(18);
 		}
 
-		Property<sf::Color> color { sf::Color() };
+		Property<sf::Color> color { sf::Color::White };
 		Property<const sf::Font*> font { NULL };
 		Property<std::wstring> text { L"" };
 
@@ -71,6 +72,7 @@ namespace Menu
 			if (font.getValue() == NULL)
 			{
 				Log::Warning(L"No font selected, using default");
+
 				font = Framework::Interface::GetResource<sf::Font>(
 					Resource::Static::DefaultFont
 				);
@@ -82,12 +84,13 @@ namespace Menu
 			Device::Screen::Draw(glText);
 		}
 
-	private:
-		void updateOwnGraphics() override
+		virtual void updateGraphics() override
 		{
+			ElementBase::updateGraphics();
 			glText.setPosition(convertPositionVTR({ 0.f, 0.f }));
 		}
 
+	private:
 		sf::Text glText;
 	};
 }

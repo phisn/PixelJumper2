@@ -35,8 +35,8 @@ namespace Menu
 		
 		void updateGraphics() override
 		{
+			ElementBase::updateGraphics();
 			label.updateGraphics();
-			updateOwnGraphics();
 		}
 
 	private:

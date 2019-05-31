@@ -32,19 +32,31 @@ namespace Menu
 					if (this->direction == CommonControlDirection::Horizontal)
 					{
 						container.position = { 0, newWidth };
-						container.size =
+						container.sizePreferred =
 						{
 							container.size.getValue().x,
 							size.getValue().y - newWidth
+						};
+
+						slideBar.sizePreferred =
+						{
+							size->x,
+							newWidth
 						};
 					}
 					else
 					{
 						container.position = { newWidth, 0 };
-						container.size =
+						container.sizePreferred =
 						{
 							size.getValue().x - newWidth,
 							container.size.getValue().y
+						};
+
+						slideBar.sizePreferred =
+						{
+							newWidth,
+							size->y
 						};
 					}
 				});
@@ -54,14 +66,14 @@ namespace Menu
 				{
 					if (this->direction == CommonControlDirection::Horizontal)
 					{
-						container.size =
+						container.sizePreferred =
 						{
 							newSize.x,
 							size.getValue().y - slideBarWidth.getValue()
 						};
 
 						if (newSize.x != oldSize.x)
-							slideBar.size =
+							slideBar.sizePreferred =
 							{
 								newSize.x,
 								slideBarWidth.getValue()
@@ -69,7 +81,7 @@ namespace Menu
 					}
 					else
 					{
-						container.size =
+						container.sizePreferred =
 						{
 							size.getValue().x - slideBarWidth.getValue(),
 							newSize.y
@@ -77,7 +89,7 @@ namespace Menu
 
 						if (newSize.y != oldSize.y)
 						{
-							slideBar.size =
+							slideBar.sizePreferred =
 							{
 								slideBarWidth.getValue(),
 								newSize.y
@@ -167,10 +179,8 @@ namespace Menu
 					container.size.getValue().y - slideBar.size.getValue().y * 2
 				)
 			};
-		}
 
-		virtual void updateOwnGraphics() override
-		{
+			updateGraphics();
 		}
 
 	private:

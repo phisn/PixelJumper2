@@ -38,13 +38,13 @@ namespace Scene
 			tsr = new Editor::TileSearchRoot();
 
 
-			sr->build();
-			tcr->build();
-			tsr->build();
-
 			sr->viewPort = { 0.f, 0.f, 0.7f, 1.f };
 			tcr->viewPort = { 0.7f, 0.15f, 0.3f, 0.85f };
 			tsr->viewPort = { 0.7f, 0.f, 0.3f, 0.15f };
+
+			sr->build();
+			tcr->build();
+			tsr->build();
 
 			/*
 			cs.position = { 100, 100 };

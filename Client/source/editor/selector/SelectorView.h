@@ -25,7 +25,7 @@ namespace Editor
 		{
 			crossBase.position = { 0.f, 0.f };
 			crossBase.size = { GridCrossSize, GridCrossSize };
-			crossBase.consumption = 0.05f;
+			crossBase.consumption = 0.1f;
 			crossBase.color = sf::Color::Color(100, 100, 100, 255);
 		}
 

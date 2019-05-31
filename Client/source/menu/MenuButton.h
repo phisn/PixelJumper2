@@ -102,16 +102,18 @@ namespace Menu
 			ElementBase::onDraw();
 		}
 
+		virtual void updateGraphics() override
+		{
+			ElementBase::updateGraphics();
+
+			material.setPosition(convertPositionVTR({ 0.f, 0.f }));
+			material.setSize(size);
+		}
+
 	protected:
 		virtual void onButtonPressed()
 		{
 			buttonPressedEvent.notify();
-		}
-
-		void updateOwnGraphics() override
-		{
-			material.setPosition(convertPositionVTR({ 0.f, 0.f }));
-			material.setSize(size);
 		}
 
 		TMaterial material;

@@ -201,20 +201,16 @@ namespace Menu
 			distance.addListener(
 				[this](const PercentProperty& distance)
 				{
-					sliderMaterial.setDistance(distance.getValue());
-					onSliderMoved(distance.getValue());
-
-					updateGraphics();
-				});
-			distance.addListener(
-				[this](const PercentProperty& distance)
-				{
 					// protect distance from NAN caused by converting to percent
 					if (std::isnan(distance.getValue()))
 					{
 						this->distance->setValue(0.f);
 					}
+
+					sliderMaterial.setDistance(distance.getValue());
+					onSliderMoved(distance.getValue());
 				});
+
 			length.addListener(
 				[this](const PercentProperty& length)
 				{
@@ -329,17 +325,12 @@ namespace Menu
 			}
 		}
 
-		virtual void onLogic(const sf::Time time)
-		{
-			ElementBase::onLogic(time);
-		}
-
 		virtual void onDraw() const
 		{
+			ElementBase::onDraw();
+
 			barMaterial.draw();
 			sliderMaterial.draw();
-
-			ElementBase::onDraw();
 		}
 
 		Property<PercentProperty> distance
@@ -392,25 +383,25 @@ namespace Menu
 				size.getValue().y);
 		}
 
-	private:
-		virtual void onSliderPressed(const float distance) = 0;
-		virtual void onSliderMoved(const float distance) = 0;
-
-		void updateOwnGraphics() override
+		virtual void updateGraphics() override
 		{
 			barMaterial.setPosition(convertPositionVTR({ 0.f, 0.f }));
 
 			sliderMaterial.setPosition(convertPositionVTR(
 				limitDistance
-				?	direction == CommonControlDirection::Horizontal
-					? sf::Vector2f(limitOffset, 0.f)
-					: sf::Vector2f(0.f, limitOffset)
-				:	sf::Vector2f(0, 0)
+				? direction == CommonControlDirection::Horizontal
+				? sf::Vector2f(limitOffset, 0.f)
+				: sf::Vector2f(0.f, limitOffset)
+				: sf::Vector2f(0, 0)
 			));
 
 			barMaterial.setSize(size);
 			sliderMaterial.setSize(size);
 		}
+
+	private:
+		virtual void onSliderPressed(const float distance) = 0;
+		virtual void onSliderMoved(const float distance) = 0;
 
 		const CommonControlDirection direction;
 

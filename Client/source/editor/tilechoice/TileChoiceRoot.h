@@ -50,6 +50,7 @@ namespace Editor
 				const sf::Vector2f newSize)
 			{
 				scrollContainer.sizePreferred = newSize;
+				scrollContainer.updateGraphics();
 			});
 
 			Manipulator::GetCache()->tileChoice.addListener(
@@ -61,6 +62,8 @@ namespace Editor
 				{
 					scrollContainer.addElement(tile->createRepresentation());
 				}
+
+				scrollContainer.updateGraphics();
 			});
 			Manipulator::GetCache()->tileChoice.addWorker(
 				std::ref(worker), 0

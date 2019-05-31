@@ -14,14 +14,12 @@ namespace Editor
 {
 	class MagicTileButton
 		:
-		public Menu::Button<Menu::ButtonMaterial::DefaultRectangleStaticSize>
+		public Menu::Button<Menu::ButtonMaterial::DefaultRectangle>
 	{
 	public:
 		void onButtonPressed() override
 		{
 			TileChoiceInput* const input = Manipulator::GetCache()->tileChoice.writeInput();
-
-
 
 			Manipulator::GetCache()->tileChoice.notify();
 		}

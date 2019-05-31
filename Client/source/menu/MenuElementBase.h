@@ -72,6 +72,12 @@ namespace Menu
 				{
 					updateSizeWithSpace();
 				});
+			sizePreferred.addListener(
+				[this](const sf::Vector2f oldSize,
+					   const sf::Vector2f newSize)
+				{
+					updateSizeWithSpace();
+				});
 		}
 
 		~ElementBase()
@@ -104,20 +110,6 @@ namespace Menu
 
 		Property<Offset> outerOffset{ };
 		Property<Offset> innerOffset{ };
-
-		/*virtual void updateGraphics()
-		{
-			static int c = 0;
-			if (++c % 1000 == 0)
-				Log::Information(std::to_wstring(c));
-
-			for (ElementBase* const element : staticChildren)
-			{
-				element->updateGraphics();
-			}
-
-			updateOwnGraphics();
-		}*/
 
 		virtual void initialize()
 		{
@@ -154,6 +146,15 @@ namespace Menu
 			}
 		}
 
+		// has to be called manually
+		virtual void updateGraphics()
+		{
+			for (ElementBase* const element : staticChildren)
+			{
+				element->updateGraphics();
+			}
+		}
+
 	protected:
 		typedef std::vector<ElementBase*> Container;
 
@@ -163,6 +164,11 @@ namespace Menu
 		{
 			element->parent.setValue(this);
 			staticChildren.push_back(element);
+
+			if (*element->space.automatic)
+			{
+				element->updateAutomaticSpace();
+			}
 		}
 
 		void insertStaticChild(
@@ -171,6 +177,11 @@ namespace Menu
 		{
 			element->parent.setValue(this);
 			staticChildren.insert(position, element);
+
+			if (*element->space.automatic)
+			{
+				element->updateAutomaticSpace();
+			}
 		}
 
 		void removeStaticChild(Container::const_iterator element)

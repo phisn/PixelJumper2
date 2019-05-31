@@ -45,9 +45,11 @@ namespace Menu
 		Right
 	};
 
+	/* Deptrecated
+
 	enum class CommonContainerType
 	{
 		Raw,
 		Compressed
-	};
+	};*/
 }
