@@ -21,7 +21,7 @@ namespace Editor
 		{
 			TileChoiceInput* const input = Manipulator::GetCache()->tileChoice.writeInput();
 
-			// ... add all templates
+
 
 			Manipulator::GetCache()->tileChoice.notify();
 		}
@@ -40,10 +40,15 @@ namespace Editor
 				const sf::Vector2f oldSize,
 				const sf::Vector2f newSize)
 			{
-				button.size = newSize;
+				button.space = newSize;
+				button.sizePreferred = newSize;
 			});
+			innerOffset = { 5.f, 5.f, 5.f, 5.f };
+			
+			return true;
 		}
-		
+
+
 	private:
 		MagicTileButton button;
 		// textbox

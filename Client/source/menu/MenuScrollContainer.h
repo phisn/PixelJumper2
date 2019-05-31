@@ -22,12 +22,6 @@ namespace Menu
 			container(direction),
 			slideBar(this, direction)
 		{
-			space->enable(
-				{
-					direction == CommonControlDirection::Vertical,
-					direction == CommonControlDirection::Horizontal
-				});
-
 			ElementBase::addStaticChild(&slideBar);
 			ElementBase::addStaticChild(&container);
 
@@ -134,7 +128,7 @@ namespace Menu
 
 		void removeAllElements()
 		{
-			slideBar.consumption->setPercent(1.f);
+			slideBar.length->setPercent(1.f);
 		}
 
 		const Container& getElements() const

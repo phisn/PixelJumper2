@@ -626,5 +626,11 @@
     <None Include="source\menu\MenuEvent.h">
       <Filter>source\menu</Filter>
     </None>
+    <None Include="source\editor\tilechoice\TileChoiceWorker.h">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileChoiceWorker.cpp">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -51,6 +51,7 @@ namespace Editor
 		Menu::ElementBase* createRepresentation() override
 		{
 			static Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize> button;
+			button.sizePreferred = { 300, 100 };
 			return &button;
 		}
 

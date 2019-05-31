@@ -22,8 +22,7 @@ namespace Editor
 
 		bool build() override
 		{
-			view.setSize({ 200, 200 });
-			view.setCenter({ 0, 0 });
+			viewSize = { 200, 200 };
 
 			return true;
 		}

@@ -26,7 +26,7 @@ namespace Menu
 
 					if (glText.getFont() != NULL)
 					{
-						size =
+						sizePreferred =
 						{
 							glText.getGlobalBounds().width,
 							glText.getGlobalBounds().height
@@ -38,7 +38,7 @@ namespace Menu
    					   const sf::Font* const newFont)
 				{
 					glText.setFont(*font);
-					size =
+					sizePreferred =
 					{
 						glText.getLocalBounds().width,
 						glText.getLocalBounds().height
@@ -85,9 +85,7 @@ namespace Menu
 	private:
 		void updateOwnGraphics() override
 		{
-			glText.setPosition(
-				convertPositionVTR({ 0.f, 0.f })
-			);
+			glText.setPosition(convertPositionVTR({ 0.f, 0.f }));
 		}
 
 		sf::Text glText;

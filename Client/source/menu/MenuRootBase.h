@@ -33,20 +33,33 @@ namespace Menu
 					   const sf::FloatRect newViewPort)
 				{
 					view.setViewport(newViewPort);
-
-					const sf::Vector2u windowSize = Device::Screen::GetWindow()->getSize();
-
+					const sf::FloatRect realView = ConvertPortToReal(newViewPort);
+					
 					size = sf::Vector2f(
-						windowSize.x * newViewPort.width,
-						windowSize.y * newViewPort.height
+						realView.width,
+						realView.height
 					);
 					position = sf::Vector2f(
-						windowSize.x * newViewPort.left,
-						windowSize.y * newViewPort.top
+						realView.left,
+						realView.top
 					);
+					view.setSize(*size);
+						/*
+					{
+						size.getValue().x,
+						size.getValue().y
+					});*/
 
-					view.setSize(size.getValue());
-					view.setCenter(size.getValue() / 2.f + position.getValue());
+					view.setCenter(*size / 2.f + *position);
+				});
+			viewSize.addListener(
+				[this](const sf::Vector2f oldSize,
+					   const sf::Vector2f newSize)
+				{
+					view.setSize(
+						viewPort->width * newSize.x,
+						viewPort->height * newSize.y
+					);
 				});
 
 			viewPort = { 0.f, 0.f, 1.f, 1.f };
@@ -58,6 +71,7 @@ namespace Menu
 		}
 
 		Property<sf::FloatRect> viewPort;
+		Property<sf::Vector2f> viewSize;
 
 		const sf::View& readView() const
 		{

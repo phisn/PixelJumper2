@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Client/source/editor/selector/SelectorRoot.h>
+#include <Client/source/editor/tilechoice/TileChoiceRoot.h>
+#include <Client/source/editor/tilechoice/TileSearchRoot.h>
 
 #include <Client/source/menu/MenuButtonMaterial.h>
 #include <Client/source/menu/MenuButtonWithLabel.h>
@@ -24,16 +26,26 @@ namespace Scene
 	{
 	public:
 		TestMenuScene()
-			:
-			container(Menu::CommonControlDirection::Vertical)
 		{
 		}
 
 		bool onCreate() override
 		{
 			Editor::Manipulator::Initialize();
+			
 			sr = new Editor::SelectorRoot();
+			tcr = new Editor::TileChoiceRoot();
+			tsr = new Editor::TileSearchRoot();
+
+
 			sr->build();
+			tcr->build();
+			tsr->build();
+
+			sr->viewPort = { 0.f, 0.f, 0.7f, 1.f };
+			tcr->viewPort = { 0.7f, 0.15f, 0.3f, 0.85f };
+			tsr->viewPort = { 0.7f, 0.f, 0.3f, 0.15f };
+
 			/*
 			cs.position = { 100, 100 };
 			cs.size = { 50, 50 };
@@ -71,6 +83,8 @@ namespace Scene
 		{
 			// root.initialize();
 			sr->initialize();
+			tcr->initialize();
+			tsr->initialize();
 		}
 
 		void onShow() override
@@ -91,6 +105,8 @@ namespace Scene
 		void onEvent(const sf::Event event) override
 		{
 			sr->onEvent(event);
+			tcr->onEvent(event);
+			tsr->onEvent(event);
 		}
 
 		void onLogic(const sf::Time time) override
@@ -100,39 +116,13 @@ namespace Scene
 		void onDraw() override
 		{
 			sr->draw();
+			tcr->draw();
+			tsr->draw();
 		}
 
 	private:
-		class Root : public Menu::MenuRootBase
-		{
-			bool build()
-			{
-				return true;
-			}
-
-		} root;
-		
-		class CButton : public Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize>
-		{
-		public:
-			CButton(int i)
-				:
-				i(i)
-			{
-			}
-
-			void onButtonPressed() override
-			{
-				Log::Information(L"Button Pressed: " + std::to_wstring(i));
-			}
-
-		private:
-			int i;
-		};
-
 		Editor::SelectorRoot* sr;
-
-		Menu::ScrollContainer<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle> container;
-		std::vector<CButton> buttons;
+		Editor::TileChoiceRoot* tcr;
+		Editor::TileSearchRoot* tsr;
 	};
 }

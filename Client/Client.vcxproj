@@ -229,6 +229,8 @@
     <None Include="source\editor\template\WallTemplate.h" />
     <None Include="source\editor\tilechoice\TileChoiceRoot.cpp" />
     <None Include="source\editor\tilechoice\TileChoiceRoot.h" />
+    <None Include="source\editor\tilechoice\TileChoiceWorker.cpp" />
+    <None Include="source\editor\tilechoice\TileChoiceWorker.h" />
     <None Include="source\editor\tilechoice\TileCoiceCache.cpp" />
     <None Include="source\editor\tilechoice\TileCoiceCache.h" />
     <None Include="source\editor\tilechoice\TileSearchRoot.cpp" />

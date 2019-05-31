@@ -398,9 +398,7 @@ namespace Menu
 
 		void updateOwnGraphics() override
 		{
-			barMaterial.setPosition(
-				convertPositionVTR({ 0.f, 0.f })
-			);
+			barMaterial.setPosition(convertPositionVTR({ 0.f, 0.f }));
 
 			sliderMaterial.setPosition(convertPositionVTR(
 				limitDistance

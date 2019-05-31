@@ -110,9 +110,7 @@ namespace Menu
 
 		void updateOwnGraphics() override
 		{
-			material.setPosition(
-				convertPositionVTR({ 0.f, 0.f })
-			);
+			material.setPosition(convertPositionVTR({ 0.f, 0.f }));
 			material.setSize(size);
 		}
 

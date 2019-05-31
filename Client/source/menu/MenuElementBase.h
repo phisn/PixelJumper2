@@ -14,66 +14,6 @@
 
 namespace Menu
 {
-	class SpaceProperty
-		:
-		public CustomProperty
-	{
-	public:
-		void enable(const sf::Vector2<bool> use)
-		{
-			this->use = use;
-			onValueChanged();
-		}
-
-		void update(
-			const sf::Vector2f size,
-			const sf::Vector2f innerOffset)
-		{
-			space = size - innerOffset;
-			onValueChanged();
-		}
-
-		sf::Vector2<bool> getUse() const
-		{
-			return use;
-		}
-
-		sf::Vector2f get() const
-		{
-			return space;
-		}
-		
-		bool validate(
-			const sf::Vector2f position,
-			const sf::Vector2f size)
-		{
-			return correctSize(position, size) == size;
-		}
-
-		sf::Vector2f correctSize(
-			const sf::Vector2f position,
-			const sf::Vector2f size)
-		{
-			sf::Vector2f result = size;
-
-			if (position.x + size.x > space.x)
-			{
-				result.x = space.x - position.x;
-			}
-
-			if (position.y + size.y > space.y)
-			{
-				result.y = space.y - position.y;
-			}
-
-			return result;
-		}
-
-	private:
-		sf::Vector2<bool> use;
-		sf::Vector2f space;
-	};
-
 	/*class ScreenDependentProperty
 		:
 		public PercentProperty
@@ -112,14 +52,40 @@ namespace Menu
 				[this](const Offset oldOffset,
 					   const Offset newOffset)
 				{
-					updateGraphics();
-					space->update(size.getValue(), { newOffset.left, newOffset.top });
+					if (space->x == 0 || space->y == 0)
+					{
+						updateGraphics();
+					}
+					else
+					{
+						updateWithPreferredSize(); // -> updateGraphics
+					}
 				});
 			position.addListener(
 				[this](const sf::Vector2f oldPosition,
 					   const sf::Vector2f newPosition)
 				{
-					updateGraphics();
+					if (space->x == 0 || space->y == 0)
+					{
+						updateGraphics();
+					}
+					else
+					{
+						updateWithPreferredSize(); // -> updateGraphics
+					}
+				});
+			sizePreferred.addListener(
+				[this](const sf::Vector2f oldSize,
+					   const sf::Vector2f newSize)
+				{
+					if (space->x == 0 || space->y == 0)
+					{
+						size = newSize;
+					}
+					else
+					{
+						updateWithPreferredSize();
+					}
 				});
 			size.addListener(
 				[this](const sf::Vector2f oldSize,
@@ -137,30 +103,27 @@ namespace Menu
 
 						parent->updateGraphics();
 					}
-
-					space->update(newSize, { innerOffset->left, innerOffset->top });
+				});
+			space.addListener(
+				[this](const sf::Vector2f oldSize,
+					   const sf::Vector2f newSize)
+				{
+					if (newSize.x != 0 && newSize.y != 0)
+					{
+						updateWithPreferredSize();
+					}
 				});
 			area.addListener(
 				[this](const CommonArea oldArea,
 					   const CommonArea newArea)
 				{
-					parent->updateGraphics();
+					if (parent != NULL)
+						parent->updateGraphics();
 				});
 			parent.addListener(
 				[this](ElementBase* const oldElement,
 					   ElementBase* const newElement)
 				{
-					if (oldElement)
-					{
-						oldElement->space.addListener(onParentSpaceChangedLambda);
-					}
-
-					if (newElement)
-					{
-						newElement->space.addListener(onParentSpaceChangedLambda);
-						onParentSpaceChanged(*newElement->space);
-					}
-
 					updateGraphics();
 				});
 		}
@@ -171,7 +134,7 @@ namespace Menu
 			for (; iterator != getStaticChildren().cend(); ++iterator)
 			{
 				removeStaticChild(iterator);
-				delete *iterator;
+				// delete *iterator;
 			}
 		}
 
@@ -180,7 +143,9 @@ namespace Menu
 			return parent;
 		}
 
-		Property<SpaceProperty> space;
+		Property<sf::Vector2f> space;
+
+		Property<sf::Vector2f> sizePreferred;
 		Property<sf::Vector2f> size;
 		Property<sf::Vector2f> position{ sf::Vector2f(0, 0) };
 
@@ -199,6 +164,7 @@ namespace Menu
 			static int c = 0;
 			if (++c % 1000 == 0)
 				Log::Information(std::to_wstring(c));
+
 			for (ElementBase* const element : staticChildren)
 			{
 				element->updateGraphics();
@@ -225,6 +191,7 @@ namespace Menu
 				element->onEvent(event);
 			}
 		}
+		
 		virtual void onLogic(const sf::Time time) 
 		{
 			for (ElementBase* const element : staticChildren)
@@ -232,6 +199,7 @@ namespace Menu
 				element->onLogic(time);
 			}
 		}
+
 		virtual void onDraw() const
 		{
 			for (ElementBase* const element : staticChildren)
@@ -244,12 +212,6 @@ namespace Menu
 		typedef std::vector<ElementBase*> Container;
 
 		virtual void updateOwnGraphics() = 0;
-
-		// providing virtual function for EASY access
-		virtual void onParentSpaceChanged(const SpaceProperty& space)
-		{
-
-		}
 
 		void addStaticChild(ElementBase* const element)
 		{
@@ -292,6 +254,33 @@ namespace Menu
 			return staticChildren;
 		}
 
+		virtual void updateWithPreferredSize()
+		{
+			const sf::Vector2f goal = *sizePreferred;
+			const sf::Vector2f possible = *space - *position - sf::Vector2f(
+				parent->innerOffset->left + parent->innerOffset->right,
+				parent->innerOffset->top + parent->innerOffset->bottom);
+
+			size = 
+			{
+				possible.x < goal.x ? possible.x : goal.x,
+				possible.y < goal.y ? possible.y : goal.y
+			};
+		}
+
+		// precent to real
+		sf::Vector2f convertPosition(const sf::Vector2f position) const
+		{
+			const sf::Vector2f virtualPosition = 
+			{
+				size->x * position.x,
+				size->y * position.y
+			};
+
+			return convertPositionVTR(virtualPosition);
+		}
+
+
 		// virtual to real
 		sf::Vector2f convertPositionVTR(const sf::Vector2f position) const
 		{
@@ -309,7 +298,7 @@ namespace Menu
 		}
 
 		// real to virtual
-		sf::Vector2f convertPositionRTV(const sf::Vector2f position) const
+		sf::Vector2f convertPositionRTV(const sf::Vector2f position) const 
 		{
 			sf::Vector2f base = position;
 
@@ -321,16 +310,10 @@ namespace Menu
 
 			return parent == NULL
 				? base
-				: parent->convertPositionVTR(base);
+				: parent->convertPositionRTV(base);
 		}
 
 	private:
-		decltype(space)::Listener onParentSpaceChangedLambda = [this](
-			const SpaceProperty& space)
-		{
-			this->onParentSpaceChanged(space);
-		};
-
 		std::vector<ElementBase*> staticChildren;
 	};
 }

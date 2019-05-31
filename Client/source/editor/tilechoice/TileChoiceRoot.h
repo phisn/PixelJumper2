@@ -1,12 +1,12 @@
 #pragma once
 
 #include <Client/source/menu/MenuRootBase.h>
+#include <Client/source/menu/MenuScrollContainer.h>
+
+#include <Client/source/editor/tilechoice/TileChoiceWorker.h>
 
 #include <Client/source/editor/manipulator/EditorCache.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
-
-
-#include <Client/source/menu/MenuScrollContainer.h>
 
 namespace Editor
 {
@@ -14,12 +14,16 @@ namespace Editor
 		:
 		public Menu::BarMaterial::DefaultRectangle
 	{
+	public:
+		using DefaultRectangle::DefaultRectangle;
 	};
 
 	class TileSliderMaterial
 		:
 		public Menu::SliderMaterial::DefaultRectangle
 	{
+	public:
+		using DefaultRectangle::DefaultRectangle;
 	};
 
 	class TileChoiceRoot
@@ -28,18 +32,24 @@ namespace Editor
 	{
 		typedef Menu::ScrollContainer<TileBarMaterial, TileSliderMaterial> ScrollContainer;
 	public:
+		TileChoiceRoot()
+			:
+			scrollContainer(Menu::CommonControlDirection::Vertical)
+		{
+		}
+
 		bool build() override
 		{
 			addStaticChild(&scrollContainer);
 
 			scrollContainer.position = { 0, 0 };
-			scrollContainer.slideBarWidth = 10.f;
+			scrollContainer.slideBarWidth = 15.f;
 
 			size.addListener([this](
 				const sf::Vector2f oldSize,
 				const sf::Vector2f newSize)
 			{
-				scrollContainer.size = newSize;
+				scrollContainer.sizePreferred = newSize;
 			});
 
 			Manipulator::GetCache()->tileChoice.addListener(
@@ -52,9 +62,16 @@ namespace Editor
 					scrollContainer.addElement(tile->createRepresentation());
 				}
 			});
+			Manipulator::GetCache()->tileChoice.addWorker(
+				std::ref(worker), 0
+			);
+			scrollContainer.sizePreferred = *size;
+
+			return true;
 		}
 
 	private:
 		ScrollContainer scrollContainer;
+		TileChoiceWorker worker;
 	};
 }

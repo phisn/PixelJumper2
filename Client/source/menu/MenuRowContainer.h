@@ -16,19 +16,55 @@ namespace Menu
 		RowContainer(const CommonControlDirection direction)
 			:
 			direction(direction)
-		{	
-			space->enable(
-			{
-				direction == CommonControlDirection::Vertical,
-				direction == CommonControlDirection::Horizontal
-			});
-			size.addListener([this](
-				const sf::Vector2f oldSize,
-				const sf::Vector2f newSize)
+		{
+			size.addListener(
+				[this](const sf::Vector2f oldSize,
+					   const sf::Vector2f newSize)
 				{
-					updateElementPosition();
+					if (!elementSpace.isEnabled())
+					{
+						elementSpace = newSize;
+					}
 				});
+			elementSpace.addListener(
+				[this](const sf::Vector2f oldSpace,
+					   const sf::Vector2f newSpace)
+				{
+					for (ElementBase* const element : getStaticChildren())
+						element->space = newSpace;
+				});
+
 		}
+
+		class ElementSpace
+			:
+			public Property<sf::Vector2f>
+		{
+		public:
+			using Property::Property;
+			using Property::operator=;
+			using Property::operator->;
+			using Property::operator*;
+
+			void enable()
+			{
+				enabled = true;
+			}
+
+			void disable()
+			{
+				enabled = false;
+			}
+
+			bool isEnabled() const
+			{
+				return enabled;
+			}
+
+		private:
+			bool enabled = false;
+
+		} elementSpace;
 
 		void addElement(
 			ElementBase* const element,
@@ -36,6 +72,8 @@ namespace Menu
 		{
 			const Container& container = getStaticChildren();
 			assert(position <= container.size());
+
+			element->area = CommonArea::Left;
 
 			if (container.size() > 0)
 			{
@@ -61,6 +99,7 @@ namespace Menu
 			}
 
 			element->size.addListener(elementSizeListener);
+			element->space = *elementSpace;
 			updateSizeByElementSize(element->size);
 		}
 
@@ -162,7 +201,7 @@ namespace Menu
 			}
 			else
 			{
-				size =
+				size = // TODO: PreferredSize ?
 				{
 					size->x,
 					size->y + elementSize.y
