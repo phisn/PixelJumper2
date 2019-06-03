@@ -46,6 +46,11 @@ namespace Menu::ButtonMaterial
 			);
 		}
 
+		void move(const sf::Vector2f offset)
+		{
+			circle.move(offset);
+		}
+
 		void applyEffect(const CommonControlEffect effect)
 		{
 			circle.setFillColor(
@@ -93,6 +98,11 @@ namespace Menu::ButtonMaterial
 		void setSize(const sf::Vector2f size)
 		{
 			rect.setSize(size);
+		}
+
+		void move(const sf::Vector2f offset)
+		{
+			rect.move(offset);
 		}
 
 		void applyEffect(const CommonControlEffect effect)
@@ -144,6 +154,11 @@ namespace Menu::ButtonMaterial
 		{
 			this->size = size;
 			applyEffect(currentEffect);
+		}
+
+		void move(const sf::Vector2f offset)
+		{
+			rect.move(offset);
 		}
 
 		void applyEffect(const CommonControlEffect effect)

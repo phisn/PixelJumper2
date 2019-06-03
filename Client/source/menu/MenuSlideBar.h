@@ -55,6 +55,11 @@ namespace Menu
 				setPosition(position);
 			}
 
+			void move(const sf::Vector2f offset)
+			{
+				rect.move(offset);
+			}
+
 			void draw() const
 			{
 				Device::Screen::Draw(rect);
@@ -104,6 +109,11 @@ namespace Menu
 			{
 				this->size = size;
 				updateSize();
+			}
+
+			void move(const sf::Vector2f offset)
+			{
+				rect.move(offset);
 			}
 
 			void setConsumption(const float consumption)
@@ -383,7 +393,8 @@ namespace Menu
 				size.getValue().y);
 		}
 
-		virtual void updateGraphics() override
+	protected:
+		virtual void updateOwnGraphics() override
 		{
 			barMaterial.setPosition(convertPositionVTR({ 0.f, 0.f }));
 
@@ -397,6 +408,12 @@ namespace Menu
 
 			barMaterial.setSize(size);
 			sliderMaterial.setSize(size);
+		}
+
+		virtual void moveOwnGraphics(const sf::Vector2f offset) override
+		{
+			barMaterial.move(offset);
+			sliderMaterial.move(offset);
 		}
 
 	private:

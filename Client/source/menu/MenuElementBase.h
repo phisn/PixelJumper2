@@ -187,7 +187,8 @@ namespace Menu
 #pragma region GraphicsUpdate
 	public:
 		// callled manually
-		virtual void updateGraphics()
+		// virtual 
+		void updateGraphics()
 		{
 			if (graphicsChanged)
 			{
@@ -225,8 +226,12 @@ namespace Menu
 			}
 		}
 
-		virtual void updateOwnGraphics() = 0;
-		virtual void moveOwnGraphics(const sf::Vector2f) = 0;
+		virtual void updateOwnGraphics()
+		{
+		}
+		virtual void moveOwnGraphics(const sf::Vector2f)
+		{
+		}
 	private:
 		bool graphicsChanged = false, childGraphicsChanged = false;
 

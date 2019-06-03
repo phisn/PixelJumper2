@@ -32,7 +32,7 @@ namespace Editor
 	public:
 		bool build() override
 		{
-			addStaticChild(&button);
+			addChild(&button);
 
 			size.addListener([this](
 				const sf::Vector2f oldSize,

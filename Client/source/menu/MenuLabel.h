@@ -84,10 +84,15 @@ namespace Menu
 			Device::Screen::Draw(glText);
 		}
 
-		virtual void updateGraphics() override
+	protected:
+		virtual void updateOwnGraphics() override
 		{
-			ElementBase::updateGraphics();
 			glText.setPosition(convertPositionVTR({ 0.f, 0.f }));
+		}
+
+		virtual void moveOwnGraphics(const sf::Vector2f offset) override
+		{
+			glText.move(offset);
 		}
 
 	private:

@@ -28,15 +28,20 @@ namespace Menu
 					updateLabelPosition();
 				});
 
-			ElementBase::addStaticChild(&label);
+			ElementBase::addChild(&label);
 		}
 
 		Property<sf::Vector2f> labelOffset{ sf::Vector2f(0.f, -8.f) };
-		
-		void updateGraphics() override
+
+	protected:
+		virtual void updateOwnGraphics() override
 		{
-			Button::updateGraphics();
-			label.updateGraphics();
+			Button::updateOwnGraphics();
+		}
+
+		virtual void moveOwnGraphics(const sf::Vector2f offset) override
+		{
+			Button::moveOwnGraphics(offset);
 		}
 
 	private:

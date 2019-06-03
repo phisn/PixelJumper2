@@ -15,10 +15,6 @@ namespace Menu
 		public ElementBase
 	{
 	public:
-		Button()
-		{
-		}
-
 		virtual void initialize() override
 		{
 			onGraphicsDefault();
@@ -106,15 +102,18 @@ namespace Menu
 			ElementBase::onDraw();
 		}
 
-		virtual void updateGraphics() override
+	protected:
+		virtual void updateOwnGraphics() override
 		{
-			ElementBase::updateGraphics();
-
 			material.setPosition(convertPositionVTR({ 0.f, 0.f }));
 			material.setSize(size);
 		}
 
-	protected:
+		virtual void moveOwnGraphics(const sf::Vector2f offset) override
+		{
+			material.move(offset);
+		}
+
 		virtual void onButtonPressed()
 		{
 			buttonPressedEvent.notify();

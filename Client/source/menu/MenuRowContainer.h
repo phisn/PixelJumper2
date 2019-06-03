@@ -29,7 +29,7 @@ namespace Menu
 			ElementBase* const element,
 			const size_t position)
 		{
-			const Container& container = getStaticChildren();
+			const Container& container = getChildren();
 			assert(position <= container.size());
 
 			if (container.size() > 0)
@@ -42,17 +42,17 @@ namespace Menu
 
 				if (iterator == container.cend())
 				{
-					addStaticChild(element);
+					addChild(element);
 				}
 				else
 				{
-					insertStaticChild(iterator, element);
+					insertChild(iterator, element);
 				}
 			}
 			else
 			{
 				updateSingleElementPosition(element);
-				addStaticChild(element);
+				addChild(element);
 			}
 
 			element->size.addListener(elementSizeListener);
@@ -62,18 +62,18 @@ namespace Menu
 		void removeElement(
 			const size_t position)
 		{
-			removeElement(getStaticChildren().begin() + position);
+			removeElement(getChildren().begin() + position);
 		}
 
 		void removeElement(
 			const ElementBase* const element)
 		{
 			Container::const_iterator iterator = std::find(
-				getStaticChildren().cbegin(), 
-				getStaticChildren().cend(), 
+				getChildren().cbegin(), 
+				getChildren().cend(), 
 				element);
 
-			if (iterator != getStaticChildren().cend())
+			if (iterator != getChildren().cend())
 			{
 				(*iterator)->size.popListener(elementSizeListener);
 				updateSizeByElementSize(
@@ -85,29 +85,23 @@ namespace Menu
 
 		void removeAllElements()
 		{
-			for (ElementBase* const element : getStaticChildren())
+			for (ElementBase* const element : getChildren())
 			{
 				element->size.popListener(elementSizeListener);
 			}
 
-			removeAllStaticChilds();
+			removeAllChildren();
 		}
 
 		void addElement(ElementBase* const element)
 		{
-			addElement(element, getStaticChildren().size());
+			addElement(element, getChildren().size());
 		}
 
 		const Container& getElements() const
 		{
-			return ElementBase::getStaticChildren();
+			return ElementBase::getChildren();
 		}
-
-		/*virtual void updateGraphics() override
-		{
-			ElementBase::updateGraphics();
-			// updateElementPosition();
-		}*/
 
 	private:
 		std::function<void(const sf::Vector2f, const sf::Vector2f)> elementSizeListener =
@@ -167,25 +161,25 @@ namespace Menu
 
 		void removeElement(const Container::const_iterator element)
 		{
-			removeStaticChild(element);
+			removeChild(element);
 		}
 
 		void updateElementPosition()
 		{
-			const size_t size = ElementBase::getStaticChildren().size();
+			const size_t size = ElementBase::getChildren().size();
 
 			if (size > 0)
 			{
 				updateSingleElementPosition(
-					ElementBase::getStaticChildren().front()
+					ElementBase::getChildren().front()
 				);
 			}
 
 			for (size_t i = 1; i < size; ++i)
 			{
 				updateSingleElementPosition(
-					ElementBase::getStaticChildren()[i - 1],
-					ElementBase::getStaticChildren()[i]
+					ElementBase::getChildren()[i - 1],
+					ElementBase::getChildren()[i]
 				);
 			}
 		}

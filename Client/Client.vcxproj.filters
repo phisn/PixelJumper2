@@ -78,9 +78,6 @@
     <ClInclude Include="source\device\ScreenDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\menu\MenuBase.h">
-      <Filter>source\menu</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\SubSceneBase.h">
       <Filter>source\scene\base</Filter>
     </ClInclude>

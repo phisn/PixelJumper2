@@ -40,7 +40,7 @@ namespace Editor
 
 		bool build() override
 		{
-			addStaticChild(&scrollContainer);
+			addChild(&scrollContainer);
 
 			scrollContainer.position = { 0, 0 };
 			scrollContainer.slideBarWidth = 15.f;

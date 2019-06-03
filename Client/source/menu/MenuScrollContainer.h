@@ -22,8 +22,8 @@ namespace Menu
 			container(direction),
 			slideBar(this, direction)
 		{
-			ElementBase::addStaticChild(&slideBar);
-			ElementBase::addStaticChild(&container);
+			ElementBase::addChild(&slideBar);
+			ElementBase::addChild(&container);
 
 			slideBarWidth.addListener(
 				[this](const float oldWitdh,
@@ -145,7 +145,7 @@ namespace Menu
 
 		const Container& getElements() const
 		{
-			return ElementBase::getStaticChildren();
+			return ElementBase::getChildren();
 		}
 
 		Property<float> slideBarWidth;
@@ -179,8 +179,6 @@ namespace Menu
 					container.size.getValue().y - slideBar.size.getValue().y * 2
 				)
 			};
-
-			updateGraphics();
 		}
 
 	private:

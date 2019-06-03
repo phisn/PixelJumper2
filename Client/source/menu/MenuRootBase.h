@@ -69,7 +69,7 @@ namespace Menu
 
 		void addElement(ElementBase* const element)
 		{
-			addStaticChild(element);
+			addChild(element);
 		}
 
 		Property<sf::FloatRect> viewPort;
@@ -85,6 +85,11 @@ namespace Menu
 			Device::Screen::SetView(view);
 			onDraw();
 			Device::Screen::ResetView();
+		}
+
+		void update()
+		{
+			updateGraphics();
 		}
 
 		void onEvent(sf::Event event) override

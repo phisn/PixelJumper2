@@ -106,7 +106,6 @@
     <ClInclude Include="source\logger\Output.h" />
     <ClInclude Include="source\logger\Section.h" />
     <ClInclude Include="source\logger\Logger.h" />
-    <ClInclude Include="source\menu\MenuBase.h" />
     <ClInclude Include="source\menu\MenuElementBase.h" />
     <ClInclude Include="source\menu\MenuLabel.h" />
     <ClInclude Include="source\menu\MenuRootBase.h" />
