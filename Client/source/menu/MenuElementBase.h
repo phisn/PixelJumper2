@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/menu/MenuCommon.h>
-#include <Client/source/menu/MenuProperty.h>
+#include <Client/source/menu/MenuSpecialProperties.h>
 #include <Client/source/logger/Logger.h>
 
 #include <cassert>
@@ -14,51 +14,38 @@
 
 namespace Menu
 {
-	template <typename T>
-	class AutomaticProperty
-		:
-		public Property<T>
-	{
-	public:
-		using Property::operator=;
-		using Property::operator->;
-		using Property::operator*;
-
-		Property<bool> automatic;
-
-		template <typename S>
-		AutomaticProperty& operator=(const S value)
-		{
-			automatic.setValue(false);
-			Property<T>::operator=(value);
-		}
-
-		// use setValue for automatic define
-	};
-
 	class ElementBase
 	{
 	public:
 		Property<ElementBase*> parent{ NULL };
+		typedef std::vector<ElementBase*> Container;
 
 		ElementBase()
 		{
+#pragma region PropertyListener
 			innerOffset.addListener(
-				[this](const Offset oldOffset,
-					   const Offset newOffset)
+				[this](const CommonElementOffset oldOffset,
+					   const CommonElementOffset newOffset)
 				{
-					for (ElementBase* const child : staticChildren)
+					moveGraphics(sf::Vector2f(
+						newOffset.left - oldOffset.left,
+						newOffset.top - newOffset.top
+					));
+
+					for (ElementBase* const child : children)
 						child->updateAutomaticSpace();
 				});
 			size.addListener(
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
 				{
-					for (ElementBase* const child : staticChildren)
+					for (ElementBase* const child : children)
 						if (*child->space.automatic)
 						{
 							child->updateAutomaticSpace();
 						}
+
+					onVirtualGraphicsChanged();
 				});
 			space.addListener(
 				[this](const sf::Vector2f oldSpace,
@@ -70,6 +57,7 @@ namespace Menu
 				[this](const sf::Vector2f oldPosition,
 					   const sf::Vector2f newPosition)
 				{
+					moveGraphics(newPosition - oldPosition);
 					updateSizeWithSpace();
 				});
 			sizePreferred.addListener(
@@ -78,21 +66,12 @@ namespace Menu
 				{
 					updateSizeWithSpace();
 				});
+#pragma endregion
 		}
 
 		~ElementBase()
 		{
-			Container::const_iterator iterator = getStaticChildren().cbegin();
-			for (; iterator != getStaticChildren().cend(); ++iterator)
-			{
-				removeStaticChild(iterator);
-				// delete *iterator;
-			}
-		}
-
-		ElementBase* getParent() const
-		{
-			return parent;
+			removeAllChildren();
 		}
 
 		AutomaticProperty<sf::Vector2f> space;
@@ -102,18 +81,15 @@ namespace Menu
 		Property<sf::Vector2f> position{ sf::Vector2f(0, 0) };
 
 		// Property<CommonArea> area{ CommonArea::Center };
-		
-		struct Offset
-		{
-			float left = 0.f, top = 0.f, right = 0.f, bottom = 0.f;
-		};
 
-		Property<Offset> outerOffset{ };
-		Property<Offset> innerOffset{ };
+		Property<CommonElementOffset> outerOffset{ };
+		Property<CommonElementOffset> innerOffset{ };
 
+#pragma region CommonAccess
+	public:
 		virtual void initialize()
 		{
-			for (ElementBase* const element : staticChildren)
+			for (ElementBase* const element : children)
 				element->initialize();
 		}
 
@@ -124,7 +100,7 @@ namespace Menu
 
 		virtual void onEvent(const sf::Event event) 
 		{
-			for (ElementBase* const element : staticChildren)
+			for (ElementBase* const element : children)
 			{
 				element->onEvent(event);
 			}
@@ -132,7 +108,7 @@ namespace Menu
 		
 		virtual void onLogic(const sf::Time time) 
 		{
-			for (ElementBase* const element : staticChildren)
+			for (ElementBase* const element : children)
 			{
 				element->onLogic(time);
 			}
@@ -140,77 +116,124 @@ namespace Menu
 
 		virtual void onDraw() const
 		{
-			for (ElementBase* const element : staticChildren)
+			for (ElementBase* const element : children)
 			{
 				element->onDraw();
 			}
 		}
+#pragma endregion
 
-		// has to be called manually
-		virtual void updateGraphics()
-		{
-			for (ElementBase* const element : staticChildren)
-			{
-				element->updateGraphics();
-			}
-		}
-
-	protected:
-		typedef std::vector<ElementBase*> Container;
-
-		// virtual void updateOwnGraphics() = 0;
-
-		void addStaticChild(ElementBase* const element)
+#pragma region Container
+	public:
+		void addChild(ElementBase* const element)
 		{
 			element->parent.setValue(this);
-			staticChildren.push_back(element);
+			children.push_back(element);
 
 			if (*element->space.automatic)
 			{
 				element->updateAutomaticSpace();
 			}
+
+			element->updateGraphics();
 		}
 
-		void insertStaticChild(
+		void insertChild(
 			Container::const_iterator position,
 			ElementBase* const element)
 		{
 			element->parent.setValue(this);
-			staticChildren.insert(position, element);
+			children.insert(position, element);
 
 			if (*element->space.automatic)
 			{
 				element->updateAutomaticSpace();
 			}
+
+			element->updateGraphics();
 		}
 
-		void removeStaticChild(Container::const_iterator element)
+		void removeChild(Container::const_iterator element)
 		{
 			element.operator*()->parent.setValue(NULL);
-			staticChildren.erase(element);
+			children.erase(element);
 		}
 
-		void removeLastStaticChild()
+		void removeLastChild()
 		{
-			staticChildren.back()->parent.setValue(NULL);
-			staticChildren.pop_back();
+			children.back()->parent.setValue(NULL);
+			children.pop_back();
 		}
 
-		void removeAllStaticChilds()
+		void removeAllChildren()
 		{
-			for (ElementBase* const element : staticChildren)
+			for (ElementBase* const element : children)
 			{
 				element->parent.setValue(NULL);
 			}
 
-			staticChildren.clear();
+			children.clear();
 		}
 
-		const std::vector<ElementBase*>& getStaticChildren() const
+		const std::vector<ElementBase*>& getChildren() const
 		{
-			return staticChildren;
+			return children;
 		}
 
+	private:
+		Container children;
+#pragma endregion
+
+#pragma region GraphicsUpdate
+	public:
+		// callled manually
+		virtual void updateGraphics()
+		{
+			if (graphicsChanged)
+			{
+				updateOwnGraphics();
+			}
+
+			if (childGraphicsChanged)
+			{
+				for (ElementBase* const element : children)
+					element->updateGraphics();
+			}
+		}
+
+	protected:
+		// called by properties used in
+		// Region: Conversion
+		void moveGraphics(const sf::Vector2f offset)
+		{
+			moveOwnGraphics(offset);
+
+			for (ElementBase* const child : children)
+				child->moveGraphics(offset);
+		}
+
+		// TODO: virtual?
+		virtual void onVirtualGraphicsChanged()
+		{
+			this->graphicsChanged = true;
+
+			for (ElementBase* parent = this->parent.getValue()
+				; parent != NULL && !parent->childGraphicsChanged
+				; parent = parent->parent.getValue())
+			{
+				parent->childGraphicsChanged = true;
+			}
+		}
+
+		virtual void updateOwnGraphics() = 0;
+		virtual void moveOwnGraphics(const sf::Vector2f) = 0;
+	private:
+		bool graphicsChanged = false, childGraphicsChanged = false;
+
+#pragma endregion
+
+#pragma region Space
+	protected:
 		virtual void updateSizeWithSpace()
 		{
 			const sf::Vector2f realSpace = *space - *position;
@@ -237,7 +260,10 @@ namespace Menu
 				parent->innerOffset->top + parent->innerOffset->bottom
 			));
 		}
+#pragma endregion
 
+#pragma region Conversion
+	protected:
 		// precent to real
 		sf::Vector2f convertPosition(const sf::Vector2f position) const
 		{
@@ -258,11 +284,14 @@ namespace Menu
 				? position
 				: parent->convertPositionVTR(position);
 
+			// all these values have to be updated
+			// with moveOwnGraphics on change
 			base.x += innerOffset.getValue().left;
 			base.y += innerOffset.getValue().top;
 
 			base.x += this->position.getValue().x;
 			base.y += this->position.getValue().y;
+			// ---
 
 			return base;
 		}
@@ -272,19 +301,21 @@ namespace Menu
 		{
 			sf::Vector2f base = position;
 
+			// all these values have to be updated
+			// with moveOwnGraphics on change
 			base.x -= innerOffset.getValue().left;
 			base.y -= innerOffset.getValue().top;
 
 			base.x -= this->position.getValue().x;
 			base.y -= this->position.getValue().y;
+			// ---
 
 			return parent == NULL
 				? base
 				: parent->convertPositionRTV(base);
 		}
+#pragma endregion
 
-	private:
-		std::vector<ElementBase*> staticChildren;
 	};
 }
 

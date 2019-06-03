@@ -12,6 +12,8 @@ namespace Menu
 		virtual void onValueChanged() const noexcept = 0;
 	};
 
+	
+
 	template <typename ListenerT>
 	class PropertyBase
 	{

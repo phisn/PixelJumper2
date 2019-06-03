@@ -35,7 +35,7 @@ namespace Menu
 		
 		void updateGraphics() override
 		{
-			ElementBase::updateGraphics();
+			Button::updateGraphics();
 			label.updateGraphics();
 		}
 

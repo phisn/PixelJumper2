@@ -261,6 +261,8 @@
     <None Include="source\menu\PercentProperty.h" />
     <None Include="source\menu\shape\CrossShape.cpp" />
     <None Include="source\menu\shape\CrossShape.h" />
+    <None Include="source\menu\MenuSpecialProperties.cpp" />
+    <None Include="source\menu\MenuSpecialProperties.h" />
     <None Include="source\shared\WallTile.cpp" />
     <None Include="source\shared\WallTile.h" />
   </ItemGroup>

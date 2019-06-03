@@ -4,6 +4,11 @@
 
 namespace Menu
 {
+	struct CommonElementOffset
+	{
+		float left = 0.f, top = 0.f, right = 0.f, bottom = 0.f;
+	};
+
 	enum class CommonControlDirection
 	{
 		Horizontal,

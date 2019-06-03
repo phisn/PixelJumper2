@@ -15,6 +15,10 @@ namespace Menu
 		public ElementBase
 	{
 	public:
+		Button()
+		{
+		}
+
 		virtual void initialize() override
 		{
 			onGraphicsDefault();
