@@ -53,8 +53,12 @@ namespace Editor
 				scrollContainer.updateGraphics();
 			});
 
-			Manipulator::GetCache()->tileChoice.addListener(
-				[this](const TileChoiceOutput* const output) -> void
+			Manipulator::GetCache()->tileChoice.addWorker(
+				std::ref(worker), 0
+			);
+
+			Manipulator::GetCache()->tileSearch.addListener(
+				[this](const TileSearchOutput* const output) -> void
 			{
 				scrollContainer.removeAllElements();
 
@@ -65,9 +69,6 @@ namespace Editor
 
 				scrollContainer.updateGraphics();
 			});
-			Manipulator::GetCache()->tileChoice.addWorker(
-				std::ref(worker), 0
-			);
 			scrollContainer.sizePreferred = *size;
 
 			return true;

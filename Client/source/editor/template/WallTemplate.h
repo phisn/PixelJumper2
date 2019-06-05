@@ -7,6 +7,11 @@
 
 #include <Client/source/editor/tile/EditorWall.h>
 
+#include <Client/source/editor/manipulator/Manipulator.h>
+#include <Client/source/editor/manipulator/EditorCache.h>
+#include <Client/source/editor/manipulator/Executor.h>
+#include <Client/source/editor/manipulator/tasks/TilePlace.h>
+
 #include <Client/source/menu/MenuButtonMaterial.h>
 #include <Client/source/menu/MenuButtonWithLabel.h>
 
@@ -27,7 +32,7 @@ namespace Editor
 
 		// ex. can be saved and shon in context menu (portal binding)
 		TileBase* create(
-			VectorTilePosition position) override
+			sf::Vector2f position) override
 		{
 			return new Tile::Wall(position);
 		}
@@ -51,7 +56,19 @@ namespace Editor
 		Menu::ElementBase* createRepresentation() override
 		{
 			static Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize> button;
+
 			button.sizePreferred = { 300, 100 };
+			button.buttonPressedEvent.addListener(
+				[this]()
+				{
+					Manipulator::GetCache()->tileChoice.writeInput()->selection = this;
+
+					if (Manipulator::GetCache()->tileChoice.notify() && !Manipulator::GetExecutor()->execute<TilePlace>())
+					{
+						Log::Error(L"Failed to place tiles");
+					}
+				});
+
 			return &button;
 		}
 

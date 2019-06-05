@@ -9,6 +9,7 @@
 #include <Client/source/editor/manipulator/Manipulator.h>
 
 #include <Client/source/editor/template/TileTemplateFactory.h>
+#include <Client/source/editor/tilechoice/TileSearchWorker.h>
 
 namespace Editor
 {
@@ -19,9 +20,9 @@ namespace Editor
 	public:
 		void onButtonPressed() override
 		{
-			TileChoiceInput* const input = Manipulator::GetCache()->tileChoice.writeInput();
+			TileSearchInput* const input = Manipulator::GetCache()->tileSearch.writeInput();
 
-			Manipulator::GetCache()->tileChoice.notify();
+			Manipulator::GetCache()->tileSearch.notify();
 		}
 	};
 
@@ -42,6 +43,10 @@ namespace Editor
 				button.sizePreferred = newSize;
 			});
 			innerOffset = { 5.f, 5.f, 5.f, 5.f };
+
+			Manipulator::GetCache()->tileSearch.addWorker(
+				std::ref(worker), 0
+			);
 			
 			return true;
 		}
@@ -49,6 +54,6 @@ namespace Editor
 
 	private:
 		MagicTileButton button;
-		// textbox
+		TileSearchWorker worker;
 	};
 }

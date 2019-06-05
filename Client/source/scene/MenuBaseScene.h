@@ -52,7 +52,8 @@ namespace Scene
 
 				break;
 			case sf::Event::MouseButtonPressed:
-				if (event.mouseButton.button == sf::Mouse::Button::Left)
+				//if (event.mouseButton.button == sf::Mouse::Button::Left)
+				if (true)
 				{
 					selectStrongByPosition(
 					{
@@ -94,6 +95,9 @@ namespace Scene
 		{
 			for (Menu::MenuRootBase* const root : roots)
 				root->draw();
+
+			for (Menu::MenuRootBase* const root : roots)
+				root->update();
 		}
 
 	protected:
@@ -107,7 +111,7 @@ namespace Scene
 				"Invalid root added to menu");
 
 			Root* root = new Root(arguments...);
-			containers.push_back(
+			roots.push_back(
 				weakSelected = strongSelected = root
 			);
 			return root;

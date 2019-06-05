@@ -1,5 +1,4 @@
 #pragma once
-
 #include <Client/source/editor/manipulator/EditorCache.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 
@@ -14,18 +13,8 @@ namespace Editor
 			const TileChoiceInput* const input,
 			TileChoiceOutput* const output)
 		{
-			this->input = input;
-			this->output = output;
-
-			output->tiles.push_back(
-				TileTemplateFactory::GetTileTemplate(Game::TileId::Wall)
-			);
-
+			output->selection = input->selection;
 			return true;
 		}
-		
-	private:
-		const TileChoiceInput* input;
-		TileChoiceOutput* output;
 	};
 }

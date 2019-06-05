@@ -2,7 +2,7 @@
 
 #include <Client/source/game/tile/TileId.h>
 
-#include <Client/source/resource/tiles/ResourceTileBase.h>
+#include <Client/source/resource/tiles/ResourceTileContentBase.h>
 #include <Client/source/resource/tiles/ResourceWall.h>
 
 #include <map>

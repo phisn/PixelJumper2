@@ -261,14 +261,14 @@ namespace Device
 
 		bool make(Resource::ReadPipe* const pipe) override
 		{
-			return pipe->readContentForce((char*) coreKeys, sizeof(coreKeys) * sizeof(*coreKeys))
-				&& pipe->readContentForce((char*) viewKeys, sizeof(viewKeys) * sizeof(*viewKeys));
+			return pipe->readContentForce((char*) coreKeys, sizeof(coreKeys))
+				&& pipe->readContentForce((char*) viewKeys, sizeof(viewKeys));
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
 		{
-			return pipe->writeContentSafe((char*) coreKeys, sizeof(coreKeys) * sizeof(*coreKeys))
-				&& pipe->writeContentSafe((char*) viewKeys, sizeof(viewKeys) * sizeof(*viewKeys));
+			return pipe->writeContentSafe((char*) coreKeys, sizeof(coreKeys))
+				&& pipe->writeContentSafe((char*) viewKeys, sizeof(viewKeys));
 		}
 
 		bool setup() override

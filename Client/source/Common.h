@@ -2,6 +2,8 @@
 
 #include <SFML/System.hpp>
 
+#include <Client/source/resource/CommonResourceTypes.h>
+
 namespace Editor
 {
 	typedef sf::Int64 TilePosition;
@@ -13,11 +15,6 @@ namespace Editor
 
 namespace Resource
 {
-	typedef sf::Int16 TilePosition;
-	typedef sf::Int8 TileSize;
-
-	typedef sf::Vector2<TilePosition> VectorTilePosition;
-	typedef sf::Vector2<TileSize> VectorTileSize;
 }
 
 namespace Game

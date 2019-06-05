@@ -33,12 +33,12 @@ namespace Editor
 		}
 
 		template <typename _Task>
-		void execute()
+		bool execute()
 		{
-			execute(new _Task());
+			return execute(new _Task());
 		}
 
-		void execute(Task* task)
+		bool execute(Task* task)
 		{
 			if ( task->execute(world) )
 			{
@@ -59,6 +59,12 @@ namespace Editor
 
 					redoTasks.clear(); 
 				}
+
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 

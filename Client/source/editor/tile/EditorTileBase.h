@@ -1,37 +1,41 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
 #include <Client/source/game/tile/TileId.h>
-
-#include <Client/source/editor/grid/GridProperties.h>
 #include <Client/source/resource/TileResource.h>
 
-#include <Client/source/Common.h>
+#include <Client/source/device/ScreenDevice.h>
+
+#include <SFML/Graphics.hpp>
 
 namespace Editor
 {
 	class TileBase
 	{
-		const VectorTileSize size =
-		{
-			1, 1
-		};
-
 	public:
-		TileBase(
-			const sf::Color color,
-			const VectorTilePosition position,
-			Game::TileId id)
+		TileBase(const Game::TileId id)
 			:
 			id(id)
 		{
-			shape.setFillColor(color);
-			setPosition(position);
-			shape.setSize(sf::Vector2f(
-				(float) size.x * GridProperties.tileSize, 
-				(float) size.y * GridProperties.tileSize
-			));
+		}
+
+		virtual void setPosition(const sf::Vector2f position)
+		{
+			this->position = position;
+		}
+
+		virtual void setSize(const sf::Vector2f size)
+		{
+			this->size = size;
+		}
+
+		sf::Vector2f getPosition() const
+		{
+			return position;
+		}
+
+		sf::Vector2f getSize() const
+		{
+			return size;
 		}
 
 		virtual bool equals(
@@ -40,35 +44,16 @@ namespace Editor
 			return id == tile->id;
 		}
 
-		void setPosition(const VectorTilePosition position)
-		{
-			shape.setPosition(sf::Vector2f(
-				(float) position.x * GridProperties.tileSize,
-				(float) position.y * GridProperties.tileSize
-			));
-		}
-
-		VectorTilePosition getPosition() const
-		{
-			return VectorTilePosition(
-				(TilePosition) (shape.getPosition().x / GridProperties.tileSize),
-				(TilePosition) (shape.getPosition().y / GridProperties.tileSize)
-			);
-		}
-
-		const sf::RectangleShape& getShape() const
-		{
-			return shape;
-		}
-
-		virtual Resource::TileBase* create(
+		virtual bool adopt(const Resource::TileBase* const tile) = 0;
+		virtual Resource::TileBase* createContent(
 			const Resource::VectorTileSize size,
 			const Resource::VectorTilePosition position) const = 0;
-		virtual bool adopt(
-			const Resource::TileBase* const tile) = 0;
+
+		virtual void draw() const = 0;
+
+	private:
+		sf::Vector2f size{ 1, 1 }, position{ 0, 0 };
 
 		const Game::TileId id;
-	private:
-		sf::RectangleShape shape;
 	};
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/editor/grid/GridProperties.h>
+#include <Client/source/editor/selector/SelectorView.h>
 
 #include <Client/source/editor/manipulator/EditorCache.h>
 #include <Client/source/editor/manipulator/Executor.h>
@@ -15,28 +15,30 @@ namespace Editor
 	public:
 		bool execute(World* const world) override
 		{
-			const Cache::Output* const cache = Manipulator::GetCache()->readOutput();
+			const SelectorOutput* const selectorCache = Manipulator::GetCache()->selection.readOutput();
+			const TileSearchOutput* const searchCache = Manipulator::GetCache()->tileSearch.readOutput();
+			const TileChoiceOutput* const choiceCache = Manipulator::GetCache()->tileChoice.readOutput();
 
-			if (cache->tile.tile == NULL)
+			if (choiceCache->selection == NULL)
 			{
 				return false;
 			}
 
-			if (cache->selection.type == SelectionCache::Output::Type::Area)
+			if (selectorCache->type == SelectorType::Area)
 			{
-				VectorTilePosition begin =
+				sf::Vector2f begin =
 				{
-					cache->selection.area->offset.x / GridProperties.tileSize,
-					cache->selection.area->offset.y / GridProperties.tileSize
+					selectorCache->area.left / SelectorView::GridRectSize,
+					selectorCache->area.top / SelectorView::GridRectSize
 				};
 
-				VectorTilePosition end =
+				sf::Vector2f end =
 				{
-					cache->selection.area->offset.x / GridProperties.tileSize + cache->selection.area->size.x / GridProperties.tileSize,
-					cache->selection.area->offset.y / GridProperties.tileSize + cache->selection.area->size.y / GridProperties.tileSize
+					selectorCache->area.left / SelectorView::GridRectSize + selectorCache->area.width / SelectorView::GridRectSize,
+					selectorCache->area.top / SelectorView::GridRectSize + selectorCache->area.height / SelectorView::GridRectSize
 				};
 
-				const sf::Uint64 expectedTiles = abs(begin.x - end.x) * abs(begin.y - end.y);
+				const sf::Uint64 expectedTiles = (sf::Uint64) abs(begin.x - end.x) * (sf::Uint64) abs(begin.y - end.y);
 				if (expectedTiles > 0xff)
 				{
 					return false;
@@ -45,8 +47,8 @@ namespace Editor
 				for (TilePosition x = begin.x; x < end.x; ++x)
 					for (TilePosition y = begin.y; y < end.y; ++y)
 					{
-						TileBase* const newTile = cache->tile.tile->create(
-							VectorTilePosition(x, y)
+						TileBase* const newTile = choiceCache->selection->create(
+							sf::Vector2f(x, y)
 						);
 
 						world->setTileSafe(newTile);
@@ -54,7 +56,7 @@ namespace Editor
 					}
 			}
 			else // Type::Tile
-			{
+			{/*
 				for (TileBase* const tile : cache->selection.tile->tiles)
 				{
 					removedTiles.push_back(tile);
@@ -73,9 +75,10 @@ namespace Editor
 						placedTiles.push_back(newTile);
 					}
 				}
+				*/
 			}
 
-			Manipulator::GetCacheManager()->notifyAll(Cache::Sector::Selection);
+			Manipulator::GetCache()->selection.notify();
 			return true;
 		}
 
@@ -97,7 +100,7 @@ namespace Editor
 			}
 
 			placedTiles.swap(removedTiles);
-			Manipulator::GetCacheManager()->notifyAll(Cache::Sector::Selection);
+			Manipulator::GetCache()->selection.notify();
 		}
 
 	private:

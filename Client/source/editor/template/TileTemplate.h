@@ -13,7 +13,7 @@ namespace Editor
 	class TileTemplate
 	{
 	public:
-		virtual TileBase* create(const VectorTilePosition position) = 0;
+		virtual TileBase* create(const sf::Vector2f position) = 0;
 
 		virtual const std::wstring& getName() const = 0;
 		virtual const std::wstring& getDescription() const = 0;

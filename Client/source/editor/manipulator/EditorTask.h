@@ -12,14 +12,14 @@ namespace Editor
 		virtual void redo(World* const world) = 0;
 		virtual void undo(World* const world) = 0;
 
-		const std::wstring* getName() const
+		const std::wstring& getName() const
 		{
-			return &name;
+			return name;
 		}
 
-		const std::wstring* getDescription() const
+		const std::wstring& getDescription() const
 		{
-			return &description;
+			return description;
 		}
 
 	protected:

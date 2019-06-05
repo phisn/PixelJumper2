@@ -1,11 +1,10 @@
 #pragma once
 
+#include <Client/source/resource/CommonResourceTypes.h>
 #include <Client/source/resource/TileFactory.h>
 #include <Client/source/resource/ResourceBase.h>
 
-#include <Client/source/resource/tiles/ResourceTileBase.h>
-
-#include <Client/source/Common.h>
+#include <Client/source/resource/tiles/ResourceTileContentBase.h>
 
 #pragma pack(push, 1)
 
@@ -17,7 +16,8 @@ namespace Resource
 	{
 	public:
 		Tile() = default;
-		Tile(Tile&& tile) {
+		Tile(Tile&& tile) noexcept
+		{
 			memcpy(
 				(char*) &Header, 
 				(char*) &tile.Header, 
@@ -126,7 +126,7 @@ namespace Resource
 			}
 
 			Header.id = Content->getTileId();
-			Header.contentSize = (sf::Uint16) Content->getSize();
+			Header.contentSize = (sf::Uint16) Content->getContentSize();
 
 			return validateHeader();
 		}

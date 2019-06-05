@@ -16,15 +16,27 @@
 
 namespace Editor
 {
-	class TileChoiceInput
+	class TileSearchInput
 	{
 	public:
 		// ... ?
 	};
 
-	class TileChoiceOutput
+	class TileSearchOutput
 	{
 	public:
 		std::vector<TileTemplate*> tiles;
+	};
+
+	class TileChoiceInput
+	{
+	public:
+		TileTemplate* selection;
+	};
+
+	class TileChoiceOutput
+	{
+	public:
+		TileTemplate* selection;
 	};
 }

@@ -165,9 +165,6 @@
     <ClInclude Include="source\resource\tiles\ResourceWall.h">
       <Filter>source\resource\tiles</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\tiles\ResourceTileBase.h">
-      <Filter>source\resource\tiles</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\PlayerResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
@@ -257,6 +254,9 @@
     </ClInclude>
     <ClInclude Include="source\scene\TestMenuScene.h">
       <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\tiles\ResourceTileContentBase.h">
+      <Filter>source\resource\tiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -401,9 +401,6 @@
     <ClCompile Include="source\game\tile\TileColors.cpp">
       <Filter>source\game\Tile</Filter>
     </ClCompile>
-    <ClCompile Include="source\resource\pipes\PipeBase.cpp">
-      <Filter>source\resource\tiles</Filter>
-    </ClCompile>
     <ClCompile Include="source\scene\TestGameScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
@@ -418,6 +415,9 @@
     </ClCompile>
     <ClCompile Include="source\scene\TestMenuScene.cpp">
       <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\pipes\PipeBase.cpp">
+      <Filter>source\resource\pipes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -623,17 +623,32 @@
     <None Include="source\menu\MenuEvent.h">
       <Filter>source\menu</Filter>
     </None>
-    <None Include="source\editor\tilechoice\TileChoiceWorker.h">
-      <Filter>source\editor\tilechoice</Filter>
-    </None>
-    <None Include="source\editor\tilechoice\TileChoiceWorker.cpp">
-      <Filter>source\editor\tilechoice</Filter>
-    </None>
     <None Include="source\menu\MenuSpecialProperties.h">
       <Filter>source\menu</Filter>
     </None>
     <None Include="source\menu\MenuSpecialProperties.cpp">
       <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileSearchWorker.h">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileSearchWorker.cpp">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileChoiceListener.cpp">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileChoiceListener.h">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileChoiceWorker.cpp">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\editor\tilechoice\TileChoiceWorker.h">
+      <Filter>source\editor\tilechoice</Filter>
+    </None>
+    <None Include="source\resource\CommonResourceTypes.h">
+      <Filter>source\resource</Filter>
     </None>
   </ItemGroup>
 </Project>

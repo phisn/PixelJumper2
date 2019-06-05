@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/editor/tile/EditorTileBase.h>
+#include <Client/source/editor/selector/SelectorView.h>
 
 #include <Client/source/game/tile/GameWallTile.h>
 
@@ -14,37 +15,59 @@ namespace Editor
 		{
 		public:
 			Wall(
-				const VectorTilePosition position)
+				const sf::Vector2f position)
 				:
-				TileBase(
-					Game::WallTile::COLOR,
-					position,
-					Game::TileId::Wall)
+				TileBase(Game::TileId::Wall)
 			{
+				shape.setFillColor(Game::WallTile::COLOR);
+				setSize({ 1, 1 });
+				setPosition(position);
 			}
 
-			Resource::TileBase* create(
+			Resource::TileBase* createContent(
 				const Resource::VectorTileSize size,
 				const Resource::VectorTilePosition position) const override 
 			{
 				Resource::WallTile* const tile = new Resource::WallTile();
 				
-				tile->Content.density = 1.f; // TODO: Make Variable
-				tile->Content.friction = 1.f;
+				tile->Content.density = density; // TODO: Make Variable
+				tile->Content.friction = friction;
 
 				return tile;
 			}
 
 			bool adopt(const Resource::TileBase* const tile) override
 			{
+				Resource::WallTile* const wt = (Resource::WallTile*) tile;
+
+				density = wt->Content.density;
+				friction = wt->Content.friction;
+
 				return true; // ignore
 			}
 
-			bool equals(
-				TileBase* const tile) const override
+			virtual void setPosition(const sf::Vector2f position)
 			{
-				return id == tile->id; // && ((Wall*)tile)->;
+				TileBase::setPosition(position);
+				shape.setPosition(position * SelectorView::GridRectSize);
 			}
+
+			virtual void setSize(const sf::Vector2f size)
+			{
+				TileBase::setSize(size);
+				shape.setSize(size * SelectorView::GridRectSize);
+			}
+
+			void draw() const override
+			{
+				Device::Screen::Draw(shape);
+			}
+
+		private:
+			float density = 2.f;
+			float friction = 1.f;
+
+			sf::RectangleShape shape;
 		};
 	}
 }

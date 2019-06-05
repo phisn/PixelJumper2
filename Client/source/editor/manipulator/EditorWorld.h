@@ -71,7 +71,7 @@ namespace Editor
 				for (int xoffset = 0; xoffset < resourceTile.Header.width; ++xoffset)
 					for (int yoffset = 0; yoffset < resourceTile.Header.height; ++yoffset)
 					{
-						TileBase* const editorTile = tileTemplate->create(Editor::VectorTilePosition(
+						TileBase* const editorTile = tileTemplate->create(sf::Vector2f(
 							resourceTile.Header.x + xoffset, 
 							resourceTile.Header.y + yoffset
 						));
@@ -105,7 +105,7 @@ namespace Editor
 		TileBase* const tile, 
 		TileTemplate* const tileTemplate)
 	{
-		VectorTilePosition position = tile->getPosition();
+		sf::Vector2f position = tile->getPosition();
 
 		deleteTile(tile);
 		setTileUnsafe(

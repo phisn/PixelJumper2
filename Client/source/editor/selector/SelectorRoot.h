@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/editor/manipulator/EditorWorld.h>
+
 #include <Client/source/editor/selector/SelectorMarker.h>
 #include <Client/source/editor/selector/SelectorView.h>
 
@@ -30,8 +32,14 @@ namespace Editor
 		void onDraw() const override
 		{
 			MenuRootBase::onDraw();
+
 			selectorView.draw();
 			selectorMarker.draw();
+
+			for (TileBase* const tile : Manipulator::GetWorld()->getTiles())
+			{
+				tile->draw();
+			}
 		}
 
 		void onEvent(const sf::Event event) override

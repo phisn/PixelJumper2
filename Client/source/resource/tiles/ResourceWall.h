@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/resource/tiles/ResourceTileBase.h>
+#include <Client/source/resource/tiles/ResourceTileContentBase.h>
 
 #pragma pack(push, 1)
 
@@ -15,7 +15,8 @@ namespace Resource
 			:
 			TileBase(
 				Game::TileId::Wall,
-				sizeof(Content))
+				sizeof(Content)
+			)
 		{
 		}
 
@@ -39,7 +40,7 @@ namespace Resource
 			float density;
 			float friction;
 
-		} Content;
+		} Content = { };
 	};
 }
 

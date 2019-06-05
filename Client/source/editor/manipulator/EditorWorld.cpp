@@ -70,7 +70,7 @@ bool Editor::World::convertTiles(
 		world->TileContainer.emplace_back();
 		Resource::Tile* resourceTile = &world->TileContainer.back();
 
-		resourceTile->Content = tile.tile->create(
+		resourceTile->Content = tile.tile->createContent(
 			tile.size,
 			tile.position);
 
@@ -80,7 +80,7 @@ bool Editor::World::convertTiles(
 		resourceTile->Header.x = tile.position.x;
 		resourceTile->Header.y = tile.position.y;
 
-		resourceTile->Header.contentSize = resourceTile->Content->getSize();
+		resourceTile->Header.contentSize = resourceTile->Content->getContentSize();
 		resourceTile->Header.id = resourceTile->Content->getTileId();
 
 		// rewrite

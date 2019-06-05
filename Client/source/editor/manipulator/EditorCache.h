@@ -12,6 +12,7 @@ namespace Editor
 	{
 	public:
 		CacheElement<SelectorInput, SelectorOutput> selection;
+		CacheElement<TileSearchInput, TileSearchOutput> tileSearch;
 		CacheElement<TileChoiceInput, TileChoiceOutput> tileChoice;
 	};
 }

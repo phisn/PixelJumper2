@@ -117,7 +117,7 @@
     <ClInclude Include="source\resource\ResourceDefinition.h" />
     <ClInclude Include="source\resource\ResourceType.h" />
     <ClInclude Include="source\resource\TileFactory.h" />
-    <ClInclude Include="source\resource\tiles\ResourceTileBase.h" />
+    <ClInclude Include="source\resource\tiles\ResourceTileContentBase.h" />
     <ClInclude Include="source\resource\tiles\ResourceWall.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
     <ClInclude Include="source\resource\StaticResource.h" />
@@ -226,10 +226,14 @@
     <None Include="source\editor\template\TileTemplateFactory.h" />
     <None Include="source\editor\template\WallTemplate.cpp" />
     <None Include="source\editor\template\WallTemplate.h" />
+    <None Include="source\editor\tilechoice\TileChoiceListener.cpp" />
+    <None Include="source\editor\tilechoice\TileChoiceListener.h" />
     <None Include="source\editor\tilechoice\TileChoiceRoot.cpp" />
     <None Include="source\editor\tilechoice\TileChoiceRoot.h" />
     <None Include="source\editor\tilechoice\TileChoiceWorker.cpp" />
     <None Include="source\editor\tilechoice\TileChoiceWorker.h" />
+    <None Include="source\editor\tilechoice\TileSearchWorker.cpp" />
+    <None Include="source\editor\tilechoice\TileSearchWorker.h" />
     <None Include="source\editor\tilechoice\TileCoiceCache.cpp" />
     <None Include="source\editor\tilechoice\TileCoiceCache.h" />
     <None Include="source\editor\tilechoice\TileSearchRoot.cpp" />
@@ -262,6 +266,7 @@
     <None Include="source\menu\shape\CrossShape.h" />
     <None Include="source\menu\MenuSpecialProperties.cpp" />
     <None Include="source\menu\MenuSpecialProperties.h" />
+    <None Include="source\resource\CommonResourceTypes.h" />
     <None Include="source\shared\WallTile.cpp" />
     <None Include="source\shared\WallTile.h" />
   </ItemGroup>
