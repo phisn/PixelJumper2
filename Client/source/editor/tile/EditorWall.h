@@ -17,9 +17,9 @@ namespace Editor
 			Wall(
 				const sf::Vector2f position)
 				:
-				TileBase(Game::TileId::Wall)
+				TileBase(Game::TileId::Wall, Game::WallTile::COLOR)
 			{
-				shape.setFillColor(Game::WallTile::COLOR);
+				shape.setFillColor(getColor());
 				setSize({ 1, 1 });
 				setPosition(position);
 			}

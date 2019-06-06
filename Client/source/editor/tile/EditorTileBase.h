@@ -12,9 +12,12 @@ namespace Editor
 	class TileBase
 	{
 	public:
-		TileBase(const Game::TileId id)
+		TileBase(
+			const Game::TileId id,
+			const sf::Color commonColor)
 			:
-			id(id)
+			id(id),
+			color(commonColor)
 		{
 		}
 
@@ -38,8 +41,17 @@ namespace Editor
 			return size;
 		}
 
-		virtual bool equals(
-			TileBase* const tile) const
+		Game::TileId getTileId() const
+		{
+			return id;
+		}
+
+		sf::Color getColor() const
+		{
+			return color;
+		}
+
+		virtual bool equals(TileBase* const tile) const
 		{
 			return id == tile->id;
 		}
@@ -50,6 +62,9 @@ namespace Editor
 			const Resource::VectorTilePosition position) const = 0;
 
 		virtual void draw() const = 0;
+
+	protected:
+		sf::Color color;
 
 	private:
 		sf::Vector2f size{ 1, 1 }, position{ 0, 0 };

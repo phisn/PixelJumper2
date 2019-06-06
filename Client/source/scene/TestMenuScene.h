@@ -31,6 +31,7 @@ namespace Scene
 
 			label.position = { 0, 0 };
 			label.text = L"0";
+			label.color = sf::Color::Yellow;
 
 			return MenuBaseScene::onCreate() && label.create();
 		}
@@ -57,7 +58,7 @@ namespace Scene
 
 		void onDraw() override
 		{
-			label.text = std::to_wstring(1.0 / (sum.asMicroseconds() / (arraySize * 1'000'000.0)));
+			label.text = std::to_wstring((int) std::round(1.0 / (sum.asMicroseconds() / (arraySize * 1'000'000.0))));
 
 			MenuBaseScene::onDraw();
 
@@ -65,7 +66,7 @@ namespace Scene
 		}
 
 	private:
-		constexpr static int arraySize{ 100 };
+		constexpr static int arraySize{ 20 };
 
 		sf::Time sum{ };
 		sf::Time timeArray[arraySize] = { };

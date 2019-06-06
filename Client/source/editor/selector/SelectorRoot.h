@@ -34,12 +34,13 @@ namespace Editor
 			MenuRootBase::onDraw();
 
 			selectorView.draw();
-			selectorMarker.draw();
 
 			for (TileBase* const tile : Manipulator::GetWorld()->getTiles())
 			{
 				tile->draw();
 			}
+
+			selectorMarker.draw();
 		}
 
 		void onEvent(const sf::Event event) override

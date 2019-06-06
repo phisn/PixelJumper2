@@ -56,18 +56,18 @@ namespace Editor
 					}
 			}
 			else // Type::Tile
-			{/*
-				for (TileBase* const tile : cache->selection.tile->tiles)
+			{
+				for (TileBase* const tile : selectorCache->tiles)
 				{
 					removedTiles.push_back(tile);
 
-					if (tile->id == cache->tile.tile->id)
+					if (tile->getTileId() == choiceCache->selection->getId())
 					{
 						world->removeTile(tile);
 					}
 					else
 					{
-						TileBase* const newTile = cache->tile.tile->create(
+						TileBase* const newTile = choiceCache->selection->create(
 							tile->getPosition()
 						);
 
@@ -75,7 +75,6 @@ namespace Editor
 						placedTiles.push_back(newTile);
 					}
 				}
-				*/
 			}
 
 			Manipulator::GetCache()->selection.notify();

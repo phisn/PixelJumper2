@@ -23,6 +23,15 @@ namespace Editor
 			constructArea();
 			collectTiles();
 
+			if (output->tiles.size() > 0)
+			{
+				output->type = SelectorType::Tiles;
+			}
+			else
+			{
+				output->type = SelectorType::Area;
+			}
+
 			return true;
 		}
 
@@ -50,15 +59,47 @@ namespace Editor
 
 			output->area.width = realNextCorner.x - output->area.left;
 			output->area.height = realNextCorner.y - output->area.top;
-
-			output->type = SelectorType::Area;
 		}
 
 		void collectTiles()
 		{
-			if (false)
+			output->tiles.clear();
+
+			
+			for (Editor::TileBase* const tile : Manipulator::GetWorld()->getTiles())
 			{
-				output->type = SelectorType::Tiles;
+				const sf::Vector2f pos = tile->getPosition() * SelectorView::GridRectSize;
+				const sf::Vector2f pospSize = pos + tile->getSize() * SelectorView::GridRectSize;
+
+				sf::Vector2f lowCorner, highCorner;
+
+				if (input->beginCorner.x > input->nextCorner.x)
+				{
+					lowCorner.x = input->nextCorner.x;
+					highCorner.x = input->beginCorner.x;
+				}
+				else
+				{
+					lowCorner.x = input->beginCorner.x;
+					highCorner.x = input->nextCorner.x;
+				}
+
+				if (input->beginCorner.y > input->nextCorner.y)
+				{
+					lowCorner.y = input->nextCorner.y;
+					highCorner.y = input->beginCorner.y;
+				}
+				else
+				{
+					lowCorner.y = input->beginCorner.y;
+					highCorner.y = input->nextCorner.y;
+				}
+
+				if (pospSize.x > lowCorner.x && pos.x < highCorner.x
+				&&	pospSize.y > lowCorner.y && pos.y < highCorner.y)
+				{
+					output->tiles.push_back(tile);
+				}
 			}
 		}
 
@@ -86,13 +127,41 @@ namespace Editor
 
 		void operator()(const SelectorOutput* const output)
 		{
-			tileMarker.setFillColor(sf::Color::Color(100, 100, 100, 100));
-			tileMarker.setPosition(
-				output->area.left,
-				output->area.top);
-			tileMarker.setSize(sf::Vector2f(
-				output->area.width,
-				output->area.height));
+			if (multipleTileMarker.size() > 0)
+			{
+				multipleTileMarker.clear();
+			}
+
+			switch (output->type)
+			{
+			case SelectorType::Tiles:
+				{
+					for (TileBase* const tile : output->tiles)
+					{
+						sf::RectangleShape& shape = multipleTileMarker.emplace_back();
+
+						shape.setFillColor(tile->getColor() - tileMarkerOffsetColor);
+						shape.setPosition(tile->getPosition() * SelectorView::GridRectSize);
+						shape.setSize(tile->getSize() * SelectorView::GridRectSize);
+					}
+				}
+
+				break;
+			case SelectorType::Area:
+				{
+					sf::RectangleShape& shape = multipleTileMarker.emplace_back();
+
+					shape.setFillColor(tileMarkerColor);
+					shape.setPosition(
+						output->area.left,
+						output->area.top);
+					shape.setSize(sf::Vector2f(
+						output->area.width,
+						output->area.height));
+				}
+
+				break;
+			};
 		}
 
 		void beginMouseMovement(const sf::Vector2i beginPosition)
@@ -120,11 +189,16 @@ namespace Editor
 
 		void draw() const
 		{
-			Device::Screen::Draw(tileMarker);
+			for (const sf::RectangleShape& shape : multipleTileMarker)
+				Device::Screen::Draw(shape);
 		}
 
 	private:
-		sf::RectangleShape outlineMarker, tileMarker;
+		const sf::Color tileMarkerColor = sf::Color::Color(100, 100, 100, 100);
+		const sf::Color tileMarkerOffsetColor = sf::Color::Color(50, 50, 50, 0);
+
+		sf::RectangleShape outlineMarker;
+		std::vector<sf::RectangleShape> multipleTileMarker;
 
 		const sf::View& view;
 		sf::Vector2f beginCoordsPosition;

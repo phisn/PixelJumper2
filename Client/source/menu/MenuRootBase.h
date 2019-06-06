@@ -170,5 +170,8 @@ namespace Menu
 
 	protected:
 		sf::View view;
+
+		std::vector<int> customStrongEvents; // TODO: realize
+		std::vector<int> customWeakEvents;
 	};
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/editor/tile/EditorTileBase.h>
+
 #include <SFML/Graphics/Rect.hpp>
 
 #include <vector>
@@ -28,7 +30,7 @@ namespace Editor
 	public:
 		SelectorType type;
 
-		// std::vector<void> tiles;
+		std::vector<TileBase*> tiles;
 		sf::FloatRect area;
 	};
 }

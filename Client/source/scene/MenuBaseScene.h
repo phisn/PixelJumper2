@@ -66,21 +66,26 @@ namespace Scene
 			case sf::Event::MouseMoved:
 				selectWeakByPosition(
 				{
-					(float) event.mouseButton.x,
-					(float) event.mouseButton.y
+					(float) event.mouseMove.x,
+					(float) event.mouseMove.y
 				});
 
 				break;
 			}
 
+			// add custom strong / weak events for controls (roots)
 			if (weakSelected != strongSelected)
+			{
 				switch (event.type)
 				{
+				case sf::Event::MouseWheelMoved:
+				case sf::Event::MouseWheelScrolled:
 				case sf::Event::MouseMoved:
 					weakSelected->onEvent(event);
 
 					break;
 				}
+			}
 
 			strongSelected->onEvent(event);
 		}
