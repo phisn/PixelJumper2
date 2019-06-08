@@ -21,10 +21,9 @@ namespace Game
 	public:
 		static const sf::Color COLOR;
 
-		static GameTileBase* Create(
-			Resource::Tile* const tile)
+		static GameTileBase* Create(Resource::Tile* const tile)
 		{
-			Resource::WallTile* resource = (Resource::WallTile*) tile->Content;
+			Resource::WallTile* const resource = (Resource::WallTile*) tile->Content;
 
 			if (tile->Header.contentSize != sizeof(Resource::WallTile::Content))
 			{
@@ -64,10 +63,7 @@ namespace Game
 		{
 			CollidableTile::registerCollisionType(
 				env,
-				CollisionType(
-					false,
-					false,
-					false)
+				CollisionType::NormalCollision
 			);
 			StaticTile::registerType(env);
 		}
@@ -113,6 +109,8 @@ namespace Game
 
 				remainMove.x = (collision.target.x - collision.info.position.x);
 			}
+
+			
 
 			/*
 			if (collision.player->getType() == PlayerType::Local && collision.info.type == CollisionEngine::CollisionInfo::G3)

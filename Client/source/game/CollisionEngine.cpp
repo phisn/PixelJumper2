@@ -245,6 +245,9 @@ namespace
 
 namespace Game
 {
+	CollisionType CollisionType::NormalCollision{ false, false, false };
+	CollisionType CollisionType::LeaveCollision{ true, true, true };
+
 	CollisionEngine::CollisionContext CollisionEngine::SetupCollisionContext(
 		const sf::Vector2f position, 
 		const sf::Vector2f destination, 

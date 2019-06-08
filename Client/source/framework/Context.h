@@ -89,8 +89,7 @@ namespace Framework
 
 		static bool PushScene(Scene::SubBase* const scene)
 		{
-			if (!isValidTask(InternalTask::LoadScene) ||
-				!scene->onCreate())
+			if (!isValidTask(InternalTask::LoadScene) || !scene->onCreate())
 			{
 				return false;
 			}
@@ -110,10 +109,7 @@ namespace Framework
 				return false;
 			}
 
-			currentTask = InternalTask::PopContext;
-
-			scenes.back()->onRemove();
-			scenes.pop_back();
+			currentTask = InternalTask::PopScene;
 
 			return true;
 		}
@@ -135,6 +131,8 @@ namespace Framework
 			case InternalTask::LoadScene:
 				break;
 			case InternalTask::PopContext:
+				Log::Information(L"Poping");
+
 				contextStack.back()->cleanup();
 				contextStack.pop_back();
 
@@ -149,6 +147,8 @@ namespace Framework
 
 				break;
 			case InternalTask::PopScene:
+				contextStack.back()->popScene();
+
 				break;
 			}
 
@@ -254,7 +254,11 @@ namespace Framework
 			if (!subScenes.empty())
 			{
 				subScenes.back()->onEvent(event);
+
+				Log::Information(L"Sub Scene");
 			}
+
+			Log::Information(std::to_wstring(scene->isRunning()));
 
 			if (scene->isRunning())
 			{

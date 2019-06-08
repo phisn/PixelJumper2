@@ -6,6 +6,9 @@ namespace Game
 {
 	struct CollisionType
 	{
+		static CollisionType NormalCollision;
+		static CollisionType LeaveCollision;
+
 		CollisionType() = default;
 		CollisionType(
 			const bool isWeak,
@@ -25,7 +28,7 @@ namespace Game
 
 		bool operator==(const CollisionType& info) const
 		{
-			return *(int*)this == *(int*)&info;
+			return *(int*)this == *(int*)& info;
 		}
 
 	private:

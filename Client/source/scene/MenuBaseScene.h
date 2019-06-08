@@ -64,11 +64,19 @@ namespace Scene
 
 				break;
 			case sf::Event::MouseMoved:
-				selectWeakByPosition(
+				Menu::MenuRootBase* const next = getWeakByPosition(
 				{
 					(float) event.mouseMove.x,
 					(float) event.mouseMove.y
 				});
+
+				if (next != weakSelected)
+				{
+					// bypass missing last MouseMoved event bug
+					// element thinks, it still has the cursor
+					weakSelected->onEvent(event);
+					weakSelected = next;
+				}
 
 				break;
 			}
@@ -171,16 +179,16 @@ namespace Scene
 			}
 		}
 
-		void selectWeakByPosition(const sf::Vector2f position)
+		Menu::MenuRootBase* getWeakByPosition(const sf::Vector2f position)
 		{
 			if (isInsideRoot(weakSelected, position))
 			{
-				return;
+				return weakSelected;
 			}
 
 			if (Menu::MenuRootBase* const root = getRootByPosition(position); root != NULL)
 			{
-				weakSelected = root;
+				return root;
 			}
 		}
 

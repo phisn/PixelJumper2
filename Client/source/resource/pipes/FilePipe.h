@@ -1,13 +1,11 @@
 #pragma once
 
+#include <Client/source/logger/Logger.h>
+
 #include <Client/source/resource/pipes/PipeBase.h>
 
 #include <filesystem>
 #include <fstream>
-
-#include <Client/source/logger/Logger.h>
-
-#define FILE_BUFFER_SIZE (1024 * 16)
 
 namespace Resource
 {

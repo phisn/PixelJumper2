@@ -33,7 +33,6 @@ namespace Editor
 		{
 			MenuRootBase::onDraw();
 
-			selectorView.draw();
 
 			for (TileBase* const tile : Manipulator::GetWorld()->getTiles())
 			{
@@ -41,6 +40,7 @@ namespace Editor
 			}
 
 			selectorMarker.draw();
+			selectorView.draw();
 		}
 
 		void onEvent(const sf::Event event) override
@@ -69,6 +69,9 @@ namespace Editor
 				{
 					mouse.left = true;
 					selectorMarker.beginMouseMovement(
+						sf::Vector2i(event.mouseButton.x, event.mouseButton.y)
+					);
+					selectorMarker.nextMouseMovement(
 						sf::Vector2i(event.mouseButton.x, event.mouseButton.y)
 					);
 

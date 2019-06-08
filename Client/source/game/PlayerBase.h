@@ -43,7 +43,7 @@ namespace Game
 			CalculateFrictionLose(
 				friction,
 				properties->weight),
-			timeValue / 70);
+			timeValue / 70.f);
 
 		const float static_lose = friction * timeValue * 1.f;
 

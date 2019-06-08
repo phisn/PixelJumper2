@@ -70,6 +70,9 @@
     <Filter Include="source\editor\tilechoice">
       <UniqueIdentifier>{49e6bfc2-000c-4a69-903f-d1fdbddacc72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\editor\subscenes">
+      <UniqueIdentifier>{8ead66e6-305b-4152-b464-d4a76f80bbf1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\device\InputDevice.h">
@@ -258,6 +261,9 @@
     <ClInclude Include="source\resource\tiles\ResourceTileContentBase.h">
       <Filter>source\resource\tiles</Filter>
     </ClInclude>
+    <ClInclude Include="source\editor\tilechoice\TileChoiceButton.h">
+      <Filter>source\editor\tilechoice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -419,6 +425,14 @@
     <ClCompile Include="source\resource\pipes\PipeBase.cpp">
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
+    <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
+    <ClCompile Include="source\editor\template\TileTemplateFactory.cpp" />
+    <ClCompile Include="source\editor\manipulator\EditorWorld.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\tilechoice\TileChoiceButton.cpp">
+      <Filter>source\editor\tilechoice</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">
@@ -557,9 +571,6 @@
     <None Include="source\editor\manipulator\EditorWorld.h">
       <Filter>source\editor\manipulator</Filter>
     </None>
-    <None Include="source\editor\manipulator\EditorWorld.cpp">
-      <Filter>source\editor\manipulator</Filter>
-    </None>
     <None Include="source\editor\selector\SelectorMarker.h">
       <Filter>source\editor\selector</Filter>
     </None>
@@ -649,6 +660,18 @@
     </None>
     <None Include="source\resource\CommonResourceTypes.h">
       <Filter>source\resource</Filter>
+    </None>
+    <None Include="source\menu\MenuFPSLabel.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuFPSLabel.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\editor\subscene\GroupedTilePreview.cpp">
+      <Filter>source\editor\subscenes</Filter>
+    </None>
+    <None Include="source\editor\subscene\GroupedTilePreview.h">
+      <Filter>source\editor\subscenes</Filter>
     </None>
   </ItemGroup>
 </Project>

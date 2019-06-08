@@ -25,7 +25,13 @@ namespace Scene
 		virtual void onShow() = 0;
 		virtual void onHide() = 0;
 		
-		virtual void onScenePopped(const int size) = 0;
+		virtual void onScenePopped(const int size)
+		{
+			if (size == 0 && !running)
+			{
+				running = true;
+			}
+		}
 
 		virtual void onEvent(
 			const sf::Event event) = 0;
@@ -37,6 +43,7 @@ namespace Scene
 		{
 			return running;
 		}
+
 	protected:
 		bool running = true;
 	};

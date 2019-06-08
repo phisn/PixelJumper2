@@ -6,7 +6,7 @@
 #include <Client/source/device/RandomDevice.h>
 #include <Client/source/device/ScreenDevice.h>
 
-#include <Client/source/editor/EditorWorld.h>
+#include <Client/source/editor/manipulator/EditorWorld.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 
 #include <Client/source/resource/ResourceInterface.h>

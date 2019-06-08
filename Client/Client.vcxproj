@@ -75,6 +75,7 @@
     <ClInclude Include="source\device\InputDevice.h" />
     <ClInclude Include="source\device\RandomDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
+    <ClInclude Include="source\editor\tilechoice\TileChoiceButton.h" />
     <ClInclude Include="source\framework\Animation.h" />
     <ClInclude Include="source\framework\AsyncAnimation.h" />
     <ClInclude Include="source\framework\Context.h" />
@@ -138,6 +139,8 @@
     <ClCompile Include="source\device\InputDevice.cpp" />
     <ClCompile Include="source\device\RandomDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
+    <ClCompile Include="source\editor\manipulator\EditorWorld.cpp" />
+    <ClCompile Include="source\editor\tilechoice\TileChoiceButton.cpp" />
     <ClCompile Include="source\framework\Animation.cpp" />
     <ClCompile Include="source\framework\AsyncAnimation.cpp" />
     <ClCompile Include="source\framework\Context.cpp" />
@@ -203,7 +206,6 @@
     <None Include="source\editor\manipulator\EditorCache.h" />
     <None Include="source\editor\manipulator\EditorTask.cpp" />
     <None Include="source\editor\manipulator\EditorTask.h" />
-    <None Include="source\editor\manipulator\EditorWorld.cpp" />
     <None Include="source\editor\manipulator\EditorWorld.h" />
     <None Include="source\editor\manipulator\Executor.cpp" />
     <None Include="source\editor\manipulator\Executor.h" />
@@ -221,6 +223,8 @@
     <None Include="source\editor\selector\SelectorRoot.h" />
     <None Include="source\editor\selector\SelectorView.cpp" />
     <None Include="source\editor\selector\SelectorView.h" />
+    <None Include="source\editor\subscene\GroupedTilePreview.cpp" />
+    <None Include="source\editor\subscene\GroupedTilePreview.h" />
     <None Include="source\editor\template\TileTemplate.cpp" />
     <None Include="source\editor\template\TileTemplate.h" />
     <None Include="source\editor\template\TileTemplateFactory.h" />
@@ -242,6 +246,8 @@
     <None Include="source\editor\tile\EditorTileBase.h" />
     <None Include="source\editor\tile\EditorWall.cpp" />
     <None Include="source\editor\tile\EditorWall.h" />
+    <None Include="source\menu\MenuFPSLabel.cpp" />
+    <None Include="source\menu\MenuFPSLabel.h" />
     <None Include="source\menu\MenuButton.cpp" />
     <None Include="source\menu\MenuButton.h" />
     <None Include="source\menu\MenuButtonMaterial.cpp" />
