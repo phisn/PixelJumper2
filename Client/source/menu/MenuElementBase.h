@@ -193,12 +193,16 @@ namespace Menu
 			if (graphicsChanged)
 			{
 				updateOwnGraphics();
+
+				graphicsChanged = false;
 			}
 
 			if (childGraphicsChanged)
 			{
 				for (ElementBase* const element : children)
 					element->updateGraphics();
+
+				childGraphicsChanged = false;
 			}
 		}
 

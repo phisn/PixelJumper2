@@ -1,14 +1,18 @@
 #pragma once
 
-#include <Client/source/editor/template/TileTemplate.h>
-#include <Client/source/editor/manipulator/Executor.h>
-#include <Client/source/editor/manipulator/Manipulator.h>
-#include <Client/source/editor/manipulator/EditorWorld.h>
-
 #include <Client/source/logger/Logger.h>
+
+#include <Client/source/editor/template/TileTemplate.h>
+
+#include <Client/source/editor/manipulator/Executor.h>
+#include <Client/source/editor/manipulator/EditorCache.h>
+#include <Client/source/editor/manipulator/EditorWorld.h>
+#include <Client/source/editor/manipulator/Manipulator.h>
 
 #include <Client/source/resource/ResourceInterface.h>
 #include <Client/source/resource/WorldResource.h>
+
+#include <string>
 
 namespace Editor
 {
@@ -66,8 +70,8 @@ namespace Editor
 
 				return false;
 			}
-			// TODO: Manipulator::GetCacheManager()->notifyAll(Cache::Sector::Selection);
 
+			Manipulator::GetCache()->selection.notify();
 			return true;
 		}
 
@@ -94,7 +98,7 @@ namespace Editor
 				world->setTileUnsafe(tile);
 			}
 			tiles = temp;
-			// TODO: Manipulator::GetCacheManager()->notifyAll(Cache::Sector::Selection);
+			Manipulator::GetCache()->selection.notify();
 		}
 
 	private:

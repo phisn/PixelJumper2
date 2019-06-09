@@ -88,7 +88,7 @@ namespace Menu
 			}
 		}
 
-		Menu::MenuEvent<Button> buttonPressedEvent;
+		MenuEvent<Button> buttonPressedEvent;
 
 		virtual void onLogic(const sf::Time time)
 		{

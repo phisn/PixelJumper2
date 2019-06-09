@@ -131,40 +131,57 @@ namespace Menu::ButtonMaterial
 		sf::RectangleShape rect;
 	};
 
-	class DefaultRectangleStaticSize
+	class DefaultStaticRectangleBase
 	{
 	public:
-		DefaultRectangleStaticSize()
-		{
-			applyEffect(currentEffect = CommonControlEffect::Default);
-		}
-
 		bool contains(const sf::Vector2f point) const
 		{
 			return rect.getGlobalBounds().contains(point);
 		}
 
-		void setPosition(const sf::Vector2f position)
+		virtual void setPosition(const sf::Vector2f position)
 		{
-			this->position = position;
-			applyEffect(currentEffect);
+			this->position = position; 
+			updateEffect();
 		}
 
-		void setSize(const sf::Vector2f size)
+		virtual void setSize(const sf::Vector2f size)
 		{
 			this->size = size;
+			updateEffect();
+		}
+
+		virtual void move(const sf::Vector2f offset)
+		{
+			rect.move(offset);
+			updateEffect();
+		}
+
+		virtual void applyEffect(const CommonControlEffect effect)
+		{
+			applyStyle(findStyle(currentEffect = effect));
+		}
+
+		void draw() const
+		{
+			Device::Screen::Draw(rect);
+		}
+
+	protected:
+		virtual const CommonShapeStyle& findStyle(const CommonControlEffect effect) const = 0;
+
+		void initialize()
+		{
+			applyEffect(currentEffect = CommonControlEffect::Default);
+		}
+
+		virtual void updateEffect()
+		{
 			applyEffect(currentEffect);
 		}
 
-		void move(const sf::Vector2f offset)
+		void applyStyle(const CommonShapeStyle& style)
 		{
-			rect.move(offset);
-		}
-
-		void applyEffect(const CommonControlEffect effect)
-		{
-			const CommonShapeStyle& style = styles[(int) (currentEffect = effect)];
-
 			rect.setPosition(
 				position.x + style.outlineThickness,
 				position.y + style.outlineThickness);
@@ -180,14 +197,28 @@ namespace Menu::ButtonMaterial
 				style.outlineThickness);
 		}
 
-		void draw() const
-		{
-			Device::Screen::Draw(rect);
-		}
-
 	private:
 		sf::Vector2f position, size;
 		CommonControlEffect currentEffect;
+
+		sf::RectangleShape rect;
+	};
+
+	class DefaultStaticRectangle final
+		:
+		public DefaultStaticRectangleBase
+	{
+	public:
+/*		DefaultStaticRectangle()
+		{
+			initialize();
+		}*/
+
+	private:
+		const CommonShapeStyle& findStyle(const CommonControlEffect effect) const override
+		{
+			return styles[(int) effect];
+		}
 
 		const CommonShapeStyle styles[3] =
 		{
@@ -195,7 +226,5 @@ namespace Menu::ButtonMaterial
 			{ sf::Color::Color(50, 50, 50), sf::Color::Color(100, 100, 100), 3 },
 			{ sf::Color::Color(80, 80, 80), sf::Color::Color(), 0 }
 		};
-
-		sf::RectangleShape rect;
 	};
 }

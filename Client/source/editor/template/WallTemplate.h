@@ -14,6 +14,7 @@
 
 #include <Client/source/menu/MenuButtonMaterial.h>
 #include <Client/source/menu/MenuButtonWithLabel.h>
+#include <Client/source/editor/tilechoice/TileChoiceButton.h>
 
 #include <iostream>
 
@@ -55,7 +56,8 @@ namespace Editor
 		// get?
 		Menu::ElementBase* createRepresentation() override
 		{
-			static Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultRectangleStaticSize> button;
+			//static Menu::ButtonWithLabel<Menu::ButtonMaterial::DefaultStaticRectangle> button;
+			static TileChoiceButton button;
 
 			button.sizePreferred = { 300, 100 };
 			button.buttonPressedEvent.addListener(

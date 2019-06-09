@@ -190,6 +190,8 @@ namespace Scene
 			{
 				return root;
 			}
+
+			return weakSelected;
 		}
 
 		Menu::MenuRootBase* getRootByPosition(const sf::Vector2f position) const

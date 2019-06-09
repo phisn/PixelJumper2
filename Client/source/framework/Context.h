@@ -254,11 +254,7 @@ namespace Framework
 			if (!subScenes.empty())
 			{
 				subScenes.back()->onEvent(event);
-
-				Log::Information(L"Sub Scene");
 			}
-
-			Log::Information(std::to_wstring(scene->isRunning()));
 
 			if (scene->isRunning())
 			{
