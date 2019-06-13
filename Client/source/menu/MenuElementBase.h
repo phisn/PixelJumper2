@@ -97,14 +97,6 @@ namespace Menu
 		{
 			return true;
 		}
-
-		virtual void onEvent(const sf::Event event) 
-		{
-			for (ElementBase* const element : children)
-			{
-				element->onEvent(event);
-			}
-		}
 		
 		virtual void onLogic(const sf::Time time) 
 		{
@@ -122,6 +114,120 @@ namespace Menu
 			}
 		}
 #pragma endregion
+
+	public:
+		virtual void onEvent(const sf::Event event)
+		{
+			switch (event.type)
+			{
+			case sf::Event::MouseMoved:
+				if (ElementBase* const element = findElementByPosition(
+						sf::Vector2f(
+							event.mouseMove.x,
+							event.mouseMove.y)
+				); element != NULL)
+				{
+					if (weakSelectedChild.getValue() != element)
+					{
+						if (weakSelectedChild.getValue() != NULL)
+						{
+							weakSelectedChild->onEvent(event);
+						}
+
+						weakSelectedChild = element;
+						element->weakSelected = true;
+					}
+				}
+				else
+				{
+					if (weakSelectedChild.getValue() != NULL)
+					{
+						weakSelectedChild->onEvent(event);
+
+						weakSelectedChild->weakSelected = false;
+						weakSelectedChild = NULL;
+					}
+				}
+
+				break;
+			case sf::Event::MouseButtonPressed:
+				if (ElementBase* const element = findElementByPosition(
+					sf::Vector2f(
+						event.mouseButton.x,
+						event.mouseButton.y)
+				); element != NULL)
+				{
+					if (strongSelectedChild.getValue() != element)
+					{
+						strongSelectedChild = element;
+						element->strongSelected = true;
+					}
+				}
+				else
+				{
+					if (strongSelectedChild.getValue() != NULL)
+					{
+						strongSelectedChild->strongSelected = false;
+						strongSelectedChild = NULL;
+					}
+				}
+
+				break;
+			}
+
+			std::vector<sf::Event::EventType>& childEvents = strongSelectedChild->strongEvents;
+			if (std::find(
+					childEvents.cbegin(), 
+					childEvents.cend(), 
+					event.type) 
+				!= childEvents.cend())
+			{
+				strongSelectedChild->onEvent(event);
+			}
+			else if (childEvents = strongSelectedChild->weakEvents;
+				std::find(
+					childEvents.cbegin(),
+					childEvents.cend(),
+					event.type)
+				!= childEvents.cend())
+			{
+				weakSelectedChild->onEvent(event);
+			}
+			else
+			{
+				for (ElementBase* const element : children)
+					element->onEvent(event);
+			}
+		}
+
+		Property<bool> weakSelected{ false };
+		Property<bool> strongSelected{ false };
+
+		Property<ElementBase*> weakSelectedChild{ NULL };
+		Property<ElementBase*> strongSelectedChild{ NULL };
+
+
+	protected:
+		std::vector<sf::Event::EventType> weakEvents;
+		std::vector<sf::Event::EventType> strongEvents;
+
+	private:
+		ElementBase* findElementByPosition(const sf::Vector2f position) const
+		{
+			for (ElementBase* const element : children)
+			{
+				const sf::FloatRect rect(
+					element->convertPositionVTR(sf::Vector2f(0.f, 0.f)),
+					*element->size);
+
+				if (rect.contains(position))
+				{
+					return element;
+				}
+			}
+
+			return NULL;
+		}
 
 #pragma region Container
 	public:

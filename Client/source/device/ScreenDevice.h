@@ -63,6 +63,12 @@ namespace Device
 		void _CloseWindow();
 		void _CreateWindow(); // _ prevent macro
 
+		namespace Cursor
+		{
+			bool Initialize();
+			void SetCursor(const sf::Cursor::Type cursor);
+		}
+
 		bool LoadSettings();
 		ScreenSettings* ChangeSettings();
 		bool SaveSettings();

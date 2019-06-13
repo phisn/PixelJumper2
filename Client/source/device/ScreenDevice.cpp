@@ -7,6 +7,9 @@ namespace
 {
 	sf::RenderWindow* window;
 	Device::ScreenSettings* resource;
+
+	sf::Cursor defaultCursor;
+	sf::Cursor textCursor;
 }
 
 namespace Device
@@ -98,6 +101,38 @@ namespace Device
 		}
 
 		window->setVerticalSyncEnabled(resource->Content.useVSync);
+	}
+
+	bool Screen::Cursor::Initialize()
+	{
+		if (!defaultCursor.loadFromSystem(sf::Cursor::Type::Arrow))
+		{
+			Log::Error(L"Failed to load arrow cursor");
+			return false;
+		}
+
+		if (!textCursor.loadFromSystem(sf::Cursor::Type::Text))
+		{
+			Log::Error(L"Failed to load text cursor");
+			return false;
+		}
+
+		return false;
+	}
+
+	void Screen::Cursor::SetCursor(const sf::Cursor::Type cursor)
+	{
+		switch (cursor)
+		{
+		case sf::Cursor::Type::Arrow:
+			window->setMouseCursor(defaultCursor);
+
+			break;
+		case sf::Cursor::Type::Text:
+			window->setMouseCursor(textCursor);
+
+			break;
+		}
 	}
 
 	bool Screen::LoadSettings()

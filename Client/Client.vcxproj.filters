@@ -628,12 +628,6 @@
     <None Include="source\editor\tilechoice\TileSearchRoot.cpp">
       <Filter>source\editor\tilechoice</Filter>
     </None>
-    <None Include="source\menu\MenuEvent.cpp">
-      <Filter>source\menu</Filter>
-    </None>
-    <None Include="source\menu\MenuEvent.h">
-      <Filter>source\menu</Filter>
-    </None>
     <None Include="source\menu\MenuSpecialProperties.h">
       <Filter>source\menu</Filter>
     </None>
@@ -672,6 +666,21 @@
     </None>
     <None Include="source\editor\subscene\GroupedTilePreview.h">
       <Filter>source\editor\subscenes</Filter>
+    </None>
+    <None Include="source\menu\MenuTextBox.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuTextBox.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuNotifier.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuNotifier.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuEvent.h">
+      <Filter>source\menu</Filter>
     </None>
   </ItemGroup>
 </Project>

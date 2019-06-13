@@ -81,7 +81,7 @@ namespace Editor
 
 
 
-		Menu::MenuEvent<TileChoiceButton> buttonSelectedEvent;
+		Menu::MenuPipe<TileChoiceButton> buttonSelectedEvent;
 
 		void unselect()
 		{
