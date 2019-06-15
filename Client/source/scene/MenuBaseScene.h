@@ -64,35 +64,31 @@ namespace Scene
 
 				break;
 			case sf::Event::MouseMoved:
+			{
 				Menu::MenuRootBase* const next = getWeakByPosition(
-				{
-					(float) event.mouseMove.x,
-					(float) event.mouseMove.y
-				});
+					{
+						(float)event.mouseMove.x,
+						(float)event.mouseMove.y
+					});
 
 				if (next != weakSelected)
 				{
-					// bypass missing last MouseMoved event bug
-					// element thinks, it still has the cursor
+					weakSelected->weakSelected = false;
 					weakSelected->onEvent(event);
+					
 					weakSelected = next;
+
+					weakSelected->weakSelected = true;
+					weakSelected->onEvent(event);
 				}
 
 				break;
 			}
+			case sf::Event::EventType::MouseWheelMoved:
+			case sf::Event::EventType::MouseWheelScrolled:
+				weakSelected->onEvent(event);
 
-			// add custom strong / weak events for controls (roots)
-			if (weakSelected != strongSelected)
-			{
-				switch (event.type)
-				{
-				case sf::Event::MouseWheelMoved:
-				case sf::Event::MouseWheelScrolled:
-				case sf::Event::MouseMoved:
-					weakSelected->onEvent(event);
-
-					break;
-				}
+				break;
 			}
 
 			strongSelected->onEvent(event);
@@ -108,9 +104,6 @@ namespace Scene
 		{
 			for (Menu::MenuRootBase* const root : roots)
 				root->draw();
-
-			for (Menu::MenuRootBase* const root : roots)
-				root->update();
 		}
 
 	protected:

@@ -3,7 +3,7 @@
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/menu/MenuElementBase.h>
-#include <Client/source/menu/MenuEvent.h>
+#include <Client/source/menu/MenuNotifier.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -88,7 +88,7 @@ namespace Menu
 			}
 		}
 
-		MenuPipe<Button> buttonPressedEvent;
+		MenuNotifier<Button> buttonPressedEvent;
 
 		virtual void onLogic(const sf::Time time)
 		{

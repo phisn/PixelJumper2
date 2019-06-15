@@ -8,9 +8,9 @@
 #include <functional>
 #include <vector>
 
-#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include <SFML/Window/Event.hpp>
+#include <SFML/Window.hpp>
 
 namespace Menu
 {
@@ -121,82 +121,31 @@ namespace Menu
 			switch (event.type)
 			{
 			case sf::Event::MouseMoved:
-				if (ElementBase* const element = findElementByPosition(
-						sf::Vector2f(
-							event.mouseMove.x,
-							event.mouseMove.y)
-				); element != NULL)
-				{
-					if (weakSelectedChild.getValue() != element)
-					{
-						if (weakSelectedChild.getValue() != NULL)
-						{
-							weakSelectedChild->onEvent(event);
-						}
-
-						weakSelectedChild = element;
-						element->weakSelected = true;
-					}
-				}
-				else
-				{
-					if (weakSelectedChild.getValue() != NULL)
-					{
-						weakSelectedChild->onEvent(event);
-
-						weakSelectedChild->weakSelected = false;
-						weakSelectedChild = NULL;
-					}
-				}
+				selectWeakChild(event);
 
 				break;
 			case sf::Event::MouseButtonPressed:
-				if (ElementBase* const element = findElementByPosition(
-					sf::Vector2f(
-						event.mouseButton.x,
-						event.mouseButton.y)
-				); element != NULL)
+				selectStrongChild(event);
+				
+				break;
+			case sf::Event::EventType::MouseWheelMoved:
+			case sf::Event::EventType::MouseWheelScrolled:
+				if (weakSelected)
 				{
-					if (strongSelectedChild.getValue() != element)
-					{
-						strongSelectedChild = element;
-						element->strongSelected = true;
-					}
-				}
-				else
-				{
-					if (strongSelectedChild.getValue() != NULL)
-					{
-						strongSelectedChild->strongSelected = false;
-						strongSelectedChild = NULL;
-					}
+					weakSelectedChild->onEvent(event);
 				}
 
 				break;
-			}
-
-			std::vector<sf::Event::EventType>& childEvents = strongSelectedChild->strongEvents;
-			if (std::find(
-					childEvents.cbegin(), 
-					childEvents.cend(), 
-					event.type) 
-				!= childEvents.cend())
-			{
-				strongSelectedChild->onEvent(event);
-			}
-			else if (childEvents = strongSelectedChild->weakEvents;
-				std::find(
-					childEvents.cbegin(),
-					childEvents.cend(),
-					event.type)
-				!= childEvents.cend())
-			{
-				weakSelectedChild->onEvent(event);
-			}
-			else
-			{
+			default:
 				for (ElementBase* const element : children)
 					element->onEvent(event);
+
+				return; // skip (repeat) strong selected
+			}
+			
+			if (strongSelected)
+			{
+				strongSelectedChild->onEvent(event);
 			}
 		}
 
@@ -206,19 +155,72 @@ namespace Menu
 		Property<ElementBase*> weakSelectedChild{ NULL };
 		Property<ElementBase*> strongSelectedChild{ NULL };
 
-
-	protected:
-		std::vector<sf::Event::EventType> weakEvents;
-		std::vector<sf::Event::EventType> strongEvents;
-
 	private:
+		void selectWeakChild(const sf::Event event)
+		{
+			if (ElementBase* const element = findElementByPosition(
+				sf::Vector2f(
+					event.mouseMove.x,
+					event.mouseMove.y)
+			); element != NULL)
+			{
+				if (weakSelectedChild.getValue() != element)
+				{
+					if (weakSelectedChild.getValue() != NULL)
+					{
+						weakSelectedChild->onEvent(event);
+					}
+
+					weakSelectedChild = element;
+					element->weakSelected = true;
+
+					weakSelectedChild->onEvent(event);
+				}
+			}
+			else
+			{
+				if (weakSelectedChild.getValue() != NULL)
+				{
+					weakSelectedChild->onEvent(event);
+
+					weakSelectedChild->weakSelected = false;
+					weakSelectedChild = (ElementBase*) NULL;
+				}
+			}
+		}
+
+		void selectStrongChild(const sf::Event event)
+		{
+			// should not call 
+			if (ElementBase * const element = findElementByPosition(
+				sf::Vector2f(
+					event.mouseButton.x,
+					event.mouseButton.y)
+			); element != NULL)
+			{
+				if (strongSelectedChild.getValue() != element)
+				{
+					strongSelectedChild = element;
+					element->strongSelected = true;
+				}
+			}
+			else
+			{
+				if (strongSelectedChild.getValue() != NULL)
+				{
+					strongSelectedChild->strongSelected = false;
+					strongSelectedChild = (ElementBase*) NULL;
+				}
+			}
+		}
+
 		ElementBase* findElementByPosition(const sf::Vector2f position) const
 		{
 			for (ElementBase* const element : children)
 			{
-				const sf::FloatRect rect(
+				const sf::FloatRect rect{
 					element->convertPositionVTR(sf::Vector2f(0.f, 0.f)),
-					*element->size);
+					*element->size };
 
 				if (rect.contains(position))
 				{
