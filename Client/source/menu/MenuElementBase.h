@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/menu/MenuCommon.h>
+#include <Client/source/menu/MenuNotifier.h>
 #include <Client/source/menu/MenuSpecialProperties.h>
 #include <Client/source/logger/Logger.h>
 
@@ -120,42 +121,116 @@ namespace Menu
 		{
 			switch (event.type)
 			{
-			case sf::Event::MouseMoved:
-				selectWeakChild(event);
+			case sf::Event::MouseButtonPressed:
+				ElementBase* const child = findTargetChild(
+					event.mouseMove.x,
+					event.mouseMove.y);
+
+				if (strongSelectedChild != child)
+				{
+					if (strongSelectedChild)
+					{
+						// strongSelectedChild->onEvent(event); not needed here?
+						strongSelectedChild->removeStrongSelected();
+					}
+
+					strongSelectedChild = child;
+					strongSelectedChild->strongSelected = true;
+				}
 
 				break;
-			case sf::Event::MouseButtonPressed:
-				selectStrongChild(event);
-				
-				break;
-			case sf::Event::EventType::MouseWheelMoved:
-			case sf::Event::EventType::MouseWheelScrolled:
-				if (weakSelected)
+			case sf::Event::MouseMoved:
+				ElementBase* const child = findTargetChild(
+					event.mouseMove.x,
+					event.mouseMove.y);
+
+				if (weakSelectedChild != child)
 				{
+					if (weakSelectedChild)
+					{
+						weakSelectedChild->onEvent(event); // fix lost movement bugs
+						weakSelectedChild->removeWeakSelected();
+					}
+
+					weakSelectedChild = child;
+					weakSelectedChild->weakSelected = true;
 					weakSelectedChild->onEvent(event);
 				}
 
 				break;
-			default:
-				for (ElementBase* const element : children)
-					element->onEvent(event);
+			case sf::Event::EventType::MouseWheelMoved:
+			case sf::Event::EventType::MouseWheelScrolled:
+				weakSelectedChild->onEvent(event);
 
-				return; // skip (repeat) strong selected
+				break;
+			default:
+				for (ElementBase* const child : children)
+					child->onEvent(event);
+
+				break;
 			}
-			
-			if (strongSelected)
-			{
+
+			if (strongSelectedChild)
 				strongSelectedChild->onEvent(event);
-			}
 		}
 
-		Property<bool> weakSelected{ false };
-		Property<bool> strongSelected{ false };
+		MenuNotifier<ElementBase, bool> onStrongSelectedChanged;
+		MenuNotifier<ElementBase, bool> onWeakSelectedChanged;
 
-		Property<ElementBase*> weakSelectedChild{ NULL };
-		Property<ElementBase*> strongSelectedChild{ NULL };
+		MenuNotifier<ElementBase, ElementBase*> onStrongSelectedChildChanged;
+		MenuNotifier<ElementBase, ElementBase*> onWeakSelectedChildChanged;
+
+		ElementBase* getWeakSelectedChild()
+		{
+			return weakSelectedChild;
+		}
+
+		ElementBase* getWeakSelectedChild()
+		{
+			return weakSelectedChild;
+		}
+
+		ReadOnlyProperty<ElementBase, ElementBase*> strongSelectedChild;
+		ReadOnlyProperty<ElementBase, ElementBase*> weakSelectedChild;
+
+		ReadOnlyProperty<ElementBase, bool> weakSelected;
+		ReadOnlyProperty<ElementBase, bool> strongSelected;
 
 	private:
+		void removeStrongSelected()
+		{
+			strongSelected = false;
+			strongSelectedChild->removeStrongSelected();
+			strongSelectedChild = NULL;
+		}
+
+		void removeWeakSelected()
+		{
+			weakSelected = false;
+			weakSelectedChild->removeWeakSelected();
+			weakSelectedChild = NULL;
+		}
+
+		ElementBase* findTargetChild(
+			const float x, 
+			const float y)
+		{
+			const sf::Vector2f position = sf::Vector2f(x, y);
+
+			for (ElementBase* const child : children)
+			{
+				const sf::FloatRect childRect = sf::FloatRect(
+					child->convertPositionVTR({ }),
+					child->size.getValue());
+
+				if (childRect.contains(position))
+					return child;
+			}
+
+			return NULL;
+		}
+
+		/*
 		void selectWeakChild(const sf::Event event)
 		{
 			if (ElementBase* const element = findElementByPosition(
@@ -213,6 +288,7 @@ namespace Menu
 				}
 			}
 		}
+		
 
 		ElementBase* findElementByPosition(const sf::Vector2f position) const
 		{
@@ -230,6 +306,7 @@ namespace Menu
 
 			return NULL;
 		}
+		*/
 
 #pragma region Container
 	public:

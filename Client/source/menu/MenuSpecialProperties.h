@@ -10,6 +10,7 @@ namespace Menu
 		public Property<T>
 	{
 	public:
+		using Property::Property;
 		using Property::operator->;
 		using Property::operator*;
 
@@ -47,5 +48,29 @@ namespace Menu
 
 	private:
 		std::vector<LazyListener> lazyListeners;
+	};
+
+	template <typename Parent, typename T>
+	class ReadOnlyProperty
+		:
+		private Property<T>
+	{
+		friend Parent;
+
+		using Property::operator=;
+	public:
+		static_assert(
+			!std::is_base_of_v<CustomProperty, T>,
+			"ReadOnlyProperty cant use CustomProperty"
+		);
+
+		using Property::Property;
+		using Property::operator->;
+		using Property::operator*;
+
+		using Property::addListener;
+		using Property::popListener;
+
+		using Property::getValue;
 	};
 }

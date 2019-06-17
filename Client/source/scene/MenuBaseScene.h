@@ -45,53 +45,6 @@ namespace Scene
 
 		virtual void onEvent(const sf::Event event) override
 		{
-			switch (event.type)
-			{
-			case sf::Event::KeyPressed:
-				onKeyPressed(event);
-
-				break;
-			case sf::Event::MouseButtonPressed:
-				//if (event.mouseButton.button == sf::Mouse::Button::Left)
-				if (true)
-				{
-					selectStrongByPosition(
-					{
-						(float) event.mouseButton.x,
-						(float) event.mouseButton.y
-					});
-				}
-
-				break;
-			case sf::Event::MouseMoved:
-			{
-				Menu::MenuRootBase* const next = getWeakByPosition(
-					{
-						(float)event.mouseMove.x,
-						(float)event.mouseMove.y
-					});
-
-				if (next != weakSelected)
-				{
-					weakSelected->weakSelected = false;
-					weakSelected->onEvent(event);
-					
-					weakSelected = next;
-
-					weakSelected->weakSelected = true;
-					weakSelected->onEvent(event);
-				}
-
-				break;
-			}
-			case sf::Event::EventType::MouseWheelMoved:
-			case sf::Event::EventType::MouseWheelScrolled:
-				weakSelected->onEvent(event);
-
-				break;
-			}
-
-			strongSelected->onEvent(event);
 		}
 
 		virtual void onLogic(const sf::Time time) override
