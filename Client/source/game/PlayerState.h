@@ -19,13 +19,13 @@ namespace Game
 		Right
 	};
 
+	struct IsOnGround
+	{
+		bool up, left, down, right;
+	};
+
 	struct PlayerStateProperties
 	{
-		struct _IsOnGround
-		{
-			bool up, left, down, right;
-		};
-
 		sf::Vector2f position;
 		sf::Vector2f movement;
 
@@ -36,7 +36,7 @@ namespace Game
 		float weight = 10;
 		float friction = 1;
 
-		_IsOnGround isOnGround;
+		IsOnGround isOnGround;
 		sf::Vector2f respawnPoint;
 
 		Resource::WorldId world;
@@ -77,29 +77,29 @@ namespace Game
 			return &properties;
 		}
 
-		PropertyWriter<sf::Vector2f> position{ properties.position };
-		PropertyWriter<sf::Vector2f> movement{ properties.movement };
+		Property<sf::Vector2f> position{ properties.position };
+		Property<sf::Vector2f> movement{ properties.movement };
 
-		PropertyWriter<bool> hasForceLeft{ properties.hasForceLeft };
-		PropertyWriter<bool> hasForceRight{ properties.hasForceRight };
+		Property<bool> hasForceLeft{ properties.hasForceLeft };
+		Property<bool> hasForceRight{ properties.hasForceRight };
 
-		PropertyWriter<float> speed{ properties.speed };
-		PropertyWriter<float> weight{ properties.weight };
-		PropertyWriter<float> friction{ properties.friction };
+		Property<float> speed{ properties.speed };
+		Property<float> weight{ properties.weight };
+		Property<float> friction{ properties.friction };
 
-		PropertyWriter<PlayerStateProperties::_IsOnGround> isOnGround{ properties.isOnGround };
-		PropertyWriter<sf::Vector2f> respawnPoint{ properties.respawnPoint };
+		Property<IsOnGround> isOnGround{ properties.isOnGround };
+		Property<sf::Vector2f> respawnPoint{ properties.respawnPoint };
 
-		PropertyWriter<Resource::WorldId> worldId{ properties.world };
+		Property<Resource::WorldId> worldId{ properties.world };
 
 		//// View
-		PropertyWriter<float> view_rotation{ properties.View.rotation };
+		Property<float> view_rotation{ properties.View.rotation };
 
 		// should set position before useCustomPosition
-		PropertyWriter<bool> view_useCustomPosition{ properties.View.useCustomPosition };
-		PropertyWriter<sf::Vector2f> view_position{ properties.View.position };
+		Property<bool> view_useCustomPosition{ properties.View.useCustomPosition };
+		Property<sf::Vector2f> view_position{ properties.View.position };
 
-		PropertyWriter<sf::Vector2f> view_size{ properties.View.size };
+		Property<sf::Vector2f> view_size{ properties.View.size };
 	};
 }
 

@@ -113,17 +113,19 @@ namespace Game
 			PlayerBase(PlayerType::Local),
 			input(input)
 		{
-			state.view_rotation.addListener([this](const float)
+			state.view_rotation.addListener([this](const float, const float)
 				{
 					view.setRotation(state.readProperties()->View.rotation);
 				});
 
-			state.view_useCustomPosition.addListener([this](const bool)
+			state.view_useCustomPosition.addListener([this](const bool, const bool)
 				{
 					updateView();
 				});
 
-			const std::function<void(const sf::Vector2f)> listener = [this](const sf::Vector2f)
+			const std::function<void(
+				const sf::Vector2f, 
+				const sf::Vector2f)> listener = [this](const sf::Vector2f, const sf::Vector2f)
 			{
 				updateView();
 			};
@@ -272,7 +274,7 @@ namespace Game
 			{
 				state.position = state.readProperties()->respawnPoint;
 				state.movement = { 0.f, 0.f };
-				state.isOnGround = { };
+				state.isOnGround = IsOnGround{ };
 				state.hasForceLeft = false;
 				state.hasForceRight = false;
 			}

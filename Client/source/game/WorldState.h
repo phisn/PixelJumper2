@@ -46,12 +46,12 @@ namespace Game
 			return &properties;
 		}
 
-		PropertyWriter<sf::Vector2f> gravity{ properties.gravity };
+		Property<sf::Vector2f> gravity{ properties.gravity };
 
-		PropertyWriter<float> airResistance{ properties.airResistance };
+		Property<float> airResistance{ properties.airResistance };
 
-		PropertyWriter<sf::Uint32> milisecondsPassed{ properties.milisecondsPassed };
-		PropertyWriter<sf::Uint16> playerCount{ properties.playerCount };
+		Property<sf::Uint32> milisecondsPassed{ properties.milisecondsPassed };
+		Property<sf::Uint16> playerCount{ properties.playerCount };
 	};
 }
 

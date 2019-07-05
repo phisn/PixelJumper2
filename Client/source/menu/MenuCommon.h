@@ -22,6 +22,13 @@ namespace Menu
 		Pressed
 	};
 
+	enum class CommonSelectedEffect
+	{
+		Selected,
+		SelectedHover,
+		SelectedPressed
+	};
+
 	struct CommonShapeStyle
 	{
 		sf::Color innerColor;

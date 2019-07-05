@@ -17,6 +17,7 @@ namespace Menu
 {
 	class ElementBase
 	{
+		friend class MenuBaseScene;
 	public:
 		Property<ElementBase*> parent{ NULL };
 		typedef std::vector<ElementBase*> Container;
@@ -28,20 +29,22 @@ namespace Menu
 				[this](const CommonElementOffset oldOffset,
 					   const CommonElementOffset newOffset)
 				{
-					moveGraphics(sf::Vector2f(
-						newOffset.left - oldOffset.left,
-						newOffset.top - newOffset.top
-					));
-
 					for (ElementBase* const child : children)
+					{
+						child->moveGraphics(sf::Vector2f(
+							newOffset.left - oldOffset.left,
+							newOffset.top - oldOffset.top
+						));
+
 						child->updateAutomaticSpace();
+					}
 				});
 			size.addListener(
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
 				{
 					for (ElementBase* const child : children)
-						if (*child->space.automatic)
+						if (child->space.isAutomatic())
 						{
 							child->updateAutomaticSpace();
 						}
@@ -122,45 +125,57 @@ namespace Menu
 			switch (event.type)
 			{
 			case sf::Event::MouseButtonPressed:
-				ElementBase* const child = findTargetChild(
-					event.mouseMove.x,
-					event.mouseMove.y);
-
-				if (strongSelectedChild != child)
+				if (ElementBase * const child = findTargetChild(
+						event.mouseButton.x,
+						event.mouseButton.y,
+						strongSelectedChild);
+					strongSelectedChild != child)
 				{
-					if (strongSelectedChild)
+					if (strongSelectedChild.getValue())
 					{
 						// strongSelectedChild->onEvent(event); not needed here?
-						strongSelectedChild->removeStrongSelected();
+						strongSelectedChild->unselectStrong();
 					}
 
 					strongSelectedChild = child;
-					strongSelectedChild->strongSelected = true;
+					if (strongSelectedChild)
+						strongSelectedChild->strongSelected = true;
+				}
+
+				// fall though
+			case sf::Event::TextEntered:
+				if (strongSelectedChild)
+				{
+					strongSelectedChild->onEvent(event);
 				}
 
 				break;
 			case sf::Event::MouseMoved:
-				ElementBase* const child = findTargetChild(
-					event.mouseMove.x,
-					event.mouseMove.y);
-
-				if (weakSelectedChild != child)
+				if (ElementBase* const child = findTargetChild(
+						event.mouseMove.x,
+						event.mouseMove.y,
+						weakSelectedChild); 
+					weakSelectedChild != child)
 				{
-					if (weakSelectedChild)
+					if (weakSelectedChild.getValue())
 					{
 						weakSelectedChild->onEvent(event); // fix lost movement bugs
-						weakSelectedChild->removeWeakSelected();
+						weakSelectedChild->unselectWeak();
 					}
 
 					weakSelectedChild = child;
-					weakSelectedChild->weakSelected = true;
-					weakSelectedChild->onEvent(event);
+
+					if (weakSelectedChild)
+						weakSelectedChild->weakSelected = true;
 				}
 
-				break;
+				// fall though
 			case sf::Event::EventType::MouseWheelMoved:
 			case sf::Event::EventType::MouseWheelScrolled:
-				weakSelectedChild->onEvent(event);
+				if (weakSelectedChild.getValue())
+				{
+					weakSelectedChild->onEvent(event);
+				}
 
 				break;
 			default:
@@ -169,65 +184,78 @@ namespace Menu
 
 				break;
 			}
-
-			if (strongSelectedChild)
-				strongSelectedChild->onEvent(event);
 		}
 
-		MenuNotifier<ElementBase, bool> onStrongSelectedChanged;
-		MenuNotifier<ElementBase, bool> onWeakSelectedChanged;
-
-		MenuNotifier<ElementBase, ElementBase*> onStrongSelectedChildChanged;
-		MenuNotifier<ElementBase, ElementBase*> onWeakSelectedChildChanged;
-
-		ElementBase* getWeakSelectedChild()
-		{
-			return weakSelectedChild;
-		}
-
-		ElementBase* getWeakSelectedChild()
-		{
-			return weakSelectedChild;
-		}
-
-		ReadOnlyProperty<ElementBase, ElementBase*> strongSelectedChild;
-		ReadOnlyProperty<ElementBase, ElementBase*> weakSelectedChild;
+		ReadOnlyProperty<ElementBase, ElementBase*> strongSelectedChild{ NULL };
+		ReadOnlyProperty<ElementBase, ElementBase*> weakSelectedChild{ NULL };
 
 		ReadOnlyProperty<ElementBase, bool> weakSelected;
 		ReadOnlyProperty<ElementBase, bool> strongSelected;
 
-	private:
-		void removeStrongSelected()
+	protected:
+		void unselectStrong()
 		{
 			strongSelected = false;
-			strongSelectedChild->removeStrongSelected();
-			strongSelectedChild = NULL;
+
+			if (strongSelectedChild != NULL)
+			{
+				strongSelectedChild->unselectStrong();
+				strongSelectedChild = (ElementBase*)NULL;
+			}
 		}
 
-		void removeWeakSelected()
+		void unselectWeak()
 		{
 			weakSelected = false;
-			weakSelectedChild->removeWeakSelected();
-			weakSelectedChild = NULL;
+
+			if (weakSelectedChild != NULL)
+			{
+				weakSelectedChild->unselectWeak();
+				weakSelectedChild = (ElementBase*)NULL;
+			}
 		}
 
+		void selectStrong() // proxy
+		{
+			strongSelected = true;
+		}
+
+		void selectWeak() // proxy
+		{
+			weakSelected = true;
+		}
+
+	private:
 		ElementBase* findTargetChild(
 			const float x, 
-			const float y)
+			const float y,
+			ElementBase* const expected)
 		{
 			const sf::Vector2f position = sf::Vector2f(x, y);
 
+			if (expected && isTargetChild(position, expected))
+			{
+				return expected;
+			}
+
 			for (ElementBase* const child : children)
 			{
-				const sf::FloatRect childRect = sf::FloatRect(
-					child->convertPositionVTR({ }),
-					child->size.getValue());
-
-				if (childRect.contains(position))
+				if (isTargetChild(position, child))
 					return child;
 			}
 
 			return NULL;
+		}
+
+		bool isTargetChild(
+			const sf::Vector2f position,
+			const ElementBase* const child) const
+		{
+			const sf::FloatRect childRect = sf::FloatRect(
+				child->convertPositionVTR({ }),
+				child->size.getValue());
+
+			return childRect.contains(position);
 		}
 
 		/*
@@ -421,6 +449,7 @@ namespace Menu
 		virtual void moveOwnGraphics(const sf::Vector2f)
 		{
 		}
+
 	private:
 		bool graphicsChanged = false, childGraphicsChanged = false;
 
@@ -449,15 +478,25 @@ namespace Menu
 
 		virtual void updateAutomaticSpace()
 		{
-			space.setValue(*parent->size - sf::Vector2f(
-				parent->innerOffset->left + parent->innerOffset->right,
-				parent->innerOffset->top + parent->innerOffset->bottom
-			));
+			sf::Vector2f result = space;
+
+			if (space.automatic->x)
+			{
+				result.x = parent->size->x - (parent->innerOffset->left + parent->innerOffset->right);
+			}
+
+			if (space.automatic->y)
+			{
+				result.x = parent->size->x - (parent->innerOffset->top + parent->innerOffset->bottom);
+			}
+
+			// no check needed, done outside
+			space.setValue(result);
 		}
 #pragma endregion
 
 #pragma region Conversion
-	protected:
+	public:
 		// precent to real
 		sf::Vector2f convertPosition(const sf::Vector2f position) const
 		{
@@ -470,22 +509,31 @@ namespace Menu
 			return convertPositionVTR(virtualPosition);
 		}
 
-
 		// virtual to real
 		sf::Vector2f convertPositionVTR(const sf::Vector2f position) const
 		{
 			sf::Vector2f base = parent == NULL
 				? position
-				: parent->convertPositionVTR(position);
+				: parent->convertFullPositionVTR(position);
 
-			// all these values have to be updated
-			// with moveOwnGraphics on change
+			base.x += this->position.getValue().x;
+			base.y += this->position.getValue().y;
+
+			return base;
+		}
+
+		// virtual to real
+		sf::Vector2f convertFullPositionVTR(const sf::Vector2f position) const
+		{
+			sf::Vector2f base = parent == NULL
+				? position
+				: parent->convertFullPositionVTR(position);
+
 			base.x += innerOffset.getValue().left;
 			base.y += innerOffset.getValue().top;
 
 			base.x += this->position.getValue().x;
 			base.y += this->position.getValue().y;
-			// ---
 
 			return base;
 		}
@@ -495,18 +543,28 @@ namespace Menu
 		{
 			sf::Vector2f base = position;
 
-			// all these values have to be updated
-			// with moveOwnGraphics on change
+			base.x -= this->position.getValue().x;
+			base.y -= this->position.getValue().y;
+
+			return parent == NULL
+				? base
+				: parent->convertFullPositionRTV(base);
+		}
+
+		// real to virtual
+		sf::Vector2f convertFullPositionRTV(const sf::Vector2f position) const
+		{
+			sf::Vector2f base = position;
+
 			base.x -= innerOffset.getValue().left;
 			base.y -= innerOffset.getValue().top;
 
 			base.x -= this->position.getValue().x;
 			base.y -= this->position.getValue().y;
-			// ---
 
 			return parent == NULL
 				? base
-				: parent->convertPositionRTV(base);
+				: parent->convertFullPositionRTV(base);
 		}
 #pragma endregion
 

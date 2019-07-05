@@ -9,6 +9,7 @@
 #include <Client/source/editor/manipulator/Manipulator.h>
 
 #include <Client/source/menu/MenuLabel.h>
+#include <Client/source/menu/MenuTextBox.h>
 
 namespace Scene
 {
@@ -19,19 +20,12 @@ namespace Scene
 	public:
 		virtual bool onCreate() override
 		{
-			Editor::Manipulator::Initialize();
-
-			Editor::SelectorRoot* const sr = addRoot<Editor::SelectorRoot>();
-			Editor::TileChoiceRoot* const tcr = addRoot<Editor::TileChoiceRoot>();
-			Editor::TileSearchRoot* const tsr = addRoot<Editor::TileSearchRoot>();
-
-			sr->viewPort = { 0.f, 0.f, 0.7f, 1.f };
-			tcr->viewPort = { 0.7f, 0.15f, 0.3f, 0.85f };
-			tsr->viewPort = { 0.7f, 0.f, 0.3f, 0.15f };
+			addRoot<Root>();
 
 			label.position = { 0, 0 };
 			label.text = L"0";
 			label.color = sf::Color::Yellow;
+
 
 			return MenuBaseScene::onCreate() && label.create();
 		}
@@ -43,6 +37,7 @@ namespace Scene
 		void initialize() override
 		{
 			MenuBaseScene::initialize();
+
 			label.initialize();
 		}
 
@@ -54,6 +49,7 @@ namespace Scene
 			timeArray[timeCounter] = time;
 
 			(++timeCounter) %= arraySize;
+			MenuBaseScene::onLogic(time);
 		}
 
 		void onDraw() override
@@ -71,6 +67,25 @@ namespace Scene
 		sf::Time sum{ };
 		sf::Time timeArray[arraySize] = { };
 		size_t timeCounter = 0;
+
+		class Root : public Menu::MenuRootBase
+		{
+		public:
+			bool build() override
+			{
+				tb.sizePreferred = { 100, 40 };
+				tb.position = { 200, 200 };
+				tb.text = L"- Input -";
+
+				addChild(&tb);
+
+				return true;
+			}
+			
+		private:
+			Menu::TextBox tb;
+
+		};
 
 		Menu::Label label;
 	};

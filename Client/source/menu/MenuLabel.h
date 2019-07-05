@@ -24,26 +24,13 @@ namespace Menu
 					   const std::wstring newText)
 				{
 					glText.setString(newText);
-
-					if (glText.getFont() != NULL)
-					{
-						sizePreferred =
-						{
-							glText.getGlobalBounds().width,
-							glText.getGlobalBounds().height
-						};
-					}
+					updateCharacterSize();
 				});
 			font.addListener(
 				[this](const sf::Font* const oldFont,
    					   const sf::Font* const newFont)
 				{
 					glText.setFont(*font);
-					sizePreferred =
-					{
-						glText.getLocalBounds().width,
-						glText.getLocalBounds().height
-					};
 				});
 			color.addListener(
 				[this](const sf::Color oldColor,
@@ -51,20 +38,26 @@ namespace Menu
 				{
 					glText.setFillColor(newColor);
 				});
-			/* TODO: Cope with that
+			size.addListener(
+				[this](const sf::Vector2f oldSize,
+					   const sf::Vector2f newSize)
+				{
+					updateCharacterSize();
+				});
+			limitWidth.addListener(
+				[this](const bool oldValue,
+					   const bool newValue)
+				{
+					updateCharacterSize();
+				});
 
-				size.addListener(
-					[this](const sf::Vector2f oldSize,
-						const sf::Vector2f newSize)
-					{
-					});
-			*/
-
-			glText.setCharacterSize(18);
+			// glText.setCharacterSize(18);
 		}
 
 		Property<sf::Color> color { sf::Color::White };
 		Property<const sf::Font*> font { NULL };
+
+		Property<bool> limitWidth{ false };
 		Property<std::wstring> text { L"" };
 
 		void initialize() override
@@ -83,11 +76,16 @@ namespace Menu
 		{
 			Device::Screen::Draw(glText);
 		}
+		
+		const sf::Text& readGlText() const
+		{
+			return glText;
+		}
 
 	protected:
 		virtual void updateOwnGraphics() override
 		{
-			glText.setPosition(convertPositionVTR({ 0.f, 0.f }));
+			glText.setPosition(convertPosition({ 0.f, 0.f }));
 		}
 
 		virtual void moveOwnGraphics(const sf::Vector2f offset) override
@@ -96,6 +94,21 @@ namespace Menu
 		}
 
 	private:
+		void updateCharacterSize()
+		{
+			glText.setCharacterSize(size->y * 0.7f);
+
+			if (limitWidth)
+			{
+				const float width = glText.getLocalBounds().width;
+
+				if (width > size->x)
+				{
+					glText.setCharacterSize((size->x * size->y) / width * 0.7);
+				}
+			}
+		}
+
 		sf::Text glText;
 	};
 }

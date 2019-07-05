@@ -10,6 +10,7 @@
 #include <functional>
 #include <string>
 #include <unordered_set>
+
 #include <Client/source/logger/Logger.h>
 #include <SFML/Graphics.hpp>
 
@@ -135,7 +136,8 @@ namespace Game
 			shape.setFillColor(sf::Color::Red);
 
 			state.position.addListener(
-				[this](const sf::Vector2f old)
+				[this](const sf::Vector2f newPosition,
+					   const sf::Vector2f oldPosition)
 				{
 					this->isRepresentationInvalid = true;
 				});

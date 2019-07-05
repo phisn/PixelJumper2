@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/menu/MenuProperty.h>
 #include <Client/source/resource/pipes/PipeBase.h>
 
 #include <cassert>
@@ -15,49 +16,5 @@ namespace Game
 	};
 
 	template <typename T>
-	class PropertyWriter
-	{
-		typedef std::function<void(const T)> Listener;
-	public:
-		PropertyWriter(T& value)
-			:
-			value(value)
-		{
-		}
-
-		PropertyWriter<T>& operator=(const T value)
-		{
-			const T oldValue = this->value;
-			this->value = value;
-
-			for (const Listener& listener : listeners)
-			{
-				listener(oldValue);
-			}
-
-			return *this;
-		}
-
-		void addListener(const Listener listener)
-		{
-			listeners.push_back(listener);
-		}
-
-		void removeListener(const Listener listener)
-		{
-			for (decltype(listeners)::iterator iterator = listeners.begin()
-				; iterator != listeners.end(); ++iterator)
-				if (iterator->target<void>() == listener.target<void>())
-				{
-					listeners.erase(iterator);
-
-					break;
-				}
-		}
-
-	private:
-		T& value;
-		std::vector<Listener> listeners;
-	};
-
+	using Property = Menu::Property<T>;
 }

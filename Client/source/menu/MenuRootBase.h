@@ -26,6 +26,16 @@ namespace Menu
 		using ElementBase::size;
 		using ElementBase::position;
 
+		using ElementBase::strongSelected;
+		using ElementBase::strongSelectedChild;
+		using ElementBase::weakSelected;
+		using ElementBase::weakSelectedChild;
+
+		using ElementBase::unselectStrong;
+		using ElementBase::unselectWeak;
+		using ElementBase::selectStrong;
+		using ElementBase::selectWeak;
+
 		MenuRootBase()
 		{
 			viewPort.addListener(

@@ -494,9 +494,6 @@
     <None Include="source\menu\MenuScrollContainer.cpp">
       <Filter>source\menu</Filter>
     </None>
-    <None Include="source\menu\MenuScrollContainer.h">
-      <Filter>source\menu</Filter>
-    </None>
     <None Include="source\menu\MenuButton.h">
       <Filter>source\menu</Filter>
     </None>
@@ -680,6 +677,9 @@
       <Filter>source\menu</Filter>
     </None>
     <None Include="source\menu\MenuEvent.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuScrollContainer.h">
       <Filter>source\menu</Filter>
     </None>
   </ItemGroup>

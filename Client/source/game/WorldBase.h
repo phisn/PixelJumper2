@@ -16,8 +16,18 @@
 
 namespace Game
 {
+	struct WorldProperties
+	{
+		std::wstring authorName;
+		std::wstring mapName;
+
+		Resource::WorldId worldId;
+		sf::Vector2i size;
+	};
+
 	class WorldBase
 	{
+		WorldProperties worldProperties;
 	public:
 		WorldState state;
 
@@ -80,25 +90,18 @@ namespace Game
 			}
 		}
 
+		sf::Uint64 timeCounter = 0;
 		virtual void onLogic(const sf::Time time)
 		{
-			sf::Int64 fullTimeValue = time.asMicroseconds() / 1000;
+			timeCounter += time.asMicroseconds();
 
-			do {
-				fullTimeValue -= TIME_STEP;
-
+			while (timeCounter > logicTimeStep)
+			{
 				for (PlayerBase* const player : players)
-				{
-					player->collisionContainer.clear();
-					
-					simulatePlayers(
-						player,
-						fullTimeValue < 0
-							? fullTimeValue + TIME_STEP
-							: TIME_STEP
-					);
-				}
-			} while (fullTimeValue > 0);
+					simulatePlayer(player);
+
+				timeCounter -= logicTimeStep;
+			}
 
 			environment.onLogic(time);
 		}
@@ -136,26 +139,14 @@ namespace Game
 		std::vector<PlayerBase*> players;
 
 	private:
-		static const sf::Uint64 TIME_STEP = 1000;
+		sf::Uint64 logicTimeStep = 1000;
 
-		struct
+		void simulatePlayer(PlayerBase* const player)
 		{
-			std::wstring authorName;
-			std::wstring mapName;
+			applyGravity(player, logicTimeStep / 1000.f);
+			applyAirResistance(player, logicTimeStep / 1000.f);
 
-			Resource::WorldId worldId;
-			sf::Vector2f size;
-
-		} worldProperties;
-
-		void simulatePlayers(
-			PlayerBase* const player, 
-			const float timeValue)
-		{
-			applyGravity(player, timeValue);
-			applyAirResistance(player, timeValue);
-
-			moveTo(player, timeValue);
+			moveTo(player, logicTimeStep / 1000.f);
 		}
 
 		void applyGravity(PlayerBase* const player, const float timeValue)
@@ -170,15 +161,18 @@ namespace Game
 			PlayerBase* const player,
 			const float timeValue)
 		{
-			player->state.movement = player->state.readProperties()->movement
-				* CalculateFrictionLose(
+			player->state.movement *= FrictionLoseOverTime(
+				CalculateFrictionLose(
 					state.readProperties()->airResistance,
 					player->state.readProperties()->weight
-				);
+				),
+				timeValue);
 		}
 		
 		void moveTo(PlayerBase* const player, const float timeValue)
 		{
+			player->collisionContainer.clear();
+
 			sf::Vector2f targetOffset = player->state.readProperties()->movement
 				* player->state.readProperties()->speed
 				* timeValue;

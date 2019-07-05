@@ -45,6 +45,54 @@ namespace Scene
 
 		virtual void onEvent(const sf::Event event) override
 		{
+			switch (event.type)
+			{
+			case sf::Event::MouseButtonPressed:
+				if (Menu::MenuRootBase * const root = findTargetRoot(
+						event.mouseButton.x,
+						event.mouseButton.y,
+						strongSelected);
+					root != strongSelected)
+				{
+					strongSelected->unselectStrong();
+					strongSelected = root;
+					strongSelected->selectStrong();
+				}
+
+				// fall though
+			case sf::Event::TextEntered:
+				if (strongSelected)
+				{
+					strongSelected->onEvent(event);
+				}
+
+				break;
+			case sf::Event::MouseMoved:
+				if (Menu::MenuRootBase* const root = findTargetRoot(
+						event.mouseMove.x,
+						event.mouseMove.y,
+						weakSelected); 
+					root != weakSelected)
+				{
+					weakSelected->onEvent(event);
+
+					weakSelected->unselectWeak();
+					weakSelected = root;
+					weakSelected->selectWeak();
+				}
+
+				// fall though
+			case sf::Event::EventType::MouseWheelMoved:
+			case sf::Event::EventType::MouseWheelScrolled:
+				weakSelected->onEvent(event);
+				
+				break;
+			default:
+				for (Menu::MenuRootBase* const root : roots)
+					root->onEvent(event);
+
+				break;
+			}
 		}
 
 		virtual void onLogic(const sf::Time time) override
@@ -106,54 +154,32 @@ namespace Scene
 			}
 		}
 
-		void selectStrongByPosition(const sf::Vector2f position)
+		Menu::MenuRootBase* findTargetRoot(
+			const float x, 
+			const float y,
+			Menu::MenuRootBase* expected)
 		{
-			if (isInsideRoot(strongSelected, position))
+			assert(expected != NULL); // in menubase cant be null
+
+			const sf::Vector2f position{ x, y };
+
+			if (isTargetChild(position, expected))
 			{
-				return;
+				return expected;
 			}
 
-			if (isInsideRoot(weakSelected, position))
-			{
-				strongSelected = weakSelected;
-				return;
-			}
-
-			if (Menu::MenuRootBase* const root = getRootByPosition(position); root != NULL)
-			{
-				strongSelected = root;
-			}
-		}
-
-		Menu::MenuRootBase* getWeakByPosition(const sf::Vector2f position)
-		{
-			if (isInsideRoot(weakSelected, position))
-			{
-				return weakSelected;
-			}
-
-			if (Menu::MenuRootBase* const root = getRootByPosition(position); root != NULL)
-			{
-				return root;
-			}
-
-			return weakSelected;
-		}
-
-		Menu::MenuRootBase* getRootByPosition(const sf::Vector2f position) const
-		{
 			for (Menu::MenuRootBase* const root : roots)
-				if (isInsideRoot(root, position))
-				{
+			{
+				if (isTargetChild(position, root))
 					return root;
-				}
+			}
 
-			return NULL;
+			return expected;
 		}
 
-		bool isInsideRoot(
-			const Menu::MenuRootBase* const root, 
-			const sf::Vector2f position) const
+		bool isTargetChild(
+			const sf::Vector2f position,
+			const Menu::MenuRootBase* const root)
 		{
 			return Menu::MenuRootBase::ConvertPortToReal(root->viewPort).contains(position);
 		}

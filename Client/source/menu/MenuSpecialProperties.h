@@ -4,7 +4,7 @@
 
 namespace Menu
 {
-	template <typename T>
+	template <typename T, BasicPropertyType = DeterminePropertyType<T>::type>
 	class AutomaticProperty
 		:
 		public Property<T>
@@ -19,9 +19,59 @@ namespace Menu
 		template <typename S>
 		AutomaticProperty& operator=(const S value)
 		{
-			automatic.setValue(false);
+			if (automatic)
+			{
+				automatic.setValue(false);
+			}
+
 			Property<T>::operator=(value);
 			return *this;
+		}
+
+		// use setValue for automatic define
+	};
+
+	template <typename E>
+	class AutomaticProperty<sf::Vector2<E>, BasicPropertyType::VectorProperty>
+		:
+		public Property<sf::Vector2<E>, BasicPropertyType::VectorProperty>
+	{
+		typedef sf::Vector2<E> T;
+		typedef Property<T, BasicPropertyType::VectorProperty> Parent;
+
+	public:
+		using Property::Property;
+		using Property::operator->;
+		using Property::operator*;
+
+		Property<sf::Vector2<bool>> automatic{ true, true };
+
+		template <typename S>
+		AutomaticProperty& operator=(const S value)
+		{
+			if (automatic->x || automatic->y)
+			{
+				sf::Vector2<bool> result = *automatic;
+
+				if (result.x && this->value.x != value.x)
+					result.x = false;
+
+				if (result.y && this->value.y != value.y)
+					result.y = false;
+
+				if (result != automatic)
+				{
+					automatic = result;
+				}
+			}
+
+			Property<T>::operator=(value);
+			return *this;
+		}
+
+		bool isAutomatic() const
+		{
+			return automatic->x || automatic->y;
 		}
 
 		// use setValue for automatic define

@@ -64,7 +64,6 @@ namespace Scene
 
 			if (player == NULL)
 			{
-				delete player; // TODO: delete?
 				return false;
 			}
 

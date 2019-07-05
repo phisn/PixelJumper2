@@ -19,7 +19,7 @@ namespace Device
 		window = new sf::RenderWindow();
 		resource = new Device::ScreenSettings();
 
-		return DefaultSettings();
+		return Cursor::Initialize() && DefaultSettings();
 	}
 
 	void Screen::Uninitialize()
@@ -117,7 +117,7 @@ namespace Device
 			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	void Screen::Cursor::SetCursor(const sf::Cursor::Type cursor)

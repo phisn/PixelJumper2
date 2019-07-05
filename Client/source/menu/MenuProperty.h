@@ -5,6 +5,8 @@
 
 #include <type_traits>
 
+#include <SFML/System/Vector2.hpp>
+
 namespace Menu
 {
 	struct CustomProperty
@@ -12,16 +14,19 @@ namespace Menu
 		virtual void onValueChanged() const noexcept = 0;
 	};
 
-	
-
 	template <typename ListenerT>
 	class PropertyBase
 	{
 		PropertyBase& operator=(PropertyBase&) = delete;
 		PropertyBase& operator=(const PropertyBase&) = delete;
 
+		PropertyBase(PropertyBase&) = delete;
+		PropertyBase(const PropertyBase&) = delete;
+
 	public:
 		typedef ListenerT Listener;
+
+		PropertyBase() = default;
 
 		void addListener(const Listener listener)
 		{
@@ -107,10 +112,9 @@ namespace Menu
 			);
 		}
 
-
 		T value;
 
-	private:
+	protected:
 		void valueChanged(const T&& oldValue) const
 		{
 			for (const Listener& listener : listeners)
@@ -120,15 +124,54 @@ namespace Menu
 		}
 	};
 
-	template <typename T,
-		bool UseCustomProperty = std::is_base_of_v<CustomProperty, T>
+	enum class BasicPropertyType
+	{
+		CommonProperty,
+		CustomProperty,
+		VectorProperty,
+		ArithmeticProperty,
+		PointerProperty
+	};
+
+	template <typename T, typename Eneable = void>
+	struct DeterminePropertyType
+	{
+		static const BasicPropertyType type = BasicPropertyType::CommonProperty;
+	};
+
+	template <typename T>
+	struct DeterminePropertyType<T, std::enable_if_t<std::is_arithmetic_v<T>>>
+	{
+		static const BasicPropertyType type = BasicPropertyType::ArithmeticProperty;
+	};
+
+	template <typename T>
+	struct DeterminePropertyType<T, std::enable_if_t<std::is_pointer_v<T>>>
+	{
+		static const BasicPropertyType type = BasicPropertyType::PointerProperty;
+	};
+
+	template <typename T>
+	struct DeterminePropertyType<T, std::enable_if_t<std::is_base_of_v<CustomProperty, T>>>
+	{
+		static const BasicPropertyType type = BasicPropertyType::CustomProperty;
+	};
+
+	template <typename T>
+	struct DeterminePropertyType<sf::Vector2<T>, void>
+	{
+		static const BasicPropertyType type = BasicPropertyType::VectorProperty;
+	};
+
+	template <typename T, 
+		BasicPropertyType = DeterminePropertyType<T>::type
 	>
 	class Property
 	{
 	};
 
 	template <typename T>
-	class Property<T, false>
+	class Property<T, BasicPropertyType::CommonProperty>
 		:
 		public ValuePropertyBase<T>
 	{
@@ -149,8 +192,209 @@ namespace Menu
 		using ValuePropertyBase::operator=;
 	};
 
+	template <typename E>
+	class Property<sf::Vector2<E>, BasicPropertyType::VectorProperty>
+		:
+		public ValuePropertyBase<sf::Vector2<E>>
+	{
+		using _T = sf::Vector2<E>;
+
+		Property(Property&) = delete;
+		Property(const Property&) = delete;
+
+		typedef std::function<void(const E)> VectorListener;
+
+	public:
+		using ValuePropertyBase::ValuePropertyBase;
+
+		Property(const E x, const E y)
+		{
+			value.x = std::move(x);
+			value.y = std::move(y);
+		}
+
+		Property& operator+=(const _T z)
+		{
+			const _T oldValue = value;
+			value += z;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		Property& operator-=(const _T z)
+		{
+			const _T oldValue = value;
+			value -= z;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		Property& operator*=(const E z)
+		{
+			const _T oldValue = value;
+			value *= z;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		Property& operator/=(const E z)
+		{
+			const _T oldValue = value;
+			value /= z;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		const _T* operator->() const
+		{
+			return &value;
+		}
+
+		const _T& operator*() const
+		{
+			return value;
+		}
+
+		void setX(const E x)
+		{
+			const _T oldValue = value;
+			value.x = std::move(x);
+			valueChanged(std::move(oldValue));
+		}
+
+		void setY(const E y)
+		{
+			const _T oldValue = value;
+			value.y = std::move(y);
+			valueChanged(std::move(oldValue));
+		}
+
+		using ValuePropertyBase::setValue;
+		void setValue(const E x, const E y)
+		{
+			const _T oldValue = value;
+			
+			value.x = std::move(x);
+			value.y = std::move(y);
+
+			valueChanged(std::move(oldValue));
+		}
+
+		using ValuePropertyBase::operator const _T;
+		using ValuePropertyBase::operator=;
+	};
+
 	template <typename T>
-	class Property<T*, false>
+	class Property<T, BasicPropertyType::ArithmeticProperty>
+		:
+		public Property<T, BasicPropertyType::CommonProperty>
+	{
+	public:
+		Property()
+			:
+			Property<T, BasicPropertyType::CommonProperty>()
+		{
+		}
+
+		Property(const T value)
+			:
+			Property<T, BasicPropertyType::CommonProperty>(value)
+		{
+		}
+
+		Property& operator++()
+		{
+			const T oldValue = value;
+			++value;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		T operator++(int)
+		{
+			const T oldValue = value;
+			++value;
+			valueChanged(std::move(oldValue));
+
+			return oldValue;
+		}
+
+		template <typename Z>
+		Property& operator+=(const Z z)
+		{
+
+			const T oldValue = value;
+			value += (T) z;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		Property& operator--()
+		{
+			const T oldValue = value;
+			--value;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		T operator--(int)
+		{
+			const T oldValue = value;
+			--value;
+			valueChanged(std::move(oldValue));
+
+			return oldValue;
+		}
+
+		template <typename Z>
+		Property& operator-=(const Z z)
+		{
+
+			const T oldValue = value;
+			value -= (T)z;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		template <typename Z>
+		Property& operator*=(const Z z)
+		{
+
+			const T oldValue = value;
+			value *= (T)z;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		template <typename Z>
+		Property& operator/=(const Z z)
+		{
+
+			const T oldValue = value;
+			value /= (T)z;
+			valueChanged(std::move(oldValue));
+
+			return *this;
+		}
+
+		using Property<T, BasicPropertyType::CommonProperty>::operator->;
+		using Property<T, BasicPropertyType::CommonProperty>::operator*;
+
+		using Property<T, BasicPropertyType::CommonProperty>::operator const T;
+		using Property<T, BasicPropertyType::CommonProperty>::operator=;
+	};
+
+	template <typename T>
+	class Property<T*, BasicPropertyType::PointerProperty>
 		:
 		public ValuePropertyBase<T*>
 	{
@@ -172,7 +416,7 @@ namespace Menu
 	};
 
 	template <typename T>
-	class Property<T, true>
+	class Property<T, BasicPropertyType::CustomProperty>
 		:
 		public PropertyBase<
 			std::function<void(const T&)>
@@ -182,7 +426,7 @@ namespace Menu
 		{
 		public:
 			template <typename... Args>
-			Value(Property<T, true>* const parent, Args... args)
+			Value(Property<T, BasicPropertyType::CustomProperty>* const parent, Args... args)
 				:
 				T(args...),
 				parent(parent)
@@ -195,7 +439,7 @@ namespace Menu
 			}
 
 		private:
-			Property<T, true>* parent;
+			Property<T, BasicPropertyType::CustomProperty>* parent;
 		};
 
 	public:

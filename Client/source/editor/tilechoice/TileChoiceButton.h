@@ -5,13 +5,6 @@
 
 namespace Editor
 {
-	enum class TileChoiceButtonEffect
-	{
-		Selected,
-		SelectedHover,
-		SelectedPressed
-	};
-
 	class TileChoiceButtonMaterial
 		:
 		public Menu::ButtonMaterial::DefaultStaticRectangleBase
@@ -28,21 +21,21 @@ namespace Editor
 			currentlySelected = false;
 		}
 
-		void applyAdditionalStyle(const TileChoiceButtonEffect effect)
+		void applySelectedStyle(const Menu::CommonSelectedEffect effect)
 		{
 			applyStyle(additionalStyles[(int) effect]);
 			currentlySelected = true;
 		}
 
 	private:
-		TileChoiceButtonEffect currentAdditionalEffect;
+		Menu::CommonSelectedEffect currentAdditionalEffect;
 		bool currentlySelected = false;
 
 		void updateEffect() override
 		{
 			if (currentlySelected)
 			{
-				applyAdditionalStyle(currentAdditionalEffect);
+				applySelectedStyle(currentAdditionalEffect);
 			}
 			else
 			{
@@ -109,7 +102,7 @@ namespace Editor
 		{
 			if (selected)
 			{
-				material.applyAdditionalStyle(TileChoiceButtonEffect::Selected);
+				material.applySelectedStyle(Menu::CommonSelectedEffect::Selected);
 			}
 			else
 			{
@@ -121,7 +114,7 @@ namespace Editor
 		{
 			if (selected)
 			{
-				material.applyAdditionalStyle(TileChoiceButtonEffect::SelectedHover);
+				material.applySelectedStyle(Menu::CommonSelectedEffect::SelectedHover);
 			}
 			else
 			{
@@ -133,7 +126,7 @@ namespace Editor
 		{
 			if (selected)
 			{
-				material.applyAdditionalStyle(TileChoiceButtonEffect::SelectedPressed);
+				material.applySelectedStyle(Menu::CommonSelectedEffect::SelectedPressed);
 			}
 			else
 			{

@@ -15,7 +15,7 @@ namespace Editor
 {
 	class MagicTileButton
 		:
-		public Menu::Button<Menu::ButtonMaterial::DefaultRectangle>
+		public Menu::Button<Menu::ButtonMaterial::DefaultStaticRectangle>
 	{
 	public:
 		void onButtonPressed() override
