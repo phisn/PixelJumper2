@@ -37,7 +37,8 @@ namespace Scene
 			const sf::Event event) = 0;
 		virtual void onLogic(
 			const sf::Time time) = 0;
-		virtual void onDraw() = 0;
+		virtual void onDraw(
+			sf::RenderTarget* const target) = 0;
 
 		bool isRunning() const
 		{

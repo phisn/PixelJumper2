@@ -236,16 +236,16 @@ namespace Framework
 		}
 
 	public:
-		void draw() const
+		void draw(sf::RenderTarget* const target) const
 		{
 			if (!subScenes.empty())
 			{
-				subScenes.back()->onDraw();
+				subScenes.back()->onDraw(target);
 			}
 
 			if (scene->isRunning())
 			{
-				scene->onDraw();
+				scene->onDraw(target);
 			}
 		}
 

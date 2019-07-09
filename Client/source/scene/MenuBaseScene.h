@@ -101,10 +101,10 @@ namespace Scene
 				root->onLogic(time);
 		}
 
-		virtual void onDraw() override
+		virtual void onDraw(sf::RenderTarget* const target) override
 		{
 			for (Menu::MenuRootBase* const root : roots)
-				root->draw();
+				root->draw(target);
 		}
 
 	protected:

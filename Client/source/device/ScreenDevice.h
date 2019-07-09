@@ -74,6 +74,7 @@ namespace Device
 		bool SaveSettings();
 
 		const sf::RenderWindow* GetWindow();
+		sf::RenderTarget* GetTarget();
 
 		void ResetView();
 		void SetView(const sf::View& view);

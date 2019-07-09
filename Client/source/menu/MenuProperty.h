@@ -73,7 +73,7 @@ namespace Menu
 		}
 
 		ValuePropertyBase& operator=(const T value)
-		{
+		{ 
 			return operator=<T>(value);
 		}
 
@@ -202,16 +202,14 @@ namespace Menu
 		Property(Property&) = delete;
 		Property(const Property&) = delete;
 
-		typedef std::function<void(const E)> VectorListener;
-
 	public:
 		using ValuePropertyBase::ValuePropertyBase;
 
-		Property(const E x, const E y)
+		/*explicit Property(const E x, const E y)
 		{
 			value.x = std::move(x);
 			value.y = std::move(y);
-		}
+		}*/
 
 		Property& operator+=(const _T z)
 		{

@@ -73,8 +73,8 @@ namespace Scene
 		public:
 			bool build() override
 			{
-				tb.sizePreferred = { 100, 40 };
-				tb.position = { 200, 200 };
+				tb.sizePreferred = sf::Vector2f(100, 40);
+				tb.position = sf::Vector2f(200, 200);
 				tb.text = L"- Input -";
 
 				addChild(&tb);

@@ -14,9 +14,9 @@ namespace Framework
 
 	namespace Interface
 	{
-		static void Draw()
+		static void Draw(sf::RenderTarget* const target)
 		{
-			Context::GetStack().back()->draw();
+			Context::GetStack().back()->draw(target);
 		}
 
 		static void Event(const sf::Event event)

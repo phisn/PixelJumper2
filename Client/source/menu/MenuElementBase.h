@@ -36,7 +36,8 @@ namespace Menu
 							newOffset.top - oldOffset.top
 						));
 
-						child->updateAutomaticSpace();
+						if (child->space.isAutomatic())
+							child->updateAutomaticSpace();
 					}
 				});
 			size.addListener(
@@ -110,7 +111,7 @@ namespace Menu
 			}
 		}
 
-		virtual void onDraw() const
+		virtual void onDraw(sf::RenderTarget* const target) const
 		{
 			for (ElementBase* const element : children)
 			{
@@ -343,7 +344,7 @@ namespace Menu
 			element->parent.setValue(this);
 			children.push_back(element);
 
-			if (*element->space.automatic)
+			if (element->space.isAutomatic())
 			{
 				element->updateAutomaticSpace();
 			}
@@ -358,7 +359,7 @@ namespace Menu
 			element->parent.setValue(this);
 			children.insert(position, element);
 
-			if (*element->space.automatic)
+			if (element->space.isAutomatic())
 			{
 				element->updateAutomaticSpace();
 			}
@@ -468,11 +469,27 @@ namespace Menu
 			}
 			else
 			{
-				size =
+				sf::Vector2f nextSize;
+
+				if (!space.automatic->x && space->x == 0)
 				{
-					realSpace.x < sizePreferred->x ? realSpace.x : sizePreferred->x,
-					realSpace.y < sizePreferred->y ? realSpace.y : sizePreferred->y,
-				};
+					nextSize.x = sizePreferred->x;
+				}
+				else
+				{
+					nextSize.x = realSpace.x < sizePreferred->x ? realSpace.x : sizePreferred->x;
+				}
+
+				if (!space.automatic->y&& space->y == 0)
+				{
+					nextSize.y = sizePreferred->y;
+				}
+				else
+				{
+					nextSize.y = realSpace.y < sizePreferred->y ? realSpace.y : sizePreferred->y;
+				}
+
+				size = nextSize;
 			}
 		}
 
@@ -487,7 +504,7 @@ namespace Menu
 
 			if (space.automatic->y)
 			{
-				result.x = parent->size->x - (parent->innerOffset->top + parent->innerOffset->bottom);
+				result.y = parent->size->y - (parent->innerOffset->top + parent->innerOffset->bottom);
 			}
 
 			// no check needed, done outside

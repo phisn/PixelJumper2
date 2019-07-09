@@ -130,9 +130,9 @@ namespace Editor
 		{
 		}
 		
-		virtual void onDraw() override
+		virtual void onDraw(sf::RenderTarget* const target) override
 		{
-			Device::Screen::Draw(groupedTilesSprite);
+			target->draw(groupedTilesSprite);
 		}
 
 	private:

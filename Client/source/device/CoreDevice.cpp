@@ -100,7 +100,7 @@ namespace Device
 			Framework::Interface::Update(clock.restart());
 
 			Device::Screen::BeginDraw();
-			Framework::Interface::Draw();
+			Framework::Interface::Draw(Device::Screen::GetTarget());
 			Device::Screen::EndDraw();
 		}
 

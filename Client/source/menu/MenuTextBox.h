@@ -170,33 +170,7 @@ namespace Menu
 				[this](const sf::Uint32 oldValue,
 					   const sf::Uint32 newValue)
 				{
-					assert(std::numeric_limits<sf::Uint32>::max());
 					updateCaretPosition();
-
-					const float realCursorPosition = label.readGlText().findCharacterPos(newValue).x;
-					const sf::Vector2f realLabelPosition = convertFullPositionVTR(label.position);
-
-					if (realCursorPosition > realLabelPosition.x + label.size->x)
-					{
-						label.position = convertFullPositionRTV(
-						{
-							realCursorPosition - label.size->x,
-							realLabelPosition.x
-						});
-
-						return;
-					}
-
-					if (realCursorPosition < realLabelPosition.x)
-					{
-						label.position = convertFullPositionRTV(
-						{
-							realCursorPosition,
-							realLabelPosition.x
-						});
-
-						return;
-					}
 				});
 
 			text.addListener(
@@ -213,9 +187,13 @@ namespace Menu
 					}
 				});
 
+			label.space.automatic.setX(false);
 			
 			addChild(&label);
 			innerOffset = { 5.f, 5.f, 5.f, 5.f };
+
+
+			space.automatic.setX(false);
 		}
 
 		void onEvent(const sf::Event event) override
@@ -447,6 +425,11 @@ namespace Menu
 
 				++cursorPosition;
 			}
+		}
+
+		bool isValidAdditonalChar(char c)
+		{
+			return label.readGlText().findCharacterPos(cursorPosition).x > convertFullPositionVTR(label.position).x + label.size->x;
 		}
 
 		Caret caret;

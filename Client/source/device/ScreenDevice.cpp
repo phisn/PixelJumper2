@@ -159,6 +159,11 @@ namespace Device
 		return window;
 	}
 
+	sf::RenderTarget* GetTarget()
+	{
+		return window;
+	}
+
 	void Screen::ResetView()
 	{
 		window->setView(window->getDefaultView());
