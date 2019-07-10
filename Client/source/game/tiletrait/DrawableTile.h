@@ -16,6 +16,6 @@ namespace Game
 			env->registerTile<DrawableTile>(this);
 		}
 
-		virtual void onDraw() = 0;
+		virtual void onDraw(sf::RenderTarget* const target) = 0;
 	};
 }

@@ -162,9 +162,9 @@ namespace Menu::ButtonMaterial
 			applyStyle(findStyle(currentEffect = effect));
 		}
 
-		void draw() const
+		void draw(sf::RenderTarget* const target) const
 		{
-			Device::Screen::Draw(rect);
+			target->draw(rect);
 		}
 
 	protected:

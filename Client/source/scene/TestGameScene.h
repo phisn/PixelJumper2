@@ -119,10 +119,10 @@ namespace Scene
 			hostWorld.onLogic(time);
 		}
 
-		void onDraw() override
+		void onDraw(sf::RenderTarget* const target) override
 		{
 			player->applyView();
-			hostWorld.draw();
+			hostWorld.draw(target);
 			Device::Screen::ResetView();
 		}
 

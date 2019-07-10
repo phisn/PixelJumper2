@@ -58,9 +58,9 @@ namespace Editor
 				shape.setSize(size * SelectorView::GridRectSize);
 			}
 
-			void draw() const override
+			void draw(sf::RenderTarget* const target) const override
 			{
-				Device::Screen::Draw(shape);
+				target->draw(shape);
 			}
 
 		private:

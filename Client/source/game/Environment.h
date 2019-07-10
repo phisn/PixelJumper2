@@ -58,7 +58,7 @@ namespace Game
 		bool initialize(
 			Resource::World* const resource);
 
-		void draw() const;
+		void draw(sf::RenderTarget* const target) const;
 		void onEvent(const sf::Event event);
 		void onLogic(const sf::Time time);
 

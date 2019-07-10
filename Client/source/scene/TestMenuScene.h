@@ -52,13 +52,12 @@ namespace Scene
 			MenuBaseScene::onLogic(time);
 		}
 
-		void onDraw() override
+		void onDraw(sf::RenderTarget* const target) override
 		{
 			label.text = std::to_wstring((int) std::round(1.0 / (sum.asMicroseconds() / (arraySize * 1'000'000.0))));
 
-			MenuBaseScene::onDraw();
-
-			label.onDraw();
+			MenuBaseScene::onDraw(target);
+			label.onDraw(target);
 		}
 
 	private:

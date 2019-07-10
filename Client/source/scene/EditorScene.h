@@ -185,10 +185,10 @@ namespace Scene
 			fpsLabel.onLogic(time);
 		}
 
-		void onDraw() override
+		void onDraw(sf::RenderTarget* const target) override
 		{
-			MenuBaseScene::onDraw();
-			fpsLabel.onDraw();
+			MenuBaseScene::onDraw(target);
+			fpsLabel.onDraw(target);
 		}
 
 	private:

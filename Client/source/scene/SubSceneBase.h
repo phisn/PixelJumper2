@@ -1,7 +1,10 @@
 #pragma once
 
+#include <SFML/Graphics/RenderTarget.hpp>
+
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
+
 
 namespace Scene
 {

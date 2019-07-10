@@ -187,10 +187,10 @@ namespace Editor
 			Manipulator::GetCache()->selection.notify(); // ignore return
 		}
 
-		void draw() const
+		void draw(sf::RenderTarget* const target) const
 		{
 			for (const sf::RectangleShape& shape : multipleTileMarker)
-				Device::Screen::Draw(shape);
+				target->draw(shape);
 		}
 
 	private:

@@ -145,14 +145,14 @@ namespace Game
 
 		virtual void onLogic(const sf::Time) = 0;
 
-		virtual void draw()
+		virtual void draw(sf::RenderTarget* const target)
 		{
 			if (isRepresentationInvalid)
 			{
 				updateRepresentation();
 			}
 
-			Device::Screen::Draw(shape);
+			target->draw(shape);
 		}
 
 		bool writeState(

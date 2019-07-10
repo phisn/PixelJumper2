@@ -61,7 +61,7 @@ namespace Editor
 			const Resource::VectorTileSize size,
 			const Resource::VectorTilePosition position) const = 0;
 
-		virtual void draw() const = 0;
+		virtual void draw(sf::RenderTarget* const target) const = 0;
 
 	protected:
 		sf::Color color;

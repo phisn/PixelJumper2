@@ -61,15 +61,15 @@ namespace Editor
 			);
 		}
 
-		void draw() const
+		void draw(sf::RenderTarget* const target) const
 		{
-			drawGrid();
+			drawGrid(target);
 		}
 
 	private:
 		mutable Menu::CrossShape crossBase;
 
-		void drawGrid() const
+		void drawGrid(sf::RenderTarget* const target) const
 		{
 			// could be exported vvv
 			const sf::Vector2f crossOffset = crossBase.size.getValue()
@@ -96,17 +96,19 @@ namespace Editor
 					drawSingleCross(sf::Vector2f(
 						crossOffset.x * x + crossBaseOffset.x,
 						crossOffset.y * y + crossBaseOffset.y
-					));
+					), target);
 				}
 
 			view.getSize();
 			view.getCenter();
 		}
 
-		void drawSingleCross(const sf::Vector2f position) const
+		void drawSingleCross(
+			const sf::Vector2f position,
+			sf::RenderTarget* const target) const
 		{
 			crossBase.position = position;
-			Device::Screen::Draw(crossBase);
+			target->draw(crossBase);
 		}
 
 		sf::Vector2i beginMouseOffset;

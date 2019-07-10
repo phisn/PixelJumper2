@@ -90,10 +90,10 @@ namespace Menu
 			return view;
 		}
 
-		void draw() const
+		void draw(sf::RenderTarget* const target) const
 		{
 			Device::Screen::SetView(view);
-			onDraw();
+			onDraw(target);
 			Device::Screen::ResetView();
 		}
 

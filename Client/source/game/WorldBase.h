@@ -80,13 +80,13 @@ namespace Game
 			return true;
 		}
 
-		virtual void draw()
+		virtual void draw(sf::RenderTarget* const target)
 		{
-			environment.draw();
+			environment.draw(target);
 
 			for (PlayerBase* const player : players)
 			{
-				player->draw();
+				player->draw(target);
 			}
 		}
 

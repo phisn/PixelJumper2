@@ -29,18 +29,17 @@ namespace Editor
 			return true;
 		}
 
-		void onDraw() const override
+		void onDraw(sf::RenderTarget* const target) const override
 		{
-			MenuRootBase::onDraw();
-
+			MenuRootBase::onDraw(target);
 
 			for (TileBase* const tile : Manipulator::GetWorld()->getTiles())
 			{
-				tile->draw();
+				tile->draw(target);
 			}
 
-			selectorMarker.draw();
-			selectorView.draw();
+			selectorMarker.draw(target);
+			selectorView.draw(target);
 		}
 
 		void onEvent(const sf::Event event) override

@@ -115,7 +115,7 @@ namespace Menu
 		{
 			for (ElementBase* const element : children)
 			{
-				element->onDraw();
+				element->onDraw(target);
 			}
 		}
 #pragma endregion
@@ -515,7 +515,7 @@ namespace Menu
 #pragma region Conversion
 	public:
 		// precent to real
-		sf::Vector2f convertPosition(const sf::Vector2f position) const
+		virtual sf::Vector2f convertPosition(const sf::Vector2f position) const
 		{
 			const sf::Vector2f virtualPosition = 
 			{
@@ -527,7 +527,7 @@ namespace Menu
 		}
 
 		// virtual to real
-		sf::Vector2f convertPositionVTR(const sf::Vector2f position) const
+		virtual sf::Vector2f convertPositionVTR(const sf::Vector2f position) const
 		{
 			sf::Vector2f base = parent == NULL
 				? position
@@ -540,7 +540,7 @@ namespace Menu
 		}
 
 		// virtual to real
-		sf::Vector2f convertFullPositionVTR(const sf::Vector2f position) const
+		virtual sf::Vector2f convertFullPositionVTR(const sf::Vector2f position) const
 		{
 			sf::Vector2f base = parent == NULL
 				? position
@@ -556,7 +556,7 @@ namespace Menu
 		}
 
 		// real to virtual
-		sf::Vector2f convertPositionRTV(const sf::Vector2f position) const 
+		virtual sf::Vector2f convertPositionRTV(const sf::Vector2f position) const 
 		{
 			sf::Vector2f base = position;
 
@@ -569,7 +569,7 @@ namespace Menu
 		}
 
 		// real to virtual
-		sf::Vector2f convertFullPositionRTV(const sf::Vector2f position) const
+		virtual sf::Vector2f convertFullPositionRTV(const sf::Vector2f position) const
 		{
 			sf::Vector2f base = position;
 

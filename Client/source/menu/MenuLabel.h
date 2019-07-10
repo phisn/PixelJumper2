@@ -72,9 +72,9 @@ namespace Menu
 			}
 		}
 
-		void onDraw() const override
+		void onDraw(sf::RenderTarget* const target) const override
 		{
-			Device::Screen::Draw(glText);
+			target->draw(glText);
 		}
 		
 		const sf::Text& readGlText() const

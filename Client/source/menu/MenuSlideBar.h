@@ -60,9 +60,9 @@ namespace Menu
 				rect.move(offset);
 			}
 
-			void draw() const
+			void draw(sf::RenderTarget* const target) const
 			{
-				Device::Screen::Draw(rect);
+				target->draw(rect);
 			}
 
 		private:
@@ -140,9 +140,9 @@ namespace Menu
 				updatePosition();
 			}
 
-			void draw() const
+			void draw(sf::RenderTarget* const target) const
 			{
-				Device::Screen::Draw(rect);
+				target->draw(rect);
 			}
 
 		private:
@@ -335,12 +335,12 @@ namespace Menu
 			}
 		}
 
-		virtual void onDraw() const
+		virtual void onDraw(sf::RenderTarget* const target) const
 		{
-			ElementBase::onDraw();
+			ElementBase::onDraw(target);
 
-			barMaterial.draw();
-			sliderMaterial.draw();
+			barMaterial.draw(target);
+			sliderMaterial.draw(target);
 		}
 
 		Property<PercentProperty> distance

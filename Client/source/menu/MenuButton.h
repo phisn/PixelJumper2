@@ -95,11 +95,11 @@ namespace Menu
 			ElementBase::onLogic(time);
 		}
 
-		virtual void onDraw() const
+		virtual void onDraw(sf::RenderTarget* const target) const
 		{
-			material.draw();
+			material.draw(target);
 
-			ElementBase::onDraw();
+			ElementBase::onDraw(target);
 		}
 
 	protected:

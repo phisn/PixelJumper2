@@ -159,7 +159,7 @@ namespace Device
 		return window;
 	}
 
-	sf::RenderTarget* GetTarget()
+	sf::RenderTarget* Screen::GetTarget()
 	{
 		return window;
 	}

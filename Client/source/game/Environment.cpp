@@ -48,16 +48,16 @@ namespace Game
 		return true;
 	}
 
-	void Environment::draw() const
+	void Environment::draw(sf::RenderTarget* const target) const
 	{
-		for (DrawableTile* const tile : getTileType<DrawableTile>())
-		{
-			tile->onDraw();
-		}
-
 		for (const sf::VertexBuffer& vertexTile : vertexWorld)
 		{
-			Device::Screen::Draw(vertexTile);
+			target->draw(vertexTile);
+		}
+
+		for (DrawableTile* const tile : getTileType<DrawableTile>())
+		{
+			tile->onDraw(target);
 		}
 	}
 
