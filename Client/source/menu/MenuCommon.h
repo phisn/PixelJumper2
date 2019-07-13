@@ -9,6 +9,19 @@ namespace Menu
 		float left = 0.f, top = 0.f, right = 0.f, bottom = 0.f;
 	};
 
+	inline bool operator==(const CommonElementOffset& ceo1, const CommonElementOffset& ceo2)
+	{
+		return ceo1.left == ceo2.left &&
+			ceo1.top == ceo2.top &&
+			ceo1.right == ceo2.right &&
+			ceo1.bottom == ceo2.bottom;
+	}
+
+	inline bool operator!=(const CommonElementOffset& ceo1, const CommonElementOffset& ceo2)
+	{
+		return !(ceo1 == ceo2);
+	}
+
 	enum class CommonControlDirection
 	{
 		Horizontal,

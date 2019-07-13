@@ -682,5 +682,11 @@
     <None Include="source\menu\MenuScrollContainer.h">
       <Filter>source\menu</Filter>
     </None>
+    <None Include="source\menu\MenuRenderContainer.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuRenderContainer.h">
+      <Filter>source\menu</Filter>
+    </None>
   </ItemGroup>
 </Project>

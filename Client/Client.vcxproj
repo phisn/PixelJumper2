@@ -261,6 +261,8 @@
     <None Include="source\menu\MenuNotifier.h" />
     <None Include="source\menu\MenuProperty.cpp" />
     <None Include="source\menu\MenuProperty.h" />
+    <None Include="source\menu\MenuRenderContainer.cpp" />
+    <None Include="source\menu\MenuRenderContainer.h" />
     <None Include="source\menu\MenuRowContainer.cpp" />
     <None Include="source\menu\MenuRowContainer.h" />
     <None Include="source\menu\MenuScrollContainer.cpp" />

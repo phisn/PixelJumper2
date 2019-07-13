@@ -24,6 +24,19 @@ namespace Game
 		bool up, left, down, right;
 	};
 
+	inline bool operator==(const IsOnGround& iog1, const IsOnGround& iog2)
+	{
+		return iog1.up == iog2.up &&
+			iog1.left == iog2.left &&
+			iog1.down == iog2.down &&
+			iog1.right == iog2.right;
+	}
+
+	inline bool operator!=(const IsOnGround& iog1, const IsOnGround& iog2)
+	{
+		return !(iog1 == iog2);
+	}
+
 	struct PlayerStateProperties
 	{
 		sf::Vector2f position;

@@ -62,6 +62,8 @@ namespace Menu
 			T newValue)>>
 	{
 	public:
+		T value;
+
 		ValuePropertyBase()
 		{
 		}
@@ -112,11 +114,62 @@ namespace Menu
 			);
 		}
 
-		T value;
+		// sync
+		// allow to sync properties (be always the same)
+		void sync(ValuePropertyBase<T>& other)
+		{
+			if (ValuePropertyBase<T>* const pOther = &other; pOther != currentSync)
+			{
+				desync(); // check inside
+				currentSync = pOther;
 
+				if (other.currentSync != this)
+				{
+					other.sync(*this);
+					updateSync();
+				}
+			}
+		}
+
+		void desync()
+		{
+			if (currentSync)
+			{
+				currentSync->desync();
+				currentSync = NULL;
+			}
+		}
+
+		ValuePropertyBase<T>& getSync() const
+		{
+			return *currentSync;
+		}
+
+		bool isSync() const
+		{
+			return currentSync == NULL;
+		}
+
+	private:
+		void updateSync() const
+		{
+			if (value != currentSync->getValue())
+			{
+				currentSync->setValue(value);
+			}
+		}
+
+		ValuePropertyBase<T>* currentSync = NULL;
+
+		// value
 	protected:
 		void valueChanged(const T&& oldValue) const
 		{
+			if (currentSync)
+			{
+				updateSync();
+			}
+
 			for (const Listener& listener : listeners)
 			{
 				listener(std::move(oldValue), value);
@@ -469,4 +522,25 @@ namespace Menu
 
 		Value value;
 	};
+}
+
+void _()
+{
+	Menu::Property<float> pf1;
+	Menu::Property<float> pf2;
+
+	pf1 = 5;
+	pf1.sync(pf2);
+
+	// pf2 == 5
+
+	pf2 = 3;
+
+	// pf1 == 3
+
+	pf2.desync();
+	pf2 = 5;
+
+	// pf1 == 3
+	// pf2 == 5
 }
