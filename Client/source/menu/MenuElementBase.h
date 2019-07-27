@@ -471,7 +471,7 @@ namespace Menu
 			{
 				sf::Vector2f nextSize;
 
-				if (!space.automatic->x && space->x == 0)
+				if (!space.automatic.x && space->x == 0)
 				{
 					nextSize.x = sizePreferred->x;
 				}
@@ -480,7 +480,7 @@ namespace Menu
 					nextSize.x = realSpace.x < sizePreferred->x ? realSpace.x : sizePreferred->x;
 				}
 
-				if (!space.automatic->y&& space->y == 0)
+				if (!space.automatic.y&& space->y == 0)
 				{
 					nextSize.y = sizePreferred->y;
 				}
@@ -497,12 +497,12 @@ namespace Menu
 		{
 			sf::Vector2f result = space;
 
-			if (space.automatic->x)
+			if (space.automatic.x)
 			{
 				result.x = parent->size->x - (parent->innerOffset->left + parent->innerOffset->right);
 			}
 
-			if (space.automatic->y)
+			if (space.automatic.y)
 			{
 				result.y = parent->size->y - (parent->innerOffset->top + parent->innerOffset->bottom);
 			}

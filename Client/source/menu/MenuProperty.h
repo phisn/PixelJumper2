@@ -524,23 +524,92 @@ namespace Menu
 	};
 }
 
-void _()
+// need special for auto casting between
+// sf::Vector2<Menu::Property<bool>> and
+// sf::Vector2<bool> + easy constructors
+namespace sf
 {
-	Menu::Property<float> pf1;
-	Menu::Property<float> pf2;
+	template <typename T>
+	class Vector2<Menu::Property<T>>
+	{
+	public:
+		Vector2()
+			:
+			Vector2(0, 0)
+		{
+		}
 
-	pf1 = 5;
-	pf1.sync(pf2);
+		Vector2(T x, T y)
+			:
+			x(x),
+			y(y)
+		{
+		}
 
-	// pf2 == 5
+		Vector2(Vector2<T> vector)
+			:
+			x(vector.x),
+			y(vector.y)
+		{
+		}
 
-	pf2 = 3;
+		template <typename U>
+		explicit Vector2(const Vector2<U>& vector)
+			:
+			x(vector.x),
+			y(vector.y)
+		{
+		}
 
-	// pf1 == 3
+		template <typename U>
+		explicit Vector2(const Vector2<
+				Menu::Property<U>
+			>& vector)
+			:
+			x(*vector.x),
+			y(*vector.y)
+		{
+		}
 
-	pf2.desync();
-	pf2 = 5;
+		operator Vector2<bool>()
+		{
+			return Vector2<bool>(*x, *y);
+		}
 
-	// pf1 == 3
-	// pf2 == 5
+		Vector2<Menu::Property<T>>& operator=(const Vector2<T>& vector)
+		{
+			const T temp = vector.x;
+
+			y = vector.y;
+			x = temp;
+
+			return *this;
+		}
+
+		Menu::Property<T> x, y;
+	};
+
+	template <typename T>
+	bool operator==(const Vector2<Menu::Property<T>>& v1, const Vector2<T>& v2)
+	{
+		return *v1.x == v2.x && *v1.y == v2.y;
+	}
+
+	template <typename T>
+	bool operator==(const Vector2<T>& v2, const Vector2<Menu::Property<T>>& v1)
+	{
+		return *v1.x == v2.x && *v1.y == v2.y;
+	}
+
+	template <typename T>
+	bool operator!=(const Vector2<T>& v2, const Vector2<Menu::Property<T>>& v1)
+	{
+		return !(v1 == v2);
+	}
+
+	template <typename T>
+	bool operator!=(const Vector2<Menu::Property<T>>& v1, const Vector2<T>& v2)
+	{
+		return !(v1 == v2);
+	}
 }

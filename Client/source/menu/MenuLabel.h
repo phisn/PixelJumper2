@@ -24,7 +24,13 @@ namespace Menu
 					   const std::wstring newText)
 				{
 					glText.setString(newText);
+					
 					updateCharacterSize();
+
+					if (!limitWidth)
+					{
+						updateTextSize();
+					}
 				});
 			font.addListener(
 				[this](const sf::Font* const oldFont,
@@ -49,7 +55,14 @@ namespace Menu
 					   const bool newValue)
 				{
 					updateCharacterSize();
+
+					if (!newValue)
+					{
+						updateTextSize();
+					}
 				});
+			
+			limitWidth.sync(space.automatic.x);
 
 			// glText.setCharacterSize(18);
 		}
@@ -69,6 +82,13 @@ namespace Menu
 				font = Framework::Interface::GetResource<sf::Font>(
 					Resource::Static::DefaultFont
 				);
+			}
+
+			updateCharacterSize();
+
+ 			if (!limitWidth)
+			{
+				updateTextSize();
 			}
 		}
 
@@ -107,6 +127,11 @@ namespace Menu
 					glText.setCharacterSize((size->x * size->y) / width * 0.7);
 				}
 			}
+		}
+
+		void updateTextSize()
+		{
+			sizePreferred.setX(glText.getLocalBounds().width);
 		}
 
 		sf::Text glText;

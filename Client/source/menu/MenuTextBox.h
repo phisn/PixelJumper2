@@ -129,10 +129,11 @@ namespace Menu
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
 				{
-					label.sizePreferred = newSize - sf::Vector2f(
+					container.sizePreferred = newSize - sf::Vector2f(
 						innerOffset->left + innerOffset->right,
 						innerOffset->top + innerOffset->bottom
 					);
+					label.sizePreferred.setY(container.sizePreferred->y);
 				});
 			weakSelected.addListener(
 				[this](const bool oldValue,
@@ -174,6 +175,21 @@ namespace Menu
 				[this](const std::wstring oldValue,
 					   const std::wstring newValue)
 				{
+					if (label.position->x + label.size->x < container.size->x && label.position->x != 0)
+					{
+						const float max_offset = label.size->x - container.size->x;
+
+						if (max_offset < 0)
+						{
+							label.position.setX(0);
+						}
+						else
+						{
+							label.position.setX(container.size->x - label.size->x - 2);
+						}
+					}
+
+
 					if (newValue.size() < cursorPosition) // overflow
 					{
 						cursorPosition = newValue.size();
@@ -184,12 +200,12 @@ namespace Menu
 					}
 				});
 
-			label.space.automatic.setX(false);
-			addChild(&label);
+			label.limitWidth = false;
+
+			addChild(&container);
+			container.addChild(&label);
 
 			innerOffset = { 5.f, 5.f, 5.f, 5.f };
-
-			space.automatic.setX(false);
 		}
 
 		void onEvent(const sf::Event event) override
@@ -235,10 +251,9 @@ namespace Menu
 		void onDraw(sf::RenderTarget* const target) const override
 		{
 			material.draw(target);
+			container.onDraw(target);
 
-			label.onDraw(target);
-
-			if (convertFullPositionRTV(caret.position).x <= label.size->x
+			if (convertFullPositionRTV(caret.position).x <= container.size->x
 				&& isCaretBlink)
 			{
 				target->draw(caret);
@@ -303,32 +318,21 @@ namespace Menu
 					(label.readGlText().findCharacterPos(cursorPosition)
 				).x;
 
-				if (charPosition < 0)
+				if (charPosition > container.size->x) // right overflow
 				{
-					/*
-					
-					     v  v
-					| ABCD | 
-					  ABCDEFG
-
-					     v  v
-					| DEFG |
-				   ABCDEFGHIJ
-
-
-
-					*/
+					label.position.setX(label.position->x + container.size->x - charPosition);
 				}
-				else if (charPosition > label.size->x)
+				else if (charPosition < 0) // left overflow
 				{
-					Log::Information(L"Begin: ");
-					Log::Information(std::to_wstring(label.position->x));
-					Log::Information(std::to_wstring(charPosition));
-					Log::Information(std::to_wstring(label.size->x));
+					label.position.setX(label.position->x - charPosition);
+				}
 
-					label.position.setX(label.size->x - charPosition + innerOffset->left);
+				if (label.position->x > 0)
+				{
+					label.position.setX(0);
 				}
 			}
+
 			else
 				if (*label.position != sf::Vector2f(0, 0))
 				{
@@ -342,7 +346,7 @@ namespace Menu
 				textCursorPosition != -1)
 			{
 
-				caret.setPosition(label.convertRcrToReal(
+				caret.setPosition(container.convertRcrToReal(
 					label.readGlText().findCharacterPos(textCursorPosition)
 				));
 			}
@@ -359,7 +363,9 @@ namespace Menu
 			const int glyphIndex, 
 			const sf::Vector2f point) const
 		{
-			const sf::Vector2f glyphVecDistance = label.readGlText().findCharacterPos(glyphIndex) - point;
+			const sf::Vector2f glyphVecDistance = container.convertRcrToReal(
+				label.readGlText().findCharacterPos(glyphIndex)
+			) - point;
 			return sqrtf(
 				glyphVecDistance.x * glyphVecDistance.x +
 				glyphVecDistance.y * glyphVecDistance.y);
@@ -374,13 +380,14 @@ namespace Menu
 
 			float maxDistance = getGlyphDistanceTo(0, point);
 			int maxDistanceIndex = 0;
-
-			for (int i = 1; i < text->size(); ++i)
+			Log::Information(std::to_wstring(text->size()));
+			for (int i = 1; i <= text->size(); ++i)
 			{
 				const float nextDistance = getGlyphDistanceTo(i, point);
 
 				if (nextDistance < maxDistance)
 				{
+					Log::Information(std::to_wstring(i));
 					maxDistanceIndex = i;
 					maxDistance = nextDistance;
 				}
@@ -478,6 +485,7 @@ namespace Menu
 		Caret caret;
 		Material material;
 
-		RenderContainer<Label> label;
+		RenderContainer<> container;
+		Label label;
 	};
 }

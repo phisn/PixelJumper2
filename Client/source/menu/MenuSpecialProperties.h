@@ -44,14 +44,14 @@ namespace Menu
 		using Property::operator->;
 		using Property::operator*;
 
-		Property<sf::Vector2<bool>> automatic{ sf::Vector2<bool>(true, true) };
+		sf::Vector2<Property<bool>> automatic{ { true }, { true } };
 
 		template <typename S>
 		AutomaticProperty& operator=(const S value)
 		{
-			if (automatic->x || automatic->y)
+			if (automatic.x || automatic.y)
 			{
-				sf::Vector2<bool> result = *automatic;
+				sf::Vector2<bool> result = automatic;
 
 				if (result.x && this->value.x != value.x)
 					result.x = false;
@@ -59,7 +59,7 @@ namespace Menu
 				if (result.y && this->value.y != value.y)
 					result.y = false;
 
-				if (result != *automatic)
+				if (result != (sf::Vector2<bool>) automatic)
 				{
 					automatic = result;
 				}
@@ -71,7 +71,7 @@ namespace Menu
 
 		bool isAutomatic() const
 		{
-			return automatic->x || automatic->y;
+			return automatic.x || automatic.y;
 		}
 
 		// use setValue for automatic define

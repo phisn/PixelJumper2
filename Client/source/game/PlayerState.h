@@ -113,6 +113,9 @@ namespace Game
 		Property<sf::Vector2f> view_position{ properties.View.position };
 
 		Property<sf::Vector2f> view_size{ properties.View.size };
+
+		Property<bool> view_inverted_view_rotation;
+		Property<float> view_degree_mili_speed;
 	};
 }
 
