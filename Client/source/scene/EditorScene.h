@@ -33,9 +33,9 @@ namespace Scene
 			Editor::TileChoiceRoot* const tcr = addRoot<Editor::TileChoiceRoot>();
 			Editor::TileSearchRoot* const tsr = addRoot<Editor::TileSearchRoot>();
 
-			sr->viewPort = { 0.f, 0.f, 0.7f, 1.f };
-			tcr->viewPort = { 0.7f, 0.15f, 0.3f, 0.85f };
-			tsr->viewPort = { 0.7f, 0.f, 0.3f, 0.15f };
+			sr->viewPort = { 0.f, 0.f, 0.8f, 1.f };
+			tcr->viewPort = { 0.8f, 0.05f, 0.2f, 0.95f };
+			tsr->viewPort = { 0.8f, 0.f, 0.2f, 0.05f };
 
 			fpsLabel.position = { 0, 0 };
 			fpsLabel.color = sf::Color::Yellow;

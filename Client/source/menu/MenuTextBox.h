@@ -485,6 +485,7 @@ namespace Menu
 		Caret caret;
 		Material material;
 
+	protected:
 		RenderContainer<> container;
 		Label label;
 	};

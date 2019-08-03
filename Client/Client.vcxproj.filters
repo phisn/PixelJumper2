@@ -73,6 +73,9 @@
     <Filter Include="source\editor\subscenes">
       <UniqueIdentifier>{8ead66e6-305b-4152-b464-d4a76f80bbf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\shared\tiles">
+      <UniqueIdentifier>{82a3faff-6287-4000-a73a-8d98c1c3dd20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\device\InputDevice.h">
@@ -446,12 +449,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\shared\WallTile.cpp">
-      <Filter>source\shared</Filter>
-    </None>
-    <None Include="source\shared\WallTile.h">
-      <Filter>source\shared</Filter>
-    </None>
     <None Include="source\menu\MenuButton.cpp">
       <Filter>source\menu</Filter>
     </None>
@@ -687,6 +684,18 @@
     </None>
     <None Include="source\menu\MenuRenderContainer.h">
       <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuTextBoxWithInfo.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuTextBoxWithInfo.cpp">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileDescription.h">
+      <Filter>source\shared\tiles</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileId.h">
+      <Filter>source\shared\tiles</Filter>
     </None>
   </ItemGroup>
 </Project>

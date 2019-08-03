@@ -1,9 +1,7 @@
 #pragma once
 
 #include <Client/source/menu/MenuRootBase.h>
-
-#include <Client/source/menu/MenuButton.h>
-#include <Client/source/menu/MenuButtonMaterial.h>
+#include <Client/source/menu/MenuTextBoxWithInfo.h>
 
 #include <Client/source/editor/manipulator/EditorCache.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
@@ -13,7 +11,7 @@
 
 namespace Editor
 {
-	class MagicTileButton
+	/*class MagicTileButton
 		:
 		public Menu::Button<Menu::ButtonMaterial::DefaultStaticRectangle>
 	{
@@ -24,6 +22,24 @@ namespace Editor
 
 			Manipulator::GetCache()->tileSearch.notify();
 		}
+	};*/
+
+	class TileSearchTextBox
+		:
+		public Menu::TextBoxWithInfo
+	{
+	public:
+		TileSearchTextBox()
+		{
+			text.addListener(
+				[this](const std::wstring& oldString,
+					   const std::wstring& newString)
+				{
+					TileSearchInput* const input = Manipulator::GetCache()->tileSearch.writeInput();
+
+				}
+			)
+		}
 	};
 
 	class TileSearchRoot
@@ -33,14 +49,14 @@ namespace Editor
 	public:
 		bool build() override
 		{
-			addChild(&button);
+			addChild(&textBox);
 
 			size.addListener([this](
 				const sf::Vector2f oldSize,
 				const sf::Vector2f newSize)
 			{
-				button.space = newSize;
-				button.sizePreferred = newSize;
+				textBox.space = newSize;
+				textBox.sizePreferred = newSize;
 			});
 			innerOffset = { 5.f, 5.f, 5.f, 5.f };
 
@@ -53,7 +69,7 @@ namespace Editor
 
 
 	private:
-		MagicTileButton button;
+		TileSearchTextBox textBox;
 		TileSearchWorker worker;
 	};
 }
