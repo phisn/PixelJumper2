@@ -3,8 +3,8 @@
 #include <Client/source/device/ScreenDevice.h>
 
 #include <Client/source/editor/tile/EditorTileBase.h>
-#include <Client/source/editor/template/TileTemplate.h>
-#include <Client/source/editor/template/TileTemplateFactory.h>
+#include <Client/source/editor/tile/TileTemplate.h>
+#include <Client/source/editor/tile/TileTemplateFactory.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 
 #include <Client/source/logger/Logger.h>

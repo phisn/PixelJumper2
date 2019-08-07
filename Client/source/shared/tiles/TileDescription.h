@@ -12,11 +12,25 @@
 
 namespace Shared
 {
-	struct TileCollection
+	struct TileCreation
 	{
-		Game::GameTileBase* const gameTile;
-		Editor::TileBase* const editorTile;
-		Resource::TileBase* const resourceTile;
+		template <
+			typename GameTile,
+			typename EditorTemplate,
+			typename ResourceTile
+		>
+		static TileCreation Create()
+		{
+			return TileCreation{
+				[](Resource::Tile * const tile) -> Game::GameTileBase* { return GameTile::Create(tile); }
+				[]() -> Editor::TileTemplate* { return new EditorTemplate(); }
+				[]() -> Editor::TileTemplate* { return new ResourceTile(); }
+			};
+		}
+
+		Game::GameTileBase* (*gameTile)(Resource::Tile*);
+		Editor::TileTemplate* (*editorTemplate)();
+		Resource::TileBase* (*resourceTile)();
 	};
 
 	struct TileDescription
@@ -31,13 +45,14 @@ namespace Shared
 		static const TileDescription* find<TileDescription>(TileId tile);
 
 		TileDescription(
-			const TileCollection tileCollection,
+			const TileCreation tileCreation,
 
 			const std::wstring name,
 			const std::wstring info,
 			const sf::Color gameColor,
 			const sf::Color editorColor)
 			:
+			creation(tileCreation),
 			name(name),
 			info(info),
 			gameColor(gameColor),
@@ -47,5 +62,6 @@ namespace Shared
 
 		std::wstring name, info;
 		sf::Color gameColor, editorColor;
+		TileCreation creation;
 	};
 }

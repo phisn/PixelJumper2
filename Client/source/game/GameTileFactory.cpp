@@ -18,7 +18,7 @@ namespace Game
 {
 	bool GameTileFactory::Initialize()
 	{
-		INSERT_TILE_CREATOR(TileWall);
+		// INSERT_TILE_CREATOR(TileWall);
 
 		return true;
 	}
@@ -28,7 +28,7 @@ namespace Game
 		tileCreators.clear();
 	}
 
-	GameTileBase* GameTileFactory::Create(
+	GameTileBase* GameTileFactory::create(
 		Resource::Tile* const tileResource)
 	{
 		return tileCreators[tileResource->Header.id](tileResource);

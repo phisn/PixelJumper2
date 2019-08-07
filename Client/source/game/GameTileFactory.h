@@ -14,6 +14,6 @@ namespace Game
 		bool Initialize();
 		void Uninitialize();
 
-		GameTileBase* Create(Resource::Tile* const tileResource);
+		GameTileBase* create(Resource::Tile* const tileResource);
 	}
 }

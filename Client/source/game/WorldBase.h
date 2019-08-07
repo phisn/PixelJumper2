@@ -48,7 +48,7 @@ namespace Game
 
 			for (Resource::Tile& tileResource : resource->TileContainer)
 			{
-				GameTileBase* const tile = GameTileFactory::Create(&tileResource);
+				GameTileBase* const tile = GameTileFactory::create(&tileResource);
 
 				if (tile == NULL)
 				{

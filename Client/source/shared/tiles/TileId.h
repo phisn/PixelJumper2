@@ -4,6 +4,9 @@ namespace Shared
 {
 	enum class TileId
 	{
-		TileWall
-	};
+		TileWall,
+
+		_Length
+	}; 
 }
+

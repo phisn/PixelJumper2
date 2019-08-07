@@ -3,6 +3,11 @@
 namespace Shared
 {
 	const TileDescription TileWall = TileDescription(
+		TileCreation::Create<
+			Game::WallTile, 
+			Editor::WallTemplate, 
+			Resource::WallTile>(),
+
 		L"Wall",
 		L"Solid Wall",
 		sf::Color::Color(200, 200, 200),

@@ -4,7 +4,7 @@
 #include <Client/source/resource/TileFactory.h>
 #include <Client/source/resource/ResourceBase.h>
 
-#include <Client/source/resource/tiles/ResourceTileContentBase.h>
+#include <Client/source/resource/ResourceTileContentBase.h>
 
 #pragma pack(push, 1)
 
