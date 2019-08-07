@@ -6,7 +6,7 @@ namespace Game
 	{
 		Invalid, // no tile should start with zero
 
-		Wall,
+		TileWall,
 
 		_Length
 	};

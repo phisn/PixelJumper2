@@ -1,6 +1,6 @@
 #include "TileTemplateFactory.h"
 
-#include <Client/source/editor/template/WallTemplate.h>
+#include <Client/source/shared/tiles/TileWall.h>
 
 #include <map>
 
@@ -17,7 +17,7 @@ namespace Editor
 {
 	void TileTemplateFactory::Initialize()
 	{
-		INSERT_TILE_TEMPLATE(Wall);
+		INSERT_TILE_TEMPLATE_DIFFER(TileWall, Wall);
 	}
 
 	void TileTemplateFactory::Uninitialize()

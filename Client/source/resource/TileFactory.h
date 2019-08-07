@@ -2,8 +2,8 @@
 
 #include <Client/source/game/tile/TileId.h>
 
-#include <Client/source/resource/tiles/ResourceTileContentBase.h>
-#include <Client/source/resource/tiles/ResourceWall.h>
+#include <Client/source/resource/ResourceTileContentBase.h>
+#include <Client/source/resource/ResourceWall.h>
 
 #include <map>
 #include <sal.h>
@@ -25,7 +25,7 @@ namespace Resource
 
 		static void RegisterAll()
 		{
-			ADD_TILE(Wall);
+			ADD_TILE(TileWall);
 		}
 	}
 }

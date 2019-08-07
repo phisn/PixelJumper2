@@ -29,6 +29,14 @@ namespace Scene
 		{
 			Editor::Manipulator::Initialize();
 
+			/*
+			
+				add label for information, independent of and in center (bit up) on screen
+				needs to have time to vanish (maybe even with increasing alpha) and to be
+				automatically hidden after pressed (cursor or maybe even key like enter / escape)
+
+			*/
+
 			Editor::SelectorRoot* const sr = addRoot<Editor::SelectorRoot>();
 			Editor::TileChoiceRoot* const tcr = addRoot<Editor::TileChoiceRoot>();
 			Editor::TileSearchRoot* const tsr = addRoot<Editor::TileSearchRoot>();

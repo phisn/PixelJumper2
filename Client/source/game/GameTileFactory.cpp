@@ -18,7 +18,7 @@ namespace Game
 {
 	bool GameTileFactory::Initialize()
 	{
-		INSERT_TILE_CREATOR(Wall);
+		INSERT_TILE_CREATOR(TileWall);
 
 		return true;
 	}

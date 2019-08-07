@@ -28,9 +28,6 @@
     <Filter Include="source\resource">
       <UniqueIdentifier>{66b67bfc-0010-45cc-80b8-4ec868cce6b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\resource\tiles">
-      <UniqueIdentifier>{aa2b9b41-6fee-432a-b232-0bb21ade2e05}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\resource\pipes">
       <UniqueIdentifier>{713d3fec-01b0-46d3-9089-e2730258018c}</UniqueIdentifier>
     </Filter>
@@ -58,12 +55,6 @@
     <Filter Include="source\editor\manipulator\tasks">
       <UniqueIdentifier>{33fdd967-3b63-45f0-a178-5f22b4bee91b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\editor\template">
-      <UniqueIdentifier>{f22cd78b-9689-4862-adc5-768f4fd02c18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\editor\tiles">
-      <UniqueIdentifier>{39b2cea4-20c9-44ea-9f0c-b6e0ab663e07}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\shared">
       <UniqueIdentifier>{33b3d319-8e83-4b82-b14a-c1517ab66063}</UniqueIdentifier>
     </Filter>
@@ -75,6 +66,9 @@
     </Filter>
     <Filter Include="source\shared\tiles">
       <UniqueIdentifier>{82a3faff-6287-4000-a73a-8d98c1c3dd20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\editor\tile">
+      <UniqueIdentifier>{39b2cea4-20c9-44ea-9f0c-b6e0ab663e07}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -168,9 +162,6 @@
     <ClInclude Include="source\logger\LoggerLevel.h">
       <Filter>source\logger</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\tiles\ResourceWall.h">
-      <Filter>source\resource\tiles</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\PlayerResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
@@ -261,9 +252,6 @@
     <ClInclude Include="source\scene\TestMenuScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\tiles\ResourceTileContentBase.h">
-      <Filter>source\resource\tiles</Filter>
-    </ClInclude>
     <ClInclude Include="source\editor\tilechoice\TileChoiceButton.h">
       <Filter>source\editor\tilechoice</Filter>
     </ClInclude>
@@ -346,9 +334,6 @@
     </ClCompile>
     <ClCompile Include="source\device\RandomDevice.cpp">
       <Filter>source\device</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\tiles\ResourceWall.cpp">
-      <Filter>source\resource\tiles</Filter>
     </ClCompile>
     <ClCompile Include="source\resource\PlayerResource.cpp">
       <Filter>source\resource</Filter>
@@ -577,32 +562,11 @@
     <None Include="source\editor\manipulator\EditorCache.h">
       <Filter>source\editor\manipulator</Filter>
     </None>
-    <None Include="source\editor\template\TileTemplate.cpp">
-      <Filter>source\editor\template</Filter>
-    </None>
-    <None Include="source\editor\template\TileTemplate.h">
-      <Filter>source\editor\template</Filter>
-    </None>
-    <None Include="source\editor\template\TileTemplateFactory.h">
-      <Filter>source\editor\template</Filter>
-    </None>
-    <None Include="source\editor\template\WallTemplate.cpp">
-      <Filter>source\editor\template</Filter>
-    </None>
-    <None Include="source\editor\template\WallTemplate.h">
-      <Filter>source\editor\template</Filter>
-    </None>
     <None Include="source\editor\tile\EditorTileBase.cpp">
-      <Filter>source\editor\tiles</Filter>
+      <Filter>source\editor\tile</Filter>
     </None>
     <None Include="source\editor\tile\EditorTileBase.h">
-      <Filter>source\editor\tiles</Filter>
-    </None>
-    <None Include="source\editor\tile\EditorWall.cpp">
-      <Filter>source\editor\tiles</Filter>
-    </None>
-    <None Include="source\editor\tile\EditorWall.h">
-      <Filter>source\editor\tiles</Filter>
+      <Filter>source\editor\tile</Filter>
     </None>
     <None Include="source\editor\tilechoice\TileCoiceCache.cpp">
       <Filter>source\editor\tilechoice</Filter>
@@ -695,6 +659,30 @@
       <Filter>source\shared\tiles</Filter>
     </None>
     <None Include="source\shared\tiles\TileId.h">
+      <Filter>source\shared\tiles</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileDescription.cpp">
+      <Filter>source\shared\tiles</Filter>
+    </None>
+    <None Include="source\resource\ResourceTileContentBase.h">
+      <Filter>source\resource</Filter>
+    </None>
+    <None Include="source\editor\tile\TileTemplate.cpp">
+      <Filter>source\editor\tile</Filter>
+    </None>
+    <None Include="source\editor\tile\TileTemplate.h">
+      <Filter>source\editor\tile</Filter>
+    </None>
+    <None Include="source\editor\tile\TileTemplateFactory.cpp">
+      <Filter>source\editor\tile</Filter>
+    </None>
+    <None Include="source\editor\tile\TileTemplateFactory.h">
+      <Filter>source\editor\tile</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileWall.cpp">
+      <Filter>source\shared\tiles</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileWall.h">
       <Filter>source\shared\tiles</Filter>
     </None>
   </ItemGroup>
