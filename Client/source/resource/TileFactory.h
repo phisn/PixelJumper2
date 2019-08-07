@@ -3,7 +3,7 @@
 #include <Client/source/game/tile/TileId.h>
 
 #include <Client/source/resource/ResourceTileContentBase.h>
-#include <Client/source/shared/tiles/TileWall.h>
+// #include <Client/source/shared/tiles/TileWall.h>
 
 #include <map>
 #include <sal.h>

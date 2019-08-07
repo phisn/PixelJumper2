@@ -1,6 +1,6 @@
 #include "GameTileFactory.h"
 
-#include <Client/source/game/tile/GameWallTile.h>
+// #include <Client/source/game/tile/GameWallTile.h>
 
 #include <unordered_map>
 

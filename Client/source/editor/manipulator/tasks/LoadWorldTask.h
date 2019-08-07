@@ -2,7 +2,7 @@
 
 #include <Client/source/logger/Logger.h>
 
-#include <Client/source/editor/template/TileTemplate.h>
+#include <Client/source/editor/tile/TileTemplate.h>
 
 #include <Client/source/editor/manipulator/Executor.h>
 #include <Client/source/editor/manipulator/EditorCache.h>

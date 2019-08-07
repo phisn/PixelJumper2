@@ -6,7 +6,7 @@
 #include <Client/source/editor/manipulator/EditorCache.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 
-#include <Client/source/editor/template/TileTemplateFactory.h>
+#include <Client/source/editor/tile/TileTemplateFactory.h>
 #include <Client/source/editor/tilechoice/TileSearchWorker.h>
 
 namespace Editor
@@ -38,7 +38,7 @@ namespace Editor
 					TileSearchInput* const input = Manipulator::GetCache()->tileSearch.writeInput();
 
 				}
-			)
+			);
 		}
 	};
 

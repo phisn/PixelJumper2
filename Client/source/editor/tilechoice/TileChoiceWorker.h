@@ -2,7 +2,7 @@
 #include <Client/source/editor/manipulator/EditorCache.h>
 #include <Client/source/editor/manipulator/Manipulator.h>
 
-#include <Client/source/editor/template/TileTemplateFactory.h>
+#include <Client/source/editor/tile/TileTemplateFactory.h>
 
 namespace Editor
 {

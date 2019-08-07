@@ -97,7 +97,6 @@
     <ClInclude Include="source\game\tiletrait\InitializableTile.h" />
     <ClInclude Include="source\game\tiletrait\StaticTile.h" />
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h" />
-    <ClInclude Include="source\game\tile\GameWallTile.h" />
     <ClInclude Include="source\game\tile\TileId.h" />
     <ClInclude Include="source\game\WorldBase.h" />
     <ClInclude Include="source\game\WorldState.h" />
@@ -157,8 +156,6 @@
     <ClCompile Include="source\game\tiletrait\DynamicTile.cpp" />
     <ClCompile Include="source\game\tiletrait\GameTileBase.cpp" />
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
-    <ClCompile Include="source\game\tile\GameWallTile.cpp" />
-    <ClCompile Include="source\game\tile\TileColors.cpp" />
     <ClCompile Include="source\game\WorldBase.cpp" />
     <ClCompile Include="source\game\WorldState.cpp" />
     <ClCompile Include="source\logger\SectionHost.cpp" />
@@ -184,7 +181,6 @@
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
-    <ClCompile Include="source\editor\template\TileTemplateFactory.cpp" />
     <ClCompile Include="source\scene\TestGameScene.cpp" />
     <ClCompile Include="source\scene\TestMenuScene.cpp" />
     <ClCompile Include="winMain.cpp" />

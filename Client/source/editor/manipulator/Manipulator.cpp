@@ -4,7 +4,7 @@
 #include <Client/source/editor/manipulator/Executor.h>
 #include <Client/source/editor/manipulator/EditorWorld.h>
 
-#include <Client/source/editor/template/TileTemplateFactory.h>
+#include <Client/source/editor/tile/TileTemplateFactory.h>
 
 namespace
 {

@@ -201,9 +201,6 @@
     <ClInclude Include="source\game\tiletrait\GameTileBase.h">
       <Filter>source\game\TileTrait</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\tile\GameWallTile.h">
-      <Filter>source\game\Tile</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
       <Filter>source\game\TileTrait</Filter>
     </ClInclude>
@@ -368,9 +365,6 @@
     <ClCompile Include="source\game\tiletrait\GameTileBase.cpp">
       <Filter>source\game\TileTrait</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\tile\GameWallTile.cpp">
-      <Filter>source\game\Tile</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\LocalPlayer.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
@@ -392,9 +386,6 @@
     <ClCompile Include="source\game\Environment.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\tile\TileColors.cpp">
-      <Filter>source\game\Tile</Filter>
-    </ClCompile>
     <ClCompile Include="source\scene\TestGameScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
@@ -414,7 +405,6 @@
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
-    <ClCompile Include="source\editor\template\TileTemplateFactory.cpp" />
     <ClCompile Include="source\editor\manipulator\EditorWorld.cpp">
       <Filter>source\editor\manipulator</Filter>
     </ClCompile>
@@ -673,17 +663,17 @@
     <None Include="source\editor\tile\TileTemplate.h">
       <Filter>source\editor\tile</Filter>
     </None>
-    <None Include="source\editor\tile\TileTemplateFactory.cpp">
-      <Filter>source\editor\tile</Filter>
-    </None>
-    <None Include="source\editor\tile\TileTemplateFactory.h">
-      <Filter>source\editor\tile</Filter>
-    </None>
     <None Include="source\shared\tiles\TileWall.cpp">
       <Filter>source\shared\tiles</Filter>
     </None>
     <None Include="source\shared\tiles\TileWall.h">
       <Filter>source\shared\tiles</Filter>
+    </None>
+    <None Include="source\editor\tile\TileTemplateFactory.cpp">
+      <Filter>source\editor\tile</Filter>
+    </None>
+    <None Include="source\editor\tile\TileTemplateFactory.h">
+      <Filter>source\editor\tile</Filter>
     </None>
   </ItemGroup>
 </Project>
