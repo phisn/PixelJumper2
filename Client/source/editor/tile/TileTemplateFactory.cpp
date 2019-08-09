@@ -1,28 +1,29 @@
 #include "TileTemplateFactory.h"
 
-#include <Client/source/shared/tiles/TileWall.h>
+#include <Client/source/shared/tiles/TileDescription.h>
 
 #include <map>
 
 namespace
 {
-	std::map<Game::TileId, Editor::TileTemplate*> tileTemplates;
+	std::map<Shared::TileId, Editor::TileTemplate*> tileTemplates;
 }
-
-#define INSERT_TILE_TEMPLATE_DIFFER(gname, ename) \
-	tileTemplates[Game::TileId::##gname] = new ename##Template()
-#define INSERT_TILE_TEMPLATE(name) INSERT_TILE_TEMPLATE_DIFFER(name, name)
 
 namespace Editor
 {
 	void TileTemplateFactory::Initialize()
 	{
-		INSERT_TILE_TEMPLATE_DIFFER(TileWall, Wall);
+		for (int i = 0; i < (int) Shared::TileId::_Length; ++i)
+		{
+			tileTemplates[(Shared::TileId) i] = Shared::TileDescription::Find(
+				(Shared::TileId) i
+			)->creation.createEditorTemplate();
+		}
 	}
 
 	void TileTemplateFactory::Uninitialize()
 	{
-		for (const std::pair<Game::TileId, Editor::TileTemplate*>& tt : tileTemplates)
+		for (decltype(tileTemplates)::const_reference tt : tileTemplates)
 		{
 			delete tt.second;
 		}
@@ -30,7 +31,7 @@ namespace Editor
 		tileTemplates.clear();
 	}
 
-	TileTemplate* TileTemplateFactory::GetTileTemplate(const Game::TileId id)
+	TileTemplate* TileTemplateFactory::GetTileTemplate(const Shared::TileId id)
 	{
 		return tileTemplates[id];
 	}

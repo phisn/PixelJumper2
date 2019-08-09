@@ -4,7 +4,6 @@
 
 #include <Client/source/resource/pipes/FilePipe.h>
 #include <Client/source/resource/ResourceDefinition.h>
-#include <Client/source/resource/TileFactory.h>
 
 #include <cassert>
 #include <map>
@@ -262,8 +261,6 @@ namespace Resource
 		{
 			return false;
 		}
-
-		TileFactory::RegisterAll();
 
 		return true;
 	}

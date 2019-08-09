@@ -28,21 +28,18 @@ namespace Shared
 			};
 		}
 
-		Game::GameTileBase* (*gameTile)(Resource::Tile*);
-		Editor::TileTemplate* (*editorTemplate)();
-		Resource::TileBase* (*resourceTile)();
+		Game::GameTileBase* (*createGameTile)(Resource::Tile*);
+		Editor::TileTemplate* (*createEditorTemplate)();
+		Resource::TileBase* (*createResourceTile)();
 	};
 
 	struct TileDescription
 	{
 		template <typename T = TileDescription>
-		static const T* find(TileId tile)
+		static const T* Find(TileId tile)
 		{
-			return (T*) find<TileDescription>(tile);
+			return (T*) Find<TileDescription>(tile);
 		}
-
-		template <>
-		static const TileDescription* find<TileDescription>(TileId tile);
 
 		TileDescription(
 			const TileCreation tileCreation,

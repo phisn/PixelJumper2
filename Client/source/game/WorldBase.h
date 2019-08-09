@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/game/GameTileFactory.h>
 #include <Client/source/game/Environment.h>
 #include <Client/source/game/PlayerBase.h>
 #include <Client/source/game/WorldState.h>
@@ -8,9 +7,10 @@
 #include <Client/source/game/tiletrait/CollidableTile.h>
 #include <Client/source/game/tiletrait/InitializableTile.h>
 
-#include <Client/source/resource/WorldResource.h>
-
 #include <Client/source/logger/Logger.h>
+
+#include <Client/source/resource/WorldResource.h>
+#include <Client/source/shared/tiles/TileDescription.h>
 
 #include <vector>
 
@@ -48,9 +48,11 @@ namespace Game
 
 			for (Resource::Tile& tileResource : resource->TileContainer)
 			{
-				GameTileBase* const tile = GameTileFactory::create(&tileResource);
+				GameTileBase* const tile = Shared::TileDescription::Find(
+					tileResource.Header.id
+				)->creation.createGameTile(&tileResource);
 
-				if (tile == NULL)
+				if (tile == NULL) // TODO: still possible?
 				{
 					delete tile;
 					section.error(L"Failed to create tile");

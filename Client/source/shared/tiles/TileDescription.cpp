@@ -9,7 +9,8 @@ namespace
 
 namespace Shared
 {
-	const TileDescription* TileDescription::find(TileId tile)
+	template <>
+	const TileDescription* TileDescription::Find<TileDescription>(TileId tile)
 	{
 		return tileDescriptions.at(tile);
 	}

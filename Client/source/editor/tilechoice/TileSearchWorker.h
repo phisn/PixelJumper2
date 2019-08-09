@@ -18,7 +18,7 @@ namespace Editor
 			this->output = output;
 
 			output->tiles.push_back(
-				TileTemplateFactory::GetTileTemplate(Game::TileId::TileWall)
+				TileTemplateFactory::GetTileTemplate(Shared::TileId::TileWall)
 			);
 
 			return true;

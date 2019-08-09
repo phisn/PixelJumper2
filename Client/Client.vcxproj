@@ -76,6 +76,7 @@
     <ClInclude Include="source\device\RandomDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
     <ClInclude Include="source\editor\tilechoice\TileChoiceButton.h" />
+    <ClInclude Include="source\editor\tile\TileTemplateFactory.h" />
     <ClInclude Include="source\framework\Animation.h" />
     <ClInclude Include="source\framework\AsyncAnimation.h" />
     <ClInclude Include="source\framework\Context.h" />
@@ -85,7 +86,6 @@
     <ClInclude Include="source\game\Environment.h" />
     <ClInclude Include="source\game\GameState.h" />
     <ClInclude Include="source\game\GameStateManager.h" />
-    <ClInclude Include="source\game\GameTileFactory.h" />
     <ClInclude Include="source\game\HostWorld.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\PlayerBase.h" />
@@ -116,7 +116,6 @@
     <ClInclude Include="source\resource\ResourceBase.h" />
     <ClInclude Include="source\resource\ResourceDefinition.h" />
     <ClInclude Include="source\resource\ResourceType.h" />
-    <ClInclude Include="source\resource\TileFactory.h" />
     <ClInclude Include="source\resource\ResourceInterface.h" />
     <ClInclude Include="source\resource\StaticResource.h" />
     <ClInclude Include="source\resource\TileResource.h" />
@@ -138,6 +137,7 @@
     <ClCompile Include="source\device\ScreenDevice.cpp" />
     <ClCompile Include="source\editor\manipulator\EditorWorld.cpp" />
     <ClCompile Include="source\editor\tilechoice\TileChoiceButton.cpp" />
+    <ClCompile Include="source\editor\tile\TileTemplateFactory.cpp" />
     <ClCompile Include="source\framework\Animation.cpp" />
     <ClCompile Include="source\framework\AsyncAnimation.cpp" />
     <ClCompile Include="source\framework\Context.cpp" />
@@ -146,7 +146,6 @@
     <ClCompile Include="source\game\CollisionEngine.cpp" />
     <ClCompile Include="source\game\Environment.cpp" />
     <ClCompile Include="source\game\GameStateManager.cpp" />
-    <ClCompile Include="source\game\GameTileFactory.cpp" />
     <ClCompile Include="source\game\HostWorld.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
     <ClCompile Include="source\game\PlayerBase.cpp" />
@@ -173,7 +172,6 @@
     <ClCompile Include="source\resource\ResourceDefinition.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\StaticResource.cpp" />
-    <ClCompile Include="source\resource\TileFactory.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />
     <ClCompile Include="source\resource\WorldResource.cpp" />
     <ClCompile Include="source\scene\EditorScene.cpp" />
@@ -234,8 +232,6 @@
     <None Include="source\editor\tile\EditorTileBase.h" />
     <None Include="source\editor\tile\TileTemplate.cpp" />
     <None Include="source\editor\tile\TileTemplate.h" />
-    <None Include="source\editor\tile\TileTemplateFactory.cpp" />
-    <None Include="source\editor\tile\TileTemplateFactory.h" />
     <None Include="source\menu\MenuEvent.h" />
     <None Include="source\menu\MenuFPSLabel.cpp" />
     <None Include="source\menu\MenuFPSLabel.h" />

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Client/source/game/tile/TileId.h>
-#include <Client/source/resource/TileResource.h>
-
 #include <Client/source/device/ScreenDevice.h>
+#include <Client/source/resource/TileResource.h>
+#include <Client/source/shared/tiles/TileId.h>
 
 #include <SFML/Graphics.hpp>
 

@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include <Client/source/device/InputDevice.h>
 
 #include <Client/source/game/LocalPlayer.h>
@@ -10,7 +10,7 @@
 #include <Client/source/framework/FrameworkInterface.h>
 
 #include <Windows.h>
-
+*/
 namespace Scene
 {
 	/*

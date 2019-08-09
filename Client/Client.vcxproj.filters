@@ -150,9 +150,6 @@
     <ClInclude Include="source\resource\pipes\PipeBase.h">
       <Filter>source\resource\pipes</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\TileFactory.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
     <ClInclude Include="source\Common.h">
       <Filter>source</Filter>
     </ClInclude>
@@ -172,9 +169,6 @@
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\GameStateManager.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameTileFactory.h">
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\PlayerBase.h">
@@ -326,9 +320,6 @@
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp">
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
-    <ClCompile Include="source\resource\TileFactory.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
     <ClCompile Include="source\device\RandomDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
@@ -339,9 +330,6 @@
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\GameStateManager.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GameTileFactory.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\PlayerBase.cpp">
@@ -668,12 +656,6 @@
     </None>
     <None Include="source\shared\tiles\TileWall.h">
       <Filter>source\shared\tiles</Filter>
-    </None>
-    <None Include="source\editor\tile\TileTemplateFactory.cpp">
-      <Filter>source\editor\tile</Filter>
-    </None>
-    <None Include="source\editor\tile\TileTemplateFactory.h">
-      <Filter>source\editor\tile</Filter>
     </None>
   </ItemGroup>
 </Project>

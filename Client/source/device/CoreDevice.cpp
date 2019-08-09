@@ -48,7 +48,6 @@ namespace Device
 		{
 			return Core::Error::InputError;
 		}
-		
 
 		return Core::Error::Success;
 	}

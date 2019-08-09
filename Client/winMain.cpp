@@ -15,8 +15,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #else
 	Log::Output::Add(Log::Output::FILE_OUT, Log::Level::Warning);
 #endif
-	Log::Information(L"Initializing game");
-
+	
 	const Device::Core::Error error = Device::Core::Initialize();
 
 	if (error != Device::Core::Error::Success)

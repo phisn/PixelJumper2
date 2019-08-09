@@ -27,8 +27,6 @@ namespace Scene
 
 		bool onCreate() override
 		{
-			Game::GameTileFactory::Initialize();
-
 			if (worldResource == NULL)
 			{
 				Resource::World world;

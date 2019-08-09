@@ -1,9 +1,7 @@
 #pragma once
 
 #include <Client/source/resource/CommonResourceTypes.h>
-#include <Client/source/resource/TileFactory.h>
 #include <Client/source/resource/ResourceBase.h>
-
 #include <Client/source/resource/ResourceTileContentBase.h>
 
 #pragma pack(push, 1)
@@ -35,7 +33,7 @@ namespace Resource
 
 		struct
 		{
-			AUTO Game::TileId id;
+			AUTO Shared::TileId id;
 
 			EDIT TileSize width;
 			EDIT TileSize height;
@@ -75,27 +73,7 @@ namespace Resource
 			return Content->make(pipe);
 		}
 		
-		bool allocateContent()
-		{
-			if (Content != NULL &&
-				Content->getTileId() != Header.id)
-			{
-				delete Content;
-				Content = NULL;
-			}
-
-			if (Content == NULL)
-			{
-				Content = TileFactory::Create(Header.id);
-
-				if (Content == NULL)
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
+		bool allocateContent();
 
 		bool save(
 			WritePipe* const pipe) override
@@ -141,7 +119,7 @@ namespace Resource
 
 		bool validateHeader() const
 		{
-			return Header.id > Game::TileId::Invalid
+			return Header.id > Shared::TileId::_Invalid
 				&& Header.width != 0
 				&& Header.height != 0;
 		}
