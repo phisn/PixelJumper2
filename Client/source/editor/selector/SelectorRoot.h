@@ -1,6 +1,9 @@
 #pragma once
 
 #include <Client/source/editor/manipulator/EditorWorld.h>
+#include <Client/source/editor/manipulator/Executor.h>
+
+#include <Client/source/editor/manipulator/tasks/TilePlace.h>
 
 #include <Client/source/editor/selector/SelectorMarker.h>
 #include <Client/source/editor/selector/SelectorView.h>
@@ -54,6 +57,8 @@ namespace Editor
 
 				break;
 			case sf::Event::MouseButtonPressed:
+				mouse.samePosition = true;
+
 				if (event.mouseButton.button == sf::Mouse::Right)
 				{
 					mouse.right = true;
@@ -79,6 +84,9 @@ namespace Editor
 
 				break;
 			case sf::Event::MouseMoved:
+				mouse.samePosition = false;
+				old_mouse.samePosition = false;
+
 				if (mouse.right)
 				{
 					selectorView.nextMouseMovement(
@@ -103,6 +111,19 @@ namespace Editor
 
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
+					if (mouse.samePosition && old_mouse.samePosition && old_mouse.left )
+					{
+						if (!Manipulator::GetExecutor()->execute<TilePlace>())
+						{
+							Log::Error(L"Failed to quick-place (inside selection) tiles");
+						}
+					}
+					else
+					{
+						old_mouse = mouse;
+					}
+
+
 					mouse.left = false;
 					break;
 				}
@@ -115,9 +136,10 @@ namespace Editor
 	private:
 		struct Mouse
 		{
+			bool samePosition;
 			bool left, right;
 
-		} mouse = { };
+		} mouse = { }, old_mouse = { };
 
 		SelectorView selectorView;
 		SelectorMarker selectorMarker;

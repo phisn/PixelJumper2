@@ -21,6 +21,8 @@ namespace Editor
 
 			if (choiceCache->selection == NULL)
 			{
+				Log::Error(L"Failed to place tile, no tile selected");
+
 				return false;
 			}
 

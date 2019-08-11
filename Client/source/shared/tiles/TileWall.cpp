@@ -91,12 +91,20 @@ namespace Editor
 			initialized = true;
 
 			button.sizePreferred = { 300, 100 };
-			button.buttonPressedEvent.addListener(
+			button.buttonSelectedEvent.addListener(
 				[this]()
 				{
 					Manipulator::GetCache()->tileChoice.writeInput()->selection = this;
 
-					if (Manipulator::GetCache()->tileChoice.notify() && !Manipulator::GetExecutor()->execute<TilePlace>())
+					if (!Manipulator::GetCache()->tileChoice.notify())
+					{
+						Log::Error(L"Failed to select template");
+					}
+				});
+			button.buttonPressedEvent.addListener(
+				[this]()
+				{
+					if (!Manipulator::GetExecutor()->execute<TilePlace>())
 					{
 						Log::Error(L"Failed to place tiles");
 					}
