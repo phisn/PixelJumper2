@@ -84,18 +84,24 @@ namespace Editor
 	Menu::ElementBase* WallTemplate::createRepresentation()
 	{
 		static TileChoiceButton button;
+		static bool initialized = false;
 
-		button.sizePreferred = { 300, 100 };
-		button.buttonPressedEvent.addListener(
-			[this]()
-			{
-				Manipulator::GetCache()->tileChoice.writeInput()->selection = this;
+		if (!initialized)
+		{
+			initialized = true;
 
-				if (Manipulator::GetCache()->tileChoice.notify() && !Manipulator::GetExecutor()->execute<TilePlace>())
+			button.sizePreferred = { 300, 100 };
+			button.buttonPressedEvent.addListener(
+				[this]()
 				{
-					Log::Error(L"Failed to place tiles");
-				}
-			});
+					Manipulator::GetCache()->tileChoice.writeInput()->selection = this;
+
+					if (Manipulator::GetCache()->tileChoice.notify() && !Manipulator::GetExecutor()->execute<TilePlace>())
+					{
+						Log::Error(L"Failed to place tiles");
+					}
+				});
+		}
 
 		return &button;
 	}

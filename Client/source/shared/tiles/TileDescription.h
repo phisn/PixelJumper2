@@ -22,9 +22,9 @@ namespace Shared
 		static TileCreation Create()
 		{
 			return TileCreation{
-				[](Resource::Tile * const tile) -> Game::GameTileBase* { return GameTile::Create(tile); }
-				[]() -> Editor::TileTemplate* { return new EditorTemplate(); }
-				[]() -> Editor::TileTemplate* { return new ResourceTile(); }
+				[](Resource::Tile * const tile) -> Game::GameTileBase* { return GameTile::Create(tile); },
+				[]() -> Editor::TileTemplate* { return new EditorTemplate(); },
+				[]() -> Resource::TileBase* { return new ResourceTile(); }
 			};
 		}
 
@@ -35,10 +35,15 @@ namespace Shared
 
 	struct TileDescription
 	{
+		static void Initialize();
+		static void Uninitialize();
+
+		static const TileDescription* Find(TileId tile);
+
 		template <typename T = TileDescription>
-		static const T* Find(TileId tile)
+		static const T * FindSpc(TileId tile)
 		{
-			return (T*) Find<TileDescription>(tile);
+			return (T*)Find(tile);
 		}
 
 		TileDescription(

@@ -12,7 +12,7 @@ namespace Device
 	class GameInput;
 	namespace Input
 	{
-		enum class Player
+		enum class PlayerId
 		{
 			P1, P2,
 			P3, P4,
@@ -48,7 +48,7 @@ namespace Device
 
 		void DefaultSettings();
 
-		GameInput* const GetGameInput(const Player player);
+		GameInput* const GetGameInput(const PlayerId player);
 	}
 
 	enum class GameCoreInputSymbol
@@ -123,7 +123,7 @@ namespace Device
 		public Resource::ResourceBase
 	{
 	public:
-		GameInput(const Input::Player player)
+		GameInput(const Input::PlayerId player)
 			:
 			player(player)
 		{
@@ -257,7 +257,7 @@ namespace Device
 		sf::Keyboard::Key coreKeys[(int) GameCoreInputSymbol::_Length];
 		sf::Keyboard::Key viewKeys[(int) GameViewInputSymbol::_Length];
 
-		const Input::Player player;
+		const Input::PlayerId player;
 
 		bool make(Resource::ReadPipe* const pipe) override
 		{
@@ -280,7 +280,7 @@ namespace Device
 	class GameInputUser
 	{
 	protected:
-		GameInputUser(const Input::Player player)
+		GameInputUser(const Input::PlayerId player)
 			:
 			input(Input::GetGameInput(player))
 		{

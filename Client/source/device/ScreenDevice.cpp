@@ -24,6 +24,8 @@ namespace Device
 
 	void Screen::Uninitialize()
 	{
+		window->close();
+		
 		delete window;
 		delete resource;
 	}

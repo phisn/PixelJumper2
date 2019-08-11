@@ -28,6 +28,13 @@ namespace Editor
 	public:
 		bool onCreate() override
 		{
+			if (Editor::Manipulator::GetWorld()->getTiles().empty())
+			{
+				Log::Error(L"Unable to load GroupedTilePreview of empty world");
+
+				return false;
+			}
+
 			sf::Image groupedTiles;
 			Resource::World* const groupedWorld = Editor::Manipulator::GetWorld()->convert(0xff, L"\0xff", L"\0xff");
 			groupedTiles.create(

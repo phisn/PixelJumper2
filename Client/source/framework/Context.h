@@ -87,16 +87,17 @@ namespace Framework
 			return true;
 		}
 
-		static bool PushScene(Scene::SubBase* const scene)
+		static bool PushScene(
+			Scene::SubBase* const scene, 
+			const bool stopMainScene = true)
 		{
-			if (!isValidTask(InternalTask::LoadScene) || !scene->onCreate())
+			if (!isValidTask(InternalTask::LoadScene) ||
+				!contextStack.front()->pushScene(scene, stopMainScene))
 			{
 				return false;
 			}
 
 			currentTask = InternalTask::LoadScene;
-
-			contextStack.back()->subScenes.push_back(scene);
 
 			return true;
 		}
@@ -114,46 +115,7 @@ namespace Framework
 			return true;
 		}
 
-		static void ProcessTask()
-		{
-			switch (currentTask)
-			{
-			case InternalTask::Empty:
-				return;
-			case InternalTask::Fallback:
-				contextStack.back()->fallback();
-
-				break;
-			case InternalTask::LoadContext:
-				contextStack.back()->externInit();
-
-				break;
-			case InternalTask::LoadScene:
-				break;
-			case InternalTask::PopContext:
-				Log::Information(L"Poping");
-
-				contextStack.back()->cleanup();
-				contextStack.pop_back();
-
-				if (contextStack.empty())
-				{
-					// TODO: Shutdown
-				}
-				else
-				{
-					contextStack.back()->show();
-				}
-
-				break;
-			case InternalTask::PopScene:
-				contextStack.back()->popScene();
-
-				break;
-			}
-
-			currentTask = InternalTask::Empty;
-		}
+		static void ProcessTask();
 
 	private:
 		Context(
@@ -214,11 +176,18 @@ namespace Framework
 			}
 		}
 
-		bool pushScene(Scene::SubBase* scene)
+		bool pushScene(
+			Scene::SubBase* const scene,
+			const bool stopMainScene)
 		{
 			if (!scene->onCreate())
 			{
 				return false;
+			}
+
+			if (stopMainScene)
+			{
+				mainSceneRunning = false;
 			}
 
 			subScenes.push_back(scene);
@@ -233,9 +202,19 @@ namespace Framework
 
 			subScenes.pop_back();
 			scene->onScenePopped(subScenes.size());
+
+			if (subScenes.empty())
+			{
+				contextStack.front()->mainSceneRunning = true;
+			}
 		}
 
 	public:
+		bool isMainSceneRunning() const
+		{
+			return mainSceneRunning;
+		}
+
 		void draw(sf::RenderTarget* const target) const
 		{
 			if (!subScenes.empty())
@@ -243,7 +222,7 @@ namespace Framework
 				subScenes.back()->onDraw(target);
 			}
 
-			if (scene->isRunning())
+			if (mainSceneRunning)
 			{
 				scene->onDraw(target);
 			}
@@ -256,7 +235,7 @@ namespace Framework
 				subScenes.back()->onEvent(event);
 			}
 
-			if (scene->isRunning())
+			if (mainSceneRunning)
 			{
 				scene->onEvent(event);
 			}
@@ -269,7 +248,7 @@ namespace Framework
 				subScenes.back()->onLogic(time);
 			}
 
-			if (scene->isRunning())
+			if (mainSceneRunning)
 			{
 				scene->onLogic(time);
 			}
@@ -282,6 +261,8 @@ namespace Framework
 
 	private:
 		ResourceContext resourceContext;
+
+		bool mainSceneRunning = true;
 
 		std::deque<Scene::SubBase*> subScenes;
 		Scene::MainSceneBase* const scene;

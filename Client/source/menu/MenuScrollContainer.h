@@ -141,6 +141,7 @@ namespace Menu
 		void removeAllElements()
 		{
 			slideBar.length->setPercent(1.f);
+			container.removeAllElements();
 		}
 
 		const Container& getElements() const

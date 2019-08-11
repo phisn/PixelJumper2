@@ -27,6 +27,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	Log::Information(L"Starting game");
 	int result = Device::Core::RunGameLoop();
+	Device::Core::Uninitialize();
+
 	std::cin.ignore();
 	return result;
 }

@@ -163,7 +163,7 @@ namespace Resource
 		WallTile()
 			:
 			TileBase(
-				Game::TileId::TileWall,
+				Shared::TileId::TileWall,
 				sizeof(Content)
 			)
 		{

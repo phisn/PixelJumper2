@@ -8,7 +8,9 @@
 namespace
 {
 	Device::GeneralInputSettings* generalInput;
-	Device::GameInput* gameInputs;
+
+	std::vector<Device::GameInput> gameInputs;
+//	Device::GameInput* gameInputs;
 }
 
 namespace Device
@@ -16,13 +18,13 @@ namespace Device
 	bool Input::Initialize()
 	{
 		generalInput = new GeneralInputSettings();
-		gameInputs = (GameInput*) new char[(int) Player::_Length * sizeof(GameInput)];
+		gameInputs.reserve((int) PlayerId::_Length);
 
 		LoadGlobalKeys();
 
-		for (int i = 0; i < (int) Player::_Length; ++i)
+		for (int i = 0; i < (int) PlayerId::_Length; ++i)
 		{
-			new(&gameInputs[i]) GameInput((Player) i);
+			gameInputs.emplace_back((PlayerId) i);
 
 			if (!gameInputs[i].load())
 			{
@@ -36,7 +38,7 @@ namespace Device
 	void Input::Uninitialize()
 	{
 		delete generalInput;
-		delete[] gameInputs;
+		gameInputs.clear();
 	}
 
 	sf::Keyboard::Key Input::GetGlobalKey(const GlobalSymbol symbol)
@@ -73,7 +75,7 @@ namespace Device
 				++usageCount;
 			}
 
-		for (int i = 0; i < (int) Player::_Length; ++i)
+		for (int i = 0; i < (int) PlayerId::_Length; ++i)
 		{
 			for (int j = 0; j < (int) GameCoreInputSymbol::_Length; ++i)
 				if (gameInputs[i].getCoreKey((GameCoreInputSymbol) j) == key)
@@ -106,7 +108,7 @@ namespace Device
 	}
 
 	GameInput* const Input::GetGameInput(
-		const Input::Player player)
+		const Input::PlayerId player)
 	{
 		return &gameInputs[(int) player];
 	}

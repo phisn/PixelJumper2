@@ -128,6 +128,8 @@
     <ClInclude Include="source\scene\SubSceneBase.h" />
     <ClInclude Include="source\scene\TestGameScene.h" />
     <ClInclude Include="source\scene\TestMenuScene.h" />
+    <ClInclude Include="source\shared\tiles\TileDescription.h" />
+    <ClInclude Include="source\shared\tiles\TileWall.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\CoreDevice.cpp" />
@@ -181,6 +183,8 @@
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
     <ClCompile Include="source\scene\TestGameScene.cpp" />
     <ClCompile Include="source\scene\TestMenuScene.cpp" />
+    <ClCompile Include="source\shared\tiles\TileDescription.cpp" />
+    <ClCompile Include="source\shared\tiles\TileWall.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +236,8 @@
     <None Include="source\editor\tile\EditorTileBase.h" />
     <None Include="source\editor\tile\TileTemplate.cpp" />
     <None Include="source\editor\tile\TileTemplate.h" />
+    <None Include="source\menu\MenuBackground.cpp" />
+    <None Include="source\menu\MenuBackground.h" />
     <None Include="source\menu\MenuEvent.h" />
     <None Include="source\menu\MenuFPSLabel.cpp" />
     <None Include="source\menu\MenuFPSLabel.h" />
@@ -267,11 +273,7 @@
     <None Include="source\menu\MenuSpecialProperties.h" />
     <None Include="source\resource\CommonResourceTypes.h" />
     <None Include="source\resource\ResourceTileContentBase.h" />
-    <None Include="source\shared\tiles\TileDescription.cpp" />
-    <None Include="source\shared\tiles\TileDescription.h" />
     <None Include="source\shared\tiles\TileId.h" />
-    <None Include="source\shared\tiles\TileWall.cpp" />
-    <None Include="source\shared\tiles\TileWall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

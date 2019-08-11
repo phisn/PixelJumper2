@@ -53,7 +53,7 @@ namespace Scene
 			}
 
 			player = Game::LocalPlayer::Create(
-				Device::Input::GetGameInput(Device::Input::Player::P1),
+				Device::Input::GetGameInput(Device::Input::PlayerId::P1),
 				{
 					0, 0, 1, 1
 				},

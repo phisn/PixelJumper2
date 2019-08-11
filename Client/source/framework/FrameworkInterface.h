@@ -7,42 +7,17 @@
 
 namespace Framework
 {
-	namespace
-	{
-		static bool running = true;
-	}
-
 	namespace Interface
 	{
-		static void Draw(sf::RenderTarget* const target)
-		{
-			Context::GetStack().back()->draw(target);
-		}
+		void Draw(sf::RenderTarget* const target);
+		void Event(const sf::Event event);
+		void Update(const sf::Time time);
 
-		static void Event(const sf::Event event)
-		{
-			Context::GetStack().back()->Event(event);
-		}
+		void ProcessTask();
 
-		static void Update(const sf::Time time)
-		{
-			Context::GetStack().back()->update(time);
-		}
+		bool IsRunning();
+		void Shutdown();
 
-		static void ProcessTask()
-		{
-			Context::ProcessTask();
-		}
-
-		static bool IsRunning()
-		{
-			return running;
-		}
-
-		static void Shutdown()
-		{
-			running = false;
-		}
 
 		_Ret_maybenull_
 		template <typename T>

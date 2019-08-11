@@ -146,12 +146,11 @@ namespace Scene
 				{
 					Log::Error(L"Unable to create GroupedTilePreview");
 				}
-
-				this->running = false;
 			}
 
 			if (event.type == sf::Event::KeyPressed &&
-				event.key.code == sf::Keyboard::R)
+				event.key.code == sf::Keyboard::R &&
+				event.key.control)
 			{
 				if (Editor::Manipulator::GetWorld()->getTiles().size() == 0)
 				{
@@ -190,7 +189,7 @@ namespace Scene
 		void onLogic(const sf::Time time) override
 		{
 			MenuBaseScene::onLogic(time);
-			fpsLabel.onLogic(time);
+			// fpsLabel.onLogic(time);
 		}
 
 		void onDraw(sf::RenderTarget* const target) override

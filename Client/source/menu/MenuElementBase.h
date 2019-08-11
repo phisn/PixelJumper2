@@ -40,6 +40,12 @@ namespace Menu
 							child->updateAutomaticSpace();
 					}
 				});
+			outerOffset.addListener(
+				[this](const CommonElementOffset oldOffset,
+					   const CommonElementOffset newOffset)
+				{
+					updateSizeWithSpace();
+				});
 			size.addListener(
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
@@ -89,6 +95,13 @@ namespace Menu
 
 		Property<CommonElementOffset> outerOffset{ };
 		Property<CommonElementOffset> innerOffset{ };
+
+		sf::Vector2f getFullSize() const
+		{
+			return sf::Vector2f(
+				size->x + outerOffset->left + outerOffset->right,
+				size->y + outerOffset->top + outerOffset->bottom);
+		}
 
 #pragma region CommonAccess
 	public:
@@ -201,7 +214,7 @@ namespace Menu
 			if (strongSelectedChild != NULL)
 			{
 				strongSelectedChild->unselectStrong();
-				strongSelectedChild = (ElementBase*)NULL;
+				strongSelectedChild = (ElementBase*) NULL;
 			}
 		}
 
@@ -212,7 +225,7 @@ namespace Menu
 			if (weakSelectedChild != NULL)
 			{
 				weakSelectedChild->unselectWeak();
-				weakSelectedChild = (ElementBase*)NULL;
+				weakSelectedChild = (ElementBase*) NULL;
 			}
 		}
 
@@ -239,10 +252,11 @@ namespace Menu
 				return expected;
 			}
 
-			for (ElementBase* const child : children)
+			for (decltype(children)::const_reverse_iterator child = children.crbegin();
+				child != children.crend(); ++child)
 			{
-				if (isTargetChild(position, child))
-					return child;
+				if (isTargetChild(position, *child))
+					return *child;
 			}
 
 			return NULL;
@@ -258,84 +272,6 @@ namespace Menu
 
 			return childRect.contains(position);
 		}
-
-		/*
-		void selectWeakChild(const sf::Event event)
-		{
-			if (ElementBase* const element = findElementByPosition(
-				sf::Vector2f(
-					event.mouseMove.x,
-					event.mouseMove.y)
-			); element != NULL)
-			{
-				if (weakSelectedChild.getValue() != element)
-				{
-					if (weakSelectedChild.getValue() != NULL)
-					{
-						weakSelectedChild->onEvent(event);
-					}
-
-					weakSelectedChild = element;
-					element->weakSelected = true;
-
-					weakSelectedChild->onEvent(event);
-				}
-			}
-			else
-			{
-				if (weakSelectedChild.getValue() != NULL)
-				{
-					weakSelectedChild->onEvent(event);
-
-					weakSelectedChild->weakSelected = false;
-					weakSelectedChild = (ElementBase*) NULL;
-				}
-			}
-		}
-
-		void selectStrongChild(const sf::Event event)
-		{
-			// should not call 
-			if (ElementBase * const element = findElementByPosition(
-				sf::Vector2f(
-					event.mouseButton.x,
-					event.mouseButton.y)
-			); element != NULL)
-			{
-				if (strongSelectedChild.getValue() != element)
-				{
-					strongSelectedChild = element;
-					element->strongSelected = true;
-				}
-			}
-			else
-			{
-				if (strongSelectedChild.getValue() != NULL)
-				{
-					strongSelectedChild->strongSelected = false;
-					strongSelectedChild = (ElementBase*) NULL;
-				}
-			}
-		}
-		
-
-		ElementBase* findElementByPosition(const sf::Vector2f position) const
-		{
-			for (ElementBase* const element : children)
-			{
-				const sf::FloatRect rect{
-					element->convertPositionVTR(sf::Vector2f(0.f, 0.f)),
-					*element->size };
-
-				if (rect.contains(position))
-				{
-					return element;
-				}
-			}
-
-			return NULL;
-		}
-		*/
 
 #pragma region Container
 	public:
@@ -460,7 +396,10 @@ namespace Menu
 	protected:
 		virtual void updateSizeWithSpace()
 		{
-			const sf::Vector2f realSpace = *space - *position;
+			const sf::Vector2f realSpace = *space - *position 
+				- sf::Vector2f(
+					outerOffset->left + outerOffset->right,
+					outerOffset->top + outerOffset->bottom);
 
 			// use max space as default size
 			if (sizePreferred->x == 0 || sizePreferred->y == 0)
@@ -499,12 +438,16 @@ namespace Menu
 
 			if (space.automatic.x)
 			{
-				result.x = parent->size->x - (parent->innerOffset->left + parent->innerOffset->right);
+				result.x = parent->size->x
+					- (parent->innerOffset->left + parent->innerOffset->right)
+					;// -(parent->outerOffset->left + parent->outerOffset->right);
 			}
 
 			if (space.automatic.y)
 			{
-				result.y = parent->size->y - (parent->innerOffset->top + parent->innerOffset->bottom);
+				result.y = parent->size->y
+					- (parent->innerOffset->top + parent->innerOffset->bottom)
+					;// -(parent->outerOffset->top + parent->outerOffset->bottom);
 			}
 
 			// no check needed, done outside
@@ -536,6 +479,9 @@ namespace Menu
 			base.x += this->position.getValue().x;
 			base.y += this->position.getValue().y;
 
+			base.x += outerOffset->left;
+			base.y += outerOffset->top;
+
 			return base;
 		}
 
@@ -546,11 +492,14 @@ namespace Menu
 				? position
 				: parent->convertFullPositionVTR(position);
 
-			base.x += innerOffset.getValue().left;
-			base.y += innerOffset.getValue().top;
+			base.x += innerOffset->left;
+			base.y += innerOffset->top;
 
-			base.x += this->position.getValue().x;
-			base.y += this->position.getValue().y;
+			base.x += outerOffset->left;
+			base.y += outerOffset->top;
+
+			base.x += this->position->x;
+			base.y += this->position->y;
 
 			return base;
 		}
@@ -560,8 +509,11 @@ namespace Menu
 		{
 			sf::Vector2f base = position;
 
-			base.x -= this->position.getValue().x;
-			base.y -= this->position.getValue().y;
+			base.x -= this->position->x;
+			base.y -= this->position->y;
+
+			base.x -= this->outerOffset->left;
+			base.y -= this->outerOffset->top;
 
 			return parent == NULL
 				? base
@@ -573,11 +525,14 @@ namespace Menu
 		{
 			sf::Vector2f base = position;
 
-			base.x -= innerOffset.getValue().left;
-			base.y -= innerOffset.getValue().top;
+			base.x -= innerOffset->left;
+			base.y -= innerOffset->top;
 
-			base.x -= this->position.getValue().x;
-			base.y -= this->position.getValue().y;
+			base.x -= this->position->x;
+			base.y -= this->position->y;
+
+			base.x -= this->outerOffset->left;
+			base.y -= this->outerOffset->top;
 
 			return parent == NULL
 				? base

@@ -27,6 +27,8 @@ namespace Device
 	{
 		Log::Section section(L"Initializing Game");
 
+		Shared::TileDescription::Initialize();
+
 		if (!Resource::Interface::Initialize())
 		{
 			return Core::Error::ResourceError;

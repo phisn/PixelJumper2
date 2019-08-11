@@ -27,10 +27,6 @@ namespace Scene
 		
 		virtual void onScenePopped(const int size)
 		{
-			if (size == 0 && !running)
-			{
-				running = true;
-			}
 		}
 
 		virtual void onEvent(
@@ -39,13 +35,5 @@ namespace Scene
 			const sf::Time time) = 0;
 		virtual void onDraw(
 			sf::RenderTarget* const target) = 0;
-
-		bool isRunning() const
-		{
-			return running;
-		}
-
-	protected:
-		bool running = true;
 	};
 }

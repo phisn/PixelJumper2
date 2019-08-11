@@ -573,9 +573,6 @@
     <None Include="source\editor\tilechoice\TileSearchWorker.h">
       <Filter>source\editor\tilechoice</Filter>
     </None>
-    <None Include="source\editor\tilechoice\TileSearchWorker.cpp">
-      <Filter>source\editor\tilechoice</Filter>
-    </None>
     <None Include="source\editor\tilechoice\TileChoiceListener.cpp">
       <Filter>source\editor\tilechoice</Filter>
     </None>
@@ -633,13 +630,7 @@
     <None Include="source\menu\MenuTextBoxWithInfo.cpp">
       <Filter>source\menu</Filter>
     </None>
-    <None Include="source\shared\tiles\TileDescription.h">
-      <Filter>source\shared\tiles</Filter>
-    </None>
     <None Include="source\shared\tiles\TileId.h">
-      <Filter>source\shared\tiles</Filter>
-    </None>
-    <None Include="source\shared\tiles\TileDescription.cpp">
       <Filter>source\shared\tiles</Filter>
     </None>
     <None Include="source\resource\ResourceTileContentBase.h">
@@ -651,11 +642,14 @@
     <None Include="source\editor\tile\TileTemplate.h">
       <Filter>source\editor\tile</Filter>
     </None>
-    <None Include="source\shared\tiles\TileWall.cpp">
-      <Filter>source\shared\tiles</Filter>
+    <None Include="source\editor\tilechoice\TileSearchWorker.cpp">
+      <Filter>source\editor\tilechoice</Filter>
     </None>
-    <None Include="source\shared\tiles\TileWall.h">
-      <Filter>source\shared\tiles</Filter>
+    <None Include="source\menu\MenuBackground.h">
+      <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\menu\MenuBackground.cpp">
+      <Filter>source\menu</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -130,8 +130,8 @@ namespace Menu
 					   const sf::Vector2f newSize)
 				{
 					container.sizePreferred = newSize - sf::Vector2f(
-						innerOffset->left + innerOffset->right,
-						innerOffset->top + innerOffset->bottom
+						innerOffset->left + innerOffset->right, // + outerOffset->left + outerOffset->right,
+						innerOffset->top + innerOffset->bottom  // + outerOffset->left + outerOffset->right
 					);
 					label.sizePreferred.setY(container.sizePreferred->y);
 				});

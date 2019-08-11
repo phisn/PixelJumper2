@@ -19,7 +19,7 @@ namespace Editor
 	class TileSearchInput
 	{
 	public:
-		// ... ?
+		std::wstring search;
 	};
 
 	class TileSearchOutput
