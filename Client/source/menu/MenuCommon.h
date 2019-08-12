@@ -54,6 +54,18 @@ namespace Menu
 	struct CommonControlStyle
 	{
 		T default, hover, pressed;
+
+		bool operator==(const CommonControlStyle& other) const
+		{
+			return default == other.default
+				&& hover == other.hover
+				&& pressed == other.pressed;
+		}
+
+		bool operator!=(const CommonControlStyle& other) const
+		{
+			return !((*this) == other);
+		}
 	};
 
 	enum class CommonVerticalArea

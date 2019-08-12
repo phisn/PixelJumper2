@@ -83,7 +83,7 @@ namespace Editor
 {
 	Menu::ElementBase* WallTemplate::createRepresentation()
 	{
-		static TileChoiceButton button;
+		static TileChoiceButton<TileChoiceMaterial::Default> button;
 		static bool initialized = false;
 
 		if (!initialized)
@@ -109,6 +109,8 @@ namespace Editor
 						Log::Error(L"Failed to place tiles");
 					}
 				});
+
+			button.label.text = L"Wall";
 		}
 
 		return &button;

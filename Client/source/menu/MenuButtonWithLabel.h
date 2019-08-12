@@ -26,12 +26,34 @@ namespace Menu
 					   const sf::Vector2f newSize)
 				{   
 					updateLabelPosition();
+					label.sizePreferred = { newSize.x * labelDependentSize->x, newSize.y * labelDependentSize->y };
+				});
+			horizontalArea.addListener(
+				[this](const CommonHorizontalArea oldArea,
+					   const CommonHorizontalArea newArea)
+				{
+					updateLabelPosition();
+				});
+			verticalArea.addListener(
+				[this](const CommonVerticalArea oldArea,
+					   const CommonVerticalArea newArea)
+				{
+					updateLabelPosition();
 				});
 
 			ElementBase::addChild(&label);
 		}
 
-		Property<sf::Vector2f> labelOffset{ sf::Vector2f(0.f, -8.f) };
+		Property<
+			CommonControlStyle<sf::Color>
+		> labelStyle = CommonControlStyle<sf::Color>{
+			sf::Color::Color(255, 255, 255),
+			sf::Color::Color(255, 255, 255),
+			sf::Color::Color(190, 190, 190)
+		};
+		Property<sf::Vector2f> labelDependentSize{ sf::Vector2f(1.f, 1.f) };
+
+		Property<sf::Vector2f> labelOffset{ sf::Vector2f(0.f, 0) };
 
 	protected:
 		virtual void updateOwnGraphics() override
@@ -47,32 +69,47 @@ namespace Menu
 	private:
 		void updateLabelPosition()
 		{
-			label.position = (size.getValue() - label.size.getValue()) / 2.f + labelOffset.getValue();
+			sf::Vector2f position = { };
+
+			if (horizontalArea != CommonHorizontalArea::Left)
+			{
+				position.x = (size->x - label.size->x);
+
+				if (horizontalArea == CommonHorizontalArea::Center)
+				{
+					position.x /= 2.f;
+				}
+			}
+
+			if (verticalArea != CommonVerticalArea::Top)
+			{
+				position.y = (size->y - label.size->y);
+
+				if (verticalArea == CommonVerticalArea::Center)
+				{
+					position.y /= 2.f;
+				}
+			}
+
+			label.position = position + *labelOffset;
 		}
 
 		virtual void onGraphicsHovered() override
 		{
 			Button::onGraphicsHovered();
-			label.color = labelStyle.hover;
+			label.color = labelStyle->hover;
 		}
 
 		virtual void onGraphicsDefault() override
 		{
 			Button::onGraphicsDefault();
-			label.color = labelStyle.default;
+			label.color = labelStyle->default;
 		}
 
 		virtual void onGraphicsPressed() override
 		{
 			Button::onGraphicsPressed();
-			label.color = labelStyle.pressed;
+			label.color = labelStyle->pressed;
 		}
-
-		CommonControlStyle<sf::Color> labelStyle =
-		{
-			sf::Color::Color(255, 255, 255),
-			sf::Color::Color(255, 255, 255),
-			sf::Color::Color(190, 190, 190)
-		};
 	};
 }

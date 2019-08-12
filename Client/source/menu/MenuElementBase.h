@@ -91,7 +91,8 @@ namespace Menu
 		Property<sf::Vector2f> size;
 		Property<sf::Vector2f> position{ sf::Vector2f(0, 0) };
 
-		// Property<CommonArea> area{ CommonArea::Center };
+		Property<CommonHorizontalArea> horizontalArea{ CommonHorizontalArea::Center };
+		Property<CommonVerticalArea> verticalArea{ CommonVerticalArea::Center };
 
 		Property<CommonElementOffset> outerOffset{ };
 		Property<CommonElementOffset> innerOffset{ };

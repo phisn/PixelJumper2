@@ -61,11 +61,24 @@ namespace Menu
 						updateTextSize();
 					}
 				});
+			style.addListener(
+				[this](const sf::Uint32 oldStyle,
+					   const sf::Uint32 newStyle)
+				{
+					glText.setStyle(newStyle);
+
+					updateCharacterSize();
+
+					if (!limitWidth)
+					{
+						updateTextSize();
+					}
+				});
 			
 			limitWidth.sync(space.automatic.x);
-
-			// glText.setCharacterSize(18);
 		}
+
+		Property<sf::Uint32> style;
 
 		Property<sf::Color> color { sf::Color::White };
 		Property<const sf::Font*> font { NULL };
