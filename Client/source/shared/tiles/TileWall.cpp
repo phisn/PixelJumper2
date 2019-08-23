@@ -1,7 +1,4 @@
-
-
 #include "TileWall.h"
-
 
 namespace Shared
 {
@@ -20,7 +17,9 @@ namespace Shared
 
 namespace Game
 {
-	GameTileBase* WallTile::Create(Resource::Tile* const tile)
+	GameTileBase* WallTile::Create(
+		Resource::Tile* const tile,
+		const int identity)
 	{
 		Resource::WallTile* const resource = (Resource::WallTile*) tile->Content;
 
@@ -30,6 +29,8 @@ namespace Game
 		}
 
 		return new WallTile(
+			identity,
+
 			resource->Content.density,
 			resource->Content.friction,
 
@@ -132,7 +133,7 @@ namespace Editor
 		const Resource::TileBase* const tile)
 	{
 		Resource::WallTile* const wt = (Resource::WallTile*) tile;
-
+		+
 		density = wt->Content.density;
 		friction = wt->Content.friction;
 

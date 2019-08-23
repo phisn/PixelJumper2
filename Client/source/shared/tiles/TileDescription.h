@@ -22,13 +22,13 @@ namespace Shared
 		static TileCreation Create()
 		{
 			return TileCreation{
-				[](Resource::Tile * const tile) -> Game::GameTileBase* { return GameTile::Create(tile); },
+				[](Resource::Tile * const tile, const int identity) -> Game::GameTileBase* { return GameTile::Create(tile, identity); },
 				[]() -> Editor::TileTemplate* { return new EditorTemplate(); },
 				[]() -> Resource::TileBase* { return new ResourceTile(); }
 			};
 		}
 
-		Game::GameTileBase* (*createGameTile)(Resource::Tile*);
+		Game::GameTileBase* (*createGameTile)(Resource::Tile*, const int);
 		Editor::TileTemplate* (*createEditorTemplate)();
 		Resource::TileBase* (*createResourceTile)();
 	};

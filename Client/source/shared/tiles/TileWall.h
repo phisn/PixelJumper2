@@ -30,15 +30,19 @@ namespace Game
 		public StaticTile
 	{
 	public:
-		static GameTileBase* Create(Resource::Tile* const tile);
+		static GameTileBase* Create(
+			Resource::Tile* const tile, 
+			const int identity);
 
 		WallTile(
+			const int identity,
 			const float density,
 			const float drag,
 			const sf::Vector2f position,
 			const sf::Vector2f size)
 			:
 			StaticTile(
+				identity,
 				Shared::TileWall.gameColor,
 				position,
 				size),

@@ -103,7 +103,7 @@ namespace Menu
 		}
 #endif
 		// enable workarounds for indirect properties
-		// like size
+		// like size and lazy property
 		virtual void setValue(const T value)
 		{
 			const T temp = std::move(this->value);

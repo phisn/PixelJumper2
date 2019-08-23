@@ -134,9 +134,7 @@ namespace Editor
 			horizontalArea = Menu::CommonHorizontalArea::Left;
 			verticalArea = Menu::CommonVerticalArea::Top;
 
-			// label.style = sf::Text::Style::Underlined;
-
-			labelOffset = { 5.f, 5.f };
+			labelOffset = { 7.f, 10.f };
 		}
 
 		Menu::MenuNotifier<TileChoiceButton> buttonSelectedEvent;

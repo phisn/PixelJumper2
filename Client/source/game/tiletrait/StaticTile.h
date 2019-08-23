@@ -19,10 +19,12 @@ namespace Game
 		}
 
 		StaticTile(
+			const int identity,
 			const sf::Color color,
 			const sf::Vector2f position,
 			const sf::Vector2f size)
 			:
+			GameTileBase(identity),
 			color(color),
 			position(position),
 			size(size)

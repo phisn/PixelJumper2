@@ -70,6 +70,9 @@
     <Filter Include="source\editor\tile">
       <UniqueIdentifier>{39b2cea4-20c9-44ea-9f0c-b6e0ab663e07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\game\old">
+      <UniqueIdentifier>{40b7df19-7a80-4367-a00e-3f872c31cc2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\device\InputDevice.h">
@@ -168,18 +171,6 @@
     <ClInclude Include="source\game\GameState.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\GameStateManager.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\PlayerBase.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\PlayerState.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\WorldState.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\tiletrait\CollidableTile.h">
       <Filter>source\game\TileTrait</Filter>
     </ClInclude>
@@ -198,9 +189,6 @@
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
       <Filter>source\game\TileTrait</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\LocalPlayer.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\device\CoreDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
@@ -212,12 +200,6 @@
     </ClInclude>
     <ClInclude Include="source\device\DeviceConfig.h">
       <Filter>source\device</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\WorldBase.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\HostWorld.h">
-      <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\Environment.h">
       <Filter>source\game</Filter>
@@ -245,6 +227,15 @@
     </ClInclude>
     <ClInclude Include="source\editor\tilechoice\TileChoiceButton.h">
       <Filter>source\editor\tilechoice</Filter>
+    </ClInclude>
+    <ClInclude Include="source\shared\tiles\TileDescription.h">
+      <Filter>source\shared\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\shared\tiles\TileWall.h">
+      <Filter>source\shared\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor\tile\TileTemplateFactory.h">
+      <Filter>source\editor\tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -329,18 +320,6 @@
     <ClCompile Include="source\game\CollisionEngine.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\GameStateManager.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\PlayerBase.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\PlayerState.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\WorldState.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\tiletrait\CollidableTile.cpp">
       <Filter>source\game\TileTrait</Filter>
     </ClCompile>
@@ -353,9 +332,6 @@
     <ClCompile Include="source\game\tiletrait\GameTileBase.cpp">
       <Filter>source\game\TileTrait</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\LocalPlayer.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\device\CoreDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
@@ -364,12 +340,6 @@
     </ClCompile>
     <ClCompile Include="source\device\DeviceConfig.cpp">
       <Filter>source\device</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\WorldBase.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\HostWorld.cpp">
-      <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\Environment.cpp">
       <Filter>source\game</Filter>
@@ -392,12 +362,23 @@
     <ClCompile Include="source\resource\pipes\PipeBase.cpp">
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
     <ClCompile Include="source\editor\manipulator\EditorWorld.cpp">
       <Filter>source\editor\manipulator</Filter>
     </ClCompile>
     <ClCompile Include="source\editor\tilechoice\TileChoiceButton.cpp">
       <Filter>source\editor\tilechoice</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\manipulator\Manipulator.cpp">
+      <Filter>source\editor\manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\shared\tiles\TileDescription.cpp">
+      <Filter>source\shared\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\shared\tiles\TileWall.cpp">
+      <Filter>source\shared\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor\tile\TileTemplateFactory.cpp">
+      <Filter>source\editor\tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -650,6 +631,84 @@
     </None>
     <None Include="source\menu\MenuBackground.cpp">
       <Filter>source\menu</Filter>
+    </None>
+    <None Include="source\game\GameProperty.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\GameProperty.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\GameWorld.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\GameWorld.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\GamemodeBase.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\GamemodeBase.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\TruePlayer.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\TruePlayer.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\VirtualPlayer.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\VirtualPlayer.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\old\GameStateManager.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\GameStateManager.h">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\GameWorld.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\GameWorld.h">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\HostWorld.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\HostWorld.h">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\LocalPlayer.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\LocalPlayer.h">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\PlayerBase.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\PlayerBase.h">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\PlayerState.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\PlayerState.h">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\WorldBase.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\WorldBase.h">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\WorldState.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\WorldState.h">
+      <Filter>source\game\old</Filter>
     </None>
   </ItemGroup>
 </Project>

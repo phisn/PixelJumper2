@@ -15,6 +15,6 @@ namespace Game
 		virtual bool readState(Resource::ReadPipe* const readPipe) = 0;
 	};
 
-	template <typename T>
-	using Property = Menu::Property<T>;
+	/*template <typename T>
+	using Property = Menu::Property<T>;*/
 }

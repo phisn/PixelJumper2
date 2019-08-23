@@ -82,6 +82,10 @@ namespace Game
 		}
 
 	private:
+		bool initializeCreateAndRegister(
+			Resource::World* const resource);
+		bool initializeVertex();
+
 		std::unordered_map<
 			size_t,
 			std::vector<GameTileBase*>

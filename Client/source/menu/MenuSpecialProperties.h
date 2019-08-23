@@ -78,26 +78,39 @@ namespace Menu
 	};
 
 	template <typename T>
-	class LazyListenerProperty
+	class LazyProperty
 		:
 		public Property<T>
 	{
 	public:
-		typedef std::function<void(const T&)> LazyListener;
-
-		void addLazyListener(LazyListener listener)
+		
+		void setValue(const T value) override
 		{
-			lazyListeners.push_back(listener);
+			if (!needsUpdate)
+			{
+				oldValue = std::move(this->value);
+				needsUpdate = true;
+			}
+
+			this->value = T(value);
 		}
 
-		void updateLazy()
+		bool update()
 		{
-			for (const LazyListener& listener : lazyListeners)
-				listener(**this);
+			if (needsUpdate)
+			{
+				valueChanged(std::move(oldValue));
+
+				needsUpdate = false;
+				return true;
+			}
+
+			return false;
 		}
 
 	private:
-		std::vector<LazyListener> lazyListeners;
+		T oldValue;
+		bool needsUpdate;
 	};
 
 	template <typename Parent, typename T>
