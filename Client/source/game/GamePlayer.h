@@ -61,6 +61,48 @@ namespace Game
 		sf::Vector2f position, movement;
 	};
 
+	class TileDataStorage
+		:
+		public GameState
+	{
+	public:
+		void update()
+		{
+			for (decltype(tileData)::const_reference data : tileData)
+				data.second.update();
+		}
+
+		bool writeState(Resource::WritePipe* const writePipe) override
+		{
+			for (decltype(tileData)::const_reference data : tileData)
+				if (!data.second->writeState(writePipe))
+				{
+					return false;
+				}
+
+			return true;
+		}
+
+		bool readState(Resource::ReadPipe * const readPipe) override
+		{
+			for (decltype(tileData)::const_reference data : tileData)
+				if (!data.second->readState(readPipe))
+				{
+					return false;
+				}
+
+			return true;
+		}
+
+		template <typename T>
+		T* readAs(const TileIdentity identity) const
+		{
+			return dynamic_cast<T*>(tileData[identity].getValue());
+		}
+
+		std::map<TileIdentity, Property<GameState*>> tileData;
+	};
+
 	class PlayerProperties
 		:
 		public GameState
@@ -68,23 +110,29 @@ namespace Game
 	public:
 		Property<sf::Vector2f> position, movement;
 
+		TileDataStorage tileDataStorage;
+
 		void update()
 		{
 			position.update();
 			movement.update();
+
+			tileDataStorage.update();
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
 		{
 			RawPlayerProperties rpp = createRaw();
-			return writePipe->writeValue(&rpp);
+			return writePipe->writeValue(&rpp)
+				&& tileDataStorage.writeState(writePipe);
 		}
 
 		bool readState(Resource::ReadPipe* const readPipe) override
 		{
 			RawPlayerProperties rpp;
 
-			if (!readPipe->readValue(&rpp))
+			if (!readPipe->readValue(&rpp) &&
+				!tileDataStorage.readState(readPipe))
 			{
 				return false;
 			}

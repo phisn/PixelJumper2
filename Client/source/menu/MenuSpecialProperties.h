@@ -95,7 +95,7 @@ namespace Menu
 			this->value = T(value);
 		}
 
-		bool update()
+		bool update() const
 		{
 			if (needsUpdate)
 			{
@@ -110,7 +110,7 @@ namespace Menu
 
 	private:
 		T oldValue;
-		bool needsUpdate;
+		mutable bool needsUpdate;
 	};
 
 	template <typename Parent, typename T>

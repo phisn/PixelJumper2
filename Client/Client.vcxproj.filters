@@ -650,18 +650,6 @@
     <None Include="source\game\GamemodeBase.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\TruePlayer.cpp">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\TruePlayer.h">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\VirtualPlayer.cpp">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\VirtualPlayer.h">
-      <Filter>source\game</Filter>
-    </None>
     <None Include="source\game\old\GameStateManager.cpp">
       <Filter>source\game\old</Filter>
     </None>
@@ -709,6 +697,24 @@
     </None>
     <None Include="source\game\old\WorldState.h">
       <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\DependentTileData.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\GamePlayer.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\GamePlayer.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\UserConnection.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\UserConnection.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\PlayerInformation.h">
+      <Filter>source\game</Filter>
     </None>
   </ItemGroup>
 </Project>

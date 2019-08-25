@@ -4,6 +4,8 @@
 
 namespace Game
 {
+	typedef int TileIdentity;
+
 	class Environment;
 	struct RegisterableType
 	{
@@ -13,7 +15,9 @@ namespace Game
 	class GameTileBase : public RegisterableType
 	{
 	public:
-		GameTileBase(const int identity)
+		GameTileBase(const TileIdentity identity)
+			:
+			identity(identity)
 		{
 		}
 
@@ -29,6 +33,6 @@ namespace Game
 		}
 
 	private:
-		const int identity;
+		const TileIdentity identity;
 	};
 }

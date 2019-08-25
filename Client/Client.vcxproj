@@ -222,6 +222,7 @@
     <None Include="source\editor\tile\EditorTileBase.h" />
     <None Include="source\editor\tile\TileTemplate.cpp" />
     <None Include="source\editor\tile\TileTemplate.h" />
+    <None Include="source\game\DependentTileData.h" />
     <None Include="source\game\GamemodeBase.cpp" />
     <None Include="source\game\GamemodeBase.h" />
     <None Include="source\game\GameProperty.cpp" />
@@ -244,10 +245,11 @@
     <None Include="source\game\old\WorldBase.h" />
     <None Include="source\game\old\WorldState.cpp" />
     <None Include="source\game\old\WorldState.h" />
-    <None Include="source\game\TruePlayer.cpp" />
-    <None Include="source\game\TruePlayer.h" />
-    <None Include="source\game\VirtualPlayer.cpp" />
-    <None Include="source\game\VirtualPlayer.h" />
+    <None Include="source\game\GamePlayer.cpp" />
+    <None Include="source\game\GamePlayer.h" />
+    <None Include="source\game\PlayerInformation.h" />
+    <None Include="source\game\UserConnection.cpp" />
+    <None Include="source\game\UserConnection.h" />
     <None Include="source\menu\MenuBackground.cpp" />
     <None Include="source\menu\MenuBackground.h" />
     <None Include="source\menu\MenuEvent.h" />
