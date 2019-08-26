@@ -83,6 +83,7 @@ namespace Menu
 		public Property<T>
 	{
 	public:
+		using Property<T>::operator=;
 		
 		void setValue(const T value) override
 		{

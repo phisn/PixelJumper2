@@ -668,18 +668,6 @@
     <None Include="source\game\old\HostWorld.h">
       <Filter>source\game\old</Filter>
     </None>
-    <None Include="source\game\old\LocalPlayer.cpp">
-      <Filter>source\game\old</Filter>
-    </None>
-    <None Include="source\game\old\LocalPlayer.h">
-      <Filter>source\game\old</Filter>
-    </None>
-    <None Include="source\game\old\PlayerBase.cpp">
-      <Filter>source\game\old</Filter>
-    </None>
-    <None Include="source\game\old\PlayerBase.h">
-      <Filter>source\game\old</Filter>
-    </None>
     <None Include="source\game\old\PlayerState.cpp">
       <Filter>source\game\old</Filter>
     </None>
@@ -714,6 +702,33 @@
       <Filter>source\game</Filter>
     </None>
     <None Include="source\game\PlayerInformation.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\WorldInformation.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\PlayerRepresentation.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\PlayerRepresentation.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\old\_PlayerBase.h">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\_PlayerBase.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\_LocalPlayer.h">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\old\_LocalPlayer.cpp">
+      <Filter>source\game\old</Filter>
+    </None>
+    <None Include="source\game\LocalPlayer.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\LocalPlayer.h">
       <Filter>source\game</Filter>
     </None>
   </ItemGroup>

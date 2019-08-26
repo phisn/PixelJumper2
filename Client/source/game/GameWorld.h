@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/game/Environment.h>
-#include <Client/source/game/TruePlayer.h>
+#include <Client/source/game/GamePlayer.h>
 
 #include <vector>
 
@@ -12,6 +12,6 @@ namespace Game
 	public:
 
 	private:
-		std::vector<TruePlayer> players;
+		std::vector<PlayerBase> players;
 	};
 }
