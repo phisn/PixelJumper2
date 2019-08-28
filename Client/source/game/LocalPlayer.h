@@ -139,9 +139,9 @@ namespace Game
 	public:
 		LocalPlayer(
 			const Device::Input::PlayerId playerId,
-			const PlayerInformation information)
+			const Resource::PlayerResource* const resource)
 			:
-			PlayerBase(information),
+			PlayerBase(resource),
 			input(
 				Device::Input::GetGameInput(playerId)
 			)

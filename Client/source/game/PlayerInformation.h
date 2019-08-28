@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/resource/PlayerResource.h>
+
 #include <SFML/Graphics.hpp>
 
 #include <string>

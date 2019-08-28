@@ -656,12 +656,6 @@
     <None Include="source\game\old\GameStateManager.h">
       <Filter>source\game\old</Filter>
     </None>
-    <None Include="source\game\old\GameWorld.cpp">
-      <Filter>source\game\old</Filter>
-    </None>
-    <None Include="source\game\old\GameWorld.h">
-      <Filter>source\game\old</Filter>
-    </None>
     <None Include="source\game\old\HostWorld.cpp">
       <Filter>source\game\old</Filter>
     </None>
@@ -729,6 +723,20 @@
       <Filter>source\game</Filter>
     </None>
     <None Include="source\game\LocalPlayer.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="resource2.h" />
+    <None Include="Client2.rc" />
+    <None Include="source\game\WorldProperties.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\WorldProperties.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\PlayerProperties.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\PlayerProperties.h">
       <Filter>source\game</Filter>
     </None>
   </ItemGroup>

@@ -180,7 +180,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Client1.rc" />
+    <None Include="Client2.rc" />
     <None Include="resource1.h" />
+    <None Include="resource2.h" />
     <None Include="source\editor\manipulator\CacheElement.cpp" />
     <None Include="source\editor\manipulator\CacheElement.h" />
     <None Include="source\editor\manipulator\EditorCache.cpp" />
@@ -233,8 +235,6 @@
     <None Include="source\game\LocalPlayer.h" />
     <None Include="source\game\old\GameStateManager.cpp" />
     <None Include="source\game\old\GameStateManager.h" />
-    <None Include="source\game\old\GameWorld.cpp" />
-    <None Include="source\game\old\GameWorld.h" />
     <None Include="source\game\old\HostWorld.cpp" />
     <None Include="source\game\old\HostWorld.h" />
     <None Include="source\game\old\_LocalPlayer.cpp" />
@@ -250,11 +250,15 @@
     <None Include="source\game\GamePlayer.cpp" />
     <None Include="source\game\GamePlayer.h" />
     <None Include="source\game\PlayerInformation.h" />
+    <None Include="source\game\PlayerProperties.cpp" />
+    <None Include="source\game\PlayerProperties.h" />
     <None Include="source\game\PlayerRepresentation.cpp" />
     <None Include="source\game\PlayerRepresentation.h" />
     <None Include="source\game\UserConnection.cpp" />
     <None Include="source\game\UserConnection.h" />
     <None Include="source\game\WorldInformation.h" />
+    <None Include="source\game\WorldProperties.cpp" />
+    <None Include="source\game\WorldProperties.h" />
     <None Include="source\menu\MenuBackground.cpp" />
     <None Include="source\menu\MenuBackground.h" />
     <None Include="source\menu\MenuEvent.h" />
