@@ -7,7 +7,7 @@ namespace Game
 	{
 		return new CommonPlayerRepresentation(
 			information.color,
-			information.color - sf::Color(30, 30, 30, information.color.a / 2)
+			sf::Color::Color(information.color.toInteger() * 0.5)
 		);
 	}
 }

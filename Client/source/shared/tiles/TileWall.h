@@ -31,7 +31,7 @@ namespace Game
 	{
 	public:
 		static GameTileBase* Create(
-			Resource::Tile* const tile, 
+			const Resource::Tile* const tile, 
 			const int identity);
 
 		WallTile(

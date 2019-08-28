@@ -201,11 +201,11 @@ namespace Menu
 			}
 		}
 
-		ReadOnlyProperty<ElementBase, ElementBase*> strongSelectedChild{ NULL };
-		ReadOnlyProperty<ElementBase, ElementBase*> weakSelectedChild{ NULL };
+		ReadOnlyPropertyContainer<Property<ElementBase*>, ElementBase> strongSelectedChild{ NULL };
+		ReadOnlyPropertyContainer<Property<ElementBase*>, ElementBase> weakSelectedChild{ NULL };
 
-		ReadOnlyProperty<ElementBase, bool> weakSelected;
-		ReadOnlyProperty<ElementBase, bool> strongSelected;
+		ReadOnlyPropertyContainer<Property<ElementBase*>, ElementBase> weakSelected;
+		ReadOnlyPropertyContainer<Property<ElementBase*>, ElementBase> strongSelected;
 
 	protected:
 		void unselectStrong()

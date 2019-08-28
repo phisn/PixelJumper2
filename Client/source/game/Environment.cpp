@@ -14,9 +14,9 @@
 namespace Game
 {
 	bool Environment::initialize(
-		Resource::World* const resource)
+		const Resource::World* const resource)
 	{
-		Log::Section section(L"Environment Initialize");
+		Log::Section section(L"Initialize Environment");
 
 		if (!initializeCreateAndRegister(resource))
 		{
@@ -32,20 +32,18 @@ namespace Game
 	}
 
 	bool Environment::initializeCreateAndRegister(
-		Resource::World* const resource)
+		const Resource::World* const resource)
 	{
 		for (int i = 0; i < resource->TileContainer.size(); ++i)
-			//Resource::Tile& tileResource : resource->TileContainer)
 		{
-			Resource::Tile& tileResource = resource->TileContainer[i];
+			const Resource::Tile& tileResource = resource->TileContainer[i];
 
 			GameTileBase* const tile = Shared::TileDescription::Find(
 				tileResource.Header.id
 			)->creation.createGameTile(&tileResource, i);
 
-			if (tile == NULL) // TODO: still possible?
+			if (tile == NULL)
 			{
-				delete tile;
 				Log::Error(L"Failed to create tile");
 				return false;
 			}

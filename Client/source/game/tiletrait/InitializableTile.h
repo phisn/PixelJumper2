@@ -1,10 +1,9 @@
 #pragma once
 
-#include <Client/source/game/Environment.h>
+#include <Client/source/game/GameWorld.h>
 
 namespace Game
 {
-	class WorldBase;
 	class InitializableTile
 		:
 		public RegisterableType
@@ -15,6 +14,7 @@ namespace Game
 			env->registerTile<InitializableTile>(this);
 		}
 
-		virtual void initialize(WorldBase* const world) = 0;
+		// can fail
+		virtual bool initialize(World* const world) = 0;
 	};
 }

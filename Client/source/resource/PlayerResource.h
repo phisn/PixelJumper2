@@ -21,7 +21,7 @@ namespace Resource
 
 		struct
 		{
-			std::wstring UserName;
+			std::wstring userName;
 
 
 		} HeaderAuth;

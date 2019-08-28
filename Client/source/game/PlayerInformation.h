@@ -8,6 +8,16 @@ namespace Game
 {
 	struct PlayerInformation
 	{
+		static PlayerInformation Create(const Resource::PlayerResource* const resource)
+		{
+			PlayerInformation information;
+
+			information.name = resource->HeaderAuth.userName;
+			information.color = sf::Color::Red;
+
+			return information;
+		}
+
 		sf::Color color;
 		std::wstring name;
 	};

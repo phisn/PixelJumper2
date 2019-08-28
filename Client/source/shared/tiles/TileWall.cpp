@@ -18,10 +18,10 @@ namespace Shared
 namespace Game
 {
 	GameTileBase* WallTile::Create(
-		Resource::Tile* const tile,
+		const Resource::Tile* const tile,
 		const int identity)
 	{
-		Resource::WallTile* const resource = (Resource::WallTile*) tile->Content;
+		const Resource::WallTile* const resource = (const Resource::WallTile*) tile->Content;
 
 		if (tile->Header.contentSize != sizeof(Resource::WallTile::Content))
 		{
@@ -132,8 +132,8 @@ namespace Editor
 	bool TileWall::adopt(
 		const Resource::TileBase* const tile)
 	{
-		Resource::WallTile* const wt = (Resource::WallTile*) tile;
-		+
+		const Resource::WallTile* const wt = (const Resource::WallTile*) tile;
+		
 		density = wt->Content.density;
 		friction = wt->Content.friction;
 

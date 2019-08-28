@@ -19,9 +19,7 @@ namespace Game
 	class Environment
 	{
 	public:
-		Environment()
-		{
-		}
+		bool initialize(const Resource::World* const resource);
 
 		// let hash | valuetype open for ex. diff. collision types
 		template <typename HashType, typename ValueType = HashType>
@@ -55,9 +53,6 @@ namespace Game
 			tiles[typeid(HashType).hash_code()].push_back((GameTileBase*) tile);
 		}
 
-		bool initialize(
-			Resource::World* const resource);
-
 		void draw(sf::RenderTarget* const target) const;
 		void onEvent(const sf::Event event);
 		void onLogic(const sf::Time time);
@@ -82,8 +77,7 @@ namespace Game
 		}
 
 	private:
-		bool initializeCreateAndRegister(
-			Resource::World* const resource);
+		bool initializeCreateAndRegister(const Resource::World* const resource);
 		bool initializeVertex();
 
 		std::unordered_map<

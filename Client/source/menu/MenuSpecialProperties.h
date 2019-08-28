@@ -114,10 +114,10 @@ namespace Menu
 		mutable bool needsUpdate;
 	};
 
-	template <typename Parent, typename T>
-	class ReadOnlyProperty
+	template <typename Property, typename Parent>
+	class ReadOnlyPropertyContainer
 		:
-		private Property<T>
+		private Property
 	{
 		friend Parent;
 

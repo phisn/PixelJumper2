@@ -4,6 +4,9 @@
 #include <Client/source/game/GameProperty.h>
 #include <Client/source/game/GameState.h>
 #include <Client/source/game/PlayerRepresentation.h>
+#include <Client/source/game/WorldInformation.h>
+
+#include <Client/source/resource/PlayerResource.h>
 
 namespace Game
 {
@@ -49,7 +52,7 @@ namespace Game
 		std::map<TileIdentity, Property<GameState*>> tileData;
 	};
 
-	struct RawPlayerProperties
+	struct PlayerState
 	{
 		bool inputReducedFriction;
 		sf::Vector2f position, movement;
@@ -67,6 +70,18 @@ namespace Game
 
 		TileDataStorage tileDataStorage;
 
+		void loadDefault(const WorldInformation& info)
+		{
+			position = info.defaultPlayerProperties.beginPosition;
+			movement = info.defaultPlayerProperties.beginMovement;
+
+			speed = info.defaultPlayerProperties.speed;
+			weight = info.defaultPlayerProperties.weight;
+			friction = info.defaultPlayerProperties.friction;
+
+			update();
+		}
+
 		void update()
 		{
 			inputReducedFriction.update();
@@ -83,14 +98,14 @@ namespace Game
 
 		bool writeState(Resource::WritePipe* const writePipe) override
 		{
-			RawPlayerProperties rpp = createRaw();
+			PlayerState rpp = createState();
 			return writePipe->writeValue(&rpp)
 				&& tileDataStorage.writeState(writePipe);
 		}
 
 		bool readState(Resource::ReadPipe* const readPipe) override
 		{
-			RawPlayerProperties rpp;
+			PlayerState rpp;
 
 			if (!readPipe->readValue(&rpp) &&
 				!tileDataStorage.readState(readPipe))
@@ -112,9 +127,9 @@ namespace Game
 			return true;
 		}
 
-		RawPlayerProperties createRaw() const
+		PlayerState createState() const
 		{
-			RawPlayerProperties rpp;
+			PlayerState rpp;
 
 			rpp.inputReducedFriction = inputReducedFriction;
 
@@ -167,16 +182,16 @@ namespace Game
 	class PlayerBase
 	{
 	public:	
-		PlayerBase(const PlayerInformation information)
+		PlayerBase(const Resource::PlayerResource* const resource)
 			:
-			information(information),
+			information(PlayerInformation::Create(resource)),
 			representation(PlayerRepresentation::Create(information))
 		{
 			properties.position.addListener(
 				[this](const sf::Vector2f oldPosition,
 					   const sf::Vector2f newPosition)
 				{
-					representation->setPosition(newPosition);
+					representationNeedsUpdate = true;
 				});
 
 			representation->setSize({ 1.f , 1.f });
@@ -194,6 +209,11 @@ namespace Game
 
 		virtual void onDraw(sf::RenderTarget* const target)
 		{
+			if (representationNeedsUpdate)
+			{
+				updateRepresentation();
+			}
+
 			representation->draw(target);
 		}
 
@@ -212,6 +232,13 @@ namespace Game
 		CollisionContainer collisionContainer; // expose
 
 	private:
+		bool representationNeedsUpdate = true;
+
+		void updateRepresentation()
+		{
+			representation->setPosition(properties.position);
+		}
+
 		PlayerRepresentation* const representation;
 		const PlayerInformation information;
 	};
