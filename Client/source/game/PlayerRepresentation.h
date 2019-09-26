@@ -44,7 +44,10 @@ namespace Game
 
 		virtual void setPosition(const sf::Vector2f position) override
 		{
-			shape.setPosition(position);
+			shape.setPosition(position + sf::Vector2f(
+				shape.getOutlineThickness(),
+				shape.getOutlineThickness()
+			));
 		}
 
 		virtual void setSize(const sf::Vector2f size) override

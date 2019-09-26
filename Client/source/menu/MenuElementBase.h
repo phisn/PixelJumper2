@@ -204,8 +204,8 @@ namespace Menu
 		ReadOnlyPropertyContainer<Property<ElementBase*>, ElementBase> strongSelectedChild{ NULL };
 		ReadOnlyPropertyContainer<Property<ElementBase*>, ElementBase> weakSelectedChild{ NULL };
 
-		ReadOnlyPropertyContainer<Property<ElementBase*>, ElementBase> weakSelected;
-		ReadOnlyPropertyContainer<Property<ElementBase*>, ElementBase> strongSelected;
+		ReadOnlyPropertyContainer<Property<bool>, ElementBase> weakSelected;
+		ReadOnlyPropertyContainer<Property<bool>, ElementBase> strongSelected;
 
 	protected:
 		void unselectStrong()

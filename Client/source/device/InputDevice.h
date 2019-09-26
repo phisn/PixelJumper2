@@ -9,7 +9,6 @@
 
 namespace Device
 {
-	class GameInput;
 	namespace Input
 	{
 		enum class PlayerId
@@ -47,8 +46,6 @@ namespace Device
 		bool SaveGlobalKeys();
 
 		void DefaultSettings();
-
-		GameInput* const GetGameInput(const PlayerId player);
 	}
 
 	enum class GameCoreInputSymbol
@@ -65,7 +62,6 @@ namespace Device
 
 		_Length
 	};
-
 
 	enum class GameViewInputSymbol
 	{
@@ -276,6 +272,11 @@ namespace Device
 			return true;
 		}
 	};
+
+	namespace Input
+	{
+		GameInput* GetGameInput(const PlayerId player);
+	}
 
 	class GameInputUser
 	{

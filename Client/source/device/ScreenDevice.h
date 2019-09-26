@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/device/InputDevice.h>
+
 #include <Client/source/resource/ResourceBase.h>
 
 #include <SFML/Graphics.hpp>
@@ -86,4 +88,32 @@ namespace Device
 
 		bool PollEvent(sf::Event& event);
 	}
+
+	class View
+		:
+		public sf::View
+	{
+	public:
+		void setRect(const sf::FloatRect rect)
+		{
+			setSize(
+				{
+					rect.width,
+					rect.height
+				});
+
+			setCenter(sf::Vector2f(
+				rect.left,
+				rect.top
+			) + getSize() * 0.5f);
+		}
+
+		void enable()
+		{
+			Screen::SetView(view);
+		}
+
+	private:
+		sf::View view;
+	};
 }

@@ -140,6 +140,8 @@
     <ClCompile Include="source\framework\ResourceContext.cpp" />
     <ClCompile Include="source\game\CollisionEngine.cpp" />
     <ClCompile Include="source\game\Environment.cpp" />
+    <ClCompile Include="source\game\GameWorld.cpp" />
+    <ClCompile Include="source\game\PlayerRepresentation.cpp" />
     <ClCompile Include="source\game\tiletrait\CollidableTile.cpp" />
     <ClCompile Include="source\game\tiletrait\DrawableTile.cpp" />
     <ClCompile Include="source\game\tiletrait\DynamicTile.cpp" />
@@ -225,11 +227,11 @@
     <None Include="source\editor\tile\TileTemplate.cpp" />
     <None Include="source\editor\tile\TileTemplate.h" />
     <None Include="source\game\DependentTileData.h" />
+    <None Include="source\game\GameEvent.h" />
     <None Include="source\game\GamemodeBase.cpp" />
     <None Include="source\game\GamemodeBase.h" />
     <None Include="source\game\GameProperty.cpp" />
     <None Include="source\game\GameProperty.h" />
-    <None Include="source\game\GameWorld.cpp" />
     <None Include="source\game\GameWorld.h" />
     <None Include="source\game\LocalPlayer.cpp" />
     <None Include="source\game\LocalPlayer.h" />
@@ -252,8 +254,9 @@
     <None Include="source\game\PlayerInformation.h" />
     <None Include="source\game\PlayerProperties.cpp" />
     <None Include="source\game\PlayerProperties.h" />
-    <None Include="source\game\PlayerRepresentation.cpp" />
     <None Include="source\game\PlayerRepresentation.h" />
+    <None Include="source\game\tiletrait\ExitableTile.cpp" />
+    <None Include="source\game\tiletrait\ExitableTile.h" />
     <None Include="source\game\UserConnection.cpp" />
     <None Include="source\game\UserConnection.h" />
     <None Include="source\game\WorldInformation.h" />
@@ -296,6 +299,8 @@
     <None Include="source\menu\MenuSpecialProperties.h" />
     <None Include="source\resource\CommonResourceTypes.h" />
     <None Include="source\resource\ResourceTileContentBase.h" />
+    <None Include="source\shared\tiles\TileExit.cpp" />
+    <None Include="source\shared\tiles\TileExit.h" />
     <None Include="source\shared\tiles\TileId.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

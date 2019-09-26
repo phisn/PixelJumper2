@@ -3,7 +3,6 @@
 #include <Client/source/game/CollisionEngine.h>
 #include <Client/source/game/PlayerProperties.h>
 #include <Client/source/game/PlayerRepresentation.h>
-#include <Client/source/game/WorldProperties.h>
 
 #include <map>
 
@@ -44,14 +43,65 @@ namespace Game
 		CollidableTile* infos[4];
 	};
 
+	static float WeightWithFriction(
+		const float friction,
+		const float weight)
+	{
+		const float positiveWeight = fabsf(weight);
+		return positiveWeight / (positiveWeight + fabsf(friction));
+	}
+
+	static sf::Vector2f ApplyFriction(
+		const PlayerProperties* const properties,
+		const float additionalFriction)
+	{
+		const float friction = additionalFriction + properties->friction;
+
+		sf::Vector2f movement = properties->movement;
+
+		movement *= WeightWithFriction(
+			friction,
+			properties->weight);
+
+		if (!properties->inputReducedFriction)
+		{
+			if (fabsf(movement.x) < friction)
+			{
+				movement.x = 0;
+			}
+			else
+			{
+				movement.x += movement.x < 0
+					? friction
+					: -friction;
+			}
+
+			if (fabsf(movement.y) < friction)
+			{
+				movement.y = 0;
+			}
+			else
+			{
+				movement.y += movement.y < 0
+					? friction
+					: -friction;
+			}
+		}
+
+		return movement;
+	}
+
 	class PlayerBase
 	{
+		friend class World;
 	public:	
-		PlayerBase(const Resource::PlayerResource* const resource)
+		PlayerBase(const PlayerInformation information)
 			:
-			information(PlayerInformation::Create(resource)),
+			information(information),
 			representation(PlayerRepresentation::Create(information))
 		{
+			// properties.loadDefault();
+
 			properties.position.addListener(
 				[this](const sf::Vector2f oldPosition,
 					   const sf::Vector2f newPosition)
@@ -82,6 +132,11 @@ namespace Game
 			representation->draw(target);
 		}
 
+		const CollisionContainer& getCollisionContainer() const
+		{
+			return collisionContainer;
+		}
+
 		PlayerProperties& getProperties()
 		{
 			return properties;
@@ -94,7 +149,7 @@ namespace Game
 
 	protected:
 		PlayerProperties properties;
-		CollisionContainer collisionContainer; // expose
+		CollisionContainer collisionContainer;
 
 	private:
 		bool representationNeedsUpdate = true;
@@ -106,35 +161,5 @@ namespace Game
 
 		PlayerRepresentation* const representation;
 		const PlayerInformation information;
-
-	public:
-		void setWorld(WorldProperties* const world)
-		{
-			currentWorld = world;
-		}
-
-		void process()
-		{
-			processGravity();
-			processAirResistance();
-			processMovement();
-		}
-
-	private:
-		void processGravity()
-		{
-			properties.movement += *currentWorld->gravity * *properties.speed;
-		}
-
-		void processAirResistance()
-		{
-
-		}
-
-		void processMovement()
-		{
-		}
-
-		const WorldProperties* currentWorld;
 	};
 }

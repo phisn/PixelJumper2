@@ -8,9 +8,10 @@
 #include <Client/source/editor/tile/TileTemplate.h>
 #include <Client/source/editor/tilechoice/TileChoiceButton.h>
 
+#include <Client/source/game/GameWorld.h>
+
 #include <Client/source/game/tiletrait/CollidableTile.h>
 #include <Client/source/game/tiletrait/StaticTile.h>
-#include <Client/source/game/WorldBase.h>
 
 #include <Client/source/resource/ResourceTileContentBase.h>
 
@@ -32,10 +33,10 @@ namespace Game
 	public:
 		static GameTileBase* Create(
 			const Resource::Tile* const tile, 
-			const int identity);
+			const TileIdentity identity);
 
 		WallTile(
-			const int identity,
+			const TileIdentity identity,
 			const float density,
 			const float drag,
 			const sf::Vector2f position,

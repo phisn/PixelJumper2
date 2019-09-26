@@ -107,7 +107,7 @@ namespace Device
 			Device::ConfigType::Input);
 	}
 
-	GameInput* const Input::GetGameInput(
+	GameInput* Input::GetGameInput(
 		const Input::PlayerId player)
 	{
 		return &gameInputs[(int) player];

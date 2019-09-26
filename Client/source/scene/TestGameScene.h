@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Client/source/game/HostWorld.h>
-#include <Client/source/game/LocalPlayer.h>
+#include <Client/source/game/GamemodeBase.h>
 
 #include <Client/source/resource/ResourceInterface.h>
 #include <Client/source/resource/WorldResource.h>
@@ -20,60 +19,18 @@ namespace Scene
 	public:
 		TestGameScene(Resource::World* const world = NULL)
 			:
-			hostWorld(),
-			worldResource(world)
+			world(world),
+			testGamemode(&this->world)
 		{
 		}
 
 		bool onCreate() override
 		{
-			if (worldResource == NULL)
-			{
-				Resource::World world;
-
-				if (!Resource::Interface::LoadResource(
-					&world,
-					Resource::ResourceType::World,
-					L"TestWorld"))
-				{
-					return false;
-				}
-
-				if (!hostWorld.initialize(&world))
-				{
-					return false;
-				}
-			}
-			else
-			{
-				if (!hostWorld.initialize(worldResource))
-				{
-					return false;
-				}
-			}
-
-			player = Game::LocalPlayer::Create(
-				Device::Input::GetGameInput(Device::Input::PlayerId::P1),
-				{
-					0, 0, 1, 1
-				},
-				NULL
-			);
-
-			if (player == NULL)
-			{
-				return false;
-			}
-
-			hostWorld.addPlayer(player);
-			player->setCurrentWorld(&hostWorld);
-
-			return true;
+			return testGamemode.initialize();
 		}
 
 		void onRemove() override
 		{
-			delete player;
 		}
 
 		void initialize() override
@@ -101,7 +58,7 @@ namespace Scene
 				return;
 			}
 
-			player->onEvent(event);
+			testGamemode.onEvent(event);
 
 			if (event.type == sf::Event::KeyPressed &&
 				event.key.code == sf::Keyboard::Key::T &&
@@ -113,21 +70,16 @@ namespace Scene
 
 		void onLogic(const sf::Time time) override
 		{
-			player->onLogic(time);
-			hostWorld.onLogic(time);
+			testGamemode.onLogic(time);
 		}
 
 		void onDraw(sf::RenderTarget* const target) override
 		{
-			player->applyView();
-			hostWorld.draw(target);
-			Device::Screen::ResetView();
+			testGamemode.onDraw(target);
 		}
 
 	private:
-		Game::HostWorld hostWorld;
-		Game::LocalPlayer* player;
-
-		Resource::World* const worldResource;
+		Game::World world;
+		Game::TestGamemode testGamemode;
 	};
 }

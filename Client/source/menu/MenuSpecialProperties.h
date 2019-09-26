@@ -96,9 +96,9 @@ namespace Menu
 			this->value = T(value);
 		}
 
-		bool update() const
+		bool update(const bool force = false) const
 		{
-			if (needsUpdate)
+			if (force || needsUpdate)
 			{
 				valueChanged(std::move(oldValue));
 
@@ -124,7 +124,7 @@ namespace Menu
 		using Property::operator=;
 	public:
 		static_assert(
-			!std::is_base_of_v<CustomProperty, T>,
+			!std::is_base_of_v<CustomProperty, Property::Type>,
 			"ReadOnlyProperty cant use CustomProperty"
 		);
 
@@ -136,5 +136,31 @@ namespace Menu
 		using Property::popListener;
 
 		using Property::getValue;
+	};
+
+	// fix c3881 can only inherit constructor from direct base
+	template <typename T, typename Parent>
+	class ReadOnlyPropertyContainer<LazyProperty<T>, Parent>
+		:
+		private LazyProperty<T>
+	{
+		typedef LazyProperty<T> Base;
+		friend Parent;
+
+		using Property::operator=;
+	public:
+		static_assert(
+			!std::is_base_of_v<CustomProperty, Base::Type>,
+			"ReadOnlyProperty cant use CustomProperty"
+		);
+
+		using Base::Base;
+		using Base::operator->;
+		using Base::operator*;
+
+		using Base::addListener;
+		using Base::popListener;
+
+		using Base::getValue;
 	};
 }

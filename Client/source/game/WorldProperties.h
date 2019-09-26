@@ -30,8 +30,7 @@ namespace Game
 			milisecondsPassed = 0;
 		}
 
-		// setPlayerCountValue
-		ReadOnlyProperty<sf::Uint16, WorldProperties> playerCount;
+		ReadOnlyProperty<Property<sf::Uint16>, WorldProperties> playerCount;
 
 		Property<sf::Vector2f> gravity;
 		Property<float> airResistance;

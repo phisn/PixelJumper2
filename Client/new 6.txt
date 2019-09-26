@@ -1,0 +1,75 @@
+local blacklist = 
+{
+	"test.txt"
+}
+
+local blacklist_suffix = "_pf"
+
+containsValue = function(s, part)
+	return #s > part and string.find(s, part) == 1
+end
+
+removeSingleSuffix = function(s)
+	local b, e = string.find(s, blacklist_suffix)
+	
+	if b == nil then
+		return s
+	end
+	
+	if b ~= 1 then
+		s = string.sub(1, b)
+	elseif e ~= #s then
+		s = s .. string.sub(e, #s)
+	end
+	
+	return s
+end
+
+removeSuffix = function(s)
+	while string.find(s, blacklist_suffix) do
+		s = removeSingleSuffix(s)
+	end
+	
+	return s
+end
+
+placeSuffixBlacklisted = function(s)
+	for key, value in pairs(blacklist) do
+		if containsValue(s, key)
+		and removeSuffix(s) == s then
+			return blacklist_suffix .. s
+		end
+	end
+	
+	return s
+end
+
+convertBlacklistArgs = function(...)
+	local args = { ... }
+		
+	for key, arg in pairs(args) do
+		if type(arg) == "string" then
+			args[key] = placeSuffixBlacklisted(arg)
+		and 
+	end
+	
+	return table.unpack(args)
+end
+
+constructBoolHook = function(native)
+	return function(...)
+		return native(convertBlacklistArgs(...))
+	end
+end
+
+constructStringHook = function(native)
+	return function(...)
+		return removeSingleSuffix(native(convertBlacklistArgs(...)))
+	end
+end
+
+fs.exists = constructBoolHook(fs.exists)
+fs.isDir = constructBoolHook(fs.isDir)
+fs.isReadOnly = constructBoolHook(fs.isReadOnly)
+
+

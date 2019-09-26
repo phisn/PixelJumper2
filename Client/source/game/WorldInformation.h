@@ -2,6 +2,8 @@
 
 #include <Client/source/resource/WorldResource.h>
 
+#include <SFML/Graphics/Rect.hpp>
+
 #include <string>
 
 namespace Game
@@ -22,15 +24,19 @@ namespace Game
 				resource->HeaderProperties.height
 			);
 
-			info.defaultPlayerProperties.beginMovement = { 0, 0 };
-			info.defaultPlayerProperties.beginPosition = { 0, -1 };
+			info.defaultPlayerProperties.beginMovement = { 0.f, 0.f };
+			info.defaultPlayerProperties.beginPosition = { 0.f, -1.f };
 
-			info.defaultPlayerProperties.friction = 0;
-			info.defaultPlayerProperties.speed = 0;
-			info.defaultPlayerProperties.weight = 0;
+			info.defaultPlayerProperties.friction = 1.f;
+			info.defaultPlayerProperties.speed = 1.f;
+			info.defaultPlayerProperties.weight = 1.f;
 
-			info.defaultWorldProperties.airResistance = 0;
-			info.defaultWorldProperties.gravity = { 0, 0 };
+			info.defaultWorldProperties.airResistance = 1.f;
+			info.defaultWorldProperties.gravity = { 0.f, 1.f };
+
+			info.defaultPlayerProperties.viewFollow = true;
+			info.defaultPlayerProperties.viewWindow = { 0.f, 0.f, 20.f, 20.f };
+			info.defaultPlayerProperties.viewRotation = 0.f;
 
 			return info;
 		}
@@ -50,10 +56,14 @@ namespace Game
 
 		struct
 		{
-			sf::Vector2i beginPosition;
+			sf::Vector2f beginPosition;
 			sf::Vector2f beginMovement;
 
 			float speed, weight, friction;
+
+			bool viewFollow;
+			sf::FloatRect viewWindow;
+			float viewRotation;
 
 		} defaultPlayerProperties;
 	};

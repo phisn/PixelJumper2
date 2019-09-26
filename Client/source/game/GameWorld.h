@@ -1,9 +1,13 @@
 #pragma once
 
+
+#include <Client/source/game/CollisionEngine.h>
+#include <Client/source/game/tiletrait/CollidableTile.h>
+
 #include <Client/source/game/Environment.h>
 #include <Client/source/game/GamePlayer.h>
-
 #include <Client/source/game/WorldInformation.h>
+#include <Client/source/game/WorldProperties.h>
 
 #include <Client/source/logger/Logger.h>
 
@@ -92,7 +96,7 @@ namespace Game
 			properties.setPlayerCountValue(*properties.playerCount + 1);
 		}
 
-		void removePlayer(PlayerBase * const player)
+		void removePlayer(PlayerBase* const player)
 		{
 			PlayerContainer::const_iterator iterator = std::find(
 				players.cbegin(), players.cend(), player
@@ -130,7 +134,7 @@ namespace Game
 			{
 				for (PlayerBase* const player : players)
 				{
-					player->process();
+					processPlayer(player);
 				}
 
 				environment.onLogic(
@@ -145,6 +149,7 @@ namespace Game
 				player->onLogic(time);
 			}
 		}
+
 	private:
 		sf::Uint64 logicCounter = 0;
 
@@ -158,14 +163,96 @@ namespace Game
 
 		void applyGravity(PlayerBase* const player)
 		{
+			player->properties.movement += *properties.gravity;
 		}
 
 		void applyAirResistance(PlayerBase* const player)
 		{
+			player->properties.movement *= WeightWithFriction(
+				player->properties.weight,
+				properties.airResistance);
 		}
 
 		void applyMovement(PlayerBase* const player)
 		{
+			player->collisionContainer.clear();
+
+			struct
+			{
+				const CollisionType* type;
+				CollidableTile* tile = NULL;
+				CollisionEngine::CollisionInfo info;
+				float distance = 0;
+
+			} collisionData;
+
+			sf::Vector2f offset = player->getProperties().movement;
+
+			while (offset.x != 0 || offset.y != 0)
+			{
+				const sf::Vector2f target = offset + *player->properties.position;
+
+				for (const CollisionType& collisionType : environment.getCollisionTypes())
+				{
+					const CollisionEngine::CollisionContext collisionContext =
+						CollisionEngine::SetupCollisionContext(
+							player->properties.position,
+							target,
+							collisionType
+						);
+
+					for (CollidableTile* const tile : environment.getCollisionTileType(collisionType))
+						if (CollisionEngine::FindCollision(
+								&collisionContext,
+								tile->getSize(),
+								tile->getPosition()))
+						{
+							const CollisionEngine::CollisionInfo collisionInfo =
+								CollisionEngine::GetLastCollision();
+							
+							const sf::Vector2f collisionDistanceVector = *player->properties.position - collisionInfo.position;
+							const float collisionDistance = sqrtf(
+								collisionDistanceVector.x * collisionDistanceVector.x + // abs not needed (-1 * -1) == 1
+								collisionDistanceVector.y * collisionDistanceVector.y
+							);
+
+							if (collisionDistance < collisionData.distance || collisionData.tile == NULL)
+							{
+								collisionData.distance = collisionDistance;
+								collisionData.tile = tile;
+								collisionData.info = collisionInfo;
+								collisionData.type = &collisionType;
+							}
+						}
+				}
+
+				if (collisionData.tile)
+				{
+					Collision collision;
+
+					collision.info = collisionData.info;
+					collision.player = player;
+					collision.target = target;
+					// collision.timeValue = 
+
+					offset = collisionData.tile->onCollision(
+						*collisionData.type,
+						collision);
+					player->collisionContainer.setCollision(
+						collision.info.type,
+						collisionData.tile);
+
+					collisionData.tile = NULL;
+				}
+				else
+				{
+					player->properties.position = target;
+					
+					break;
+				}
+			}
 		}
+
+
 	};
 }

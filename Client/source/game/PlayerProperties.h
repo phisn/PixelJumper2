@@ -58,6 +58,10 @@ namespace Game
 		bool inputReducedFriction;
 		sf::Vector2f position, movement;
 		float speed, weight, friction;
+
+		bool viewFollow;
+		sf::FloatRect viewWindow;
+		float viewRotation;
 	};
 
 	class PlayerProperties
@@ -71,6 +75,10 @@ namespace Game
 
 		TileDataStorage tileDataStorage;
 
+		Property<bool> viewFollow;
+		Property<sf::FloatRect> viewWindow;
+		Property<float> viewRotation; // % 360
+
 		void loadDefault(const WorldInformation& info)
 		{
 			position = info.defaultPlayerProperties.beginPosition;
@@ -79,6 +87,10 @@ namespace Game
 			speed = info.defaultPlayerProperties.speed;
 			weight = info.defaultPlayerProperties.weight;
 			friction = info.defaultPlayerProperties.friction;
+
+			viewFollow = info.defaultPlayerProperties.viewFollow;
+			viewWindow = info.defaultPlayerProperties.viewWindow;
+			viewRotation = info.defaultPlayerProperties.viewRotation;
 
 			update();
 		}
@@ -93,6 +105,10 @@ namespace Game
 			speed.update();
 			weight.update();
 			friction.update();
+
+			viewFollow.update();
+			viewWindow.update();
+			viewRotation.update();
 
 			tileDataStorage.update();
 		}
@@ -123,6 +139,10 @@ namespace Game
 			weight.setValue(rpp.weight);
 			friction.setValue(rpp.friction);
 
+			viewFollow.setValue(rpp.viewFollow);
+			viewWindow.setValue(rpp.viewWindow);
+			viewRotation.setValue(rpp.viewRotation);
+
 			update(); // TODO: ?
 
 			return true;
@@ -140,6 +160,10 @@ namespace Game
 			rpp.speed = speed;
 			rpp.weight = weight;
 			rpp.friction = friction;
+
+			rpp.viewFollow = viewFollow;
+			rpp.viewWindow = viewWindow;
+			rpp.viewRotation = viewRotation;
 
 			return rpp;
 		}

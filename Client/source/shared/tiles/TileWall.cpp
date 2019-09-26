@@ -47,6 +47,9 @@ namespace Game
 
 	void WallTile::registerType(Environment* const env)
 	{
+		// TODO: Needed?
+		env->registerTile<CollidableTile>(this);
+
 		CollidableTile::registerCollisionType(
 			env,
 			CollisionType::NormalCollision
@@ -57,25 +60,24 @@ namespace Game
 	sf::Vector2f WallTile::onCollision(const CollisionType type, const Collision collision)
 	{
 		CollidableTile::onCollision(type, collision);
-		collision.player->state.position = collision.info.position;
+		collision.player->getProperties().position = collision.info.position;
 
-		// predefine 0
 		sf::Vector2f movement = {};
 		sf::Vector2f remainMove = {};
 
 		// set opposite of collision
 		if (collision.info.isHorizontal())
 		{
-			movement.y = collision.player->state.readProperties()->movement.y;
+			movement.y = collision.player->getProperties().movement->y;
 			remainMove.y = (collision.target.y - collision.info.position.y);
 		}
 		else
 		{
-			movement.x = collision.player->state.readProperties()->movement.x;
+			movement.x = collision.player->getProperties().movement->x;
 			remainMove.x = (collision.target.x - collision.info.position.x);
 		}
 
-		collision.player->state.movement = movement;
+		collision.player->getProperties().movement = movement;
 		return remainMove;
 	}
 }

@@ -62,6 +62,8 @@ namespace Menu
 			T newValue)>>
 	{
 	public:
+		typedef T Type;
+
 		T value;
 
 		ValuePropertyBase()
@@ -256,7 +258,25 @@ namespace Menu
 		Property(const Property&) = delete;
 
 	public:
-		using ValuePropertyBase::ValuePropertyBase;
+		Property()
+			:
+			ValuePropertyBase()
+		{
+		}
+
+		Property(const sf::Vector2<E> value)
+			:
+			ValuePropertyBase(value)
+		{
+		}
+
+		/*explicit Property(const E x, const E y)
+			:
+			ValuePropertyBase(
+				sf::Vector2<E>(x, y)
+			)
+		{
+		}*/
 
 		/*explicit Property(const E x, const E y)
 		{

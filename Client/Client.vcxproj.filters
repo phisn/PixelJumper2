@@ -380,6 +380,12 @@
     <ClCompile Include="source\editor\tile\TileTemplateFactory.cpp">
       <Filter>source\editor\tile</Filter>
     </ClCompile>
+    <ClCompile Include="source\game\PlayerRepresentation.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameWorld.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">
@@ -638,9 +644,6 @@
     <None Include="source\game\GameProperty.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\GameWorld.cpp">
-      <Filter>source\game</Filter>
-    </None>
     <None Include="source\game\GameWorld.h">
       <Filter>source\game</Filter>
     </None>
@@ -704,9 +707,6 @@
     <None Include="source\game\PlayerRepresentation.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\PlayerRepresentation.cpp">
-      <Filter>source\game</Filter>
-    </None>
     <None Include="source\game\old\_PlayerBase.h">
       <Filter>source\game\old</Filter>
     </None>
@@ -738,6 +738,21 @@
     </None>
     <None Include="source\game\PlayerProperties.h">
       <Filter>source\game</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileExit.h">
+      <Filter>source\shared\tiles</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileExit.cpp">
+      <Filter>source\shared\tiles</Filter>
+    </None>
+    <None Include="source\game\GameEvent.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\tiletrait\ExitableTile.h">
+      <Filter>source\game\TileTrait</Filter>
+    </None>
+    <None Include="source\game\tiletrait\ExitableTile.cpp">
+      <Filter>source\game\TileTrait</Filter>
     </None>
   </ItemGroup>
 </Project>

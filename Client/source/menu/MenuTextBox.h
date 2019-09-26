@@ -262,7 +262,7 @@ namespace Menu
 
 		void onLogic(const sf::Time time)
 		{
-			if (*strongSelected)
+			if (strongSelected.getValue())
 			{
 				static sf::Time counter = sf::Time::Zero;
 				counter += time;
@@ -398,16 +398,16 @@ namespace Menu
 
 		void updateMaterialEffect()
 		{	
-			if (*strongSelected)
+			if (strongSelected.getValue())
 			{
-				material.applySelectedEffect(*weakSelected
+				material.applySelectedEffect(weakSelected.getValue()
 					? CommonSelectedEffect::SelectedHover
 					: CommonSelectedEffect::Selected
 				);
 			}
 			else
 			{
-				material.applyEffect(*weakSelected
+				material.applyEffect(weakSelected.getValue()
 					? CommonControlEffect::Hover
 					: CommonControlEffect::Default
 				);

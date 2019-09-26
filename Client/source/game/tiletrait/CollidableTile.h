@@ -2,7 +2,8 @@
 
 #include <Client/source/game/CollisionEngine.h>
 #include <Client/source/game/Environment.h>
-#include <Client/source/game/PlayerBase.h>
+#include <Client/source/game/GameEvent.h>
+#include <Client/source/game/GamePlayer.h>
 
 #include <utility>
 #include <vector>
@@ -16,7 +17,7 @@ namespace Game
 		PlayerBase* player;
 		sf::Vector2f target; // expected destination
 
-		float timeValue;
+		// float timeValue;
 	};
 
 	class CollidableTile
@@ -40,10 +41,12 @@ namespace Game
 			const CollisionType type,
 			const Collision collision) = 0
 		{
-			collision.player->state.movement = ApplyFriction(
-				&collision.player->state,
-				friction,
-				collision.timeValue);
+			collision.player->getProperties().movement = ApplyFriction(
+				&collision.player->getProperties(),
+				friction
+			);
+
+			notifyCollisionEvent(&type, &collision);
 
 			return { };
 		}
@@ -57,6 +60,12 @@ namespace Game
 			return density;
 		}
 
+		GameEvent<
+			CollidableTile, 
+			const CollisionType*, 
+			const Collision*
+		> collisionEvent;
+
 	protected:
 		void registerCollisionType(
 			Environment* const env,
@@ -67,5 +76,12 @@ namespace Game
 
 		const float density;
 		const float friction;
+
+		void notifyCollisionEvent(
+			const CollisionType* type,
+			const Collision* collision)
+		{
+			collisionEvent.notify(type, collision);
+		}
 	};
 }

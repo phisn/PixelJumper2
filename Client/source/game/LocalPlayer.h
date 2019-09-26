@@ -139,13 +139,53 @@ namespace Game
 	public:
 		LocalPlayer(
 			const Device::Input::PlayerId playerId,
-			const Resource::PlayerResource* const resource)
+			const PlayerInformation information,
+			Device::View* const view)
 			:
-			PlayerBase(resource),
+			PlayerBase(information),
 			input(
 				Device::Input::GetGameInput(playerId)
-			)
+			),
+			view(view)
 		{
+			properties.viewFollow.addListener(
+				[this](const bool oldViewFollow, 
+					   const bool newViewFollow)
+				{
+					properties.viewWindow.update(true);
+				});
+			properties.viewWindow.addListener(
+				[this](const sf::FloatRect oldViewWindow, 
+					   const sf::FloatRect newViewWindow)
+				{
+					if (properties.viewFollow)
+					{
+						this->view->setSize(
+						{
+							properties.viewWindow->width,
+							properties.viewWindow->height
+						});
+					}
+					else
+					{
+						this->view->setRect(newViewWindow);
+					}
+				});
+			properties.viewRotation.addListener(
+				[this](const float oldViewRotation, 
+					   const float newViewRotation)
+				{
+					this->view->setRotation(newViewRotation);
+				});
+			properties.position.addListener(
+				[this](const sf::Vector2f oldPosition,
+					   const sf::Vector2f newPosition)
+				{
+					if (properties.viewFollow)
+					{
+						this->view->setCenter(newPosition);
+					}
+				});
 		}
 
 		void onLogic(const sf::Time time) override
@@ -244,7 +284,7 @@ namespace Game
 						   |gx| + |gy|
 
 				*/
-				const sf::Vector2f gravity = currentWorld->state.readProperties()->gravity;
+				const sf::Vector2f gravity = { 0, 1.f };
 				const float gravitySum = fabsf(gravity.x) + fabsf(gravity.y);
 
 				sf::Vector2f movement =
@@ -258,7 +298,7 @@ namespace Game
 					movement.x = -movement.x;
 				}
 
-				properties.movement = *properties.movement + movement
+				properties.movement += movement 
 					* (direction == InputDirection::Right ? 1.f : -1.f);
 			}
 		}
@@ -283,7 +323,7 @@ namespace Game
 
 		sf::Vector2f adjustForceJumpAssist(const sf::Vector2f tileForce) const
 		{
-
+			return { };
 		}
 
 		sf::Vector2f getTileJumpForce() const
@@ -305,6 +345,7 @@ namespace Game
 				: 0;
 		}
 
+		Device::View* const view;
 		Device::GameInput* const input;
 	};
 }

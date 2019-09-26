@@ -16,7 +16,7 @@
 
 namespace Game
 {
-	struct WorldProperties
+	struct _WorldProperties
 	{
 		std::wstring authorName;
 		std::wstring mapName;
