@@ -397,40 +397,26 @@ namespace Menu
 	protected:
 		virtual void updateSizeWithSpace()
 		{
-			const sf::Vector2f realSpace = *space - *position 
+			sf::Vector2f nextSize = *space - *position
 				- sf::Vector2f(
 					outerOffset->left + outerOffset->right,
 					outerOffset->top + outerOffset->bottom);
 
-			// use max space as default size
-			if (sizePreferred->x == 0 || sizePreferred->y == 0)
+			if (sizePreferred->x != 0 && 
+				(!space.automatic.x && space->x == 0 || nextSize.x >= sizePreferred->x)
+			)
 			{
-				size = realSpace;
+				nextSize.x = sizePreferred->x;
 			}
-			else
+
+			if (sizePreferred->y != 0 &&
+				(!space.automatic.y && space->y == 0 || nextSize.y >= sizePreferred->y)
+			)
 			{
-				sf::Vector2f nextSize;
-
-				if (!space.automatic.x && space->x == 0)
-				{
-					nextSize.x = sizePreferred->x;
-				}
-				else
-				{
-					nextSize.x = realSpace.x < sizePreferred->x ? realSpace.x : sizePreferred->x;
-				}
-
-				if (!space.automatic.y&& space->y == 0)
-				{
-					nextSize.y = sizePreferred->y;
-				}
-				else
-				{
-					nextSize.y = realSpace.y < sizePreferred->y ? realSpace.y : sizePreferred->y;
-				}
-
-				size = nextSize;
+				nextSize.y = sizePreferred->y;
 			}
+
+			size = nextSize;
 		}
 
 		virtual void updateAutomaticSpace()

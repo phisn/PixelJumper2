@@ -96,7 +96,7 @@ namespace Game
 			Device::Screen::ResetView();
 		}
 
-	private:
+	// private:
 		LocalConnection user;
 		World* const world;
 	};

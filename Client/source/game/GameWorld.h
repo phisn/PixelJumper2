@@ -68,6 +68,11 @@ namespace Game
 			return &environment;
 		}
 
+		WorldProperties& getProperties()
+		{
+			return properties;
+		}
+
 		const PlayerContainer& getPlayers() const
 		{
 			return players;
@@ -148,6 +153,8 @@ namespace Game
 			{
 				player->onLogic(time);
 			}
+
+			properties.update();
 		}
 
 	private:
@@ -163,14 +170,14 @@ namespace Game
 
 		void applyGravity(PlayerBase* const player)
 		{
-			player->properties.movement += *properties.gravity;
+			player->properties.movement += *properties.gravity * *player->properties.speed;
 		}
 
 		void applyAirResistance(PlayerBase* const player)
 		{
 			player->properties.movement *= WeightWithFriction(
-				player->properties.weight,
-				properties.airResistance);
+				properties.airResistance,
+				player->properties.weight);
 		}
 
 		void applyMovement(PlayerBase* const player)

@@ -393,6 +393,9 @@ namespace Menu
 				size.getValue().y);
 		}
 
+		Menu::MenuNotifier<SlideBar, float> sliderPressed;
+		Menu::MenuNotifier<SlideBar, float> sliderMoved;
+
 	protected:
 		virtual void updateOwnGraphics() override
 		{
@@ -417,8 +420,15 @@ namespace Menu
 		}
 
 	private:
-		virtual void onSliderPressed(const float distance) = 0;
-		virtual void onSliderMoved(const float distance) = 0;
+		virtual void onSliderPressed(const float distance)
+		{
+			sliderPressed.notify(distance);
+		}
+
+		virtual void onSliderMoved(const float distance)
+		{
+			sliderMoved.notify(distance);
+		}
 
 		const CommonControlDirection direction;
 

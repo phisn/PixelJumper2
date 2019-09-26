@@ -27,12 +27,12 @@ namespace Game
 			info.defaultPlayerProperties.beginMovement = { 0.f, 0.f };
 			info.defaultPlayerProperties.beginPosition = { 0.f, -1.f };
 
-			info.defaultPlayerProperties.friction = 1.f;
-			info.defaultPlayerProperties.speed = 1.f;
+			info.defaultPlayerProperties.friction = 0.f;
+			info.defaultPlayerProperties.speed = 0.0012f;
 			info.defaultPlayerProperties.weight = 1.f;
 
-			info.defaultWorldProperties.airResistance = 1.f;
-			info.defaultWorldProperties.gravity = { 0.f, 1.f };
+			info.defaultWorldProperties.airResistance = 0.004f;
+			info.defaultWorldProperties.gravity = { 0.f, 0.1f };
 
 			info.defaultPlayerProperties.viewFollow = true;
 			info.defaultPlayerProperties.viewWindow = { 0.f, 0.f, 20.f, 20.f };

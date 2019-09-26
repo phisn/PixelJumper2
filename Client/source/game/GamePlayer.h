@@ -120,6 +120,7 @@ namespace Game
 		virtual void onLogic(const sf::Time time)
 		{
 			representation->update(time);
+			properties.update();
 		}
 
 		virtual void onDraw(sf::RenderTarget* const target)

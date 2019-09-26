@@ -112,7 +112,7 @@ namespace Editor
 		}
 
 	private:
-		float density = 2.f;
+		float density = 0.04f;
 		float friction = 1.f;
 
 		sf::RectangleShape shape;
