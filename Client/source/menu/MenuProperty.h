@@ -167,6 +167,11 @@ namespace Menu
 	protected:
 		void valueChanged(const T&& oldValue) const
 		{
+			if (value == oldValue)
+			{
+				return;
+			}
+
 			if (currentSync)
 			{
 				updateSync();

@@ -64,6 +64,63 @@ namespace Game
 		float viewRotation;
 	};
 
+	/**
+	
+	Spieler:
+		mass
+		velc ->
+		post ->
+		fric
+		Fi
+
+	Welt:
+		Fg
+		Bd
+		Bpf
+		Pc
+		Fcrit
+		Bfric
+
+		velc -> = F -> / m
+		Ekin = 1 / 2 * m * v ^ 2
+
+		_
+	<- |_| ->
+	---------
+	0.
+		Ekin -> = 1 / 2 * m * velc -> ^ 2
+	
+	n - 6. F generieren (input und gravi)
+		F -> = Fi * Bpf -> (input) | Bf = Block Possible Force 
+		F -> += Fg ->
+		F -> += Bd | If jump
+
+	n - 5. Wiederstand 1
+		Far -> = Pc * velc -> ^ 2 | Pc -> air | Block
+		Fbr0 = Fcrit
+
+	n - 4. Addieren
+		Ekin -> = Ekin -> + F ->
+
+	n - 3. Wiederstand 2
+		Fbr = Fbr0 + {0 < (Bfric + Pfric) < 1} * Ekin ->
+
+	n - 2. Abziehen
+		Flos -> = Fbr -> + Far ->
+		Ekin -> = Ekin -> - Flos ->
+
+	n - 1.
+		velc = sqrt(2 * Ekin / m)
+
+	n.
+		post = post + velc
+		
+	x.
+	- post
+
+
+	**/
+
 	class PlayerProperties
 		:
 		public GameState

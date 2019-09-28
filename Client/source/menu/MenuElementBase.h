@@ -140,7 +140,7 @@ namespace Menu
 			switch (event.type)
 			{
 			case sf::Event::MouseButtonPressed:
-				if (ElementBase * const child = findTargetChild(
+				if (ElementBase* const child = findTargetChild(
 						event.mouseButton.x,
 						event.mouseButton.y,
 						strongSelectedChild);
@@ -260,7 +260,7 @@ namespace Menu
 					return *child;
 			}
 
-			return NULL;
+			return expected;
 		}
 
 		bool isTargetChild(

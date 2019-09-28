@@ -51,6 +51,12 @@ namespace Game
 		{
 		}
 
+		void setDND(float d1, float d2)
+		{
+			density = d1;
+			friction = d2;
+		}
+
 		void registerType(Environment* const env) override;
 
 		virtual sf::Vector2f onCollision(

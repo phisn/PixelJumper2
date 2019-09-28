@@ -14,7 +14,9 @@
 
 namespace Menu
 {
-	class Label : public ElementBase
+	class Label 
+		: 
+		public ElementBase
 	{
 	public:
 		Label()

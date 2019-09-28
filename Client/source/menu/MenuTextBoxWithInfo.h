@@ -13,19 +13,19 @@ namespace Menu
 			:
 			TextBox()
 		{
-			label.limitWidth.addListener(
+			value.limitWidth.addListener(
 				[this](const bool oldValue,
 					   const bool newValue)
 				{
 					info.limitWidth = newValue;
 				});
-			label.font.addListener(
+			value.font.addListener(
 				[this](const sf::Font* oldFont,
 					   const sf::Font* newFont)
 				{
 					info.font = newFont;
 				});
-			label.color.addListener(
+			value.color.addListener(
 				[this](const sf::Color oldColor,
 					   const sf::Color newColor)
 				{

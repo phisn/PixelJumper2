@@ -60,6 +60,11 @@ namespace Game
 			return density;
 		}
 
+		float getFriction() const
+		{
+			return friction;
+		}
+
 		GameEvent<
 			CollidableTile, 
 			const CollisionType*, 
@@ -74,8 +79,10 @@ namespace Game
 			env->registerCollisionType(type, this);
 		}
 
-		const float density;
-		const float friction;
+		//const 
+		float density;
+		//const
+		float friction;
 
 		void notifyCollisionEvent(
 			const CollisionType* type,

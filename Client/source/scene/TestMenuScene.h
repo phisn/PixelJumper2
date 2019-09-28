@@ -22,12 +22,12 @@ namespace Scene
 		{
 			addRoot<Root>();
 
-			label.position = { 0, 0 };
-			label.text = L"0";
-			label.color = sf::Color::Yellow;
+			value.position = { 0, 0 };
+			value.text = L"0";
+			value.color = sf::Color::Yellow;
 
 
-			return MenuBaseScene::onCreate() && label.create();
+			return MenuBaseScene::onCreate() && value.create();
 		}
 
 		virtual void onScenePopped(const int size) override
@@ -38,7 +38,7 @@ namespace Scene
 		{
 			MenuBaseScene::initialize();
 
-			label.initialize();
+			value.initialize();
 		}
 
 		void onLogic(const sf::Time time) override
@@ -54,10 +54,10 @@ namespace Scene
 
 		void onDraw(sf::RenderTarget* const target) override
 		{
-			label.text = std::to_wstring((int) std::round(1.0 / (sum.asMicroseconds() / (arraySize * 1'000'000.0))));
+			value.text = std::to_wstring((int) std::round(1.0 / (sum.asMicroseconds() / (arraySize * 1'000'000.0))));
 
 			MenuBaseScene::onDraw(target);
-			label.onDraw(target);
+			value.onDraw(target);
 		}
 
 	private:
@@ -86,6 +86,6 @@ namespace Scene
 
 		};
 
-		Menu::Label label;
+		Menu::Label value;
 	};
 }

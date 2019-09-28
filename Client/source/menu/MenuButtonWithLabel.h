@@ -11,7 +11,7 @@ namespace Menu
 		public Button<ButtonMaterial>
 	{
 	public:
-		Label label;
+		Label value;
 
 		ButtonWithLabel()
 		{
@@ -26,7 +26,7 @@ namespace Menu
 					   const sf::Vector2f newSize)
 				{   
 					updateLabelPosition();
-					label.sizePreferred = { newSize.x * labelDependentSize->x, newSize.y * labelDependentSize->y };
+					value.sizePreferred = { newSize.x * labelDependentSize->x, newSize.y * labelDependentSize->y };
 				});
 			horizontalArea.addListener(
 				[this](const CommonHorizontalArea oldArea,
@@ -41,7 +41,7 @@ namespace Menu
 					updateLabelPosition();
 				});
 
-			ElementBase::addChild(&label);
+			ElementBase::addChild(&value);
 		}
 
 		Property<
@@ -73,7 +73,7 @@ namespace Menu
 
 			if (horizontalArea != CommonHorizontalArea::Left)
 			{
-				position.x = (size->x - label.size->x);
+				position.x = (size->x - value.size->x);
 
 				if (horizontalArea == CommonHorizontalArea::Center)
 				{
@@ -83,7 +83,7 @@ namespace Menu
 
 			if (verticalArea != CommonVerticalArea::Top)
 			{
-				position.y = (size->y - label.size->y);
+				position.y = (size->y - value.size->y);
 
 				if (verticalArea == CommonVerticalArea::Center)
 				{
@@ -91,25 +91,25 @@ namespace Menu
 				}
 			}
 
-			label.position = position + *labelOffset;
+			value.position = position + *labelOffset;
 		}
 
 		virtual void onGraphicsHovered() override
 		{
 			Button::onGraphicsHovered();
-			label.color = labelStyle->hover;
+			value.color = labelStyle->hover;
 		}
 
 		virtual void onGraphicsDefault() override
 		{
 			Button::onGraphicsDefault();
-			label.color = labelStyle->default;
+			value.color = labelStyle->default;
 		}
 
 		virtual void onGraphicsPressed() override
 		{
 			Button::onGraphicsPressed();
-			label.color = labelStyle->pressed;
+			value.color = labelStyle->pressed;
 		}
 	};
 }

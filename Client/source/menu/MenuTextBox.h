@@ -133,7 +133,7 @@ namespace Menu
 						innerOffset->left + innerOffset->right, // + outerOffset->left + outerOffset->right,
 						innerOffset->top + innerOffset->bottom  // + outerOffset->left + outerOffset->right
 					);
-					label.sizePreferred.setY(container.sizePreferred->y);
+					value.sizePreferred.setY(container.sizePreferred->y);
 				});
 			weakSelected.addListener(
 				[this](const bool oldValue,
@@ -175,17 +175,17 @@ namespace Menu
 				[this](const std::wstring oldValue,
 					   const std::wstring newValue)
 				{
-					if (label.position->x + label.size->x < container.size->x && label.position->x != 0)
+					if (value.position->x + value.size->x < container.size->x && value.position->x != 0)
 					{
-						const float max_offset = label.size->x - container.size->x;
+						const float max_offset = value.size->x - container.size->x;
 
 						if (max_offset < 0)
 						{
-							label.position.setX(0);
+							value.position.setX(0);
 						}
 						else
 						{
-							label.position.setX(container.size->x - label.size->x - 2);
+							value.position.setX(container.size->x - value.size->x - 2);
 						}
 					}
 
@@ -200,10 +200,10 @@ namespace Menu
 					}
 				});
 
-			label.limitWidth = false;
+			value.limitWidth = false;
 
 			addChild(&container);
-			container.addChild(&label);
+			container.addChild(&value);
 
 			innerOffset = { 5.f, 5.f, 5.f, 5.f };
 		}
@@ -276,7 +276,7 @@ namespace Menu
 		}
 
 		Property<sf::Uint32> cursorPosition;
-		Property<std::wstring>& text = label.text;
+		Property<std::wstring>& text = value.text;
 
 	protected:
 		virtual void updateOwnGraphics() override
@@ -284,7 +284,7 @@ namespace Menu
 			material.setPosition(convertPosition({ 0, 0 }));
 			material.setSize(*size);
 
-			caret.setLength(label.readGlText().getCharacterSize());
+			caret.setLength(value.readGlText().getCharacterSize());
 			updateCaretPosition();
 		}
 
@@ -315,28 +315,28 @@ namespace Menu
 				textCursorPosition != -1)
 			{
 				const float charPosition =
-					(label.readGlText().findCharacterPos(cursorPosition)
+					(value.readGlText().findCharacterPos(cursorPosition)
 				).x;
 
 				if (charPosition > container.size->x) // right overflow
 				{
-					label.position.setX(label.position->x + container.size->x - charPosition);
+					value.position.setX(value.position->x + container.size->x - charPosition);
 				}
 				else if (charPosition < 0) // left overflow
 				{
-					label.position.setX(label.position->x - charPosition);
+					value.position.setX(value.position->x - charPosition);
 				}
 
-				if (label.position->x > 0)
+				if (value.position->x > 0)
 				{
-					label.position.setX(0);
+					value.position.setX(0);
 				}
 			}
 
 			else
-				if (*label.position != sf::Vector2f(0, 0))
+				if (*value.position != sf::Vector2f(0, 0))
 				{
-					label.position = { 0, 0 };
+					value.position = { 0, 0 };
 				}
 		}
 
@@ -347,7 +347,7 @@ namespace Menu
 			{
 
 				caret.setPosition(container.convertRcrToReal(
-					label.readGlText().findCharacterPos(textCursorPosition)
+					value.readGlText().findCharacterPos(textCursorPosition)
 				));
 			}
 			else
@@ -364,7 +364,7 @@ namespace Menu
 			const sf::Vector2f point) const
 		{
 			const sf::Vector2f glyphVecDistance = container.convertRcrToReal(
-				label.readGlText().findCharacterPos(glyphIndex)
+				value.readGlText().findCharacterPos(glyphIndex)
 			) - point;
 			return sqrtf(
 				glyphVecDistance.x * glyphVecDistance.x +
@@ -479,7 +479,7 @@ namespace Menu
 
 		bool isValidAdditonalChar(char c)
 		{
-			return label.readGlText().findCharacterPos(cursorPosition).x > convertFullPositionVTR(label.position).x + label.size->x;
+			return value.readGlText().findCharacterPos(cursorPosition).x > convertFullPositionVTR(value.position).x + value.size->x;
 		}
 
 		Caret caret;
@@ -487,6 +487,6 @@ namespace Menu
 
 	protected:
 		RenderContainer<> container;
-		Label label;
+		Label value;
 	};
 }

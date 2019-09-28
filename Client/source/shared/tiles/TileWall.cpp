@@ -47,8 +47,7 @@ namespace Game
 
 	void WallTile::registerType(Environment* const env)
 	{
-		// TODO: Needed?
-		env->registerTile<CollidableTile>(this);
+		env->registerTile<Game::WallTile>(this);
 
 		CollidableTile::registerCollisionType(
 			env,
@@ -113,7 +112,7 @@ namespace Editor
 					}
 				});
 
-			button.label.text = L"Wall";
+			button.value.text = L"Wall";
 		}
 
 		return &button;
