@@ -139,6 +139,7 @@ namespace Game
 			{
 				for (PlayerBase* const player : players)
 				{
+					player->onInternalUpdate(); // before or after process?
 					processPlayer(player);
 				}
 
@@ -164,20 +165,18 @@ namespace Game
 		void processPlayer(PlayerBase* const player)
 		{
 			applyGravity(player);
-			applyAirResistance(player);
+			applyResistance(player);
 			applyMovement(player);
 		}
 
 		void applyGravity(PlayerBase* const player)
 		{
-			player->properties.movement += *properties.gravity * *player->properties.speed;
+			player->properties.movement += *properties.gravity;
 		}
 
-		void applyAirResistance(PlayerBase* const player)
+		void applyResistance(PlayerBase* const player)
 		{
-			player->properties.movement *= WeightWithFriction(
-				properties.airResistance,
-				player->properties.weight);
+			player->properties.movement *= *properties.airResistance;
 		}
 
 		void applyMovement(PlayerBase* const player)

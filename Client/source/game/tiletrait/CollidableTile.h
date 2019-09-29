@@ -37,33 +37,51 @@ namespace Game
 			used for sliding or bouncing (normal walls slide too [ignores phyiscs])
 		*/
 
+
+
+		void setDensity(float value)
+		{
+			density = value;
+		}
+		void setCrit(float value)
+		{
+			criticalForce = value;
+		}
+		void setFriction(float value)
+		{
+			friction = value;
+		}
+		void setForce(float value)
+		{
+			inputForceAddition = value;
+		}
+
 		virtual sf::Vector2f onCollision(
 			const CollisionType type,
-			const Collision collision) = 0
+			const Collision collision) = 0;
+			/*
 		{
-			collision.player->getProperties().movement = ApplyFriction(
-				&collision.player->getProperties(),
-				friction
-			);
+			sf::Vector2f movement = collision.player->getProperties().movement;
+//			movement = collision.player->getProperties().friction * friction;
 
-			notifyCollisionEvent(&type, &collision);
+			if (fabsf(movement.x) < criticalForce)
+			{
+				movement.x = 0.f;
+			}
+
+			if (fabsf(movement.y) < criticalForce)
+			{
+				movement.y = 0.f;
+			}
+
+			collision.player->getProperties().movement = movement;
 
 			return { };
-		}
+		}*/
 		
 		// copied from / same as in GameTileBase.h
 		virtual const sf::Vector2f getPosition() const = 0;
 		virtual const sf::Vector2f getSize() const = 0;
-
-		float getDensity() const
-		{
-			return density;
-		}
-
-		float getFriction() const
-		{
-			return friction;
-		}
 
 		GameEvent<
 			CollidableTile, 
@@ -71,17 +89,28 @@ namespace Game
 			const Collision*
 		> collisionEvent;
 
+		float getDensity() const
+		{
+			return density;
+		}
+
+		float getInputForceAddition() const
+		{
+			return inputForceAddition;
+		}
+
 	protected:
 		void registerCollisionType(
 			Environment* const env,
 			const CollisionType type) // alternative to register
 		{
+			env->registerTile<CollidableTile>(this);
 			env->registerCollisionType(type, this);
 		}
 
-		//const 
 		float density;
-		//const
+		float inputForceAddition;
+		float criticalForce;
 		float friction;
 
 		void notifyCollisionEvent(

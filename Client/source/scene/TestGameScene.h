@@ -11,7 +11,7 @@
 #include <Client/source/menu/MenuSlideBar.h>
 #include <Client/source/menu/MenuRowContainer.h>
 
-#include <Client/source/shared/tiles/TileWall.h>>
+#include <Client/source/shared/tiles/TileWall.h>
 
 #include <Client/source/framework/FrameworkInterface.h>
 
@@ -51,7 +51,7 @@ namespace Scene
 			addElement(&slider);
 			addElement(&value);
 
-			value.text = L"0.000000";
+			value.text = L"1.000000";
 
 			slider.length->setPercent(0.1f);
 			slider.sliderMoved.addListener(
@@ -61,18 +61,56 @@ namespace Scene
 
 					value.text = std::to_wstring(result).substr(0, 8);
 					p.setValue(result);
+					
 				});
+
+			slider.distance->setPercent(0.5f);
 		}
 
 	private:
 		float convertDistanceToValue(const float distance)
 		{
 			const float fm = fmodf(distance, 0.1f);
-			return (powf(10, (distance - fm) * 10 - 5) * fm * 128);
+			const float fc = fm == 0 ? 1 : (fm * 128);
+
+			return (powf(10, (distance - fm) * 10 - 5) * fc);
 		}
 
 		Menu::Property<float>& p;
-		Menu::SlideBar<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle> slider;
+
+		class CustomSlider : public Menu::SlideBar<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle>
+		{
+		public:
+			CustomSlider(Menu::CommonControlDirection d)
+				:
+				SlideBar(d)
+			{
+			}
+
+			void onEvent(const sf::Event event) override
+			{
+				SlideBar::onEvent(event);
+
+				if (*weakSelected && event.type == sf::Event::KeyPressed)
+				{
+					if (event.key.code == sf::Keyboard::Left)
+					{
+						distance->setValue(distance->getValue() - 0.025f);
+
+						return;
+					}
+
+					if (event.key.code == sf::Keyboard::Right)
+					{
+						distance->setValue(distance->getValue() + 0.025f);
+
+
+						return;
+					}
+				}
+			}
+
+		} slider;
 		Menu::Label name, value;
 	};
 
@@ -98,13 +136,13 @@ namespace Scene
 
 			addChild(&container);
 
-			slider.push_back(new GameSlider(std::wstring(L"Speed"), player->getProperties().speed));
+			slider.push_back(new GameSlider(std::wstring(L"Input Force"), player->getProperties().inputForce));
 			container.addElement(slider.back());
 			slider.back()->build();
-			slider.push_back(new GameSlider(std::wstring(L"Friction"), player->getProperties().friction));
+			slider.push_back(new GameSlider(std::wstring(L"Input Reduce"), player->getProperties().inputReduce));
 			container.addElement(slider.back());
 			slider.back()->build();
-			slider.push_back(new GameSlider(std::wstring(L"Weight"), player->getProperties().weight));
+			slider.push_back(new GameSlider(std::wstring(L"Mass"), player->getProperties().mass));
 			container.addElement(slider.back());
 			slider.back()->build();
 			slider.push_back(new GameSlider(std::wstring(L"AirResistance"), testGamemode->world->getProperties().airResistance));
@@ -114,6 +152,7 @@ namespace Scene
 			gravityProperty.addListener(
 				[this](const float, const float gravity)
 				{
+					Log::Information(std::to_wstring(gravity));
 					testGamemode->world->getProperties().gravity = sf::Vector2f(0, gravity);
 				});
 
@@ -124,9 +163,9 @@ namespace Scene
 			tileDensityProperty.addListener(
 				[this](const float, const float density)
 				{
-					for (Game::WallTile* tile : testGamemode->world->getEnvironment()->getTileType<Game::WallTile>())
+					for (Game::CollidableTile* const tile : testGamemode->world->getEnvironment()->getTileType<Game::CollidableTile>())
 					{
-						tile->setDND(density, tile->getFriction());
+						tile->setDensity(density);
 					}
 				});
 
@@ -134,8 +173,42 @@ namespace Scene
 			container.addElement(slider.back());
 			slider.back()->build();
 
+			tileFrictionProperty.addListener(
+				[this](const float, const float value)
+				{
+					for (Game::CollidableTile* const tile : testGamemode->world->getEnvironment()->getTileType<Game::CollidableTile>())
+					{
+						tile->setFriction(value);
+					}
+				});
 			
-			slider.push_back(new GameSlider(std::wstring(L"Tile Friction"), gravityProperty));
+			slider.push_back(new GameSlider(std::wstring(L"Tile Friction"), tileFrictionProperty));
+			container.addElement(slider.back());
+			slider.back()->build();
+
+			tileCriticalProperty.addListener(
+				[this](const float, const float value)
+				{
+					for (Game::CollidableTile* const tile : testGamemode->world->getEnvironment()->getTileType<Game::CollidableTile>())
+					{
+						tile->setCrit(value);
+					}
+				});
+
+			slider.push_back(new GameSlider(std::wstring(L"Tile Critical"), tileCriticalProperty));
+			container.addElement(slider.back());
+			slider.back()->build();
+
+			tileForceProperty.addListener(
+				[this](const float, const float value)
+				{
+					for (Game::CollidableTile* const tile : testGamemode->world->getEnvironment()->getTileType<Game::CollidableTile>())
+					{
+						tile->setForce(value);
+					}
+				});
+
+			slider.push_back(new GameSlider(std::wstring(L"Tile InputForce"), tileForceProperty));
 			container.addElement(slider.back());
 			slider.back()->build();
 
@@ -146,9 +219,11 @@ namespace Scene
 		Menu::RowContainer container;
 		std::vector<GameSlider*> slider;
 
-		Game::Property<float> gravityProperty;
-		Game::Property<float> tileDensityProperty;
-		Game::Property<float> tileFrictionProperty;
+		Menu::Property<float> gravityProperty;
+		Menu::Property<float> tileDensityProperty;
+		Menu::Property<float> tileFrictionProperty;
+		Menu::Property<float> tileCriticalProperty;
+		Menu::Property<float> tileForceProperty;
 
 		float convertDistanceToValue(const float distance)
 		{
@@ -213,6 +288,8 @@ namespace Scene
 			{
 				testGamemode.world->getPlayers()[0]->getProperties().movement = { 0, 0 };
 				testGamemode.world->getPlayers()[0]->getProperties().position = { 0, -1 };
+
+				testGamemode.world->getPlayers()[0]->getProperties().update();
 			}
 
 			MenuBaseScene::onEvent(event);

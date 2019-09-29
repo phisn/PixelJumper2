@@ -43,7 +43,7 @@ namespace Game
 		CollidableTile* infos[4];
 	};
 
-	static float WeightWithFriction(
+	/*static float WeightWithFriction(
 		const float friction,
 		const float weight)
 	{
@@ -89,7 +89,7 @@ namespace Game
 		}
 
 		return movement;
-	}
+	}*/
 
 	class PlayerBase
 	{
@@ -117,9 +117,16 @@ namespace Game
 			delete representation;
 		}
 
+		// update with time
 		virtual void onLogic(const sf::Time time)
 		{
 			representation->update(time);
+		}
+
+		// update without time dependent on
+		// logic cyclus in world
+		virtual void onInternalUpdate()
+		{
 			properties.update();
 		}
 

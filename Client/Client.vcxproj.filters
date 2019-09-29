@@ -58,9 +58,6 @@
     <Filter Include="source\shared">
       <UniqueIdentifier>{33b3d319-8e83-4b82-b14a-c1517ab66063}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\editor\tilechoice">
-      <UniqueIdentifier>{49e6bfc2-000c-4a69-903f-d1fdbddacc72}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\editor\subscenes">
       <UniqueIdentifier>{8ead66e6-305b-4152-b464-d4a76f80bbf1}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,9 @@
     </Filter>
     <Filter Include="source\game\old">
       <UniqueIdentifier>{40b7df19-7a80-4367-a00e-3f872c31cc2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\editor\tilechoice">
+      <UniqueIdentifier>{49e6bfc2-000c-4a69-903f-d1fdbddacc72}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -617,9 +617,6 @@
     <None Include="source\menu\MenuTextBoxWithInfo.cpp">
       <Filter>source\menu</Filter>
     </None>
-    <None Include="source\shared\tiles\TileId.h">
-      <Filter>source\shared\tiles</Filter>
-    </None>
     <None Include="source\resource\ResourceTileContentBase.h">
       <Filter>source\resource</Filter>
     </None>
@@ -753,6 +750,9 @@
     </None>
     <None Include="source\game\tiletrait\ExitableTile.cpp">
       <Filter>source\game\TileTrait</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileCommon.h">
+      <Filter>source\shared\tiles</Filter>
     </None>
   </ItemGroup>
 </Project>

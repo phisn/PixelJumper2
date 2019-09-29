@@ -188,22 +188,18 @@ namespace Game
 				});
 		}
 
-		void onLogic(const sf::Time time) override
+		void onInternalUpdate() override
 		{
-			handleInput(time);
-
-			// maybe something wants
-			// to react on handleInput
-			// changes
-			PlayerBase::onLogic(time);
+			handleInput();
+			PlayerBase::onInternalUpdate();
 		}
 
 		// InputRoutine<sf::Time> triggerRoutine;
-		InputRoutine<sf::Time, InputDirection> movementRoutine{
+		InputRoutine<InputDirection> movementRoutine{
 			{
-				[this](const bool state, const sf::Time time, const InputDirection input)
+				[this](const bool state, const InputDirection input)
 				{
-					handleMovement(state, time, input);
+					handleMovement(state, input);
 				},
 				InputMode::Active,
 				true
@@ -213,24 +209,23 @@ namespace Game
 		Property<bool> jumpAssistLevel;
 
 	private:
-		void handleInput(const sf::Time time)
+		void handleInput()
 		{
-			movementRoutine.update(input->isKeyPressed(Device::GameCoreInputSymbol::Up), time, InputDirection::Up);
-			movementRoutine.update(input->isKeyPressed(Device::GameCoreInputSymbol::Left), time, InputDirection::Left);
-			movementRoutine.update(input->isKeyPressed(Device::GameCoreInputSymbol::Down), time, InputDirection::Down);
-			movementRoutine.update(input->isKeyPressed(Device::GameCoreInputSymbol::Right), time, InputDirection::Right);
+			movementRoutine.update(input->isKeyPressed(Device::GameCoreInputSymbol::Up), InputDirection::Up);
+			movementRoutine.update(input->isKeyPressed(Device::GameCoreInputSymbol::Left), InputDirection::Left);
+			movementRoutine.update(input->isKeyPressed(Device::GameCoreInputSymbol::Down), InputDirection::Down);
+			movementRoutine.update(input->isKeyPressed(Device::GameCoreInputSymbol::Right), InputDirection::Right);
 		}
 
 		void handleMovement(
 			const bool active,
-			const sf::Time time,
 			const InputDirection direction)
 		{
 			switch (direction)
 			{
 			case InputDirection::Left:
 			case InputDirection::Right:
-				onMovementHorizontal(active, time, direction);
+				onMovementHorizontal(active, direction);
 
 				break;
 			case InputDirection::Up:
@@ -246,20 +241,29 @@ namespace Game
 
 		void onMovementHorizontal(
 			const bool active,
-			const sf::Time time,
 			const InputDirection direction)
 		{
-			if (properties.inputReducedFriction != active)
+/*			if (active)
+			{
+				// vel = sqrt((m * velc ^ 2 + n) / m)
+				// vel = sqrt(velc ^ 2 + n / m)
+
+				const float inForce = properties.inputForce * getForceAddition();
+				const sf::Vector2f vecForce = { (direction == InputDirection::Left ? -1 : 1) * inForce, 0.f  };
+				properties.movement = vecForce;
+			}*/
+
+			
+			/*if (properties.inputReducedFriction != active)
 			{
 				properties.inputReducedFriction.setValue(active);
-			}
+			}*/
 
 			if (active)
 			{
-				const float movementValue = time.asMicroseconds() / 1000.f
-					* 10.f
-					* properties.speed
-					* (1.f / (1.f + properties.weight / 1000.f));
+				float movementValue = (properties.inputForce 
+					* getForceAddition()) / *properties.mass
+					* (direction == InputDirection::Right ? 1.f : -1.f);;
 
 				/*
 
@@ -283,8 +287,8 @@ namespace Game
 					  Dx = ----------- = (D * gy) / (gx + gy)
 						   |gx| + |gy|
 
-				*/
-				const sf::Vector2f gravity = { 0, 1.f };
+				
+				
 				const float gravitySum = fabsf(gravity.x) + fabsf(gravity.y);
 
 				sf::Vector2f movement =
@@ -296,17 +300,50 @@ namespace Game
 				if (inputCorrection && gravity.y < 0)
 				{
 					movement.x = -movement.x;
-				}
+				}*/
 
-				properties.movement += movement 
-					* (direction == InputDirection::Right ? 1.f : -1.f);
+				/*if (signbit(movementValue) == signbit(properties.movement->x))
+				{
+					movementValue /= properties.movement->x;
+				}
+				else
+				{
+					movementValue *= properties.inputReduce;
+				}*/
+
+				properties.movement += sf::Vector2f(movementValue, 0);
 			}
+		}
+
+		float getForceAddition() const
+		{
+			return getSingleForceAddition(CollisionEngine::CollisionInfo::G1)
+				 * getSingleForceAddition(CollisionEngine::CollisionInfo::G2)
+				 * getSingleForceAddition(CollisionEngine::CollisionInfo::G3)
+				 * getSingleForceAddition(CollisionEngine::CollisionInfo::G4);
+		}
+
+		float getSingleForceAddition(const CollisionEngine::CollisionInfo::Type type) const
+		{
+			return collisionContainer.has(type)
+				? collisionContainer[type]->getInputForceAddition()
+				: 1;
 		}
 
 		void onMovementJump(const bool active)
 		{
 			if (active)
 			{
+				const sf::Vector2f jumpForce = getTileJumpForce();
+
+				if (jumpForce.x == 0 && jumpForce.y == 0)
+				{
+					return;
+				}
+
+				properties.movement += jumpForce / *properties.mass;
+
+				/**
 				const sf::Vector2f tileForce = getTileJumpForce();
 
 				if (tileForce.x == 0 && tileForce.y == 0)
@@ -318,6 +355,7 @@ namespace Game
 					? adjustForceJumpAssist(tileForce)
 					: tileForce
 				) / *properties.weight;
+				**/
 			}
 		}
 

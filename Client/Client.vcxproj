@@ -301,7 +301,7 @@
     <None Include="source\resource\ResourceTileContentBase.h" />
     <None Include="source\shared\tiles\TileExit.cpp" />
     <None Include="source\shared\tiles\TileExit.h" />
-    <None Include="source\shared\tiles\TileId.h" />
+    <None Include="source\shared\tiles\TileCommon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

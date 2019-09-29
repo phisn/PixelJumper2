@@ -55,80 +55,21 @@ namespace Game
 
 	struct PlayerState
 	{
-		bool inputReducedFriction;
 		sf::Vector2f position, movement;
-		float speed, weight, friction;
+		float mass, inputForce, inputReduce;
 
 		bool viewFollow;
 		sf::FloatRect viewWindow;
 		float viewRotation;
 	};
 
-	/**
-	
-	Spieler:
-		mass
-		velc ->
-		post ->
-		fric
-		Fi
-
-	Welt:
-		Fg
-		Bd
-		Bpf
-		Pc
-		Fcrit
-		Bfric
-
-		velc -> = F -> / m
-		Ekin = 1 / 2 * m * v ^ 2
-
-		_
-	<- |_| ->
-	---------
-	0.
-		Ekin -> = 1 / 2 * m * velc -> ^ 2
-	
-	n - 6. F generieren (input und gravi)
-		F -> = Fi * Bpf -> (input) | Bf = Block Possible Force 
-		F -> += Fg ->
-		F -> += Bd | If jump
-
-	n - 5. Wiederstand 1
-		Far -> = Pc * velc -> ^ 2 | Pc -> air | Block
-		Fbr0 = Fcrit
-
-	n - 4. Addieren
-		Ekin -> = Ekin -> + F ->
-
-	n - 3. Wiederstand 2
-		Fbr = Fbr0 + {0 < (Bfric + Pfric) < 1} * Ekin ->
-
-	n - 2. Abziehen
-		Flos -> = Fbr -> + Far ->
-		Ekin -> = Ekin -> - Flos ->
-
-	n - 1.
-		velc = sqrt(2 * Ekin / m)
-
-	n.
-		post = post + velc
-		
-	x.
-	- post
-
-
-	**/
-
 	class PlayerProperties
 		:
 		public GameState
 	{
 	public:
-		Property<bool> inputReducedFriction;
 		Property<sf::Vector2f> position, movement;
-		Property<float> speed, weight, friction;
+		Property<float> mass, inputForce, inputReduce;
 
 		TileDataStorage tileDataStorage;
 
@@ -141,9 +82,9 @@ namespace Game
 			position = info.defaultPlayerProperties.beginPosition;
 			movement = info.defaultPlayerProperties.beginMovement;
 
-			speed = info.defaultPlayerProperties.speed;
-			weight = info.defaultPlayerProperties.weight;
-			friction = info.defaultPlayerProperties.friction;
+			mass = info.defaultPlayerProperties.mass;
+			inputForce = info.defaultPlayerProperties.inputForce;
+			inputReduce = info.defaultPlayerProperties.inputReduce;
 
 			viewFollow = info.defaultPlayerProperties.viewFollow;
 			viewWindow = info.defaultPlayerProperties.viewWindow;
@@ -154,14 +95,12 @@ namespace Game
 
 		void update()
 		{
-			inputReducedFriction.update();
-
 			position.update();
 			movement.update();
 
-			speed.update();
-			weight.update();
-			friction.update();
+			mass.update();
+			inputForce.update();
+			inputReduce.update();
 
 			viewFollow.update();
 			viewWindow.update();
@@ -187,14 +126,12 @@ namespace Game
 				return false;
 			}
 
-			inputReducedFriction.setValue(rpp.inputReducedFriction);
-
 			position.setValue(rpp.position);
 			movement.setValue(rpp.movement);
 
-			speed.setValue(rpp.speed);
-			weight.setValue(rpp.weight);
-			friction.setValue(rpp.friction);
+			mass.setValue(rpp.mass);
+			inputForce.setValue(rpp.inputForce);
+			inputReduce.setValue(rpp.inputReduce);
 
 			viewFollow.setValue(rpp.viewFollow);
 			viewWindow.setValue(rpp.viewWindow);
@@ -209,14 +146,12 @@ namespace Game
 		{
 			PlayerState rpp;
 
-			rpp.inputReducedFriction = inputReducedFriction;
-
 			rpp.position = position;
 			rpp.movement = movement;
 
-			rpp.speed = speed;
-			rpp.weight = weight;
-			rpp.friction = friction;
+			rpp.mass = mass;
+			rpp.inputForce = inputForce;
+			rpp.inputReduce = inputReduce;
 
 			rpp.viewFollow = viewFollow;
 			rpp.viewWindow = viewWindow;

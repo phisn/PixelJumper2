@@ -27,12 +27,12 @@ namespace Game
 			info.defaultPlayerProperties.beginMovement = { 0.f, 0.f };
 			info.defaultPlayerProperties.beginPosition = { 0.f, -1.f };
 
-			info.defaultPlayerProperties.friction = 0.f;
-			info.defaultPlayerProperties.speed = 0.0012f;
-			info.defaultPlayerProperties.weight = 1.f;
+			info.defaultPlayerProperties.mass = 1.28f;
+			info.defaultPlayerProperties.inputForce = 0.000050f;
+			info.defaultPlayerProperties.inputReduce = 2.0f;
 
-			info.defaultWorldProperties.airResistance = 0.004f;
-			info.defaultWorldProperties.gravity = { 0.f, 0.1f };
+			info.defaultWorldProperties.airResistance = 0.998642f;
+			info.defaultWorldProperties.gravity = { 0.f, 0.000063f };
 
 			info.defaultPlayerProperties.viewFollow = true;
 			info.defaultPlayerProperties.viewWindow = { 0.f, 0.f, 20.f, 20.f };
@@ -59,7 +59,7 @@ namespace Game
 			sf::Vector2f beginPosition;
 			sf::Vector2f beginMovement;
 
-			float speed, weight, friction;
+			float mass, inputForce, inputReduce;
 
 			bool viewFollow;
 			sf::FloatRect viewWindow;

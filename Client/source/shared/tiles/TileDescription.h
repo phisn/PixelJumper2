@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/shared/tiles/TileId.h>
+#include <Client/source/shared/tiles/TileCommon.h>
 
 #include <Client/source/editor/tile/TileTemplate.h>
 #include <Client/source/game/tiletrait/GameTileBase.h>

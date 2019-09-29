@@ -58,26 +58,44 @@ namespace Game
 	
 	sf::Vector2f WallTile::onCollision(const CollisionType type, const Collision collision)
 	{
-		CollidableTile::onCollision(type, collision);
 		collision.player->getProperties().position = collision.info.position;
 
 		sf::Vector2f movement = {};
-		sf::Vector2f remainMove = {};
+		sf::Vector2f remainOffset = {};
 
-		// set opposite of collision
 		if (collision.info.isHorizontal())
 		{
 			movement.y = collision.player->getProperties().movement->y;
-			remainMove.y = (collision.target.y - collision.info.position.y);
+			remainOffset.y = (collision.target.y - collision.info.position.y);
+
+			if (fabsf(movement.y) < friction)
+			{
+				movement.y = 0;
+			}
+			else
+			{
+				movement.y += movement.y > 0 ? -friction : friction;
+			}
 		}
 		else
 		{
 			movement.x = collision.player->getProperties().movement->x;
-			remainMove.x = (collision.target.x - collision.info.position.x);
+			remainOffset.x = (collision.target.x - collision.info.position.x);
+
+			if (fabsf(movement.x) < friction)
+			{
+				movement.x = 0;
+			}
+			else
+			{
+				movement.x += movement.x > 0 ? -friction : friction;
+			}
 		}
 
 		collision.player->getProperties().movement = movement;
-		return remainMove;
+		notifyCollisionEvent(&type, &collision);
+
+		return remainOffset;
 	}
 }
 
