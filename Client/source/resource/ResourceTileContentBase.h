@@ -5,7 +5,7 @@
 #include <Client/source/resource/CommonResourceTypes.h>
 #include <Client/source/resource/ResourceBase.h>
 
-#include <Client/source/shared/tiles/TileId.h>
+#include <Client/source/shared/tiles/TileCommon.h>
 
 #include <SFML/Main.hpp>
 

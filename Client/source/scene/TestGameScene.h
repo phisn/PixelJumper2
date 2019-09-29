@@ -25,9 +25,12 @@ namespace Scene
 	public:
 		GameSlider(
 			const std::wstring name,
-			Menu::Property<float>& p)
+			Menu::Property<float>& gameProperty,
+			const float default)
 			:
-			p(p),
+			gameProperty(gameProperty),
+			defaultValue(default),
+
 			RowContainer(Menu::CommonControlDirection::Horizontal),
 			slider(Menu::CommonControlDirection::Horizontal)
 		{
@@ -41,17 +44,18 @@ namespace Scene
 			value.sizePreferred = { 75, 20 };
 
 			sizePreferred = { 500, 20 };
+
+			// bug fix begin TODO: fix cause later
 			size = { 500, 20 };
 
 			name.space.automatic = sf::Vector2<bool>(false, false);
 			slider.space.automatic = sf::Vector2<bool>(false, false);
 			value.space.automatic = sf::Vector2<bool>(false, false);
+			// bug fix end
 
 			addElement(&name);
 			addElement(&slider);
 			addElement(&value);
-
-			value.text = L"1.000000";
 
 			slider.length->setPercent(0.1f);
 			slider.sliderMoved.addListener(
@@ -60,11 +64,17 @@ namespace Scene
 					const float result = convertDistanceToValue(slider.distance->getPercent());
 
 					value.text = std::to_wstring(result).substr(0, 8);
-					p.setValue(result);
+					gameProperty.setValue(result);
 					
 				});
 
-			slider.distance->setPercent(0.5f);
+			slider.resetValue.addListener(
+				[this]()
+				{
+					resetDefaultValue();
+				});
+
+			resetDefaultValue();
 		}
 
 	private:
@@ -75,8 +85,34 @@ namespace Scene
 
 			return (powf(10, (distance - fm) * 10 - 5) * fc);
 		}
+		/*
+		e = (log10(x) + 5) / 10.f
 
-		Menu::Property<float>& p;
+		x = e * fc
+		x / e = fc
+		fc = fm * 128
+		x / e = fm * 128
+		x / (e * 128) = fm
+
+		(x / e) = 2 | 2 = fc = fm * 128
+		2 = fm * 128 => 2 / 128 => 0.015625
+
+		e = (-1 + 5) / 10.f = 0.4f
+		2.000 / (e * 128)
+
+
+		*/
+
+		void resetDefaultValue()
+		{
+			const int percent_e = (int) log10f(defaultValue);
+			const float percent = (percent_e + 5) / 10.f + (defaultValue / powf(10, percent_e)) / 128.f;
+
+			slider.distance->setPercent(percent);
+		}
+
+		float defaultValue;
+		Menu::Property<float>& gameProperty;
 
 		class CustomSlider : public Menu::SlideBar<Menu::BarMaterial::DefaultRectangle, Menu::SliderMaterial::DefaultRectangle>
 		{
@@ -107,10 +143,20 @@ namespace Scene
 
 						return;
 					}
+
+					if (event.key.code == sf::Keyboard::E)
+					{
+						resetValue.notify();
+
+						return;
+					}
 				}
 			}
 
+			Menu::MenuNotifier<CustomSlider> resetValue;
+
 		} slider;
+
 		Menu::Label name, value;
 	};
 
@@ -136,16 +182,16 @@ namespace Scene
 
 			addChild(&container);
 
-			slider.push_back(new GameSlider(std::wstring(L"Input Force"), player->getProperties().inputForce));
+			slider.push_back(new GameSlider(std::wstring(L"Input Force"), player->getProperties().inputForce, testGamemode->world->getInformation()->defaultPlayerProperties.inputForce));
 			container.addElement(slider.back());
 			slider.back()->build();
-			slider.push_back(new GameSlider(std::wstring(L"Input Reduce"), player->getProperties().inputReduce));
+			slider.push_back(new GameSlider(std::wstring(L"Input Reduce"), player->getProperties().inputReduce, testGamemode->world->getInformation()->defaultPlayerProperties.inputReduce));
 			container.addElement(slider.back());
 			slider.back()->build();
-			slider.push_back(new GameSlider(std::wstring(L"Mass"), player->getProperties().mass));
+			slider.push_back(new GameSlider(std::wstring(L"Mass"), player->getProperties().mass, testGamemode->world->getInformation()->defaultPlayerProperties.mass));
 			container.addElement(slider.back());
 			slider.back()->build();
-			slider.push_back(new GameSlider(std::wstring(L"AirResistance"), testGamemode->world->getProperties().airResistance));
+			slider.push_back(new GameSlider(std::wstring(L"AirResistance"), testGamemode->world->getProperties().airResistance, testGamemode->world->getInformation()->defaultWorldProperties.airResistance));
 			container.addElement(slider.back());
 			slider.back()->build();
 
@@ -156,7 +202,7 @@ namespace Scene
 					testGamemode->world->getProperties().gravity = sf::Vector2f(0, gravity);
 				});
 
-			slider.push_back(new GameSlider(std::wstring(L"Gravity Y"), gravityProperty));
+			slider.push_back(new GameSlider(std::wstring(L"Gravity Y"), gravityProperty, testGamemode->world->getInformation()->defaultWorldProperties.gravity.y));
 			container.addElement(slider.back());
 			slider.back()->build();
 
@@ -169,7 +215,7 @@ namespace Scene
 					}
 				});
 
-			slider.push_back(new GameSlider(std::wstring(L"Tile Density"), tileDensityProperty));
+			slider.push_back(new GameSlider(std::wstring(L"Tile Density"), tileDensityProperty, Shared::Default::collidable_density));
 			container.addElement(slider.back());
 			slider.back()->build();
 
@@ -182,20 +228,7 @@ namespace Scene
 					}
 				});
 			
-			slider.push_back(new GameSlider(std::wstring(L"Tile Friction"), tileFrictionProperty));
-			container.addElement(slider.back());
-			slider.back()->build();
-
-			tileCriticalProperty.addListener(
-				[this](const float, const float value)
-				{
-					for (Game::CollidableTile* const tile : testGamemode->world->getEnvironment()->getTileType<Game::CollidableTile>())
-					{
-						tile->setCrit(value);
-					}
-				});
-
-			slider.push_back(new GameSlider(std::wstring(L"Tile Critical"), tileCriticalProperty));
+			slider.push_back(new GameSlider(std::wstring(L"Tile Friction"), tileFrictionProperty, Shared::Default::collidable_friction));
 			container.addElement(slider.back());
 			slider.back()->build();
 
@@ -208,7 +241,7 @@ namespace Scene
 					}
 				});
 
-			slider.push_back(new GameSlider(std::wstring(L"Tile InputForce"), tileForceProperty));
+			slider.push_back(new GameSlider(std::wstring(L"Tile InputForce"), tileForceProperty, Shared::Default::collidable_inputForce));
 			container.addElement(slider.back());
 			slider.back()->build();
 

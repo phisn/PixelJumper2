@@ -261,10 +261,6 @@ namespace Game
 
 			if (active)
 			{
-				float movementValue = (properties.inputForce 
-					* getForceAddition()) / *properties.mass
-					* (direction == InputDirection::Right ? 1.f : -1.f);;
-
 				/*
 
 					Movement distribution dependent on gravity
@@ -302,14 +298,24 @@ namespace Game
 					movement.x = -movement.x;
 				}*/
 
-				/*if (signbit(movementValue) == signbit(properties.movement->x))
+				float movementValue = properties.inputForce * getForceAddition()
+					* (direction == InputDirection::Right ? 1.f : -1.f);;
+
+
+				if (signbit(movementValue) == signbit(properties.movement->x))
 				{
-					movementValue /= properties.movement->x;
+					movementValue /= *properties.mass;
 				}
 				else
 				{
-					movementValue *= properties.inputReduce;
-				}*/
+					if (fabsf(movementValue) < fabsf(properties.movement->x))
+					{
+						movementValue *= properties.inputReduce;
+
+						if (fabsf(movementValue) > fabsf(properties.movement->x))
+							movementValue = -properties.movement->x;
+					}
+				}
 
 				properties.movement += sf::Vector2f(movementValue, 0);
 			}
