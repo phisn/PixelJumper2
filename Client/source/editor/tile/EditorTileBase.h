@@ -12,7 +12,7 @@ namespace Editor
 	{
 	public:
 		TileBase(
-			const Game::TileId id,
+			const Shared::TileId id,
 			const sf::Color commonColor)
 			:
 			id(id),
@@ -40,7 +40,7 @@ namespace Editor
 			return size;
 		}
 
-		Game::TileId getTileId() const
+		Shared::TileId getTileId() const
 		{
 			return id;
 		}
@@ -68,6 +68,6 @@ namespace Editor
 	private:
 		sf::Vector2f size{ 1, 1 }, position{ 0, 0 };
 
-		const Game::TileId id;
+		const Shared::TileId id;
 	};
 }

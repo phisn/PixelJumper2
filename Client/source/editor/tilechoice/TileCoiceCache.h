@@ -37,6 +37,6 @@ namespace Editor
 	class TileChoiceOutput
 	{
 	public:
-		TileTemplate* selection;
+		TileTemplate* selection = NULL;
 	};
 }

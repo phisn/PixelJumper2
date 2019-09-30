@@ -192,11 +192,12 @@ namespace Menu
 			{
 				// calcluate area offset
 				
-
 				element->position =
 				{
 					lastElement->position.getValue().x
-					+ lastElement->size.getValue().x,
+					+ lastElement->size.getValue().x
+					+ lastElement->outerOffset->right
+					+ element->outerOffset->left,
 					calculateElementAreaOffset(element)
 				};
 			}
@@ -207,6 +208,8 @@ namespace Menu
 					calculateElementAreaOffset(element),
 					lastElement->position.getValue().y
 					+ lastElement->size.getValue().y
+					+ lastElement->outerOffset->bottom
+					+ element->outerOffset->top
 				};
 			}
 		}

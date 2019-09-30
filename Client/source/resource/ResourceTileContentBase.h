@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Client/source/game/tile/TileId.h>
-
 #include <Client/source/resource/CommonResourceTypes.h>
 #include <Client/source/resource/ResourceBase.h>
 

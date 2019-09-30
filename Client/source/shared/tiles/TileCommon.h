@@ -15,6 +15,7 @@ namespace Shared
 		_Begin = 1,
 
 		TileWall = 1,
+		TileExit,
 
 		_Length
 	}; 

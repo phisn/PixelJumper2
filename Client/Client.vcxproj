@@ -92,7 +92,6 @@
     <ClInclude Include="source\game\tiletrait\InitializableTile.h" />
     <ClInclude Include="source\game\tiletrait\StaticTile.h" />
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h" />
-    <ClInclude Include="source\game\tile\TileId.h" />
     <ClInclude Include="source\logger\Names.h" />
     <ClInclude Include="source\logger\SectionHost.h" />
     <ClInclude Include="source\logger\LoggerLevel.h" />
@@ -172,6 +171,7 @@
     <ClCompile Include="source\scene\TestGameScene.cpp" />
     <ClCompile Include="source\scene\TestMenuScene.cpp" />
     <ClCompile Include="source\shared\tiles\TileDescription.cpp" />
+    <ClCompile Include="source\shared\tiles\TileExit.cpp" />
     <ClCompile Include="source\shared\tiles\TileWall.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
@@ -299,7 +299,6 @@
     <None Include="source\menu\MenuSpecialProperties.h" />
     <None Include="source\resource\CommonResourceTypes.h" />
     <None Include="source\resource\ResourceTileContentBase.h" />
-    <None Include="source\shared\tiles\TileExit.cpp" />
     <None Include="source\shared\tiles\TileExit.h" />
     <None Include="source\shared\tiles\TileCommon.h" />
   </ItemGroup>

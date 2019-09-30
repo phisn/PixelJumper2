@@ -13,6 +13,16 @@ namespace Editor
 			const TileChoiceInput* const input,
 			TileChoiceOutput* const output)
 		{
+			if (output->selection != NULL && output->selection->isSelected())
+			{
+				output->selection->unselect();
+			}
+
+			if (!input->selection->isSelected())
+			{
+				input->selection->select();
+			}
+
 			output->selection = input->selection;
 			return true;
 		}

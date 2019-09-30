@@ -17,7 +17,12 @@ namespace Editor
 
 		virtual const std::wstring& getName() const = 0;
 		virtual const std::wstring& getDescription() const = 0;
-		virtual Game::TileId getId() const = 0;
+		virtual Shared::TileId getId() const = 0;
+
+		virtual bool isSelected() const = 0;
+
+		virtual void select() = 0;
+		virtual void unselect() = 0;
 
 		// usally a button
 		virtual Menu::ElementBase* createRepresentation() = 0;

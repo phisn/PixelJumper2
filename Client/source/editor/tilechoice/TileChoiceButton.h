@@ -47,6 +47,12 @@ namespace Editor
 			:
 			public DefaultBase
 		{
+		public:
+			Default()
+			{
+				initialize();
+			}
+
 		private:
 			const Menu::CommonShapeStyle& findStyle(
 				const Menu::CommonControlEffect effect) const override
@@ -134,6 +140,7 @@ namespace Editor
 			horizontalArea = Menu::CommonHorizontalArea::Left;
 			verticalArea = Menu::CommonVerticalArea::Top;
 
+			outerOffset = { 0.f, 1.f, 0.f, 1.f };
 			labelOffset = { 7.f, 10.f };
 		}
 
@@ -142,6 +149,13 @@ namespace Editor
 		void unselect()
 		{
 			selected = false;
+			onGraphicsDefault();
+		}
+
+		void select()
+		{
+			selected = true;
+			onGraphicsDefault(); // TODO: change to adopt on default / hover / pressed
 		}
 
 		bool isSelected() const
@@ -200,6 +214,6 @@ namespace Editor
 		}
 
 	private:
-		bool selected;
+		bool selected = false;
 	};
 }

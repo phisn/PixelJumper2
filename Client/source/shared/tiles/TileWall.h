@@ -90,7 +90,7 @@ namespace Editor
 			const sf::Vector2f position)
 			:
 			TileBase(
-				Game::TileId::TileWall, 
+				Shared::TileId::TileWall, 
 				Shared::TileWall.editorColor)
 		{
 			shape.setFillColor(getColor());
@@ -135,6 +135,27 @@ namespace Editor
 	public:
 		WallTemplate()
 		{
+			button.sizePreferred = { 300, 100 };
+			button.buttonSelectedEvent.addListener(
+				[this]()
+				{
+					Manipulator::GetCache()->tileChoice.writeInput()->selection = this;
+
+					if (!Manipulator::GetCache()->tileChoice.notify())
+					{
+						Log::Error(L"Failed to select template");
+					}
+				});
+			button.buttonPressedEvent.addListener(
+				[this]()
+				{
+					if (!Manipulator::GetExecutor()->execute<TilePlace>())
+					{
+						Log::Error(L"Failed to place tiles");
+					}
+				});
+
+			button.value.text = L"Wall";
 		}
 
 		// onOpenContext ...
@@ -156,12 +177,30 @@ namespace Editor
 			return Shared::TileWall.info;
 		}
 
-		Game::TileId getId() const override
+		Shared::TileId getId() const override
 		{
-			return Game::TileId::TileWall;
+			return Shared::TileId::TileWall;
 		}
 
 		Menu::ElementBase* createRepresentation() override;
+
+		bool isSelected() const override
+		{
+			return button.isSelected();
+		}
+
+		void select() override
+		{
+			button.select();
+		}
+
+		void unselect() override
+		{
+			button.unselect();
+		}
+
+	private:
+		TileChoiceButton<TileChoiceMaterial::Default> button;
 	};
 }
 

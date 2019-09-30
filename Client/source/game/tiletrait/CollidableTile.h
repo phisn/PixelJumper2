@@ -17,7 +17,13 @@ namespace Game
 		PlayerBase* player;
 		sf::Vector2f target; // expected destination
 
-		// float timeValue;
+		sf::Vector2f getRemainOffset() const
+		{
+			return sf::Vector2f(
+				target.x - info.position.x,
+				target.y - info.position.y
+			);
+		}
 	};
 
 	class CollidableTile

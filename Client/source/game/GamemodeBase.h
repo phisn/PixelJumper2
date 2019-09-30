@@ -73,7 +73,11 @@ namespace Game
 				tile->onExit.addListener(
 				[this]()
 				{
-					Framework::Context::Pop();
+					if (!popingContext)
+					{
+						Framework::Context::Pop();
+						popingContext = true;
+					}
 				});
 			}
 
@@ -96,8 +100,10 @@ namespace Game
 			Device::Screen::ResetView();
 		}
 
-	// private:
 		LocalConnection user;
 		World* const world;
+
+	private:
+		bool popingContext = false;
 	};
 }

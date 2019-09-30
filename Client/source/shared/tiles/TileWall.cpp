@@ -103,36 +103,6 @@ namespace Editor
 {
 	Menu::ElementBase* WallTemplate::createRepresentation()
 	{
-		static TileChoiceButton<TileChoiceMaterial::Default> button;
-		static bool initialized = false;
-
-		if (!initialized)
-		{
-			initialized = true;
-
-			button.sizePreferred = { 300, 100 };
-			button.buttonSelectedEvent.addListener(
-				[this]()
-				{
-					Manipulator::GetCache()->tileChoice.writeInput()->selection = this;
-
-					if (!Manipulator::GetCache()->tileChoice.notify())
-					{
-						Log::Error(L"Failed to select template");
-					}
-				});
-			button.buttonPressedEvent.addListener(
-				[this]()
-				{
-					if (!Manipulator::GetExecutor()->execute<TilePlace>())
-					{
-						Log::Error(L"Failed to place tiles");
-					}
-				});
-
-			button.value.text = L"Wall";
-		}
-
 		return &button;
 	}
 	
