@@ -75,6 +75,8 @@ namespace Editor
 
 						world->setTileUnsafe(newTile);
 						placedTiles.push_back(newTile);
+
+						world->removeTile(tile);
 					}
 				}
 			}

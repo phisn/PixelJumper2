@@ -264,3 +264,105 @@
 [Section] : Creating world from WorldResource ... Success
 [Section] : Converting World ... Success
 [Section] : Creating world from WorldResource ... Success
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Warning] : No font selected, using default
+[Error] : Static resource file not found or is empty 'font.ttf' (resource path: 'resource/static')
+[Error] : Failed to load font
+[Warning] : No font selected, using default
+[Error] : Static resource file not found or is empty 'font.ttf' (resource path: 'resource/static')
+[Error] : Failed to load font
+[Warning] : No font selected, using default
+[Error] : Static resource file not found or is empty 'font.ttf' (resource path: 'resource/static')
+[Error] : Failed to load font
+[Warning] : No font selected, using default
+[Error] : Static resource file not found or is empty 'font.ttf' (resource path: 'resource/static')
+[Error] : Failed to load font
+[Warning] : No font selected, using default
+[Error] : Static resource file not found or is empty 'font.ttf' (resource path: 'resource/static')
+[Error] : Failed to load font
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Entering game loop
+[Warning] : No font selected, using default
+[Information] : Resource 'font.ttf' read (resource path: 'resource/static')
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Section] : Converting World ... Success
+[Section] : Creating World ... Success
+[Information] : 0.999999
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Information] : Poping
+[Section] : Converting World ... Success
+[Section] : Creating World ... Success
+[Information] : 0.999999
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Information] : Poping
+[Section] : Converting World ... Success
+[Section] : Creating World ... Success
+[Information] : 0.999999
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Warning] : No font selected, using default
+[Information] : Poping
+[Information] : Poping

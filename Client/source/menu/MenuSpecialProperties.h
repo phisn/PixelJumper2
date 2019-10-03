@@ -85,7 +85,7 @@ namespace Menu
 	public:
 		using Property<T>::operator=;
 		
-		void setValue(const T value) override
+		virtual void setValue(const T value) override
 		{
 			if (!needsUpdate)
 			{

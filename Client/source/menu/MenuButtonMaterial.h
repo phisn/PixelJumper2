@@ -153,7 +153,7 @@ namespace Menu::ButtonMaterial
 
 		virtual void move(const sf::Vector2f offset)
 		{
-			rect.move(offset);
+			position += offset;
 			updateEffect();
 		}
 

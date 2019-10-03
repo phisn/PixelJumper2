@@ -71,11 +71,6 @@ namespace Game
 		{
 			return friction;
 		}
-
-		float getCriticalForce() const
-		{
-			return criticalForce;
-		}
 	};
 }
 

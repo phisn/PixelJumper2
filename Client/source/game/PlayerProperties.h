@@ -1,5 +1,7 @@
 #pragma 
 
+
+#include <Client/source/game/GameDefinitions.h>
 #include <Client/source/game/GameProperty.h>
 #include <Client/source/game/GameState.h>
 #include <Client/source/game/tiletrait/GameTileBase.h>
@@ -69,7 +71,10 @@ namespace Game
 	{
 	public:
 		Property<sf::Vector2f> position, movement;
-		Property<float> mass, inputForce, inputReduce;
+
+		DefinedProperty<float> mass{ Definition::mass };
+		DefinedProperty<float> inputForce{ Definition::input_force };
+		Property<float> inputReduce;
 
 		TileDataStorage tileDataStorage;
 

@@ -7,7 +7,7 @@
 	int main()
 #else
 	#include <Windows.h>
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+	int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #endif
 {
 #ifdef _DEBUG

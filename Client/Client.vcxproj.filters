@@ -231,6 +231,9 @@
     <ClInclude Include="source\editor\tile\TileTemplateFactory.h">
       <Filter>source\editor\tile</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\GameDefinitions.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">

@@ -84,6 +84,7 @@
     <ClInclude Include="source\framework\ResourceContext.h" />
     <ClInclude Include="source\game\CollisionEngine.h" />
     <ClInclude Include="source\game\Environment.h" />
+    <ClInclude Include="source\game\GameDefinitions.h" />
     <ClInclude Include="source\game\GameState.h" />
     <ClInclude Include="source\game\tiletrait\CollidableTile.h" />
     <ClInclude Include="source\game\tiletrait\DrawableTile.h" />

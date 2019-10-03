@@ -43,47 +43,22 @@ namespace Game
 			used for sliding or bouncing (normal walls slide too [ignores phyiscs])
 		*/
 
-
-
 		void setDensity(float value)
 		{
-			density = value;
-		}
-		void setCrit(float value)
-		{
-			criticalForce = value;
+			density = value * Definition::tile_density;
 		}
 		void setFriction(float value)
 		{
-			friction = value;
+			friction = value * Definition::tile_friction;
 		}
 		void setForce(float value)
 		{
-			inputForceAddition = value;
+			inputForceAddition = value * Definition::tile_input;
 		}
 
 		virtual sf::Vector2f onCollision(
 			const CollisionType type,
 			const Collision collision) = 0;
-			/*
-		{
-			sf::Vector2f movement = collision.player->getProperties().movement;
-//			movement = collision.player->getProperties().friction * friction;
-
-			if (fabsf(movement.x) < criticalForce)
-			{
-				movement.x = 0.f;
-			}
-
-			if (fabsf(movement.y) < criticalForce)
-			{
-				movement.y = 0.f;
-			}
-
-			collision.player->getProperties().movement = movement;
-
-			return { };
-		}*/
 		
 		// copied from / same as in GameTileBase.h
 		virtual const sf::Vector2f getPosition() const = 0;
@@ -116,7 +91,6 @@ namespace Game
 
 		float density;
 		float inputForceAddition;
-		float criticalForce;
 		float friction;
 
 		void notifyCollisionEvent(

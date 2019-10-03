@@ -486,10 +486,8 @@ namespace Menu
 					}
 				}
 			}
-			else
-			{
-				return distance;
-			}
+
+			return distance;
 		}
 
 		float takeByDirection(float x, float y) const

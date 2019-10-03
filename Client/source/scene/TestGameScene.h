@@ -15,7 +15,6 @@
 
 #include <Client/source/framework/FrameworkInterface.h>
 
-
 namespace Scene
 {
 	class GameSlider
@@ -85,23 +84,6 @@ namespace Scene
 
 			return (powf(10, (distance - fm) * 10 - 5) * fc);
 		}
-		/*
-		e = (log10(x) + 5) / 10.f
-
-		x = e * fc
-		x / e = fc
-		fc = fm * 128
-		x / e = fm * 128
-		x / (e * 128) = fm
-
-		(x / e) = 2 | 2 = fc = fm * 128
-		2 = fm * 128 => 2 / 128 => 0.015625
-
-		e = (-1 + 5) / 10.f = 0.4f
-		2.000 / (e * 128)
-
-
-		*/
 
 		void resetDefaultValue()
 		{
@@ -198,7 +180,6 @@ namespace Scene
 			gravityProperty.addListener(
 				[this](const float, const float gravity)
 				{
-					Log::Information(std::to_wstring(gravity));
 					testGamemode->world->getProperties().gravity = sf::Vector2f(0, gravity);
 				});
 
@@ -215,7 +196,7 @@ namespace Scene
 					}
 				});
 
-			slider.push_back(new GameSlider(std::wstring(L"Tile Density"), tileDensityProperty, Shared::Default::collidable_density));
+			slider.push_back(new GameSlider(std::wstring(L"Tile Density"), tileDensityProperty, 1.f));
 			container.addElement(slider.back());
 			slider.back()->build();
 
@@ -228,7 +209,7 @@ namespace Scene
 					}
 				});
 			
-			slider.push_back(new GameSlider(std::wstring(L"Tile Friction"), tileFrictionProperty, Shared::Default::collidable_friction));
+			slider.push_back(new GameSlider(std::wstring(L"Tile Friction"), tileFrictionProperty, 1.f));
 			container.addElement(slider.back());
 			slider.back()->build();
 
@@ -241,7 +222,17 @@ namespace Scene
 					}
 				});
 
-			slider.push_back(new GameSlider(std::wstring(L"Tile InputForce"), tileForceProperty, Shared::Default::collidable_inputForce));
+			slider.push_back(new GameSlider(std::wstring(L"Tile InputForce"), tileForceProperty, 1.f));
+			container.addElement(slider.back());
+			slider.back()->build();
+
+			 viewSizeProperty.addListener(
+				[this](const float, const float value)
+				{
+					 testGamemode->world->getPlayers()[0]->getProperties().viewWindow.setValue({ 0.f, 0.f, value, value });
+				});
+
+			slider.push_back(new GameSlider(std::wstring(L"View Size"), viewSizeProperty, 20.f));
 			container.addElement(slider.back());
 			slider.back()->build();
 
@@ -257,6 +248,7 @@ namespace Scene
 		Menu::Property<float> tileFrictionProperty;
 		Menu::Property<float> tileCriticalProperty;
 		Menu::Property<float> tileForceProperty;
+		Menu::Property<float> viewSizeProperty;
 
 		float convertDistanceToValue(const float distance)
 		{

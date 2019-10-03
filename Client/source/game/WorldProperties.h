@@ -32,9 +32,8 @@ namespace Game
 
 		ReadOnlyProperty<Property<sf::Uint16>, WorldProperties> playerCount;
 
-//		Property<float> criticalForce;
-		Property<sf::Vector2f> gravity;
-		Property<float> airResistance;
+		DefinedProperty<sf::Vector2f> gravity{ Definition::gravity };
+		DefinedProperty<float> airResistance{ Definition::air_resistance };
 
 		Property<sf::Uint32> milisecondsPassed;
 
