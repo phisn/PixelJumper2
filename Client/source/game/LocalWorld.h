@@ -1,19 +1,22 @@
 #pragma once
 
 #include <Client/source/game/GameWorld.h>
+#include <Client/source/game/LocalPlayer.h>
 
 namespace Game
 {
 	class LocalWorld
 		:
-		public World<LocalPlayer>
+		public World
 	{
-	public: // access
+	public:
+		using World::World;
+
 		virtual void draw(sf::RenderTarget* const target)
 		{
 			environment.draw(target);
 
-			for (LocalPlayer* const player : players)
+			for (LocalPlayer* const player : asLocalPlayers())
 			{
 				player->onDraw(target);
 			}
@@ -29,7 +32,7 @@ namespace Game
 				logicCounter -= LogicTimeStep;
 			}
 
-			for (LocalPlayer* const player : players)
+			for (LocalPlayer* const player : asLocalPlayers())
 			{
 				player->onLogic(time);
 			}
@@ -38,6 +41,11 @@ namespace Game
 		}
 
 	private:
+		std::vector<LocalPlayer*>& asLocalPlayers()
+		{
+			return (std::vector<LocalPlayer*>&) players;
+		}
+
 		sf::Uint64 logicCounter = 0;
 	};
 }

@@ -333,7 +333,7 @@ namespace Scene
 		}
 
 	private:
-		Game::World world;
+		Game::LocalWorld world;
 		Game::TestGamemode testGamemode;
 	};
 }

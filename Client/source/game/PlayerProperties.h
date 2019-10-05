@@ -114,19 +114,21 @@ namespace Game
 
 		bool update()
 		{
+			// has to be bitand because
+			// normal does omit future updates
 			return spawn.update()
-				|| position.update()
-				|| movement.update()
+				| position.update()
+				| movement.update()
 
-				|| mass.update()
-				|| inputForce.update()
-				|| inputReduce.update()
+				| mass.update()
+				| inputForce.update()
+				| inputReduce.update()
 
-				|| viewFollow.update()
-				|| viewWindow.update()
-				|| viewRotation.update()
+				| viewFollow.update()
+				| viewWindow.update()
+				| viewRotation.update()
 
-				|| tileDataStorage.update();
+				| tileDataStorage.update();
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override

@@ -126,6 +126,7 @@
     <ClInclude Include="source\scene\SubSceneBase.h" />
     <ClInclude Include="source\scene\TestGameScene.h" />
     <ClInclude Include="source\scene\TestMenuScene.h" />
+    <ClInclude Include="source\scene\TestReleaseGameScene.h" />
     <ClInclude Include="source\shared\tiles\TileDescription.h" />
     <ClInclude Include="source\shared\tiles\TileWall.h" />
   </ItemGroup>
@@ -146,6 +147,7 @@
     <ClCompile Include="source\game\CollisionEngine.cpp" />
     <ClCompile Include="source\game\ControllablePlayer.cpp" />
     <ClCompile Include="source\game\Environment.cpp" />
+    <ClCompile Include="source\game\GamePlayer.cpp" />
     <ClCompile Include="source\game\GameWorld.cpp" />
     <ClCompile Include="source\game\LocalWorld.cpp" />
     <ClCompile Include="source\game\PlayerRepresentation.cpp" />
@@ -180,6 +182,7 @@
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
     <ClCompile Include="source\scene\TestGameScene.cpp" />
     <ClCompile Include="source\scene\TestMenuScene.cpp" />
+    <ClCompile Include="source\scene\TestReleaseGameScene.cpp" />
     <ClCompile Include="source\shared\tiles\TileDescription.cpp" />
     <ClCompile Include="source\shared\tiles\TileExit.cpp" />
     <ClCompile Include="source\shared\tiles\TileWall.cpp" />
@@ -259,7 +262,6 @@
     <None Include="source\game\old\WorldBase.h" />
     <None Include="source\game\old\WorldState.cpp" />
     <None Include="source\game\old\WorldState.h" />
-    <None Include="source\game\GamePlayer.cpp" />
     <None Include="source\game\GamePlayer.h" />
     <None Include="source\game\PlayerInformation.h" />
     <None Include="source\game\PlayerProperties.cpp" />

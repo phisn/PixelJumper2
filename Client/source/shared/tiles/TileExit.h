@@ -42,7 +42,7 @@ namespace Game
 				Shared::TileExit.gameColor,
 				position,
 				size),
-			CollidableTile(0, 0)
+			CollidableTile(0, 0, 0)
 		{
 		}
 

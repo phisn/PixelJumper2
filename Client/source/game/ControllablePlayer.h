@@ -14,10 +14,11 @@ namespace Game
 		Passive  // (event based) not repeated without time
 	};
 
-	template <InputMode mode, typename... RoutineArgs>
+	template <InputMode mode>
 	class KeyController
 	{
-		typedef InputRoutine<RoutineArgs...> LocalRoutine;
+		typedef InputRoutine<> LocalRoutine;
+
 	public:
 		KeyController(
 			const Device::GameInput* const input,
@@ -30,30 +31,28 @@ namespace Game
 		{
 		}
 
-		template <typename Enable = void>
+		template <InputMode = mode>
 		void handleKey()
 		{
 		}
 
-		void handleKey<
-			std::enable_if_t<mode == InputMode::Active>
-		>(const RoutineArgs... args)
+		template <>
+		void handleKey<InputMode::Active>()
 		{
 			currentState = input->isKeyPressed(key);
 
 			if (currentState)
 			{
-				routine.call(args...);
+				routine.call();
 			}
 		}
 
-		void handleKey<
-			std::enable_if_t<mode == InputMode::Passive>
-		>(const RoutineArgs... args)
+		template <>
+		void handleKey<InputMode::Passive>()
 		{
-			if (input->isKeyPressed(key) != currentState && currentState = !currentState)
+			if (input->isKeyPressed(key) != currentState && (currentState = !currentState))
 			{
-				routine.call(args...);
+				routine.call();
 			}
 		}
 		
@@ -74,6 +73,10 @@ namespace Game
 		:
 		public LocalPlayer
 	{
+		// needs to be at top
+		// first evaluation
+		Device::GameInput* const input;
+
 	public:
 		ControllablePlayer(
 			const Device::Input::PlayerId playerId,
@@ -86,13 +89,13 @@ namespace Game
 		{
 			properties.viewFollow.addListener(
 				[this](const bool oldViewFollow,
-					const bool newViewFollow)
+					   const bool newViewFollow)
 				{
 					properties.viewWindow.update(true);
 				});
 			properties.viewWindow.addListener(
 				[this](const sf::FloatRect oldViewWindow,
-					const sf::FloatRect newViewWindow)
+					   const sf::FloatRect newViewWindow)
 				{
 					if (properties.viewFollow)
 					{
@@ -109,13 +112,13 @@ namespace Game
 				});
 			properties.viewRotation.addListener(
 				[this](const float oldViewRotation,
-					const float newViewRotation)
+					   const float newViewRotation)
 				{
 					this->view->setRotation(newViewRotation);
 				});
 			properties.position.addListener(
 				[this](const sf::Vector2f oldPosition,
-					const sf::Vector2f newPosition)
+					   const sf::Vector2f newPosition)
 				{
 					if (properties.viewFollow)
 					{
@@ -127,16 +130,16 @@ namespace Game
 		void onInternalUpdate() override
 		{
 			handleInput();
-			LocalPlayer::onInternalUpdate();
+			PlayerBase::onInternalUpdate();
 		}
 
 		KeyController<InputMode::Passive> respawnController{ input, Device::GameCoreInputSymbol::Reset, respawn };
-		KeyController<InputMode::Passive> interactController{ input, Device::GameCoreInputSymbol::Left, interact };
+		KeyController<InputMode::Passive> interactController{ input, Device::GameCoreInputSymbol::Trigger, interact };
 
-		KeyController<InputMode::Active> upController{ input, Device::GameCoreInputSymbol::Left, up };
-		KeyController<InputMode::Active> downController{ input, Device::GameCoreInputSymbol::Left, down };
+		KeyController<InputMode::Active> upController{ input, Device::GameCoreInputSymbol::Up, up };;
+		KeyController<InputMode::Active> downController{ input, Device::GameCoreInputSymbol::Down, down };
 		KeyController<InputMode::Active> leftController{ input, Device::GameCoreInputSymbol::Left, left };
-		KeyController<InputMode::Active> rightController{ input, Device::GameCoreInputSymbol::Left, right };
+		KeyController<InputMode::Active> rightController{ input, Device::GameCoreInputSymbol::Right, right };
 
 	private:
 		void handleInput()
@@ -151,6 +154,5 @@ namespace Game
 		}
 
 		Device::View* const view;
-		Device::GameInput* const input;
 	};
 }

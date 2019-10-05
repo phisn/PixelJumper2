@@ -19,13 +19,12 @@ namespace Game
 {
 	constexpr sf::Uint64 LogicTimeStep = 1'000;
 
-	template <
-		typename PlayerType = PlayerBase, 
-		typename PlayerContainer = std::vector<PlayerType*>
-	>
 	class World
 	{
 	protected:
+		typedef PlayerBase PlayerType;
+		typedef std::vector<PlayerType*> PlayerContainer;
+
 		const Resource::World* const resource;
 
 	public: // init

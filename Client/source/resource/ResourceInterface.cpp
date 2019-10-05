@@ -112,9 +112,19 @@ namespace Resource
 			return false;
 		}
 
-		frp.setPosition(
-			sizeof(ResourceTypeMagic::Type)
-		);
+		{ // ensure magic
+			ResourceTypeMagic::Type magic;
+			if (!frp.readValue(&magic) || magic != ResourceDefinition::Get(type)->magic)
+			{
+				Log::Error(L"Failed to write resource "
+					+ MakeDefaultResourceTypeFileError(type, file->path)
+					+ L" "
+					+ MakeErrorMessageError()
+				);
+
+				return false;
+			}
+		}
 
 		if (!resource->make(&frp))
 		{
@@ -428,17 +438,17 @@ namespace Resource
 			}
 
 			resourceFile = resourceType.find(name);
-		}
+			 
+			if (resourceFile == resourceType.end())
+			{
+				Log::Error(L"Resource '"
+					+ name
+					+ L"' (resouce path: '"
+					+ ResourceDefinition::Get(type)->path
+					+ L"') not found (again)");
 
-		if (resourceFile == resourceType.end())
-		{
-			Log::Error(L"Resource '"
-				+ name
-				+ L"' (resouce path: '"
-				+ ResourceDefinition::Get(type)->path
-				+ L"') not found");
-
-			return false;
+				return false;
+			}
 		}
 
 		FileDefinition* file = &resourceFile->second;

@@ -38,6 +38,7 @@ namespace Game
 		WallTile(
 			const TileIdentity identity,
 			const float density,
+			const float inputForceAddition,
 			const float drag,
 			const sf::Vector2f position,
 			const sf::Vector2f size)
@@ -47,7 +48,7 @@ namespace Game
 				Shared::TileWall.gameColor,
 				position,
 				size),
-			CollidableTile(density, drag) // 10.f, 0.01f
+			CollidableTile(density, inputForceAddition, drag) // 10.f, 0.01f
 		{
 		}
 
@@ -117,8 +118,9 @@ namespace Editor
 		}
 
 	private:
-		float density = 0.04f;
-		float friction = 1.f;
+		float density = Game::Definition::tile_density;
+		float inputForceAddition = Game::Definition::tile_input;
+		float friction = Game::Definition::tile_friction;
 
 		sf::RectangleShape shape;
 	};
@@ -211,10 +213,7 @@ namespace Resource
 	public:
 		WallTile()
 			:
-			TileBase(
-				Shared::TileId::TileWall,
-				sizeof(Content)
-			)
+			TileBase(Shared::TileId::TileWall, sizeof(Content))
 		{
 		}
 
@@ -236,9 +235,10 @@ namespace Resource
 		struct
 		{
 			float density;
+			float inputForceAddition;
 			float friction;
 
-		} Content = { };
+		} Content;
 	};
 
 #pragma pack(pop)

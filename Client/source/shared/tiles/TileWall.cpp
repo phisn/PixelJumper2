@@ -32,6 +32,7 @@ namespace Game
 			identity,
 
 			resource->Content.density,
+			resource->Content.inputForceAddition,
 			resource->Content.friction,
 
 			sf::Vector2f(
@@ -113,6 +114,7 @@ namespace Editor
 		Resource::WallTile* const tile = new Resource::WallTile();
 
 		tile->Content.density = density; // TODO: Make Variable
+		tile->Content.inputForceAddition = inputForceAddition;
 		tile->Content.friction = friction;
 
 		return tile;
@@ -124,6 +126,7 @@ namespace Editor
 		const Resource::WallTile* const wt = (const Resource::WallTile*) tile;
 		
 		density = wt->Content.density;
+		inputForceAddition = wt->Content.inputForceAddition;
 		friction = wt->Content.friction;
 
 		return true; // ignore

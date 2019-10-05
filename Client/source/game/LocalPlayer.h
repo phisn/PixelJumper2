@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/game/GamePlayer.h>
 #include <Client/source/game/PlayerRepresentation.h>
 
 namespace Game

@@ -31,9 +31,11 @@ namespace Game
 	public:
 		CollidableTile(
 			const float density,
+			const float inputForceAddition,
 			const float friction)
 			:
 			density(density),
+			inputForceAddition(inputForceAddition),
 			friction(friction)
 		{
 		}

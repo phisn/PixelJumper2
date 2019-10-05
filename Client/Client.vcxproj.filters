@@ -258,6 +258,9 @@
     <ClInclude Include="source\game\VirtualWorld.h">
       <Filter>source\game\world</Filter>
     </ClInclude>
+    <ClInclude Include="source\scene\TestReleaseGameScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -421,6 +424,12 @@
     </ClCompile>
     <ClCompile Include="source\game\VirtualWorld.cpp">
       <Filter>source\game\world</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GamePlayer.cpp">
+      <Filter>source\game\player</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\TestReleaseGameScene.cpp">
+      <Filter>source\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -744,9 +753,6 @@
     </None>
     <None Include="source\shared\tiles\TileCommon.h">
       <Filter>source\shared\tiles</Filter>
-    </None>
-    <None Include="source\game\GamePlayer.cpp">
-      <Filter>source\game\player</Filter>
     </None>
     <None Include="source\game\GamePlayer.h">
       <Filter>source\game\player</Filter>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/game/GamePlayer.h>
-#include <Client/source/game/GameWorld.h>
+#include <Client/source/game/LocalWorld.h>
 
 #include <Client/source/game/ControllablePlayer.h>
 
@@ -11,7 +11,7 @@ namespace Game
 	{
 	public:
 		virtual void initialize() = 0;
-		virtual void createPlayer(World* const world) = 0;
+		virtual void createPlayer(LocalWorld* const world) = 0;
 
 		const PlayerInformation& getInformation() const
 		{
@@ -42,7 +42,7 @@ namespace Game
 		{
 		}
 
-		void createPlayer(World* const world) override
+		void createPlayer(LocalWorld* const world) override
 		{
 			world->addPlayer(
 				currentPlayer = new ControllablePlayer(playerId, information, &view)

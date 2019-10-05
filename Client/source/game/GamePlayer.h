@@ -112,6 +112,8 @@ namespace Game
 
 	class PlayerBase
 	{
+		friend class World;
+
 	public:	
 		PlayerBase(const PlayerInformation information)
 			:

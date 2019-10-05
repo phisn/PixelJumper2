@@ -76,6 +76,7 @@ namespace Resource
 			const char* const buffer,
 			const sf::Uint64 size) override
 		{
+			file.write(buffer, size);
 		}
 
 		void setPosition(

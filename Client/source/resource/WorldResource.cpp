@@ -25,8 +25,7 @@ namespace Resource
 		return result;
 	}
 
-	bool World::make(
-		ReadPipe* const pipe)
+	bool World::make(ReadPipe* const pipe)
 	{
 		if (pipe->getSize() < HEADER_SIZE)
 		{

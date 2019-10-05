@@ -16,7 +16,8 @@
 #include <Client/source/menu/MenuFPSLabel.h>
 
 #include <Client/source/scene/MenuBaseScene.h>
-#include <Client/source/scene/TestGameScene.h>
+#include <Client/source/scene/TestGameScene.h> // for testing
+#include <Client/source/scene/TestReleaseGameScene.h> // for testing
 
 namespace Scene
 {
@@ -93,13 +94,6 @@ namespace Scene
 					L"TestWorld")
 					)
 				{
-					/*
-
-						Tiles are not correctly saved
-					
-					*/
-
-
 					Log::Information(L"Successfully saved world");
 				}
 				else
@@ -176,8 +170,7 @@ namespace Scene
 					return;
 				}
 
-
-				Framework::Context::Push<TestGameScene>(world);
+				Framework::Context::Push<TestGameScene>();
 			}
 
 			if (event.type == sf::Event::KeyPressed &&

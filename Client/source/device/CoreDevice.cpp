@@ -15,6 +15,7 @@
 #include <Client/source/scene/EditorScene.h>
 // #include <Client/source/scene/TestGameScene.h>
 // #include <Client/source/scene/TestMenuScene.h>
+// #include <Client/source/scene/TestReleaseGameScene.h>
 
 namespace Device
 {
