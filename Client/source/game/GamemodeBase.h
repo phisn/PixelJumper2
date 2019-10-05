@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/game/UserConnection.h>
-#include <Client/source/game/GameWorld.h>
+#include <Client/source/game/LocalWorld.h>
 
 #include <Client/source/game/tiletrait/ExitableTile.h>
 
@@ -29,7 +29,7 @@ namespace Game
 		}
 
 	private:
-		World* world;
+		LocalWorld* world;
 	};
 
 	class SoloGamemode
@@ -37,7 +37,7 @@ namespace Game
 		public GamemodeBase
 	{
 	public:
-		World world;
+		LocalWorld world;
 		LocalConnection player;
 	};
 
@@ -48,7 +48,7 @@ namespace Game
 		PlayerInformation playerInfo{ sf::Color::Red, L"Test Player" };
 
 	public:
-		TestGamemode(World* const world)
+		TestGamemode(LocalWorld* const world)
 			:
 			world(world),
 			user(playerInfo, Device::Input::PlayerId::P1, { 0, 0, 1, 1 })
@@ -71,14 +71,14 @@ namespace Game
 			for (ExitableTile* tile : world->getEnvironment()->getTileType<ExitableTile>())
 			{
 				tile->onExit.addListener(
-				[this]()
-				{
-					if (!popingContext)
+					[this]()
 					{
-						Framework::Context::Pop();
-						popingContext = true;
-					}
-				});
+						if (!popingContext)
+						{
+							Framework::Context::Pop();
+							popingContext = true;
+						}
+					});
 			}
 
 			return true;
@@ -101,7 +101,7 @@ namespace Game
 		}
 
 		LocalConnection user;
-		World* const world;
+		LocalWorld* const world;
 
 	private:
 		bool popingContext = false;

@@ -217,7 +217,7 @@ namespace Device
 			return GameViewInputSymbol::_Invalid;
 		}
 
-		bool isKeyPressed(const GameCoreInputSymbol symbol)
+		bool isKeyPressed(const GameCoreInputSymbol symbol) const
 		{
 			return sf::Keyboard::isKeyPressed(coreKeys[(int)symbol]);
 		}

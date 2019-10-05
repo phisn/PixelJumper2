@@ -13,18 +13,29 @@
 
 namespace Game
 {
+	struct PlayerInput
+	{
+	};
+
 	class TileDataStorage
 		:
 		public GameState
 	{
 	public:
-		void update()
+		bool update()
 		{
+			bool hasUpdated = false;
+
 			for (decltype(tileData)::const_reference data : tileData)
-				data.second.update();
+				if (data.second.update())
+				{
+					hasUpdated = true;
+				}
+
+			return hasUpdated;
 		}
 
-		bool writeState(Resource::WritePipe * const writePipe) override
+		bool writeState(Resource::WritePipe* const writePipe) override
 		{
 			for (decltype(tileData)::const_reference data : tileData)
 				if (!data.second->writeState(writePipe))
@@ -57,6 +68,7 @@ namespace Game
 
 	struct PlayerState
 	{
+		sf::Vector2f spawn;
 		sf::Vector2f position, movement;
 		float mass, inputForce, inputReduce;
 
@@ -70,6 +82,7 @@ namespace Game
 		public GameState
 	{
 	public:
+		Property<sf::Vector2f> spawn;
 		Property<sf::Vector2f> position, movement;
 
 		DefinedProperty<float> mass{ Definition::mass };
@@ -84,6 +97,7 @@ namespace Game
 
 		void loadDefault(const WorldInformation& info)
 		{
+			spawn = info.defaultPlayerProperties.beginPosition;
 			position = info.defaultPlayerProperties.beginPosition;
 			movement = info.defaultPlayerProperties.beginMovement;
 
@@ -98,20 +112,21 @@ namespace Game
 			update();
 		}
 
-		void update()
+		bool update()
 		{
-			position.update();
-			movement.update();
+			return spawn.update()
+				|| position.update()
+				|| movement.update()
 
-			mass.update();
-			inputForce.update();
-			inputReduce.update();
+				|| mass.update()
+				|| inputForce.update()
+				|| inputReduce.update()
 
-			viewFollow.update();
-			viewWindow.update();
-			viewRotation.update();
+				|| viewFollow.update()
+				|| viewWindow.update()
+				|| viewRotation.update()
 
-			tileDataStorage.update();
+				|| tileDataStorage.update();
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
@@ -131,6 +146,7 @@ namespace Game
 				return false;
 			}
 
+			spawn.setValue(rpp.spawn);
 			position.setValue(rpp.position);
 			movement.setValue(rpp.movement);
 
@@ -151,6 +167,7 @@ namespace Game
 		{
 			PlayerState rpp;
 
+			rpp.spawn = spawn;
 			rpp.position = position;
 			rpp.movement = movement;
 

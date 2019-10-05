@@ -1,143 +1,61 @@
 #pragma once
 
-#include <Client/source/device/InputDevice.h>
-
-#include <Client/source/game/GamePlayer.h>
-
-#include <Client/source/game/tiletrait/CollidableTile.h>
+#include <Client/source/game/PlayerRepresentation.h>
 
 namespace Game
 {
-	enum class InputMode
-	{
-		Active,  // (pull  based) repeated with time
-		Hybrid,  // (pull  based) repeated with time if state is true
-		Passive  // (event based) not repeated without time
-	};
-
-	template <typename... Args>
-	class InputRoutine
-	{
-		friend class LocalPlayer;
-		typedef std::function<void(const bool, Args...)> Listener;
-
-	public:
-		struct FunctionContainer
-		{
-			Listener function;
-
-			InputMode mode = Passive;
-			bool callListeners = true;
-		};
-
-		InputRoutine(const FunctionContainer defaultFunction)
-			:
-			defaultFunction(defaultFunction),
-			currentFunction(defaultFunction)
-		{
-		}
-
-		void addListener(const Listener listener)
-		{
-			listeners.push_back(listener);
-		}
-
-		void removeListener(const Listener listener)
-		{
-			for (decltype(listeners)::iterator iterator = listeners.begin()
-				; iterator != listeners.end(); ++iterator)
-				if (iterator->target<void>() == listener.target<void>())
-				{
-					listeners.erase(iterator);
-
-					break;
-				}
-		}
-
-		void hook(FunctionContainer function)
-		{
-			currentFunction = function;
-		}
-
-		void unhook()
-		{
-			currentFunction = defaultFunction;
-		}
-
-		const FunctionContainer& getCurrentContainer() const
-		{
-			return currentFunction;
-		}
-
-		const FunctionContainer& getDefaultContainer() const
-		{
-			return defaultFunction;
-		}
-
-		bool getCurrentState() const
-		{
-			return currentState;
-		}
-
-	private:
-		void update(const bool state, Args... args)
-		{
-			switch (currentFunction.mode)
-			{
-			case InputMode::Active:
-				call(state, args...);
-
-				break;
-			case InputMode::Hybrid:
-				if (state)
-				{
-					call(state, args...);
-				}
-
-				break;
-			case InputMode::Passive:
-				if (state != currentState)
-				{
-					call(state, args...);
-				}
-			}
-		}
-
-		void call(const bool state, Args... args)
-		{
-			currentState = state;
-
-			if (currentFunction.callListeners)
-				for (const Listener& listener : listeners)
-				{
-					listener(state, args...);
-				}
-
-			currentFunction.function(state, args...);
-		}
-
-		std::vector<Listener> listeners;
-
-		const FunctionContainer defaultFunction;
-		FunctionContainer currentFunction;
-
-		bool currentState;
-	};
-
-	enum class InputDirection
-	{
-		Up,
-		Left,
-		Down,
-		Right
-	};
-	
 	class LocalPlayer
 		:
 		public PlayerBase
 	{
 	public:
-		LocalPlayer(
+		LocalPlayer(const PlayerInformation information)
+			:
+			PlayerBase(information),
+			representation(PlayerRepresentation::Create(information))
+		{
+			properties.position.addListener(
+				[this](const sf::Vector2f oldPosition,
+					const sf::Vector2f newPosition)
+				{
+					representationNeedsUpdate = true;
+				});
+
+			representation->setSize({ 1.f , 1.f });
+		}
+
+		~LocalPlayer()
+		{
+			delete representation;
+		}
+
+		// update with time
+		virtual void onLogic(const sf::Time time)
+		{
+			representation->update(time);
+		}
+
+		virtual void onDraw(sf::RenderTarget* const target)
+		{
+			if (representationNeedsUpdate)
+			{
+				updateRepresentation();
+			}
+
+			representation->draw(target);
+		}
+
+	protected:
+		bool representationNeedsUpdate = true;
+
+		void updateRepresentation()
+		{
+			representation->setPosition(properties.position);
+		}
+
+		PlayerRepresentation* const representation;
+
+		/*LocalPlayer(
 			const Device::Input::PlayerId playerId,
 			const PlayerInformation information,
 			Device::View* const view)
@@ -207,7 +125,7 @@ namespace Game
 
 		Property<bool> inputCorrection;
 		Property<bool> jumpAssistLevel;
-
+		 
 	private:
 		void handleInput()
 		{
@@ -257,7 +175,7 @@ namespace Game
 			/*if (properties.inputReducedFriction != active)
 			{
 				properties.inputReducedFriction.setValue(active);
-			}*/
+			}
 
 			if (active)
 			{
@@ -296,7 +214,7 @@ namespace Game
 				if (inputCorrection && gravity.y < 0)
 				{
 					movement.x = -movement.x;
-				}*/
+				}
 
 				float movementValue = properties.inputForce * getForceAddition()
 					* (direction == InputDirection::Right ? 1.f : -1.f);;
@@ -361,7 +279,7 @@ namespace Game
 					? adjustForceJumpAssist(tileForce)
 					: tileForce
 				) / *properties.weight;
-				**/
+				
 			}
 		}
 
@@ -391,5 +309,6 @@ namespace Game
 
 		Device::View* const view;
 		Device::GameInput* const input;
+		*/
 	};
 }

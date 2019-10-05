@@ -2,7 +2,8 @@
 
 #include <Client/source/game/GamePlayer.h>
 #include <Client/source/game/GameWorld.h>
-#include <Client/source/game/LocalPlayer.h>
+
+#include <Client/source/game/ControllablePlayer.h>
 
 namespace Game
 {
@@ -44,7 +45,7 @@ namespace Game
 		void createPlayer(World* const world) override
 		{
 			world->addPlayer(
-				currentPlayer = new LocalPlayer(playerId, information, &view)
+				currentPlayer = new ControllablePlayer(playerId, information, &view)
 			);
 		}
 

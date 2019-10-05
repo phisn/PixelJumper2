@@ -22,7 +22,6 @@ namespace Game
 		:
 		public GameState
 	{
-		friend class World;
 	public:
 		WorldProperties()
 		{
@@ -90,7 +89,6 @@ namespace Game
 			return rpp;
 		}
 
-	private:
 		void setPlayerCountValue(const sf::Uint16 value)
 		{
 			playerCount = value;

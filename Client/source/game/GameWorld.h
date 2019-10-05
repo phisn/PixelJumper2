@@ -19,10 +19,14 @@ namespace Game
 {
 	constexpr sf::Uint64 LogicTimeStep = 1'000;
 
+	template <
+		typename PlayerType = PlayerBase, 
+		typename PlayerContainer = std::vector<PlayerType*>
+	>
 	class World
 	{
+	protected:
 		const Resource::World* const resource;
-		typedef std::vector<PlayerBase*> PlayerContainer;
 
 	public: // init
 		World(const Resource::World* const resource)
@@ -84,16 +88,16 @@ namespace Game
 		}
 
 	protected:
+		const WorldInformation information;
+
 		Environment environment;
 		WorldProperties properties;
 
 	private:
 		bool initializeTiles();
 
-		const WorldInformation information;
-
 	public: // player
-		void addPlayer(PlayerBase* const player)
+		void addPlayer(PlayerType* const player)
 		{
 			player->getProperties().loadDefault(information);
 			players.push_back(player);
@@ -101,7 +105,7 @@ namespace Game
 			properties.setPlayerCountValue(*properties.playerCount + 1);
 		}
 
-		void removePlayer(PlayerBase* const player)
+		void removePlayer(PlayerType* const player)
 		{
 			PlayerContainer::const_iterator iterator = std::find(
 				players.cbegin(), players.cend(), player
@@ -117,69 +121,43 @@ namespace Game
 				// uninitialize listner?
 			}
 		}
-	private:
+
+	protected:
 		PlayerContainer players;
 
-	public: // access
-		virtual void draw(sf::RenderTarget* const target)
+		void processLogic()
 		{
-			environment.draw(target);
-
-			for (PlayerBase* const player : players)
+			for (PlayerType* const player : players)
 			{
-				player->onDraw(target);
+				processPlayer(player);
 			}
+
+			environment.onLogic(
+				sf::microseconds(LogicTimeStep)
+			);
 		}
 
-		virtual void onLogic(const sf::Time time)
+		void processPlayer(PlayerType* const player)
 		{
-			logicCounter += time.asMicroseconds();
+			player->onInternalUpdate(); // before or after process?
 
-			while (logicCounter > LogicTimeStep)
-			{
-				for (PlayerBase* const player : players)
-				{
-					player->onInternalUpdate(); // before or after process?
-					processPlayer(player);
-				}
-
-				environment.onLogic(
-					sf::microseconds(LogicTimeStep)
-				);
-
-				logicCounter -= LogicTimeStep;
-			}
-
-			for (PlayerBase* const player : players)
-			{
-				player->onLogic(time);
-			}
-
-			properties.update();
-		}
-
-	private:
-		sf::Uint64 logicCounter = 0;
-
-	private: // player movement
-		void processPlayer(PlayerBase* const player)
-		{
 			applyGravity(player);
 			applyResistance(player);
 			applyMovement(player);
 		}
-
-		void applyGravity(PlayerBase* const player)
+		
+	private:
+		void applyGravity(PlayerType* const player)
 		{
 			player->properties.movement += *properties.gravity;
 		}
 
-		void applyResistance(PlayerBase* const player)
+		void applyResistance(PlayerType* const player)
 		{
 			player->properties.movement *= *properties.airResistance;
 		}
 
-		void applyMovement(PlayerBase* const player)
+		void applyMovement(PlayerType* const player)
 		{
 			player->collisionContainer.clear();
 
@@ -237,7 +215,7 @@ namespace Game
 					Collision collision;
 
 					collision.info = collisionData.info;
-					collision.player = player;
+					collision.player = (PlayerBase*) player;
 					collision.target = target;
 					// collision.timeValue = 
 
