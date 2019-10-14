@@ -17,12 +17,10 @@ namespace Menu
 			:
 			direction(direction)
 		{
-			size.addListener(
-				[this](const sf::Vector2f oldSize,
-					   const sf::Vector2f newSize)
-				{
-					//  change area
-				});
+			elementOffset.addIndependentListener(onContainerContentChanged);
+			limitLength.addIndependentListener(onContainerContentChanged);
+			innerOffset.addIndependentListener(onContainerContentChanged);
+			size.addIndependentListener(onContainerContentChanged);
 		}
 
 		void addElement(
@@ -30,33 +28,25 @@ namespace Menu
 			const size_t position)
 		{
 			const Container& container = getChildren();
-			assert(position <= container.size());
 
 			if (container.size() > 0)
 			{
-				updateSingleElementPosition(
-					container.back(),
-					element);
-
 				Container::const_iterator iterator = container.begin() + position;
 
 				if (iterator == container.cend())
 				{
 					addChild(element);
+					updateNewLastElement();
 				}
 				else
 				{
 					insertChild(iterator, element);
+					updateElements();
 				}
 			}
-			else
-			{
-				updateSingleElementPosition(element);
-				addChild(element);
-			}
 
-			element->size.addListener(elementSizeListener);
-			updateSizeByElementSize(element->size);
+			element->sizePreferred.addIndependentListener(onContainerContentChanged);
+			element->outerOffset.addIndependentListener(onContainerContentChanged);
 		}
 
 		void removeElement(
@@ -75,10 +65,8 @@ namespace Menu
 
 			if (iterator != getChildren().cend())
 			{
-				(*iterator)->size.popListener(elementSizeListener);
-				updateSizeByElementSize(
-					-(*iterator)->size.getValue()
-				);
+				// element needs custom container
+
 				removeElement(iterator);
 			}
 		}
@@ -87,7 +75,7 @@ namespace Menu
 		{
 			for (ElementBase* const element : getChildren())
 			{
-				element->size.popListener(elementSizeListener);
+				// ...
 			}
 
 			removeAllChildren();
@@ -103,150 +91,244 @@ namespace Menu
 			return ElementBase::getChildren();
 		}
 
+		Property<bool> limitLength{ true };
+		Property<float> elementOffset{ 0.f };
+
 	private:
-		std::function<void(const sf::Vector2f, const sf::Vector2f)> elementSizeListener =
-			[this](const sf::Vector2f oldSize,
-			       const sf::Vector2f newSize)
-		{
-			if (direction == CommonControlDirection::Horizontal)
-			{
-				if (oldSize.x != newSize.x)
-					sizePreferred =
-					{
-						sizePreferred->x + newSize.x - oldSize.x,
-						sizePreferred->y
-					};
-			}
-			else
-			{
-				if (oldSize.y != newSize.y)
-					sizePreferred =
-					{
-						sizePreferred->x,
-						sizePreferred->y + newSize.y - oldSize.y
-					};
-			}
-		};
-
-		void updateSizeByElementSize(
-			const sf::Vector2f elementSize)
-		{
-			if (direction == CommonControlDirection::Horizontal)
-			{
-				if (elementSize.x == 0)
-				{
-					return;
-				}
-
-				sizePreferred =
-				{
-					sizePreferred->x + elementSize.x,
-					sizePreferred->y
-				};
-			}
-			else
-			{
-				if (elementSize.y == 0)
-				{
-					return;
-				}
-
-				sizePreferred = // TODO: PreferredSize ?
-				{
-					sizePreferred->x,
-					sizePreferred->y + elementSize.y
-				};
-			}
-		}
-
 		void removeElement(const Container::const_iterator element)
 		{
 			removeChild(element);
 		}
 
+		void updateNewLastElement()
+		{
+			const Container& container = getChildren();
+			ElementBase* const target = container.back();
+
+			const float lastElementPositionOffset = getNextElementPositionOffset(
+				container[container.size() - 2]
+			);
+
+			// check if element would overflow size and respace is needed
+			if (limitLength &&
+				(takeByDirection(size) - (container.size() == 1
+					? *elementOffset
+					: lastElementPositionOffset)
+				< elementOffset + takeByDirection(target->size)
+				+ (direction == CommonControlDirection::Horizontal
+					? outerOffset->left + outerOffset->right
+					: outerOffset->top + outerOffset->bottom))
+			   )
+			{
+				updateElements();
+			}
+			else
+			{
+				target->position = invertByDirection(
+				{
+					lastElementPositionOffset,
+					getElementInvertedPositionByArea(target)
+				});
+			}
+		}
+
+		void updateElements()
+		{
+			if (getChildren().size() == 0)
+			{
+				return;
+			}
+
+			if (limitLength)
+			{
+				updateLimitedElementSpace();
+			}
+			else
+			{
+				updateDefaultElementSpace();
+			}
+
+			updateElementPosition();
+		}
+
+		void updateLimitedElementSpace()
+		{
+			// determine defualt spaces
+			const float maxDefaultSpace = takeByDirection(size)
+				- (direction == CommonControlDirection::Horizontal
+					? innerOffset->left + innerOffset->right
+					: innerOffset->top + innerOffset->bottom)
+				- elementOffset * (getChildren().size() + 1);
+
+			const float maxDefaultSingleSpace = maxDefaultSpace / getChildren().size();
+
+			// create vector sorted by sizepreferred to
+			// iterate though and find elements with smaller
+			// size than default max (adjust default max by
+			// every found element) -> resulting in best
+			// space for every element
+			std::vector<ElementBase*> sizeSortedElements = getChildren();
+			std::sort(sizeSortedElements.begin(), sizeSortedElements.end(),
+				[this](const ElementBase* const e1, const ElementBase* const e2) -> bool
+				{
+					return takeByDirection(e1->getFullSizePreferred())
+						< takeByDirection(e2->getFullSizePreferred());
+				});
+
+			// block vvv (refactor possible)
+			float bigElementSpaceRemaining = maxDefaultSpace;
+			float currentElementSingleSpace = maxDefaultSingleSpace;
+
+			int smallElementCount = 0;
+
+			for (ElementBase* const element : sizeSortedElements)
+			{
+				// ignore automatic sizePreferred by space
+				if (takeByDirection(element->sizePreferred) != 0)
+				{
+					const float elementSizePreferred = takeByDirection(element->getFullSizePreferred());
+
+					if (maxDefaultSingleSpace > elementSizePreferred)
+					{
+						// count all elements smaller than max space
+						++smallElementCount;
+						bigElementSpaceRemaining -= elementSizePreferred;
+
+						// adjust max element space to new
+						currentElementSingleSpace = bigElementSpaceRemaining
+							/ (getChildren().size() - smallElementCount);
+					}
+					else
+					{
+						break;
+					}
+
+				}
+			}
+
+			const float bigElementSingleSpace = currentElementSingleSpace;
+			// block end ^^^
+
+			// size for inverted space (horizontal -> vertical (y) space)
+			const float spaceInverted = takeByDirectionInverted(size)
+				- (direction == CommonControlDirection::Vertical
+					? innerOffset->left + innerOffset->right
+					: innerOffset->top + innerOffset->bottom);
+
+			for (ElementBase* const element : sizeSortedElements)
+			{
+				float elementSpace;
+
+				// determine space by (is big element or not)
+				// is automatic
+				if (takeByDirection(element->sizePreferred) == 0)
+				{
+					elementSpace = bigElementSingleSpace;
+				}
+				else
+				{
+					const float elementSizePreferred = takeByDirection(element->getFullSizePreferred());
+
+					// is small element
+					if (maxDefaultSingleSpace > elementSizePreferred)
+					{
+						elementSpace = element->sizePreferred->x;
+					}
+					else // big
+					{
+						elementSpace = bigElementSingleSpace;
+					}
+				}
+
+				// apply space
+				element->space = invertByDirection(
+					{
+						elementSpace,
+						spaceInverted
+					});
+			}
+		}
+
+		void updateDefaultElementSpace()
+		{
+			const float spaceInverted = takeByDirectionInverted(size)
+				- (direction == CommonControlDirection::Vertical
+					? innerOffset->left + innerOffset->right
+					: innerOffset->top + innerOffset->bottom);
+
+			for (ElementBase* const element : getChildren())
+			{
+				element->space = invertByDirection(
+				{
+					0.f,
+					spaceInverted
+				});
+			}
+		}
+
 		void updateElementPosition()
 		{
-			const size_t size = ElementBase::getChildren().size();
+			const float elementInvertedOffset = (direction == CommonControlDirection::Horizontal
+				? innerOffset->top
+				: innerOffset->left);
 
-			if (size > 0)
-			{
-				updateSingleElementPosition(
-					ElementBase::getChildren().front()
-				);
-			}
-
-			for (size_t i = 1; i < size; ++i)
-			{
-				updateSingleElementPosition(
-					ElementBase::getChildren()[i - 1],
-					ElementBase::getChildren()[i]
-				);
-			}
-		}
-
-		void updateSingleElementPosition(
-			ElementBase* const lastElement,
-			ElementBase* const element)
-		{
-			if (direction == CommonControlDirection::Horizontal)
-			{
-				// calcluate area offset
-				
-				element->position =
+			getChildren().front()->position = invertByDirection(
 				{
-					lastElement->position.getValue().x
-					+ lastElement->size.getValue().x
-					+ lastElement->outerOffset->right
-					+ element->outerOffset->left,
-					calculateElementAreaOffset(element)
-				};
-			}
-			else
+					(direction == CommonControlDirection::Horizontal
+						? innerOffset->left
+						: innerOffset->top) + elementOffset,
+					elementInvertedOffset
+				});
+
+			for (int i = 0; i < getChildren().size(); ++i)
 			{
-				element->position =
+				getChildren()[i]->position = invertByDirection(
 				{
-					calculateElementAreaOffset(element),
-					lastElement->position.getValue().y
-					+ lastElement->size.getValue().y
-					+ lastElement->outerOffset->bottom
-					+ element->outerOffset->top
-				};
+					getNextElementPositionOffset(getChildren()[i - 1]),
+					elementInvertedOffset
+				});
 			}
 		}
 
-		void updateSingleElementPosition(
-			ElementBase* const element)
+		float getElementInvertedPositionByArea(const ElementBase* element)
 		{
-			element->position = direction == CommonControlDirection::Horizontal
-				? sf::Vector2f(0.f, calculateElementAreaOffset(element))
-				: sf::Vector2f(calculateElementAreaOffset(element), 0.f);
-		}
-
-		inline float calculateElementAreaOffset(ElementBase* const element)
-		{/*
-			if (direction == CommonControlDirection::Horizontal)
-			{
-				return element->area.getValue() == CommonArea::Bottom
-					? size.getValue().y - element->size.getValue().y
-					: (element->area.getValue() == CommonArea::Center
-						? (size.getValue().y - element->size.getValue().y) / 2.f
-						: 0.f);
-			}
-			else
-			{
-				return element->area.getValue() == CommonArea::Right
-					? size.getValue().x - element->size.getValue().x
-					: (element->area.getValue() == CommonArea::Center
-						? (size.getValue().x - element->size.getValue().x) / 2.f
-						: 0.f);
-			}
-			*/
 			return 0.f;
 		}
+
+		float getNextElementPositionOffset(const ElementBase* const element)
+		{
+			return takeByDirection(element->position)
+				 + takeByDirection(element->getFullSize())
+				 + elementOffset;
+		}
+
+	protected:
+		std::function<void()> onContainerContentChanged = [this]()
+		{
+			updateElements();
+		};
 
 		float takeByDirection(float x, float y) const
 		{
 			return direction == CommonControlDirection::Horizontal ? x : y;
+		}
+
+		float takeByDirection(const sf::Vector2f v) const
+		{
+			return direction == CommonControlDirection::Horizontal ? v.x : v.y;
+		}
+
+		float takeByDirectionInverted(const sf::Vector2f v) const
+		{
+			return direction == CommonControlDirection::Horizontal ? v.y : v.x;
+		}
+
+		// horizontal is default
+		sf::Vector2f invertByDirection(const sf::Vector2f v)
+		{
+			return direction == CommonControlDirection::Horizontal
+				? v
+				: sf::Vector2f(v.y, v.x);
 		}
 
 		const CommonControlDirection direction;

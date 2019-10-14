@@ -120,6 +120,7 @@
     <ClInclude Include="source\resource\WorldResource.h" />
     <ClInclude Include="source\scene\EditorScene.h" />
     <ClInclude Include="source\scene\GameBaseScene.h" />
+    <ClInclude Include="source\scene\GameJoinScene.h" />
     <ClInclude Include="source\scene\LocalGameScene.h" />
     <ClInclude Include="source\scene\MainSceneBase.h" />
     <ClInclude Include="source\scene\MenuBaseScene.h" />
@@ -177,6 +178,7 @@
     <ClCompile Include="source\resource\WorldResource.cpp" />
     <ClCompile Include="source\scene\EditorScene.cpp" />
     <ClCompile Include="source\scene\GameBaseScene.cpp" />
+    <ClCompile Include="source\scene\GameJoinScene.cpp" />
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />

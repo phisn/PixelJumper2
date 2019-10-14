@@ -4,6 +4,68 @@
 
 namespace Menu
 {
+	template <typename T, typename Property = Property<T>>
+	class DependentProperty
+		:
+		public Property
+	{
+	public:
+		typedef std::function<T()> DependenceDefinition;
+		typedef size_t DependenceId;
+
+		using Property::operator=;
+
+		DependentProperty(
+			const DependenceDefinition definition)
+			:
+			Property(),
+			definition(definition)
+		{
+		}
+
+		DependentProperty(
+			const DependenceDefinition definition,
+			const T value)
+			:
+			Property(value),
+			definition(definition)
+		{
+		}
+
+		~DependentProperty()
+		{
+			for (const Dependence& dependence : dependencies)
+			{
+				dependence.second->removeIndependentListener(dependence.first);
+			}
+		}
+
+		template <typename S>
+		void addDependence(::Menu::Property<S>* const dependence)
+		{
+			dependencies.push_back(std::make_pair(
+				dependence->addIndependentListener([this]()
+					{
+						setValue(definition());
+					}),
+				(IndependentPropertyBase*) dependence)
+			);
+		}
+
+		void updateByExternalDependence()
+		{
+			setValue(definition());
+		}
+
+	private:
+		const DependenceDefinition definition;
+
+		typedef std::pair<DependenceId, IndependentPropertyBase*> Dependence;
+		typedef std::vector<Dependence> DependenceContainer;
+	
+		DependenceContainer dependencies;
+	};
+
 	template <typename T, BasicPropertyType = DeterminePropertyType<T>::type>
 	class AutomaticProperty
 		:
@@ -114,28 +176,26 @@ namespace Menu
 		mutable bool needsUpdate;
 	};
 
-	template <typename Property, typename Parent>
+	template <typename _Property, typename Parent>
 	class ReadOnlyPropertyContainer
 		:
-		private Property
+		public _Property
 	{
 		friend Parent;
 
-		using Property::operator=;
+		using _Property::operator=;
+		using _Property::setValue;
+
+		void setX() = delete;
+		void setY() = delete;
+
 	public:
+		using _Property::_Property;
+
 		static_assert(
-			!std::is_base_of_v<CustomProperty, Property::Type>,
+			!std::is_base_of_v<CustomProperty, _Property::Type>,
 			"ReadOnlyProperty cant use CustomProperty"
 		);
-
-		using Property::Property;
-		using Property::operator->;
-		using Property::operator*;
-
-		using Property::addListener;
-		using Property::popListener;
-
-		using Property::getValue;
 	};
 
 	// fix c3881 can only inherit constructor from direct base

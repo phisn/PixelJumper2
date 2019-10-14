@@ -1,0 +1,19 @@
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Information] : resource/static/font.ttf
+---> [Section] : Mapping all resource types ... Failed
+-----> [Section] : Mapping resource type 'World' ... Failed
+-------> [Warning] : Too small or empty file 'TestWorld.wrld' (resource path: 'resource/world')
+-------> [Information] : Mapped '1' files (resource type: 'resource/world')
+-----> [Section] : Mapping resource type 'Player' ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Warning] : Resource 'TestWorld' (resouce path: 'world') not found mapping resource type (resource type: 'World')
+[Section] : Mapping resource type 'World' ... Failed
+-> [Warning] : Too small or empty file 'TestWorld.wrld' (resource path: 'resource/world')
+-> [Information] : Mapped '2' files (resource type: 'resource/world')
+[Error] : Resource 'TestWorld' (resouce path: 'world') not found (again)
+[Error] : Failed to read resource
+[Error] : Failed to create starting context

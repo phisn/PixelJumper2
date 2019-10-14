@@ -170,7 +170,7 @@ namespace Scene
 					return;
 				}
 
-				Framework::Context::Push<TestGameScene>();
+				Framework::Context::Push<TestGameScene>(world);
 			}
 
 			if (event.type == sf::Event::KeyPressed &&

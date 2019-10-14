@@ -27,7 +27,6 @@ namespace Editor
 
 		bool build() override
 		{
-			viewSize = { 200, 200 };
 
 			return true;
 		}

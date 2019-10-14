@@ -19,12 +19,28 @@ namespace Menu
 	{
 		friend class MenuBaseScene;
 	public:
-		Property<ElementBase*> parent{ NULL };
+		ReadOnlyPropertyContainer<Property<ElementBase*>, ElementBase> parent{ NULL };
 		typedef std::vector<ElementBase*> Container;
 
 		ElementBase()
+			:
+			size([this]() -> sf::Vector2f
+			{
+				return definitionMakeSize();
+			}),
+			space([this]() -> sf::Vector2f
+			{
+				return definitionMakeSpace();
+			})
 		{
-#pragma region PropertyListener
+#pragma region PropertyInit
+			size.addDependence(&outerOffset);
+			size.addDependence(&position);
+			size.addDependence(&sizePreferred);
+			size.addDependence(&space);
+
+			space.addDependence(&parent);
+
 			innerOffset.addListener(
 				[this](const CommonElementOffset oldOffset,
 					   const CommonElementOffset newOffset)
@@ -36,46 +52,23 @@ namespace Menu
 							newOffset.top - oldOffset.top
 						));
 
-						if (child->space.isAutomatic())
-							child->updateAutomaticSpace();
+						child->space.updateByExternalDependence();
 					}
-				});
-			outerOffset.addListener(
-				[this](const CommonElementOffset oldOffset,
-					   const CommonElementOffset newOffset)
-				{
-					updateSizeWithSpace();
 				});
 			size.addListener(
 				[this](const sf::Vector2f oldSize,
 					   const sf::Vector2f newSize)
 				{
 					for (ElementBase* const child : children)
-						if (child->space.isAutomatic())
-						{
-							child->updateAutomaticSpace();
-						}
+						child->space.updateByExternalDependence();
 
 					onVirtualGraphicsChanged();
-				});
-			space.addListener(
-				[this](const sf::Vector2f oldSpace,
-					   const sf::Vector2f newSpace)
-				{
-					updateSizeWithSpace();
 				});
 			position.addListener(
 				[this](const sf::Vector2f oldPosition,
 					   const sf::Vector2f newPosition)
 				{
 					moveGraphics(newPosition - oldPosition);
-					updateSizeWithSpace();
-				});
-			sizePreferred.addListener(
-				[this](const sf::Vector2f oldSize,
-					   const sf::Vector2f newSize)
-				{
-					updateSizeWithSpace();
 				});
 #pragma endregion
 		}
@@ -85,10 +78,10 @@ namespace Menu
 			removeAllChildren();
 		}
 
-		AutomaticProperty<sf::Vector2f> space;
+		DependentProperty<sf::Vector2f, AutomaticProperty<sf::Vector2f>> space;
+		ReadOnlyPropertyContainer<DependentProperty<sf::Vector2f>, ElementBase> size;
 
 		Property<sf::Vector2f> sizePreferred;
-		Property<sf::Vector2f> size;
 		Property<sf::Vector2f> position{ sf::Vector2f(0, 0) };
 
 		Property<CommonHorizontalArea> horizontalArea{ CommonHorizontalArea::Center };
@@ -102,6 +95,13 @@ namespace Menu
 			return sf::Vector2f(
 				size->x + outerOffset->left + outerOffset->right,
 				size->y + outerOffset->top + outerOffset->bottom);
+		}
+
+		sf::Vector2f getFullSizePreferred() const
+		{
+			return sf::Vector2f(
+				sizePreferred->x + outerOffset->left + outerOffset->right,
+				sizePreferred->y + outerOffset->top + outerOffset->bottom);
 		}
 
 #pragma region CommonAccess
@@ -280,12 +280,6 @@ namespace Menu
 		{
 			element->parent.setValue(this);
 			children.push_back(element);
-
-			if (element->space.isAutomatic())
-			{
-				element->updateAutomaticSpace();
-			}
-
 			element->updateGraphics();
 		}
 
@@ -295,12 +289,6 @@ namespace Menu
 		{
 			element->parent.setValue(this);
 			children.insert(position, element);
-
-			if (element->space.isAutomatic())
-			{
-				element->updateAutomaticSpace();
-			}
-
 			element->updateGraphics();
 		}
 
@@ -395,50 +383,53 @@ namespace Menu
 
 #pragma region Space
 	protected:
-		virtual void updateSizeWithSpace()
+		sf::Vector2f definitionMakeSize()
 		{
-			sf::Vector2f nextSize = *space - *position
-				- sf::Vector2f(
-					outerOffset->left + outerOffset->right,
-					outerOffset->top + outerOffset->bottom);
+			sf::Vector2f result = *space - *position - sf::Vector2f(
+				outerOffset->left + outerOffset->right,
+				outerOffset->top + outerOffset->bottom); // max possible size
 
-			if (sizePreferred->x != 0 && 
-				(!space.automatic.x && space->x == 0 || nextSize.x >= sizePreferred->x)
-			)
+			if (sizePreferred->x != 0 && (sizePreferred->x < result.x || result.x <= 0))
 			{
-				nextSize.x = sizePreferred->x;
+				result.x = sizePreferred->x;
 			}
 
-			if (sizePreferred->y != 0 &&
-				(!space.automatic.y && space->y == 0 || nextSize.y >= sizePreferred->y)
-			)
+			if (sizePreferred->y != 0 && (sizePreferred->y < result.y || result.y <= 0))
 			{
-				nextSize.y = sizePreferred->y;
+				result.y = sizePreferred->y;
 			}
 
-			size = nextSize;
+			return result;
 		}
 
-		virtual void updateAutomaticSpace()
+		sf::Vector2f definitionMakeSpace()
 		{
-			sf::Vector2f result = space;
+			if (parent.getValue() == NULL)
+			{
+				return *space;
+			}
+
+			sf::Vector2f result;
 
 			if (space.automatic.x)
 			{
-				result.x = parent->size->x
-					- (parent->innerOffset->left + parent->innerOffset->right)
-					;// -(parent->outerOffset->left + parent->outerOffset->right);
+				result.x = parent->size->x - (parent->innerOffset->left + parent->innerOffset->right);
+			}
+			else
+			{
+				result.x = space->x;
 			}
 
 			if (space.automatic.y)
 			{
-				result.y = parent->size->y
-					- (parent->innerOffset->top + parent->innerOffset->bottom)
-					;// -(parent->outerOffset->top + parent->outerOffset->bottom);
+				result.y = parent->size->y - (parent->innerOffset->top + parent->innerOffset->bottom);
+			}
+			else
+			{
+				result.x = space->y;
 			}
 
-			// no check needed, done outside
-			space.setValue(result);
+			return result;
 		}
 #pragma endregion
 

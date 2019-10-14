@@ -117,7 +117,8 @@ namespace Game
 				properties.setPlayerCountValue(*properties.playerCount - 1);
 				assert(*properties.playerCount >= 0);
 
-				// uninitialize listner?
+				// uninitialize listener?
+				
 			}
 		}
 

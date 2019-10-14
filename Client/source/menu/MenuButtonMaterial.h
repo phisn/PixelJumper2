@@ -204,15 +204,15 @@ namespace Menu::ButtonMaterial
 		sf::RectangleShape rect;
 	};
 
-	class DefaultStaticRectangle final
+	class DefaultStaticRectangle
 		:
 		public DefaultStaticRectangleBase
 	{
 	public:
-/*		DefaultStaticRectangle()
+		DefaultStaticRectangle()
 		{
 			initialize();
-		}*/
+		}
 
 	private:
 		const CommonShapeStyle& findStyle(const CommonControlEffect effect) const override

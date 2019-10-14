@@ -53,7 +53,7 @@ namespace Framework
 		template <typename T, class... Args>
 		static bool Push(Args... args)
 		{
-			Context* const newContext = new Context(new T(args...));
+			Context* const newContext = new Context((Scene::MainSceneBase*) new T(args...));
 
 			// TODO: prepush and pop? (to fix resource problem [no on stack])
 

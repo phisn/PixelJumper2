@@ -77,7 +77,11 @@ namespace Menu
 					}
 				});
 			
-			limitWidth.sync(space.automatic.x);
+			limitWidth.addListener(
+				[this](const bool, const bool limit)
+				{
+					space.automatic.x = limit;
+				});
 		}
 
 		Property<sf::Uint32> style;

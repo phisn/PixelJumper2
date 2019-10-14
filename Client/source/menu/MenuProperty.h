@@ -14,8 +14,47 @@ namespace Menu
 		virtual void onValueChanged() const noexcept = 0;
 	};
 
+	// used to add listener indpendently from
+	// template type
+	class IndependentPropertyBase
+	{
+	public:
+		typedef size_t IndependentListenerId;
+		typedef std::function<void()> IndependentListener;
+
+		IndependentListenerId addIndependentListener(const IndependentListener listener)
+		{
+			const IndependentListenerId nextId = ++lastId;
+			independentListeners.push_back(std::make_pair(nextId, listener));
+			return nextId;
+		}
+
+		bool removeIndependentListener(const IndependentListenerId id)
+		{
+			for (IndependentListenerContainer::const_iterator iterator = independentListeners.cbegin()
+			   ; iterator != independentListeners.cend(); iterator++)
+				if (iterator->first == id)
+				{
+					independentListeners.erase(iterator);
+					return true;
+				}
+
+			return false;
+		}
+
+	private:
+		static IndependentListenerId lastId;
+
+		typedef std::pair<IndependentListenerId, IndependentListener> IndependentListenerPair;
+		typedef std::vector<IndependentListenerPair> IndependentListenerContainer;
+
+		IndependentListenerContainer independentListeners;
+	};
+
 	template <typename ListenerT>
 	class PropertyBase
+		:
+		public IndependentPropertyBase
 	{
 		PropertyBase& operator=(PropertyBase&) = delete;
 		PropertyBase& operator=(const PropertyBase&) = delete;
@@ -31,23 +70,6 @@ namespace Menu
 		void addListener(const Listener listener)
 		{
 			listeners.push_back(listener);
-		}
-
-		bool popListener(const Listener listener)
-		{
-			decltype(listeners)::const_iterator iterator = listeners.cbegin();
-
-			do
-			{
-				if (iterator->target<std::size_t>() == listener.target<std::size_t>())
-				{
-					listeners.erase(iterator);
-					return true;
-				}
-
-			} while (++iterator != listeners.cend());
-
-			return false;
 		}
 
 	protected:
@@ -116,65 +138,12 @@ namespace Menu
 			);
 		}
 
-		// sync
-		// allow to sync properties (be always the same)
-		void sync(ValuePropertyBase<T>& other)
-		{
-			if (ValuePropertyBase<T>* const pOther = &other; pOther != currentSync)
-			{
-				desync(); // check inside
-				currentSync = pOther;
-
-				if (other.currentSync != this)
-				{
-					other.sync(*this);
-					updateSync();
-				}
-			}
-		}
-
-		void desync()
-		{
-			if (currentSync)
-			{
-				currentSync->desync();
-				currentSync = NULL;
-			}
-		}
-
-		ValuePropertyBase<T>& getSync() const
-		{
-			return *currentSync;
-		}
-
-		bool isSync() const
-		{
-			return currentSync == NULL;
-		}
-
-	private:
-		void updateSync() const
-		{
-			if (value != currentSync->getValue())
-			{
-				currentSync->setValue(value);
-			}
-		}
-
-		ValuePropertyBase<T>* currentSync = NULL;
-
-		// value
 	protected:
 		void valueChanged(const T&& oldValue) const
 		{
 			if (value == oldValue)
 			{
 				return;
-			}
-
-			if (currentSync)
-			{
-				updateSync();
 			}
 
 			for (const Listener& listener : listeners)

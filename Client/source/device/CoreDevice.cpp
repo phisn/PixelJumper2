@@ -8,20 +8,23 @@
 #include <Client/source/framework/Context.h>
 #include <Client/source/framework/FrameworkInterface.h>
 
+#include <Client/source/shared/tiles/TileDescription.h>
+
 #include <Client/source/logger/Logger.h>
 
 #include <Client/source/resource/ResourceInterface.h>
 
-#include <Client/source/scene/EditorScene.h>
+// #include <Client/source/scene/EditorScene.h>
 // #include <Client/source/scene/TestGameScene.h>
 // #include <Client/source/scene/TestMenuScene.h>
 // #include <Client/source/scene/TestReleaseGameScene.h>
+#include <Client/source/scene/GameJoinScene.h>
 
 namespace Device
 {
 	bool PushMainContext()
 	{
-		return Framework::Context::Push<Scene::EditorScene>();
+		return Framework::Context::Push<Scene::GameJoinScene>();
 	}
 
 	Core::Error Core::Initialize()
