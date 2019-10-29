@@ -4,21 +4,21 @@
 
 namespace Menu
 {
-	template <typename T, typename Property = Property<T>>
+	template <typename T, typename _Property = Property<T>>
 	class DependentProperty
 		:
-		public Property
+		public _Property
 	{
 	public:
 		typedef std::function<T()> DependenceDefinition;
 		typedef size_t DependenceId;
 
-		using Property::operator=;
+		using _Property::operator=;
 
 		DependentProperty(
 			const DependenceDefinition definition)
 			:
-			Property(),
+			_Property(),
 			definition(definition)
 		{
 		}
@@ -27,7 +27,7 @@ namespace Menu
 			const DependenceDefinition definition,
 			const T value)
 			:
-			Property(value),
+			_Property(value),
 			definition(definition)
 		{
 		}
@@ -219,7 +219,7 @@ namespace Menu
 		using Base::operator*;
 
 		using Base::addListener;
-		using Base::popListener;
+		using Base::addIndependentListener;
 
 		using Base::getValue;
 	};

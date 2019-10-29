@@ -71,7 +71,7 @@ namespace Menu
 					   const sf::Vector2f newSize)
 				{
 					view.setSize(newSize);
-					size = newSize;
+					sizePreferred = newSize;
 					view.setCenter(newSize / 2.f);
 				});
 
@@ -174,10 +174,6 @@ namespace Menu
 		// called in Scene::onCreate
 		// to build the super ui
 		virtual bool build() = 0;
-
-		void updateSizeWithSpace() override
-		{
-		}
 
 		void viewPortCenteredByVirtualSize(const CommonElementOffset outerOffset)
 		{

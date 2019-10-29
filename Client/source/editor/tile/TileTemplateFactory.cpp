@@ -34,5 +34,6 @@ namespace Editor
 	TileTemplate* TileTemplateFactory::GetTileTemplate(const Shared::TileId id)
 	{
 		return tileTemplates[id];
+
 	}
 }
