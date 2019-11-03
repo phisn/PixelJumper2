@@ -4,16 +4,17 @@
 
 namespace Menu
 {
-	template <typename T, typename _Property = Property<T>>
+	template <typename _DT, typename _Property = Property<_DT>>
 	class DependentProperty
 		:
 		public _Property
 	{
 	public:
-		typedef std::function<T()> DependenceDefinition;
+		typedef std::function<_DT()> DependenceDefinition;
 		typedef size_t DependenceId;
 
 		using _Property::operator=;
+		using _Property::operator*;
 
 		DependentProperty(
 			const DependenceDefinition definition)
@@ -25,7 +26,7 @@ namespace Menu
 
 		DependentProperty(
 			const DependenceDefinition definition,
-			const T value)
+			const _DT value)
 			:
 			_Property(value),
 			definition(definition)
@@ -115,6 +116,7 @@ namespace Menu
 			{
 				sf::Vector2<bool> result = automatic;
 
+				// TODO: are these checks needed
 				if (result.x && this->value.x != value.x)
 					result.x = false;
 

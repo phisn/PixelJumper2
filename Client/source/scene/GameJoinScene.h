@@ -43,13 +43,18 @@ namespace Scene
 
 			constructChilds();
 
-
-			inputContainer.sizePreferred = { 150, 200 };
-			buttonContainer.sizePreferred = { 150, 200 };
-
+//			inputContainer.sizePreferred = { 200, 150 };
+//			buttonContainer.sizePreferred = { 200, 150 };
 
 			ipLabel.text = L"IP:";
 			portLabel.text = L"Port:";
+
+			cancelButton.labelDependentSize = { 0.2f, 0.2f };
+
+			cancelButton.labelOffset = { 7.f, 10.f };
+			cancelButton.value.text = L"Cancel";
+
+			joinButton.value.text = L"Join";
 
 			portTextBox.text = L"8295";
 
@@ -66,6 +71,11 @@ namespace Scene
 				});
 
 			return true;
+		}
+
+		void onDraw(sf::RenderTarget* const target) const override
+		{
+			MenuRootBase::onDraw(target);
 		}
 
 	private:

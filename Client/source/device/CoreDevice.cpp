@@ -14,17 +14,17 @@
 
 #include <Client/source/resource/ResourceInterface.h>
 
-// #include <Client/source/scene/EditorScene.h>
+#include <Client/source/scene/EditorScene.h>
 // #include <Client/source/scene/TestGameScene.h>
 // #include <Client/source/scene/TestMenuScene.h>
 // #include <Client/source/scene/TestReleaseGameScene.h>
-#include <Client/source/scene/GameJoinScene.h>
+// #include <Client/source/scene/GameJoinScene.h>
 
 namespace Device
 {
 	bool PushMainContext()
 	{
-		return Framework::Context::Push<Scene::GameJoinScene>();
+		return Framework::Context::Push<Scene::EditorScene>();
 	}
 
 	Core::Error Core::Initialize()

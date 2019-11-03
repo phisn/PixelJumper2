@@ -64,9 +64,6 @@
     <Filter Include="source\editor\tile">
       <UniqueIdentifier>{39b2cea4-20c9-44ea-9f0c-b6e0ab663e07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\game\old">
-      <UniqueIdentifier>{40b7df19-7a80-4367-a00e-3f872c31cc2e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\editor\tilechoice">
       <UniqueIdentifier>{49e6bfc2-000c-4a69-903f-d1fdbddacc72}</UniqueIdentifier>
     </Filter>
@@ -78,6 +75,9 @@
     </Filter>
     <Filter Include="source\game\world">
       <UniqueIdentifier>{562fb688-8187-4001-acea-9f78f9217ece}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game\old">
+      <UniqueIdentifier>{40b7df19-7a80-4367-a00e-3f872c31cc2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -249,13 +249,7 @@
     <ClInclude Include="source\game\VirtualPlayer.h">
       <Filter>source\game\player</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\LocalWorld.h">
-      <Filter>source\game\world</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\Environment.h">
-      <Filter>source\game\world</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\VirtualWorld.h">
       <Filter>source\game\world</Filter>
     </ClInclude>
     <ClInclude Include="source\scene\TestReleaseGameScene.h">
@@ -263,6 +257,12 @@
     </ClInclude>
     <ClInclude Include="source\scene\GameJoinScene.h">
       <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\_LocalWorld.h">
+      <Filter>source\game\world</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\_VirtualWorld.h">
+      <Filter>source\game\world</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -419,13 +419,7 @@
     <ClCompile Include="source\game\GameWorld.cpp">
       <Filter>source\game\world</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\LocalWorld.cpp">
-      <Filter>source\game\world</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\Environment.cpp">
-      <Filter>source\game\world</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\VirtualWorld.cpp">
       <Filter>source\game\world</Filter>
     </ClCompile>
     <ClCompile Include="source\game\GamePlayer.cpp">
@@ -436,6 +430,15 @@
     </ClCompile>
     <ClCompile Include="source\scene\GameJoinScene.cpp">
       <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\menu\MenuProperty.cpp">
+      <Filter>source\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\_LocalWorld.cpp">
+      <Filter>source\game\world</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\_VirtualWorld.cpp">
+      <Filter>source\game\world</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -478,9 +481,6 @@
       <Filter>source\menu</Filter>
     </None>
     <None Include="source\menu\MenuProperty.h">
-      <Filter>source\menu</Filter>
-    </None>
-    <None Include="source\menu\MenuProperty.cpp">
       <Filter>source\menu</Filter>
     </None>
     <None Include="source\menu\MenuRowContainer.cpp">
@@ -799,5 +799,13 @@
     <None Include="source\game\UserConnection.cpp">
       <Filter>source\game</Filter>
     </None>
+    <None Include="source\game\net\IndependentSimulator.h">
+      <Filter>source\game\net</Filter>
+    </None>
+    <None Include="source\game\net\IndependentSimulator.cpp">
+      <Filter>source\game\net</Filter>
+    </None>
+    <None Include="resource3.h" />
+    <None Include="Client3.rc" />
   </ItemGroup>
 </Project>

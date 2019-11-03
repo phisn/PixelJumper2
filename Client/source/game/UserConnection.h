@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/game/GamePlayer.h>
-#include <Client/source/game/LocalWorld.h>
+#include <Client/source/game/GameWorld.h>
 
 #include <Client/source/game/ControllablePlayer.h>
 
@@ -11,7 +11,11 @@ namespace Game
 	{
 	public:
 		virtual void initialize() = 0;
-		virtual void createPlayer(LocalWorld* const world) = 0;
+
+		virtual void onLogic(const sf::Time time) = 0;
+
+		// creating normally only one time needed
+		virtual void createPlayer() = 0;
 
 		const PlayerInformation& getInformation() const
 		{

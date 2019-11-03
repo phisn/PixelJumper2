@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/game/UserConnection.h>
-#include <Client/source/game/LocalWorld.h>
+#include <Client/source/game/GameWorld.h>
 
 #include <Client/source/game/tiletrait/ExitableTile.h>
 
@@ -11,25 +11,113 @@
 
 namespace Game
 {
+	// gamemode must be able to sync players
+	// gamemode should only sync internal gamemode
+	// values, not dependent on the creator
 	class GamemodeBase
+		:
+		public GameState
 	{
 	public:
 		virtual bool initialize() = 0;
+		virtual void processLogic() = 0;
+	};
 
-		virtual void onLogic(const sf::Time time) = 0;
-		virtual void onEvent(const sf::Event event) = 0;
-		virtual void onDraw(sf::RenderTarget* const) = 0;
+	class GamemodeCreatorBase
+	{
+	public:
+		virtual GamemodeBase* createGamemode() = 0;
 	};
 
 	class ClassicGamemode
+		:
+		public GamemodeBase
 	{
 	public:
-		ClassicGamemode()
+		typedef std::vector<Resource::World*> WorldResources;
+
+		ClassicGamemode(const WorldResources& worldResources)
+			:
+			worldResources(worldResources)
+		{
+		}
+
+		bool initialize()
+		{
+			// or preload all worlds?
+			loadWorld(worldResources[0]);
+
+			return currentWorld->initialize();
+		}
+
+		void processLogic()
+		{
+			if (requestWorldSwitch)
+			{
+				// load next world;
+			}
+		}
+
+		void registerPlayer(PlayerBase* const player)
+		{
+		}
+
+		World* getCurrentWorld() const
+		{
+			return currentWorld;
+		}
+
+		bool writeState(Resource::WritePipe* const writePipe)
+		{
+		}
+
+		bool readState(Resource::ReadPipe* const readPipe)
 		{
 		}
 
 	private:
-		LocalWorld* world;
+		void loadWorld(Resource::World* const worldResource)
+		{
+			if (currentWorld != NULL)
+			{
+				delete currentWorld;
+			}
+
+			currentWorld = new World(worldResource);
+			currentWorld->addPlayer(player);
+		}
+
+		void registerExitTiles()
+		{
+			for (ExitableTile* tile : currentWorld->getEnvironment()->getTileType<ExitableTile>())
+			{
+				tile->onExit.addListener(
+					[this]()
+					{
+						requestWorldSwitch = true;
+					});
+			}
+		}
+
+		PlayerBase* const player;
+
+		bool requestWorldSwitch = false;
+		World* currentWorld = NULL;
+		const WorldResources& worldResources;
+	};
+
+	class ClassicGamemodeCreator
+		:
+		public GamemodeCreatorBase
+	{
+	public:
+		GamemodeBase* createGamemode() override
+		{
+			return new ClassicGamemode(worlds);
+		}
+
+	private:
+		std::vector<Resource::World*> worlds;
 	};
 
 	class SoloGamemode
@@ -89,11 +177,11 @@ namespace Game
 			world->onLogic(time);
 		}
 
-		void onEvent(const sf::Event event)
+		void onEvent(const sf::Event event) override
 		{ // reserved for use in future
 		}
 
-		void onDraw(sf::RenderTarget* const target)
+		void onDraw(sf::RenderTarget* const target) override
 		{
 			user.enableView(target);
 			world->draw(target);

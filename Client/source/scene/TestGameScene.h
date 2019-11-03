@@ -45,7 +45,7 @@ namespace Scene
 			sizePreferred = { 500, 20 };
 
 			// bug fix begin TODO: fix cause later
-			size = { 500, 20 };
+			// size = { 500, 20 };
 
 			name.space.automatic = sf::Vector2<bool>(false, false);
 			slider.space.automatic = sf::Vector2<bool>(false, false);

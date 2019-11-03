@@ -18,17 +18,8 @@ namespace Game
 	{
 		Log::Section section(L"Initialize Environment");
 
-		if (!initializeCreateAndRegister(resource))
-		{
-			return false;
-		}
-
-		if (!initializeVertex())
-		{
-			return false;
-		}
-
-		return true;
+		// vertex init moved
+		return initializeCreateAndRegister(resource);
 	}
 
 	bool Environment::initializeCreateAndRegister(
@@ -68,7 +59,6 @@ namespace Game
 
 	bool Environment::initializeVertex()
 	{
-
 		for (StaticTile* const tile : getTileType<StaticTile>())
 		{
 			sf::VertexBuffer vertexBuffer(sf::PrimitiveType::Quads);

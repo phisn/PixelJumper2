@@ -66,6 +66,27 @@ namespace Game
 			return true;
 		}
 
+		bool initializeGraphics()
+		{
+			// maybe initialize some tiles individually if needed
+			// (feature as tiletrait)
+			return environment.initializeGraphics();
+		}
+
+		void processLogic()
+		{
+			for (PlayerBase* const player : players)
+			{
+				processPlayer(player);
+			}
+
+			environment.onLogic(
+				sf::microseconds(LogicTimeStep)
+			);
+
+			properties.update();
+		}
+
 		const Environment* getEnvironment() const
 		{
 			return &environment;
@@ -74,11 +95,6 @@ namespace Game
 		WorldProperties& getProperties()
 		{
 			return properties;
-		}
-
-		const PlayerContainer& getPlayers() const
-		{
-			return players;
 		}
 
 		const WorldInformation* getInformation() const
@@ -124,18 +140,6 @@ namespace Game
 
 	protected:
 		PlayerContainer players;
-
-		void processLogic()
-		{
-			for (PlayerType* const player : players)
-			{
-				processPlayer(player);
-			}
-
-			environment.onLogic(
-				sf::microseconds(LogicTimeStep)
-			);
-		}
 
 		void processPlayer(PlayerType* const player)
 		{

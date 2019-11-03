@@ -20,6 +20,10 @@ namespace Game
 	{
 	public:
 		bool initialize(const Resource::World* const resource);
+		bool initializeGraphics()
+		{
+			return initializeVertex();
+		}
 
 		// let hash | valuetype open for ex. diff. collision types
 		template <typename HashType, typename ValueType = HashType>

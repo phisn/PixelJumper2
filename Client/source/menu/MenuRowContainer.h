@@ -29,6 +29,10 @@ namespace Menu
 		{
 			const Container& container = getChildren();
 
+			// prevent automatic space by changing and
+			// collision with new space causing no automatic flip
+			element->space.automatic = sf::Vector2{ false, false };
+
 			if (container.size() > 0)
 			{
 				Container::const_iterator iterator = container.begin() + position;
@@ -36,14 +40,20 @@ namespace Menu
 				if (iterator == container.cend())
 				{
 					addChild(element);
-					updateNewLastElement();
+					//updateNewLastElement();
 				}
 				else
 				{
 					insertChild(iterator, element);
-					updateElements();
+					//updateElements();
 				}
 			}
+			else
+			{
+				addChild(element);
+			}
+
+			updateElements();
 
 			element->sizePreferred.addIndependentListener(onContainerContentChanged);
 			element->outerOffset.addIndependentListener(onContainerContentChanged);
@@ -105,16 +115,14 @@ namespace Menu
 			const Container& container = getChildren();
 			ElementBase* const target = container.back();
 
-			const float lastElementPositionOffset = getNextElementPositionOffset(
-				container[container.size() - 2]
-			);
+			const float elementPositionOffset = container.size() == 1
+				? getNextElementPositionOffset(container[container.size() - 2])
+				: *elementOffset;
 
 			// check if element would overflow size and respace is needed
 			if (limitLength &&
-				(takeByDirection(size) - (container.size() == 1
-					? *elementOffset
-					: lastElementPositionOffset)
-				< elementOffset + takeByDirection(target->size)
+				(takeByDirection(*size) - elementPositionOffset
+				< elementOffset + takeByDirection(*target->size)
 				+ (direction == CommonControlDirection::Horizontal
 					? outerOffset->left + outerOffset->right
 					: outerOffset->top + outerOffset->bottom))
@@ -126,7 +134,7 @@ namespace Menu
 			{
 				target->position = invertByDirection(
 				{
-					lastElementPositionOffset,
+					elementPositionOffset,
 					getElementInvertedPositionByArea(target)
 				});
 			}
@@ -154,7 +162,7 @@ namespace Menu
 		void updateLimitedElementSpace()
 		{
 			// determine defualt spaces
-			const float maxDefaultSpace = takeByDirection(size)
+			const float maxDefaultSpace = takeByDirection(*size)
 				- (direction == CommonControlDirection::Horizontal
 					? innerOffset->left + innerOffset->right
 					: innerOffset->top + innerOffset->bottom)
@@ -210,7 +218,7 @@ namespace Menu
 			// block end ^^^
 
 			// size for inverted space (horizontal -> vertical (y) space)
-			const float spaceInverted = takeByDirectionInverted(size)
+			const float spaceInverted = takeByDirectionInverted(*size)
 				- (direction == CommonControlDirection::Vertical
 					? innerOffset->left + innerOffset->right
 					: innerOffset->top + innerOffset->bottom);
@@ -251,7 +259,7 @@ namespace Menu
 
 		void updateDefaultElementSpace()
 		{
-			const float spaceInverted = takeByDirectionInverted(size)
+			const float spaceInverted = takeByDirectionInverted(*size)
 				- (direction == CommonControlDirection::Vertical
 					? innerOffset->left + innerOffset->right
 					: innerOffset->top + innerOffset->bottom);
@@ -272,6 +280,7 @@ namespace Menu
 				? innerOffset->top
 				: innerOffset->left);
 
+			// make first manual
 			getChildren().front()->position = invertByDirection(
 				{
 					(direction == CommonControlDirection::Horizontal
@@ -280,7 +289,8 @@ namespace Menu
 					elementInvertedOffset
 				});
 
-			for (int i = 0; i < getChildren().size(); ++i)
+			// skip first
+			for (int i = 1; i < getChildren().size(); ++i)
 			{
 				getChildren()[i]->position = invertByDirection(
 				{

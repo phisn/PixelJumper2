@@ -19,7 +19,6 @@ namespace Menu
 		}
 
 		using ElementBase::initialize;
-		using ElementBase::onEvent;
 		using ElementBase::onLogic;
 		using ElementBase::innerOffset;
 

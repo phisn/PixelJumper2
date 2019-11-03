@@ -35,11 +35,11 @@ namespace Menu
 		{
 #pragma region PropertyInit
 			size.addDependence(&outerOffset);
-			size.addDependence(&position);
 			size.addDependence(&sizePreferred);
 			size.addDependence(&space);
 
 			space.addDependence(&parent);
+			space.addDependence(&position);
 
 			innerOffset.addListener(
 				[this](const CommonElementOffset oldOffset,
@@ -385,7 +385,7 @@ namespace Menu
 	protected:
 		sf::Vector2f definitionMakeSize()
 		{
-			sf::Vector2f result = *space - *position - sf::Vector2f(
+			sf::Vector2f result = *space - sf::Vector2f(
 				outerOffset->left + outerOffset->right,
 				outerOffset->top + outerOffset->bottom); // max possible size
 
@@ -413,7 +413,7 @@ namespace Menu
 
 			if (space.automatic.x)
 			{
-				result.x = parent->size->x - (parent->innerOffset->left + parent->innerOffset->right);
+				result.x = parent->size->x - (parent->innerOffset->left + parent->innerOffset->right) - position->x;
 			}
 			else
 			{
@@ -422,11 +422,11 @@ namespace Menu
 
 			if (space.automatic.y)
 			{
-				result.y = parent->size->y - (parent->innerOffset->top + parent->innerOffset->bottom);
+				result.y = parent->size->y - (parent->innerOffset->top + parent->innerOffset->bottom) - position->y;
 			}
 			else
 			{
-				result.x = space->y;
+				result.y = space->y;
 			}
 
 			return result;

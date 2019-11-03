@@ -4,7 +4,8 @@
 #include <Client/source/editor/tile/EditorTileBase.h>
 #include <Client/source/menu/MenuElementBase.h>
 
-#include <Client/source/shared/tiles/TileDescription.h>
+// only for new tile template
+// #include <Client/source/shared/tiles/TileDescription.h>
 
 #include <SFML/Graphics/Color.hpp>
 

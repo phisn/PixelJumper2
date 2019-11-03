@@ -7,16 +7,16 @@ namespace Scene
 		addChild(&background);
 		addChild(&outerContainer);
 
-		outerContainer.addChild(&buttonContainer);
-		outerContainer.addChild(&inputContainer);
+		outerContainer.addElement(&buttonContainer);
+		outerContainer.addElement(&inputContainer);
 
-		inputContainer.addChild(&ipLabel);
-		inputContainer.addChild(&ipTextBox);
-		inputContainer.addChild(&portLabel);
-		inputContainer.addChild(&portTextBox);
+		inputContainer.addElement(&ipLabel);
+		inputContainer.addElement(&ipTextBox);
+		inputContainer.addElement(&portLabel);
+		inputContainer.addElement(&portTextBox);
 
-		buttonContainer.addChild(&cancelButton);
-		buttonContainer.addChild(&joinButton);
+		buttonContainer.addElement(&cancelButton);
+		buttonContainer.addElement(&joinButton);
 
 	}
 }

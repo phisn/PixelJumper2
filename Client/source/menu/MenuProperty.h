@@ -42,6 +42,13 @@ namespace Menu
 			return false;
 		}
 
+	protected:
+		void callIndependentListeners() const
+		{
+			for (const IndependentListenerPair& listener : independentListeners)
+				listener.second();
+		}
+
 	private:
 		static IndependentListenerId lastId;
 
@@ -150,6 +157,8 @@ namespace Menu
 			{
 				listener(std::move(oldValue), value);
 			}
+
+			callIndependentListeners();
 		}
 	};
 
@@ -512,6 +521,8 @@ namespace Menu
 			{
 				listener(value);
 			}
+
+			callIndependentListeners();
 		}
 
 		Value value;
