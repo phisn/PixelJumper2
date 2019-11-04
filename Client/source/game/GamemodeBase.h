@@ -21,6 +21,7 @@ namespace Game
 	public:
 		virtual bool initialize() = 0;
 		virtual void processLogic() = 0;
+
 	};
 
 	class GamemodeCreatorBase
@@ -44,6 +45,13 @@ namespace Game
 
 		bool initialize()
 		{
+			if (player == NULL)
+			{
+				Log::Error(L"Got empty player in classic gamemode");
+
+				return false;
+			}
+
 			// or preload all worlds?
 			loadWorld(worldResources[0]);
 
@@ -77,6 +85,7 @@ namespace Game
 
 		void registerPlayer(PlayerBase* const player)
 		{
+			this->player = player;
 		}
 
 		World* getCurrentWorld() const
@@ -190,80 +199,5 @@ namespace Game
 
 	private:
 		std::vector<Resource::World*> worlds;
-	};
-
-	class SoloGamemode
-		:
-		public GamemodeBase
-	{
-	public:
-		LocalWorld world;
-		LocalConnection player;
-	};
-
-	class TestGamemode
-		:
-		public GamemodeBase
-	{
-		PlayerInformation playerInfo{ sf::Color::Red, L"Test Player" };
-
-	public:
-		TestGamemode(LocalWorld* const world)
-			:
-			world(world),
-			user(playerInfo, Device::Input::PlayerId::P1, { 0, 0, 1, 1 })
-		{
-		}
-
-		~TestGamemode()
-		{
-		}
-
-		bool initialize() override
-		{
-			if (!world->initialize())
-			{
-				return false;
-			}
-
-			user.createPlayer(world);
-
-			for (ExitableTile* tile : world->getEnvironment()->getTileType<ExitableTile>())
-			{
-				tile->onExit.addListener(
-					[this]()
-					{
-						if (!popingContext)
-						{
-							Framework::Context::Pop();
-							popingContext = true;
-						}
-					});
-			}
-
-			return true;
-		}
-
-		void onLogic(const sf::Time time) override
-		{
-			world->onLogic(time);
-		}
-
-		void onEvent(const sf::Event event) override
-		{ // reserved for use in future
-		}
-
-		void onDraw(sf::RenderTarget* const target) override
-		{
-			user.enableView(target);
-			world->draw(target);
-			Device::Screen::ResetView();
-		}
-
-		LocalConnection user;
-		LocalWorld* const world;
-
-	private:
-		bool popingContext = false;
-	};
+	},
 }
