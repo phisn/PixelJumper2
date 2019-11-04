@@ -16,6 +16,7 @@ namespace Game
 			env->registerTile<SynchronizableTile>(this);
 		}
 
+		// currently not implemented
 		virtual GameState* getState() = 0;
 	};
 }

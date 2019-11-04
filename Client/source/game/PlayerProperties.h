@@ -82,6 +82,8 @@ namespace Game
 		public GameState
 	{
 	public:
+		// Property<Resource::WorldId> worldId;
+
 		Property<sf::Vector2f> spawn;
 		Property<sf::Vector2f> position, movement;
 

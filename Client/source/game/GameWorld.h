@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <Client/source/game/CollisionEngine.h>
 #include <Client/source/game/tiletrait/CollidableTile.h>
 
@@ -20,6 +19,8 @@ namespace Game
 	constexpr sf::Uint64 LogicTimeStep = 1'000;
 
 	class World
+		:
+		public GameState
 	{
 	protected:
 		typedef PlayerBase PlayerType;
@@ -85,6 +86,16 @@ namespace Game
 			);
 
 			properties.update();
+		}
+
+		bool writeState(Resource::WritePipe* const writePipe)
+		{
+			return properties.writeState(writePipe);
+		}
+
+		bool readState(Resource::ReadPipe* const readPipe)
+		{
+			return properties.readState(readPipe);
 		}
 
 		const Environment* getEnvironment() const

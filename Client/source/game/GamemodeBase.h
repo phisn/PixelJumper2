@@ -54,8 +54,25 @@ namespace Game
 		{
 			if (requestWorldSwitch)
 			{
-				// load next world;
+				if (currentWorld == NULL)
+				{
+					Log::Error(L"Got empty world in classic gamemode logic process");
+
+					return;
+				}
+
+				for (int i = 0; i < worldResources.size(); ++i)
+					if (worldResources[i]->HeaderIntro.worldID == currentWorld->getInformation()->worldId)
+					{
+						loadWorld(worldResources[
+							i - 1 == worldResources.size() ? 0: i + 1
+						]);
+					}
+
+				// req sync
 			}
+
+			currentWorld->processLogic();
 		}
 
 		void registerPlayer(PlayerBase* const player)
@@ -69,13 +86,68 @@ namespace Game
 
 		bool writeState(Resource::WritePipe* const writePipe)
 		{
+			Content content;
+
+			if (currentWorld == NULL)
+			{
+				Log::Warning(L"Creating empty sync in classic gamemode");
+
+				content.hasWorld = false;
+				return writePipe->writeValue(&content);
+			}
+
+			content.hasWorld = true;
+			content.world = currentWorld->getInformation()->worldId;
+
+			return writePipe->writeValue(&content)
+				&& currentWorld->writeState(writePipe);
 		}
 
 		bool readState(Resource::ReadPipe* const readPipe)
 		{
+			Content content;
+
+			if (!readPipe->readValue(&content))
+			{
+				return false;
+			}
+
+			if (!content.hasWorld)
+			{
+				Log::Warning(L"Got empty sync in classic gamemode");
+
+				delete currentWorld;
+				currentWorld = NULL;
+
+				return false;
+			}
+
+			if (currentWorld == NULL || // null check first
+				currentWorld->getInformation()->worldId != content.world)
+			{
+				for (Resource::World* world : worldResources)
+					if (world->HeaderIntro.worldID == content.world)
+					{
+						loadWorld(world);
+						goto WORLD_FOUND;
+					}
+
+				Log::Error(L"Got invalid world in classic gamemode");
+				return false;
+
+			WORLD_FOUND:
+			}
+
+			return currentWorld->readState(readPipe);
 		}
 
 	private:
+		struct Content
+		{
+			bool hasWorld;
+			Resource::WorldId world;
+		};
+
 		void loadWorld(Resource::World* const worldResource)
 		{
 			if (currentWorld != NULL)
@@ -99,7 +171,7 @@ namespace Game
 			}
 		}
 
-		PlayerBase* const player;
+		PlayerBase* player;
 
 		bool requestWorldSwitch = false;
 		World* currentWorld = NULL;
