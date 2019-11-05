@@ -203,6 +203,8 @@
     <None Include="resource1.h" />
     <None Include="resource2.h" />
     <None Include="resource3.h" />
+    <None Include="source\device\NetDevice.cpp" />
+    <None Include="source\device\NetDevice.h" />
     <None Include="source\editor\manipulator\CacheElement.cpp" />
     <None Include="source\editor\manipulator\CacheElement.h" />
     <None Include="source\editor\manipulator\EditorCache.cpp" />
@@ -255,6 +257,8 @@
     <None Include="source\game\LocalPlayer.h" />
     <None Include="source\game\net\IndependentSimulator.cpp" />
     <None Include="source\game\net\IndependentSimulator.h" />
+    <None Include="source\game\net\NetOperator.cpp" />
+    <None Include="source\game\net\NetOperator.h" />
     <None Include="source\game\old\GameStateManager.cpp" />
     <None Include="source\game\old\GameStateManager.h" />
     <None Include="source\game\old\HostWorld.cpp" />

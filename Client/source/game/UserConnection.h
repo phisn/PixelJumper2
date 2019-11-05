@@ -6,6 +6,8 @@
 #include <Client/source/game/ControllablePlayer.h>
 #include <Client/source/game/VirtualPlayer.h>
 
+#include <SFML/Network.hpp>
+
 namespace Game
 {
 	class UserConnection
@@ -17,12 +19,6 @@ namespace Game
 			Remote,
 			Ghost
 		};
-
-		UserConnection(const Type type)
-			:
-			type(type)
-		{
-		}
 
 		UserConnection(
 			const Type type,
@@ -36,11 +32,19 @@ namespace Game
 		virtual void initialize() = 0;
 		virtual void onLogic(const sf::Time time) = 0;
 
-		virtual PlayerBase* getPlayer() = 0;
-
 		virtual void changeUserInformation(const PlayerInformation info)
 		{
 			information = info;
+		}
+
+		virtual void pushPlayer(World* const world)
+		{
+			world->addPlayer(getPlayer());
+		}
+
+		virtual void popPlayer(World* const world)
+		{
+			world->removePlayer(getPlayer());
 		}
 
 		const PlayerInformation& getInformation() const
@@ -50,6 +54,8 @@ namespace Game
 
 		const Type type;
 	protected:
+		virtual PlayerBase* getPlayer() = 0;
+
 		PlayerInformation information;
 	};
 
@@ -65,12 +71,10 @@ namespace Game
 			const Device::Input::PlayerId playerId,
 			const sf::FloatRect viewPort)
 			:
-			UserConnection(info),
+			UserConnection(Local, info),
 			playerId(playerId)
 		{
 			view.setViewport(viewPort);
-			information = info;
-
 			player = new LocalPlayer(info);
 		}
 
@@ -83,11 +87,6 @@ namespace Game
 		{
 		}
 
-		PlayerBase* getPlayer() override
-		{
-			return player;
-		}
-
 		void changeUserInformation(const PlayerInformation info) override
 		{
 			UserConnection::changeUserInformation(info);
@@ -97,12 +96,22 @@ namespace Game
 			player = new LocalPlayer(info);
 		}
 
+		LocalPlayer* getLocalPlayer() const
+		{
+			return player;
+		}
+
 		void enableView(sf::RenderTarget* const target)
 		{
 			target->setView(view);
 		}
 
 	private:
+		PlayerBase* getPlayer() override
+		{
+			return player;
+		}
+
 		LocalPlayer* player = NULL;
 
 		const Device::Input::PlayerId playerId;
@@ -114,6 +123,29 @@ namespace Game
 		public UserConnection
 	{
 	public:
+		struct Message
+		{
+			Resource::PlayerId playerId;
+
+			enum Type
+			{
+				Sync,
+				Frame
+			} type;
+
+			sf::Packet packet;
+		};
+
+		RemoteConnection(
+			const sf::IpAddress ipAddress,
+			const PlayerInformation info)
+			:
+			ipAddress(ipAddress),
+			UserConnection(Remote, info)
+		{
+			player = new VirtualPlayer(info);
+		}
+
 		void initialize() override
 		{
 		}
@@ -122,12 +154,33 @@ namespace Game
 		{
 		}
 
-		virtual PlayerBase* getPlayer()
+		void changeUserInformation(const PlayerInformation info) override
 		{
+			UserConnection::changeUserInformation(info);
+
+			// player should never be null
+			delete player;
+			player = new VirtualPlayer(info);
 		}
 
-	private:
-		VirtualPlayer* virtualPlayer;
+		VirtualPlayer* getVirtualPlayer() const
+		{
+			return player;
+		}
+
+		const sf::IpAddress& getIpAddress() const
+		{
+			return ipAddress;
+		}
+
+	protected:
+		PlayerBase* getPlayer() override
+		{
+			return player;
+		}
+
+		const sf::IpAddress ipAddress;
+		VirtualPlayer* player;
 	};
 
 	class GhostConnection

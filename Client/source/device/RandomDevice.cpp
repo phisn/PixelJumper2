@@ -34,6 +34,13 @@ namespace Device
 	}
 
 	template<>
+	long long Random::MakeRandom<long long>()
+	{
+		static std::uniform_int_distribution<long long> distribution(INT_MIN, INT_MAX);
+		return distribution(GetEngine());
+	}
+
+	template<>
 	double Random::MakeRandom<double>()
 	{
 		static std::uniform_real_distribution<double> distribution(DBL_MIN, DBL_MAX);

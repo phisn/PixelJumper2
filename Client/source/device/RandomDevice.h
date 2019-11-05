@@ -18,6 +18,8 @@ namespace Device
 		template<>
 		int Random::MakeRandom<int>();
 		template<>
+		long long Random::MakeRandom<long long>();
+		template<>
 		double Random::MakeRandom<double>();
 		template<>
 		float Random::MakeRandom<float>();

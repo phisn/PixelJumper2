@@ -9,12 +9,12 @@ namespace Game
 {
 	namespace Net
 	{
-		class Simulation
+		class DedicatedSimulation
 			:
 			public GameState
 		{
 		public:
-			enum State
+			enum Status
 			{ // order by importance
 				Running,
 				Disconnect,
@@ -22,7 +22,7 @@ namespace Game
 				Error
 			};
 
-			virtual ~Simulation()
+			virtual ~DedicatedSimulation()
 			{
 			}
 			
@@ -49,9 +49,21 @@ namespace Game
 				}
 			}
 
-			State getState() const
+			virtual UserConnection* getConnection() const = 0;
+
+			Status getStatus() const
 			{
-				return state;
+				return status;
+			}
+
+			bool writeState(Resource::WritePipe* const writePipe)
+			{
+				return gamemode->writeState(writePipe);
+			}
+
+			bool readState(Resource::ReadPipe* const readPipe)
+			{
+				return gamemode->readState(readPipe);
 			}
 
 		protected:
@@ -60,19 +72,19 @@ namespace Game
 			sf::Uint64 logicCounter;
 			GamemodeBase* gamemode;
 
-			void adjustState(const State state)
+			void adjustState(const Status state)
 			{
-				if (this->state < state)
-					this->state = state;
+				if (this->status < state)
+					this->status = state;
 			}
 
 		private:
-			State state = Running;
+			Status status = Running;
 		};
 
 		class DedicatedLocalSimulation
 			:
-			public Simulation
+			public DedicatedSimulation
 		{
 		public:
 			DedicatedLocalSimulation(LocalConnection* const connection)
@@ -81,10 +93,9 @@ namespace Game
 			{
 			}
 
-			bool initialize(GamemodeBase* const gamemode) override
+			UserConnection* getConnection() const
 			{
-				connection->initialize();
-				return Simulation::initialize(gamemode);
+				return connection;
 			}
 
 		private:
@@ -96,9 +107,9 @@ namespace Game
 			LocalConnection* const connection;
 		};
 
-		class DedicatedVirtualSimulation
+		class DedicatedRemoteSimulation
 			:
-			public Simulation
+			public DedicatedSimulation
 		{
 		public:
 			struct Settings
@@ -107,22 +118,24 @@ namespace Game
 				int hardTimeoutCount = 4; // 2 sec				// timout after N lags
 			};
 
-			DedicatedVirtualSimulation(const Settings settings)
+			DedicatedRemoteSimulation(
+				RemoteConnection* const connection,
+				const Settings settings)
 				:
+				connection(connection),
 				settings(settings)
 			{
 			}
 
-			bool initialize(GamemodeBase* const gamemode) override
+			UserConnection* getConnection() const
 			{
-
-				return Simulation::initialize(gamemode);
+				return connection;
 			}
 
 		private:
 			bool processLogic() override
 			{
-				if (player->hasUpdate())
+				if (connection->getVirtualPlayer()->hasUpdate())
 				{
 					return false;
 				}
@@ -142,9 +155,9 @@ namespace Game
 				if (++softTimeoutCounter >= settings.hardTimeoutCount)
 				{
 					Log::Error(L"User (pid=" 
-						+ std::to_wstring(player->getInformation().playerId)
+						+ std::to_wstring(connection->getInformation().playerId)
 						+ L", name="
-						+ player->getInformation().name
+						+ connection->getInformation().name
 						+ L") timed out");
 
 					adjustState(Timeout);
@@ -153,14 +166,14 @@ namespace Game
 				}
 				
 				for (int i = 0; i < (logicCounter / LogicTimeStep); ++i)
-					player->pushEmptyUpdate();
+					connection->getVirtualPlayer()->pushEmptyUpdate();
 
 				return false;
 			}
 
 			int softTimeoutCounter = 0;
 
-			UserConnection* connection;
+			RemoteConnection* connection;
 			const Settings settings;
 		};
 
@@ -179,13 +192,13 @@ namespace Game
 				for (decltype(simulations)::iterator i = simulations.begin();
 					i != simulations.end(); ++i)
 				{
-					Simulation* const simulation = *i;
+					DedicatedSimulation* const simulation = *i;
 
 					simulation->onLogic(time);
 
-					switch (simulation->getState())
+					switch (simulation->getStatus())
 					{
-					case Simulation::State::Running:
+					case DedicatedSimulation::Status::Running:
 						break;
 
 					default:
@@ -199,7 +212,7 @@ namespace Game
 			
 			bool createSimulation(UserConnection* const connection)
 			{
-				Simulation* const simulation = initiateSimulation(connection);
+				DedicatedSimulation* const simulation = initiateSimulation(connection);
 
 				if (!simulation->initialize(gamemodeCreator->createGamemode()))
 				{
@@ -212,26 +225,29 @@ namespace Game
 			}
 			
 		private:
-			Simulation* initiateSimulation(UserConnection* const connection)
+			DedicatedSimulation* initiateSimulation(UserConnection* const connection)
 			{
 				switch (connection->type)
 				{
 				case UserConnection::Local:
-					return new DedicatedLocalSimulation((LocalConnection*) connection);
+					return new DedicatedLocalSimulation(
+						(LocalConnection*) connection);
 
 				case UserConnection::Remote:
-					return new DedicatedVirtualSimulation((RemoteConnection*)connection);
+					return new DedicatedRemoteSimulation(
+						(RemoteConnection*) connection, simulationSettings);
 
 				case UserConnection::Ghost:
-					return new DedicatedVirtualSimulation((GhostConnection*)connection);
-
+					// return new DedicatedRemoteSimulation((GhostConnection*)connection);
+					assert(false);
 				}
-
+					
 				// not possible
 			}
 
-			std::vector<Simulation*> simulations;
+			std::vector<DedicatedSimulation*> simulations;
 			GamemodeCreatorBase* const gamemodeCreator;
+			DedicatedRemoteSimulation::Settings simulationSettings;
 		};
 
 		class NetOperator
