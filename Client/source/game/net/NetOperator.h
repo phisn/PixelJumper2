@@ -7,41 +7,42 @@
 
 namespace Game::Net
 {
+	struct OperatorMessage
+		:
+		public Resource::ResourceBase
+	{
+		enum Type
+		{
+			Connect,
+			Ack,
+			Disconnect,
+
+			Extended
+
+		} type;
+
+		Resource::ConnectionResource connection;
+
+		bool make(Resource::ReadPipe* const pipe) override
+		{
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+		}
+
+		bool setup() override
+		{
+			return true;
+		}
+	};
+
 	class NetOperator
 	{
 	public:
 		struct Settings
 		{
 			int tickRate; // in Game::LogicTimeStep (ms)
-		};
-
-		struct Message
-			:
-			public Resource::ResourceBase
-		{
-			enum Type
-			{
-				Load,
-				Confirm,
-				Connect,
-				Disconnect
-
-			} type;
-
-			Resource::ConnectionResource connection;
-
-			bool make(Resource::ReadPipe* const pipe) override
-			{
-			}
-
-			bool save(Resource::WritePipe* const pipe) override
-			{
-			}
-
-			bool setup() override
-			{
-				return true;
-			}
 		};
 
 		~NetOperator()
@@ -81,8 +82,8 @@ namespace Game::Net
 					onOperatorMessage();
 
 					break;
-				case Device::Net::PacketContext::GameMessage:
-					onGameMessage();
+				case Device::Net::PacketContext::ConnectionMessage:
+					onConnectionMessage();
 
 					break;
 				}
@@ -109,6 +110,17 @@ namespace Game::Net
 			}
 		}
 
+		bool hasPlayer(const Resource::PlayerId player)
+		{
+			for (RemoteConnection* const connection : connections)
+				if (connection->getInformation().playerId == player)
+				{
+					return true;
+				}
+
+			return false;
+		}
+
 		const Settings& getSettings() const
 		{
 			return settings;
@@ -117,12 +129,17 @@ namespace Game::Net
 	protected:
 		virtual void processLogic() = 0;
 
-		virtual void onCommand() = 0;
-		virtual void onGameMessage() = 0;
-
-		virtual void onOperatorMessage()
+		void handleCommandPacket()
 		{
-			Message message;
+		}
+
+		void handleGameMessagePacket()
+		{
+		}
+
+		void handleOperatorMessagePacket()
+		{
+			OperatorMessage message;
 
 			Resource::ReadPipe* const pipe = Device::Net::GetReadPipe();
 			if (!message.make(pipe))
@@ -131,18 +148,70 @@ namespace Game::Net
 				return;
 			}
 
-			switch (message.type)
-			{
-			case Message::Connect:
+			onOperatorMessage(&message);
+		}
+		
+		virtual void onCommand() = 0;
+		virtual void onConnectionMessage() = 0;
 
+		virtual void onOperatorMessage(OperatorMessage* const message)
+		{
+			switch (message->type)
+			{
+			case OperatorMessage::Connect:
+			{
+				Resource::PlayerResource resource;
+
+				if (!retrivePlayerResource(
+						&resource,
+						message->connection.HeaderIntro.playerId))
+				{
+					// ...
+				}
+
+				if (!hasPlayer(message->connection.HeaderIntro.playerId))
+				{
+					RemoteConnection* const connection = new RemoteConnection(packet.address, PlayerInformation::Create(&resource));
+
+					if (!simulator->pushConnection(connection))
+					{
+						// ...
+					}
+
+					connections.push_back(connection);
+				}
+
+				Device::Net::RegisterPacket(packet.type);
+
+				Resource::ResourceBase* const client = NULL;
+				if (!client->save(Device::Net::GetWritePipe()))
+				{
+					// ... delete last connection
+				}
+
+				if (!Device::Net::PushPacket(
+					packet.address,
+					packet.port))
+				{
+					// ... delete last connection
+				}
+
+				// success
+			}
+				break;
+			case OperatorMessage::Ack:
 
 				break;
-			case Message::Acknowledgement:
+			case OperatorMessage::Disconnect:
+				connections[0]->adjustStatus(RemoteConnection::Disconnected);
 
-			case Message::Disconnect:
-
+				break;
 			}
 		}
+
+		virtual bool retrivePlayerResource(
+			Resource::PlayerResource* const resource,
+			const Resource::PlayerId player) = 0;
 
 		Simulator* simulator;
 

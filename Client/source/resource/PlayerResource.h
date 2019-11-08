@@ -50,5 +50,20 @@ namespace Resource
 		ConnectionResource connection;
 
 
+	private:
+		bool make(ReadPipe* const pipe) override
+		{
+
+		}
+
+		bool save(WritePipe* const pipe) override
+		{
+
+		}
+
+		bool setup() override
+		{
+
+		}
 	};
 }

@@ -140,6 +140,7 @@ namespace Game
 		enum Status
 		{
 			Connected,
+			Disconnected,
 			Timeout,
 			Error
 		};

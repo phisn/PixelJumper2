@@ -23,9 +23,10 @@ namespace Device::Net
 		{
 			Invalid  = 0,
 
-			Command,
 			OperatorMessage,
-			GameMessage,
+			ConnectionMessage,
+
+			Command,
 
 			_Length
 		} type;
