@@ -1,40 +1,27 @@
 #pragma once
 
 #include <SFML/Main.hpp>
+#include <sfml/Network.hpp>
 
 #include <string>
+
+#ifdef _WIN32 // hton | ntoh
+#include <ws2tcpip.h>
+#else
+#include <arpa/inet.h>
+#endif
 
 namespace Resource
 {
 	class BasePipe // never used as plmp
 	{
 	public:
-		sf::Uint64 getPosition() const
-		{
-			return position;
-		}
-		
-		virtual void setPosition(
-			const sf::Uint64 position)
-		{
-			this->position = position;
-		}
-
 		virtual sf::Uint64 getSize() const = 0;
+		virtual sf::Uint64 getPosition() = 0;
 
-		void goToEnd()
-		{
-			setPosition( getSize() );
-		}
-
-		void goToBegin()
-		{
-			setPosition(0);
-		}
+		// virtual void setPosition(const sf::Uint64) = 0;
 
 		virtual bool isValid() const = 0;
-	protected:
-		sf::Uint64 position = 0;
 	};
 
 	class WritePipe
@@ -48,7 +35,7 @@ namespace Resource
 		virtual void writeContent(
 			const char* const buffer,
 			const sf::Uint64 size) = 0;
-
+		
 		bool writeContentSafe(
 			const char* const buffer,
 			const sf::Uint64 size)
@@ -68,6 +55,18 @@ namespace Resource
 		{
 			return writeContentSafe((const char* const) value, sizeof(T));
 		}
+
+		template<> bool writeValue<sf::Uint16>(const sf::Uint16* const value);
+		template<> bool writeValue<sf::Int16>(const sf::Int16* const value);
+
+		template<> bool writeValue<sf::Uint32>(const sf::Uint32* const value);
+		template<> bool writeValue<sf::Int32>(const sf::Int32* const value);
+
+		template<> bool writeValue<sf::Uint64>(const sf::Uint64* const value);
+		template<> bool writeValue<sf::Int64>(const sf::Int64* const value);
+
+		template<> bool writeValue<float>(const float* const value);
+		template<> bool writeValue<double>(const double* const value);
 
 		template <typename Size>
 		bool writeString(
@@ -114,6 +113,18 @@ namespace Resource
 			return readContentForce((char*) value, sizeof(T));
 		}
 
+		template<> bool readValue<sf::Uint16>(sf::Uint16* const value);
+		template<> bool readValue<sf::Int16>(sf::Int16* const value);
+
+		template<> bool readValue<sf::Uint32>(sf::Uint32* const value);
+		template<> bool readValue<sf::Int32>(sf::Int32* const value);
+
+		template<> bool readValue<sf::Uint64>(sf::Uint64* const value);
+		template<> bool readValue<sf::Int64>(sf::Int64* const value);
+
+		template<> bool readValue<float>(float* const value);
+		template<> bool readValue<double>(double* const value);
+
 		template <typename Size>
 		bool readString(
 			std::wstring* const str)
@@ -137,4 +148,166 @@ namespace Resource
 			);
 		}
 	};
+
+	template<>
+	inline bool ReadPipe::readValue(sf::Uint16* const value)
+	{
+		const bool result = readContentForce((char*)value, 2);
+
+		if (result)
+		{
+			*value = ntohs(*value);
+		}
+
+		return result;
+	}
+
+	template<>
+	inline bool ReadPipe::readValue(sf::Int16* const value)
+	{
+		const bool result = readContentForce((char*)value, 2);
+
+		if (result)
+		{
+			*value = ntohs(*value);
+		}
+
+		return result;
+	}
+
+	template<>
+	inline bool ReadPipe::readValue(sf::Uint32* const value)
+	{
+		const bool result = readContentForce((char*)value, 4);
+
+		if (result)
+		{
+			*value = ntohl(*value);
+		}
+
+		return result;
+	}
+
+	template<>
+	inline bool ReadPipe::readValue(sf::Int32* const value)
+	{
+		const bool result = readContentForce((char*)value, 4);
+
+		if (result)
+		{
+			*value = ntohl(*value);
+		}
+
+		return result;
+	}
+
+	template<>
+	inline bool ReadPipe::readValue(sf::Uint64* const value)
+	{
+		const bool result = readContentForce((char*)value, 8);
+
+		if (result)
+		{
+			*value = ntohll(*value);
+		}
+
+		return result;
+	}
+
+	template<>
+	inline bool ReadPipe::readValue(sf::Int64* const value)
+	{
+		const bool result = readContentForce((char*)value, 8);
+
+		if (result)
+		{
+			*value = ntohll(*value);
+		}
+
+		return result;
+	}
+
+	template<>
+	inline bool ReadPipe::readValue(float* const value)
+	{
+		const bool result = readContentForce((char*)value, 4);
+
+		if (result)
+		{
+			*value = ntohf(*value);
+		}
+
+		return result;
+	}
+
+	template<>
+	inline bool ReadPipe::readValue(double* const value)
+	{
+		const bool result = readContentForce((char*)value, 8);
+
+		if (result)
+		{
+			*value = ntohd(*value);
+		}
+
+		return result;
+	}
+
+	template<>
+	inline bool WritePipe::writeValue(const sf::Uint16* const value)
+	{
+		const sf::Uint16 netValue = htons(*value);
+		return writeContentSafe((const char* const)&netValue, 2);
+	}
+	
+	template<>
+	inline bool WritePipe::writeValue(const sf::Int16* const value)
+	{
+		const sf::Int16 netValue = htons(*value);
+		return writeContentSafe((const char* const)&netValue, 2);
+
+	}
+	
+	template<>
+	inline bool WritePipe::writeValue(const sf::Uint32* const value)
+	{
+		const sf::Uint32 netValue = htonl(*value);
+		return writeContentSafe((const char* const)&netValue, 4);
+	}
+	
+	template<>
+	inline bool WritePipe::writeValue(const sf::Int32* const value)
+	{
+		const sf::Int32 netValue = htonl(*value);
+		return writeContentSafe((const char* const)&netValue, 4);
+	}
+	
+	template<>
+	inline bool WritePipe::writeValue(const sf::Uint64* const value)
+	{
+		const sf::Uint64 netValue = htonll(*value);
+		return writeContentSafe((const char* const)&netValue, 8);
+	}
+	
+	template<>
+	inline bool WritePipe::writeValue(const sf::Int64* const value)
+	{
+		const sf::Int64 netValue = htonll(*value);
+		return writeContentSafe((const char* const)&netValue, 8);
+	}
+	
+	template<>
+	inline bool WritePipe::writeValue(const float* const value)
+	{
+		const float netValue = htonf(*value);
+		return writeContentSafe((const char* const)&netValue, 4);
+	}
+	
+	template<>
+	inline bool WritePipe::writeValue(const double* const value)
+	{
+		const double netValue = htond(*value);
+		return writeContentSafe((const char* const)&netValue, 4);
+	}
 }
+

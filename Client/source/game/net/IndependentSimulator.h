@@ -9,20 +9,20 @@ namespace Game
 {
 	namespace Net
 	{
-		class DedicatedSimulation
+		class Simulation
 			:
 			public GameState
 		{
 		public:
+			// order by importance
 			enum Status
-			{ // order by importance
-				Running,
-				Disconnect,
-				Timeout,
-				Error
+			{
+				Running,	// has player(s)
+				Dead,		// has no player
+				Error		// error
 			};
 
-			virtual ~DedicatedSimulation()
+			virtual ~Simulation()
 			{
 			}
 			
@@ -49,7 +49,14 @@ namespace Game
 				}
 			}
 
-			virtual UserConnection* getConnection() const = 0;
+			// last possiblity to handly removal 
+			// of connection
+			virtual void onConnectionRemoved(UserConnection* const connection) = 0;
+
+			virtual void kill()
+			{
+				adjustStatus(Simulation::Status::Dead);
+			}
 
 			Status getStatus() const
 			{
@@ -72,10 +79,10 @@ namespace Game
 			sf::Uint64 logicCounter;
 			GamemodeBase* gamemode;
 
-			void adjustState(const Status state)
+			void adjustStatus(const Status status)
 			{
-				if (this->status < state)
-					this->status = state;
+				if (this->status < status)
+					this->status = status;
 			}
 
 		private:
@@ -84,7 +91,7 @@ namespace Game
 
 		class DedicatedLocalSimulation
 			:
-			public DedicatedSimulation
+			public Simulation
 		{
 		public:
 			DedicatedLocalSimulation(LocalConnection* const connection)
@@ -93,9 +100,9 @@ namespace Game
 			{
 			}
 
-			UserConnection* getConnection() const
+			void onConnectionRemoved(UserConnection* const connection)
 			{
-				return connection;
+				assert(connection != this->connection);
 			}
 
 		private:
@@ -109,7 +116,7 @@ namespace Game
 
 		class DedicatedRemoteSimulation
 			:
-			public DedicatedSimulation
+			public Simulation
 		{
 		public:
 			struct Settings
@@ -127,9 +134,12 @@ namespace Game
 			{
 			}
 
-			UserConnection* getConnection() const
+			void onConnectionRemoved(UserConnection* const connection)
 			{
-				return connection;
+				if (connection == this->connection)
+				{
+					kill();
+				}
 			}
 
 		private:
@@ -154,13 +164,15 @@ namespace Game
 
 				if (++softTimeoutCounter >= settings.hardTimeoutCount)
 				{
+					assert(connection->getStatus() != RemoteConnection::Timeout);
+
 					Log::Error(L"User (pid=" 
 						+ std::to_wstring(connection->getInformation().playerId)
 						+ L", name="
 						+ connection->getInformation().name
 						+ L") timed out");
 
-					adjustState(Timeout);
+					connection->adjustStatus(RemoteConnection::Timeout);
 
 					return true;
 				}
@@ -177,55 +189,122 @@ namespace Game
 			const Settings settings;
 		};
 
-		// abstraction for simulator?
-		class IndependentSimulator
+		class Simulator
+			:
+			public GameState
 		{
 		public:
-			IndependentSimulator(GamemodeCreatorBase* const gamemodeCreator)
+			typedef std::vector<Simulation*> SimulationContainer;
+			typedef SimulationContainer::iterator SimulationIterator;
+
+			Simulator(GamemodeCreatorBase* const gamemodeCreator)
 				:
 				gamemodeCreator(gamemodeCreator)
 			{
 			}
+			
+			virtual bool initialize() = 0;
 
-			void onLogic(const sf::Time time)
+			virtual void onLogic(const sf::Time time)
 			{
-				for (decltype(simulations)::iterator i = simulations.begin();
-					i != simulations.end(); ++i)
+				for (SimulationIterator i = simulations.begin(); i != simulations.end(); ++i)
 				{
-					DedicatedSimulation* const simulation = *i;
+					processSimulationLogic(*i, time);
 
-					simulation->onLogic(time);
-
-					switch (simulation->getStatus())
+					switch ((*i)->getStatus())
 					{
-					case DedicatedSimulation::Status::Running:
-						break;
+					case Simulation::Status::Dead:
+						onSimulationDead(i);
 
-					default:
-						simulations.erase(i);
-						delete simulation;
+						break;
+					case Simulation::Status::Error:
+						onSimulationError(i);
 
 						break;
 					}
 				}
 			}
-			
-			bool createSimulation(UserConnection* const connection)
-			{
-				DedicatedSimulation* const simulation = initiateSimulation(connection);
 
-				if (!simulation->initialize(gamemodeCreator->createGamemode()))
+			virtual bool pushConnection(UserConnection* const connection) = 0;
+			virtual void onConnectionRemoved(UserConnection* const connection)
+			{
+				for (Simulation* const simulation : simulations)
+				{
+					simulation->onConnectionRemoved(connection);
+				}
+			}
+
+		protected:
+			virtual void processSimulationLogic(
+				Simulation* const simulation,
+				const sf::Time time)
+			{
+				simulation->onLogic(time);
+			}
+
+			virtual void onSimulationDead(SimulationIterator simulation)
+			{
+				handleCommonSimulationFault(simulation);
+			}
+
+			virtual void onSimulationError(SimulationIterator simulation)
+			{
+				handleCommonSimulationFault(simulation);
+			}
+
+			virtual void handleCommonSimulationFault(SimulationIterator simulation)
+			{
+				Simulation* const simulationPtr = *simulation;
+
+				simulations.erase(simulation);
+				delete simulationPtr;
+			}
+
+			virtual bool pushSimulation(Simulation* const simulation)
+			{
+				if (simulation->initialize(gamemodeCreator->createGamemode()))
+				{
+					simulations.push_back(simulation);
+					return true;
+				}
+				else
 				{
 					delete simulation;
 					return false;
 				}
+			}
 
-				simulations.push_back(simulation);
+		private:
+			SimulationContainer simulations;
+			GamemodeCreatorBase* const gamemodeCreator;
+		};
+
+		class DedicatedSimulator
+			:
+			public Simulator
+		{
+		public:
+			DedicatedSimulator(
+				const DedicatedRemoteSimulation::Settings simulationSettings,
+				GamemodeCreatorBase* const gamemodeCreator)
+				:
+				Simulator(gamemodeCreator),
+				simulationSettings(simulationSettings)
+			{
+			}
+
+			bool initialize() override
+			{
 				return true;
 			}
 			
+			bool pushConnection(UserConnection* const connection) override
+			{
+				return pushSimulation(initiateSimulation(connection));
+			}
+			
 		private:
-			DedicatedSimulation* initiateSimulation(UserConnection* const connection)
+			Simulation* initiateSimulation(UserConnection* const connection)
 			{
 				switch (connection->type)
 				{
@@ -245,20 +324,7 @@ namespace Game
 				// not possible
 			}
 
-			std::vector<DedicatedSimulation*> simulations;
-			GamemodeCreatorBase* const gamemodeCreator;
-			DedicatedRemoteSimulation::Settings simulationSettings;
-		};
-
-		class NetOperator
-		{
-		public:
-			/*
-			
-				Handles a independent simulator and connecting players.
-				also loads their playerinformation from local base
-			
-			*/
+			const DedicatedRemoteSimulation::Settings simulationSettings;
 		};
 	}
 }

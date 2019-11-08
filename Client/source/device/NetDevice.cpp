@@ -2,7 +2,11 @@
 
 namespace
 {
-	sf::UdpSocket socket;
+	// preallocated on stack
+	Resource::PacketReadPipe pollPipe;
+	Resource::PacketWritePipe pushPipe;
+
+	sf::UdpSocket udpsocket;
 
 	Device::Net::PacketId lastPacketIds[4];
 	int lastPacketIdIndex = 0;
@@ -12,10 +16,10 @@ namespace
 
 namespace Device::Net
 {
-	bool ValidatePacketId(sf::Packet* const packet);
+	bool ValidatePacketId();
 	bool Initialize(const unsigned short port)
 	{
-		if (const sf::Socket::Status status = socket.bind(port); status != sf::Socket::Done)
+		if (const sf::Socket::Status status = udpsocket.bind(port); status != sf::Socket::Done)
 		{
 			Log::Error(L"Failed to bind socket (c="
 				+ std::to_wstring((int) status) + L")");
@@ -23,7 +27,7 @@ namespace Device::Net
 			return false;
 		}
 
-		socket.setBlocking(false);
+		udpsocket.setBlocking(false);
 
 		initialized = true;
 		return true;
@@ -31,7 +35,7 @@ namespace Device::Net
 
 	void Uninitialize()
 	{
-		socket.unbind();
+		udpsocket.unbind();
 
 		initialized = false;
 	}
@@ -41,12 +45,13 @@ namespace Device::Net
 		return initialized;
 	}
 
-	bool PollPacket(Packet* const result)
+	bool PollPacket(PacketContext* const context)
 	{
-		const sf::Socket::Status status = socket.receive(
-			result->packet, 
-			result->address, 
-			result->port);
+		pollPipe.reset();
+		const sf::Socket::Status status = udpsocket.receive(
+			pollPipe.getPacket(), 
+			context->address, 
+			context->port);
 		
 		if (status != sf::Socket::Status::Done)
 		{
@@ -58,21 +63,33 @@ namespace Device::Net
 			return false;
 		}
 
-		if (!ValidatePacketId(&result->packet))
+		
+		if (!ValidatePacketId())
 		{
 			return false;
 		}
 		
-		result->packet >> (int&)result->type;
+		if (!pollPipe.readValue((int*) &context->type))
+		{
+			return false;
+		}
 
-		return result->type > Packet::Invalid &&
-			   result->type < Packet::_Length;
+		return context->type > PacketContext::Invalid &&
+			   context->type < PacketContext::_Length;
 	}
 
-	bool ValidatePacketId(sf::Packet* const packet)
+	Resource::PacketReadPipe* GetReadPipe()
+	{
+		return &pollPipe;
+	}
+
+	bool ValidatePacketId()
 	{
 		PacketId id;
-		*packet >> (PacketId&) id;
+		if (!pollPipe.readValue((int*) &id))
+		{
+			return false;
+		}
 
 		// unrolled loop
 		if (id == lastPacketIds[0] ||
@@ -87,20 +104,24 @@ namespace Device::Net
 		return true;
 	}
 	
-	void RegisterPacket(Packet* const packet, const Packet::Type type)
+	void RegisterPacket(const PacketContext::Type type)
 	{
-		packet->packet.clear();
+		pushPipe.reset();
 
-		packet->packet << Device::Random::MakeRandom<PacketId>();
-		packet->packet << (packet->type = type);
+		const PacketId id = Device::Random::MakeRandom<PacketId>();
+
+		pushPipe.writeValue(&id);
+		pushPipe.writeValue((int*) &type);
 	}
 
-	bool PushPacket(Packet* const packet)
+	bool PushPacket(
+		const sf::IpAddress ip,
+		const unsigned short port)
 	{
-		const sf::Socket::Status status = socket.send(
-			packet->packet,
-			packet->address,
-			packet->port);
+		const sf::Socket::Status status = udpsocket.send(
+			pushPipe.getPacket(),
+			ip,
+			port);
 
 		if (status == sf::Socket::Error)
 		{
@@ -118,5 +139,10 @@ namespace Device::Net
 		}
 
 		return true;
+	}
+
+	Resource::PacketWritePipe* GetWritePipe()
+	{
+		return &pushPipe;
 	}
 }

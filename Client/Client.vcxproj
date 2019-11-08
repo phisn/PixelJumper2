@@ -108,7 +108,7 @@
     <ClInclude Include="source\menu\MenuLabel.h" />
     <ClInclude Include="source\menu\MenuRootBase.h" />
     <ClInclude Include="source\resource\pipes\FilePipe.h" />
-    <ClInclude Include="source\resource\pipes\MemoryPipe.h" />
+    <ClInclude Include="source\resource\pipes\PacketPipe.h" />
     <ClInclude Include="source\resource\pipes\PipeBase.h" />
     <ClInclude Include="source\resource\PlayerResource.h" />
     <ClInclude Include="source\resource\ResourceBase.h" />
@@ -168,7 +168,7 @@
     <ClCompile Include="source\menu\MenuProperty.cpp" />
     <ClCompile Include="source\menu\MenuRootBase.cpp" />
     <ClCompile Include="source\resource\pipes\FilePipe.cpp" />
-    <ClCompile Include="source\resource\pipes\MemoryPipe.cpp" />
+    <ClCompile Include="source\resource\pipes\PacketPipe.cpp" />
     <ClCompile Include="source\resource\pipes\PipeBase.cpp" />
     <ClCompile Include="source\resource\PlayerResource.cpp" />
     <ClCompile Include="source\resource\ResourceBase.cpp" />

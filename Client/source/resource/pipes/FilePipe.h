@@ -23,7 +23,7 @@ namespace Resource
 
 		bool resetSize()
 		{
-			try 
+			try
 			{
 				size = std::filesystem::file_size(path);
 			}
@@ -62,7 +62,7 @@ namespace Resource
 			:
 			definition(fileDefinition),
 			file(
-				fileDefinition->path, 
+				fileDefinition->path,
 				std::ios::out | std::ios::binary
 			)
 		{
@@ -79,15 +79,14 @@ namespace Resource
 			file.write(buffer, size);
 		}
 
-		void setPosition(
-			const sf::Uint64 position) override
-		{
-			file.seekp(position);
-		}
-
 		sf::Uint64 getSize() const override
 		{
 			return definition->size;
+		}
+
+		sf::Uint64 getPosition() override
+		{
+			return file.tellp();
 		}
 
 		void reserveSize(
@@ -126,23 +125,24 @@ namespace Resource
 		{
 			return definition->size;
 		}
-		
+
+		sf::Uint64 getPosition() override
+		{
+			return file.tellg();
+		}
+
 		sf::Int64 readContent(
-			char *buffer, 
+			char* buffer,
 			const sf::Uint64 size) override
 		{
-			const sf::Uint64 diff = definition->size - file.tellg();
+			const std::streampos position = file.tellg();
+			const sf::Uint64 realSize = size <= definition->size - position
+				? size
+				: definition->size - position;
 
-			if (diff < size)
-			{
-				file.read(buffer, diff);
-				return diff;
-			}
-			else
-			{
-				file.read(buffer, size);
-				return size;
-			}
+			file.read(buffer, realSize);
+
+			return realSize;
 		}
 
 		bool isValid() const

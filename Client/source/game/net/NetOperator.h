@@ -5,7 +5,7 @@
 #include <Client/source/game/net/IndependentSimulator.h>
 #include <Client/source/game/UserConnection.h>
 
-namespace Game
+namespace Game::Net
 {
 	class NetOperator
 	{
@@ -16,12 +16,32 @@ namespace Game
 		};
 
 		struct Message
+			:
+			public Resource::ResourceBase
 		{
 			enum Type
 			{
+				Load,
+				Confirm,
 				Connect,
 				Disconnect
+
 			} type;
+
+			Resource::ConnectionResource connection;
+
+			bool make(Resource::ReadPipe* const pipe) override
+			{
+			}
+
+			bool save(Resource::WritePipe* const pipe) override
+			{
+			}
+
+			bool setup() override
+			{
+				return true;
+			}
 		};
 
 		~NetOperator()
@@ -38,17 +58,13 @@ namespace Game
 		{
 		}
 
-		bool initialize(const unsigned short port)
+		bool initialize(
+			Simulator* const simulator,
+			const unsigned short port)
 		{
-			if (Device::Net::Isinitialized())
-			{
-				return false;
-			}
-
-			if (!Device::Net::Initialize(port))
-			{
-				return false;
-			}
+			return Device::Net::Isinitialized()
+				&& Device::Net::Initialize(port)
+				&& simulator->initialize();
 		}
 
 		void onLogic(const sf::Time time)
@@ -57,49 +73,103 @@ namespace Game
 			{
 				switch (packet.type)
 				{
-				case Device::Net::Packet::Command:
-
-
-					break;
-				case Device::Net::Packet::OperatorMessage:
-
+				case Device::Net::PacketContext::Command:
+					onCommand();
 
 					break;
-				case Device::Net::Packet::GameMessage:
-					RemoteConnection::Message message;
+				case Device::Net::PacketContext::OperatorMessage:
+					onOperatorMessage();
 
-					packet.packet >> message.playerId;
-					packet.packet >> (int&) message.type;
-					message.packet = packet.packet;
-
-					for (RemoteConnection* const connection : connections)
-						if (connection->getIpAddress() == packet.address &&
-							connection->getInformation().playerId == message.playerId)
-						{
-
-
-							break;
-						}
+					break;
+				case Device::Net::PacketContext::GameMessage:
+					onGameMessage();
 
 					break;
 				}
 			}
 
-
-
 			logicCounter += time;
 			if (logicCounter.asMicroseconds() > Game::LogicTimeStep * settings.tickRate)
 			{
-				// sync
+				processLogic();
+			}
+
+			for (decltype(connections)::iterator i = connections.begin();
+				i != connections.end(); ++i)
+			{
+				RemoteConnection* const connection = *i;
+
+				if (connection->getStatus() != RemoteConnection::Connected)
+				{
+					simulator->onConnectionRemoved(*i);
+
+					connections.erase(i);
+					delete connection;
+				}
 			}
 		}
+
+		const Settings& getSettings() const
+		{
+			return settings;
+		}
+
+	protected:
+		virtual void processLogic() = 0;
+
+		virtual void onCommand() = 0;
+		virtual void onGameMessage() = 0;
+
+		virtual void onOperatorMessage()
+		{
+			Message message;
+
+			Resource::ReadPipe* const pipe = Device::Net::GetReadPipe();
+			if (!message.make(pipe))
+			{
+				// ...
+				return;
+			}
+
+			switch (message.type)
+			{
+			case Message::Connect:
+
+
+				break;
+			case Message::Acknowledgement:
+
+			case Message::Disconnect:
+
+			}
+		}
+
+		Simulator* simulator;
+
+		std::vector<RemoteConnection*> connections;
+		Device::Net::PacketContext packet;
 
 	private:
 		const Settings settings;
 
-		Device::Net::Packet packet;
-		std::vector<RemoteConnection*> connections;
-
 		sf::Time logicCounter;
+	};
+
+	class LocalHostOperator
+	{
+	public:
+
+	private:
+		void onCommand()
+		{
+		}
+
+		void onOperatorMessage()
+		{
+		}
+
+		void onGameMessage()
+		{
+		}
 	};
 }

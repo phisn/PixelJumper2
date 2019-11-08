@@ -153,9 +153,6 @@
     <ClInclude Include="source\resource\pipes\FilePipe.h">
       <Filter>source\resource\pipes</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\pipes\MemoryPipe.h">
-      <Filter>source\resource\pipes</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\pipes\PipeBase.h">
       <Filter>source\resource\pipes</Filter>
     </ClInclude>
@@ -252,9 +249,6 @@
     <ClInclude Include="source\game\Environment.h">
       <Filter>source\game\world</Filter>
     </ClInclude>
-    <ClInclude Include="source\scene\TestReleaseGameScene.h">
-      <Filter>source\scene</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\GameJoinScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
@@ -263,6 +257,12 @@
     </ClInclude>
     <ClInclude Include="source\game\_VirtualWorld.h">
       <Filter>source\game\world</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\pipes\PacketPipe.h">
+      <Filter>source\resource\pipes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\TestReleaseGameScene.h">
+      <Filter>source\shared\tiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -333,9 +333,6 @@
       <Filter>source\resource</Filter>
     </ClCompile>
     <ClCompile Include="source\resource\pipes\FilePipe.cpp">
-      <Filter>source\resource\pipes</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\pipes\MemoryPipe.cpp">
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
     <ClCompile Include="source\device\RandomDevice.cpp">
@@ -439,6 +436,9 @@
     </ClCompile>
     <ClCompile Include="source\game\_VirtualWorld.cpp">
       <Filter>source\game\world</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\pipes\PacketPipe.cpp">
+      <Filter>source\resource\pipes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -757,9 +757,6 @@
     <None Include="source\game\tiletrait\ExitableTile.cpp">
       <Filter>source\game\TileTrait</Filter>
     </None>
-    <None Include="source\shared\tiles\TileCommon.h">
-      <Filter>source\shared\tiles</Filter>
-    </None>
     <None Include="source\game\GamePlayer.h">
       <Filter>source\game\player</Filter>
     </None>
@@ -818,6 +815,9 @@
     </None>
     <None Include="source\game\net\NetOperator.h">
       <Filter>source\game\net</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileCommon.h">
+      <Filter>source\scene</Filter>
     </None>
   </ItemGroup>
 </Project>

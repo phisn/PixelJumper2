@@ -8,33 +8,30 @@ namespace Resource
 {
 	typedef sf::Uint64 PlayerId;
 
-	class PlayerResource
+	class ConnectionResource
 		:
 		public ResourceBase
 	{
 	public:
 		struct
 		{
-			PlayerId playerId;
+			EDIT PlayerId playerId;
 
 		} HeaderIntro;
 
 		struct
 		{
-			std::wstring userName;
-
+			EDIT std::wstring userName;
 
 		} HeaderAuth;
 
 	private:
-		bool make(
-			ReadPipe* const pipe) override
+		bool make(ReadPipe* const pipe) override
 		{
 
 		}
 
-		bool save(
-			WritePipe* const pipe) override
+		bool save(WritePipe* const pipe) override
 		{
 
 		}
@@ -43,5 +40,15 @@ namespace Resource
 		{
 
 		}
+	};
+
+	class PlayerResource
+		:
+		public ResourceBase
+	{
+	public:
+		ConnectionResource connection;
+
+
 	};
 }

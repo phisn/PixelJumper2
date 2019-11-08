@@ -136,6 +136,14 @@ namespace Game
 			sf::Packet packet;
 		};
 
+		// order by importance
+		enum Status
+		{
+			Connected,
+			Timeout,
+			Error
+		};
+
 		RemoteConnection(
 			const sf::IpAddress ipAddress,
 			const PlayerInformation info)
@@ -163,6 +171,17 @@ namespace Game
 			player = new VirtualPlayer(info);
 		}
 
+		void adjustStatus(const Status status)
+		{
+			if (this->status < status)
+				this->status = status;
+		}
+
+		Status getStatus() const
+		{
+			return status;
+		}
+
 		VirtualPlayer* getVirtualPlayer() const
 		{
 			return player;
@@ -178,7 +197,8 @@ namespace Game
 		{
 			return player;
 		}
-
+		
+		Status status;
 		const sf::IpAddress ipAddress;
 		VirtualPlayer* player;
 	};
