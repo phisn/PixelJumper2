@@ -7,7 +7,7 @@ namespace Game::Net
 {
 	struct OperatorMessage
 		:
-		public Resource::ResourceBase
+		public GameState
 	{
 		enum Type
 		{
@@ -21,42 +21,33 @@ namespace Game::Net
 
 		Resource::ConnectionResource connection;
 
-		bool make(Resource::ReadPipe* const pipe) override
+		bool readState(Resource::ReadPipe* const pipe) override
 		{
 			return pipe->readValue(&type)
 				&& connection.make(pipe);
 		}
 
-		bool save(Resource::WritePipe* const pipe) override
+		bool writeState(Resource::WritePipe* const pipe) override
 		{
 			return pipe->writeValue(&type)
 				&& connection.save(pipe);
 		}
-
-		bool setup() override
-		{
-			return true;
-		}
 	};
 
-	class ClientMessage
+	struct ConnectResponse
 		:
-		public Resource::ResourceBase
+		public GameState
 	{
-	public:
 
-	private:
-		bool make(Resource::ReadPipe* const pipe) override
+		Resource::PlayerResource resource;
+
+
+		bool readState(Resource::ReadPipe* const pipe) override
 		{
 		}
 
-		bool save(Resource::WritePipe* const pipe) override
+		bool writeState(Resource::WritePipe* const pipe) override
 		{
-		}
-
-		bool setup() override
-		{
-			return true;
 		}
 	};
 

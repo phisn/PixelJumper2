@@ -67,16 +67,6 @@ namespace Game::Net
 
 		virtual void onNetMessagePacket()
 		{
-
-		}
-
-		virtual void onConnectionMessagePacket()
-		{
-
-		}
-
-		virtual void onCommandPacket()
-		{
 			OperatorMessage message;
 
 			Resource::ReadPipe* const pipe = Device::Net::GetReadPipe();
@@ -87,6 +77,15 @@ namespace Game::Net
 			}
 
 			onOperatorMessage(&message);
+		}
+
+		virtual void onConnectionMessagePacket()
+		{
+
+		}
+
+		virtual void onCommandPacket()
+		{
 		}
 
 		virtual void onOperatorMessage(OperatorMessage* const message)

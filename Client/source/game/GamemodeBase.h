@@ -25,8 +25,11 @@ namespace Game
 	};
 
 	class GamemodeCreatorBase
+		:
+		public LazyGameState
 	{
 	public:
+		// creator does not handle gamemode state
 		virtual GamemodeBase* createGamemode() = 0;
 	};
 

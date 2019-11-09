@@ -68,6 +68,12 @@ namespace Resource
 		template<> bool writeValue<float>(const float* const value);
 		template<> bool writeValue<double>(const double* const value);
 
+		template<> bool writeValue<bool>(const bool* const value)
+		{
+			const sf::Uint8 byte = *value != 0;
+			return writeValue<sf::Uint8>(&byte);
+		}
+
 		template <typename Size>
 		bool writeString(
 			const std::wstring* const str)
@@ -124,6 +130,11 @@ namespace Resource
 
 		template<> bool readValue<float>(float* const value);
 		template<> bool readValue<double>(double* const value);
+
+		template<> bool readValue<bool>(bool* const value)
+		{
+			return readValue<sf::Uint8>((sf::Uint8*) value);
+		}
 
 		template <typename Size>
 		bool readString(

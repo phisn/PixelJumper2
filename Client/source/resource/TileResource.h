@@ -42,6 +42,7 @@ namespace Resource
 			EDIT TilePosition y;
 			
 			AUTO sf::Uint16 contentSize; // probably does not exceed
+
 		} Header = { };
 
 		_Maybenull_
