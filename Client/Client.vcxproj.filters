@@ -819,5 +819,17 @@
     <None Include="source\shared\tiles\TileCommon.h">
       <Filter>source\scene</Filter>
     </None>
+    <None Include="source\game\net\NetClient.cpp">
+      <Filter>source\game\net</Filter>
+    </None>
+    <None Include="source\game\net\NetClient.h">
+      <Filter>source\game\net</Filter>
+    </None>
+    <None Include="source\game\net\NetGameBase.cpp">
+      <Filter>source\game\net</Filter>
+    </None>
+    <None Include="source\game\net\NetGameBase.h">
+      <Filter>source\game\net</Filter>
+    </None>
   </ItemGroup>
 </Project>

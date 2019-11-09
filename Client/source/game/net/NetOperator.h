@@ -1,43 +1,13 @@
 #pragma once
 
-#include <Client/source/device/NetDevice.h>
-
-#include <Client/source/game/net/IndependentSimulator.h>
+#include <Client/source/game/net/NetGameBase.h>
 #include <Client/source/game/UserConnection.h>
 
 namespace Game::Net
 {
-	struct OperatorMessage
-		:
-		public Resource::ResourceBase
-	{
-		enum Type
-		{
-			Connect,
-			Ack,
-			Disconnect,
-
-			Extended
-
-		} type;
-
-		Resource::ConnectionResource connection;
-
-		bool make(Resource::ReadPipe* const pipe) override
-		{
-		}
-
-		bool save(Resource::WritePipe* const pipe) override
-		{
-		}
-
-		bool setup() override
-		{
-			return true;
-		}
-	};
-
 	class NetOperator
+		:
+		public NetGameBase
 	{
 	public:
 		struct Settings
@@ -45,49 +15,15 @@ namespace Game::Net
 			int tickRate; // in Game::LogicTimeStep (ms)
 		};
 
-		~NetOperator()
-		{
-			if (Device::Net::Isinitialized())
-			{
-				Device::Net::Uninitialize();
-			}
-		}
-
 		NetOperator(const Settings settings)
 			:
 			settings(settings)
 		{
 		}
 
-		bool initialize(
-			Simulator* const simulator,
-			const unsigned short port)
+		void onLogic(const sf::Time time) override
 		{
-			return Device::Net::Isinitialized()
-				&& Device::Net::Initialize(port)
-				&& simulator->initialize();
-		}
-
-		void onLogic(const sf::Time time)
-		{
-			while (Device::Net::PollPacket(&packet))
-			{
-				switch (packet.type)
-				{
-				case Device::Net::PacketContext::Command:
-					onCommand();
-
-					break;
-				case Device::Net::PacketContext::OperatorMessage:
-					onOperatorMessage();
-
-					break;
-				case Device::Net::PacketContext::ConnectionMessage:
-					onConnectionMessage();
-
-					break;
-				}
-			}
+			NetGameBase::onLogic(time);
 
 			logicCounter += time;
 			if (logicCounter.asMicroseconds() > Game::LogicTimeStep * settings.tickRate)
@@ -129,15 +65,17 @@ namespace Game::Net
 	protected:
 		virtual void processLogic() = 0;
 
-		void handleCommandPacket()
+		virtual void onNetMessagePacket()
 		{
+
 		}
 
-		void handleGameMessagePacket()
+		virtual void onConnectionMessagePacket()
 		{
+
 		}
 
-		void handleOperatorMessagePacket()
+		virtual void onCommandPacket()
 		{
 			OperatorMessage message;
 
@@ -150,9 +88,6 @@ namespace Game::Net
 
 			onOperatorMessage(&message);
 		}
-		
-		virtual void onCommand() = 0;
-		virtual void onConnectionMessage() = 0;
 
 		virtual void onOperatorMessage(OperatorMessage* const message)
 		{

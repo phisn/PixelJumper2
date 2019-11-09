@@ -23,7 +23,7 @@ namespace Device::Net
 		{
 			Invalid  = 0,
 
-			OperatorMessage,
+			NetMessage,
 			ConnectionMessage,
 
 			Command,

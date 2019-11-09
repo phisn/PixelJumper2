@@ -257,6 +257,10 @@
     <None Include="source\game\LocalPlayer.h" />
     <None Include="source\game\net\IndependentSimulator.cpp" />
     <None Include="source\game\net\IndependentSimulator.h" />
+    <None Include="source\game\net\NetClient.cpp" />
+    <None Include="source\game\net\NetClient.h" />
+    <None Include="source\game\net\NetGameBase.cpp" />
+    <None Include="source\game\net\NetGameBase.h" />
     <None Include="source\game\net\NetOperator.cpp" />
     <None Include="source\game\net\NetOperator.h" />
     <None Include="source\game\old\GameStateManager.cpp" />

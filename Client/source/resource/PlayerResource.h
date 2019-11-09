@@ -25,7 +25,6 @@ namespace Resource
 
 		} HeaderAuth;
 
-	private:
 		bool make(ReadPipe* const pipe) override
 		{
 
