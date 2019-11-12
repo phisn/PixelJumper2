@@ -1,8 +1,6 @@
 #include <Client/source/device/CoreDevice.h>
 #include <Client/source/logger/Logger.h>
 
-#include <iostream>
-
 #if defined(_DEBUG) or not _WIN32
 	int main()
 #else

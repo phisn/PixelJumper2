@@ -14,6 +14,12 @@ namespace
 	bool initialized = false;
 }
 
+// Client members
+namespace Device::Net
+{
+}
+
+// Functions
 namespace Device::Net
 {
 	bool ValidatePacketId();
@@ -139,6 +145,12 @@ namespace Device::Net
 		}
 
 		return true;
+	}
+
+	bool PushReliablePacket(
+		const sf::IpAddress ip, 
+		const unsigned short port)
+	{
 	}
 
 	Resource::PacketWritePipe* GetWritePipe()

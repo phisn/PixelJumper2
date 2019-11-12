@@ -29,7 +29,7 @@ namespace Device
 		{
 			T value;
 
-			FillRandom(sizeof(T), (char*)&value);
+			FillRandom(sizeof(T), (char*) &value);
 
 			return value;
 		}

@@ -20,7 +20,7 @@ namespace Game
 	{
 	public:
 		virtual bool initialize() = 0;
-		virtual void processLogic() = 0;
+		virtual bool processLogic() = 0;
 
 	};
 
@@ -39,8 +39,9 @@ namespace Game
 	{
 	public:
 		typedef std::vector<Resource::World*> WorldResources;
-
-		ClassicGamemode(const WorldResources& worldResources)
+		
+		ClassicGamemode(
+			const WorldResources& worldResources)
 			:
 			worldResources(worldResources)
 		{
@@ -55,35 +56,29 @@ namespace Game
 				return false;
 			}
 
-			// or preload all worlds?
-			loadWorld(worldResources[0]);
-
-			return currentWorld->initialize();
+			return loadWorld(worldResources[0]);
 		}
 
-		void processLogic()
+		bool processLogic() override
 		{
 			if (requestWorldSwitch)
 			{
-				if (currentWorld == NULL)
+				Log::Section section(L"Switching world in classic gamemode");
+
+				if (!switchWorld())
 				{
-					Log::Error(L"Got empty world in classic gamemode logic process");
+					Log::Error(L"Failed to initialize world");
 
-					return;
+					delete currentWorld;
+					currentWorld = NULL;
+
+					return false;
 				}
-
-				for (int i = 0; i < worldResources.size(); ++i)
-					if (worldResources[i]->HeaderIntro.worldID == currentWorld->getInformation()->worldId)
-					{
-						loadWorld(worldResources[
-							i - 1 == worldResources.size() ? 0: i + 1
-						]);
-					}
-
-				// req sync
 			}
 
 			currentWorld->processLogic();
+
+			return true;
 		}
 
 		void registerPlayer(PlayerBase* const player)
@@ -140,7 +135,11 @@ namespace Game
 				for (Resource::World* world : worldResources)
 					if (world->HeaderIntro.worldID == content.world)
 					{
-						loadWorld(world);
+						if (!loadWorld(world))
+						{
+							return false;
+						}
+
 						goto WORLD_FOUND;
 					}
 
@@ -160,7 +159,26 @@ namespace Game
 			Resource::WorldId world;
 		};
 
-		void loadWorld(Resource::World* const worldResource)
+		bool switchWorld()
+		{
+			for (int i = 0; i < worldResources.size(); ++i)
+				if (worldResources[i]->HeaderIntro.worldID == currentWorld->getInformation()->worldId)
+				{
+					return loadWorld(worldResources[
+						i - 1 == worldResources.size() ? 0 : i + 1
+					]);
+				}
+
+			Log::Warning(
+				L"Current world not found, "
+				L"resource propably missing"
+				L"because of creator sync. "
+				L"Loading first");
+
+			return loadWorld(worldResources[0]);
+		}
+
+		bool loadWorld(Resource::World* const worldResource)
 		{
 			if (currentWorld != NULL)
 			{
@@ -169,6 +187,8 @@ namespace Game
 
 			currentWorld = new World(worldResource);
 			currentWorld->addPlayer(player);
+
+			return currentWorld->initialize();
 		}
 
 		void registerExitTiles()
@@ -201,6 +221,55 @@ namespace Game
 		}
 
 	private:
+		bool writeChangedState(Resource::WritePipe* const writePipe)
+		{
+			const int count = worlds.size();
+
+			if (!writePipe->writeValue(&count))
+			{
+				return false;
+			}
+
+			for (Resource::World* const world : worlds)
+				if (!world->save(writePipe))
+				{
+					return false;
+				}
+
+			return true;
+		}
+
+		bool readChangedState(Resource::ReadPipe* const readPipe)
+		{
+			int count;
+			if (!readPipe->readValue(&count))
+			{
+				return false;
+			}
+
+			std::vector<Resource::World*> tempWorlds(count);
+
+			for (int i = 0; i < count; ++i)
+			{
+				Resource::World* const world = tempWorlds[i] = new Resource::World();
+				
+				if (!world->make(readPipe))
+				{
+					for (Resource::World* const world : tempWorlds)
+						delete world;
+
+					return false;
+				}
+			}
+
+			for (Resource::World* const world : worlds)
+				delete world;
+
+			worlds = std::move(tempWorlds);
+
+			return true;
+		}
+
 		std::vector<Resource::World*> worlds;
-	},
+	};
 }
