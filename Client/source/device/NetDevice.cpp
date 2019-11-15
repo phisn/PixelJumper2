@@ -2,10 +2,6 @@
 
 namespace
 {
-	// preallocated on stack
-	Resource::PacketReadPipe pollPipe;
-	Resource::PacketWritePipe pushPipe;
-
 	sf::UdpSocket udpsocket;
 
 	Device::Net::PacketId lastPacketIds[4];
@@ -22,7 +18,6 @@ namespace Device::Net
 // Functions
 namespace Device::Net
 {
-	bool ValidatePacketId();
 	bool Initialize(const unsigned short port)
 	{
 		if (const sf::Socket::Status status = udpsocket.bind(port); status != sf::Socket::Done)
@@ -51,52 +46,34 @@ namespace Device::Net
 		return initialized;
 	}
 
-	bool PollPacket(PacketContext* const context)
+	bool PollPacket(MessageRead* const message)
 	{
-		pollPipe.reset();
-		const sf::Socket::Status status = udpsocket.receive(
-			pollPipe.getPacket(), 
-			context->address, 
-			context->port);
-		
-		if (status != sf::Socket::Status::Done)
+		if (const sf::Socket::Status status = message->pullPacket(&udpsocket); status != sf::Socket::Status::Done)
 		{
+			// nonblocking - no packet in buffer
 			if (status != sf::Socket::Status::NotReady)
 			{
 				Log::Error(L"Got invalid result in pollpacket");
 			}
-
+		
 			return false;
 		}
 
-		
 		if (!ValidatePacketId())
 		{
-			return false;
-		}
-		
-		if (!pollPipe.readValue((int*) &context->type))
-		{
+			// no log needed because udp
+			// double packets are common
+			// and cant be handled
+
 			return false;
 		}
 
-		return context->type > PacketContext::Invalid &&
-			   context->type < PacketContext::_Length;
+		return message->getType() > MessageType::Invalid 
+			&& message->getType() < MessageType::_Length;
 	}
 
-	Resource::PacketReadPipe* GetReadPipe()
+	bool ValidatePacketId(const PacketId id)
 	{
-		return &pollPipe;
-	}
-
-	bool ValidatePacketId()
-	{
-		PacketId id;
-		if (!pollPipe.readValue((int*) &id))
-		{
-			return false;
-		}
-
 		// unrolled loop
 		if (id == lastPacketIds[0] ||
 			id == lastPacketIds[1] ||
@@ -109,26 +86,13 @@ namespace Device::Net
 		lastPacketIds[lastPacketIdIndex++] = id;
 		return true;
 	}
-	
-	void RegisterPacket(const PacketContext::Type type)
-	{
-		pushPipe.reset();
-
-		const PacketId id = Device::Random::MakeRandom<PacketId>();
-
-		pushPipe.writeValue(&id);
-		pushPipe.writeValue((int*) &type);
-	}
 
 	bool PushPacket(
-		const sf::IpAddress ip,
-		const unsigned short port)
+		MessageWrite* const message,
+		const Target target)
 	{
-		const sf::Socket::Status status = udpsocket.send(
-			pushPipe.getPacket(),
-			ip,
-			port);
-
+		const sf::Socket::Status status = message->pushPacket(&udpsocket, target);
+		
 		if (status == sf::Socket::Error)
 		{
 			Log::Error(L"Failed to push packet");
@@ -145,16 +109,5 @@ namespace Device::Net
 		}
 
 		return true;
-	}
-
-	bool PushReliablePacket(
-		const sf::IpAddress ip, 
-		const unsigned short port)
-	{
-	}
-
-	Resource::PacketWritePipe* GetWritePipe()
-	{
-		return &pushPipe;
 	}
 }

@@ -44,7 +44,8 @@ namespace Device::Net
 		{
 			const sf::Socket::Status status = socket->receive(packet, target.address, target.port);
 
-			if (status == sf::Socket::Done && !readValue(&type))
+			if (status == sf::Socket::Done && !(
+					readValue(&packetId) && readValue(&type) ))
 			{
 				return sf::Socket::Error;
 			}
@@ -62,20 +63,32 @@ namespace Device::Net
 			return target;
 		}
 
+		PacketId getPacketId() const
+		{
+			return packetId;
+		}
+
 	private:
 		MessageType type;
 		Target target;
+		PacketId packetId;
 	};
 
 	struct MessageWrite
 		:
 		Resource::PacketWritePipe
 	{
+		friend class Client;
+
 	public:
 		bool load(const MessageType type)
 		{
+			const PacketId packetId = Device::Random::MakeRandom<PacketId>();
+
 			reset();
-			return writeValue(&type);
+			
+			return writeValue(&packetId)
+				&& writeValue(&type);
 		}
 
 		sf::Socket::Status pushPacket(
@@ -87,6 +100,45 @@ namespace Device::Net
 				target.address,
 				target.port);
 		}
+
+		// used for owners to resign their ownership
+		// and "free" this object. because MessageWrite
+		// can still be used in client as buffer (common)
+		// this object should not be delete at resign if
+		// a ref is still hold (called by client). this
+		// method is used, because we wont use sharedptr
+		void resign()
+		{
+			if (counter == 0)
+			{
+				delete this;
+			}
+			else
+			{
+				resigned = true;
+			}
+		}
+
+	private:
+		// only used in client (access by friend) for
+		// commiting to this object
+		void ref()
+		{
+			++counter;
+		}
+
+		// called when client (access by friend) gets
+		// ack from packet (buffer packet released)
+		void deref()
+		{
+			if (--counter == 0 && resigned)
+			{
+				delete this;
+			}
+		}
+
+		bool resigned = false;
+		int counter = 0;
 	};
 
 	struct Header
@@ -125,19 +177,19 @@ namespace Device::Net
 		struct PacketBuffer
 		{
 			PacketBuffer(
+				MessageWrite* const message,
 				const Target target,
-				const Sequence sequence,
-				const sf::Packet packet)
+				const Sequence sequence)
 				:
+				message(message),
 				target(target),
-				sequence(sequence),
-				packet(packet)
+				sequence(sequence)
 			{
 			}
 
+			MessageWrite* const message;
 			const Target target;
 			const Sequence sequence;
-			const sf::Packet packet;
 		};
 
 	public:
@@ -152,13 +204,12 @@ namespace Device::Net
 		};
 
 		Client(
+			const Target target,
 			const ClientId id,
-			const PacketContext context,
 			const Sequence sequence)
 			:
+			target(target),
 			id(id),
-			ipAddress(context.address),
-			port(context.port),
 			externalSequence(sequence)
 		{
 			internalSequence = Random::MakeRandom<Sequence>();
@@ -185,25 +236,22 @@ namespace Device::Net
 			// by low level net device
 		}
 
-		bool PushPacket()
+		bool PushPacket(MessageWrite* const message)
 		{
 			Header header;
 
 			header.type = Header::Neutral;
 			header.sequence = internalSequence + 1;
 
-			if (Net::PushPacket(target.address, target.port))
+			if (Net::PushPacket(message, target))
 			{
 				return false;
 			}
 
-			PacketContext context;
-
 			packets.emplace_back(
-
-				header,
-				GetReadPipe()->getPacket()
-			);
+				message,
+				target,
+				header.sequence);
 
 			++internalSequence;
 
@@ -229,7 +277,7 @@ namespace Device::Net
 		ClientId id;
 		Target target;
 
-		std::deque<PacketContext> packets;
+		std::deque<PacketBuffer> packets;
 	};
 
 	class Server
@@ -241,23 +289,21 @@ namespace Device::Net
 
 		virtual void onLogic(const sf::Time time)
 		{
-			PacketContext context;
-
 			for (Client* const client : clients)
 				client->onLogic(time);
 
-			while (PollPacket(&context))
+			while (PollPacket(&messageBuffer))
 			{
 				Header header;
 
-				if (!header.make(GetReadPipe()))
+				if (!header.make(&messageBuffer))
 				{
 					continue;
 				}
 
-				switch (context.type)
+				switch (messageBuffer.getType())
 				{
-				case PacketContext::NetDeviceMessage:
+				case MessageType::NetDevice:
 					if (Client * const client = findClientOrNull(header.clientId); client != NULL)
 					{
 						// ...
@@ -275,16 +321,16 @@ namespace Device::Net
 					}
 
 					Client* const client = new Client(
+						
 						header.clientId,
-						context,
 						header.sequence);
 
 					break;
-				case PacketContext::OperatorMessage:
+				case MessageType::Operator:
 					// forward messages to client
 
 					break;
-				case PacketContext::ConnectionMessage:
+				case MessageType::Connection:
 					// forward messages to client
 
 					break;
@@ -307,6 +353,8 @@ namespace Device::Net
 		}
 
 	private:
+		MessageRead messageBuffer;
+
 		Client* findClientOrNull(const ClientId clientId) const
 		{
 			for (Client* const client : clients)
@@ -326,25 +374,15 @@ namespace Device::Net
 
 	bool Isinitialized();
 
-	bool _PollPacket(MessageRead* const messsage);
-	bool _PushPacket(
+	// packets cant be received double
+	// (actually can but it is extremly 
+	// rare [never happend before]) packets 
+	// have reliable data
+	bool PollPacket(MessageRead* const messsage);
+	bool PushPacket(
 		MessageWrite* const message,
 		const Target target);
 
 /*
-	// packets cant be received double
-	// (actually can but it is extremly 
-	// rare [never happend before])
-	// packets have reliable data
-	bool PollPacket(PacketContext* const context);
-	Resource::PacketReadPipe* GetReadPipe();
-
-	// automatically clears packet
-	void RegisterPacket(const PacketContext::Type type);
-	// packets must have reliable data
-	bool PushPacket(
-		const sf::IpAddress ip,
-		const unsigned short port);
-	Resource::PacketWritePipe* GetWritePipe();
 */
 }
