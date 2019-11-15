@@ -44,14 +44,11 @@ namespace Resource
 		{
 		}
 
-		sf::Packet& getPacket()
-		{
-			return packet;
-		}
+	protected:
+		sf::Packet packet;
 
 	private:
 		sf::Uint64 position = 0;
-		sf::Packet packet;
 	};
 
 	class PacketReadPipe
@@ -92,13 +89,10 @@ namespace Resource
 			return realSize;
 		}
 
-		sf::Packet& getPacket()
-		{
-			return packet;
-		}
+	protected:
+		sf::Packet packet;
 
 	private:
 		sf::Uint64 position = 0;
-		sf::Packet packet;
 	};
 }

@@ -16,24 +16,77 @@ namespace Device::Net
 	typedef sf::Uint32 ClientId;
 	typedef sf::Uint32 Sequence;
 
-	class PacketContext
+	struct Target
 	{
-	public:
-
-
-		enum Type
-		{
-			Invalid  = 0,
-			
-			NetDeviceMessage,
-			OperatorMessage,
-			ConnectionMessage,
-
-			_Length
-		} type;
-
 		unsigned short port;
 		sf::IpAddress address;
+	};
+
+	enum MessageType
+	{
+		Invalid = 0,
+
+		NetDevice,
+		Operator,
+		Connection,
+
+		Extended, // reserved
+
+		_Length
+	} type;
+
+	struct MessageRead
+		:
+		Resource::PacketReadPipe
+	{
+	public:
+		sf::Socket::Status pullPacket(sf::UdpSocket* const socket)
+		{
+			const sf::Socket::Status status = socket->receive(packet, target.address, target.port);
+
+			if (status == sf::Socket::Done && !readValue(&type))
+			{
+				return sf::Socket::Error;
+			}
+
+			return status;
+		}
+
+		MessageType getType() const
+		{
+			return type;
+		}
+
+		const Target& getTarget() const
+		{
+			return target;
+		}
+
+	private:
+		MessageType type;
+		Target target;
+	};
+
+	struct MessageWrite
+		:
+		Resource::PacketWritePipe
+	{
+	public:
+		bool load(const MessageType type)
+		{
+			reset();
+			return writeValue(&type);
+		}
+
+		sf::Socket::Status pushPacket(
+			sf::UdpSocket* const socket,
+			const Target target)
+		{
+			return socket->send(
+				packet,
+				target.address,
+				target.port);
+		}
 	};
 
 	struct Header
@@ -69,6 +122,24 @@ namespace Device::Net
 
 	class Client
 	{
+		struct PacketBuffer
+		{
+			PacketBuffer(
+				const Target target,
+				const Sequence sequence,
+				const sf::Packet packet)
+				:
+				target(target),
+				sequence(sequence),
+				packet(packet)
+			{
+			}
+
+			const Target target;
+			const Sequence sequence;
+			const sf::Packet packet;
+		};
+
 	public:
 		enum Type
 		{
@@ -121,16 +192,18 @@ namespace Device::Net
 			header.type = Header::Neutral;
 			header.sequence = internalSequence + 1;
 
-			if (Net::PushPacket(ipAddress, port))
+			if (Net::PushPacket(target.address, target.port))
 			{
 				return false;
 			}
 
-			packets.push_back(
-				std::make_pair(
-					header,
-					GetReadPipe()->getPacket()
-			));
+			PacketContext context;
+
+			packets.emplace_back(
+
+				header,
+				GetReadPipe()->getPacket()
+			);
 
 			++internalSequence;
 
@@ -154,12 +227,9 @@ namespace Device::Net
 		Type type = Pending;
 
 		ClientId id;
-		sf::IpAddress ipAddress;
-		unsigned short port;
+		Target target;
 
-		std::deque<
-			std::pair<Header, sf::Packet>
-		> packets;
+		std::deque<PacketContext> packets;
 	};
 
 	class Server
@@ -188,7 +258,7 @@ namespace Device::Net
 				switch (context.type)
 				{
 				case PacketContext::NetDeviceMessage:
-					if (Client* const client = findClientOrNull(header.clientId); client != NULL)
+					if (Client * const client = findClientOrNull(header.clientId); client != NULL)
 					{
 						// ...
 						// forward messages to client
@@ -253,9 +323,15 @@ namespace Device::Net
 
 	bool Initialize(const unsigned short port);
 	void Uninitialize();
-	
+
 	bool Isinitialized();
 
+	bool _PollPacket(MessageRead* const messsage);
+	bool _PushPacket(
+		MessageWrite* const message,
+		const Target target);
+
+/*
 	// packets cant be received double
 	// (actually can but it is extremly 
 	// rare [never happend before])
@@ -267,7 +343,8 @@ namespace Device::Net
 	void RegisterPacket(const PacketContext::Type type);
 	// packets must have reliable data
 	bool PushPacket(
-		const sf::IpAddress ip, 
+		const sf::IpAddress ip,
 		const unsigned short port);
 	Resource::PacketWritePipe* GetWritePipe();
+*/
 }
