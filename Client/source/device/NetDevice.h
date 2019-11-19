@@ -1,9 +1,7 @@
 #pragma once
 
 #include <Client/source/device/RandomDevice.h>
-
 #include <Client/source/logger/Logger.h>
-
 #include <Client/source/resource/pipes/PacketPipe.h>
 
 #include <SFML/Network.hpp>
@@ -15,6 +13,11 @@ namespace Device::Net
 	typedef sf::Uint64 PacketId;
 	typedef sf::Uint32 ClientId;
 	typedef sf::Uint32 Sequence;
+
+	bool Initialize(const unsigned short port);
+	void Uninitialize();
+
+	bool Isinitialized();
 
 	struct Target
 	{
@@ -145,15 +148,26 @@ namespace Device::Net
 	{
 		ClientId clientId;
 
-		enum Type
+		enum Type : sf::Uint8
 		{
 			Neutral,
 
 			Syn,
 			SynAck,
+
 			Ack
 
 		} type;
+
+		enum Response : sf::Uint8
+		{
+			Success,
+			Timeout,
+			UserAlreadyExists,
+			UserDoesNotExists,
+			InvalidSequence
+
+		} response;
 
 		Sequence sequence;
 
@@ -193,7 +207,7 @@ namespace Device::Net
 		};
 
 	public:
-		enum Type
+		enum Status
 		{
 			Pending,
 			Error,
@@ -203,30 +217,50 @@ namespace Device::Net
 			Timeout
 		};
 
+		// normally same for a group of clients
+		struct Settings
+		{
+			sf::Time softTimeout;	// re send after time
+			int hardTimeout;		// timeout after N re send
+		};
+
 		Client(
+			const Settings settings,
 			const Target target,
 			const ClientId id,
 			const Sequence sequence)
 			:
+			settings(settings),
 			target(target),
 			id(id),
 			externalSequence(sequence)
 		{
 			internalSequence = Random::MakeRandom<Sequence>();
-
-			if (!true) // send packet
-			{
-				type = Error;
-			}
 		}
 
 		void disconnect()
 		{
-			type = Disconnected;
+			status = Disconnected;
 		}
 
 		virtual void onLogic(const sf::Time time)
 		{
+			if (packets.size() != 0 
+				&& (logicCounter += time) > settings.softTimeout)
+			{
+				if (++timeoutCounter > settings.hardTimeout)
+				{
+					status = Timeout;
+					timeoutCounter = 0;
+				}
+				else
+				{
+					resendPacket();
+				}
+
+				logicCounter = sf::microseconds(0);
+			}
+
 			// - handle missing packets answers 
 			// (ack) after timeout [primary]
 			// - handle missing synack or ack
@@ -236,15 +270,17 @@ namespace Device::Net
 			// by low level net device
 		}
 
-		bool PushPacket(MessageWrite* const message)
+		bool PushMessage(MessageWrite* const message)
 		{
 			Header header;
 
 			header.type = Header::Neutral;
 			header.sequence = internalSequence + 1;
+			header.response = Header::Success;
 
-			if (Net::PushPacket(message, target))
+			if (packets.size() == 0 && !Net::PushPacket(message, target))
 			{
+				status = Error;
 				return false;
 			}
 
@@ -258,9 +294,68 @@ namespace Device::Net
 			return true;
 		}
 
-		Type getType() const
+		bool HandleMessage(const Header header, MessageRead* const message)
 		{
-			return type;
+			switch (header.type)
+			{
+			case Header::Ack:
+				if (packets.size() == 0)
+				{
+					Log::Error(L"Got ack while empty packetbuffer" + logSuffix(),
+						header.sequence, L"hseq",
+						externalSequence, L"eseq",
+						internalSequence, L"iseq");
+					status = Error;
+
+					return false;
+				}
+
+				if (header.sequence != packets[0].sequence)
+				{
+					// send invalid sequence
+
+					Log::Error(L"Got packet with invalid sequence" + logSuffix(),
+						header.sequence, L"hseq",
+						packets[0].sequence, L"pseq",
+						externalSequence, L"eseq",
+						internalSequence, L"iseq");
+					status = Error;
+					
+					return false;
+				}
+
+				packets.pop_front();
+
+				logicCounter = sf::microseconds(0);
+				timeoutCounter = 0;
+
+				if (packets.size() != 0)
+				{
+					resendPacket();
+				}
+
+				return true;
+			case Header::Syn:
+			{
+				Header header;
+
+				header.clientId;
+				header.sequence;
+				header.type = Header::SynAck;
+				header.response = Header::Success;
+
+				// send synack
+			}
+				return true;
+			}
+
+
+			// send ack
+		}
+
+		Status getStatus() const
+		{
+			return status;
 		}
 
 		ClientId getId() const
@@ -269,21 +364,53 @@ namespace Device::Net
 		}
 
 	private:
-		Sequence internalSequence;
-		Sequence externalSequence;
+		void resendPacket()
+		{
+			if (!PushPacket(packets[0].message, packets[0].target))
+			{
+				Log::Error(L"Failed to resend packet" + logSuffix(),
+					packets[0].sequence, L"pseq",
+					internalSequence, L"iseq",
+					externalSequence, L"eseq");
 
-		Type type = Pending;
+				status = Error;
+			}
+		}
+
+		std::wstring logSuffix()
+		{
+			return Log::Convert(id, L"cid",
+				target.address.toInteger(), L"ip",
+				target.port, L"port",
+				status, L"status");
+		}
+
+		Status status = Pending;
+		const Settings settings;
 
 		ClientId id;
 		Target target;
 
+		Sequence internalSequence;
+		Sequence externalSequence;
+
 		std::deque<PacketBuffer> packets;
+
+		sf::Time logicCounter;
+		int timeoutCounter = 0;
 	};
 
 	class Server
 	{
 	public:
-		Server(const int maxClients)
+		struct Settings
+		{
+			int maxClients;
+		};
+
+		Server(const Settings settings)
+			:
+			settings(settings)
 		{
 		}
 
@@ -298,50 +425,69 @@ namespace Device::Net
 
 				if (!header.make(&messageBuffer))
 				{
+					Log::Error(L"Failed to make message",
+						clients.size(), L"csize");
+
 					continue;
 				}
 
-				switch (messageBuffer.getType())
+				Client* client = findClientOrNull(header.clientId);
+				
+				if (client == NULL)
 				{
-				case MessageType::NetDevice:
-					if (Client * const client = findClientOrNull(header.clientId); client != NULL)
+					if (messageBuffer.getType() == MessageType::NetDevice)
 					{
-						// ...
-						// forward messages to client
-						// - client does assume packet lost on 
-						// multiple messages (for all types)
+						// has to be syn
+						if (header.type != Header::Syn)
+						{
+							Log::Error(L"Got invalid client without syn header",
+								header.clientId, L"cid",
+								header.sequence, L"seq",
+								(int) header.type, L"type",
+								clients.size(), L"csize");
 
-						break;
+							continue;
+						}
+
+						if (clients.size() >= settings.maxClients)
+						{
+							Log::Error(L"Cant accept client because max client number reached",
+								clients.size(), L"csize",
+								header.clientId, L"cid",
+								header.sequence, L"seq");
+
+							continue;
+						}
+
+						client = new Client(
+							// re send after 50ms
+							// timeout after 1000ms
+							Client::Settings{
+								sf::microseconds(50'000),
+								20
+							},
+							messageBuffer.getTarget(),
+							header.clientId,
+							header.sequence);
+
+						clients.push_back(client);
 					}
-
-					// has to be syn
-					if (header.type != Header::Syn)
+					else
 					{
-						break;
+						Log::Error(L"");
+
+						continue;
 					}
-
-					Client* const client = new Client(
-						
-						header.clientId,
-						header.sequence);
-
-					break;
-				case MessageType::Operator:
-					// forward messages to client
-
-					break;
-				case MessageType::Connection:
-					// forward messages to client
-
-					break;
 				}
+
+				client->HandleMessage(header, &messageBuffer);
 			}
 		}
 
 		virtual void cleanupClients()
 		{
 			for (decltype(clients)::iterator i = clients.begin(); i != clients.end(); ++i)
-				if ((*i)->getType() != Client::Connected)
+				if ((*i)->getStatus() != Client::Connected)
 				{
 					clients.erase(i);
 				}
@@ -353,8 +499,6 @@ namespace Device::Net
 		}
 
 	private:
-		MessageRead messageBuffer;
-
 		Client* findClientOrNull(const ClientId clientId) const
 		{
 			for (Client* const client : clients)
@@ -366,13 +510,11 @@ namespace Device::Net
 			return NULL;
 		}
 
+		const Settings settings;
+		MessageRead messageBuffer;
+
 		std::vector<Client*> clients;
 	};
-
-	bool Initialize(const unsigned short port);
-	void Uninitialize();
-
-	bool Isinitialized();
 
 	// packets cant be received double
 	// (actually can but it is extremly 

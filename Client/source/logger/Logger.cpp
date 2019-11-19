@@ -63,8 +63,7 @@ namespace Log
 		output->write(message);
 	}
 
-	void Error(
-		const std::wstring message)
+	void Error(const std::wstring message)
 	{
 		SectionHost* host = SectionHost::getCurrent();
 
