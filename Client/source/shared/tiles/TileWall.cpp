@@ -107,28 +107,27 @@ namespace Editor
 		return &button;
 	}
 	
-	Resource::TileBase* TileWall::createContent(
+	Resource::TileInstance* TileWall::createContent(
 		const Resource::VectorTileSize size, 
 		const Resource::VectorTilePosition position) const
 	{
 		Resource::WallTile* const tile = new Resource::WallTile();
 
-		tile->Content.density = density; // TODO: Make Variable
-		tile->Content.inputForceAddition = inputForceAddition;
-		tile->Content.friction = friction;
+		tile->content.density = density;
+		tile->content.inputForceAddition = inputForceAddition;
+		tile->content.friction = friction;
 
 		return tile;
 	}
 	
-	bool TileWall::adopt(
-		const Resource::TileBase* const tile)
+	bool TileWall::adopt(const Resource::TileInstance* const instance)
 	{
-		const Resource::WallTile* const wt = (const Resource::WallTile*) tile;
+		const Resource::WallTile* const tile = (const Resource::WallTile*) instance;
 		
-		density = wt->Content.density;
-		inputForceAddition = wt->Content.inputForceAddition;
-		friction = wt->Content.friction;
+		density = tile->content.density;
+		inputForceAddition = tile->content.inputForceAddition;
+		friction = tile->content.friction;
 
-		return true; // ignore
+		return true;
 	}
 }

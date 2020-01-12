@@ -1,5 +1,4 @@
-#pragma 
-
+#pragma once
 
 #include <Client/source/game/GameDefinitions.h>
 #include <Client/source/game/GameProperty.h>

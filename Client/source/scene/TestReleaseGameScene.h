@@ -10,6 +10,7 @@
 
 namespace Scene
 {
+	/*
 	class TestReleaseGameScene
 		:
 		public MainSceneBase
@@ -93,5 +94,5 @@ namespace Scene
 	private:
 		Game::LocalWorld* world;
 		Game::TestGamemode* testGamemode;
-	};
+	};*/
 }

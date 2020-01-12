@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/resource/WorldResource.h>
+#include <Client/source/shared/WorldDefinitions.h>
 
 #include <SFML/Graphics/Rect.hpp>
 
@@ -14,29 +15,15 @@ namespace Game
 		{
 			WorldInformation info;
 
-			info.worldId = resource->HeaderIntro.worldID;
-
-			info.authorName = resource->HeaderAuth.authorName;
-			info.mapName = resource->HeaderAuth.mapName;
+			info.worldId = resource->content.id;
 
 			info.size = sf::Vector2i(
-				resource->HeaderProperties.width,
-				resource->HeaderProperties.height
+				resource->content.width,
+				resource->content.height
 			);
 
-			info.defaultPlayerProperties.beginMovement = { 0.f, 0.f };
-			info.defaultPlayerProperties.beginPosition = { 0.f, -1.f };
-
-			info.defaultPlayerProperties.mass = 1.f;
-			info.defaultPlayerProperties.inputForce = 1.f;
-			info.defaultPlayerProperties.inputReduce = 2.0f;
-
-			info.defaultWorldProperties.airResistance = 1.f;
-			info.defaultWorldProperties.gravity = { 0.f, 1.f };
-
-			info.defaultPlayerProperties.viewFollow = true;
-			info.defaultPlayerProperties.viewWindow = { 0.f, 0.f, 20.f, 20.f };
-			info.defaultPlayerProperties.viewRotation = 0.f;
+			info.defaultPlayerProperties = resource->content.defaultPlayerProperties;
+			info.defaultProperties = resource->content.defaultProperties;
 
 			return info;
 		}
@@ -47,24 +34,7 @@ namespace Game
 		Resource::WorldId worldId;
 		sf::Vector2i size;
 
-		struct
-		{
-			sf::Vector2f gravity;
-			float airResistance;
-
-		} defaultWorldProperties;
-
-		struct
-		{
-			sf::Vector2f beginPosition;
-			sf::Vector2f beginMovement;
-
-			float mass, inputForce, inputReduce;
-
-			bool viewFollow;
-			sf::FloatRect viewWindow;
-			float viewRotation;
-
-		} defaultPlayerProperties;
+		Shared::WorldDefaultProperties defaultProperties;
+		Shared::PlayerDefaultProperties defaultPlayerProperties;
 	};
 }

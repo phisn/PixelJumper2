@@ -2,13 +2,102 @@
 
 #include <Client/source/resource/CommonResourceTypes.h>
 #include <Client/source/resource/ResourceBase.h>
-#include <Client/source/resource/ResourceTileContentBase.h>
+#include <Client/source/shared/tiles/TileDescription.h>
 
 #pragma pack(push, 1)
 
 namespace Resource
 {
+	class TileInstance
+		:
+		public Resource::ResourceBase
+	{
+	public:
+		TileInstance(const Shared::TileId id)
+			:
+			id(id)
+		{
+		}
+
+		virtual ~TileInstance()
+		{
+		}
+
+		virtual bool save(WritePipe* const pipe) override
+		{
+			return pipe->writeValue(&id);
+		}
+
+		virtual bool make(ReadPipe* const pipe) override
+		{
+			return pipe->readValue(&id);
+		}
+
+	private:
+		Shared::TileId id;
+	};
+
 	class Tile
+		:
+		public Resource::ResourceBase
+	{
+	public:
+		struct Content
+		{
+			TileSize width, height;
+			TilePosition x, y;
+
+			// indicates tileinstance as index
+			// saved in world. index and tileinstance
+			// is only useful with the whole world
+			sf::Uint16 instanceIndex;
+
+		} content;
+
+
+		bool make(ReadPipe* const pipe)
+		{
+			return pipe->readValue(&content);
+		}
+
+		bool save(WritePipe* const pipe)
+		{
+			return pipe->writeValue(&content);
+		}
+
+		bool setup()
+		{
+			return validate();
+		}
+
+		bool validate()
+		{
+			if (content.width == 0)
+			{
+				Log::Error(L"Got zero as tile width", 
+					content.x, L"x", 
+					content.y, L"y",
+					content.instanceIndex, L"i");
+
+				return false;
+			}
+
+			if (content.height == 0)
+			{
+				Log::Error(L"Got zero as tile height",
+					content.x, L"x",
+					content.y, L"y",
+					content.instanceIndex, L"i");
+
+				return false;
+			}
+
+			return true;
+		}
+	};
+
+	/*
+	class _N_Tile
 		:
 		public Resource::ResourceBase
 	{
@@ -125,6 +214,7 @@ namespace Resource
 				&& Header.height != 0;
 		}
 	};
+	*/
 }
 
 #pragma pack(pop)

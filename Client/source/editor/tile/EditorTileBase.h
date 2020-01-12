@@ -55,8 +55,8 @@ namespace Editor
 			return id == tile->id;
 		}
 
-		virtual bool adopt(const Resource::TileBase* const tile) = 0;
-		virtual Resource::TileBase* createContent(
+		virtual bool adopt(const Resource::TileInstance* const tile) = 0;
+		virtual Resource::TileInstance* createContent(
 			const Resource::VectorTileSize size,
 			const Resource::VectorTilePosition position) const = 0;
 

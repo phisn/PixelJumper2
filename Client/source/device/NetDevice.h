@@ -25,19 +25,6 @@ namespace Device::Net
 		sf::IpAddress address;
 	};
 
-	enum MessageType
-	{
-		Invalid = 0,
-
-		NetDevice,
-		Operator,
-		Connection,
-
-		Extended, // reserved
-
-		_Length
-	} type;
-
 	struct MessageRead
 		:
 		Resource::PacketReadPipe
@@ -47,8 +34,7 @@ namespace Device::Net
 		{
 			const sf::Socket::Status status = socket->receive(packet, target.address, target.port);
 
-			if (status == sf::Socket::Done && !(
-					readValue(&packetId) && readValue(&type) ))
+			if (status == sf::Socket::Done && !readValue(&packetId))
 			{
 				return sf::Socket::Error;
 			}
@@ -56,9 +42,8 @@ namespace Device::Net
 			return status;
 		}
 
-		MessageType getType() const
+		MessageRead* steal()
 		{
-			return type;
 		}
 
 		const Target& getTarget() const
@@ -72,9 +57,42 @@ namespace Device::Net
 		}
 
 	private:
-		MessageType type;
 		Target target;
 		PacketId packetId;
+	};
+
+	class MessageReadBuffer
+	{
+	public:
+		MessageReadBuffer()
+		{
+			message = new MessageRead();
+		}
+
+		~MessageReadBuffer()
+		{
+			delete message;
+		}
+
+		MessageRead* steal()
+		{
+			MessageRead* const temp = message;
+			message = new MessageRead();
+			return temp;
+		}
+
+		MessageRead* operator->() const
+		{
+			return message;
+		}
+
+		MessageRead* operator*() const
+		{
+			return message;
+		}
+
+	private:
+		MessageRead* message;
 	};
 
 	struct MessageWrite
@@ -84,14 +102,11 @@ namespace Device::Net
 		friend class Client;
 
 	public:
-		bool load(const MessageType type)
+		bool load()
 		{
 			const PacketId packetId = Device::Random::MakeRandom<PacketId>();
-
 			reset();
-			
-			return writeValue(&packetId)
-				&& writeValue(&type);
+			return writeValue(&packetId);
 		}
 
 		sf::Socket::Status pushPacket(
@@ -148,26 +163,21 @@ namespace Device::Net
 	{
 		ClientId clientId;
 
+		// error >= 128
 		enum Type : sf::Uint8
 		{
-			Neutral,
+			Reliable,
+			Unreliable,
 
 			Syn,
 			SynAck,
+			Ack,
 
-			Ack
-
+			Error_Timeout = 0b1000000,
+			Error_UserAlreadExists,
+			Error_UserDoesNotExist,
+			Error_InvalidSequence
 		} type;
-
-		enum Response : sf::Uint8
-		{
-			Success,
-			Timeout,
-			UserAlreadyExists,
-			UserDoesNotExists,
-			InvalidSequence
-
-		} response;
 
 		Sequence sequence;
 
@@ -186,8 +196,27 @@ namespace Device::Net
 		}
 	};
 
+
+	// packets cant be received double
+	// (actually can but it is extremly 
+	// rare [never happend before]) packets 
+	// have reliable data
+	bool PollPacket(MessageRead* const messsage);
+	bool PushPacket(
+		MessageWrite* const message,
+		const Target target);
+
 	class Client
 	{
+	public:
+		// normally same for a group of clients
+		struct Settings
+		{
+			sf::Time softTimeout = sf::milliseconds(20);	// re send after time
+			int hardTimeout = 50;		// timeout after N re send
+		};
+
+	private:
 		struct PacketBuffer
 		{
 			PacketBuffer(
@@ -217,25 +246,34 @@ namespace Device::Net
 			Timeout
 		};
 
-		// normally same for a group of clients
-		struct Settings
-		{
-			sf::Time softTimeout;	// re send after time
-			int hardTimeout;		// timeout after N re send
-		};
-
 		Client(
 			const Settings settings,
 			const Target target,
 			const ClientId id,
 			const Sequence sequence)
 			:
+			Client(settings, target)
+		{
+			this->id = id;
+			this->externalSequence = sequence;
+		}
+
+		Client(
+			const Settings settings,
+			const Target target)
+			:
+			id(NULL),
 			settings(settings),
-			target(target),
-			id(id),
-			externalSequence(sequence)
+			target(target)
 		{
 			internalSequence = Random::MakeRandom<Sequence>();
+			pushReliableMessageNet(Header::Syn);
+		}
+
+		~Client()
+		{
+			for (const PacketBuffer& packet : packets)
+				packet.message->deref();
 		}
 
 		void disconnect()
@@ -245,7 +283,7 @@ namespace Device::Net
 
 		virtual void onLogic(const sf::Time time)
 		{
-			if (packets.size() != 0 
+			if (packets.size() != 0
 				&& (logicCounter += time) > settings.softTimeout)
 			{
 				if (++timeoutCounter > settings.hardTimeout)
@@ -270,31 +308,30 @@ namespace Device::Net
 			// by low level net device
 		}
 
-		bool PushMessage(MessageWrite* const message)
+		bool pushUnreliableMessage(MessageWrite* const message)
 		{
 			Header header;
 
-			header.type = Header::Neutral;
-			header.sequence = internalSequence + 1;
-			header.response = Header::Success;
+			header.clientId = id;
+			header.type = Header::Type::Unreliable;
+			header.sequence = unreliableSequence++;
 
-			if (packets.size() == 0 && !Net::PushPacket(message, target))
+			if (!message->writeValue(&header) ||
+				!Net::PushPacket(message, target))
 			{
 				status = Error;
 				return false;
 			}
 
-			packets.emplace_back(
-				message,
-				target,
-				header.sequence);
-
-			++internalSequence;
-
 			return true;
 		}
 
-		bool HandleMessage(const Header header, MessageRead* const message)
+		bool pushReliableMessage(MessageWrite* const message)
+		{
+			return pushReliableMessageRaw(message, Header::Type::Reliable);
+		}
+
+		bool handleMessage(const Header header, MessageRead* const message)
 		{
 			switch (header.type)
 			{
@@ -320,15 +357,17 @@ namespace Device::Net
 						externalSequence, L"eseq",
 						internalSequence, L"iseq");
 					status = Error;
-					
+
 					return false;
 				}
 
+				packets[0].message->deref();
 				packets.pop_front();
 
 				logicCounter = sf::microseconds(0);
 				timeoutCounter = 0;
 
+				// if packet is waiting send next packet
 				if (packets.size() != 0)
 				{
 					resendPacket();
@@ -336,21 +375,19 @@ namespace Device::Net
 
 				return true;
 			case Header::Syn:
-			{
-				Header header;
+				pushReliableMessageNet(Header::SynAck);
 
-				header.clientId;
-				header.sequence;
-				header.type = Header::SynAck;
-				header.response = Header::Success;
-
-				// send synack
-			}
 				return true;
 			}
 
+			if (header.sequence == externalSequence)
+			{
+				onMessage(message);
+			}
 
-			// send ack
+			pushReliableMessageNet(Header::Ack);
+
+			return true;
 		}
 
 		Status getStatus() const
@@ -363,7 +400,54 @@ namespace Device::Net
 			return id;
 		}
 
+	protected:
+		virtual void onMessage(MessageRead* const message) = 0;
+
 	private:
+		bool pushReliableMessageNet(const Header::Type type)
+		{
+			MessageWrite* const message = new MessageWrite();
+
+			if (message->load() && pushReliableMessageRaw(message, type))
+			{
+				message->resign();
+				return true;
+			}
+			else
+			{
+				delete message;
+				return false;
+			}
+		}
+
+		bool pushReliableMessageRaw(
+			MessageWrite* const message,
+			const Header::Type type)
+		{
+			Header header;
+
+			header.clientId = id;
+			header.type = type;
+			header.sequence = internalSequence;
+
+			if (packets.size() == 0 && !Net::PushPacket(message, target))
+			{
+				status = Error;
+				return false;
+			}
+
+			message->ref();
+
+			packets.emplace_back(
+				message,
+				target,
+				header.sequence);
+
+			++internalSequence;
+
+			return true;
+		}
+
 		void resendPacket()
 		{
 			if (!PushPacket(packets[0].message, packets[0].target))
@@ -394,12 +478,19 @@ namespace Device::Net
 		Sequence internalSequence;
 		Sequence externalSequence;
 
+		// unreliable sequence starts at 0 and
+		// is only used to detect the amount of
+		// packet loss
+		Sequence unreliableSequence;
+
 		std::deque<PacketBuffer> packets;
+		std::deque<MessageRead*> messages;
 
 		sf::Time logicCounter;
 		int timeoutCounter = 0;
 	};
 
+	template <typename ClientT>
 	class Server
 	{
 	public:
@@ -419,11 +510,11 @@ namespace Device::Net
 			for (Client* const client : clients)
 				client->onLogic(time);
 
-			while (PollPacket(&messageBuffer))
+			while (PollPacket(*messageBuffer))
 			{
 				Header header;
 
-				if (!header.make(&messageBuffer))
+				if (!header.make(*messageBuffer))
 				{
 					Log::Error(L"Failed to make message",
 						clients.size(), L"csize");
@@ -432,55 +523,50 @@ namespace Device::Net
 				}
 
 				Client* client = findClientOrNull(header.clientId);
-				
+
 				if (client == NULL)
 				{
-					if (messageBuffer.getType() == MessageType::NetDevice)
+					// has to be syn
+					if (header.type != Header::Syn)
 					{
-						// has to be syn
-						if (header.type != Header::Syn)
-						{
-							Log::Error(L"Got invalid client without syn header",
-								header.clientId, L"cid",
-								header.sequence, L"seq",
-								(int) header.type, L"type",
-								clients.size(), L"csize");
+						Log::Error(L"Got invalid client without syn header",
+							header.clientId, L"cid",
+							header.sequence, L"seq",
+							(int)header.type, L"type",
+							clients.size(), L"csize");
 
-							continue;
-						}
-
-						if (clients.size() >= settings.maxClients)
-						{
-							Log::Error(L"Cant accept client because max client number reached",
-								clients.size(), L"csize",
-								header.clientId, L"cid",
-								header.sequence, L"seq");
-
-							continue;
-						}
-
-						client = new Client(
-							// re send after 50ms
-							// timeout after 1000ms
-							Client::Settings{
-								sf::microseconds(50'000),
-								20
-							},
-							messageBuffer.getTarget(),
-							header.clientId,
-							header.sequence);
-
-						clients.push_back(client);
-					}
-					else
-					{
-						Log::Error(L"");
+						// send error
 
 						continue;
 					}
+
+					if (clients.size() >= settings.maxClients)
+					{
+						Log::Error(L"Cant accept client because max client number reached",
+							clients.size(), L"csize",
+							header.clientId, L"cid",
+							header.sequence, L"seq");
+
+						// send error
+
+						continue;
+					}
+
+					client = new Client(
+						// re send after 50ms
+						// timeout after 1000ms
+						Client::Settings{
+							sf::microseconds(50'000),
+							20
+						},
+						messageBuffer->getTarget(),
+						createClientId(),
+						header.sequence);
+
+					clients.push_back(client);
 				}
 
-				client->HandleMessage(header, &messageBuffer);
+				client->handleMessage(header, &messageBuffer);
 			}
 		}
 
@@ -498,6 +584,10 @@ namespace Device::Net
 			return clients;
 		}
 
+	protected:
+		virtual void onClient(Client* const client) = 0;
+		virtual void onClientRemove(Client* const client) = 0;
+
 	private:
 		Client* findClientOrNull(const ClientId clientId) const
 		{
@@ -510,21 +600,29 @@ namespace Device::Net
 			return NULL;
 		}
 
+		ClientId createClientId() const
+		{
+			ClientId clientId;
+
+			while (true)
+			{
+				clientId = Random::MakeRandom<ClientId>();
+
+				for (Client* const client : clients)
+					if (client->getId() == clientId)
+					{
+						goto GET_CLIENT_ID_RETRY;
+					}
+
+				return clientId;
+			GET_CLIENT_ID_RETRY:
+			}
+		}
+
 		const Settings settings;
-		MessageRead messageBuffer;
+		MessageReadBuffer messageBuffer;
 
 		std::vector<Client*> clients;
 	};
-
-	// packets cant be received double
-	// (actually can but it is extremly 
-	// rare [never happend before]) packets 
-	// have reliable data
-	bool PollPacket(MessageRead* const messsage);
-	bool PushPacket(
-		MessageWrite* const message,
-		const Target target);
-
-/*
-*/
 }
+

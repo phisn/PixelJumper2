@@ -59,7 +59,7 @@ namespace Device::Net
 			return false;
 		}
 
-		if (!ValidatePacketId())
+		if (!ValidatePacketId(message->getPacketId()))
 		{
 			// no log needed because udp
 			// double packets are common
@@ -68,8 +68,7 @@ namespace Device::Net
 			return false;
 		}
 
-		return message->getType() > MessageType::Invalid 
-			&& message->getType() < MessageType::_Length;
+		return true;
 	}
 
 	bool ValidatePacketId(const PacketId id)

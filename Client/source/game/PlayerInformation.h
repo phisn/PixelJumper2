@@ -14,8 +14,8 @@ namespace Game
 		{
 			PlayerInformation information;
 
-			information.playerId = resource->HeaderIntro.playerId;
-			information.name = resource->HeaderAuth.userName;
+			information.playerId = resource->connection.HeaderIntro.playerId;
+			information.name = resource->connection.HeaderAuth.userName;
 
 			information.color = sf::Color::Red;
 

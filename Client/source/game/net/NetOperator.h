@@ -65,83 +65,6 @@ namespace Game::Net
 	protected:
 		virtual void processLogic() = 0;
 
-		virtual void onNetMessagePacket()
-		{
-			OperatorMessage message;
-
-			Resource::ReadPipe* const pipe = Device::Net::GetReadPipe();
-			if (!message.make(pipe))
-			{
-				// ...
-				return;
-			}
-
-			onOperatorMessage(&message);
-		}
-
-		virtual void onConnectionMessagePacket()
-		{
-
-		}
-
-		virtual void onCommandPacket()
-		{
-		}
-
-		virtual void onOperatorMessage(OperatorMessage* const message)
-		{
-			switch (message->type)
-			{
-			case OperatorMessage::Connect:
-			{
-				Resource::PlayerResource resource;
-
-				if (!retrivePlayerResource(
-						&resource,
-						message->connection.HeaderIntro.playerId))
-				{
-					// ...
-				}
-
-				if (!hasPlayer(message->connection.HeaderIntro.playerId))
-				{
-					RemoteConnection* const connection = new RemoteConnection(packet.address, PlayerInformation::Create(&resource));
-
-					if (!simulator->pushConnection(connection))
-					{
-						// ...
-					}
-
-					connections.push_back(connection);
-				}
-
-				Device::Net::RegisterPacket(packet.type);
-
-				Resource::ResourceBase* const client = NULL;
-				if (!client->save(Device::Net::GetWritePipe()))
-				{
-					// ... delete last connection
-				}
-
-				if (!Device::Net::PushPacket(
-					packet.address,
-					packet.port))
-				{
-					// ... delete last connection
-				}
-
-				// success
-			}
-				break;
-			case OperatorMessage::Ack:
-
-				break;
-			case OperatorMessage::Disconnect:
-				connections[0]->adjustStatus(RemoteConnection::Disconnected);
-
-				break;
-			}
-		}
 
 		virtual bool retrivePlayerResource(
 			Resource::PlayerResource* const resource,
@@ -150,7 +73,6 @@ namespace Game::Net
 		Simulator* simulator;
 
 		std::vector<RemoteConnection*> connections;
-		Device::Net::PacketContext packet;
 
 	private:
 		const Settings settings;

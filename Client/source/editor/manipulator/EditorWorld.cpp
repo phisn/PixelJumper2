@@ -1,5 +1,8 @@
 #include "EditorWorld.h"
 
+
+
+
 _Ret_maybenull_
 Resource::World* Editor::World::convert(
 	const sf::Uint32 worldID,
@@ -17,7 +20,7 @@ Resource::World* Editor::World::convert(
 
 	Resource::World* world = new Resource::World();
 
-	world->HeaderIntro.worldID = worldID;
+	world->content.id = worldID;
 
 	world->HeaderAuth.authorName = authorName;
 	world->HeaderAuth.mapName = mapName;

@@ -87,7 +87,6 @@
     <ClInclude Include="source\game\Environment.h" />
     <ClInclude Include="source\game\GameDefinitions.h" />
     <ClInclude Include="source\game\GameState.h" />
-    <ClInclude Include="source\game\_LocalWorld.h" />
     <ClInclude Include="source\game\net\FrameStatus.h" />
     <ClInclude Include="source\game\tiletrait\CollidableTile.h" />
     <ClInclude Include="source\game\tiletrait\DrawableTile.h" />
@@ -97,7 +96,6 @@
     <ClInclude Include="source\game\tiletrait\StaticTile.h" />
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h" />
     <ClInclude Include="source\game\VirtualPlayer.h" />
-    <ClInclude Include="source\game\_VirtualWorld.h" />
     <ClInclude Include="source\logger\Names.h" />
     <ClInclude Include="source\logger\SectionHost.h" />
     <ClInclude Include="source\logger\LoggerLevel.h" />
@@ -127,7 +125,6 @@
     <ClInclude Include="source\scene\SubSceneBase.h" />
     <ClInclude Include="source\scene\TestGameScene.h" />
     <ClInclude Include="source\scene\TestMenuScene.h" />
-    <ClInclude Include="source\scene\TestReleaseGameScene.h" />
     <ClInclude Include="source\shared\tiles\TileDescription.h" />
     <ClInclude Include="source\shared\tiles\TileWall.h" />
   </ItemGroup>
@@ -150,7 +147,6 @@
     <ClCompile Include="source\game\Environment.cpp" />
     <ClCompile Include="source\game\GamePlayer.cpp" />
     <ClCompile Include="source\game\GameWorld.cpp" />
-    <ClCompile Include="source\game\_LocalWorld.cpp" />
     <ClCompile Include="source\game\PlayerRepresentation.cpp" />
     <ClCompile Include="source\game\tiletrait\CollidableTile.cpp" />
     <ClCompile Include="source\game\tiletrait\DrawableTile.cpp" />
@@ -158,7 +154,6 @@
     <ClCompile Include="source\game\tiletrait\GameTileBase.cpp" />
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
     <ClCompile Include="source\game\VirtualPlayer.cpp" />
-    <ClCompile Include="source\game\_VirtualWorld.cpp" />
     <ClCompile Include="source\logger\SectionHost.cpp" />
     <ClCompile Include="source\logger\Output.cpp" />
     <ClCompile Include="source\logger\Section.cpp" />
@@ -263,20 +258,6 @@
     <None Include="source\game\net\NetGameBase.h" />
     <None Include="source\game\net\NetOperator.cpp" />
     <None Include="source\game\net\NetOperator.h" />
-    <None Include="source\game\old\GameStateManager.cpp" />
-    <None Include="source\game\old\GameStateManager.h" />
-    <None Include="source\game\old\HostWorld.cpp" />
-    <None Include="source\game\old\HostWorld.h" />
-    <None Include="source\game\old\_LocalPlayer.cpp" />
-    <None Include="source\game\old\_LocalPlayer.h" />
-    <None Include="source\game\old\_PlayerBase.cpp" />
-    <None Include="source\game\old\_PlayerBase.h" />
-    <None Include="source\game\old\PlayerState.cpp" />
-    <None Include="source\game\old\PlayerState.h" />
-    <None Include="source\game\old\WorldBase.cpp" />
-    <None Include="source\game\old\WorldBase.h" />
-    <None Include="source\game\old\WorldState.cpp" />
-    <None Include="source\game\old\WorldState.h" />
     <None Include="source\game\GamePlayer.h" />
     <None Include="source\game\PlayerInformation.h" />
     <None Include="source\game\PlayerProperties.cpp" />
@@ -324,7 +305,7 @@
     <None Include="source\menu\MenuSpecialProperties.cpp" />
     <None Include="source\menu\MenuSpecialProperties.h" />
     <None Include="source\resource\CommonResourceTypes.h" />
-    <None Include="source\resource\ResourceTileContentBase.h" />
+    <None Include="source\shared\WorldDefinitions.h" />
     <None Include="source\shared\tiles\TileExit.h" />
     <None Include="source\shared\tiles\TileCommon.h" />
   </ItemGroup>

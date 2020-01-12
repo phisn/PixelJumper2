@@ -589,3 +589,105 @@
 [Section] : Creating World ... Success
 [Information] : Entering game loop
 [Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Information] : resource/static/font.ttf
+---> [Section] : Mapping all resource types ... Failed
+-----> [Section] : Mapping resource type 'World' ... Failed
+-------> [Warning] : File with invalid extension 'TestWorld.7z' (resource path: 'resource/world') (extension: '.7z')
+-------> [Warning] : File with invalid extension 'TestWorld.zip' (resource path: 'resource/world') (extension: '.zip')
+-------> [Information] : Mapped '1' files (resource type: 'resource/world')
+-----> [Section] : Mapping resource type 'Player' ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Information] : resource/static/font.ttf
+---> [Section] : Mapping all resource types ... Failed
+-----> [Section] : Mapping resource type 'World' ... Failed
+-------> [Warning] : File with invalid extension 'TestWorld.7z' (resource path: 'resource/world') (extension: '.7z')
+-------> [Warning] : File with invalid extension 'TestWorld.zip' (resource path: 'resource/world') (extension: '.zip')
+-------> [Information] : Mapped '1' files (resource type: 'resource/world')
+-----> [Section] : Mapping resource type 'Player' ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Information] : resource/static/font.ttf
+---> [Section] : Mapping all resource types ... Failed
+-----> [Section] : Mapping resource type 'World' ... Failed
+-------> [Warning] : File with invalid extension 'TestWorld.7z' (resource path: 'resource/world') (extension: '.7z')
+-------> [Warning] : File with invalid extension 'TestWorld.zip' (resource path: 'resource/world') (extension: '.zip')
+-------> [Information] : Mapped '1' files (resource type: 'resource/world')
+-----> [Section] : Mapping resource type 'Player' ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Information] : resource/static/font.ttf
+---> [Section] : Mapping all resource types ... Failed
+-----> [Section] : Mapping resource type 'World' ... Failed
+-------> [Warning] : File with invalid extension 'TestWorld.7z' (resource path: 'resource/world') (extension: '.7z')
+-------> [Warning] : File with invalid extension 'TestWorld.zip' (resource path: 'resource/world') (extension: '.zip')
+-------> [Information] : Mapped '1' files (resource type: 'resource/world')
+-----> [Section] : Mapping resource type 'Player' ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Information] : resource/static/font.ttf
+---> [Section] : Mapping all resource types ... Failed
+-----> [Section] : Mapping resource type 'World' ... Failed
+-------> [Warning] : File with invalid extension 'TestWorld.7z' (resource path: 'resource/world') (extension: '.7z')
+-------> [Warning] : File with invalid extension 'TestWorld.zip' (resource path: 'resource/world') (extension: '.zip')
+-------> [Information] : Mapped '1' files (resource type: 'resource/world')
+-----> [Section] : Mapping resource type 'Player' ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Information] : resource/static/font.ttf
+---> [Section] : Mapping all resource types ... Failed
+-----> [Section] : Mapping resource type 'World' ... Failed
+-------> [Warning] : File with invalid extension 'TestWorld.7z' (resource path: 'resource/world') (extension: '.7z')
+-------> [Warning] : File with invalid extension 'TestWorld.zip' (resource path: 'resource/world') (extension: '.zip')
+-------> [Information] : Mapped '1' files (resource type: 'resource/world')
+-----> [Section] : Mapping resource type 'Player' ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping

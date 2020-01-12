@@ -17,6 +17,7 @@
 
 namespace Scene
 {
+	/*
 	class GameSlider
 		:
 		public Menu::RowContainer
@@ -336,4 +337,5 @@ namespace Scene
 		Game::LocalWorld world;
 		Game::TestGamemode testGamemode;
 	};
+	*/
 }

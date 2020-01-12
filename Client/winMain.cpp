@@ -1,5 +1,9 @@
+#include <iostream>
+
 #include <Client/source/device/CoreDevice.h>
 #include <Client/source/logger/Logger.h>
+
+#include <Client/source/device/NetDevice.h>
 
 #if defined(_DEBUG) or not _WIN32
 	int main()
@@ -13,20 +17,42 @@
 #else
 	Log::Output::Add(Log::Output::FILE_OUT, Log::Level::Warning);
 #endif
-	
 	const Device::Core::Error error = Device::Core::Initialize();
+	Log::Information(Device::Net::Initialize(12345), L"result");
 
-	if (error != Device::Core::Error::Success)
+	class C : public Device::Net::Client
 	{
-		std::cin.ignore();
+	public:
+		C()
+			:
+			Client(
+				Device::Net::Client::Settings{ },
+				Device::Net::Target{ 12345, sf::IpAddress::LocalHost })
+		{
+		}
+		
+	private:
+		void onMessage(Device::Net::MessageRead* const message) override
+		{
+			Log::Information(L"Message");
+		}
 
-		return (int) error;
-	}
+	} client;
+
+	/*
+		
+		if (error != Device::Core::Error::Success)
+		{
+			std::cin.ignore();
+
+			return (int) error;
+		}
 	
-	Log::Information(L"Starting game");
-	int result = Device::Core::RunGameLoop();
-	Device::Core::Uninitialize();
+		Log::Information(L"Starting game");
+		int result = Device::Core::RunGameLoop();
+		Device::Core::Uninitialize();
 
-	std::cin.ignore();
-	return result;
+		std::cin.ignore();
+		return result;
+	*/
 }

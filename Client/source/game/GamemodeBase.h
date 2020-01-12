@@ -146,7 +146,7 @@ namespace Game
 				Log::Error(L"Got invalid world in classic gamemode");
 				return false;
 
-			WORLD_FOUND:
+			WORLD_FOUND: __noop;
 			}
 
 			return currentWorld->readState(readPipe);

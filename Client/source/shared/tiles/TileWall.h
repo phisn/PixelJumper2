@@ -13,14 +13,19 @@
 #include <Client/source/game/tiletrait/CollidableTile.h>
 #include <Client/source/game/tiletrait/StaticTile.h>
 
-#include <Client/source/resource/ResourceTileContentBase.h>
-
 #include <Client/source/shared/tiles/TileDescription.h>
 
 
 namespace Shared
 {
 	const extern TileDescription TileWall;
+
+	struct WallContent
+	{
+		float density;
+		float inputForceAddition;
+		float friction;
+	};
 }
 
 namespace Game
@@ -94,11 +99,11 @@ namespace Editor
 			setPosition(position);
 		}
 
-		Resource::TileBase* createContent(
+		Resource::TileInstance* createContent(
 			const Resource::VectorTileSize size,
 			const Resource::VectorTilePosition position) const override;
 
-		bool adopt(const Resource::TileBase* const tile) override;
+		bool adopt(const Resource::TileInstance* const tile) override;
 
 		virtual void setPosition(const sf::Vector2f position)
 		{
@@ -208,23 +213,27 @@ namespace Resource
 
 	class WallTile
 		:
-		public TileBase
+		public TileInstance
 	{
 	public:
+		Shared::WallContent content;
+
 		WallTile()
 			:
-			TileBase(Shared::TileId::TileWall, sizeof(Content))
+			TileInstance(Shared::TileId::TileWall)
 		{
 		}
 
 		bool make(ReadPipe* const pipe) override
 		{
-			return pipe->readValue(&Content);
+			return TileInstance::make(pipe) 
+				&& pipe->readValue(&content);
 		}
 
 		bool save(WritePipe* const pipe) override
 		{
-			return pipe->writeValue(&Content);
+			return TileInstance::save(pipe)
+				&& pipe->writeValue(&content);
 		}
 
 		bool setup() override
@@ -232,13 +241,10 @@ namespace Resource
 			return true;
 		}
 
-		struct
+		bool validate() override
 		{
-			float density;
-			float inputForceAddition;
-			float friction;
-
-		} Content;
+			return true;
+		}
 	};
 
 #pragma pack(pop)

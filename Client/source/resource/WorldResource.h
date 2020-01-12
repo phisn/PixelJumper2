@@ -1,14 +1,16 @@
+
 #pragma once
 
-#include <Client/source/resource/TileResource.h>
+#include <Client/source/resource/PlayerResource.h>
 #include <Client/source/resource/ResourceBase.h>
+#include <Client/source/resource/TileResource.h>
+
+#include <Client/source/shared/WorldDefinitions.h>
 
 #include <SFML/Main.hpp>
 
 #include <string>
 #include <vector>
-
-#define WORLD_MAGIC 0xbb'22'cc'33
 
 #pragma pack(push, 1)
 
@@ -20,8 +22,83 @@ namespace Resource
 		:
 		public Resource::ResourceBase
 	{
+		struct PrivateContent
+		{
+			sf::Uint32 checksum;
+
+			sf::Uint16 tileInstanceCount;
+			sf::Uint16 tileCount;
+		};
+
+	public:
+		struct Content
+		{
+			WorldId id;
+			PlayerId author;
+
+			Shared::WorldDefaultProperties defaultProperties;
+			Shared::PlayerDefaultProperties defaultPlayerProperties;
+
+			sf::Uint16 width, height;
+
+		} content;
+
+		std::vector<TileInstance*> tileInstances;
+		std::vector<Tile> tiles;
+
+		bool make(ReadPipe* const pipe) override
+		{
+			if (!pipe->readValue(&content))
+			{
+				return false;
+			}
+
+			for (TileInstance* const instance : tileInstances)
+				if (!instance->make(pipe))
+				{
+					return false;
+				}
+
+			for (Tile& tile : tiles)
+				if (!tile.make(pipe))
+				{
+					return false;
+				}
+
+			return true;
+		}
+
+		bool save(WritePipe* const pipe) override
+		{
+		}
+
+		bool setup() override
+		{
+		}
+
+	private:
+		bool validateContent()
+		{
+			return validateAuth()
+				&& validateInnerContent()
+				&& validateTiles();
+		}
+
+		bool validateAuth();
+		bool validateInnerContent();
+		bool validateTiles();
+
+		sf::Uint32 generateCheckSum();
+	};
+
+	/*
+	class _N_World
+		:
+		public Resource::ResourceBase
+	{
 		typedef unsigned char AuthorNameSize;	// 0 - 255
 		typedef unsigned char MapNameSize;		// 0 - 255
+
 	public:
 		struct
 		{
@@ -39,8 +116,11 @@ namespace Resource
 		{
 			EDIT sf::Uint16 width, height;
 
+			AUTO sf::Uint16 tileContentCount;
 			AUTO sf::Uint16 tileCount;
+
 			AUTO sf::Uint32 tileCheckSum;
+
 		} HeaderProperties = { };
 
 		bool make(ReadPipe* const pipe) override;
@@ -93,6 +173,7 @@ namespace Resource
 		bool validateHeaderAuth() const;
 		bool validateHeaderProperties() const;
 	};
+	*/
 }
 
 #pragma pack(pop)

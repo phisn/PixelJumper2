@@ -24,13 +24,13 @@ namespace Shared
 			return TileCreation{
 				[](const Resource::Tile * const tile, const int identity) -> Game::GameTileBase* { return GameTile::Create(tile, identity); },
 				[]() -> Editor::TileTemplate* { return new EditorTemplate(); },
-				[]() -> Resource::TileBase* { return new ResourceTile(); }
+				[]() -> Resource::TileInstance* { return new ResourceTile(); }
 			};
 		}
 
 		Game::GameTileBase* (*createGameTile)(const Resource::Tile*, const int);
 		Editor::TileTemplate* (*createEditorTemplate)();
-		Resource::TileBase* (*createResourceTile)();
+		Resource::TileInstance* (*createResourceTile)();
 	};
 
 	struct TileDescription

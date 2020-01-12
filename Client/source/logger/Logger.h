@@ -85,10 +85,7 @@ namespace Log
 
 	// wstring(message)
 	// T(value) [to_wstring] "=" wstring(label)
-	std::wstring Convert(const std::wstring message)
-	{
-		return message;
-	}
+	
 
 	template <typename... Args>
 	std::wstring Convert(const std::wstring message, Args... args);
@@ -101,6 +98,12 @@ namespace Log
 	std::wstring Convert(const std::wstring message, Args... args)
 	{
 		return message + L" " + Convert(args...);
+	}
+
+	template <>
+	inline std::wstring Convert<>(const std::wstring message)
+	{
+		return message;
 	}
 
 	template <typename T>
