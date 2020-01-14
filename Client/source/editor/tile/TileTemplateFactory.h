@@ -11,6 +11,6 @@ namespace Editor
 		void Initialize();
 		void Uninitialize();
 
-		TileTemplate* GetTileTemplate(const Shared::TileId id);
+		TileTemplate* GetTileTemplate(const Shared::TileID id);
 	}
 }

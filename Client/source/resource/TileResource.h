@@ -2,39 +2,65 @@
 
 #include <Client/source/resource/CommonResourceTypes.h>
 #include <Client/source/resource/ResourceBase.h>
-#include <Client/source/shared/tiles/TileDescription.h>
+#include <Client/source/shared/tiles/TileCommon.h>
+
+#include <Client/source/logger/Logger.h>
 
 #pragma pack(push, 1)
 
 namespace Resource
 {
-	class TileInstance
+	class TileInstanceWrapper
 		:
 		public Resource::ResourceBase
 	{
 	public:
-		TileInstance(const Shared::TileId id)
+		TileInstanceWrapper(const Shared::TileID id);
+
+		TileInstanceWrapper()
 			:
-			id(id)
+			instance(NULL)
 		{
 		}
 
-		virtual ~TileInstance()
+		~TileInstanceWrapper()
 		{
+			if (instance)
+				delete instance;
 		}
 
 		virtual bool save(WritePipe* const pipe) override
 		{
-			return pipe->writeValue(&id);
+			return pipe->writeValue(&id)
+				&& instance->save(pipe);
 		}
 
-		virtual bool make(ReadPipe* const pipe) override
+		virtual bool make(ReadPipe* const pipe) override;
+
+		bool setup()
 		{
-			return pipe->readValue(&id);
+			return instance->setup();
+		}
+
+		bool validate()
+		{
+			return instance->validate();
+		}
+
+		Shared::TileID getID() const
+		{
+			return id;
+		}
+
+		template <typename TileInstance>
+		TileInstance* getInstance() const
+		{
+			return (TileInstance*) instance;
 		}
 
 	private:
-		Shared::TileId id;
+		Resource::ResourceBase* instance;
+		Shared::TileID id;
 	};
 
 	class Tile
@@ -122,7 +148,7 @@ namespace Resource
 
 		struct
 		{
-			AUTO Shared::TileId id;
+			AUTO Shared::TileID id;
 
 			EDIT TileSize width;
 			EDIT TileSize height;
@@ -209,7 +235,7 @@ namespace Resource
 
 		bool validateHeader() const
 		{
-			return Header.id > Shared::TileId::_Invalid
+			return Header.id > Shared::TileID::_Invalid
 				&& Header.width != 0
 				&& Header.height != 0;
 		}

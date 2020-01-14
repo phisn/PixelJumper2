@@ -12,7 +12,9 @@ namespace Game
 		virtual void registerType(Environment* const) = 0;
 	};
 
-	class GameTileBase : public RegisterableType
+	class GameTileBase 
+		:
+		public RegisterableType
 	{
 	public:
 		GameTileBase(const TileIdentity identity)

@@ -29,35 +29,10 @@ namespace Game
 	class CollidableTile
 	{
 	public:
-		CollidableTile(
-			const float density,
-			const float inputForceAddition,
-			const float friction)
-			:
-			density(density),
-			inputForceAddition(inputForceAddition),
-			friction(friction)
-		{
-		}
-
 		/*
 			Return: repeated movement without physics,
 			used for sliding or bouncing (normal walls slide too [ignores phyiscs])
 		*/
-
-		void setDensity(float value)
-		{
-			density = value * Definition::tile_density;
-		}
-		void setFriction(float value)
-		{
-			friction = value * Definition::tile_friction;
-		}
-		void setForce(float value)
-		{
-			inputForceAddition = value * Definition::tile_input;
-		}
-
 		virtual sf::Vector2f onCollision(
 			const CollisionType type,
 			const Collision collision) = 0;
@@ -72,16 +47,6 @@ namespace Game
 			const Collision*
 		> collisionEvent;
 
-		float getDensity() const
-		{
-			return density;
-		}
-
-		float getInputForceAddition() const
-		{
-			return inputForceAddition;
-		}
-
 	protected:
 		void registerCollisionType(
 			Environment* const env,
@@ -90,10 +55,6 @@ namespace Game
 			env->registerTile<CollidableTile>(this);
 			env->registerCollisionType(type, this);
 		}
-
-		float density;
-		float inputForceAddition;
-		float friction;
 
 		void notifyCollisionEvent(
 			const CollisionType* type,

@@ -5,7 +5,7 @@
 
 #include <Client/source/device/NetDevice.h>
 
-#if defined(_DEBUG) or not _WIN32
+#if defined(_DEBUG) or not defined(_WIN32)
 	int main()
 #else
 	#include <Windows.h>
@@ -19,7 +19,7 @@
 #endif
 	const Device::Core::Error error = Device::Core::Initialize();
 	Log::Information(Device::Net::Initialize(12345), L"result");
-
+/*
 	class C : public Device::Net::Client
 	{
 	public:
@@ -38,6 +38,7 @@
 		}
 
 	} client;
+*/
 
 	/*
 		

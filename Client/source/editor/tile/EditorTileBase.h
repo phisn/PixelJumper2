@@ -12,7 +12,7 @@ namespace Editor
 	{
 	public:
 		TileBase(
-			const Shared::TileId id,
+			const Shared::TileID id,
 			const sf::Color commonColor)
 			:
 			id(id),
@@ -40,7 +40,7 @@ namespace Editor
 			return size;
 		}
 
-		Shared::TileId getTileId() const
+		Shared::TileID getTileId() const
 		{
 			return id;
 		}
@@ -55,10 +55,8 @@ namespace Editor
 			return id == tile->id;
 		}
 
-		virtual bool adopt(const Resource::TileInstance* const tile) = 0;
-		virtual Resource::TileInstance* createContent(
-			const Resource::VectorTileSize size,
-			const Resource::VectorTilePosition position) const = 0;
+		virtual bool adopt(const Resource::TileInstanceWrapper* const instanceWrapper) = 0;
+		virtual void assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const = 0;
 
 		virtual void draw(sf::RenderTarget* const target) const = 0;
 
@@ -68,6 +66,6 @@ namespace Editor
 	private:
 		sf::Vector2f size{ 1, 1 }, position{ 0, 0 };
 
-		const Shared::TileId id;
+		const Shared::TileID id;
 	};
 }

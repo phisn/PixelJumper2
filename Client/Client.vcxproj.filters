@@ -311,9 +311,6 @@
     <ClCompile Include="source\resource\ResourceInterface.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
-    <ClCompile Include="source\resource\ResourceBase.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
     <ClCompile Include="source\resource\WorldResource.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
@@ -406,9 +403,6 @@
     </ClCompile>
     <ClCompile Include="source\game\GamePlayer.cpp">
       <Filter>source\game\player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\scene\TestReleaseGameScene.cpp">
-      <Filter>source\scene</Filter>
     </ClCompile>
     <ClCompile Include="source\scene\GameJoinScene.cpp">
       <Filter>source\scene</Filter>
@@ -677,9 +671,6 @@
     <None Include="source\game\GamemodeBase.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\DependentTileData.h">
-      <Filter>source\game</Filter>
-    </None>
     <None Include="resource2.h" />
     <None Include="Client2.rc" />
     <None Include="source\shared\tiles\TileExit.h">
@@ -750,9 +741,6 @@
     <None Include="source\game\net\NetOperator.h">
       <Filter>source\game\net</Filter>
     </None>
-    <None Include="source\shared\tiles\TileCommon.h">
-      <Filter>source\scene</Filter>
-    </None>
     <None Include="source\game\net\NetClient.cpp">
       <Filter>source\game\net</Filter>
     </None>
@@ -770,6 +758,12 @@
     </None>
     <None Include="source\shared\WorldDefinitions.h">
       <Filter>source\shared</Filter>
+    </None>
+    <None Include="source\shared\tiles\TileCommon.h">
+      <Filter>source\shared\tiles</Filter>
+    </None>
+    <None Include="source\game\DependentTileData.h">
+      <Filter>source\game</Filter>
     </None>
   </ItemGroup>
 </Project>

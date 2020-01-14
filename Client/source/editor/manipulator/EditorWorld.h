@@ -16,8 +16,6 @@
 #include <set>
 #include <vector>
 
-#define RTILE_TYPE_MAX(var) std::numeric_limits< decltype( decltype(Resource::Tile::Header):: ## var )>::max()
-
 namespace Editor
 {
 	class World
@@ -29,14 +27,15 @@ namespace Editor
 			Resource::VectorTileSize size;
 			Resource::VectorTilePosition position;
 
-			Editor::TileBase* tile;
+			int instancePosition;
 		};
 
-		typedef std::set<Editor::TileBase*> Tiles;
-		typedef std::vector<
-			std::vector<Editor::TileBase*>
-		> TileGroups;
 		typedef std::vector<GroupedTile> GroupedTiles;
+
+		typedef std::set<Editor::TileBase*> Tiles;
+		typedef std::vector<Editor::TileBase*> TileGroup;
+		typedef std::vector<TileGroup> TileGroups;
+
 	public:
 		void replaceTileTemplate(
 			TileBase* const tile,
@@ -59,25 +58,25 @@ namespace Editor
 		_Ret_maybenull_
 		Resource::World* convert(
 			const sf::Uint32 worldID,
-			const std::wstring authorName,
-			const std::wstring mapName) const;
+			const Resource::PlayerID playerID) const;
 
 		bool adopt(const Resource::World* const world)
 		{
-			for (const Resource::Tile& resourceTile : world->TileContainer)
+			for (const Resource::Tile& tile : world->tiles)
 			{
-				TileTemplate* const tileTemplate = TileTemplateFactory::GetTileTemplate(resourceTile.Header.id);
+				Resource::TileInstanceWrapper* tileInstance = world->tileInstances[tile.content.instanceIndex];
+				TileTemplate* const tileTemplate = TileTemplateFactory::GetTileTemplate(tileInstance->getID());
 
-				for (int xoffset = 0; xoffset < resourceTile.Header.width; ++xoffset)
-					for (int yoffset = 0; yoffset < resourceTile.Header.height; ++yoffset)
+				for (int xoffset = 0; xoffset < tile.content.width; ++xoffset)
+					for (int yoffset = 0; yoffset < tile.content.height; ++yoffset)
 					{
 						TileBase* const editorTile = tileTemplate->create(sf::Vector2f(
-							resourceTile.Header.x + xoffset, 
-							resourceTile.Header.y + yoffset
+							tile.content.x + xoffset,
+							tile.content.y + yoffset
 						));
 
 						tiles.insert(editorTile);
-						editorTile->adopt(resourceTile.Content);
+						editorTile->adopt(tileInstance);
 					}
 			}
 
@@ -90,10 +89,11 @@ namespace Editor
 		}
 
 	private:
-		bool convertTiles(
-			Resource::World* const world) const;
-		void sortTiles(
-			TileGroups* const tileGroups) const;
+		void convertTiles(Resource::World* const world) const;
+		void prepareTiles(
+			Resource::World* const world,
+			GroupedTiles* const groupedTiles) const;
+		void sortTiles(TileGroups* const tileGroups) const;
 		void groupTiles(
 			GroupedTiles* const groupedTiles,
 			TileGroups* const tileGroups) const;

@@ -68,7 +68,7 @@ namespace Game
 		// a local connection
 		LocalConnection(
 			const PlayerInformation info,
-			const Device::Input::PlayerId playerId,
+			const Device::Input::PlayerID playerId,
 			const sf::FloatRect viewPort)
 			:
 			UserConnection(Local, info),
@@ -114,7 +114,7 @@ namespace Game
 
 		LocalPlayer* player = NULL;
 
-		const Device::Input::PlayerId playerId;
+		const Device::Input::PlayerID playerId;
 		Device::View view;
 	};
 
@@ -125,7 +125,7 @@ namespace Game
 	public:
 		struct Message
 		{
-			Resource::PlayerId playerId;
+			Resource::PlayerID playerId;
 
 			enum Type
 			{

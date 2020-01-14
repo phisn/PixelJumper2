@@ -36,12 +36,12 @@ namespace Editor
 			}
 
 			sf::Image groupedTiles;
-			Resource::World* const groupedWorld = Editor::Manipulator::GetWorld()->convert(0xff, L"\0xff", L"\0xff");
+			Resource::World* const groupedWorld = Editor::Manipulator::GetWorld()->convert(0xff, 0xff);
 			groupedTiles.create(
-				groupedWorld->HeaderProperties.width,
-				groupedWorld->HeaderProperties.height);
+				groupedWorld->content.width,
+				groupedWorld->content.height);
 			
-			for (const Resource::Tile& groupedTile : groupedWorld->TileContainer)
+			for (const Resource::Tile& groupedTile : groupedWorld->tiles)
 			{
 				sf::Uint32 rawRandomColor = Device::Random::MakeRandom<int>();
 				rawRandomColor += 0x222222'00;
@@ -64,12 +64,12 @@ namespace Editor
 				rawRandomColor |= 0x000000'ff;
 				const sf::Color randomColor = (sf::Color) rawRandomColor;
 
-				for (int x = 0; x < groupedTile.Header.width; ++x)
-					for (int y = 0; y < groupedTile.Header.height; ++y)
+				for (int x = 0; x < groupedTile.content.width; ++x)
+					for (int y = 0; y < groupedTile.content.height; ++y)
 					{
 						groupedTiles.setPixel(
-							x + groupedTile.Header.x,
-							y + groupedTile.Header.y,
+							x + groupedTile.content.x,
+							y + groupedTile.content.y,
 							randomColor
 						);
 					}

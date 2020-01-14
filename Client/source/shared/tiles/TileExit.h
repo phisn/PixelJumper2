@@ -30,6 +30,7 @@ namespace Game
 	public:
 		static GameTileBase* Create(
 			const Resource::Tile* const tile,
+			const Resource::TileInstanceWrapper* const instanceWrapper,
 			const TileIdentity identity);
 
 		TileExit(
@@ -42,7 +43,7 @@ namespace Game
 				Shared::TileExit.gameColor,
 				position,
 				size),
-			CollidableTile(0, 0, 0)
+			CollidableTile()
 		{
 		}
 
@@ -81,7 +82,7 @@ namespace Editor
 		TileExit(const sf::Vector2f position)
 			:
 			TileBase(
-				Shared::TileId::TileExit,
+				Shared::TileID::TileExit,
 				Shared::TileExit.editorColor
 			)
 		{
@@ -90,13 +91,13 @@ namespace Editor
 			setPosition(position);
 		}
 
-		Resource::TileBase* createContent(
-			const Resource::VectorTileSize size,
-			const Resource::VectorTilePosition position) const override;
 
-		bool adopt(const Resource::TileBase* const tile) override
+		bool adopt(const Resource::TileInstanceWrapper* const instanceWrapper)
 		{
-			return true;
+		}
+
+		void assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const
+		{
 		}
 
 		virtual void setPosition(const sf::Vector2f position)
@@ -166,9 +167,9 @@ namespace Editor
 			return Shared::TileExit.info;
 		}
 
-		Shared::TileId getId() const override
+		Shared::TileID getId() const override
 		{
-			return Shared::TileId::TileExit;
+			return Shared::TileID::TileExit;
 		}
 
 		Menu::ElementBase* createRepresentation() override
@@ -202,26 +203,21 @@ namespace Resource
 
 	class TileExit
 		:
-		public TileBase
+		public ResourceBase
 	{
 	public:
 		TileExit()
-			:
-			TileBase(
-				Shared::TileId::TileExit,
-				sizeof(Content)
-			)
 		{
 		}
 
 		bool make(ReadPipe* const pipe) override
 		{
-			return pipe->readValue(&Content);
+			return true;
 		}
 
 		bool save(WritePipe* const pipe) override
 		{
-			return pipe->writeValue(&Content);
+			return true;
 		}
 
 		bool setup() override
@@ -229,9 +225,10 @@ namespace Resource
 			return true;
 		}
 
-		struct
+		bool validate() override
 		{
-		} Content = { };
+			return true;
+		}
 	};
 
 #pragma pack(pop)

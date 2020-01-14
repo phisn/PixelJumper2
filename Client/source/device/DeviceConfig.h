@@ -27,10 +27,10 @@ namespace Device
 
 		bool LoadPlayerInput(
 			Device::GameInput* const input,
-			const Input::PlayerId player);
+			const Input::PlayerID player);
 		bool SavePlayerInput(
 			Device::GameInput* const input,
-			const Input::PlayerId player);
+			const Input::PlayerID player);
 
 		std::wstring TranslateConfigType(const ConfigType type);
 		std::wstring MakeConfigTypePath(const ConfigType type);

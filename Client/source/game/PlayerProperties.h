@@ -98,9 +98,9 @@ namespace Game
 
 		void loadDefault(const WorldInformation& info)
 		{
-			spawn = info.defaultPlayerProperties.beginPosition;
-			position = info.defaultPlayerProperties.beginPosition;
-			movement = info.defaultPlayerProperties.beginMovement;
+			spawn = info.defaultPlayerProperties.position;
+			position = info.defaultPlayerProperties.position;
+			movement = info.defaultPlayerProperties.movement;
 
 			mass = info.defaultPlayerProperties.mass;
 			inputForce = info.defaultPlayerProperties.inputForce;
@@ -116,7 +116,7 @@ namespace Game
 		bool update()
 		{
 			// has to be bitand because
-			// normal does omit future updates
+			// normal does omit remaining updates
 			return spawn.update()
 				| position.update()
 				| movement.update()

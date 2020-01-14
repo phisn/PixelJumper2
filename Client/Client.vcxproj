@@ -166,7 +166,6 @@
     <ClCompile Include="source\resource\pipes\PacketPipe.cpp" />
     <ClCompile Include="source\resource\pipes\PipeBase.cpp" />
     <ClCompile Include="source\resource\PlayerResource.cpp" />
-    <ClCompile Include="source\resource\ResourceBase.cpp" />
     <ClCompile Include="source\resource\ResourceDefinition.cpp" />
     <ClCompile Include="source\resource\ResourceInterface.cpp" />
     <ClCompile Include="source\resource\StaticResource.cpp" />
@@ -180,7 +179,6 @@
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
     <ClCompile Include="source\scene\TestGameScene.cpp" />
     <ClCompile Include="source\scene\TestMenuScene.cpp" />
-    <ClCompile Include="source\scene\TestReleaseGameScene.cpp" />
     <ClCompile Include="source\shared\tiles\TileDescription.cpp" />
     <ClCompile Include="source\shared\tiles\TileExit.cpp" />
     <ClCompile Include="source\shared\tiles\TileWall.cpp" />

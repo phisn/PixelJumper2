@@ -19,31 +19,20 @@ namespace Game
 {
 	GameTileBase* WallTile::Create(
 		const Resource::Tile* const tile,
-		const int identity)
+		const Resource::TileInstanceWrapper* const instanceWrapper,
+		const TileIdentity identity)
 	{
-		const Resource::WallTile* const resource = (const Resource::WallTile*) tile->Content;
-
-		if (tile->Header.contentSize != sizeof(Resource::WallTile::Content))
-		{
-			return NULL;
-		}
-
 		return new WallTile(
 			identity,
-
-			resource->Content.density,
-			resource->Content.inputForceAddition,
-			resource->Content.friction,
-
 			sf::Vector2f(
-				tile->Header.x,
-				tile->Header.y
+				tile->content.x,
+				tile->content.y
 			),
 			sf::Vector2f(
-				tile->Header.width,
-				tile->Header.height
-			)
-		);
+				tile->content.width,
+				tile->content.height
+			),
+			instanceWrapper->getInstance<Resource::WallTile>()->content);
 	}
 
 	void WallTile::registerType(Environment* const env)
@@ -69,13 +58,13 @@ namespace Game
 			movement.y = collision.player->getProperties().movement->y;
 			remainOffset.y = (collision.target.y - collision.info.position.y);
 
-			if (fabsf(movement.y) < friction)
+			if (fabsf(movement.y) < content.friction)
 			{
 				movement.y = 0;
 			}
 			else
 			{
-				movement.y += movement.y > 0 ? -friction : friction;
+				movement.y += movement.y > 0 ? -content.friction : content.friction;
 			}
 		}
 		else
@@ -83,13 +72,13 @@ namespace Game
 			movement.x = collision.player->getProperties().movement->x;
 			remainOffset.x = (collision.target.x - collision.info.position.x);
 
-			if (fabsf(movement.x) < friction)
+			if (fabsf(movement.x) < content.friction)
 			{
 				movement.x = 0;
 			}
 			else
 			{
-				movement.x += movement.x > 0 ? -friction : friction;
+				movement.x += movement.x > 0 ? -content.friction : content.friction;
 			}
 		}
 
@@ -107,27 +96,14 @@ namespace Editor
 		return &button;
 	}
 	
-	Resource::TileInstance* TileWall::createContent(
-		const Resource::VectorTileSize size, 
-		const Resource::VectorTilePosition position) const
+	void TileWall::assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const
 	{
-		Resource::WallTile* const tile = new Resource::WallTile();
-
-		tile->content.density = density;
-		tile->content.inputForceAddition = inputForceAddition;
-		tile->content.friction = friction;
-
-		return tile;
+		instanceWrapper->getInstance<Resource::WallTile>()->content = content;
 	}
-	
-	bool TileWall::adopt(const Resource::TileInstance* const instance)
-	{
-		const Resource::WallTile* const tile = (const Resource::WallTile*) instance;
-		
-		density = tile->content.density;
-		inputForceAddition = tile->content.inputForceAddition;
-		friction = tile->content.friction;
 
+	bool TileWall::adopt(const Resource::TileInstanceWrapper* const instanceWrapper)
+	{
+		content = instanceWrapper->getInstance<Resource::WallTile>()->content;
 		return true;
 	}
 }

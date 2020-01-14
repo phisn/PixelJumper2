@@ -14,15 +14,15 @@ namespace Game
 		{
 			PlayerInformation information;
 
-			information.playerId = resource->connection.HeaderIntro.playerId;
-			information.name = resource->connection.HeaderAuth.userName;
+			information.playerId = resource->connection.content.playerId;
+			information.name = resource->connection.content.userName;
 
 			information.color = sf::Color::Red;
 
 			return information;
 		}
 
-		Resource::PlayerId playerId;
+		Resource::PlayerID playerId;
 		sf::Color color;
 		std::wstring name;
 	};

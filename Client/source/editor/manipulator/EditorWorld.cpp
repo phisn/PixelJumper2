@@ -1,13 +1,9 @@
 #include "EditorWorld.h"
 
-
-
-
 _Ret_maybenull_
 Resource::World* Editor::World::convert(
 	const sf::Uint32 worldID,
-	const std::wstring authorName,
-	const std::wstring mapName) const
+	const Resource::PlayerID playerID) const
 {
 	Log::Section section(L"Converting World");
 
@@ -21,72 +17,38 @@ Resource::World* Editor::World::convert(
 	Resource::World* world = new Resource::World();
 
 	world->content.id = worldID;
-
-	world->HeaderAuth.authorName = authorName;
-	world->HeaderAuth.mapName = mapName;
+	world->content.author = playerID;
 
 	Log::Information(
 		L"Converting '"
 		+ std::to_wstring(tiles.size())
 		+ L"' tiles");
 
-	if (!convertTiles(world))
-	{
-		delete world;
-		world = NULL;
-	}
+	convertTiles(world);
 
 	return world;
 }
 	
-bool Editor::World::convertTiles(
-	Resource::World* const world) const
+void Editor::World::convertTiles(Resource::World* const world) const
 {
 	GroupedTiles groupedTiles;
+	prepareTiles(world, &groupedTiles);
 
-	{
-		TileGroups tileGroups;
-
-		sortTiles(
-			&tileGroups);
-		groupTiles(
-			&groupedTiles,
-			&tileGroups);
-	}
+	world->tiles.reserve(groupedTiles.size());
 
 	// World size cant be larger than tile position (ignore size)
 	TilePosition worldWidth = 0, worldHeight = 0;
 	for (const GroupedTile& tile : groupedTiles)
 	{
-		if (tile.position.x > RTILE_TYPE_MAX(x) ||
-			tile.position.y > RTILE_TYPE_MAX(y))
-		{
-			return false;
-		}
+		world->tiles.emplace_back();
+		Resource::Tile* resourceTile = &world->tiles.back();
 
-		if (tile.size.x > RTILE_TYPE_MAX(width) ||
-			tile.size.y > RTILE_TYPE_MAX(height))
-		{
-			return false;
-		}
+		resourceTile->content.width = tile.size.x;
+		resourceTile->content.height = tile.size.y;
 
-		world->TileContainer.emplace_back();
-		Resource::Tile* resourceTile = &world->TileContainer.back();
+		resourceTile->content.x = tile.position.x;
+		resourceTile->content.y = tile.position.y;
 
-		resourceTile->Content = tile.tile->createContent(
-			tile.size,
-			tile.position);
-
-		resourceTile->Header.width = tile.size.x;
-		resourceTile->Header.height = tile.size.y;
-
-		resourceTile->Header.x = tile.position.x;
-		resourceTile->Header.y = tile.position.y;
-
-		resourceTile->Header.contentSize = resourceTile->Content->getContentSize();
-		resourceTile->Header.id = resourceTile->Content->getTileId();
-
-		// rewrite
 		const sf::Uint32 totalTileWidth = tile.size.x + tile.position.x;
 		if (worldWidth < totalTileWidth)
 		{
@@ -100,10 +62,27 @@ bool Editor::World::convertTiles(
 		}
 	}
 
-	world->HeaderProperties.width = worldWidth;
-	world->HeaderProperties.height = worldHeight;
+	world->content.width = worldWidth;
+	world->content.height = worldHeight;
+}
 
-	return groupedTiles.size() > 0; // TODO: pointless?
+void Editor::World::prepareTiles(
+	Resource::World* const world,
+	GroupedTiles* const groupedTiles) const
+{
+	TileGroups tileGroups;
+	sortTiles(&tileGroups);
+
+	world->tileInstances.reserve(tileGroups.size());
+	for (int i = 0; i < tileGroups.size(); ++i)
+	{
+		TileBase* const tile = tileGroups[i][0];
+
+		world->tileInstances.emplace_back(tile->getTileId());
+		tile->assignInstance(world->tileInstances.back());
+	}
+
+	groupTiles(groupedTiles, &tileGroups);
 }
 
 void Editor::World::sortTiles(TileGroups* const tileGroups) const
@@ -125,16 +104,10 @@ void Editor::World::sortTiles(TileGroups* const tileGroups) const
 }
 	
 void Editor::World::groupTiles(
-	GroupedTiles* const groupedTiles, 
+	GroupedTiles* const groupedTiles,
 	TileGroups* const tileGroups) const
 {
 	int totalTileCount = 0; // for logging
-
-	struct LocalTileStorage
-	{
-		TileBase* tile;
-		mutable bool consumed;
-	};
 
 	// start smallest from 0 in resource
 	// TODO: rewrite find smallest (quick and easy)
@@ -166,8 +139,15 @@ void Editor::World::groupTiles(
 		}
 	}
 
-	for (const std::vector<TileBase*>& tileGroup : *tileGroups)
+	struct LocalTileStorage
 	{
+		TileBase* tile;
+		mutable bool consumed;
+	};
+
+	for (int instance = 0; instance < tileGroups->size(); ++instance)
+	{
+		// prepare sorted tiles
 		std::set<LocalTileStorage, bool(*)(const LocalTileStorage, const LocalTileStorage)> orderedTiles(
 			[](const LocalTileStorage tile1, const LocalTileStorage tile2)
 			{
@@ -176,7 +156,7 @@ void Editor::World::groupTiles(
 					: tile1.tile->getPosition().x < tile2.tile->getPosition().x;
 			});
 
-		for (TileBase* tile : tileGroup)
+		for (TileBase* const tile : (*tileGroups)[instance])
 		{
 			orderedTiles.insert({ tile, false });
 		}
@@ -201,7 +181,7 @@ void Editor::World::groupTiles(
 				);
 				current->realPosition = (VectorTilePosition) tile->tile->getPosition();
 				current->size = { 1, 1 };
-				current->tile = tile->tile;
+				current->instancePosition = instance;
 
 				continue;
 			}

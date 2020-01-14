@@ -22,16 +22,16 @@ namespace Game
 		return initializeCreateAndRegister(resource);
 	}
 
-	bool Environment::initializeCreateAndRegister(
-		const Resource::World* const resource)
+	bool Environment::initializeCreateAndRegister(const Resource::World* const resource)
 	{
-		for (int i = 0; i < resource->TileContainer.size(); ++i)
+		for (int i = 0; i < resource->tiles.size(); ++i)
 		{
-			const Resource::Tile& tileResource = resource->TileContainer[i];
+			const Resource::Tile& tileResource = resource->tiles[i];
+			Resource::TileInstanceWrapper* const tileInstance = resource->tileInstances[tileResource.content.instanceIndex];
 
 			GameTileBase* const tile = Shared::TileDescription::Find(
-				tileResource.Header.id
-			)->creation.createGameTile(&tileResource, i);
+				tileInstance->getID()
+			)->creation.createGameTile(&tileResource, tileInstance, i);
 
 			if (tile == NULL)
 			{
@@ -46,13 +46,6 @@ namespace Game
 		{
 			tile->registerType(this);
 		}
-
-		/* Move to new World
-			for (InitializableTile* const tile : getTileType<InitializableTile>())
-			{
-				tile->initialize();
-			}
-		*/
 
 		return true;
 	}

@@ -46,7 +46,7 @@ namespace Game::Net
 			}
 		}
 
-		bool hasPlayer(const Resource::PlayerId player)
+		bool hasPlayer(const Resource::PlayerID player)
 		{
 			for (RemoteConnection* const connection : connections)
 				if (connection->getInformation().playerId == player)
@@ -68,7 +68,7 @@ namespace Game::Net
 
 		virtual bool retrivePlayerResource(
 			Resource::PlayerResource* const resource,
-			const Resource::PlayerId player) = 0;
+			const Resource::PlayerID player) = 0;
 
 		Simulator* simulator;
 

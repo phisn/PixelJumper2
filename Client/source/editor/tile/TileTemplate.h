@@ -15,10 +15,10 @@ namespace Editor
 {
 	/*class _TileTemplate
 	{
-		const Shared::TileId id;
+		const Shared::TileID id;
 
 	public:
-		_TileTemplate(const Shared::TileId id)
+		_TileTemplate(const Shared::TileID id)
 			:
 			id(id),
 			info(Shared::TileDescription::Find(id))
@@ -46,7 +46,7 @@ namespace Editor
 			return info->info;
 		}
 
-		Shared::TileId getId() const
+		Shared::TileID getId() const
 		{
 			return id;
 		}
@@ -104,7 +104,7 @@ namespace Editor
 
 		virtual const std::wstring& getName() const = 0;
 		virtual const std::wstring& getDescription() const = 0;
-		virtual Shared::TileId getId() const = 0;
+		virtual Shared::TileID getId() const = 0;
 
 		virtual bool isSelected() const = 0;
 

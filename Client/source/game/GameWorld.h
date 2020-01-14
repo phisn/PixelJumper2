@@ -45,12 +45,11 @@ namespace Game
 		{
 			Log::Section section(L"Creating World");
 
-			section.information(L"Map: " + resource->HeaderAuth.mapName);
-			section.information(L"Author: " + resource->HeaderAuth.authorName);
-			section.information(L"ID: " + std::to_wstring(resource->HeaderIntro.worldID));
-			section.information(L"TileCount: " + std::to_wstring(resource->HeaderProperties.tileCount));
-			section.information(L"Width: " + std::to_wstring(resource->HeaderProperties.width));
-			section.information(L"Height: " + std::to_wstring(resource->HeaderProperties.height));
+			section.information(L"Map: " + resource->content.author);
+			section.information(L"ID: " + std::to_wstring(resource->content.id));
+			section.information(L"TileCount: " + std::to_wstring(resource->tiles.size()));
+			section.information(L"Width: " + std::to_wstring(resource->content.width));
+			section.information(L"Height: " + std::to_wstring(resource->content.height));
 
 			if (!environment.initialize(resource))
 			{

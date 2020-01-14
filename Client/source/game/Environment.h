@@ -97,8 +97,6 @@ namespace Game
 		std::vector<CollisionType> collisionTypes;
 		std::vector<GameTileBase*> emptyVector;
 
-		std::vector<
-			sf::VertexBuffer
-		> vertexWorld;
+		std::vector<sf::VertexBuffer> vertexWorld;
 	};
 }

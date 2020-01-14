@@ -6,24 +6,19 @@
 
 namespace Resource
 {
-	typedef sf::Uint64 PlayerId;
+	typedef sf::Uint64 PlayerID;
 
 	class ConnectionResource
 		:
 		public ResourceBase
 	{
 	public:
-		struct
+		struct Content
 		{
-			EDIT PlayerId playerId;
+			PlayerID playerId;
+			std::wstring userName;
 
-		} HeaderIntro;
-
-		struct
-		{
-			EDIT std::wstring userName;
-
-		} HeaderAuth;
+		} content;
 
 		bool make(ReadPipe* const pipe) override
 		{
@@ -37,7 +32,12 @@ namespace Resource
 
 		bool setup() override
 		{
+			return true;
+		}
 
+		bool validate() override
+		{
+			return true;
 		}
 	};
 
@@ -47,8 +47,7 @@ namespace Resource
 	{
 	public:
 		ConnectionResource connection;
-
-
+		
 	private:
 		bool make(ReadPipe* const pipe) override
 		{
@@ -62,7 +61,12 @@ namespace Resource
 
 		bool setup() override
 		{
+			return true;
+		}
 
+		bool validate() override
+		{
+			return true;
 		}
 	};
 }

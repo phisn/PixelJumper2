@@ -57,7 +57,7 @@ namespace Game
 		PlayerRepresentation* const representation;
 
 		/*LocalPlayer(
-			const Device::Input::PlayerId playerId,
+			const Device::Input::PlayerID playerId,
 			const PlayerInformation information,
 			Device::View* const view)
 			:

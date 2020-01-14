@@ -21,17 +21,17 @@ namespace Editor
 
 			output->tiles.clear();
 
-			for (int i = (int)Shared::TileId::_Begin; i < (int)Shared::TileId::_Length; ++i)
+			for (int i = 0; i < (int)Shared::TileID::_Length; ++i)
 			{
 				const Shared::TileDescription* const description = Shared::TileDescription::Find(
-					(Shared::TileId) i
+					(Shared::TileID) i
 				);
 
 				// TODO: find in name or in info?
 				if (input->search.empty() || matchTileName(description->name))
 				{
 					output->tiles.push_back(
-						TileTemplateFactory::GetTileTemplate((Shared::TileId) i)
+						TileTemplateFactory::GetTileTemplate((Shared::TileID) i)
 					);
 				}
 			}

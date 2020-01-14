@@ -7,18 +7,18 @@
 
 namespace
 {
-	std::unordered_map<Shared::TileId, const Shared::TileDescription*> tileDescriptions;
+	std::unordered_map<Shared::TileID, const Shared::TileDescription*> tileDescriptions;
 }
 
 namespace Shared
 {
 	void TileDescription::Initialize()
 	{
-		tileDescriptions[TileId::TileWall] = &TileWall;
-		tileDescriptions[TileId::TileExit] = &TileExit;
+		tileDescriptions[TileID::TileWall] = &TileWall;
+		tileDescriptions[TileID::TileExit] = &TileExit;
 	}
 
-	const TileDescription* TileDescription::Find(TileId tile)
+	const TileDescription* TileDescription::Find(TileID tile)
 	{
 		return tileDescriptions.at(tile);
 	}

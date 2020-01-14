@@ -38,8 +38,8 @@ namespace Game
 
 		void loadDefault(const WorldInformation info)
 		{
-			airResistance = info.defaultWorldProperties.airResistance;
-			gravity = info.defaultWorldProperties.gravity;
+			airResistance = info.defaultProperties.airResistance;
+			gravity = info.defaultProperties.gravity;
 
 			update();
 		}

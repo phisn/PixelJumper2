@@ -69,14 +69,14 @@ namespace Device
 
 	bool Config::LoadPlayerInput(
 		GameInput* const input, 
-		const Input::PlayerId player)
+		const Input::PlayerID player)
 	{
 		return true;
 	}
 
 	bool Config::SavePlayerInput(
 		GameInput* const input, 
-		const Input::PlayerId player)
+		const Input::PlayerID player)
 	{
 		return true;
 	}

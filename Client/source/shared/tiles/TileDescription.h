@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Client/source/shared/tiles/TileCommon.h>
-
 #include <Client/source/editor/tile/TileTemplate.h>
 #include <Client/source/game/tiletrait/GameTileBase.h>
 #include <Client/source/resource/TileResource.h>
@@ -22,15 +20,23 @@ namespace Shared
 		static TileCreation Create()
 		{
 			return TileCreation{
-				[](const Resource::Tile * const tile, const int identity) -> Game::GameTileBase* { return GameTile::Create(tile, identity); },
+				[](const Resource::Tile* const tile,
+				   const Resource::TileInstanceWrapper* const instance,
+				   const Game::TileIdentity identity) -> Game::GameTileBase* 
+				{ 
+					return GameTile::Create(tile, instance, identity); 
+				},
 				[]() -> Editor::TileTemplate* { return new EditorTemplate(); },
-				[]() -> Resource::TileInstance* { return new ResourceTile(); }
+				[]() -> Resource::ResourceBase* { return new ResourceTile(); }
 			};
 		}
 
-		Game::GameTileBase* (*createGameTile)(const Resource::Tile*, const int);
+		Game::GameTileBase* (*createGameTile)(
+			const Resource::Tile*, 
+			const Resource::TileInstanceWrapper*, 
+			const Game::TileIdentity);
 		Editor::TileTemplate* (*createEditorTemplate)();
-		Resource::TileInstance* (*createResourceTile)();
+		Resource::ResourceBase* (*createResourceTile)();
 	};
 
 	struct TileDescription
@@ -38,10 +44,10 @@ namespace Shared
 		static void Initialize();
 		static void Uninitialize();
 
-		static const TileDescription* Find(TileId tile);
+		static const TileDescription* Find(TileID tile);
 
 		template <typename T = TileDescription>
-		static const T * FindSpc(TileId tile)
+		static const T * FindSpc(TileID tile)
 		{
 			return (T*)Find(tile);
 		}

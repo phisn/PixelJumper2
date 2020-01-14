@@ -5,7 +5,6 @@
 
 namespace Game
 {
-	class TileContainer;
 	class SynchronizableTile
 		:
 		public RegisterableType

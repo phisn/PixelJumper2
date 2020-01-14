@@ -6,17 +6,17 @@
 
 namespace
 {
-	std::map<Shared::TileId, Editor::TileTemplate*> tileTemplates;
+	std::map<Shared::TileID, Editor::TileTemplate*> tileTemplates;
 }
 
 namespace Editor
 {
 	void TileTemplateFactory::Initialize()
 	{
-		for (int i = 1; i < (int) Shared::TileId::_Length; ++i)
+		for (int i = 1; i < (int) Shared::TileID::_Length; ++i)
 		{
-			tileTemplates[(Shared::TileId) i] = Shared::TileDescription::Find(
-				(Shared::TileId) i
+			tileTemplates[(Shared::TileID) i] = Shared::TileDescription::Find(
+				(Shared::TileID) i
 			)->creation.createEditorTemplate();
 		}
 	}
@@ -31,7 +31,7 @@ namespace Editor
 		tileTemplates.clear();
 	}
 
-	TileTemplate* TileTemplateFactory::GetTileTemplate(const Shared::TileId id)
+	TileTemplate* TileTemplateFactory::GetTileTemplate(const Shared::TileID id)
 	{
 		return tileTemplates[id];
 

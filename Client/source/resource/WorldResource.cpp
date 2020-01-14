@@ -6,14 +6,6 @@ namespace Resource
 	{
 	}
 
-	bool World::validateDefaultProperties()
-	{
-	}
-
-	bool World::validateDefaultPlayerProperties()
-	{
-	}
-
 	bool World::validateInnerContent()
 	{
 	}

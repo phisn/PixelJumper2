@@ -31,10 +31,16 @@ namespace Resource
 		};
 
 	public:
+		~World()
+		{
+			for (TileInstanceWrapper* const instance : tileInstances)
+				delete instance;
+		}
+
 		struct Content
 		{
 			WorldId id;
-			PlayerId author;
+			PlayerID author;
 
 			Shared::WorldDefaultProperties defaultProperties;
 			Shared::PlayerDefaultProperties defaultPlayerProperties;
@@ -43,7 +49,7 @@ namespace Resource
 
 		} content;
 
-		std::vector<TileInstance*> tileInstances;
+		std::vector<TileInstanceWrapper*> tileInstances;
 		std::vector<Tile> tiles;
 
 		bool make(ReadPipe* const pipe) override
@@ -53,7 +59,7 @@ namespace Resource
 				return false;
 			}
 
-			for (TileInstance* const instance : tileInstances)
+			for (TileInstanceWrapper* const instance : tileInstances)
 				if (!instance->make(pipe))
 				{
 					return false;
@@ -76,14 +82,14 @@ namespace Resource
 		{
 		}
 
-	private:
-		bool validateContent()
+		bool validate() override
 		{
 			return validateAuth()
 				&& validateInnerContent()
 				&& validateTiles();
 		}
 
+	private:
 		bool validateAuth();
 		bool validateInnerContent();
 		bool validateTiles();

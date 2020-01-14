@@ -18,13 +18,13 @@ namespace Device
 	bool Input::Initialize()
 	{
 		generalInput = new GeneralInputSettings();
-		gameInputs.reserve((int) PlayerId::_Length);
+		gameInputs.reserve((int) PlayerID::_Length);
 
 		LoadGlobalKeys();
 
-		for (int i = 0; i < (int) PlayerId::_Length; ++i)
+		for (int i = 0; i < (int) PlayerID::_Length; ++i)
 		{
-			gameInputs.emplace_back((PlayerId) i);
+			gameInputs.emplace_back((PlayerID) i);
 
 			if (!gameInputs[i].load())
 			{
@@ -75,7 +75,7 @@ namespace Device
 				++usageCount;
 			}
 
-		for (int i = 0; i < (int) PlayerId::_Length; ++i)
+		for (int i = 0; i < (int) PlayerID::_Length; ++i)
 		{
 			for (int j = 0; j < (int) GameCoreInputSymbol::_Length; ++i)
 				if (gameInputs[i].getCoreKey((GameCoreInputSymbol) j) == key)
@@ -108,7 +108,7 @@ namespace Device
 	}
 
 	GameInput* Input::GetGameInput(
-		const Input::PlayerId player)
+		const Input::PlayerID player)
 	{
 		return &gameInputs[(int) player];
 	}

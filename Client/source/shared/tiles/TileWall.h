@@ -15,7 +15,6 @@
 
 #include <Client/source/shared/tiles/TileDescription.h>
 
-
 namespace Shared
 {
 	const extern TileDescription TileWall;
@@ -37,23 +36,23 @@ namespace Game
 	{
 	public:
 		static GameTileBase* Create(
-			const Resource::Tile* const tile, 
+			const Resource::Tile* const tile,
+			const Resource::TileInstanceWrapper* const instanceWrapper,
 			const TileIdentity identity);
 
 		WallTile(
 			const TileIdentity identity,
-			const float density,
-			const float inputForceAddition,
-			const float drag,
 			const sf::Vector2f position,
-			const sf::Vector2f size)
+			const sf::Vector2f size,
+			const Shared::WallContent content)
 			:
 			StaticTile(
 				identity,
 				Shared::TileWall.gameColor,
 				position,
 				size),
-			CollidableTile(density, inputForceAddition, drag) // 10.f, 0.01f
+			CollidableTile(),
+			content(content)
 		{
 		}
 
@@ -73,10 +72,8 @@ namespace Game
 			return StaticTile::getSize();
 		}
 
-		float getFriction() const
-		{
-			return friction;
-		}
+	private:
+		Shared::WallContent content;
 	};
 }
 
@@ -87,23 +84,23 @@ namespace Editor
 		public TileBase
 	{
 	public:
-		TileWall(
-			const sf::Vector2f position)
+		TileWall(const sf::Vector2f position)
 			:
 			TileBase(
-				Shared::TileId::TileWall, 
+				Shared::TileID::TileWall, 
 				Shared::TileWall.editorColor)
 		{
 			shape.setFillColor(getColor());
 			setSize({ 1, 1 });
 			setPosition(position);
+
+			content.density = Game::Definition::tile_density;
+			content.inputForceAddition = Game::Definition::tile_input;
+			content.friction = Game::Definition::tile_friction;
 		}
 
-		Resource::TileInstance* createContent(
-			const Resource::VectorTileSize size,
-			const Resource::VectorTilePosition position) const override;
-
-		bool adopt(const Resource::TileInstance* const tile) override;
+		void assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const override;
+		bool adopt(const Resource::TileInstanceWrapper* const instanceWrapper) override;
 
 		virtual void setPosition(const sf::Vector2f position)
 		{
@@ -123,10 +120,7 @@ namespace Editor
 		}
 
 	private:
-		float density = Game::Definition::tile_density;
-		float inputForceAddition = Game::Definition::tile_input;
-		float friction = Game::Definition::tile_friction;
-
+		Shared::WallContent content;
 		sf::RectangleShape shape;
 	};
 
@@ -179,9 +173,9 @@ namespace Editor
 			return Shared::TileWall.info;
 		}
 
-		Shared::TileId getId() const override
+		Shared::TileID getId() const override
 		{
-			return Shared::TileId::TileWall;
+			return Shared::TileID::TileWall;
 		}
 
 		Menu::ElementBase* createRepresentation() override;
@@ -213,27 +207,23 @@ namespace Resource
 
 	class WallTile
 		:
-		public TileInstance
+		public ResourceBase
 	{
 	public:
 		Shared::WallContent content;
 
 		WallTile()
-			:
-			TileInstance(Shared::TileId::TileWall)
 		{
 		}
 
 		bool make(ReadPipe* const pipe) override
 		{
-			return TileInstance::make(pipe) 
-				&& pipe->readValue(&content);
+			return pipe->readValue(&content);
 		}
 
 		bool save(WritePipe* const pipe) override
 		{
-			return TileInstance::save(pipe)
-				&& pipe->writeValue(&content);
+			return pipe->writeValue(&content);
 		}
 
 		bool setup() override

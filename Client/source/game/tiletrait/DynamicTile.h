@@ -2,13 +2,21 @@
 
 #include <SFML/System/Time.hpp>
 
+#include <Client/source/game/tiletrait/GameTileBase.h>
+
+#include <Client/source/game/Environment.h>
+
 namespace Game
 {
-	class TileContainer;
 	class DynamicTile
+		:
+		public RegisterableType
 	{
 	public:
-		void initialize(TileContainer* const);
+		void registerType(Environment* const environment) override
+		{
+			environment->registerTile<DynamicTile>(this);
+		}
 
 		virtual void onLogic(const sf::Time time) = 0;
 	};

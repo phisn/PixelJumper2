@@ -18,25 +18,19 @@ namespace Shared
 namespace Game
 {
 	GameTileBase* TileExit::Create(
-		const Resource::Tile* const tile, 
+		const Resource::Tile* const tile,
+		const Resource::TileInstanceWrapper* const instanceWrapper,
 		const TileIdentity identity)
 	{
-		const Resource::TileExit* const resource = (const Resource::TileExit*) tile;
-
-		if (tile->Header.contentSize != sizeof(Resource::TileExit::Content))
-		{
-			return NULL;
-		}
-
 		return new TileExit(
 			identity,
 			sf::Vector2f(
-				tile->Header.x,
-				tile->Header.y
+				tile->content.x,
+				tile->content.y
 			),
 			sf::Vector2f(
-				tile->Header.width,
-				tile->Header.height
+				tile->content.width,
+				tile->content.height
 		));
 	}
 
@@ -53,8 +47,4 @@ namespace Game
 
 namespace Editor
 {
-	Resource::TileBase* TileExit::createContent(const Resource::VectorTileSize size, const Resource::VectorTilePosition position) const
-	{
-		return new Resource::TileExit();
-	}
 }

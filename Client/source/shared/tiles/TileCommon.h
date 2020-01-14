@@ -2,15 +2,14 @@
 
 namespace Shared
 {
-	enum class TileId
+	enum class TileID
 	{
-		_Invalid = 0,
-		_Begin = 1,
-
-		TileWall = 1,
+		TileWall,
 		TileExit,
 
-		_Length
-	}; 
+		_Length,
+		_Invalid = -1,
+	};
+
 }
 
