@@ -133,7 +133,7 @@ namespace Game
 				currentWorld->getInformation()->worldId != content.world)
 			{
 				for (Resource::World* world : worldResources)
-					if (world->HeaderIntro.worldID == content.world)
+					if (world->content.id == content.world)
 					{
 						if (!loadWorld(world))
 						{
@@ -162,7 +162,7 @@ namespace Game
 		bool switchWorld()
 		{
 			for (int i = 0; i < worldResources.size(); ++i)
-				if (worldResources[i]->HeaderIntro.worldID == currentWorld->getInformation()->worldId)
+				if (worldResources[i]->content.id == currentWorld->getInformation()->worldId)
 				{
 					return loadWorld(worldResources[
 						i - 1 == worldResources.size() ? 0 : i + 1

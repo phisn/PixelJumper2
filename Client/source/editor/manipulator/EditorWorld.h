@@ -64,7 +64,7 @@ namespace Editor
 		{
 			for (const Resource::Tile& tile : world->tiles)
 			{
-				Resource::TileInstanceWrapper* tileInstance = world->tileInstances[tile.content.instanceIndex];
+				const Resource::TileInstanceWrapper* tileInstance = &world->tileInstances[tile.content.instanceIndex];
 				TileTemplate* const tileTemplate = TileTemplateFactory::GetTileTemplate(tileInstance->getID());
 
 				for (int xoffset = 0; xoffset < tile.content.width; ++xoffset)

@@ -51,7 +51,7 @@ namespace Game
 
 		sf::Vector2f onCollision(
 			const CollisionType type,
-			const Collision collision) override
+			const Collision& collision) override
 		{
 			notifyCollisionEvent(&type, &collision);
 			notifyExitEvent();
@@ -94,6 +94,7 @@ namespace Editor
 
 		bool adopt(const Resource::TileInstanceWrapper* const instanceWrapper)
 		{
+			return true;
 		}
 
 		void assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const

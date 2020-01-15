@@ -46,7 +46,7 @@ namespace Game
 		StaticTile::registerType(env);
 	}
 	
-	sf::Vector2f WallTile::onCollision(const CollisionType type, const Collision collision)
+	sf::Vector2f WallTile::onCollision(const CollisionType type, const Collision& collision)
 	{
 		collision.player->getProperties().position = collision.info.position;
 
@@ -81,6 +81,13 @@ namespace Game
 				movement.x += movement.x > 0 ? -content.friction : content.friction;
 			}
 		}
+
+		collision.player->getCollisionContainer().setCollider(
+			collision.info.type,
+			CollisionContainer::Collider{
+				content.inputForceAddition,
+				content.density
+			});
 
 		collision.player->getProperties().movement = movement;
 		notifyCollisionEvent(&type, &collision);

@@ -173,7 +173,7 @@ namespace Game
 
 		void applyMovement(PlayerType* const player)
 		{
-			player->collisionContainer.clear();
+			player->collisionContainer.reduceFrame();
 
 			struct
 			{
@@ -231,14 +231,10 @@ namespace Game
 					collision.info = collisionData.info;
 					collision.player = (PlayerBase*) player;
 					collision.target = target;
-					// collision.timeValue = 
 
 					offset = collisionData.tile->onCollision(
 						*collisionData.type,
 						collision);
-					player->collisionContainer.setCollision(
-						collision.info.type,
-						collisionData.tile);
 
 					collisionData.tile = NULL;
 				}

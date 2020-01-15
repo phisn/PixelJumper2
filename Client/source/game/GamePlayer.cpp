@@ -1,20 +1,15 @@
 #include "GamePlayer.h"
-#include <Client/source/game/tiletrait/CollidableTile.h>
-
  
 float Game::PlayerBase::getSingleJumpForce(const CollisionEngine::CollisionInfo::Type type) const
 {
-	// TODO: rethink
-	/*return collisionContainer.has(type)
-		? collisionContainer[type]->getDensity()
-		: 0;*/
+	return collisionContainer.isActive(type)
+		? collisionContainer.readCollider(type).jumpForce
+		: 0;
 }
 
 float Game::PlayerBase::getSingleForceAddition(const CollisionEngine::CollisionInfo::Type type) const
 {
-	// TODO: rethink
-	/*
-	return collisionContainer.has(type)
-		? collisionContainer[type]->getInputForceAddition()
-		: 1;*/
+	return collisionContainer.isActive(type)
+		? collisionContainer.readCollider(type).inputForceAddition
+		: 1;
 }

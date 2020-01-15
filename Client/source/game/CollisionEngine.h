@@ -34,6 +34,9 @@ namespace Game
 	private:
 		char padding = 0;
 	};
+	 
+	static_assert(sizeof(CollisionType) == 4,
+		"Collision type size changed, operator== needs to be updated");
 
 	namespace CollisionEngine
 	{
@@ -63,7 +66,7 @@ namespace Game
 
 			bool isHorizontal() const
 			{
-				return !isVertical();
+				return type == G1 || type == G3;
 			}
 		};
 

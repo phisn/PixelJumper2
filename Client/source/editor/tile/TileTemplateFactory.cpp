@@ -13,7 +13,7 @@ namespace Editor
 {
 	void TileTemplateFactory::Initialize()
 	{
-		for (int i = 1; i < (int) Shared::TileID::_Length; ++i)
+		for (int i = 0; i < (int) Shared::TileID::_Length; ++i)
 		{
 			tileTemplates[(Shared::TileID) i] = Shared::TileDescription::Find(
 				(Shared::TileID) i

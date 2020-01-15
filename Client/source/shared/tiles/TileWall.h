@@ -60,7 +60,7 @@ namespace Game
 
 		virtual sf::Vector2f onCollision(
 			const CollisionType type,
-			const Collision collision) override;
+			const Collision& collision) override;
 
 		const sf::Vector2f getPosition() const override
 		{

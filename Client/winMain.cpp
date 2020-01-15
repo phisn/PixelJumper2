@@ -5,7 +5,7 @@
 
 #include <Client/source/device/NetDevice.h>
 
-#if defined(_DEBUG) or not defined(_WIN32)
+#if defined(_DEBUG) || !defined(_WIN32)
 	int main()
 #else
 	#include <Windows.h>
@@ -18,8 +18,8 @@
 	Log::Output::Add(Log::Output::FILE_OUT, Log::Level::Warning);
 #endif
 	const Device::Core::Error error = Device::Core::Initialize();
-	Log::Information(Device::Net::Initialize(12345), L"result");
 /*
+	Log::Information(Device::Net::Initialize(12345), L"result");
 	class C : public Device::Net::Client
 	{
 	public:
@@ -40,20 +40,17 @@
 	} client;
 */
 
-	/*
-		
-		if (error != Device::Core::Error::Success)
-		{
-			std::cin.ignore();
-
-			return (int) error;
-		}
-	
-		Log::Information(L"Starting game");
-		int result = Device::Core::RunGameLoop();
-		Device::Core::Uninitialize();
-
+	if (error != Device::Core::Error::Success)
+	{
 		std::cin.ignore();
-		return result;
-	*/
+
+		return (int) error;
+	}
+	
+	Log::Information(L"Starting game");
+	int result = Device::Core::RunGameLoop();
+	Device::Core::Uninitialize();
+
+	std::cin.ignore();
+	return result;
 }

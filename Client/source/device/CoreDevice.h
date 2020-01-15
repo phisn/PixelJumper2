@@ -5,7 +5,7 @@
 #ifndef DEVICE
 #define DEVICE ::Device // remove THIS
 #endif
-
+ 
 namespace Device
 {	
 	namespace Core

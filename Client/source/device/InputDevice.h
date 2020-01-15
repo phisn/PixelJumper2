@@ -95,7 +95,6 @@ namespace Device
 
 		} Content;
 
-	private:
 		bool make(Resource::ReadPipe* const pipe) override
 		{
 			return pipe->readValue(&Content)
@@ -109,6 +108,11 @@ namespace Device
 		}
 
 		bool setup() override
+		{
+			return true;
+		}
+
+		bool validate() override
 		{
 			return true;
 		}
@@ -268,6 +272,11 @@ namespace Device
 		}
 
 		bool setup() override
+		{
+			return true;
+		}
+
+		bool validate() override
 		{
 			return true;
 		}

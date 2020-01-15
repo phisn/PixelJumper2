@@ -27,7 +27,7 @@ namespace Game
 		for (int i = 0; i < resource->tiles.size(); ++i)
 		{
 			const Resource::Tile& tileResource = resource->tiles[i];
-			Resource::TileInstanceWrapper* const tileInstance = resource->tileInstances[tileResource.content.instanceIndex];
+			const Resource::TileInstanceWrapper* const tileInstance = &resource->tileInstances[tileResource.content.instanceIndex];
 
 			GameTileBase* const tile = Shared::TileDescription::Find(
 				tileInstance->getID()

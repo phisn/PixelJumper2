@@ -20,7 +20,7 @@ namespace Shared
 		float inputReduce;
 
 		bool viewFollow;
-		sf::Vector2f viewWindow;
+		sf::FloatRect viewWindow;
 		float viewRotation;
 	};
 }

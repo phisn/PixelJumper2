@@ -8,39 +8,91 @@
 
 namespace Game
 {
-	class CollidableTile;
 	class CollisionContainer
 	{
 	public:
-		bool has(
-			const CollisionEngine::CollisionInfo::Type type) const
+		struct Collider
 		{
-			return !!infos[type];
+			Collider(
+				float inputForceAddition,
+				float jumpForce,
+				int frameLength,
+				int functLength)
+				:
+				inputForceAddition(inputForceAddition),
+				jumpForce(jumpForce),
+				frameLength(frameLength),
+				functLength(functLength)
+			{
+			}
+
+			Collider(
+				float inputForceAddition,
+				float jumpForce)
+				:
+				Collider(inputForceAddition, jumpForce, 1, 1)
+			{
+			}
+
+			Collider()
+				:
+				Collider(1.f, 1.f, 1, 1)
+			{
+			}
+
+			float inputForceAddition;
+			float jumpForce;
+
+			// a new collision will normally override
+			// the old collider regardless of the length
+			// or strength. this can be used, to define
+			// new game mechanics
+
+			// time in frames the collision is active
+			int frameLength;
+			// normally the number of times the collider
+			// will be used in functional context.
+			// eg. jumping
+			int functLength;
+		};
+
+		void reduceFrame()
+		{
+			for (int i = 0; i < 4; ++i)
+				if (colliders[i].frameLength < 0)
+				{
+					--colliders[i].frameLength;
+				}
 		}
 
-		CollidableTile* operator[](
-			const CollisionEngine::CollisionInfo::Type type) const
+		void reduceFunct()
 		{
-			return infos[type];
+			for (int i = 0; i < 4; ++i)
+				if (colliders[i].frameLength < 0)
+				{
+					--colliders[i].frameLength;
+				}
 		}
 
-		void clear()
-		{
-			infos[0] = { };
-			infos[1] = { };
-			infos[2] = { };
-			infos[3] = { };
-		}
-
-		void setCollision(
+		void setCollider(
 			const CollisionEngine::CollisionInfo::Type type,
-			CollidableTile* const tile)
+			const Collider collider)
 		{
-			infos[type] = tile;
+			colliders[type] = collider;
+		}
+
+		const Collider& readCollider(const CollisionEngine::CollisionInfo::Type type) const
+		{
+			return colliders[type];
+		}
+
+		bool isActive(const CollisionEngine::CollisionInfo::Type type) const
+		{
+			return colliders[type].frameLength > 0 && colliders[type].functLength > 0;
 		}
 
 	private:
-		CollidableTile* infos[4];
+		Collider colliders[4];
 	};
 
 	template <typename... Args>
@@ -128,8 +180,8 @@ namespace Game
 			properties.update();
 		}
 
-		InputRoutine<
-		>  up		{ [this]() { commonJump(); } 
+		InputRoutine<>  
+		   up		{ [this]() { commonJump(); } 
 		}, down		{ [this]() { Log::Information(L"Not implemented yet"); } 
 		}, left		{ [this]() { commonMovement(true); }
 		}, right	{ [this]() { commonMovement(false); }
@@ -137,7 +189,7 @@ namespace Game
 		}, respawn	{ [this]() { commonRespawn(); } 
 		};
 
-		const CollisionContainer& getCollisionContainer() const
+		CollisionContainer& getCollisionContainer()
 		{
 			return collisionContainer;
 		}
@@ -167,21 +219,6 @@ namespace Game
 			}
 
 			properties.movement += jumpForce / *properties.mass;
-
-			/**
-			const sf::Vector2f tileForce = getTileJumpForce();
-
-			if (tileForce.x == 0 && tileForce.y == 0)
-			{
-				return;
-			}
-			*
-
-			properties.movement += (jumpAssistLevel
-				? adjustForceJumpAssist(tileForce)
-				: tileForce
-			) / *properties.weight;*/
-
 		}
 
 		sf::Vector2f adjustForceJumpAssist(const sf::Vector2f tileForce) const

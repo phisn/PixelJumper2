@@ -78,8 +78,7 @@ namespace Scene
 
 				Resource::World* world = Editor::Manipulator::GetWorld()->convert(
 					Device::Random::MakeRandom<int>(),
-					L"Author Name",
-					L"Map Name");
+					0xbb);
 
 				if (world == NULL)
 				{
@@ -153,8 +152,7 @@ namespace Scene
 
 				Resource::World* const world = Editor::Manipulator::GetWorld()->convert(
 					Device::Random::MakeRandom<int>(),
-					L"Author Name",
-					L"Map Name");
+					0xaa);
 
 				if (world == NULL)
 				{

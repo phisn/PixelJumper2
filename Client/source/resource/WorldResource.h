@@ -33,8 +33,6 @@ namespace Resource
 	public:
 		~World()
 		{
-			for (TileInstanceWrapper* const instance : tileInstances)
-				delete instance;
 		}
 
 		struct Content
@@ -49,7 +47,7 @@ namespace Resource
 
 		} content;
 
-		std::vector<TileInstanceWrapper*> tileInstances;
+		std::vector<TileInstanceWrapper> tileInstances;
 		std::vector<Tile> tiles;
 
 		bool make(ReadPipe* const pipe) override
@@ -59,8 +57,8 @@ namespace Resource
 				return false;
 			}
 
-			for (TileInstanceWrapper* const instance : tileInstances)
-				if (!instance->make(pipe))
+			for (TileInstanceWrapper& instance : tileInstances)
+				if (!instance.make(pipe))
 				{
 					return false;
 				}
@@ -76,10 +74,29 @@ namespace Resource
 
 		bool save(WritePipe* const pipe) override
 		{
+			if (!pipe->writeValue(&content))
+			{
+				return false;
+			}
+
+			for (TileInstanceWrapper& instance : tileInstances)
+				if (!instance.save(pipe))
+				{
+					return false;
+				}
+
+			for (Tile& tile : tiles)
+				if (!tile.save(pipe))
+				{
+					return false;
+				}
+
+			return true;
 		}
 
 		bool setup() override
 		{
+			return validate();
 		}
 
 		bool validate() override

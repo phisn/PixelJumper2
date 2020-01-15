@@ -17,3 +17,23 @@
 [Error] : Resource 'TestWorld' (resouce path: 'world') not found (again)
 [Error] : Failed to read resource
 [Error] : Failed to create starting context
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping

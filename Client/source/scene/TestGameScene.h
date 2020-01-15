@@ -1,17 +1,6 @@
 #pragma once
 
-#include <Client/source/game/GamemodeBase.h>
-
-#include <Client/source/resource/ResourceInterface.h>
-#include <Client/source/resource/WorldResource.h>
-
-#include <Client/source/scene/MenuBaseScene.h>
-
-#include <Client/source/menu/MenuLabel.h>
-#include <Client/source/menu/MenuSlideBar.h>
-#include <Client/source/menu/MenuRowContainer.h>
-
-#include <Client/source/shared/tiles/TileWall.h>
+#include <Client/source/game/>
 
 #include <Client/source/framework/FrameworkInterface.h>
 
@@ -259,32 +248,35 @@ namespace Scene
 
 		Game::PlayerBase* player;
 		Game::TestGamemode* const testGamemode;
-	};
+	};*/
 
 	class TestGameScene
 		:
-		public MenuBaseScene
+		public MainSceneBase
 	{
 	public:
 		TestGameScene(Resource::World* const world)
-			:
-			world(world),
-			testGamemode(&this->world)
 		{
 		}
 
 		bool onCreate() override
 		{
-			if (!testGamemode.initialize())
-			{
-				return false;
-			}
+		}
 
-			sf::FloatRect viewPort = Menu::MenuRootBase::ConvertRealToPort({ 0, 0, 500, 0 });
-			viewPort.height = 1.f;
+		void onRemove() override
+		{
+		}
 
-			addRoot<GameSlidersRoot>(&testGamemode)->viewPort = viewPort;
-			return MenuBaseScene::onCreate();
+		void initialize() override
+		{
+		}
+
+		void onShow() override
+		{
+		}
+
+		void onHide() override
+		{
 		}
 
 		void onScenePopped(const int size) override
@@ -293,49 +285,16 @@ namespace Scene
 
 		void onEvent(const sf::Event event) override
 		{
-			if (event.type == sf::Event::Closed)
-			{
-				Framework::Context::Pop();
-
-				return;
-			}
-
-			testGamemode.onEvent(event);
-
-			if (event.type == sf::Event::KeyPressed &&
-				event.key.code == sf::Keyboard::Key::T &&
-				event.key.control)
-			{
-				Framework::Context::Pop();
-			}
-
-			if (event.type == sf::Event::KeyPressed &&
-				event.key.code == sf::Keyboard::Key::R)
-			{
-				testGamemode.world->getPlayers()[0]->getProperties().movement = { 0, 0 };
-				testGamemode.world->getPlayers()[0]->getProperties().position = { 0, -1 };
-
-				testGamemode.world->getPlayers()[0]->getProperties().update();
-			}
-
-			MenuBaseScene::onEvent(event);
 		}
 
 		void onLogic(const sf::Time time) override
 		{
-			testGamemode.onLogic(time);
-			MenuBaseScene::onLogic(time);
 		}
 
 		void onDraw(sf::RenderTarget* const target) override
 		{
-			testGamemode.onDraw(target);
-			MenuBaseScene::onDraw(target);
 		}
 
 	private:
-		Game::LocalWorld world;
-		Game::TestGamemode testGamemode;
 	};
-	*/
 }
