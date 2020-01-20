@@ -237,9 +237,6 @@
     <ClInclude Include="source\game\ControllablePlayer.h">
       <Filter>source\game\player</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\VirtualPlayer.h">
-      <Filter>source\game\player</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\Environment.h">
       <Filter>source\game\world</Filter>
     </ClInclude>
@@ -251,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="source\shared\tiles\TileDescription.h">
       <Filter>source\shared\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\VirtualPlayer.h">
+      <Filter>source\game\player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -328,18 +328,6 @@
     </ClCompile>
     <ClCompile Include="source\game\CollisionEngine.cpp">
       <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiletrait\CollidableTile.cpp">
-      <Filter>source\game\tiletrait</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiletrait\DrawableTile.cpp">
-      <Filter>source\game\tiletrait</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiletrait\DynamicTile.cpp">
-      <Filter>source\game\tiletrait</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\tiletrait\GameTileBase.cpp">
-      <Filter>source\game\tiletrait</Filter>
     </ClCompile>
     <ClCompile Include="source\resource\ResourceDefinition.cpp">
       <Filter>source\resource</Filter>
@@ -516,8 +504,6 @@
     <None Include="source\editor\manipulator\tasks\TilePlace.h">
       <Filter>source\editor\manipulator\tasks</Filter>
     </None>
-    <None Include="resource1.h" />
-    <None Include="Client1.rc" />
     <None Include="source\editor\selector\SelectorCache.cpp">
       <Filter>source\editor\selector</Filter>
     </None>
@@ -668,8 +654,6 @@
     <None Include="source\game\GamemodeBase.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="resource2.h" />
-    <None Include="Client2.rc" />
     <None Include="source\shared\tiles\TileExit.h">
       <Filter>source\shared\tiles</Filter>
     </None>
@@ -677,9 +661,6 @@
       <Filter>source\game</Filter>
     </None>
     <None Include="source\game\tiletrait\ExitableTile.h">
-      <Filter>source\game\tiletrait</Filter>
-    </None>
-    <None Include="source\game\tiletrait\ExitableTile.cpp">
       <Filter>source\game\tiletrait</Filter>
     </None>
     <None Include="source\game\GamePlayer.h">
@@ -727,8 +708,6 @@
     <None Include="source\game\net\IndependentSimulator.cpp">
       <Filter>source\game\net</Filter>
     </None>
-    <None Include="resource3.h" />
-    <None Include="Client3.rc" />
     <None Include="source\device\NetDevice.h">
       <Filter>source\device</Filter>
     </None>
@@ -762,8 +741,8 @@
     <None Include="source\game\DependentTileData.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\device\CoreDevice.cpp">
-      <Filter>source\device</Filter>
-    </None>
+    <None Include="source\game\Simulation.h" />
+    <None Include="source\game\Simulation.cpp" />
+    <None Include="source\game\tiletrait\TransitiveTile.h" />
   </ItemGroup>
 </Project>

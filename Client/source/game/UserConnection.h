@@ -13,38 +13,27 @@ namespace Game
 	class UserConnection
 	{
 	public:
-		enum Type
-		{
-			Local,
-			Remote,
-			Ghost
-		};
-
-		UserConnection(
-			const Type type,
-			const PlayerInformation info)
+		UserConnection(const PlayerInformation info)
 			:
-			type(type),
 			information(info)
 		{
 		}
 
 		virtual void initialize() = 0;
+
 		virtual void onLogic(const sf::Time time) = 0;
+
+		// local: process input and store if
+		// connection goes to remote host
+		// remote: process new input and determine
+		// timeouts and eventuelly change status
+		// return: is currently able to 
+		// process logic
+		virtual bool processLogic() = 0;
 
 		virtual void changeUserInformation(const PlayerInformation info)
 		{
 			information = info;
-		}
-
-		virtual void pushPlayer(World* const world)
-		{
-			world->addPlayer(getPlayer());
-		}
-
-		virtual void popPlayer(World* const world)
-		{
-			world->removePlayer(getPlayer());
 		}
 
 		const PlayerInformation& getInformation() const
@@ -52,10 +41,9 @@ namespace Game
 			return information;
 		}
 
-		const Type type;
-	protected:
 		virtual PlayerBase* getPlayer() = 0;
 
+	private:
 		PlayerInformation information;
 	};
 
@@ -71,11 +59,14 @@ namespace Game
 			const Device::Input::PlayerID playerId,
 			const sf::FloatRect viewPort)
 			:
-			UserConnection(Local, info),
+			UserConnection(info),
 			playerId(playerId)
 		{
 			view.setViewport(viewPort);
-			player = new LocalPlayer(info);
+			player = new ControllablePlayer(
+				playerId, 
+				info, 
+				&view);
 		}
 
 		~LocalConnection()
@@ -91,12 +82,17 @@ namespace Game
 		{
 			UserConnection::changeUserInformation(info);
 
-			// player should never be null
+			// player must not be null
 			delete player;
-			player = new LocalPlayer(info);
+			player = new ControllablePlayer(playerId, info, &view);
 		}
 
-		LocalPlayer* getLocalPlayer() const
+		void onLogic(const sf::Time time) override
+		{
+			player->onLogic(time);
+		}
+
+		ControllablePlayer* getLocalPlayer() const
 		{
 			return player;
 		}
@@ -112,10 +108,9 @@ namespace Game
 			return player;
 		}
 
-		LocalPlayer* player = NULL;
-
-		const Device::Input::PlayerID playerId;
+		ControllablePlayer* player;
 		Device::View view;
+		const Device::Input::PlayerID playerId;
 	};
 
 	class RemoteConnection
@@ -136,6 +131,17 @@ namespace Game
 			sf::Packet packet;
 		};
 
+		struct Settings
+		{
+			sf::Time softTimeout = sf::milliseconds(500);	// allowed lag
+			int hardTimeoutCount = 4; // 2 sec				// timout after N lags
+		};
+
+		// status should be used by the connection
+		// itself and the operator. if the status
+		// changes from connected, then the connection
+		// has to be removed
+
 		// order by importance
 		enum Status
 		{
@@ -146,11 +152,13 @@ namespace Game
 		};
 
 		RemoteConnection(
-			const sf::IpAddress ipAddress,
+			const sf::IpAddress ipAddress, // change to (socket context)
+			const Settings settings,
 			const PlayerInformation info)
 			:
 			ipAddress(ipAddress),
-			UserConnection(Remote, info)
+			settings(settings),
+			UserConnection(info)
 		{
 			player = new VirtualPlayer(info);
 		}
@@ -161,6 +169,15 @@ namespace Game
 
 		void onLogic(const sf::Time time) override
 		{
+			Net::FrameStatus fs;
+		}
+
+		void processLogic() override
+		{
+			if (!player->hasUpdate())
+			{
+
+			}
 		}
 
 		void changeUserInformation(const PlayerInformation info) override
@@ -183,7 +200,7 @@ namespace Game
 			return status;
 		}
 
-		VirtualPlayer* getVirtualPlayer() const
+		PlayerBase* getPlayer() override
 		{
 			return player;
 		}
@@ -194,13 +211,10 @@ namespace Game
 		}
 
 	protected:
-		PlayerBase* getPlayer() override
-		{
-			return player;
-		}
+		const sf::IpAddress ipAddress;
+		const Settings settings;
 		
 		Status status;
-		const sf::IpAddress ipAddress;
 		VirtualPlayer* player;
 	};
 

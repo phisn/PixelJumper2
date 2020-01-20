@@ -4,6 +4,7 @@
 #include <Client/source/game/GameWorld.h>
 
 #include <Client/source/game/tiletrait/ExitableTile.h>
+#include <Client/source/game/tiletrait/TransitiveTile.h>
 
 #include <Client/source/framework/Context.h>
 
@@ -11,205 +12,229 @@
 
 namespace Game
 {
-	// gamemode must be able to sync players
-	// gamemode should only sync internal gamemode
-	// values, not dependent on the creator
-	class GamemodeBase
+	class Simulation
 		:
 		public GameState
 	{
 	public:
+		// order by importance
+		enum Status
+		{
+			Running,	// has player(s)
+			Dead,		// has no player
+			Error		// error
+		};
+
+		virtual ~Simulation()
+		{
+		}
+
+		Simulation(UserConnection* const connection)
+			:
+			connection(connection)
+		{
+		}
+
 		virtual bool initialize() = 0;
 		virtual bool processLogic() = 0;
 
-	};
+		virtual void kill()
+		{
+			adjustStatus(Simulation::Status::Dead);
+		}
 
-	class GamemodeCreatorBase
-		:
-		public LazyGameState
-	{
-	public:
-		// creator does not handle gamemode state
-		virtual GamemodeBase* createGamemode() = 0;
-	};
 
-	class ClassicGamemode
+		Status getStatus() const
+		{
+			return status;
+		}
+
+		UserConnection* getConnection() const
+		{
+			return connection;
+		}
+
+	protected:
+		virtual void adjustStatus(const Status status)
+		{
+			if (this->status < status)
+				this->status = status;
+		}
+
+		UserConnection* const connection;
+
+	private:
+		Status status = Running;
+	};
+	/*
+	class TestGamemode
 		:
 		public GamemodeBase
 	{
 	public:
-		typedef std::vector<Resource::World*> WorldResources;
-		
-		ClassicGamemode(
-			const WorldResources& worldResources)
+		TestGamemode(
+			Resource::World* const world,
+			PlayerBase* const player)
 			:
-			worldResources(worldResources)
+			resource(world),
+			player(player)
 		{
 		}
 
-		bool initialize()
+		~TestGamemode()
 		{
-			if (player == NULL)
-			{
-				Log::Error(L"Got empty player in classic gamemode");
+			if (world)
+				delete world;
+		}
 
-				return false;
-			}
+		bool initialize() override
+		{
+			world = new World(resource);
+			world->addPlayer(player);
 
-			return loadWorld(worldResources[0]);
+			return world->initialize() && world->initializeGraphics();
 		}
 
 		bool processLogic() override
 		{
-			if (requestWorldSwitch)
-			{
-				Log::Section section(L"Switching world in classic gamemode");
-
-				if (!switchWorld())
-				{
-					Log::Error(L"Failed to initialize world");
-
-					delete currentWorld;
-					currentWorld = NULL;
-
-					return false;
-				}
-			}
-
-			currentWorld->processLogic();
-
-			return true;
-		}
-
-		void registerPlayer(PlayerBase* const player)
-		{
-			this->player = player;
-		}
-
-		World* getCurrentWorld() const
-		{
-			return currentWorld;
+			world->processLogic();
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe)
 		{
-			Content content;
-
-			if (currentWorld == NULL)
-			{
-				Log::Warning(L"Creating empty sync in classic gamemode");
-
-				content.hasWorld = false;
-				return writePipe->writeValue(&content);
-			}
-
-			content.hasWorld = true;
-			content.world = currentWorld->getInformation()->worldId;
-
-			return writePipe->writeValue(&content)
-				&& currentWorld->writeState(writePipe);
+			return true;
 		}
 
 		bool readState(Resource::ReadPipe* const readPipe)
 		{
-			Content content;
-
-			if (!readPipe->readValue(&content))
-			{
-				return false;
-			}
-
-			if (!content.hasWorld)
-			{
-				Log::Warning(L"Got empty sync in classic gamemode");
-
-				delete currentWorld;
-				currentWorld = NULL;
-
-				return false;
-			}
-
-			if (currentWorld == NULL || // null check first
-				currentWorld->getInformation()->worldId != content.world)
-			{
-				for (Resource::World* world : worldResources)
-					if (world->content.id == content.world)
-					{
-						if (!loadWorld(world))
-						{
-							return false;
-						}
-
-						goto WORLD_FOUND;
-					}
-
-				Log::Error(L"Got invalid world in classic gamemode");
-				return false;
-
-			WORLD_FOUND: __noop;
-			}
-
-			return currentWorld->readState(readPipe);
+			return true;
 		}
 
 	private:
-		struct Content
+		World* world = NULL;
+
+		Resource::World* const resource;
+		PlayerBase* const player;
+	};
+
+	class TestGamemodeCreator
+		:
+		public GamemodeCreatorBase
+	{
+	public:
+		TestGamemodeCreator(
+			Resource::World* const world,
+			LocalConnection* const connection)
+			:
+			world(world),
+			connection(connection)
 		{
-			bool hasWorld;
-			Resource::WorldId world;
-		};
-
-		bool switchWorld()
-		{
-			for (int i = 0; i < worldResources.size(); ++i)
-				if (worldResources[i]->content.id == currentWorld->getInformation()->worldId)
-				{
-					return loadWorld(worldResources[
-						i - 1 == worldResources.size() ? 0 : i + 1
-					]);
-				}
-
-			Log::Warning(
-				L"Current world not found, "
-				L"resource propably missing"
-				L"because of creator sync. "
-				L"Loading first");
-
-			return loadWorld(worldResources[0]);
 		}
 
-		bool loadWorld(Resource::World* const worldResource)
+		GamemodeBase* createGamemode() override
 		{
-			if (currentWorld != NULL)
-			{
-				delete currentWorld;
-			}
-
-			currentWorld = new World(worldResource);
-			currentWorld->addPlayer(player);
-
-			return currentWorld->initialize();
+			return new TestGamemode(world, connection->getLocalPlayer());
 		}
 
-		void registerExitTiles()
+		bool writeChangedState(Resource::WritePipe* const writePipe)
+		{
+			return true;
+		}
+
+		bool readChangedState(Resource::ReadPipe* const readPipe)
+		{
+			return true;
+		}
+
+	private:
+		Resource::World* const world;
+		LocalConnection* const connection;
+	};
+	*/
+	class ClassicSimulation
+		:
+		public Simulation
+	{
+	public:
+		typedef std::map<Resource::WorldId, Resource::World*> ResourceContainer;
+		typedef std::map<Resource::WorldId, World*> WorldContainer;
+
+		ClassicSimulation()
+		{
+		}
+
+		bool initialize() override
+		{
+		}
+
+		bool processLogic() override
+		{
+			return true;
+		}
+
+		bool writeState(Resource::WritePipe* const writePipe) override
+		{
+		}
+
+		bool readState(Resource::ReadPipe* const readPipe) override
+		{
+		}
+
+	private:
+		bool registerExitTiles()
 		{
 			for (ExitableTile* tile : currentWorld->getEnvironment()->getTileType<ExitableTile>())
 			{
 				tile->onExit.addListener(
 					[this]()
 					{
-						requestWorldSwitch = true;
 					});
+			}
+
+			for (TransitiveTile* tile : currentWorld->getEnvironment()->getTileType<TransitiveTile>())
+			{
+				tile->onTransition.addListener(
+					[this](const Resource::WorldId worldID)
+					{
+						decltype(loadedWorlds)::iterator world = loadedWorlds.find(worldID);
+
+						if (world == loadedWorlds.cend())
+						{
+							Log::Error("World for transition was not loaded, fatal error");
+						}
+
+						world->second
+					});
+
+				if (loadedWorlds.find(tile->getTarget()) == loadedWorlds.cend())
+				{
+					if (loadedWorldResources.find(tile->getTarget()) == loadedWorldResources.cend())
+					{
+						return false;
+					}
+					else
+					{
+						World* const world = new World(loadedWorldResources[tile->getTarget()]);
+
+						if (!world->initialize())
+						{
+							delete world;
+							return false;
+						}
+
+						loadedWorlds[tile->getTarget()] = world;
+					}
+				}
 			}
 		}
 
-		PlayerBase* player;
+		Resource::WorldId currentWorldID;
+		World* currentWorld;
 
-		bool requestWorldSwitch = false;
-		World* currentWorld = NULL;
-		const WorldResources& worldResources;
+		std::map<Resource::WorldId, Resource::World*> loadedWorldResources;
+		WorldContainer loadedWorlds;
 	};
-
+	/*
 	class ClassicGamemodeCreator
 		:
 		public GamemodeCreatorBase
@@ -252,7 +277,7 @@ namespace Game
 			for (int i = 0; i < count; ++i)
 			{
 				Resource::World* const world = tempWorlds[i] = new Resource::World();
-				
+
 				if (!world->make(readPipe))
 				{
 					for (Resource::World* const world : tempWorlds)
@@ -272,4 +297,5 @@ namespace Game
 
 		std::vector<Resource::World*> worlds;
 	};
+	*/
 }

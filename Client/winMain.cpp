@@ -5,6 +5,8 @@
 
 #include <Client/source/device/NetDevice.h>
 
+#include <steam/steamnetworkingsockets.h>
+
 #if defined(_DEBUG) || !defined(_WIN32)
 	int main()
 #else

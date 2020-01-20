@@ -1,6 +1,7 @@
 #pragma once
 
-#include <Client/source/game/>
+#include <Client/source/game/GamemodeBase.h>
+#include <Client/source/game/Simulation.h>
 
 #include <Client/source/framework/FrameworkInterface.h>
 
@@ -54,7 +55,7 @@ namespace Scene
 
 					value.text = std::to_wstring(result).substr(0, 8);
 					gameProperty.setValue(result);
-					
+
 				});
 
 			slider.resetValue.addListener(
@@ -198,7 +199,7 @@ namespace Scene
 						tile->setFriction(value);
 					}
 				});
-			
+
 			slider.push_back(new GameSlider(std::wstring(L"Tile Friction"), tileFrictionProperty, 1.f));
 			container.addElement(slider.back());
 			slider.back()->build();
@@ -261,6 +262,7 @@ namespace Scene
 
 		bool onCreate() override
 		{
+			simulator = new Game::DedicatedTestSimulator()
 		}
 
 		void onRemove() override
@@ -296,5 +298,7 @@ namespace Scene
 		}
 
 	private:
+		Game::TestGamemodeCreator* testGamemodeCreator;
+		Game::DedicatedTestSimulator* simulator;
 	};
 }

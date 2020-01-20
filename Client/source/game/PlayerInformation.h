@@ -22,6 +22,24 @@ namespace Game
 			return information;
 		}
 
+		PlayerInformation(
+			const Resource::PlayerID playerId,
+			const sf::Color color,
+			const std::wstring name)
+			:
+			playerId(playerId),
+			color(color),
+			name(name)
+		{
+		}
+
+		PlayerInformation()
+			:
+			playerId(0),
+			color(sf::Color::White)
+		{
+		}
+
 		Resource::PlayerID playerId;
 		sf::Color color;
 		std::wstring name;

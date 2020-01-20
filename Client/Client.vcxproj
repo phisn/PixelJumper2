@@ -148,10 +148,6 @@
     <ClCompile Include="source\game\GamePlayer.cpp" />
     <ClCompile Include="source\game\GameWorld.cpp" />
     <ClCompile Include="source\game\PlayerRepresentation.cpp" />
-    <ClCompile Include="source\game\tiletrait\CollidableTile.cpp" />
-    <ClCompile Include="source\game\tiletrait\DrawableTile.cpp" />
-    <ClCompile Include="source\game\tiletrait\DynamicTile.cpp" />
-    <ClCompile Include="source\game\tiletrait\GameTileBase.cpp" />
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
     <ClCompile Include="source\game\VirtualPlayer.cpp" />
     <ClCompile Include="source\logger\SectionHost.cpp" />
@@ -190,12 +186,6 @@
     <Image Include="source\resource\IMAG0011.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Client1.rc" />
-    <None Include="Client2.rc" />
-    <None Include="Client3.rc" />
-    <None Include="resource1.h" />
-    <None Include="resource2.h" />
-    <None Include="resource3.h" />
     <None Include="source\device\NetDevice.cpp" />
     <None Include="source\device\NetDevice.h" />
     <None Include="source\editor\manipulator\CacheElement.cpp" />
@@ -261,8 +251,10 @@
     <None Include="source\game\PlayerProperties.cpp" />
     <None Include="source\game\PlayerProperties.h" />
     <None Include="source\game\PlayerRepresentation.h" />
-    <None Include="source\game\tiletrait\ExitableTile.cpp" />
+    <None Include="source\game\Simulation.cpp" />
+    <None Include="source\game\Simulation.h" />
     <None Include="source\game\tiletrait\ExitableTile.h" />
+    <None Include="source\game\tiletrait\TransitiveTile.h" />
     <None Include="source\game\UserConnection.cpp" />
     <None Include="source\game\UserConnection.h" />
     <None Include="source\game\WorldInformation.h" />

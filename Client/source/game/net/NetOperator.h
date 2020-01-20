@@ -65,7 +65,6 @@ namespace Game::Net
 	protected:
 		virtual void processLogic() = 0;
 
-
 		virtual bool retrivePlayerResource(
 			Resource::PlayerResource* const resource,
 			const Resource::PlayerID player) = 0;
