@@ -70,24 +70,24 @@ namespace Game
 	};
 
 	/*
-	
+
 		A simulation consists of worlds which can be connected
 		transitivly with each other meaning the player can switch
 		between them without interrupts.
-		A loaded world will preload all transitivly connected 
+		A loaded world will preload all transitivly connected
 		worlds to prevent any interrupts by loading. preloaded
 		worlds will be loaded asynchronous and evaluated when
 		needed. an error in loading a world will be first discovered
 		when the world is loaded. when the worlds are evaluated
 		first all worlds are moved to loadedworlds then the targeted
 		worlds will be loaded and possibly new worlds moved into
-		preloadedworlds. 
+		preloadedworlds.
 		it is important to reset all worlds when the player resets
-		or dies to prevent an overallocation of resources. that 
+		or dies to prevent an overallocation of resources. that
 		either mean that there will only be a low count of active
 		worlds when the player often respawns and dies or that there
 		will be currently many loaded worlds
-	
+
 	*/
 	class ClassicSimulation
 		:
@@ -157,20 +157,17 @@ namespace Game
 		}
 
 	private:
-		void processExitTiles()
+		bool processTileDependencies()
 		{
-			for (ExitableTile* tile : currentWorld->getEnvironment()->getTileType<ExitableTile>())
+			for (ExitableTile* const tile : currentWorld->getEnvironment()->getTileType<ExitableTile>())
 			{
 				tile->onExit.addListener(
 					[this]()
 					{
 						// ...
-					});
+					}, GameEventIdentifier::ClassicSimulation);
 			}
-		}
 
-		bool processTransitionTiles()
-		{
 			// preload transtive tiles because environment uses maps
 			const std::vector<TransitiveTile*>& transitiveTiles = currentWorld->getEnvironment()->getTileType<TransitiveTile>();
 
@@ -190,12 +187,26 @@ namespace Game
 						}
 
 						// ...
-					});
+
+					}, GameEventIdentifier::ClassicSimulation);
 
 				if (!preloadWorld(tile->getTarget()))
 				{
 					return false;
 				}
+			}
+		}
+
+		void removeTileDependencies()
+		{
+			for (ExitableTile* const tile : currentWorld->getEnvironment()->getTileType<ExitableTile>())
+			{
+				tile->onExit.popListener(GameEventIdentifier::ClassicSimulation);
+			}
+
+			for (TransitiveTile* const tile : currentWorld->getEnvironment()->getTileType<TransitiveTile>())
+			{
+				tile->onTransition.popListener(GameEventIdentifier::ClassicSimulation);
 			}
 		}
 
@@ -244,22 +255,18 @@ namespace Game
 					return false;
 				}
 
-				if (currentWorld)
-					delete currentWorld;
-
-				currentWorld = new World(worldResource->second);
-
-				if (!currentWorld->initialize())
+				world = new World(worldResource->second);
+				if (!world->initialize())
 				{
 					adjustStatus(Status::Error);
 					return false;
 				}
 			}
 
-			// need to remove all dependencies
-			// to prevent double registes !!!!!!!!!!!!!!!
-			processExitTiles();
-			if (!processTransitionTiles())
+			removeTileDependencies();
+			currentWorld = world;
+
+			if (!processTileDependencies())
 			{
 				return false;
 			}
@@ -297,7 +304,7 @@ namespace Game
 		std::vector<Resource::WorldId> missingResources;
 		std::vector<WorldPreloader> preloadingWorlds;
 	};
-	
+
 	/*
 	class ClassicGamemodeCreator
 		:

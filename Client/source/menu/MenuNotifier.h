@@ -9,34 +9,24 @@ namespace Menu
 	class MenuNotifier
 	{
 		friend Parent;
+
 	public:
 		typedef std::function<void(ListenerParameter...)> Listener;
+		typedef std::pair<Listener, size_t> ListenerPair;
 
-		void addListener(Listener listener)
+		void addListener(Listener listener, const size_t identifier = 0)
 		{
-			listeners.push_back(listener);
+			listeners.push_back(std::make_pair(listener, identifier));
 		}
 
-		void popListener(Listener listener)
+		void popListener(const size_t identifier)
 		{
-			if (listeners.size() == 0)
-			{
-				return;
-			}
-
-			decltype(listeners)::const_iterator iterator = listeners.cbegin();
-
-			while (iterator->target<void>() != listener.target<void>())
-			{
-				if (iterator == listeners.cend())
+			for (decltype(listeners)::const_iterator iterator = listeners.cbegin();
+				iterator != listeners.cend(); ++iterator)
+				if (iterator->second == identifier)
 				{
-					return;
+					listeners.erase();
 				}
-
-				++iterator;
-			}
-
-			listeners.erase(iterator);
 		}
 
 		void clearListener()
@@ -47,10 +37,10 @@ namespace Menu
 	private:
 		void notify(ListenerParameter... parameter)
 		{
-			for (const Listener& listener : listeners)
-				listener(parameter...);
+			for (const ListenerPair& listener : listeners)
+				listener.first(parameter...);
 		}
 
-		std::vector<Listener> listeners;
+		std::vector<ListenerPair> listeners;
 	};
 }
