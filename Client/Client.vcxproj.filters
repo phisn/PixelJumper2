@@ -648,12 +648,6 @@
     <None Include="source\game\GameProperty.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\GamemodeBase.cpp">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\GamemodeBase.h">
-      <Filter>source\game</Filter>
-    </None>
     <None Include="source\shared\tiles\TileExit.h">
       <Filter>source\shared\tiles</Filter>
     </None>
@@ -741,8 +735,18 @@
     <None Include="source\game\DependentTileData.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\Simulation.h" />
-    <None Include="source\game\Simulation.cpp" />
     <None Include="source\game\tiletrait\TransitiveTile.h" />
+    <None Include="source\game\Simulation.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\Simulation.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\Simulator.cpp">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\Simulator.h">
+      <Filter>source\game</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -85,6 +85,14 @@ namespace Game
 		return true;
 	}
 
+	void Environment::processLogic()
+	{
+		for (DynamicTile* const tile : getTileType<DynamicTile>())
+		{
+			tile->processLogic();
+		}
+	}
+
 	void Environment::draw(sf::RenderTarget* const target) const
 	{
 		for (const sf::VertexBuffer& vertexTile : vertexWorld)
@@ -100,13 +108,5 @@ namespace Game
 
 	void Environment::onEvent(const sf::Event event)
 	{
-	}
-
-	void Environment::onLogic(const sf::Time time)
-	{
-		for (DynamicTile* const tile : getTileType<DynamicTile>())
-		{
-			tile->onLogic(time);
-		}
 	}
 }

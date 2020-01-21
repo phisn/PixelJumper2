@@ -56,11 +56,12 @@ namespace Game
 		{
 			tiles[typeid(HashType).hash_code()].push_back((GameTileBase*) tile);
 		}
+		
+		void processLogic();
 
 		void draw(sf::RenderTarget* const target) const;
 		void onEvent(const sf::Event event);
-		void onLogic(const sf::Time time);
-
+		
 		const std::vector<CollisionType>& getCollisionTypes()
 		{
 			return collisionTypes;

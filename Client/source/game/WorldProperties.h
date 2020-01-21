@@ -15,18 +15,20 @@ namespace Game
 		sf::Vector2f gravity;
 		float airResistance;
 
-		sf::Uint32 milisecondsPassed;
+		sf::Uint32 tickCount;
 	};
 
 	class WorldProperties
 		:
 		public GameState
 	{
+		friend class World;
+
 	public:
 		WorldProperties()
 		{
 			playerCount = 0;
-			milisecondsPassed = 0;
+			tickCount = 0;
 		}
 
 		ReadOnlyProperty<Property<sf::Uint16>, WorldProperties> playerCount;
@@ -34,7 +36,7 @@ namespace Game
 		DefinedProperty<sf::Vector2f> gravity{ Definition::gravity };
 		DefinedProperty<float> airResistance{ Definition::air_resistance };
 
-		Property<sf::Uint32> milisecondsPassed;
+		ReadOnlyProperty<Property<sf::Uint32>, WorldProperties> tickCount;
 
 		void loadDefault(const WorldInformation info)
 		{
@@ -49,7 +51,7 @@ namespace Game
 			playerCount.update();
 			gravity.update();
 			airResistance.update();
-			milisecondsPassed.update();
+			tickCount.update();
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
@@ -67,10 +69,15 @@ namespace Game
 				return false;
 			}
 
+			if (playerCount != rpp.playerCount)
+			{
+				return false;
+			}
+
 			playerCount = rpp.playerCount;
 			gravity = rpp.gravity;
 			airResistance = rpp.airResistance;
-			milisecondsPassed = rpp.milisecondsPassed;
+			tickCount = rpp.tickCount;
 
 			update(); // TODO: ?
 
@@ -84,14 +91,25 @@ namespace Game
 			rpp.playerCount = playerCount;
 			rpp.gravity = gravity;
 			rpp.airResistance = airResistance;
-			rpp.milisecondsPassed = milisecondsPassed;
+			rpp.tickCount = tickCount;
 
 			return rpp;
 		}
 
-		void setPlayerCountValue(const sf::Uint16 value)
+	private:
+		void setPlayerCount(const sf::Uint16 value)
 		{
 			playerCount = value;
+		}
+
+		void setTickCount(const sf::Uint64 value)
+		{
+			tickCount = value;
+		}
+
+		void increaseTickCount()
+		{
+			++tickCount;
 		}
 	};
 }

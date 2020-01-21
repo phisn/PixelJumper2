@@ -18,6 +18,6 @@ namespace Game
 			environment->registerTile<DynamicTile>(this);
 		}
 
-		virtual void onLogic(const sf::Time time) = 0;
+		virtual void processLogic() = 0;
 	};
 }

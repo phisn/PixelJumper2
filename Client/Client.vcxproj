@@ -231,8 +231,8 @@
     <None Include="source\editor\tile\TileTemplate.h" />
     <None Include="source\game\DependentTileData.h" />
     <None Include="source\game\GameEvent.h" />
-    <None Include="source\game\GamemodeBase.cpp" />
-    <None Include="source\game\GamemodeBase.h" />
+    <None Include="source\game\Simulation.cpp" />
+    <None Include="source\game\Simulation.h" />
     <None Include="source\game\GameProperty.cpp" />
     <None Include="source\game\GameProperty.h" />
     <None Include="source\game\GameWorld.h" />
@@ -251,8 +251,8 @@
     <None Include="source\game\PlayerProperties.cpp" />
     <None Include="source\game\PlayerProperties.h" />
     <None Include="source\game\PlayerRepresentation.h" />
-    <None Include="source\game\Simulation.cpp" />
-    <None Include="source\game\Simulation.h" />
+    <None Include="source\game\Simulator.cpp" />
+    <None Include="source\game\Simulator.h" />
     <None Include="source\game\tiletrait\ExitableTile.h" />
     <None Include="source\game\tiletrait\TransitiveTile.h" />
     <None Include="source\game\UserConnection.cpp" />

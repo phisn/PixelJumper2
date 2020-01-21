@@ -163,6 +163,8 @@ namespace Game
 	};
 
 	class PlayerBase
+		:
+		public GameState
 	{
 		friend class World;
 
@@ -188,6 +190,16 @@ namespace Game
 		}, interact	{ [this]() { Log::Information(L"Not implemented yet"); }
 		}, respawn	{ [this]() { commonRespawn(); } 
 		};
+
+		bool writeState(Resource::WritePipe* const writePipe)
+		{
+			return properties.writeState(writePipe);
+		}
+		
+		bool readState(Resource::ReadPipe* const readPipe)
+		{
+			return properties.readState(readPipe);
+		}
 
 		CollisionContainer& getCollisionContainer()
 		{

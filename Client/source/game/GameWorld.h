@@ -16,6 +16,7 @@
 
 namespace Game
 {
+	// in microseconds
 	constexpr sf::Uint64 LogicTimeStep = 1'000;
 
 	class World
@@ -80,21 +81,42 @@ namespace Game
 				processPlayer(player);
 			}
 
-			environment.onLogic(
-				sf::microseconds(LogicTimeStep)
-			);
+			environment.processLogic();
 
+			properties.increaseTickCount();
 			properties.update();
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe)
 		{
-			return properties.writeState(writePipe);
+			if (!properties.writeState(writePipe))
+			{
+				return false;
+			}
+
+			for (PlayerBase* const player : players)
+				if (!player->writeState(writePipe))
+				{
+					return false;
+				}
+
+			return true;
 		}
 
 		bool readState(Resource::ReadPipe* const readPipe)
 		{
-			return properties.readState(readPipe);
+			if (!properties.readState(readPipe))
+			{
+				return false;
+			}
+
+			for (PlayerBase* const player : players)
+				if (!player->readState(readPipe))
+				{
+					return false;
+				}
+
+			return true;
 		}
 
 		const Environment* getEnvironment() const
@@ -103,6 +125,11 @@ namespace Game
 		}
 
 		WorldProperties& getProperties()
+		{
+			return properties;
+		}
+
+		const WorldProperties& getProperties() const
 		{
 			return properties;
 		}
@@ -127,7 +154,7 @@ namespace Game
 			player->getProperties().loadDefault(information);
 			players.push_back(player);
 
-			properties.setPlayerCountValue(*properties.playerCount + 1);
+			properties.setPlayerCount(*properties.playerCount + 1);
 		}
 
 		void removePlayer(PlayerType* const player)
@@ -140,7 +167,7 @@ namespace Game
 			{
 				players.erase(iterator);
 
-				properties.setPlayerCountValue(*properties.playerCount - 1);
+				properties.setPlayerCount(*properties.playerCount - 1);
 				assert(*properties.playerCount >= 0);
 
 				// uninitialize listener?
