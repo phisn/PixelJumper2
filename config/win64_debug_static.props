@@ -16,7 +16,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>sfml-graphics-d-2.lib;sfml-window-d-2.lib;sfml-audio-d-2.lib;sfml-network-d-2.lib;sfml-system-d-2.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;jpeg.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

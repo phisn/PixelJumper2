@@ -23,10 +23,12 @@ namespace Menu
 		{
 			for (decltype(listeners)::const_iterator iterator = listeners.cbegin();
 				iterator != listeners.cend(); ++iterator)
+			{
 				if (iterator->second == identifier)
 				{
-					listeners.erase();
+					listeners.erase(iterator);
 				}
+			}
 		}
 
 		void clearListener()

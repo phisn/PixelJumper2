@@ -45,6 +45,10 @@ namespace Game
 			adjustStatus(Simulation::Status::Dead);
 		}
 
+		virtual void resume()
+		{
+			status = Simulation::Status::Running;
+		}
 
 		Status getStatus() const
 		{
@@ -107,6 +111,13 @@ namespace Game
 		{
 		}
 
+		bool initialize() override
+		{
+			adjustStatus(Simulation::Status::Idle);
+
+			return true;
+		}
+
 		bool pushWorld(Resource::WorldId const world)
 		{
 			return loadWorld(world);
@@ -151,9 +162,20 @@ namespace Game
 			return currentWorld->readState(readPipe);
 		}
 
+		const World* getCurrentWorld() const
+		{
+			return currentWorld;
+		}
+
 		sf::Uint64 getTickCount() const
 		{
 			return currentWorld->getProperties().tickCount.getValue();
+		}
+
+	protected:
+		virtual bool initializeWorld(World* const world)
+		{
+			return world->initialize();
 		}
 
 	private:
@@ -183,7 +205,7 @@ namespace Game
 
 						if (world == loadedWorlds.cend())
 						{
-							Log::Error("World for transition was not loaded, fatal error");
+							Log::Error(L"World for transition was not loaded, fatal error");
 						}
 
 						// ...
@@ -222,18 +244,18 @@ namespace Game
 					preloadingWorlds.push_back(
 						std::async(
 							std::launch::async,
-							[&worldResource]() -> World*
+							[this](Resource::World* const worldResource) -> World*
 							{
-								World* const world = new World(worldResource->second);
+								World* const world = new World(worldResource);
 
-								if (!world->initialize())
+								if (!initializeWorld(world))
 								{
 									delete world;
 									return NULL;
 								}
 
 								return world;
-							}));
+							}, worldResource->second));
 				}
 			}
 
@@ -256,14 +278,19 @@ namespace Game
 				}
 
 				world = new World(worldResource->second);
-				if (!world->initialize())
+				if (!initializeWorld(world))
 				{
 					adjustStatus(Status::Error);
 					return false;
 				}
 			}
 
-			removeTileDependencies();
+			if (currentWorld)
+			{
+				removeTileDependencies();
+				currentWorld->removePlayer(connection->getPlayer());
+			}
+
 			currentWorld = world;
 
 			if (!processTileDependencies())
@@ -303,6 +330,25 @@ namespace Game
 
 		std::vector<Resource::WorldId> missingResources;
 		std::vector<WorldPreloader> preloadingWorlds;
+	};
+
+	class VisualClassicSimulation
+		:
+		public ClassicSimulation
+	{
+	public:
+		using ClassicSimulation::ClassicSimulation;
+
+		void draw(sf::RenderTarget* const target)
+		{
+			getCurrentWorld()->getEnvironment()->draw(target);
+		}
+
+	private:
+		bool initializeWorld(World* const world)
+		{
+			return ClassicSimulation::initializeWorld(world) && world->initializeGraphics();
+		}
 	};
 
 	/*

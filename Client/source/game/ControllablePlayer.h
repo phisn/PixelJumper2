@@ -76,8 +76,8 @@ namespace Game
 		// needs to be at top
 		// first evaluation
 		Device::GameInput* const input;
-
 	public:
+
 		ControllablePlayer(
 			const Device::Input::PlayerID playerId,
 			const PlayerInformation information,

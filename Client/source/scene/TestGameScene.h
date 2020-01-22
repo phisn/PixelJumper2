@@ -1,9 +1,7 @@
 #pragma once
 
-#include <Client/source/game/GamemodeBase.h>
-#include <Client/source/game/Simulation.h>
-
 #include <Client/source/framework/FrameworkInterface.h>
+#include <Client/source/game/Simulator.h>
 
 namespace Scene
 {
@@ -262,11 +260,40 @@ namespace Scene
 
 		bool onCreate() override
 		{
-			simulator = new Game::DedicatedTestSimulator()
+			if (!loadWorldResource(L"left") ||
+				!loadWorldResource(L"right"))
+			{
+				return false;
+			}
+
+			connection = new Game::LocalConnection(
+				Game::PlayerInformation{
+					0x00,
+					sf::Color::Red,
+					L""
+				},
+				Device::Input::PlayerID::P1,
+				sf::FloatRect{
+					0.f, 0.f,
+					1.f, 1.f
+				}
+			);
+
+			simulator = new Game::LocalClassicTestSimulator(connection, worlds);
+
+			return connection->initialize()
+				&& simulator->initialize();
 		}
 
 		void onRemove() override
 		{
+			delete simulator;
+			delete connection;
+
+			for (const std::pair<Resource::WorldId, Resource::World*>& world : worlds)
+			{
+				delete world.second;
+			}
 		}
 
 		void initialize() override
@@ -291,14 +318,35 @@ namespace Scene
 
 		void onLogic(const sf::Time time) override
 		{
+			simulator->onLogic(time);
 		}
 
 		void onDraw(sf::RenderTarget* const target) override
 		{
+			simulator->draw(target);
 		}
 
 	private:
-		Game::TestGamemodeCreator* testGamemodeCreator;
-		Game::DedicatedTestSimulator* simulator;
+		bool loadWorldResource(const std::wstring name)
+		{
+			Resource::World* world = new Resource::World();
+			
+			if (!Resource::Interface::LoadResource(
+					world,
+					Resource::ResourceType::World,
+					name))
+			{
+				return false;
+			}
+
+			worlds[world->content.id] = world;
+
+			return true;
+		}
+
+		std::map<Resource::WorldId, Resource::World*> worlds;
+
+		Game::LocalConnection* connection;
+		Game::LocalClassicTestSimulator* simulator;
 	};
 }

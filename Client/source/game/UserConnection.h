@@ -19,7 +19,7 @@ namespace Game
 		{
 		}
 
-		virtual void initialize() = 0;
+		virtual bool initialize() = 0;
 
 		virtual void onLogic(const sf::Time time) = 0;
 
@@ -74,7 +74,7 @@ namespace Game
 			delete player;
 		}
 
-		void initialize() override
+		bool initialize() override
 		{
 		}
 
@@ -90,6 +90,13 @@ namespace Game
 		void onLogic(const sf::Time time) override
 		{
 			player->onLogic(time);
+		}
+
+		bool processLogic() override
+		{
+			// TODO: save input or create new localplayer variation
+
+			return true;
 		}
 
 		ControllablePlayer* getLocalPlayer() const
@@ -163,7 +170,7 @@ namespace Game
 			player = new VirtualPlayer(info);
 		}
 
-		void initialize() override
+		bool initialize() override
 		{
 		}
 
@@ -172,7 +179,7 @@ namespace Game
 			Net::FrameStatus fs;
 		}
 
-		void processLogic() override
+		bool processLogic() override
 		{
 			if (!player->hasUpdate())
 			{

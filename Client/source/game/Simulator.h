@@ -7,16 +7,11 @@ namespace Game
 {
 	class Simulator
 		:
-		GameState
+		public GameState
 	{
 	public:
 		virtual bool initialize() = 0;
 		virtual void onLogic(const sf::Time time) = 0;
-
-		virtual void removeConnection(UserConnection* const connection) = 0;
-		virtual bool pushConnection(UserConnection* const connection) = 0;
-
-	private:
 	};
 
 	class ClassicSimulator
@@ -28,192 +23,112 @@ namespace Game
 		{
 		}
 
-		virtual void onLogic(const sf::Time time)
+		virtual void onLogic(const sf::Time time) override
 		{
-			for (Simulation* const simulation : simulations)
+
+		}
+
+		virtual bool pushConnection(UserConnection* const connection)
+		{
+			/*
+			ClassicSimulation* const simulation = new ClassicSimulation(worldResources, connection);
+
+			if (!simulation->initialize())
 			{
-				processSimulationLogic(simulation, time);
-
-				switch (simulation->getStatus())
-				{
-				case Simulation::Status::Dead:
-					onSimulationDead(simulation);
-
-					break;
-				case Simulation::Status::Error:
-					onSimulationError(simulation);
-
-					break;
-				}
+				delete simulation;
+				return false;
 			}
+
+			simulations.push_back(simulation);
+			*/
 		}
 
 		virtual void removeConnection(UserConnection* const connection)
 		{
-			for (Simulation* const simulation : simulations)
-			{
-				simulation->removeConnection(connection);
-			}
-		}
-
-	protected:
-		virtual void processSimulationLogic(
-			Simulation* const simulation,
-			const sf::Time time)
-		{
-			simulation->onLogic(time);
-		}
-
-		virtual void onSimulationDead(Simulation* const simulation) override
-		{
-			handleCommonSimulationFault(simulation);
-		}
-
-		virtual void onSimulationError(Simulation* const simulation) override
-		{
-			handleCommonSimulationFault(simulation);
-		}
-
-		virtual void handleCommonSimulationFault(Simulation* const simulation)
-		{
-			for (SimulationIterator iterator = simulations.begin(); iterator != simulations.end(); ++iterator)
-				if (*iterator != simulation)
-				{
-					simulations.erase(iterator);
-					break;
-				}
-
-			delete simulation;
-		}
-
-		virtual bool pushSimulation(Simulation* const simulation)
-		{
-			if (simulation->initialize(gamemodeCreator->createGamemode()))
-			{
-				simulations.push_back(simulation);
-				return true;
-			}
-			else
-			{
-				// TODO ?
-				delete simulation;
-				return false;
-			}
-		}
-
-	private:
-		SimulationContainer simulations;
-	};
-
-	class DedicatedSimulator
-		:
-		public Simulator
-	{
-	public:
-		DedicatedSimulator(GamemodeCreatorBase* const gamemodeCreator)
-			:
-			gamemodeCreator(gamemodeCreator)
-		{
-		}
-
-		void onLogic(const sf::Time time) override
-		{
-			if (simulation)
-			{
-				if (simulation->getStatus() != Simulation::Status::Running)
-				{
-
-				}
-
-				simulation->onLogic(time);
-			}
-		}
-
-		virtual void removeConnection(UserConnection* const connection) override
-		{
-			simulation->removeConnection(connection);
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
 		{
-			return simulation->writeState(writePipe);
 		}
 
 		bool readState(Resource::ReadPipe* const readPipe) override
 		{
-			return simulation->readState(readPipe);
 		}
 
 	protected:
-		void onSimulationDead(Simulation* const simulation) override
+		virtual void pushWorld(Resource::World* const world, UserConnection* const connection)
 		{
-			handleCommonSimulationFault(simulation);
-		}
-
-		void onSimulationError(Simulation* const simulation) override
-		{
-			handleCommonSimulationFault(simulation);
-		}
-
-		virtual void handleCommonSimulationFault(Simulation* const simulation)
-		{
-			delete simulation;
-		}
-
-		virtual bool pushSimulation(Simulation* const simulation)
-		{
-			if (!simulation->initialize(gamemodeCreator->createGamemode()))
-			{
-				return false;
-			}
-
-			if (this->simulation == NULL)
-				delete this->simulation;
-
-			this->simulation = simulation;
-
-			return true;
 		}
 
 	private:
-		Simulation* simulation = NULL;
-		GamemodeCreatorBase* const gamemodeCreator;
+		virtual void processSimulations()
+		{
+			for (Simulation* const simulation : simulations)
+				if (simulation->getStatus() == Simulation::Status::Running)
+				{
+					simulation->processLogic();
+				}
+		}
+
+		std::vector<ClassicSimulation*> simulations;
 	};
 
-	class DedicatedTestSimulator
+	class LocalClassicTestSimulator
 		:
-		public DedicatedSimulator
+		public Simulator
 	{
 	public:
-		/*
-			Connection
+		typedef std::map<Resource::WorldId, Resource::World*> WorldResources;
 
-
-		*/
-
-		DedicatedTestSimulator(Resource::World* const world)
+		LocalClassicTestSimulator(
+			LocalConnection* const connection,
+			const WorldResources& worlds)
 			:
-			DedicatedSimulator(
-				new TestGamemodeCreator(
-					world,
-					connection
-				)
-			),
-			connection(connection)
+			connection(connection),
+			worlds(worlds)
+		{
+			simulation = new VisualClassicSimulation(worlds, connection);
+		}
+
+		bool initialize() override
+		{
+			return simulation->initialize()
+				&& simulation->pushWorld(worlds.begin()->second->content.id);
+		}
+
+		void draw(sf::RenderTarget* const target)
+		{
+			simulation->draw(target);
+			connection->getLocalPlayer()->onDraw(target);
+		}
+
+		void onLogic(const sf::Time time) override
+		{
+			logicCounter += time.asMicroseconds();
+
+			while (logicCounter > LogicTimeStep)
+			{
+				simulation->processLogic();
+
+				logicCounter -= LogicTimeStep;
+			}
+
+			connection->getLocalPlayer()->onLogic(time);
+		}
+
+		bool writeState(Resource::WritePipe* const writePipe) override
 		{
 		}
 
-		bool pushConnection(UserConnection* const connection) override
+		bool readState(Resource::ReadPipe* const readPipe) override
 		{
-
-		}
-
-		bool initialize()
-		{
-			return pushSimulation(new DedicatedLocalSimulation(connection));
 		}
 
 	private:
+		sf::Uint64 logicCounter = 0;
+		WorldResources worlds;
+
+		VisualClassicSimulation* simulation;
 		LocalConnection* const connection;
 	};
 }

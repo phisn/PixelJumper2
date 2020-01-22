@@ -211,7 +211,7 @@ namespace Game
 
 			} collisionData;
 
-			sf::Vector2f offset = player->getProperties().movement;
+			sf::Vector2f offset = player->getProperties().movement.getValue();
 
 			while (offset.x != 0 || offset.y != 0)
 			{

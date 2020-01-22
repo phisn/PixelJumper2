@@ -1,8 +1,5 @@
 #pragma once
 
-
-#include <Client/source/game/GamemodeBase.h>
-
 #include <Client/source/resource/ResourceInterface.h>
 #include <Client/source/resource/WorldResource.h>
 
