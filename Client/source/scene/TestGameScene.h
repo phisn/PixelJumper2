@@ -254,7 +254,7 @@ namespace Scene
 		public MainSceneBase
 	{
 	public:
-		TestGameScene(Resource::World* const world)
+		TestGameScene()
 		{
 		}
 

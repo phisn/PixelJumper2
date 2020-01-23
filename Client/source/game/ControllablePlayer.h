@@ -76,6 +76,7 @@ namespace Game
 		// needs to be at top
 		// first evaluation
 		Device::GameInput* const input;
+
 	public:
 
 		ControllablePlayer(
@@ -99,10 +100,12 @@ namespace Game
 				{
 					if (properties.viewFollow)
 					{
+						float size = std::max(newViewWindow.width, newViewWindow.height);
+
 						this->view->setSize(
 							{
-								properties.viewWindow->width,
-								properties.viewWindow->height
+								this->view->getViewport().width * size,
+								this->view->getViewport().height * size
 							});
 					}
 					else

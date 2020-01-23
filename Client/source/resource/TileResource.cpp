@@ -17,6 +17,11 @@ namespace Resource
 		{
 			return false;
 		}
+
+		if (id >= Shared::TileID::_Length)
+		{
+			return false;
+		}
 		
 		// normally not possible
 		if (instance)

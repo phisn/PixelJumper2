@@ -1,12 +1,13 @@
 #pragma once
 
-#include <Client/source/game/GameDefinitions.h>
 #include <Client/source/game/GameProperty.h>
 #include <Client/source/game/GameState.h>
 #include <Client/source/game/tiletrait/GameTileBase.h>
 #include <Client/source/game/WorldInformation.h>
 
 #include <Client/source/resource/PlayerResource.h>
+
+#include <Client/source/shared/ValueDefinitions.h>
 
 #include <map>
 
@@ -86,8 +87,8 @@ namespace Game
 		Property<sf::Vector2f> spawn;
 		Property<sf::Vector2f> position, movement;
 
-		DefinedProperty<float> mass{ Definition::mass };
-		DefinedProperty<float> inputForce{ Definition::input_force };
+		DefinedProperty<float> mass{ Shared::ValueDefinition::mass };
+		DefinedProperty<float> inputForce{ Shared::ValueDefinition::input_force };
 		Property<float> inputReduce;
 
 		TileDataStorage tileDataStorage;

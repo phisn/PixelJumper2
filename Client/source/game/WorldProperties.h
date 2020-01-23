@@ -4,6 +4,8 @@
 #include <Client/source/game/GameState.h>
 #include <Client/source/game/WorldInformation.h>
 
+#include <Client/source/shared/ValueDefinitions.h>
+
 #include <SFML/Graphics.hpp>
 
 namespace Game
@@ -33,8 +35,8 @@ namespace Game
 
 		ReadOnlyProperty<Property<sf::Uint16>, WorldProperties> playerCount;
 
-		DefinedProperty<sf::Vector2f> gravity{ Definition::gravity };
-		DefinedProperty<float> airResistance{ Definition::air_resistance };
+		DefinedProperty<sf::Vector2f> gravity{ Shared::ValueDefinition::gravity };
+		DefinedProperty<float> airResistance{ Shared::ValueDefinition::air_resistance };
 
 		ReadOnlyProperty<Property<sf::Uint32>, WorldProperties> tickCount;
 

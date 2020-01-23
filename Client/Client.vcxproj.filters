@@ -228,9 +228,6 @@
     <ClInclude Include="source\editor\tile\TileTemplateFactory.h">
       <Filter>source\editor\tile</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\GameDefinitions.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\net\FrameStatus.h">
       <Filter>source\game\net</Filter>
     </ClInclude>
@@ -251,6 +248,12 @@
     </ClInclude>
     <ClInclude Include="source\game\VirtualPlayer.h">
       <Filter>source\game\player</Filter>
+    </ClInclude>
+    <ClInclude Include="source\shared\ValueDefinitions.h">
+      <Filter>source\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="source\shared\tiles\TransitivePortal.h">
+      <Filter>source\shared\tiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -399,6 +402,9 @@
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
     <ClCompile Include="source\shared\tiles\TileDescription.cpp">
+      <Filter>source\shared\tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\shared\tiles\TransitivePortal.cpp">
       <Filter>source\shared\tiles</Filter>
     </ClCompile>
   </ItemGroup>

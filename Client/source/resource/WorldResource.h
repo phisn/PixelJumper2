@@ -24,8 +24,6 @@ namespace Resource
 	{
 		struct PrivateContent
 		{
-			sf::Uint32 checksum;
-
 			sf::Uint16 tileInstanceCount;
 			sf::Uint16 tileCount;
 		};
@@ -37,13 +35,15 @@ namespace Resource
 
 		struct Content
 		{
+			sf::Uint32 checksum;
+
 			WorldId id;
 			PlayerID author;
 
+			sf::Uint16 width, height;
+
 			Shared::WorldDefaultProperties defaultProperties;
 			Shared::PlayerDefaultProperties defaultPlayerProperties;
-
-			sf::Uint16 width, height;
 
 		} content;
 
@@ -56,6 +56,15 @@ namespace Resource
 			{
 				return false;
 			}
+
+			PrivateContent privateContent;
+			if (!pipe->readValue(&privateContent))
+			{
+				return false;
+			}
+
+			tileInstances.resize(privateContent.tileInstanceCount);
+			tiles.resize(privateContent.tileCount);
 
 			for (TileInstanceWrapper& instance : tileInstances)
 				if (!instance.make(pipe))
@@ -75,6 +84,15 @@ namespace Resource
 		bool save(WritePipe* const pipe) override
 		{
 			if (!pipe->writeValue(&content))
+			{
+				return false;
+			}
+
+			PrivateContent privateContent;
+			privateContent.tileInstanceCount = tileInstances.size();
+			privateContent.tileCount = tiles.size();
+
+			if (!pipe->writeValue(&privateContent))
 			{
 				return false;
 			}

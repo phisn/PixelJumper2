@@ -56,10 +56,19 @@ namespace Game
 			int functLength;
 		};
 
+		CollisionContainer()
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				colliders[i].frameLength = 0;
+				colliders[i].functLength = 0;
+			}
+		}
+
 		void reduceFrame()
 		{
 			for (int i = 0; i < 4; ++i)
-				if (colliders[i].frameLength < 0)
+				if (colliders[i].frameLength > 0)
 				{
 					--colliders[i].frameLength;
 				}
@@ -68,7 +77,7 @@ namespace Game
 		void reduceFunct()
 		{
 			for (int i = 0; i < 4; ++i)
-				if (colliders[i].frameLength < 0)
+				if (colliders[i].frameLength > 0)
 				{
 					--colliders[i].frameLength;
 				}
@@ -88,7 +97,7 @@ namespace Game
 
 		bool isActive(const CollisionEngine::CollisionInfo::Type type) const
 		{
-			return colliders[type].frameLength > 0 && colliders[type].functLength > 0;
+			return colliders[type].frameLength != 0 && colliders[type].functLength != 0;
 		}
 
 	private:

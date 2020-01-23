@@ -12,6 +12,8 @@
 #include <Client/source/resource/TileResource.h>
 #include <Client/source/resource/WorldResource.h>
 
+#include <Client/source/shared/ValueDefinitions.h>
+
 #include <limits>
 #include <set>
 #include <vector>

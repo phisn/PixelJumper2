@@ -16,8 +16,7 @@
 #include <Client/source/menu/MenuFPSLabel.h>
 
 #include <Client/source/scene/MenuBaseScene.h>
-#include <Client/source/scene/TestGameScene.h> // for testing
-#include <Client/source/scene/TestReleaseGameScene.h> // for testing
+#include <Client/source/scene/TestGameScene.h>
 
 namespace Scene
 {
@@ -47,6 +46,8 @@ namespace Scene
 			tsr->viewPort = { 0.8f, 0.f, 0.2f, 0.05f };
 
 			fpsLabel.position = { 0, 0 };
+			fpsLabel.sizePreferred = { 50, 25 };
+
 			fpsLabel.color = sf::Color::Yellow;
 
 			return MenuBaseScene::onCreate() && fpsLabel.create();
@@ -69,38 +70,20 @@ namespace Scene
 
 			MenuBaseScene::onEvent(event);
 
-			// save world | S + STRG
+			// save world left | S + STRG
 			if (event.type == sf::Event::KeyPressed &&
 				event.key.code == sf::Keyboard::S &&
 				event.key.control)
-			{ // propably does not need task
-				Log::Section section(L"Saving world");
+			{
+				saveWorld(L"left");
+			}
 
-				Resource::World* world = Editor::Manipulator::GetWorld()->convert(
-					Device::Random::MakeRandom<int>(),
-					0xbb);
-
-				if (world == NULL)
-				{
-					Log::Error(L"Failed to create world");
-
-					return;
-				}
-
-				if (Resource::Interface::SaveResource(
-					world,
-					Resource::ResourceType::World,
-					L"TestWorld")
-					)
-				{
-					Log::Information(L"Successfully saved world");
-				}
-				else
-				{
-					Log::Error(L"Failed to save world");
-				}
-
-				delete world;
+			// save world right | D + STRG
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::D &&
+				event.key.control)
+			{
+				saveWorld(L"right");
 			}
 
 			// load world | L + STRG
@@ -145,30 +128,7 @@ namespace Scene
 				event.key.code == sf::Keyboard::R &&
 				event.key.control)
 			{
-				if (Editor::Manipulator::GetWorld()->getTiles().size() == 0)
-				{
-					return;
-				}
-
-				Resource::World* const world = Editor::Manipulator::GetWorld()->convert(
-					Device::Random::MakeRandom<int>(),
-					0xaa);
-
-				if (world == NULL)
-				{
-					Log::Error(L"Failed to create world");
-					return;
-				}
-
-				if (!world->setup())
-				{
-					Log::Error(L"Invalid world");
-
-					delete world;
-					return;
-				}
-
-				// Framework::Context::Push<TestGameScene>(world);
+				Framework::Context::Push<TestGameScene>();
 			}
 
 			if (event.type == sf::Event::KeyPressed &&
@@ -181,7 +141,7 @@ namespace Scene
 		void onLogic(const sf::Time time) override
 		{
 			MenuBaseScene::onLogic(time);
-			// fpsLabel.onLogic(time);
+			fpsLabel.onLogic(time);
 		}
 
 		void onDraw(sf::RenderTarget* const target) override
@@ -191,6 +151,39 @@ namespace Scene
 		}
 
 	private:
+		void saveWorld(const std::wstring name)
+		{
+			Log::Section section(L"Saving world");
+			Log::Information(L"Name=" + name);
+
+			Resource::World* world = Editor::Manipulator::GetWorld()->convert(
+				Device::Random::MakeRandom<int>(),
+				0xbb);
+
+			world->content.defaultPlayerProperties;
+
+			if (world == NULL)
+			{
+				Log::Error(L"Failed to create world");
+
+				return;
+			}
+
+			if (Resource::Interface::SaveResource(
+					world,
+					Resource::ResourceType::World,
+					name))
+			{
+				Log::Information(L"Successfully saved world");
+			}
+			else
+			{
+				Log::Error(L"Failed to save world");
+			}
+
+			delete world;
+		}
+
 		Menu::FPSLabel<> fpsLabel;
 	};
 }

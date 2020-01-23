@@ -153,7 +153,6 @@ namespace Game
 		{
 			player->getProperties().loadDefault(information);
 			players.push_back(player);
-
 			properties.setPlayerCount(*properties.playerCount + 1);
 		}
 

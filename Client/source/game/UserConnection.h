@@ -76,6 +76,7 @@ namespace Game
 
 		bool initialize() override
 		{
+			return true;
 		}
 
 		void changeUserInformation(const PlayerInformation info) override

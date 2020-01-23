@@ -98,6 +98,7 @@ namespace Game
 
 		void draw(sf::RenderTarget* const target)
 		{
+			connection->enableView(target);
 			simulation->draw(target);
 			connection->getLocalPlayer()->onDraw(target);
 		}
@@ -118,10 +119,12 @@ namespace Game
 
 		bool writeState(Resource::WritePipe* const writePipe) override
 		{
+			return true;
 		}
 
 		bool readState(Resource::ReadPipe* const readPipe) override
 		{
+			return true;
 		}
 
 	private:

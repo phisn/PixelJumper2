@@ -217,6 +217,8 @@ namespace Game
 					return false;
 				}
 			}
+
+			return true;
 		}
 
 		void removeTileDependencies()
@@ -323,7 +325,7 @@ namespace Game
 		}
 
 		Resource::WorldId currentWorldID;
-		World* currentWorld;
+		World* currentWorld = NULL;
 
 		const ResourceContainer& loadedWorldResources;
 		WorldContainer loadedWorlds;

@@ -85,7 +85,6 @@
     <ClInclude Include="source\game\CollisionEngine.h" />
     <ClInclude Include="source\game\ControllablePlayer.h" />
     <ClInclude Include="source\game\Environment.h" />
-    <ClInclude Include="source\game\GameDefinitions.h" />
     <ClInclude Include="source\game\GameState.h" />
     <ClInclude Include="source\game\net\FrameStatus.h" />
     <ClInclude Include="source\game\tiletrait\CollidableTile.h" />
@@ -127,6 +126,8 @@
     <ClInclude Include="source\scene\TestMenuScene.h" />
     <ClInclude Include="source\shared\tiles\TileDescription.h" />
     <ClInclude Include="source\shared\tiles\TileWall.h" />
+    <ClInclude Include="source\shared\tiles\TransitivePortal.h" />
+    <ClInclude Include="source\shared\ValueDefinitions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\device\CoreDevice.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="source\shared\tiles\TileDescription.cpp" />
     <ClCompile Include="source\shared\tiles\TileExit.cpp" />
     <ClCompile Include="source\shared\tiles\TileWall.cpp" />
+    <ClCompile Include="source\shared\tiles\TransitivePortal.cpp" />
     <ClCompile Include="winMain.cpp" />
   </ItemGroup>
   <ItemGroup>

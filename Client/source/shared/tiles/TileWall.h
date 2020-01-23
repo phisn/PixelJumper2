@@ -14,6 +14,7 @@
 #include <Client/source/game/tiletrait/StaticTile.h>
 
 #include <Client/source/shared/tiles/TileDescription.h>
+#include <Client/source/shared/ValueDefinitions.h>
 
 namespace Shared
 {
@@ -94,9 +95,9 @@ namespace Editor
 			setSize({ 1, 1 });
 			setPosition(position);
 
-			content.density = Game::Definition::tile_density;
-			content.inputForceAddition = Game::Definition::tile_input;
-			content.friction = Game::Definition::tile_friction;
+			content.density = Shared::ValueDefinition::tile_density;
+			content.inputForceAddition = Shared::ValueDefinition::tile_input;
+			content.friction = Shared::ValueDefinition::tile_friction;
 		}
 
 		void assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const override;
@@ -214,6 +215,9 @@ namespace Resource
 
 		WallTile()
 		{
+			content.density = Shared::ValueDefinition::tile_density;
+			content.friction = Shared::ValueDefinition::tile_friction;
+			content.inputForceAddition = Shared::ValueDefinition::tile_input;
 		}
 
 		bool make(ReadPipe* const pipe) override

@@ -19,6 +19,18 @@ Resource::World* Editor::World::convert(
 	world->content.id = worldID;
 	world->content.author = playerID;
 
+	world->content.defaultPlayerProperties.inputForce = 1.f;
+	world->content.defaultPlayerProperties.inputReduce = 2.f;
+	world->content.defaultPlayerProperties.mass = 1.f;
+	world->content.defaultPlayerProperties.movement = { 0, 0 };
+	world->content.defaultPlayerProperties.position = { 0, 0 };
+	world->content.defaultPlayerProperties.viewFollow = true;
+	world->content.defaultPlayerProperties.viewRotation = 0.f;
+	world->content.defaultPlayerProperties.viewWindow = { 0.f, 0.f, 100.f, 100.f };
+
+	world->content.defaultProperties.airResistance = 1.f;
+	world->content.defaultProperties.gravity = { 0.f, 1.f };
+
 	Log::Information(
 		L"Converting '"
 		+ std::to_wstring(tiles.size())
@@ -48,6 +60,8 @@ void Editor::World::convertTiles(Resource::World* const world) const
 
 		resourceTile->content.x = tile.position.x;
 		resourceTile->content.y = tile.position.y;
+
+		resourceTile->content.instanceIndex = tile.instancePosition;
 
 		const sf::Uint32 totalTileWidth = tile.size.x + tile.position.x;
 		if (worldWidth < totalTileWidth)
@@ -266,6 +280,8 @@ void Editor::World::groupTiles(
 
 			// unreachable
 		}
+
+
 	}
 
 
