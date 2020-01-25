@@ -14,37 +14,106 @@ namespace Game
 		virtual void onLogic(const sf::Time time) = 0;
 	};
 
-	class ClassicSimulator
+	class HostClassicSimulator
 		:
 		public Simulator
 	{
+		struct User
+		{
+			RemoteConnection* connection;
+			ClassicSimulation* simulation;
+
+			sf::Uint64 tickCountBegin;
+		};
+
+		typedef std::vector<User> UserContainer;
+		typedef std::map<Resource::WorldId, Resource::World*> ResourceContainer;
+
 	public:
-		ClassicSimulator()
+		struct Settings
+		{
+			sf::Uint64 tickrate = 100'000; // 100ms
+		};
+
+		HostClassicSimulator(const Settings settings = Settings{ })
+			:
+			settings(settings)
 		{
 		}
 
 		virtual void onLogic(const sf::Time time) override
 		{
+			logicCounter += time.asMicroseconds();
 
+			while (logicCounter > nextGameProcess)
+			{
+				for (User& user : users)
+					if (user.simulation->getStatus() == Simulation::Status::Running)
+					{
+						user.simulation->processLogic();
+					}
+
+				nextGameProcess += LogicTimeStep;
+			}
+
+			if (logicCounter > nextUserProcess)
+			{
+				UserContainer::iterator user = users.begin();
+				while (user != users.end())
+				{
+					if (user->connection->getStatus() != RemoteConnection::Status::Connected && 
+						onUnexpectedConnectionStatus(&*user))
+					{
+						user = users.erase(user);
+						continue;
+					}
+
+					if (user->simulation->getStatus() != Simulation::Status::Running &&
+						onUnexpectedSimulationStatus(&*user))
+					{
+						user = users.erase(user);
+						continue;
+					}
+
+					// sync user
+				}
+
+				nextUserProcess = logicCounter + settings.tickrate;
+			}
 		}
 
-		virtual bool pushConnection(UserConnection* const connection)
+		virtual bool pushConnection(RemoteConnection* const connection)
 		{
-			/*
-			ClassicSimulation* const simulation = new ClassicSimulation(worldResources, connection);
+			User user;
+			
+			user.connection = connection;
+			user.simulation = new ClassicSimulation(resources, connection);
+			user.tickCountBegin = tickCount;
 
-			if (!simulation->initialize())
+			if (!user.simulation->initialize())
 			{
-				delete simulation;
+				delete user.simulation;
 				return false;
 			}
 
-			simulations.push_back(simulation);
-			*/
+			users.push_back(user);
 		}
 
-		virtual void removeConnection(UserConnection* const connection)
+		virtual void removeConnection(RemoteConnection* const connection)
 		{
+			decltype(users)::const_iterator user = std::find_if(
+				users.cbegin(), 
+				users.cend(),
+				[connection](const User& user) -> bool
+				{
+					return user.connection == connection;
+				});
+
+			if (user != users.cend())
+			{
+				delete user->simulation;
+				users.erase(user);
+			}
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
@@ -55,22 +124,43 @@ namespace Game
 		{
 		}
 
-	protected:
-		virtual void pushWorld(Resource::World* const world, UserConnection* const connection)
-		{
-		}
-
 	private:
-		virtual void processSimulations()
+		User* findUser(UserConnection* const connection)
 		{
-			for (Simulation* const simulation : simulations)
-				if (simulation->getStatus() == Simulation::Status::Running)
-				{
-					simulation->processLogic();
-				}
+			return findUser(connection->getInformation().playerId);
 		}
 
-		std::vector<ClassicSimulation*> simulations;
+		User* findUser(Resource::PlayerID playerID)
+		{
+			for (User& user : users)
+				if (user.connection->getInformation().playerId == playerID)
+				{
+					return &user;
+				}
+
+			return NULL;
+		}
+
+		// return == remove user
+		virtual bool onUnexpectedConnectionStatus(User* const user)
+		{
+		}
+
+		// return == remove user
+		virtual bool onUnexpectedSimulationStatus(User* const user)
+		{
+		}
+
+		const Settings settings;
+
+		sf::Uint64 logicCounter = 0,
+				nextGameProcess = 0,
+				nextUserProcess = 0;
+
+		sf::Uint64 tickCount = 0;
+
+		ResourceContainer resources;
+		UserContainer users;
 	};
 
 	class LocalClassicTestSimulator

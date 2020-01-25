@@ -24,7 +24,7 @@ namespace Device
 {
 	bool PushMainContext()
 	{
-		return Framework::Context::Push<Scene::TestGameScene>();
+		return Framework::Context::Push<Scene::EditorScene>();
 	}
 
 	Core::Error Core::Initialize()

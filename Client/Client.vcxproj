@@ -54,6 +54,9 @@
     <ClCompile>
       <SupportJustMyCode>true</SupportJustMyCode>
     </ClCompile>
+    <Link>
+      <Profile>true</Profile>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_|x64'">
     <ClCompile>
@@ -65,7 +68,7 @@
     <Link>
       <SubSystem>NotSet</SubSystem>
       <AdditionalDependencies>sfml-graphics-2.lib;sfml-window-2.lib;sfml-audio-2.lib;sfml-network-2.lib;sfml-system-2.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;jpeg.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

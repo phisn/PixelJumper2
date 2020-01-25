@@ -166,7 +166,7 @@ namespace Game
 				return false;
 			}
 
-			player->properties.position.setValue(tile->getPosition() + offset);
+			player->properties.position.setValue(tile->getPosition() + player->properties.position.getValue() - offset);
 			players.push_back(player);
 			properties.setPlayerCount(*properties.playerCount + 1);
 

@@ -39,11 +39,11 @@ namespace Game
 		}
 
 	protected:
-		void notifyTransitionEvent(const sf::Vector2f sourceOffset)
+		void notifyTransitionEvent()
 		{
 			Event event;
 			
-			event.sourceOffset = sourceOffset;
+			event.sourceOffset = getPosition();
 			event.target = target;
 
 			onTransition.notify(event);

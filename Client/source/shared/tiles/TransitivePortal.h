@@ -27,6 +27,7 @@ namespace Game
 	class TileTransitivePortal
 		:
 		public CollidableTile,
+		public StaticTile,
 		public TransitiveTile
 	{
 	public:
@@ -45,6 +46,7 @@ namespace Game
 				identity,
 				position,
 				size),
+			StaticTile(Shared::TileTransitivePortal.gameColor),
 			TransitiveTile(target)
 		{
 		}
@@ -56,20 +58,40 @@ namespace Game
 				env,
 				Game::CollisionType{
 					true,
-					true,
+					false,
 					true
 				});
 			GameTileBase::registerType(env);
 			TransitiveTile::registerType(env);
+			// StaticTile::registerType(env);
 		}
 
 		sf::Vector2f onCollision(
 			const CollisionType type,
 			const Collision& collision) override
 		{
-			collision.player->getProperties().position = collision.target;
-			notifyTransitionEvent(collision.target - getPosition());
-			return { };
+			notifyTransitionEvent();
+			
+			if (collision.info.isHorizontal())
+			{
+				collision.player->getProperties().position =
+				{
+					collision.target.x,
+					collision.info.position.y
+				};
+
+				return { 0.f, collision.target.y - collision.info.position.y };
+			}
+			else
+			{
+				collision.player->getProperties().position =
+				{
+					collision.info.position.x,
+					collision.target.y
+				};
+
+				return { collision.target.x - collision.info.position.x, 0.f };
+			}
 		}
 	};
 }

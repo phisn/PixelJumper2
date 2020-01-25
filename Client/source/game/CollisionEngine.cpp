@@ -59,7 +59,9 @@ namespace
 			// set value
 			// position: x = t_w; y = t_y
 			lastCollision.position.x = t_w;
-			lastCollision.position.y = std::roundf(t_y * PRECISION) / PRECISION;;
+			lastCollision.position.y = isWeak
+				? std::roundf(t_y * PRECISION) / PRECISION
+				: t_y;
 
 			lastCollision.type = collisionContext->hSideOffset
 				? Game::CollisionEngine::CollisionInfo::G3
@@ -112,8 +114,15 @@ namespace
 		{
 			// set value
 			// position: x = t_x; y = t_h
-			lastCollision.position.x = std::roundf(t_x * PRECISION) / PRECISION;
+			lastCollision.position.x = isWeak
+				? std::roundf(t_x * PRECISION) / PRECISION
+				: t_x;
 			lastCollision.position.y = t_h;
+
+			if (lastCollision.position.x == 28.f)
+			{
+				Log::Information(L"predict bug");
+			}
 
 			lastCollision.type = collisionContext->vSideOffset
 				? Game::CollisionEngine::CollisionInfo::G4

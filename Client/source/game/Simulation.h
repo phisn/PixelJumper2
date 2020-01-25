@@ -114,7 +114,6 @@ namespace Game
 		bool initialize() override
 		{
 			adjustStatus(Simulation::Status::Idle);
-
 			return true;
 		}
 
@@ -131,6 +130,12 @@ namespace Game
 			}
 
 			currentWorld->processLogic();
+
+			if (transitiveSwitchRequest)
+			{
+				transitiveLoadWorld(transitiveSwitchEvent);
+				transitiveSwitchRequest = false;
+			}
 
 			return true;
 		}
@@ -187,6 +192,7 @@ namespace Game
 					[this]()
 					{
 						// ...
+
 					}, GameEventIdentifier::ClassicSimulation);
 			}
 
@@ -201,7 +207,8 @@ namespace Game
 				tile->onTransition.addListener(
 					[this, tile](const TransitiveTile::Event& event)
 					{
-						transitiveLoadWorld(event);
+						transitiveSwitchRequest = true;
+						transitiveSwitchEvent = event;
 
 					}, GameEventIdentifier::ClassicSimulation);
 
@@ -363,6 +370,9 @@ namespace Game
 
 			return world;
 		}
+
+		TransitiveTile::Event transitiveSwitchEvent;
+		bool transitiveSwitchRequest = false;
 
 		Resource::WorldId currentWorldID;
 		World* currentWorld = NULL;
