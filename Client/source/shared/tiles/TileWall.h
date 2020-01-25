@@ -47,12 +47,11 @@ namespace Game
 			const sf::Vector2f size,
 			const Shared::WallContent content)
 			:
-			StaticTile(
+			GameTileBase(
 				identity,
-				Shared::TileWall.gameColor,
 				position,
 				size),
-			CollidableTile(),
+			StaticTile(Shared::TileWall.gameColor),
 			content(content)
 		{
 		}
@@ -62,16 +61,6 @@ namespace Game
 		virtual sf::Vector2f onCollision(
 			const CollisionType type,
 			const Collision& collision) override;
-
-		const sf::Vector2f getPosition() const override
-		{
-			return StaticTile::getPosition();
-		}
-
-		const sf::Vector2f getSize() const override
-		{
-			return StaticTile::getSize();
-		}
 
 	private:
 		Shared::WallContent content;

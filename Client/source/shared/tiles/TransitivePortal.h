@@ -12,6 +12,7 @@
 
 #include <Client/source/game/tiletrait/CollidableTile.h>
 #include <Client/source/game/tiletrait/StaticTile.h>
+#include <Client/source/game/tiletrait/TransitiveTile.h>
 
 #include <Client/source/shared/tiles/TileDescription.h>
 #include <Client/source/shared/ValueDefinitions.h>
@@ -26,7 +27,7 @@ namespace Game
 	class TileTransitivePortal
 		:
 		public CollidableTile,
-		public StaticTile
+		public TransitiveTile
 	{
 	public:
 		static GameTileBase* Create(
@@ -38,63 +39,67 @@ namespace Game
 			const TileIdentity identity,
 			const sf::Vector2f position,
 			const sf::Vector2f size,
-			const Shared::WallContent content)
+			const Resource::WorldId target)
 			:
-			StaticTile(
+			GameTileBase(
 				identity,
-				Shared::TileWall.gameColor,
 				position,
 				size),
-			CollidableTile(),
-			content(content)
+			TransitiveTile(target)
 		{
 		}
 
-		void registerType(Environment* const env) override;
+		void registerType(Environment* const env) override
+		{
+			env->registerTile<TileTransitivePortal>(this);
+			CollidableTile::registerCollisionType(
+				env,
+				Game::CollisionType{
+					true,
+					true,
+					true
+				});
+			GameTileBase::registerType(env);
+			TransitiveTile::registerType(env);
+		}
 
-		virtual sf::Vector2f onCollision(
+		sf::Vector2f onCollision(
 			const CollisionType type,
-			const Collision& collision) override;
-
-		const sf::Vector2f getPosition() const override
+			const Collision& collision) override
 		{
-			return StaticTile::getPosition();
+			collision.player->getProperties().position = collision.target;
+			notifyTransitionEvent(collision.target - getPosition());
+			return { };
 		}
-
-		const sf::Vector2f getSize() const override
-		{
-			return StaticTile::getSize();
-		}
-
-	private:
-		Shared::WallContent content;
 	};
 }
 
 namespace Editor
 {
-	class TileWall
+	class TileTransitivePortal
 		:
 		public TileBase
 	{
 	public:
-		TileWall(const sf::Vector2f position)
+		TileTransitivePortal(const sf::Vector2f position)
 			:
 			TileBase(
-				Shared::TileID::TileWall,
-				Shared::TileWall.editorColor)
+				Shared::TileID::TileTransitivePortal,
+				Shared::TileTransitivePortal.editorColor)
 		{
 			shape.setFillColor(getColor());
 			setSize({ 1, 1 });
 			setPosition(position);
-
-			content.density = Shared::ValueDefinition::tile_density;
-			content.inputForceAddition = Shared::ValueDefinition::tile_input;
-			content.friction = Shared::ValueDefinition::tile_friction;
 		}
 
-		void assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const override;
-		bool adopt(const Resource::TileInstanceWrapper* const instanceWrapper) override;
+		void assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const override
+		{
+		}
+
+		bool adopt(const Resource::TileInstanceWrapper* const instanceWrapper) override
+		{
+			return true;
+		}
 
 		virtual void setPosition(const sf::Vector2f position)
 		{
@@ -114,16 +119,15 @@ namespace Editor
 		}
 
 	private:
-		Shared::WallContent content;
 		sf::RectangleShape shape;
 	};
 
-	class WallTemplate
+	class TemplateTransitivePortal
 		:
 		public TileTemplate
 	{
 	public:
-		WallTemplate()
+		TemplateTransitivePortal()
 		{
 			button.sizePreferred = { 300, 100 };
 			button.buttonSelectedEvent.addListener(
@@ -145,7 +149,7 @@ namespace Editor
 					}
 				});
 
-			button.value.text = L"Wall";
+			button.value.text = L"Transitive Portal";
 		}
 
 		// onOpenContext ...
@@ -154,25 +158,28 @@ namespace Editor
 		TileBase* create(
 			sf::Vector2f position) override
 		{
-			return new TileWall(position);
+			return new TileTransitivePortal(position);
 		}
 
 		const std::wstring& getName() const override
 		{
-			return Shared::TileWall.name;
+			return Shared::TileTransitivePortal.name;
 		}
 
 		const std::wstring& getDescription() const override
 		{
-			return Shared::TileWall.info;
+			return Shared::TileTransitivePortal.info;
 		}
 
 		Shared::TileID getId() const override
 		{
-			return Shared::TileID::TileWall;
+			return Shared::TileID::TileTransitivePortal;
 		}
 
-		Menu::ElementBase* createRepresentation() override;
+		Menu::ElementBase* createRepresentation() override
+		{
+			return &button;
+		}
 
 		bool isSelected() const override
 		{
@@ -194,24 +201,20 @@ namespace Editor
 	};
 }
 
-
 namespace Resource
 {
 #pragma pack(push, 1)
 
-	class WallTile
+	class TileTransitivePortal
 		:
 		public ResourceBase
 	{
 	public:
-		Shared::WallContent content;
-
-		WallTile()
+		struct Content
 		{
-			content.density = Shared::ValueDefinition::tile_density;
-			content.friction = Shared::ValueDefinition::tile_friction;
-			content.inputForceAddition = Shared::ValueDefinition::tile_input;
-		}
+			Resource::WorldId world;
+
+		} content;
 
 		bool make(ReadPipe* const pipe) override
 		{

@@ -93,7 +93,7 @@ namespace Game
 		bool initialize() override
 		{
 			return simulation->initialize()
-				&& simulation->pushWorld(worlds.begin()->second->content.id);
+				&& simulation->pushWorld((worlds.begin())->second->content.id);
 		}
 
 		void draw(sf::RenderTarget* const target)

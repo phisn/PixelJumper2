@@ -29,7 +29,7 @@ namespace Game
 			const Resource::Tile& tileResource = resource->tiles[i];
 			const Resource::TileInstanceWrapper* const tileInstance = &resource->tileInstances[tileResource.content.instanceIndex];
 
-			GameTileBase* const tile = Shared::TileDescription::Find(
+			GameElementBase* const tile = Shared::TileDescription::Find(
 				tileInstance->getID()
 			)->creation.createGameTile(&tileResource, tileInstance, i);
 
@@ -39,10 +39,10 @@ namespace Game
 				return false;
 			}
 
-			registerTile<GameTileBase>(tile);
+			registerTile<GameElementBase>(tile);
 		}
 
-		for (GameTileBase* const tile : getTileType<GameTileBase>())
+		for (GameElementBase* const tile : getTileType<GameElementBase>())
 		{
 			tile->registerType(this);
 		}
@@ -54,6 +54,8 @@ namespace Game
 	{
 		for (StaticTile* const tile : getTileType<StaticTile>())
 		{
+			GameTileBase* const gameTile = (GameTileBase*) tile;
+
 			sf::VertexBuffer vertexBuffer(sf::PrimitiveType::Quads);
 
 			if (!vertexBuffer.create(4))

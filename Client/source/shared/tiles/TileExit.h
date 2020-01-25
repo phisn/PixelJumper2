@@ -38,12 +38,11 @@ namespace Game
 			const sf::Vector2f position,
 			const sf::Vector2f size)
 			:
-			StaticTile(
+			GameTileBase(
 				identity,
-				Shared::TileExit.gameColor,
 				position,
 				size),
-			CollidableTile()
+			StaticTile(Shared::TileExit.gameColor)
 		{
 		}
 
@@ -58,16 +57,6 @@ namespace Game
 
 			collision.player->getProperties().position = collision.target;
 			return { };
-		}
-
-		const sf::Vector2f getPosition() const override
-		{
-			return StaticTile::getPosition();
-		}
-
-		const sf::Vector2f getSize() const override
-		{
-			return StaticTile::getSize();
 		}
 	};
 }

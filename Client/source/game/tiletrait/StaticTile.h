@@ -10,24 +10,12 @@ namespace Game
 {
 	class StaticTile
 		:
-		public GameTileBase
+		public virtual GameTileBase
 	{
 	public:
-		virtual void registerType(Environment* const env) override
-		{
-			env->registerTile<StaticTile>(this);
-		}
-
-		StaticTile(
-			const int identity,
-			const sf::Color color,
-			const sf::Vector2f position,
-			const sf::Vector2f size)
+		StaticTile(const sf::Color color)
 			:
-			GameTileBase(identity),
-			color(color),
-			position(position),
-			size(size)
+			color(color)
 		{
 		}
 
@@ -36,20 +24,12 @@ namespace Game
 			return color;
 		}
 
-		const sf::Vector2f getPosition() const override
-		{
-			return position;
-		}
-
-		const sf::Vector2f getSize() const override
-		{
-			return size;
-		}
-
 	protected:
-		const sf::Color color;
+		void registerType(Environment* const env)
+		{
+			env->registerTile<StaticTile>(this);
+		}
 
-		const sf::Vector2f position;
-		const sf::Vector2f size;
+		const sf::Color color;
 	};
 }

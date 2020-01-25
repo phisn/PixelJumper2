@@ -120,7 +120,7 @@ namespace Game
 
 		bool pushWorld(Resource::WorldId const world)
 		{
-			return loadWorld(world);
+			return commonLoadWorld(world);
 		}
 
 		bool processLogic() override
@@ -154,7 +154,7 @@ namespace Game
 				return false;
 			}
 
-			if (currentWorld->getInformation()->worldId != worldID && !loadWorld(worldID))
+			if (currentWorld->getInformation()->worldId != worldID && !commonLoadWorld(worldID))
 			{
 				return false;
 			}
@@ -199,16 +199,9 @@ namespace Game
 			for (TransitiveTile* tile : transitiveTiles)
 			{
 				tile->onTransition.addListener(
-					[this](const Resource::WorldId worldID)
+					[this, tile](const TransitiveTile::Event& event)
 					{
-						decltype(loadedWorlds)::iterator world = loadedWorlds.find(worldID);
-
-						if (world == loadedWorlds.cend())
-						{
-							Log::Error(L"World for transition was not loaded, fatal error");
-						}
-
-						// ...
+						transitiveLoadWorld(event);
 
 					}, GameEventIdentifier::ClassicSimulation);
 
@@ -264,29 +257,39 @@ namespace Game
 			return true;
 		}
 
-		bool loadWorld(const Resource::WorldId worldID)
+		bool commonLoadWorld(const Resource::WorldId worldID)
+		{
+			if (prepareWorld(worldID))
+			{
+				currentWorld->addPlayer(connection->getPlayer());
+				return true;
+			}
+
+			return false;
+		}
+
+		bool transitiveLoadWorld(const TransitiveTile::Event& event)
+		{
+			const Resource::WorldId source = currentWorld->getInformation()->worldId;
+
+			if (prepareWorld(event.target))
+			{
+				currentWorld->addTransitivePlayer(
+					connection->getPlayer(),
+					event.sourceOffset, 
+					source);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		bool prepareWorld(const Resource::WorldId worldID)
 		{
 			currentWorldID = worldID;
 
-			World* world = processPreloadedWorlds(worldID);
-			if (world == NULL)
-			{
-				ResourceContainer::const_iterator worldResource = loadedWorldResources.find(worldID);
-
-				if (worldResource == loadedWorldResources.cend())
-				{
-					adjustStatus(Status::Idle);
-					return false;
-				}
-
-				world = new World(worldResource->second);
-				if (!initializeWorld(world))
-				{
-					adjustStatus(Status::Error);
-					return false;
-				}
-			}
-
+			World* const world = getWorld(worldID);
 			if (currentWorld)
 			{
 				removeTileDependencies();
@@ -294,14 +297,49 @@ namespace Game
 			}
 
 			currentWorld = world;
-
 			if (!processTileDependencies())
 			{
 				return false;
 			}
 
-			currentWorld->addPlayer(connection->getPlayer());
 			return true;
+		}
+
+		World* getWorld(const Resource::WorldId worldID)
+		{
+			if (World* world = processPreloadedWorlds(worldID); world)
+			{
+				return world;
+			}
+
+			decltype(loadedWorlds)::const_iterator world = loadedWorlds.find(worldID);
+			if (world == loadedWorlds.cend())
+			{
+				return createWorld(worldID);
+			}
+
+			return world->second;
+		}
+
+		World* createWorld(const Resource::WorldId worldID)
+		{
+			ResourceContainer::const_iterator worldResource = loadedWorldResources.find(worldID);
+			if (worldResource == loadedWorldResources.cend())
+			{
+				adjustStatus(Status::Idle);
+				return NULL;
+			}
+
+			World* const world = new World(worldResource->second);
+			if (!initializeWorld(world))
+			{
+				delete world;
+				adjustStatus(Status::Error);
+				return NULL;
+			}
+			loadedWorlds[worldID] = world;
+
+			return world;
 		}
 
 		World* processPreloadedWorlds(const Resource::WorldId worldID)
@@ -311,7 +349,7 @@ namespace Game
 			for (WorldPreloader& preloader : preloadingWorlds)
 			{
 				World* const preloadedWorld = preloader.get();
-				const Resource::WorldId preloadedWorldID = world->getInformation()->worldId;
+				const Resource::WorldId preloadedWorldID = preloadedWorld->getInformation()->worldId;
 
 				if (preloadedWorldID == worldID)
 				{
@@ -320,6 +358,8 @@ namespace Game
 
 				loadedWorlds[preloadedWorldID] = preloadedWorld;
 			}
+
+			preloadingWorlds.clear();
 
 			return world;
 		}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/game/CollisionEngine.h>
-#include <Client/source/game/tiletrait/GameTileBase.h>
+#include <Client/source/game/tiletrait/GameElementBase.h>
 
 #include <Client/source/resource/WorldResource.h>
 
@@ -54,7 +54,7 @@ namespace Game
 		template <typename HashType, typename ValueType = HashType>
 		void registerTile(ValueType* const tile)
 		{
-			tiles[typeid(HashType).hash_code()].push_back((GameTileBase*) tile);
+			tiles[typeid(HashType).hash_code()].push_back((void*) tile);
 		}
 		
 		void processLogic();
@@ -87,7 +87,7 @@ namespace Game
 
 		std::unordered_map<
 			size_t,
-			std::vector<GameTileBase*>
+			std::vector<void*>
 		> tiles;
 
 		std::unordered_map<
@@ -96,7 +96,7 @@ namespace Game
 		> collisionTypeTiles;
 
 		std::vector<CollisionType> collisionTypes;
-		std::vector<GameTileBase*> emptyVector;
+		std::vector<void*> emptyVector;
 
 		std::vector<sf::VertexBuffer> vertexWorld;
 	};

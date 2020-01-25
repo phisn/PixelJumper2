@@ -183,9 +183,6 @@
     <ClInclude Include="source\game\tiletrait\StaticTile.h">
       <Filter>source\game\tiletrait</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\tiletrait\GameTileBase.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
       <Filter>source\game\tiletrait</Filter>
     </ClInclude>
@@ -254,6 +251,12 @@
     </ClInclude>
     <ClInclude Include="source\shared\tiles\TransitivePortal.h">
       <Filter>source\shared\tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\GameElementBase.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\GameTileBase.h">
+      <Filter>source\game\tiletrait</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -741,7 +744,6 @@
     <None Include="source\game\DependentTileData.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\tiletrait\TransitiveTile.h" />
     <None Include="source\game\Simulation.cpp">
       <Filter>source\game</Filter>
     </None>
@@ -753,6 +755,9 @@
     </None>
     <None Include="source\game\Simulator.h">
       <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\tiletrait\TransitiveTile.h">
+      <Filter>source\game\tiletrait</Filter>
     </None>
   </ItemGroup>
 </Project>

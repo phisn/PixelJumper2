@@ -36,6 +36,7 @@ namespace Game
 
 	void TileExit::registerType(Environment* env)
 	{
+		CollidableTile::registerType(env);
 		CollidableTile::registerCollisionType(
 			env,
 			CollisionType::NormalCollision

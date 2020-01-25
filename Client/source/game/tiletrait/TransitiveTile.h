@@ -9,9 +9,17 @@ namespace Game
 {
 	class TransitiveTile
 		:
-		public RegisterableType
+		public virtual GameTileBase
 	{
 	public:
+		typedef sf::Uint8 Index;
+
+		struct Event
+		{
+			Resource::WorldId target;
+			sf::Vector2f sourceOffset;
+		};
+
 		TransitiveTile(const Resource::WorldId target)
 			:
 			target(target)
@@ -23,7 +31,7 @@ namespace Game
 			env->registerTile<TransitiveTile>(this);
 		}
 
-		GameEvent<TransitiveTile, Resource::WorldId> onTransition;
+		GameEvent<TransitiveTile, const Event&> onTransition;
 
 		Resource::WorldId getTarget() const
 		{
@@ -31,9 +39,14 @@ namespace Game
 		}
 
 	protected:
-		void notifyTransitionEvent()
+		void notifyTransitionEvent(const sf::Vector2f sourceOffset)
 		{
-			onTransition.notify(target);
+			Event event;
+			
+			event.sourceOffset = sourceOffset;
+			event.target = target;
+
+			onTransition.notify(event);
 		}
 
 		Resource::WorldId target;

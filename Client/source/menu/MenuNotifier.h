@@ -21,12 +21,17 @@ namespace Menu
 
 		void popListener(const size_t identifier)
 		{
-			for (decltype(listeners)::const_iterator iterator = listeners.cbegin();
-				iterator != listeners.cend(); ++iterator)
+			decltype(listeners)::const_iterator iterator = listeners.cbegin();
+
+			while (iterator != listeners.cend())
 			{
 				if (iterator->second == identifier)
 				{
-					listeners.erase(iterator);
+					iterator = listeners.erase(iterator);
+				}
+				else
+				{
+					++iterator;
 				}
 			}
 		}

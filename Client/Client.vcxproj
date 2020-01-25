@@ -90,6 +90,7 @@
     <ClInclude Include="source\game\tiletrait\CollidableTile.h" />
     <ClInclude Include="source\game\tiletrait\DrawableTile.h" />
     <ClInclude Include="source\game\tiletrait\DynamicTile.h" />
+    <ClInclude Include="source\game\tiletrait\GameElementBase.h" />
     <ClInclude Include="source\game\tiletrait\GameTileBase.h" />
     <ClInclude Include="source\game\tiletrait\InitializableTile.h" />
     <ClInclude Include="source\game\tiletrait\StaticTile.h" />

@@ -92,7 +92,7 @@ namespace Scene
 				event.key.control)
 			{
 				Editor::Manipulator::GetExecutor()->execute(
-					new Editor::LoadWorldTask(L"TestWorld")
+					new Editor::LoadWorldTask(L"right")
 				);
 			}
 

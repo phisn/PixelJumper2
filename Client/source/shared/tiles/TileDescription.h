@@ -22,7 +22,7 @@ namespace Shared
 			return TileCreation{
 				[](const Resource::Tile* const tile,
 				   const Resource::TileInstanceWrapper* const instance,
-				   const Game::TileIdentity identity) -> Game::GameTileBase* 
+				   const Game::TileIdentity identity) -> Game::GameElementBase*
 				{ 
 					return GameTile::Create(tile, instance, identity); 
 				},
@@ -31,7 +31,7 @@ namespace Shared
 			};
 		}
 
-		Game::GameTileBase* (*createGameTile)(
+		Game::GameElementBase* (*createGameTile)(
 			const Resource::Tile*, 
 			const Resource::TileInstanceWrapper*, 
 			const Game::TileIdentity);

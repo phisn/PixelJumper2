@@ -28,6 +28,8 @@ namespace Game
 	};
 
 	class CollidableTile
+		:
+		public virtual GameTileBase
 	{
 	public:
 		/*
@@ -37,10 +39,6 @@ namespace Game
 		virtual sf::Vector2f onCollision(
 			const CollisionType type,
 			const Collision& collision) = 0;
-		
-		// copied from / same as in GameTileBase.h
-		virtual const sf::Vector2f getPosition() const = 0;
-		virtual const sf::Vector2f getSize() const = 0;
 
 		GameEvent<CollidableTile, 
 			const CollisionType*, const Collision*
@@ -51,8 +49,12 @@ namespace Game
 			Environment* const env,
 			const CollisionType type) // alternative to register
 		{
-			env->registerTile<CollidableTile>(this);
 			env->registerCollisionType(type, this);
+		}
+
+		void registerType(Environment* const env)
+		{
+			env->registerTile<CollidableTile>(this);
 		}
 
 		void notifyCollisionEvent(

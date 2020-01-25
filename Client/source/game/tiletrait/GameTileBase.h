@@ -1,40 +1,52 @@
 #pragma once
 
-#include <SFML/System/Vector2.hpp>
+#include <Client/source/game/Environment.h>
+#include <Client/source/game/tiletrait/GameElementBase.h>
 
 namespace Game
 {
-	typedef int TileIdentity;
-
-	class Environment;
-	struct RegisterableType
-	{
-		virtual void registerType(Environment* const) = 0;
-	};
-
-	class GameTileBase 
+	class GameTileBase
 		:
-		public RegisterableType
+		public GameElementBase
 	{
 	public:
-		GameTileBase(const TileIdentity identity)
+		virtual void registerType(Environment* const env) override
+		{
+			env->registerTile<GameTileBase>(this);
+		}
+
+		// should not be used and is only
+		// here to symplify virtual inheritance
+		GameTileBase()
 			:
-			identity(identity)
+			GameTileBase(0, { }, { })
+		{
+			assert(true);
+		}
+
+		GameTileBase(
+			const int identity,
+			const sf::Vector2f position,
+			const sf::Vector2f size)
+			:
+			GameElementBase(identity),
+			position(position),
+			size(size)
 		{
 		}
 
-		// should register itself into env
-		virtual void registerType(Environment* const) = 0;
-
-		virtual const sf::Vector2f getPosition() const = 0;
-		virtual const sf::Vector2f getSize() const = 0;
-
-		int getIdentity() const
+		const sf::Vector2f getPosition() const
 		{
-			return identity;
+			return position;
 		}
 
-	private:
-		const TileIdentity identity;
+		const sf::Vector2f getSize() const
+		{
+			return size;
+		}
+
+	protected:
+		const sf::Vector2f position;
+		const sf::Vector2f size;
 	};
 }

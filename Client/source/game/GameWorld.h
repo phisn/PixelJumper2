@@ -1,12 +1,13 @@
 #pragma once
 
 #include <Client/source/game/CollisionEngine.h>
-#include <Client/source/game/tiletrait/CollidableTile.h>
-
 #include <Client/source/game/Environment.h>
 #include <Client/source/game/GamePlayer.h>
 #include <Client/source/game/WorldInformation.h>
 #include <Client/source/game/WorldProperties.h>
+
+#include <Client/source/game/tiletrait/CollidableTile.h>
+#include <Client/source/game/tiletrait/TransitiveTile.h>
 
 #include <Client/source/logger/Logger.h>
 
@@ -149,6 +150,29 @@ namespace Game
 		bool initializeTiles();
 
 	public: // player
+		bool addTransitivePlayer(
+			PlayerType* const player, 
+			const sf::Vector2f offset,
+			Resource::WorldId source)
+		{
+			TransitiveTile* const tile = findTransitiveTarget(source);
+
+			if (tile == NULL)
+			{
+				Log::Error(L"Target world not found", 
+					source, L"target", 
+					information.worldId, L"id");
+
+				return false;
+			}
+
+			player->properties.position.setValue(tile->getPosition() + offset);
+			players.push_back(player);
+			properties.setPlayerCount(*properties.playerCount + 1);
+
+			return true;
+		}
+
 		void addPlayer(PlayerType* const player)
 		{
 			player->getProperties().loadDefault(information);
@@ -164,13 +188,9 @@ namespace Game
 
 			if (iterator != players.cend())
 			{
-				players.erase(iterator);
-
 				properties.setPlayerCount(*properties.playerCount - 1);
+				players.erase(iterator);
 				assert(*properties.playerCount >= 0);
-
-				// uninitialize listener?
-				
 			}
 		}
 
@@ -273,6 +293,15 @@ namespace Game
 			}
 		}
 
+		TransitiveTile* const findTransitiveTarget(const Resource::WorldId world)
+		{
+			for (TransitiveTile* const tile : environment.getTileType<TransitiveTile>())
+				if (tile->getTarget() == world)
+				{
+					return tile;
+				}
 
+			return NULL;
+		}
 	};
 }

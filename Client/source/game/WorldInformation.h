@@ -25,6 +25,9 @@ namespace Game
 			info.defaultPlayerProperties = resource->content.defaultPlayerProperties;
 			info.defaultProperties = resource->content.defaultProperties;
 
+			info.defaultPlayerProperties.position = { 2, 2 };
+			info.defaultPlayerProperties.viewWindow = { 0, 0, 50, 50 };
+
 			return info;
 		}
 

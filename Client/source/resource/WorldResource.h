@@ -49,7 +49,7 @@ namespace Resource
 
 		std::vector<TileInstanceWrapper> tileInstances;
 		std::vector<Tile> tiles;
-
+		
 		bool make(ReadPipe* const pipe) override
 		{
 			if (!pipe->readValue(&content))

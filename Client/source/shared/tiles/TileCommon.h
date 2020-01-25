@@ -6,6 +6,7 @@ namespace Shared
 	{
 		TileWall,
 		TileExit,
+		TileTransitivePortal,
 
 		_Length,
 		_Invalid = -1,

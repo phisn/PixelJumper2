@@ -39,6 +39,7 @@ namespace Game
 	{
 		env->registerTile<Game::WallTile>(this);
 
+		CollidableTile::registerType(env);
 		CollidableTile::registerCollisionType(
 			env,
 			CollisionType::NormalCollision
