@@ -258,6 +258,7 @@
     <ClInclude Include="source\game\tiletrait\GameTileBase.h">
       <Filter>source\game\tiletrait</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -410,6 +411,7 @@
     <ClCompile Include="source\shared\tiles\TransitivePortal.cpp">
       <Filter>source\shared\tiles</Filter>
     </ClCompile>
+    <ClCompile Include="source\device\CoreDevice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">
@@ -705,32 +707,8 @@
     <None Include="source\game\UserConnection.cpp">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\net\IndependentSimulator.h">
-      <Filter>source\game\net</Filter>
-    </None>
-    <None Include="source\game\net\IndependentSimulator.cpp">
-      <Filter>source\game\net</Filter>
-    </None>
     <None Include="source\device\NetDevice.h">
       <Filter>source\device</Filter>
-    </None>
-    <None Include="source\game\net\NetOperator.cpp">
-      <Filter>source\game\net</Filter>
-    </None>
-    <None Include="source\game\net\NetOperator.h">
-      <Filter>source\game\net</Filter>
-    </None>
-    <None Include="source\game\net\NetClient.cpp">
-      <Filter>source\game\net</Filter>
-    </None>
-    <None Include="source\game\net\NetClient.h">
-      <Filter>source\game\net</Filter>
-    </None>
-    <None Include="source\game\net\NetGameBase.cpp">
-      <Filter>source\game\net</Filter>
-    </None>
-    <None Include="source\game\net\NetGameBase.h">
-      <Filter>source\game\net</Filter>
     </None>
     <None Include="source\device\NetDevice.cpp">
       <Filter>source\device</Filter>
@@ -750,14 +728,17 @@
     <None Include="source\game\Simulation.h">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\Simulator.cpp">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\Simulator.h">
-      <Filter>source\game</Filter>
-    </None>
     <None Include="source\game\tiletrait\TransitiveTile.h">
       <Filter>source\game\tiletrait</Filter>
     </None>
+    <None Include="source\game\GameOperator.h">
+      <Filter>source\game</Filter>
+    </None>
+    <None Include="source\game\GameOperator.cpp">
+      <Filter>source\game</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc" />
   </ItemGroup>
 </Project>

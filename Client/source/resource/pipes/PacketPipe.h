@@ -44,6 +44,11 @@ namespace Resource
 		{
 		}
 
+		sf::Packet& getPacket()
+		{
+			return packet;
+		}
+
 	protected:
 		sf::Packet packet;
 
@@ -77,9 +82,9 @@ namespace Resource
 			return true;
 		}
 
-		sf::Int64 readContent(char* const buffer, const sf::Uint64 size)
+		sf::Int64 readContent(char* const buffer, const sf::Uint64 size) override
 		{
-			const sf::Uint64 realSize = size <= packet.getDataSize() - position
+			const sf::Int64 realSize = size <= packet.getDataSize() - position
 				? size
 				: packet.getDataSize() - position;
 
@@ -87,6 +92,11 @@ namespace Resource
 			position += size;
 
 			return realSize;
+		}
+
+		sf::Packet& getPacket()
+		{
+			return packet;
 		}
 
 	protected:

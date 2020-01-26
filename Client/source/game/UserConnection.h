@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Client/source/game/GamePlayer.h>
-#include <Client/source/game/GameWorld.h>
-
 #include <Client/source/game/ControllablePlayer.h>
+#include <Client/source/game/Simulation.h>
 #include <Client/source/game/VirtualPlayer.h>
+
+#include <Client/source/resource/pipes/PacketPipe.h>
 
 #include <SFML/Network.hpp>
 
@@ -22,13 +22,6 @@ namespace Game
 		virtual bool initialize() = 0;
 
 		virtual void onLogic(const sf::Time time) = 0;
-
-		// local: process input and store if
-		// connection goes to remote host
-		// remote: process new input and determine
-		// timeouts and eventuelly change status
-		// return: is currently able to 
-		// process logic
 		virtual bool processLogic() = 0;
 
 		virtual void changeUserInformation(const PlayerInformation info)
@@ -121,80 +114,113 @@ namespace Game
 		const Device::Input::PlayerID playerId;
 	};
 
+	struct ConnectionContext
+	{
+	};
+
 	class RemoteConnection
-		:
-		public UserConnection
 	{
 	public:
-		struct Message
-		{
-			Resource::PlayerID playerId;
-
-			enum Type
+		/*
+			struct Message
 			{
-				Sync,
-				Frame
-			} type;
+				Resource::PlayerID playerId;
 
-			sf::Packet packet;
-		};
+				enum Type
+				{
+					Sync,
+					Frame
+				} type;
 
-		struct Settings
-		{
-			sf::Time softTimeout = sf::milliseconds(500);	// allowed lag
-			int hardTimeoutCount = 4; // 2 sec				// timout after N lags
-		};
+				sf::Packet packet;
+			};
+		*/
 
-		// status should be used by the connection
-		// itself and the operator. if the status
-		// changes from connected, then the connection
-		// has to be removed
-
-		// order by importance
 		enum Status
 		{
-			Connected,
+			Running,
+			Pending,
 			Disconnected,
 			Timeout,
 			Error
 		};
 
-		RemoteConnection(
-			const sf::IpAddress ipAddress, // change to (socket context)
-			const Settings settings,
-			const PlayerInformation info)
+		struct Settings
+		{
+			// time after how many updates the current 
+			// status will cause a hard timeout
+			sf::Uint32 pendingTimeout = 2;
+			sf::Uint32 runningTimeout = 4;
+
+			// tickratedifference represents the
+			// difference between client tickrate and
+			// the server tickrate. this tickrate
+			// gets adjusted to prevent  
+			int minTickrateDifference;
+			int maxTickrateDifference;
+		};
+
+		RemoteConnection(const Settings settings)
 			:
-			ipAddress(ipAddress),
-			settings(settings),
-			UserConnection(info)
+			settings(settings)
 		{
-			player = new VirtualPlayer(info);
+			socket.setBlocking(false);
 		}
 
-		bool initialize() override
+		bool initialize()
 		{
 		}
 
-		void onLogic(const sf::Time time) override
+		bool processLogic()
 		{
-			Net::FrameStatus fs;
-		}
-
-		bool processLogic() override
-		{
-			if (!player->hasUpdate())
+			if (simulation->getStatus() == ClassicSimulation::Running)
 			{
-
+				if (player->hasUpdate())
+				{
+					if (simulation->processLogic())
+					{
+					}
+				}
 			}
 		}
 
-		void changeUserInformation(const PlayerInformation info) override
+		bool update()
 		{
-			UserConnection::changeUserInformation(info);
+			const sf::Socket::Status status = socket.receive(buffer);
 
-			// player should never be null
-			delete player;
-			player = new VirtualPlayer(info);
+			switch (status)
+			{
+			case sf::Socket::Status::Disconnected:
+				adjustStatus(Disconnected);
+
+				return false;
+			case sf::Socket::Status::Done:
+				handlePacket();
+
+				break;
+			case sf::Socket::Status::Error:
+				adjustStatus(Error);
+
+				return false;
+			}
+
+			return true;
+		}
+
+		Status getStatus() const
+		{
+			return status;
+		}
+
+		sf::TcpSocket& getSocket()
+		{
+			return socket;
+		}
+
+	protected:
+		void handlePacket()
+		{
+
 		}
 
 		void adjustStatus(const Status status)
@@ -203,32 +229,14 @@ namespace Game
 				this->status = status;
 		}
 
-		Status getStatus() const
-		{
-			return status;
-		}
-
-		PlayerBase* getPlayer() override
-		{
-			return player;
-		}
-
-		const sf::IpAddress& getIpAddress() const
-		{
-			return ipAddress;
-		}
-
-	protected:
-		const sf::IpAddress ipAddress;
 		const Settings settings;
-		
+
 		Status status;
-		VirtualPlayer* player;
-	};
+		
+		sf::TcpSocket socket;
+		sf::Packet buffer;
 
-	class GhostConnection
-	{
-	public:
-
+		ClassicSimulation* simulation = NULL;
+		VirtualPlayer* player = NULL;
 	};
 }

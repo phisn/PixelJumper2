@@ -5,6 +5,8 @@
 
 #include <Client/source/device/InputDevice.h>
 
+#include <queue>
+
 namespace Game
 {
 	/*
@@ -55,19 +57,19 @@ namespace Game
 				const Device::GameCoreInputSymbol key,
 				const bool state)
 			{
-				keyStates[(int) key] = state;
+				keyStates[(int)key] = state;
 			}
 
 			bool getKey(const Device::GameCoreInputSymbol key) const
 			{
-				return keyStates[(int) key];
+				return keyStates[(int)key];
 			}
 
 			bool writeState(Resource::WritePipe* const writePipe)
 			{
 				char buffer;
 
-				for (int i = 0; i < (int) Device::GameCoreInputSymbol::_Length / 8 + 1; ++i)
+				for (int i = 0; i < (int)Device::GameCoreInputSymbol::_Length / 8 + 1; ++i)
 				{
 					buffer = 0;
 
@@ -105,8 +107,100 @@ namespace Game
 				return true;
 			}
 
+			bool operator==(const FrameStatus& frame) const
+			{
+				return memcmp(keyStates, frame.keyStates, sizeof(keyStates)) == 0;
+			}
+
+			bool operator!=(const FrameStatus& frame) const
+			{
+				return !(*this == frame);
+			}
+
 		private:
 			bool keyStates[(int) Device::GameCoreInputSymbol::_Length];
+		};
+
+		class PackedFrameStatus
+			:
+			public GameState
+		{
+		public:
+			bool writeState(Resource::WritePipe* const writePipe) override
+			{
+				sf::Uint32 framecount = frames.size();
+				if (!writePipe->writeValue(&framecount))
+				{
+					return false;
+				}
+
+				if (frames.size() == 0)
+				{
+					return true;
+				}
+
+				FrameStatus& current = frames[0];
+				sf::Uint8 currentLength = 0;
+
+				for (FrameStatus& frame : frames)
+				{
+					if (current != frame || currentLength == 255)
+					{
+						if (!writePipe->writeValue(&currentLength) ||
+							!current.writeState(writePipe))
+						{
+							return false;
+						}
+
+						currentLength = 0;
+					}
+
+					++currentLength;
+
+					if (current != frame)
+					{
+						current = frame;
+					}
+				}
+
+				return writePipe->writeValue(&currentLength)
+					&& current.writeState(writePipe);
+			}
+
+			bool readState(Resource::ReadPipe* const readPipe) override
+			{
+				sf::Uint32 framecount;
+				if (!readPipe->readValue(&framecount))
+				{
+					return false;
+				}
+				
+				frames.clear();
+				frames.reserve(framecount);
+
+				while (framecount > 0)
+				{
+					sf::Uint8 framelength;
+					FrameStatus frame;
+
+					if (!readPipe->readValue(&framelength) ||
+						!frame.readState(readPipe))
+					{
+						return false;
+					}
+
+					for (int i = 0; i < framelength; ++i)
+					{
+						frames.push_back(frame);
+					}
+
+					framecount -= framelength;
+				}
+
+				return framecount == 0;
+			}
+
+			std::vector<FrameStatus> frames;
 		};
 	}
 }

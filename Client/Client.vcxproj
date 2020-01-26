@@ -72,6 +72,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DeviceConfig.h" />
@@ -244,21 +245,13 @@
     <None Include="source\game\GameWorld.h" />
     <None Include="source\game\LocalPlayer.cpp" />
     <None Include="source\game\LocalPlayer.h" />
-    <None Include="source\game\net\IndependentSimulator.cpp" />
-    <None Include="source\game\net\IndependentSimulator.h" />
-    <None Include="source\game\net\NetClient.cpp" />
-    <None Include="source\game\net\NetClient.h" />
-    <None Include="source\game\net\NetGameBase.cpp" />
-    <None Include="source\game\net\NetGameBase.h" />
-    <None Include="source\game\net\NetOperator.cpp" />
-    <None Include="source\game\net\NetOperator.h" />
     <None Include="source\game\GamePlayer.h" />
     <None Include="source\game\PlayerInformation.h" />
     <None Include="source\game\PlayerProperties.cpp" />
     <None Include="source\game\PlayerProperties.h" />
     <None Include="source\game\PlayerRepresentation.h" />
-    <None Include="source\game\Simulator.cpp" />
-    <None Include="source\game\Simulator.h" />
+    <None Include="source\game\GameOperator.cpp" />
+    <None Include="source\game\GameOperator.h" />
     <None Include="source\game\tiletrait\ExitableTile.h" />
     <None Include="source\game\tiletrait\TransitiveTile.h" />
     <None Include="source\game\UserConnection.cpp" />
@@ -304,6 +297,9 @@
     <None Include="source\shared\WorldDefinitions.h" />
     <None Include="source\shared\tiles\TileExit.h" />
     <None Include="source\shared\tiles\TileCommon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

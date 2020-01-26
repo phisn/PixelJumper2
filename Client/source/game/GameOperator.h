@@ -5,7 +5,7 @@
 
 namespace Game
 {
-	class Simulator
+	class Operator
 		:
 		public GameState
 	{
@@ -14,31 +14,50 @@ namespace Game
 		virtual void onLogic(const sf::Time time) = 0;
 	};
 
-	class HostClassicSimulator
+	// need something like a host structure
+	// while the host self has all connections
+	// the client wont be connected to all
+	// clients. he will have a list of all player
+	// informations? and their current position
+	// can optionally request more player data
+
+	class HostOperator
 		:
-		public Simulator
+		public Operator
 	{
-		struct User
-		{
-			RemoteConnection* connection;
-			ClassicSimulation* simulation;
-
-			sf::Uint64 tickCountBegin;
-		};
-
-		typedef std::vector<User> UserContainer;
 		typedef std::map<Resource::WorldId, Resource::World*> ResourceContainer;
 
 	public:
 		struct Settings
 		{
 			sf::Uint64 tickrate = 100'000; // 100ms
+			unsigned short port = 9928;
+			int maxClients = 128;
+
+			RemoteConnection::Settings connectionSettings;
 		};
 
-		HostClassicSimulator(const Settings settings = Settings{ })
+		HostOperator(const Settings settings = Settings{ })
 			:
 			settings(settings)
 		{
+			listener.setBlocking(false);
+		}
+
+		bool initialize()
+		{
+			const sf::Socket::Status status = listener.listen(settings.port);
+
+			if (status != sf::Socket::Status::Done)
+			{
+				Log::Error(L"Failed to set host socket to listen",
+					(int) status, L"status",
+					settings.port, L"port");
+				
+				return false;
+			}
+
+			return true;
 		}
 
 		virtual void onLogic(const sf::Time time) override
@@ -47,73 +66,30 @@ namespace Game
 
 			while (logicCounter > nextGameProcess)
 			{
-				for (User& user : users)
-					if (user.simulation->getStatus() == Simulation::Status::Running)
-					{
-						user.simulation->processLogic();
-					}
 
 				nextGameProcess += LogicTimeStep;
 			}
 
 			if (logicCounter > nextUserProcess)
 			{
-				UserContainer::iterator user = users.begin();
-				while (user != users.end())
-				{
-					if (user->connection->getStatus() != RemoteConnection::Status::Connected && 
-						onUnexpectedConnectionStatus(&*user))
-					{
-						user = users.erase(user);
-						continue;
-					}
 
-					if (user->simulation->getStatus() != Simulation::Status::Running &&
-						onUnexpectedSimulationStatus(&*user))
-					{
-						user = users.erase(user);
-						continue;
-					}
+			}
 
-					// sync user
-				}
-
-				nextUserProcess = logicCounter + settings.tickrate;
+			while (listener.accept(connections.back()->getSocket()))
+			{
+				if (connections.back()->initialize())
+					connections.push_back(
+						new RemoteConnection(settings.connectionSettings)
+					);
 			}
 		}
 
 		virtual bool pushConnection(RemoteConnection* const connection)
 		{
-			User user;
-			
-			user.connection = connection;
-			user.simulation = new ClassicSimulation(resources, connection);
-			user.tickCountBegin = tickCount;
-
-			if (!user.simulation->initialize())
-			{
-				delete user.simulation;
-				return false;
-			}
-
-			users.push_back(user);
 		}
 
 		virtual void removeConnection(RemoteConnection* const connection)
 		{
-			decltype(users)::const_iterator user = std::find_if(
-				users.cbegin(), 
-				users.cend(),
-				[connection](const User& user) -> bool
-				{
-					return user.connection == connection;
-				});
-
-			if (user != users.cend())
-			{
-				delete user->simulation;
-				users.erase(user);
-			}
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
@@ -125,32 +101,6 @@ namespace Game
 		}
 
 	private:
-		User* findUser(UserConnection* const connection)
-		{
-			return findUser(connection->getInformation().playerId);
-		}
-
-		User* findUser(Resource::PlayerID playerID)
-		{
-			for (User& user : users)
-				if (user.connection->getInformation().playerId == playerID)
-				{
-					return &user;
-				}
-
-			return NULL;
-		}
-
-		// return == remove user
-		virtual bool onUnexpectedConnectionStatus(User* const user)
-		{
-		}
-
-		// return == remove user
-		virtual bool onUnexpectedSimulationStatus(User* const user)
-		{
-		}
-
 		const Settings settings;
 
 		sf::Uint64 logicCounter = 0,
@@ -159,13 +109,17 @@ namespace Game
 
 		sf::Uint64 tickCount = 0;
 
+		// last element represents empty connection
+		// to accept new tcpsockets
+		std::vector<RemoteConnection*> connections;
 		ResourceContainer resources;
-		UserContainer users;
+
+		sf::TcpListener listener;
 	};
 
 	class LocalClassicTestSimulator
 		:
-		public Simulator
+		public Operator
 	{
 	public:
 		typedef std::map<Resource::WorldId, Resource::World*> WorldResources;

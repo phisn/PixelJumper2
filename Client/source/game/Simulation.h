@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Client/source/game/UserConnection.h>
 #include <Client/source/game/GameWorld.h>
 
 #include <Client/source/game/tiletrait/ExitableTile.h>
@@ -18,59 +17,15 @@ namespace Game
 		public GameState
 	{
 	public:
-		// order by importance
-		enum Status
-		{
-			Running,	// has player(s)
-			Idle,		// wating for simulator resources
-			Dead,		// has no player
-			Error		// error
-		};
-
 		virtual ~Simulation()
-		{
-		}
-
-		Simulation(UserConnection* const connection)
-			:
-			connection(connection)
 		{
 		}
 
 		virtual bool initialize() = 0;
 		virtual bool processLogic() = 0;
 
-		virtual void kill()
-		{
-			adjustStatus(Simulation::Status::Dead);
-		}
-
-		virtual void resume()
-		{
-			status = Simulation::Status::Running;
-		}
-
-		Status getStatus() const
-		{
-			return status;
-		}
-
-		UserConnection* getConnection() const
-		{
-			return connection;
-		}
-
-	protected:
-		virtual void adjustStatus(const Status status)
-		{
-			if (this->status < status)
-				this->status = status;
-		}
-
-		UserConnection* const connection;
-
-	private:
-		Status status = Running;
+		virtual void pushPlayer(PlayerBase* const player) = 0;
+		virtual void popPlayer(PlayerBase* const player) = 0;
 	};
 
 	/*
@@ -102,18 +57,24 @@ namespace Game
 		typedef std::map<Resource::WorldId, Resource::World*> ResourceContainer;
 		typedef std::map<Resource::WorldId, World*> WorldContainer;
 
-		ClassicSimulation(
-			const ResourceContainer& resourceContainer,
-			UserConnection* const connection)
+		enum Status
+		{
+			Running,
+			MissingPlayer,   // waiting for player being added
+			MissingWorld,    // waiting for world being run
+			MissingResource, // waiting for missing resource
+			Shutdown,        // manually shutdown
+			Error            // fault in load world or resource
+		};
+
+		ClassicSimulation(const ResourceContainer& resourceContainer)
 			:
-			Simulation(connection),
 			loadedWorldResources(resourceContainer)
 		{
 		}
 
 		bool initialize() override
 		{
-			adjustStatus(Simulation::Status::Idle);
 			return true;
 		}
 
@@ -124,11 +85,6 @@ namespace Game
 
 		bool processLogic() override
 		{
-			if (!connection->processLogic())
-			{
-				return false;
-			}
-
 			currentWorld->processLogic();
 
 			if (transitiveSwitchRequest)
@@ -138,6 +94,45 @@ namespace Game
 			}
 
 			return true;
+		}
+
+		void pushPlayer(PlayerBase* const player) override
+		{
+			if (this->player != NULL)
+			{
+				currentWorld->removePlayer(player);
+			}
+
+			this->player = player;
+
+			if (currentWorldID)
+			{
+				commonLoadWorld(currentWorldID);
+			}
+			else
+			{
+				adjustStatus(MissingWorld);
+			}
+		}
+		
+		void popPlayer(PlayerBase* const player) override
+		{
+			if (this->player != player)
+			{
+				const Resource::PlayerID existing = this->player
+					? this->player->getInformation().playerId 
+					: 0;
+
+				Log::Error(L"Tried to remove invaid player in simulation",
+					existing, L"existing",
+					player->getInformation().playerId, L"remove");
+			}
+			else
+			{
+				currentWorld->removePlayer(player);
+				this->player = NULL;
+				adjustStatus(MissingPlayer);
+			}
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
@@ -170,6 +165,11 @@ namespace Game
 		const World* getCurrentWorld() const
 		{
 			return currentWorld;
+		}
+
+		Status getStatus() const
+		{
+			return status;
 		}
 
 		sf::Uint64 getTickCount() const
@@ -268,7 +268,7 @@ namespace Game
 		{
 			if (prepareWorld(worldID))
 			{
-				currentWorld->addPlayer(connection->getPlayer());
+				currentWorld->addPlayer(player);
 				return true;
 			}
 
@@ -282,7 +282,7 @@ namespace Game
 			if (prepareWorld(event.target))
 			{
 				currentWorld->addTransitivePlayer(
-					connection->getPlayer(),
+					player,
 					event.sourceOffset, 
 					source);
 
@@ -300,7 +300,7 @@ namespace Game
 			if (currentWorld)
 			{
 				removeTileDependencies();
-				currentWorld->removePlayer(connection->getPlayer());
+				currentWorld->removePlayer(player);
 			}
 
 			currentWorld = world;
@@ -333,7 +333,7 @@ namespace Game
 			ResourceContainer::const_iterator worldResource = loadedWorldResources.find(worldID);
 			if (worldResource == loadedWorldResources.cend())
 			{
-				adjustStatus(Status::Idle);
+				adjustStatus(Status::MissingResource);
 				return NULL;
 			}
 
@@ -371,16 +371,24 @@ namespace Game
 			return world;
 		}
 
+		void adjustStatus(const Status status)
+		{
+			if (this->status < status)
+				this->status = status;
+		}
+
+		Status status = MissingPlayer;
+
 		TransitiveTile::Event transitiveSwitchEvent;
 		bool transitiveSwitchRequest = false;
+
+		PlayerBase* player;
 
 		Resource::WorldId currentWorldID;
 		World* currentWorld = NULL;
 
 		const ResourceContainer& loadedWorldResources;
 		WorldContainer loadedWorlds;
-
-		std::vector<Resource::WorldId> missingResources;
 		std::vector<WorldPreloader> preloadingWorlds;
 	};
 
@@ -399,7 +407,8 @@ namespace Game
 	private:
 		bool initializeWorld(World* const world)
 		{
-			return ClassicSimulation::initializeWorld(world) && world->initializeGraphics();
+			return ClassicSimulation::initializeWorld(world) 
+				&& world->initializeGraphics();
 		}
 	};
 
