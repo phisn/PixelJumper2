@@ -7,8 +7,15 @@
 #include <Client/source/logger/SectionHost.h>
 #include <Client/source/logger/Section.h>
 
+#include <codecvt>
 #include <string>
 #include <vector>
+
+inline std::wstring carrtowstr(const char* const arr)
+{
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+	return converter.from_bytes(arr);
+}
 
 namespace Log
 {

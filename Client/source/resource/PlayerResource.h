@@ -48,7 +48,6 @@ namespace Resource
 	public:
 		ConnectionResource connection;
 		
-	private:
 		bool make(ReadPipe* const pipe) override
 		{
 

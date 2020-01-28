@@ -468,7 +468,6 @@ extern "C" {
 	STEAMNETWORKINGSOCKETS_INTERFACE ISteamNetworkingSockets *SteamNetworkingSockets();
 
 #else
-
 	// Steamworks SDK
 	inline ISteamNetworkingSockets *SteamNetworkingSockets();
 	STEAM_DEFINE_USER_INTERFACE_ACCESSOR( ISteamNetworkingSockets *, SteamNetworkingSockets, STEAMNETWORKINGSOCKETS_INTERFACE_VERSION );
