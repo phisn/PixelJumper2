@@ -2,7 +2,7 @@
 
 #include <Client/source/device/RandomDevice.h>
 #include <Client/source/logger/Logger.h>
-#include <Client/source/resource/pipes/PacketPipe.h>
+#include <Client/source/resource/pipes/MemoryPipe.h>
 
 #include <steam/steamnetworkingsockets.h>
 #include <steam/isteamnetworkingutils.h>
@@ -17,9 +17,67 @@ namespace Device::Net
 	class ClientHandler
 	{
 	public:
+		ClientHandler(const HSteamNetConnection connection)
+			:
+			connection(connection)
+		{
+			networkInterface = SteamNetworkingSockets();
+		}
+
+		virtual ~ClientHandler()
+		{
+			// server closes handle
+		}
+
+		bool process()
+		{
+			while (true)
+			{
+				ISteamNetworkingMessage* message = NULL;
+				
+				const int count = networkInterface->ReceiveMessagesOnConnection(
+					connection,
+					&message,
+					4);
+
+				if (count == 0)
+				{
+					return true;
+				}
+
+				if (count < 0)
+				{
+					Log::Error(L"Got invalid connection in clienthandler receive");
+					return false;
+				}
+
+				for (int i = 0; i < count; ++i)
+				{
+					Resource::MemoryReadPipe pipe(
+						(const char*) message->m_pData,
+						message->m_cbSize);
+
+					onMessage(&pipe);
+
+					message->Release();
+					++message;
+				}
+			}
+		}
+
+	protected:
+		virtual void onMessage(Resource::ReadPipe* const pipe) = 0;
+
+		virtual void sendMessage(Resource::WritePipe* const pipe)
+		{
+			networkInterface->SendMessageToConnection(
+				connection,
+				pipe->);
+		}
 
 	private:
-
+		ISteamNetworkingSockets* networkInterface;
+		const HSteamNetConnection connection;
 	};
 
 	class Server

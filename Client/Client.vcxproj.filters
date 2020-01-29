@@ -259,6 +259,10 @@
       <Filter>source\game\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="MemoryPipe.h" />
+    <ClInclude Include="source\resource\pipes\MemoryPipe.h">
+      <Filter>source\resource\pipes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -412,6 +416,10 @@
       <Filter>source\shared\tiles</Filter>
     </ClCompile>
     <ClCompile Include="source\device\CoreDevice.cpp" />
+    <ClCompile Include="MemoryPipe.cpp" />
+    <ClCompile Include="source\resource\pipes\MemoryPipe.cpp">
+      <Filter>source\resource\pipes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">
