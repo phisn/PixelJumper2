@@ -49,6 +49,11 @@ namespace Resource
 			buffer.reserve(size);
 		}
 
+		const std::vector<char>& getData() const
+		{
+			return buffer;
+		}
+
 	private:
 		std::vector<char> buffer;
 		sf::Uint64 position = 0;

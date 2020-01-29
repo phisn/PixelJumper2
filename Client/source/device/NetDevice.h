@@ -13,6 +13,10 @@ namespace Device::Net
 {
 	bool Initialize();
 	void Uninitialize();
+	
+	class Client
+	{
+	};
 
 	class ClientHandler
 	{
@@ -68,16 +72,36 @@ namespace Device::Net
 	protected:
 		virtual void onMessage(Resource::ReadPipe* const pipe) = 0;
 
-		virtual void sendMessage(Resource::WritePipe* const pipe)
+		virtual Resource::WritePipe* beginMessage(const int reserve = 32)
 		{
-			networkInterface->SendMessageToConnection(
+			messagePipe.reset();
+			messagePipe.reserveSize(reserve);
+
+			return &messagePipe;
+		}
+
+		virtual void sendMessage()
+		{
+			const EResult result = networkInterface->SendMessageToConnection(
 				connection,
-				pipe->);
+				&messagePipe.getData()[0],
+				messagePipe.getSize(),
+				k_nSteamNetworkingSend_Reliable,
+				NULL);
+
+			if (result != EResult::k_EResultOK)
+			{
+				Log::Error(L"Failed to send message",
+					(int) result, L"result",
+					messagePipe.getSize(), L"size");
+			}
 		}
 
 	private:
 		ISteamNetworkingSockets* networkInterface;
 		const HSteamNetConnection connection;
+
+		Resource::MemoryWritePipe messagePipe;
 	};
 
 	class Server

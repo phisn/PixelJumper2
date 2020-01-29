@@ -259,7 +259,6 @@
       <Filter>source\game\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="MemoryPipe.h" />
     <ClInclude Include="source\resource\pipes\MemoryPipe.h">
       <Filter>source\resource\pipes</Filter>
     </ClInclude>
@@ -416,7 +415,6 @@
       <Filter>source\shared\tiles</Filter>
     </ClCompile>
     <ClCompile Include="source\device\CoreDevice.cpp" />
-    <ClCompile Include="MemoryPipe.cpp" />
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp">
       <Filter>source\resource\pipes</Filter>
     </ClCompile>

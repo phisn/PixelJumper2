@@ -72,7 +72,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MemoryPipe.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
@@ -137,7 +136,6 @@
     <ClInclude Include="source\shared\ValueDefinitions.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MemoryPipe.cpp" />
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DeviceConfig.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
