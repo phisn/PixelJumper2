@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Client/source/framework/FrameworkInterface.h>
-#include <Client/source/game/Simulator.h>
 
 namespace Scene
 {
@@ -249,6 +248,7 @@ namespace Scene
 		Game::TestGamemode* const testGamemode;
 	};*/
 
+/*
 	class TestGameScene
 		:
 		public MainSceneBase
@@ -349,4 +349,5 @@ namespace Scene
 		Game::LocalConnection* connection;
 		Game::LocalClassicTestSimulator* simulator;
 	};
+	*/
 }

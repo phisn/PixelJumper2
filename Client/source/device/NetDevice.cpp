@@ -36,4 +36,9 @@ namespace Device::Net
 
 		return true;
 	}
+
+	void Uninitialize()
+	{
+		GameNetworkingSockets_Kill();
+	}
 }

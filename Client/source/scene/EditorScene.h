@@ -128,7 +128,7 @@ namespace Scene
 				event.key.code == sf::Keyboard::R &&
 				event.key.control)
 			{
-				Framework::Context::Push<TestGameScene>();
+				// Framework::Context::Push<TestGameScene>();
 			}
 
 			if (event.type == sf::Event::KeyPressed &&

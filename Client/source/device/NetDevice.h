@@ -13,13 +13,14 @@ namespace Device::Net
 {
 	bool Initialize();
 	void Uninitialize();
-	
-	class Client
-	{
-	};
 
 	class ClientHandler
 	{
+	protected:
+		ClientHandler()
+		{
+		}
+
 	public:
 		ClientHandler(const HSteamNetConnection connection)
 			:
@@ -30,10 +31,9 @@ namespace Device::Net
 
 		virtual ~ClientHandler()
 		{
-			// server closes handle
 		}
 
-		bool process()
+		virtual bool process()
 		{
 			while (true)
 			{
@@ -72,7 +72,7 @@ namespace Device::Net
 	protected:
 		virtual void onMessage(Resource::ReadPipe* const pipe) = 0;
 
-		virtual Resource::WritePipe* beginMessage(const int reserve = 32)
+		Resource::WritePipe* beginMessage(const int reserve = 32)
 		{
 			messagePipe.reset();
 			messagePipe.reserveSize(reserve);
@@ -80,7 +80,7 @@ namespace Device::Net
 			return &messagePipe;
 		}
 
-		virtual void sendMessage()
+		void sendMessage()
 		{
 			const EResult result = networkInterface->SendMessageToConnection(
 				connection,
@@ -97,10 +97,10 @@ namespace Device::Net
 			}
 		}
 
-	private:
 		ISteamNetworkingSockets* networkInterface;
-		const HSteamNetConnection connection;
+		HSteamNetConnection connection;
 
+	private:
 		Resource::MemoryWritePipe messagePipe;
 	};
 
@@ -164,14 +164,7 @@ namespace Device::Net
 
 	protected:
 		ISteamNetworkingSockets* networkInterface;
-
-		// ask weather accept the connection or
-		// deny. allows denial based on ipaddress
-		virtual bool askClientConnect(SteamNetworkingIPAddr* const ipAddress) = 0;
-		virtual void onClientConnect(const HSteamNetConnection connection) = 0;
-
-		virtual bool onClientDisconnected(const HSteamNetConnection connection) = 0;
-		virtual bool onClientLost(const HSteamNetConnection connection) = 0;
+		std::vector<HSteamNetConnection> connections;
 
 		bool existsConnection(const HSteamNetConnection connection)
 		{
@@ -184,7 +177,31 @@ namespace Device::Net
 			return false;
 		}
 
-		std::vector<HSteamNetConnection> connections;
+		bool removeConnection(const HSteamNetConnection connection)
+		{
+			decltype(connections)::const_iterator iterator = std::find(
+				connections.cbegin(),
+				connections.cend(),
+				connection);
+
+			if (iterator == connections.cend())
+			{
+				return false;
+			}
+			else
+			{
+				connections.erase(iterator);
+				return true;
+			}
+		}
+
+		// ask weather accept the connection or
+		// deny. allows denial based on ipaddress
+		virtual bool askClientConnect(SteamNetworkingIPAddr* const ipAddress) = 0;
+		virtual void onClientConnect(const HSteamNetConnection connection) = 0;
+
+		virtual void onClientDisconnected(const HSteamNetConnection connection) = 0;
+		virtual void onClientLost(const HSteamNetConnection connection) = 0;
 
 	private:
 		void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event) override
@@ -202,7 +219,7 @@ namespace Device::Net
 				{
 					Log::Error(L"Connection already exists",
 						event->m_info.m_addrRemote.GetIPv4(), L"ip",
-						event->m_info.m_addrRemote.m_port);
+						event->m_info.m_addrRemote.m_port, L"port");
 
 					break;
 				}
@@ -243,6 +260,8 @@ namespace Device::Net
 						event->m_info.m_addrRemote.GetIPv4(), L"ip");
 				}
 
+				removeConnection(event->m_hConn);
+
 				break;
 			case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
 				onClientLost(event->m_hConn);
@@ -257,6 +276,8 @@ namespace Device::Net
 						event->m_info.m_addrRemote.GetIPv4(), L"ip");
 				}
 
+				removeConnection(event->m_hConn);
+
 				break;
 			default:
 				Log::Information(L"Got unusual new connection status",
@@ -268,5 +289,112 @@ namespace Device::Net
 
 		HSteamListenSocket listenSocket;
 	};
+
+	class Client
+		:
+		public ISteamNetworkingSocketsCallbacks,
+		public ClientHandler
+	{
+	public:
+		Client()
+		{
+			connection = k_HSteamNetConnection_Invalid;
+		}
+
+		~Client()
+		{
+			if (connection != k_HSteamNetConnection_Invalid)
+				closeConnection(4, "client destructor");
+		}
+
+		bool connect(const SteamNetworkingIPAddr& ipAddress)
+		{
+			networkInterface = SteamNetworkingSockets();
+
+			connection = networkInterface->ConnectByIPAddress(
+				ipAddress,
+				0,
+				NULL);
+
+			if (connection == k_HSteamNetConnection_Invalid)
+			{
+				Log::Error(L"Failed to create connection to server",
+					ipAddress.GetIPv4(), L"ip",
+					ipAddress.m_port, L"port");
+
+				return false;
+			}
+
+			return true;
+		}
+
+		bool process() override
+		{
+			networkInterface->RunCallbacks(this);
+			return ClientHandler::process();
+		}
+
+	protected:
+		void closeConnection(
+			const int reasonID,
+			const char* reason,
+			const bool linger = false)
+		{
+			if (!networkInterface->CloseConnection(connection, reasonID, reason, linger))
+			{
+				Log::Error(L"Got invalid connection while closing connection");
+			}
+
+			connection = k_HSteamNetConnection_Invalid;
+		}
+
+		virtual void onConnectionOpen() = 0;
+		virtual void onConnectionLost(const int reason) = 0;
+		virtual void onConnectionClosed(const int reason) = 0;
+
+	private:
+		void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event) override
+		{
+			if (connection == event->m_hConn ||
+				connection == k_HSteamNetConnection_Invalid)
+			{
+				Log::Error(L"Got invalid connection in callback",
+					(int)connection, L"connection",
+					(int)event->m_info.m_eState, L"state");
+
+				return;
+			}
+
+			switch (event->m_info.m_eState)
+			{
+			case k_ESteamNetworkingConnectionState_Connecting:
+			case k_ESteamNetworkingConnectionState_None:
+				// both ignored
+				// connecting is only as server important
+
+				break;
+			case k_ESteamNetworkingConnectionState_Connected:
+				onConnectionOpen();
+
+				break;
+			case k_ESteamNetworkingConnectionState_ClosedByPeer:
+				onConnectionClosed(event->m_info.m_eEndReason);
+				closeConnection(5, "closed by peer");
+
+				break;
+			case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+				onConnectionLost(event->m_info.m_eEndReason);
+				closeConnection(6, "lost connection");
+
+				break;
+			default:
+				Log::Information(L"Got unusual new connection status",
+					(int)event->m_info.m_eState, L"state");
+
+				break;
+			}
+		}
+	};
+
 }
 

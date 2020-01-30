@@ -74,7 +74,7 @@ namespace Resource
 			return writeValue<sf::Uint8>(&byte);
 		}
 
-		template <typename Size>
+		template <typename Size = char>
 		bool writeString(
 			const std::wstring* const str)
 		{
@@ -136,7 +136,7 @@ namespace Resource
 			return readValue<sf::Uint8>((sf::Uint8*) value);
 		}
 
-		template <typename Size>
+		template <typename Size = unsigned char>
 		bool readString(
 			std::wstring* const str)
 		{
