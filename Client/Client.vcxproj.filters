@@ -418,6 +418,9 @@
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp">
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
+    <ClCompile Include="source\device\NetDevice.cpp">
+      <Filter>source\device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">
@@ -714,9 +717,6 @@
       <Filter>source\game</Filter>
     </None>
     <None Include="source\device\NetDevice.h">
-      <Filter>source\device</Filter>
-    </None>
-    <None Include="source\device\NetDevice.cpp">
       <Filter>source\device</Filter>
     </None>
     <None Include="source\shared\WorldDefinitions.h">

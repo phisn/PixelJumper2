@@ -30,6 +30,13 @@ void doServer()
 		:
 		public Device::Net::Server
 	{
+	public:
+		void process()
+		{
+			handler->process();
+			Device::Net::Server::process();
+		}
+
 	private:
 		bool askClientConnect(SteamNetworkingIPAddr* const ipAddress)
 		{
@@ -132,8 +139,8 @@ void doClient()
 #else
 	Log::Output::Add(Log::Output::FILE_OUT, Log::Level::Warning);
 #endif
-	const Device::Core::Error error = Device::Core::Initialize();
-
+	// const Device::Core::Error error = Device::Core::Initialize();
+	Device::Net::Initialize();
 	int i;
 	std::cin >> i;
 	if (i == 0)

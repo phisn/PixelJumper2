@@ -157,7 +157,7 @@ namespace Device::Net
 			return true;
 		}
 
-		void process()
+		virtual void process()
 		{
 			networkInterface->RunCallbacks(this);
 		}
@@ -355,12 +355,12 @@ namespace Device::Net
 	private:
 		void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event) override
 		{
-			if (connection == event->m_hConn ||
-				connection == k_HSteamNetConnection_Invalid)
+			if (connection != event->m_hConn &&
+				connection != k_HSteamNetConnection_Invalid)
 			{
 				Log::Error(L"Got invalid connection in callback",
-					(int)connection, L"connection",
-					(int)event->m_info.m_eState, L"state");
+					(int) connection, L"connection",
+					(int) event->m_info.m_eState, L"state");
 
 				return;
 			}

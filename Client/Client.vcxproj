@@ -56,6 +56,7 @@
     </ClCompile>
     <Link>
       <Profile>true</Profile>
+      <AdditionalDependencies>gns_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_|x64'">
@@ -139,6 +140,7 @@
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DeviceConfig.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
+    <ClCompile Include="source\device\NetDevice.cpp" />
     <ClCompile Include="source\device\RandomDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
     <ClCompile Include="source\editor\manipulator\EditorWorld.cpp" />
@@ -195,7 +197,6 @@
     <Image Include="source\resource\IMAG0011.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\device\NetDevice.cpp" />
     <None Include="source\device\NetDevice.h" />
     <None Include="source\editor\manipulator\CacheElement.cpp" />
     <None Include="source\editor\manipulator\CacheElement.h" />
