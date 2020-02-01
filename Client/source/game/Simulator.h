@@ -1,7 +1,12 @@
 #pragma once
 
+#include <Client/source/device/NetDevice.h>
+
 #include <Client/source/game/GameWorld.h>
 #include <Client/source/game/Simulation.h>
+
+#include <Client/source/game/RemoteConnection.h>
+#include <Client/source/game/UserConnection.h>
 
 namespace Game
 {
@@ -23,7 +28,8 @@ namespace Game
 
 	class HostOperator
 		:
-		public Operator
+		public Device::Net::Server,
+		public GameState
 	{
 		typedef std::map<Resource::WorldId, Resource::World*> ResourceContainer;
 
@@ -41,26 +47,20 @@ namespace Game
 			:
 			settings(settings)
 		{
-			listener.setBlocking(false);
 		}
 
 		bool initialize()
 		{
-			const sf::Socket::Status status = listener.listen(settings.port);
-
-			if (status != sf::Socket::Status::Done)
+			if (!Server::initialize(settings.port))
 			{
-				Log::Error(L"Failed to set host socket to listen",
-					(int) status, L"status",
-					settings.port, L"port");
-				
+				Log::Error(L"Failed to initialize server");
 				return false;
 			}
 
 			return true;
 		}
 
-		virtual void onLogic(const sf::Time time) override
+		virtual void onLogic(const sf::Time time)
 		{
 			logicCounter += time.asMicroseconds();
 
@@ -75,13 +75,14 @@ namespace Game
 
 			}
 
-			while (listener.accept(connections.back()->getSocket()))
+
+			/*while (listener.accept(connections.back()->getSocket()))
 			{
 				if (connections.back()->initialize())
 					connections.push_back(
 						new RemoteConnection(settings.connectionSettings)
 					);
-			}
+			}*/
 		}
 
 		virtual bool pushConnection(RemoteConnection* const connection)
@@ -101,6 +102,28 @@ namespace Game
 		}
 
 	private:
+		bool askClientConnect(SteamNetworkingIPAddr* const ipAddress) override
+		{
+			Log::Information(L"New client connects",
+				ipAddress->GetIPv4(), L"ip",
+				ipAddress->m_port, L"port");
+
+			return true;
+		}
+
+		void onClientConnect(const HSteamNetConnection connection) override
+		{
+
+		}
+
+		void onClientDisconnected(const HSteamNetConnection connection) override
+		{
+		}
+
+		void onClientLost(const HSteamNetConnection connection) override
+		{
+		}
+
 		const Settings settings;
 
 		sf::Uint64 logicCounter = 0,
@@ -113,8 +136,6 @@ namespace Game
 		// to accept new tcpsockets
 		std::vector<RemoteConnection*> connections;
 		ResourceContainer resources;
-
-		sf::TcpListener listener;
 	};
 
 	class LocalClassicTestSimulator
@@ -131,7 +152,7 @@ namespace Game
 			connection(connection),
 			worlds(worlds)
 		{
-			simulation = new VisualClassicSimulation(worlds, connection);
+			simulation = new VisualClassicSimulation(worlds);
 		}
 
 		bool initialize() override

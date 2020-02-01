@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/device/NetDevice.h>
+
 #include <Client/source/game/Simulation.h>
 #include <Client/source/game/VirtualPlayer.h>
 

@@ -73,7 +73,10 @@
     <Filter Include="source\game\world">
       <UniqueIdentifier>{562fb688-8187-4001-acea-9f78f9217ece}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\game\tiletrait">
+    <Filter Include="operator">
+      <UniqueIdentifier>{661ad6e3-ac5d-4c9b-a35f-466dc962ba1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game\player\tiletrait">
       <UniqueIdentifier>{69b9c64d-ffe4-408e-ac6a-79f90bd91212}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -172,19 +175,19 @@
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiletrait\CollidableTile.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiletrait\DrawableTile.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiletrait\DynamicTile.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiletrait\StaticTile.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="source\device\CoreDevice.h">
       <Filter>source\device</Filter>
@@ -199,7 +202,7 @@
       <Filter>source\device</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiletrait\InitializableTile.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="source\scene\TestGameScene.h">
       <Filter>source\scene</Filter>
@@ -253,14 +256,32 @@
       <Filter>source\shared\tiles</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiletrait\GameElementBase.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="source\game\tiletrait\GameTileBase.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\resource\pipes\MemoryPipe.h">
       <Filter>source\resource\pipes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\RemoteConnection.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\operator\OperatorAccess.h">
+      <Filter>operator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\AuthenticationHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\ClientMessage.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\NetworkMessage.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\ServerMessage.h">
+      <Filter>source\game\net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -414,13 +435,25 @@
     <ClCompile Include="source\shared\tiles\TransitivePortal.cpp">
       <Filter>source\shared\tiles</Filter>
     </ClCompile>
-    <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp">
       <Filter>source\resource\pipes</Filter>
     </ClCompile>
     <ClCompile Include="source\device\NetDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
+    <ClCompile Include="source\device\CoreDevice.cpp">
+      <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\RemoteConnection.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\operator\OperatorAccess.cpp">
+      <Filter>operator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\AuthenticationHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\net\ClientMessage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">
@@ -675,7 +708,7 @@
       <Filter>source\game</Filter>
     </None>
     <None Include="source\game\tiletrait\ExitableTile.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </None>
     <None Include="source\game\GamePlayer.h">
       <Filter>source\game\player</Filter>
@@ -735,12 +768,12 @@
       <Filter>source\game</Filter>
     </None>
     <None Include="source\game\tiletrait\TransitiveTile.h">
-      <Filter>source\game\tiletrait</Filter>
+      <Filter>source\game\player\tiletrait</Filter>
     </None>
-    <None Include="source\game\GameOperator.h">
+    <None Include="source\game\Simulator.cpp">
       <Filter>source\game</Filter>
     </None>
-    <None Include="source\game\GameOperator.cpp">
+    <None Include="source\game\Simulator.h">
       <Filter>source\game</Filter>
     </None>
   </ItemGroup>

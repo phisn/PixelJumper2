@@ -11,6 +11,8 @@
 
 namespace Device::Net
 {
+	typedef uint64_t MessageID;
+
 	bool Initialize();
 	void Uninitialize();
 
@@ -61,7 +63,14 @@ namespace Device::Net
 						(const char*) message->m_pData,
 						message->m_cbSize);
 
-					onMessage(&pipe);
+					if (MessageID messageID; pipe.readValue(&messageID))
+					{
+						onMessage(messageID, &pipe);
+					}
+					else
+					{
+						onInvalidMessage();
+					}
 
 					message->Release();
 					++message;
@@ -70,12 +79,18 @@ namespace Device::Net
 		}
 
 	protected:
-		virtual void onMessage(Resource::ReadPipe* const pipe) = 0;
+		virtual void onMessage(const MessageID messageID, Resource::ReadPipe* const pipe) = 0;
+		virtual void onInvalidMessage() = 0;
 
-		Resource::WritePipe* beginMessage(const int reserve = 32)
+		Resource::WritePipe* beginMessage(
+			const MessageID messageID,
+			const int reserve = 32)
 		{
 			messagePipe.reset();
 			messagePipe.reserveSize(reserve);
+
+			// cant happen with memorypipe
+			messagePipe.writeValue(&messageID);
 
 			return &messagePipe;
 		}
@@ -133,7 +148,7 @@ namespace Device::Net
 			networkInterface->CloseListenSocket(listenSocket);
 		}
 
-		virtual bool Initialize(const sf::Uint16 port = DEV_NET_PORT)
+		virtual bool initialize(const sf::Uint16 port = DEV_NET_PORT)
 		{
 			networkInterface = SteamNetworkingSockets();
 			

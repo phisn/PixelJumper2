@@ -17,7 +17,8 @@ namespace Device
 			InputError,
 			ResourceError,
 			ScreenError,
-			SettingsError
+			SettingsError,
+			NetError
 		};
 		
 		Error Initialize(); // think about other return [LATER]

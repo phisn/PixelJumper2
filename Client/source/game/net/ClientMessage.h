@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Client/source/game/net/ServerMessage.h>
 #include <Client/source/game/PlayerInformation.h>
 
-#include <Client/source/resource/PlayerResource.h>
+#include <Client/source/game/net/NetworkMessage.h>
 
 namespace Game::Net
 {
@@ -17,28 +16,18 @@ namespace Game::Net
 
 	struct ClientConnectMessage
 		:
-		public Resource::ResourceBase
+		public NetworkMessage
 	{
 		Resource::PlayerResource player;
 
-		bool make(Resource::ReadPipe* const pipe) override
+		bool load(Resource::ReadPipe* const pipe) override
 		{
-			return player.make(pipe);
+			return pipe->readValue(&player) && player.validate();
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
 		{
-			return player.save(pipe);
-		}
-
-		bool setup() override
-		{
-			return player.setup();
-		}
-
-		bool validate() override
-		{
-			return player.validate();
+			return player.setup() && pipe->writeValue(&player);
 		}
 	};
 

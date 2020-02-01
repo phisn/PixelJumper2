@@ -16,7 +16,7 @@ namespace Game
 	bool Environment::initialize(
 		const Resource::World* const resource)
 	{
-		Log::Section section(L"Initialize Environment");
+		Log::Section section(L"initialize Environment");
 
 		// vertex init moved
 		return initializeCreateAndRegister(resource);

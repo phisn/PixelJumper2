@@ -1,5 +1,6 @@
 #include <Client/source/device/DeviceConfig.h>
 #include <Client/source/device/InputDevice.h>
+#include <Client/source/device/NetDevice.h>
 #include <Client/source/device/RandomDevice.h>
 #include <Client/source/device/ScreenDevice.h>
 
@@ -55,6 +56,11 @@ namespace Device
 			return Core::Error::InputError;
 		}
 
+		if (!Net::Initialize())
+		{
+			return Core::Error::NetError;
+		}
+
 		return Core::Error::Success;
 	}
 
@@ -75,7 +81,7 @@ namespace Device
 		sf::Event event;
 
 		// Context must be pushed in RunGameLoop
-		// (after creating window) and not in Initialize
+		// (after creating window) and not in initialize
 		// because internal initializations inside
 		// contexts use window properties like size
 
