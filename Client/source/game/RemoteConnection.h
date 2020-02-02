@@ -133,6 +133,8 @@ namespace Game::Net
 		ClassicSimulation* simulation = NULL;
 		VirtualPlayer* player = NULL;
 
+		Resource::PlayerResource* playerResource;
+
 		void onMessage(
 			const Device::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
@@ -181,7 +183,7 @@ namespace Game::Net
 				Host::RejectSimulationRequestMessage message;
 				message.reason = message.SimulationAlreadyRunning;
 
-				safeMessageProcess(
+				safeMessageLoad(
 					Host::ClassicalConnectionMessageID::RejectSimulationRequest,
 					&message,
 					beginMessage(Host::ClassicalConnectionMessageID::RejectSimulationRequest)
@@ -202,7 +204,7 @@ namespace Game::Net
 				Host::RejectSimulationRequestMessage message;
 				message.reason = message.InvalidSimulationRequestContent;
 
-				safeMessageProcess(
+				safeMessageLoad(
 					Host::ClassicalConnectionMessageID::RejectSimulationRequest,
 					&message,
 					beginMessage(Host::ClassicalConnectionMessageID::RejectSimulationRequest)
@@ -212,21 +214,6 @@ namespace Game::Net
 			}
 
 
-
-			/*
-			if (!message.load(pipe) && message.playerID != NULL)
-				{
-					this->onThreatIdentified(
-						messageID,
-						L"invalid messagecontent",
-						Device::Net::ThreatLevel::Uncommon);
-
-					beginMessage(Host::AuthenticationMessageID::InvalidAuthentication, 8);
-					sendMessage();
-
-					return;
-				}
-				*/
 		}
 
 		void onThreatIdentified(

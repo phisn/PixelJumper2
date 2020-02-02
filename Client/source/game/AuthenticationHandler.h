@@ -143,7 +143,7 @@ namespace Game::Net
 			}
 		}
 
-		void safeMessageProcess(
+		void safeMessageLoad(
 			Device::Net::MessageID messageID,
 			NetworkMessage* const message,
 			Resource::WritePipe* const pipe)
