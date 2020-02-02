@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Client/source/game/net/ClientMessage.h>
+#include <Client/source/game/net/ServerMessage.h>
+
 #include <Client/source/operator/OperatorAccess.h>
 
 namespace Game::Net
@@ -41,49 +44,144 @@ namespace Game::Net
 	public:
 		enum Status
 		{
-			Running,
-			Authenticating,
+			// user is not authenticated and
+			// identification not known
+			Connecting,
+			// user is authenticated and
+			// identification known
+			Connected,
+
+			// user is still connected or
+			// connecting but connection will
+			// be closed soon. identification
+			// may not be known
+			Disconnecting,
+			// user is not connected. identification
+			// may not be known
 			Disconnected,
-			Timeout,
-			InvalidToken,
-			Error
 		};
 
-		AuthenticationHandler(const sf::Time timeout)
+		// timeout in ticks in 100ms
+		AuthenticationHandler(const sf::Uint32 timeout = 100)
 			:
 			timeout(timeout)
 		{
 		}
 
-		void onLogic(const sf::Time time)
+		// has to override and only be called
+		// when status == Connecting
+		virtual void update()
 		{
-			counter += time;
-
-			if (counter > timeout)
+			if (--timeout == 0)
 			{
-				status = Timeout;
+				status = Disconnecting;
+
+				if (playerID == NULL)
+				{
+					beginMessage(Host::AuthenticationMessageID::Timeout, 8);
+					sendMessage();
+				}
+				else
+				{
+					beginMessage(Host::AuthenticationMessageID::OperatorTimeout, 8);
+					sendMessage();
+				}
 			}
 		}
 
-	private:
-		Status status;
+		Status getStatus() const
+		{
+			return status;
+		}
 
-		const sf::Time timeout;
-		sf::Time counter;
+	protected:
+		Status status;
+		Resource::PlayerID playerID = NULL;
+
+		// use timeout in specializations when
+		// needed to abuse unused memory after
+		// status connecting
+		sf::Uint32 timeout;
+
+		virtual void onClientConnected() = 0;
+
+	private:
 
 		void onMessage(
 			const Device::Net::MessageID messageID, 
 			Resource::ReadPipe* const pipe) override
 		{
+			switch (messageID)
+			{
+			case Client::AuthenticationMessageID::Authenticate:
+				Client::AuthenticationMessage message;
+
+				// playerid cant be null to identify operator
+				// timeout
+				if (!message.load(pipe) && message.playerID != NULL)
+				{
+					this->onThreatIdentified(
+						messageID,
+						L"invalid messagecontent",
+						Device::Net::ThreatLevel::Uncommon);
+
+					beginMessage(Host::AuthenticationMessageID::InvalidAuthentication, 8);
+					sendMessage();
+
+					return;
+				}
+
+				Operator::RegisterClient(&message.identificator, this);
+				playerID = message.playerID;
+
+				break;
+			default:
+				// could be a brute-force messageid finder
+				this->onThreatIdentified(messageID,
+					L"invalid messageid",
+					Device::Net::ThreatLevel::Suspicious);
+
+				break;
+			}
+		}
+		
+		void onOperatorClientConnected(const Resource::PlayerID playerID)
+		{
+			if (this->playerID != playerID)
+			{
+				beginMessage(Host::AuthenticationMessageID::InvalidPlayerID, 8);
+				sendMessage();
+
+				status = Disconnecting;
+			}
+			else
+			{
+				beginMessage(Host::AuthenticationMessageID::AcceptAuthentication, 8);
+				sendMessage();
+
+				status = Connected;
+
+				onClientConnected();
+			}
 		}
 
 		void onOperatorClientRejected() override
 		{
-			status = InvalidToken;
+			beginMessage(Host::AuthenticationMessageID::InvalidToken, 8);
+			sendMessage();
+
+			status = Disconnecting;
+			onThreatIdentified(
+				Client::AuthenticationMessageID::Authenticate,
+				L"invalid token",
+				Device::Net::ThreatLevel::Suspicious);
 		}
 
 		void onOperatorClientDisconnected() override
 		{
+			beginMessage(Host::AuthenticationMessageID::OperatorDisconnect);
+			sendMessage();
+
 			status = Disconnected;
 		}
 	};

@@ -10,6 +10,23 @@ namespace Game::Net
 		virtual bool save(Resource::WritePipe* const pipe) = 0;
 	};
 
+	template <typename Content>
+	struct TrivialNetworkMessage
+		:
+		public NetworkMessage,
+		public Content
+	{
+		bool load(Resource::ReadPipe* const pipe) override
+		{
+			return pipe->readValue(this);
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return pipe->writeValue(this);
+		}
+	};
+
 	struct CommonMessageID
 	{
 		enum
@@ -17,6 +34,37 @@ namespace Game::Net
 			Error,
 			_Offset
 		};
+	};
+
+	class CommonErrorMessage
+		:
+		public NetworkMessage
+	{
+	public:
+		// message should not be longer
+		// than 255 characters
+		std::wstring message;
+
+		struct Content
+		{
+			sf::Uint64 errorID;
+
+			// cause messageID when error
+			// is send in response to a message
+			sf::Uint64 messageID;
+		} content;
+
+		bool load(Resource::ReadPipe* const pipe) override
+		{
+			return pipe->readValue(&content)
+				&& pipe->readString(&message);
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return pipe->writeValue(&content)
+				&& pipe->writeString(&message);
+		}
 	};
 
 	namespace Client
@@ -34,46 +82,4 @@ namespace Game::Net
 		};
 	}
 
-	namespace Host
-	{
-		struct AuthenticationMessageID
-		{
-			enum
-			{
-				_Begin = CommonMessageID::_Offset - 1,
-
-				// auth accepted and playerid
-				// validated
-				AcceptAuthentication,
-
-				// auth token or salt is invalid
-				InvalidToken,
-				// playerid is invalid or does
-				// not correspond to the token
-				// ones
-				InvalidPlayerID,
-
-				// operator timed out on requesting
-				// auth validation
-				OperatorTimeout,
-				// lost connection to operator and
-				// auth is no longer valid
-				OperatorDisconnect,
-
-				_Offset
-			};
-		};
-
-		struct ClassicalConnectionMessageID
-		{
-			enum
-			{
-				_Begin = AuthenticationMessageID::_Offset - 1,
-
-				LoadContext = AuthenticationMessageID::_Offset,
-
-				_Offset
-			};
-		};
-	}
 }

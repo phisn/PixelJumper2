@@ -2,12 +2,15 @@
 
 #include <Client/source/device/NetDevice.h>
 
+#include <Client/source/game/AuthenticationHandler.h>
 #include <Client/source/game/Simulation.h>
 #include <Client/source/game/VirtualPlayer.h>
 
-namespace Game
+namespace Game::Net
 {
 	class RemoteConnection
+		:
+		public AuthenticationHandler
 	{
 	public:
 		struct Error
@@ -17,15 +20,6 @@ namespace Game
 				_Begin = 0xa0,
 				InvalidSimulationState
 			};
-		};
-
-		enum Status
-		{
-			Running,
-			Pending,
-			Disconnected,
-			Timeout,
-			Error
 		};
 
 		struct Settings
@@ -47,13 +41,13 @@ namespace Game
 			:
 			settings(settings)
 		{
-			socket.setBlocking(false);
 		}
 
 		bool initialize()
 		{
 		}
 
+		// called on every 
 		bool processLogic()
 		{
 			if (simulation->getStatus() == ClassicSimulation::Running)
@@ -67,22 +61,19 @@ namespace Game
 			}
 		}
 
-		bool update()
+		void update() override
 		{
-			switch (socket.receive(buffer))
+			switch (status)
 			{
-			case sf::Socket::Status::Disconnected:
-				adjustStatus(Disconnected);
+			case Connecting:
+			case Connected:
 
-				return false;
-			case sf::Socket::Status::Done:
-				handlePacket();
+			default:
+				// update should neither be called with
+				// disconnecting nor disconnected
+				Log::Error(L"Got invalid status in update");
 
 				break;
-			case sf::Socket::Status::Error:
-				adjustStatus(Error);
-
-				return false;
 			}
 
 			switch (simulation->getStatus())
@@ -102,46 +93,39 @@ namespace Game
 					Error::InvalidSimulationState);
 					*/
 
-				return false;
 			}
-
-			return true;
 		}
 
-		void sendError(const std::wstring message, const sf::Uint32 code)
-		{
-		}
-
-		Status getStatus() const
-		{
-			return status;
-		}
-
-		sf::TcpSocket& getSocket()
-		{
-			return socket;
-		}
-
-	protected:
-		void handlePacket()
-		{
-
-		}
-
-		void adjustStatus(const Status status)
-		{
-			if (this->status < status)
-				this->status = status;
-		}
-
+	private:
 		const Settings settings;
-
-		Status status;
-
-		sf::TcpSocket socket;
-		sf::Packet buffer;
 
 		ClassicSimulation* simulation = NULL;
 		VirtualPlayer* player = NULL;
+
+		void onThreatIdentified(
+			const Device::Net::MessageID messageID,
+			const wchar_t* const note,
+			const Device::Net::ThreatLevel level) override
+		{
+			SteamNetConnectionInfo_t info;
+			if (networkInterface->GetConnectionInfo(connection, &info))
+			{
+				Log::Warning(L"Threat identified: " + std::wstring(note),
+					(int) level, L"level",
+					(int) messageID,
+					(int) info.m_addrRemote.GetIPv4(), L"ipv4",
+					(int) info.m_addrRemote.m_port, L"port"); 
+			}
+			else
+			{
+				Log::Error(L"Invalid connection while threat is identified");
+				Log::Warning(L"Threat identified: " + std::wstring(note),
+					(int) level, L"level",
+					(int) messageID, L"messageID",
+					(int) connection, L"connection");
+			}
+		}
+
+		void onClientConnected() override;
 	};
 }

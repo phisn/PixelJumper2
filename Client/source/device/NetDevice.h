@@ -13,6 +13,13 @@ namespace Device::Net
 {
 	typedef uint64_t MessageID;
 
+	enum class ThreatLevel
+	{
+		Uncommon,
+		Suspicious,
+		Malicious
+	};
+
 	bool Initialize();
 	void Uninitialize();
 
@@ -69,7 +76,10 @@ namespace Device::Net
 					}
 					else
 					{
-						onInvalidMessage();
+						onThreatIdentified(
+							-1,
+							L"invalid messageid",
+							ThreatLevel::Uncommon);
 					}
 
 					message->Release();
@@ -80,7 +90,16 @@ namespace Device::Net
 
 	protected:
 		virtual void onMessage(const MessageID messageID, Resource::ReadPipe* const pipe) = 0;
-		virtual void onInvalidMessage() = 0;
+
+		// used to log and handle invalid messages
+		// messages with invalid messageid get called
+		// with -1 as messageID ?? maybe add notification
+		// messages later to log better and catch malicous
+		// messages
+		virtual void onThreatIdentified(
+			const MessageID messageID,
+			const wchar_t* const note,
+			const ThreatLevel level) = 0;
 
 		Resource::WritePipe* beginMessage(
 			const MessageID messageID,

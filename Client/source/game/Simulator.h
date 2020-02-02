@@ -10,15 +10,6 @@
 
 namespace Game
 {
-	class Operator
-		:
-		public GameState
-	{
-	public:
-		virtual bool initialize() = 0;
-		virtual void onLogic(const sf::Time time) = 0;
-	};
-
 	// need something like a host structure
 	// while the host self has all connections
 	// the client wont be connected to all
@@ -138,7 +129,7 @@ namespace Game
 		ResourceContainer resources;
 	};
 
-	class LocalClassicTestSimulator
+	/*class LocalClassicTestSimulator
 		:
 		public Operator
 	{
@@ -199,4 +190,5 @@ namespace Game
 		VisualClassicSimulation* simulation;
 		LocalConnection* const connection;
 	};
+	*/
 }

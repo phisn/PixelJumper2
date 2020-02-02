@@ -3,16 +3,17 @@
 #include <Client/source/game/PlayerInformation.h>
 
 #include <Client/source/game/net/NetworkMessage.h>
+#include <Client/source/operator/OperatorAccess.h>
 
-namespace Game::Net
+namespace Game::Net::Client
 {
-	enum class ClientMessage
+	struct AuthenticationMessageContent
 	{
-		Connect,
-		Disconnect,
-		Error,
-		Framestatus
+		Resource::PlayerID playerID;
+		Operator::ClientIdentifactor identificator;
 	};
+
+	typedef TrivialNetworkMessage<AuthenticationMessageContent> AuthenticationMessage;
 
 	struct ClientConnectMessage
 		:
