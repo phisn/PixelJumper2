@@ -58,9 +58,56 @@ namespace Game::Net::Host
 		{
 			_Begin = AuthenticationMessageID::_Offset - 1,
 
-			LoadContext = AuthenticationMessageID::_Offset,
+			AcceptSimulationRequest,
+			RejectSimulationRequest,
+
+			// adds or removes player from 
+			// client view
+			RemovePlayer,
+			AddPlayer,
+
+			// load other player movement
+			PlayerMovement,
+
+			// used to adjust client game
+			// speed acording to connection
+			// slow connections should have
+			// higher delays and to achive
+			// that a speeddown at the client
+			// is used to cause a "falling
+			// behind"
+			SpeedUp,
+			SpeedDown,
+
+			// measure tick delay between client
+			// and server
+			Ping,
+
+			// upload world resource to client
+			PushResource,
+
+			// sync player and world properties
+			PrepareSync,
+			MakeSync,
+
+			// remove client from server
+			Disconnect,
 
 			_Offset
 		};
 	};
+
+	struct RejectSimulationRequestMessageContent
+	{
+		enum Reason
+		{
+			SimulationAlreadyRunning,
+			// invalid content as unable to read the message
+			// or completly invalid content
+			InvalidSimulationRequestContent
+
+		} reason;
+	};
+
+	typedef TrivialNetworkMessage<RejectSimulationRequestMessageContent> RejectSimulationRequestMessage;
 }

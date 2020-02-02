@@ -7,6 +7,19 @@
 
 namespace Game::Net::Client
 {
+	struct AuthenticationMessageID
+	{
+		enum
+		{
+			_Begin = CommonMessageID::_Offset - 1,
+
+			// request auth from the host
+			Authenticate,
+
+			_Offset
+		};
+	};
+
 	struct AuthenticationMessageContent
 	{
 		Resource::PlayerID playerID;
@@ -15,24 +28,52 @@ namespace Game::Net::Client
 
 	typedef TrivialNetworkMessage<AuthenticationMessageContent> AuthenticationMessage;
 
-	struct ClientConnectMessage
-		:
-		public NetworkMessage
+	struct ClassicalConnectionMessageID
 	{
-		Resource::PlayerResource player;
-
-		bool load(Resource::ReadPipe* const pipe) override
+		enum
 		{
-			return pipe->readValue(&player) && player.validate();
-		}
+			_Begin = AuthenticationMessageID::_Offset - 1,
 
-		bool save(Resource::WritePipe* const pipe) override
-		{
-			return player.setup() && pipe->writeValue(&player);
-		}
+			// request simulation informations
+			QuerySimulation,
+
+			// request simulation start with
+			// starting informations
+			RequestSimulation,
+
+			// request a sync instead of 
+			// waiting for the next one
+			RequestSync,
+
+			// accept a server side forced
+			// sync
+			AcceptSync,
+
+			PushMovement,
+
+			_Offset
+		};
 	};
 
-	struct ClientDisconnectMessage
+	struct QuarySimulationMessage
 	{
 	};
+
+	struct OpenSimulationMessageContent
+	{
+		Resource::WorldId world;
+	};
+
+	typedef TrivialNetworkMessage<OpenSimulationMessageContent> RequestSimulationMessage;
+
+	struct RequestSyncMessage
+	{
+	};
+
+	struct AcceptSyncMessageContent
+	{
+		sf::Uint64 tickCount;
+	};
+
+	typedef TrivialNetworkMessage<AcceptSyncMessageContent> AcceptSyncMessage;
 }

@@ -105,9 +105,7 @@ namespace Game::Net
 
 		virtual void onClientConnected() = 0;
 
-	private:
-
-		void onMessage(
+		virtual void onMessage(
 			const Device::Net::MessageID messageID, 
 			Resource::ReadPipe* const pipe) override
 		{
@@ -144,7 +142,26 @@ namespace Game::Net
 				break;
 			}
 		}
-		
+
+		void safeMessageProcess(
+			Device::Net::MessageID messageID,
+			NetworkMessage* const message,
+			Resource::WritePipe* const pipe)
+		{
+			if (!message->save(pipe))
+			{
+				Log::Error(L"Unable to construct message",
+					(sf::Uint64) messageID, L"messageID");
+
+				status = Disconnecting;
+			}
+			else
+			{
+				sendMessage();
+			}
+		}
+
+	private:
 		void onOperatorClientConnected(const Resource::PlayerID playerID)
 		{
 			if (this->playerID != playerID)

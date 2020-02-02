@@ -67,19 +67,11 @@ namespace Game::Net
 		}
 	};
 
-	namespace Client
+	struct CommonErrorID
 	{
-		struct AuthenticationMessageID
+		enum
 		{
-			enum
-			{
-				_Begin = CommonMessageID::_Offset - 1,
-
-				// request auth from the host
-				Authenticate,
-				_Offset
-			};
+			InvalidConnectionInClientHandlerProcess
 		};
-	}
-
+	};
 }
