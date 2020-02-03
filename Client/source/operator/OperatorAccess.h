@@ -10,15 +10,49 @@ namespace Operator
 	bool Initialize();
 	void Uninitialize();
 
-	class OperatorAccess
+	struct OperatorHandler
 	{
+		virtual void onConnected();
+		virtual void onDisconnected();
+
+		virtual void onMessage();
 	};
 
-	// only if connected
-	OperatorAccess* Get();
+	void ProcessOperatorHandler(const OperatorHandler* const handler);
 
-	bool IsAvailable();
+	bool IsConnected();
 	bool Reconnect();
+
+	typedef sf::Uint32 RequestID;
+
+	enum class RequestType : sf::Uint8
+	{
+		AuthenticationToken,
+		PlayerData
+	};
+
+	struct AuthenticationToken
+	{
+		unsigned char token[20];
+	};
+
+	struct RequestHandler
+	{
+		enum Response
+		{
+			Done,
+			Denied,
+			Error
+		};
+
+		virtual void handle(
+			const Response response,
+			const RequestID requestID,
+			const RequestType requestType,
+			Resource::ReadPipe* const pipe) = 0;
+	};
+
+	const RequestID Request(RequestType request, RequestHandler* const handler);
 	
 	struct OperatorAccessClient
 	{
@@ -39,8 +73,8 @@ namespace Operator
 
 	struct ClientIdentifactor
 	{
-		char token[SHA_DIGEST_LENGTH];
-		char salt[16];
+		AuthenticationToken token;
+		unsigned char salt[16];
 	};
 
 	// identificate a client as a server

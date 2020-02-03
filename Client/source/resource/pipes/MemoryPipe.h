@@ -64,6 +64,12 @@ namespace Resource
 		public ReadPipe
 	{
 	public:
+		// need to look yourself to not call
+		// until memory was set
+		MemoryReadPipe()
+		{
+		}
+		
 		MemoryReadPipe(
 			const char* const buffer,
 			const int length)
@@ -71,6 +77,16 @@ namespace Resource
 			buffer(buffer),
 			length(length)
 		{
+		}
+		
+		void setMemory(
+			const char* const buffer,
+			const int length)
+		{
+			this->buffer = buffer;
+			this->length = length;
+
+			position = 0;
 		}
 
 		void reset()
@@ -106,8 +122,8 @@ namespace Resource
 		}
 
 	private:
-		const char* const buffer;
-		const int length;
+		const char* buffer;
+		int length;
 
 		sf::Uint64 position = 0;
 	};

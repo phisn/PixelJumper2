@@ -51,6 +51,20 @@ namespace Resource
 		}
 
 		template <typename T>
+		bool writeVector(const std::vector<T>* const vector)
+		{
+			sf::Uint32 count;
+			if (!writeValue(&count))
+			{
+				return false;
+			}
+
+			return writeContentSafe(
+				vector.data(),
+				count * sizeof(T));
+		}
+
+		template <typename T>
 		bool writeValue(const T* const value)
 		{
 			return writeContentSafe((const char* const) value, sizeof(T));
@@ -111,6 +125,22 @@ namespace Resource
 			const sf::Uint64 size)
 		{
 			return readContent(buffer, size) == size && isValid();
+		}
+
+		template <typename T>
+		bool readVector(std::vector<T>* const vector)
+		{
+			sf::Uint32 count;
+			if (!readValue(&count)) 
+			{
+				return false;
+			}
+
+			vector->resize(count);
+
+			return readContentForce(
+				vector->data(),
+				count * sizeof(T));
 		}
 		
 		template <typename T>

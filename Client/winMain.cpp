@@ -20,7 +20,6 @@
 	if (error != Device::Core::Error::Success)
 	{
 		std::cin.ignore();
-
 		return (int) error;
 	}
 	
