@@ -214,6 +214,8 @@
     <ClInclude Include="..\Client\source\logger\Output.h" />
     <ClInclude Include="..\Client\source\logger\Section.h" />
     <ClInclude Include="..\Client\source\logger\SectionHost.h" />
+    <ClInclude Include="source\database\PlayerTable.h" />
+    <ClInclude Include="source\database\TableBase.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DatabaseDevice.h" />
     <ClInclude Include="source\operator\ElementConnection.h" />

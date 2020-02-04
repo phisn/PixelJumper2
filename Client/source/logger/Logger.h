@@ -2,10 +2,6 @@
 
 // Main logger include file
 
-// who got the idea to just deprecate a much used functinality
-// without providing an replacement
-#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
-
 #include <Client/source/logger/Names.h>
 #include <Client/source/logger/Output.h>
 #include <Client/source/logger/SectionHost.h>
@@ -19,6 +15,52 @@ inline std::wstring carrtowstr(const char* const arr)
 {
 	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
 	return converter.from_bytes(arr);
+}
+
+inline unsigned short bytetohex(const unsigned char byte)
+{
+	const char hex[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+
+	unsigned short buffer;
+	((char*) &buffer)[0] = hex[(byte & 0xF0) >> 4];
+	((char*) &buffer)[1] = hex[(byte & 0x0F) >> 0];
+
+	return buffer;
+}
+
+inline unsigned char hextobyte(unsigned short hex)
+{
+	const unsigned char left = ((char*) &hex)[0];
+	const unsigned char right = ((char*) &hex)[1];
+
+	unsigned char buffer = 0;
+
+	buffer |= (left >= 'A') ? (left - 'A' + 10) : (left - '0');
+	buffer <<= 4;
+	buffer |= (right >= 'A') ? (right - 'A' + 10) : (right - '0');
+
+	return buffer;
+}
+
+inline std::string carrtohexstr(const unsigned char* arr, int length = 0)
+{
+	if (length == 0)
+	{
+		length = strlen((const char*) arr);
+	}
+
+	std::string buffer;
+	buffer.reserve(length);
+
+	for (int i = 0; i < 20; ++i)
+	{
+		unsigned short hex = bytetohex(arr[i]);
+
+		buffer += ((char*)hex)[0];
+		buffer += ((char*)hex)[1];
+	}
+
+	return buffer;
 }
 
 namespace Log
@@ -75,37 +117,66 @@ namespace Log
 
 	// wstring(message)
 	// T(value) [to_wstring] "=" wstring(label)
-	
 
 	template <typename... Args>
 	std::wstring Convert(const std::wstring message, Args... args);
-	template <typename T>
-	std::wstring Convert(const T var, const std::wstring label);
+	template <typename... Args>
+	std::wstring Convert(const wchar_t* const message, Args... args);
 	template <typename T, typename... Args>
-	std::wstring Convert(const T var, const std::wstring label, Args... args);
-	
+	std::wstring Convert_Parameter(const T var, const std::wstring label, Args... args);
+	template <typename T, typename... Args>
+	std::wstring Convert_Parameter(const T var, const wchar_t* const label, Args... args);
+	template <typename T>
+	std::wstring Convert_Parameter(const T var, const std::wstring label);	
+	template <typename T>
+	std::wstring Convert_Parameter(const T var, const wchar_t* const label);
+
 	template <typename... Args>
 	std::wstring Convert(const std::wstring message, Args... args)
 	{
-		return message + L" " + Convert(args...);
+		return message + L" " + Convert_Parameter(args...);
 	}
 
+	template <typename... Args>
+	std::wstring Convert(const wchar_t* const message, Args... args)
+	{
+		return std::wstring(message) + L" " + Convert_Parameter(args...);
+	}
+	
 	template <>
 	inline std::wstring Convert<>(const std::wstring message)
 	{
 		return message;
 	}
 
+	template <>
+	inline std::wstring Convert<>(const wchar_t* const message)
+	{
+		return std::wstring(message);
+	}
+
+	template <typename T, typename... Args>
+	std::wstring Convert_Parameter(const T var, const std::wstring label, Args... args)
+	{
+		return label + L"=" + std::to_wstring(var) + L" " + Convert_Parameter(args...);
+	}
+
+	template <typename T, typename... Args>
+	std::wstring Convert_Parameter(const T var, const wchar_t* const label, Args... args)
+	{
+		return std::wstring(label) + L"=" + std::to_wstring(var) + L" " + Convert_Parameter(args...);
+	}
+
 	template <typename T>
-	std::wstring Convert(const T var, const std::wstring label)
+	std::wstring Convert_Parameter(const T var, const std::wstring label)
 	{
 		return label + L"=" + std::to_wstring(var) + L" ";
 	}
 
-	template <typename T, typename... Args>
-	std::wstring Convert(const T var, const std::wstring label, Args... args)
+	template <typename T>
+	std::wstring Convert_Parameter(const T var, const wchar_t* const label)
 	{
-		return label + L"=" + std::to_wstring(var) + L" " + Convert(args...);
+		return std::wstring(label) + L"=" + std::to_wstring(var) + L" ";
 	}
 
 	template <typename... Args>

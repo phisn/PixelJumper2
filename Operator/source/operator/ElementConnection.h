@@ -20,6 +20,8 @@ namespace Operator
 			ClientHandler::process();
 
 			// work on requests
+
+			return true;
 		}
 
 	private:
@@ -49,7 +51,7 @@ namespace Operator
 			{
 				Log::Warning(L"Threat identified: " + std::wstring(note),
 					(int)level, L"level",
-					(int)messageID,
+					(int)messageID, L"messageID",
 					(int)info.m_addrRemote.GetIPv4(), L"ipv4",
 					(int)info.m_addrRemote.m_port, L"port");
 			}

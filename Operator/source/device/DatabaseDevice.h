@@ -6,4 +6,6 @@ namespace Device::Database
 {
 	bool Initialize();
 	void Unintialize();
+
+
 }

@@ -5,6 +5,8 @@
 
 #include <openssl/sha.h>
 
+#include <future>
+
 namespace Operator
 {
 	bool Initialize();
