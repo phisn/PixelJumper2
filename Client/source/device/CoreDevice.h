@@ -6,10 +6,8 @@
 #define DEVICE ::Device // remove THIS
 #endif
  
-namespace Device
-{	
-	namespace Core
-	{
+namespace Device::Core
+{
 		enum class Error
 		{
 			Success,
@@ -24,5 +22,4 @@ namespace Device
 		Error Initialize(); // think about other return [LATER]
 		void Uninitialize();
 		int RunGameLoop();
-	}
 }

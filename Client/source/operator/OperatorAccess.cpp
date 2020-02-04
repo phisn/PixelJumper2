@@ -7,6 +7,8 @@ namespace Operator
 		RequestType request, 
 		RequestHandler* const handler)
 	{
+		// wipe and start creating real operator
+		/*
 		const RequestID requestID = Device::Random::MakeRandom<RequestID>();
 
 		// simulate requests based on connection with 200ms work time
@@ -44,5 +46,6 @@ namespace Operator
 			});
 
 		return requestID;
+		*/
 	}
 }

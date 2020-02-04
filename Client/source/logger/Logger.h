@@ -2,6 +2,10 @@
 
 // Main logger include file
 
+// who got the idea to just deprecate a much used functinality
+// without providing an replacement
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+
 #include <Client/source/logger/Names.h>
 #include <Client/source/logger/Output.h>
 #include <Client/source/logger/SectionHost.h>
@@ -46,30 +50,9 @@ namespace Log
 			Rs: [Information] : Hello important=5 World someChar=T
 	*/
 
-	template <typename... Args>
-	void Error(Args... args)
-	{
-		Error(Convert(args...));
-	}
-
-	template <typename... Args>
-	void Information(Args... args)
-	{
-		Information(Convert(args...));
-	}
-
-	template <typename... Args>
-	void Warning(Args... args)
-	{
-		Warning(Convert(args...));
-	}
-
-	void Error(
-		const std::wstring message);
-	void Information(
-		const std::wstring message);
-	void Warning(
-		const std::wstring message);
+	void Error(const std::wstring message);
+	void Information(const std::wstring message);
+	void Warning(const std::wstring message);
 
 	namespace Independent
 	{
@@ -123,5 +106,23 @@ namespace Log
 	std::wstring Convert(const T var, const std::wstring label, Args... args)
 	{
 		return label + L"=" + std::to_wstring(var) + L" " + Convert(args...);
+	}
+
+	template <typename... Args>
+	void Error(Args... args)
+	{
+		Error(Convert(args...));
+	}
+
+	template <typename... Args>
+	void Information(Args... args)
+	{
+		Information(Convert(args...));
+	}
+
+	template <typename... Args>
+	void Warning(Args... args)
+	{
+		Warning(Convert(args...));
 	}
 }
