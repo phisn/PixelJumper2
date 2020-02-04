@@ -55,6 +55,17 @@ namespace Database
 			"salt"
 		};
 		
+		constexpr static const char* CreateTable =
+		{
+			R"__(
+			CREATE TABLE "players" (
+				"id"	INTEGER NOT NULL,
+				"password"	BLOB,
+				"salt"	BLOB,
+				PRIMARY KEY("id")
+			);)__"
+		};
+		
 		const ColumnValuesContainer getAllColumnValues() override
 		{
 			ColumnValuesContainer container;
