@@ -116,7 +116,20 @@ namespace Database
 		{
 			std::stringstream ss;
 
-			ss << "SELECT * FROM ";
+			ss << "SELECT ";
+
+			const ColumnValuesContainer allContainer = getAllColumnValues();
+			for (const ColumnValuesPair& pair : allContainer)
+			{
+				ss << pair.first;
+
+				if (pair != allContainer.back())
+				{
+					ss << ",";
+				}
+			}
+
+			ss << " FROM ";
 			ss << table;
 			ss << " WHERE ";
 

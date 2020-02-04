@@ -56,8 +56,8 @@ inline std::string carrtohexstr(const unsigned char* arr, int length = 0)
 	{
 		unsigned short hex = bytetohex(arr[i]);
 
-		buffer += ((char*)hex)[0];
-		buffer += ((char*)hex)[1];
+		buffer += ((char*) &hex)[0];
+		buffer += ((char*) &hex)[1];
 	}
 
 	return buffer;
