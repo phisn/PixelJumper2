@@ -24,6 +24,13 @@ namespace Device::Core
 			return false;
 		}
 
+		if (!Net::Initialize())
+		{
+			Log::Error(L"Failed to initialize net device");
+
+			return false;
+		}
+
 		server = new Operator::Operator();
 		if (!server->initialize())
 		{

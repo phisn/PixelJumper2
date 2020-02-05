@@ -200,9 +200,14 @@
     <ClCompile Include="..\Client\source\logger\Output.cpp" />
     <ClCompile Include="..\Client\source\logger\Section.cpp" />
     <ClCompile Include="..\Client\source\logger\SectionHost.cpp" />
+    <ClCompile Include="source\database\KeyTable.cpp" />
+    <ClCompile Include="source\database\PlayerTable.cpp" />
+    <ClCompile Include="source\database\TableBase.cpp" />
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DatabaseDevice.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\net\OperatorClientMessage.cpp" />
+    <ClCompile Include="source\net\OperatorHostMessage.cpp" />
     <ClCompile Include="source\operator\ElementConnection.cpp" />
     <ClCompile Include="source\operator\Operator.cpp" />
   </ItemGroup>
@@ -214,10 +219,14 @@
     <ClInclude Include="..\Client\source\logger\Output.h" />
     <ClInclude Include="..\Client\source\logger\Section.h" />
     <ClInclude Include="..\Client\source\logger\SectionHost.h" />
+    <ClInclude Include="source\database\KeyTable.h" />
     <ClInclude Include="source\database\PlayerTable.h" />
     <ClInclude Include="source\database\TableBase.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DatabaseDevice.h" />
+    <ClInclude Include="source\net\OperatorClientMessage.h" />
+    <ClInclude Include="source\net\OperatorHostMessage.h" />
+    <ClInclude Include="source\net\OperatorMessage.h" />
     <ClInclude Include="source\operator\ElementConnection.h" />
     <ClInclude Include="source\operator\Operator.h" />
   </ItemGroup>

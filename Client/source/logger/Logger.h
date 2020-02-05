@@ -52,7 +52,7 @@ inline std::string carrtohexstr(const unsigned char* arr, int length = 0)
 	std::string buffer;
 	buffer.reserve(length);
 
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < length; ++i)
 	{
 		unsigned short hex = bytetohex(arr[i]);
 
