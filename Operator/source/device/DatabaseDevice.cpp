@@ -2,7 +2,7 @@
 
 #include <Client/source/logger/Logger.h>
 
-#include <Operator/source/database/PlayerTable.h>
+#include <Operator/source/database/KeyTable.h>
 #include <iostream>
 
 namespace
@@ -17,7 +17,7 @@ namespace Device::Database
 
 	bool Initialize()
 	{
-		int result = sqlite3_open("pj2.db", &database);
+		int result = sqlite3_open16(L"pj2.db", &database);
 
 		if (result)
 		{
@@ -35,26 +35,7 @@ namespace Device::Database
 
 	bool VerifyDatabase()
 	{
-
-		for (int j = 0; j < 20; ++j)
-		{
-			::Database::PlayerTable player;
-			player.primary.id = rand();
-
-			srand(player.primary.id);
-
-			for (int i = 0; i < 20; ++i)
-			{
-				player.content.password[i] = rand();
-			}
-
-			for (int i = 0; i < 16; ++i)
-			{
-				player.content.salt[i] = rand();
-			}
-
-			Insert(&player);
-		}
+		::Database::KeyTable key;
 
 		return true;
 	}
@@ -164,5 +145,10 @@ namespace Device::Database
 		}
 
 		return true;
+	}
+
+	sqlite3* GetConnection()
+	{
+		return database;
 	}
 }

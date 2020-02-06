@@ -196,23 +196,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Client\source\device\NetDevice.cpp" />
+    <ClCompile Include="..\Client\source\device\RandomDevice.cpp" />
     <ClCompile Include="..\Client\source\logger\Logger.cpp" />
     <ClCompile Include="..\Client\source\logger\Output.cpp" />
     <ClCompile Include="..\Client\source\logger\Section.cpp" />
     <ClCompile Include="..\Client\source\logger\SectionHost.cpp" />
     <ClCompile Include="source\database\KeyTable.cpp" />
-    <ClCompile Include="source\database\PlayerTable.cpp" />
+    <ClCompile Include="source\database\PlayerAuthTable.cpp" />
+    <ClCompile Include="source\database\PlayerInfoTable.cpp" />
     <ClCompile Include="source\database\TableBase.cpp" />
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DatabaseDevice.cpp" />
     <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\net\OperatorClientMessage.cpp" />
-    <ClCompile Include="source\net\OperatorHostMessage.cpp" />
     <ClCompile Include="source\operator\ElementConnection.cpp" />
     <ClCompile Include="source\operator\Operator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\source\device\NetDevice.h" />
+    <ClInclude Include="..\Client\source\device\RandomDevice.h" />
     <ClInclude Include="..\Client\source\logger\Logger.h" />
     <ClInclude Include="..\Client\source\logger\LoggerLevel.h" />
     <ClInclude Include="..\Client\source\logger\Names.h" />
@@ -220,7 +221,8 @@
     <ClInclude Include="..\Client\source\logger\Section.h" />
     <ClInclude Include="..\Client\source\logger\SectionHost.h" />
     <ClInclude Include="source\database\KeyTable.h" />
-    <ClInclude Include="source\database\PlayerTable.h" />
+    <ClInclude Include="source\database\PlayerAuthTable.h" />
+    <ClInclude Include="source\database\PlayerInfoTable.h" />
     <ClInclude Include="source\database\TableBase.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DatabaseDevice.h" />

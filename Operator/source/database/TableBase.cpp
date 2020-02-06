@@ -6,7 +6,7 @@ int Database::TableBase::create(sqlite3* const database, sqlite3_stmt** const st
 
 	ss << "INSERT INTO ";
 	ss << table;
-	ss << "(";
+	ss << " (";
 
 	const ColumnValuesContainer allContainer = getAllColumnValues();
 	for (const ColumnValuesPair& pair : allContainer)

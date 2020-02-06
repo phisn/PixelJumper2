@@ -1,5 +1,8 @@
 #include "CoreDevice.h"
 
+#include <Client/source/device/NetDevice.h>
+#include <Client/source/device/RandomDevice.h>
+
 #include <Operator/source/device/DatabaseDevice.h>
 #include <Operator/source/operator/Operator.h>
 
@@ -16,6 +19,8 @@ namespace Device::Core
 	bool Initialize()
 	{
 		Log::Section(L"Initializing devices");
+
+		Random::Initialize();
 
 		if (!Database::Initialize())
 		{
@@ -48,6 +53,9 @@ namespace Device::Core
 		// uninitialize is called because this will
 		// instantly shutdown all connection
 		delete server;
+
+		Net::Uninitialize();
+		Database::Unintialize();
 	}
 
 	void Run()

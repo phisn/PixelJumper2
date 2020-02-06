@@ -10,4 +10,6 @@ namespace Device::Database
 	bool Extract(::Database::TableBase* const table);
 	bool Insert(::Database::TableBase* const table);
 	bool Edit(::Database::TableBase* const table);
+
+	sqlite3* GetConnection();
 }

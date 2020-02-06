@@ -13,8 +13,6 @@ namespace Database
 	// split the big table players in
 	// many classes to support easy acess
 	// -> authplayer, contentplayer ...
-	// add .cpp to export long functions
-	// ! tablebase :)
 	class PlayerTable
 		:
 		public TableBase
@@ -34,6 +32,8 @@ namespace Database
 
 		struct Content
 		{
+			std::string username;
+
 			unsigned char password[20];
 			unsigned char salt[16];
 
@@ -43,45 +43,32 @@ namespace Database
 		{
 			primary.id = sqlite3_column_int64(statement, 0);
 
-			unsigned short* hex = (unsigned short*)sqlite3_column_blob(statement, 1);
+			content.username.clear();
+			const int usernameLength = sqlite3_column_bytes(statement, 1);
+			content.username.reserve(usernameLength / 2);
+			content.username.assign((const char*) sqlite3_column_blob(statement, 1));
+
+			unsigned short* hex = (unsigned short*) sqlite3_column_blob(statement, 2);
 			for (int i = 0; i < 20; ++i)
 			{
 				content.password[i] = hextobyte(hex[i]);
 			}
 
-			hex = (unsigned short*)sqlite3_column_blob(statement, 2);
+			hex = (unsigned short*) sqlite3_column_blob(statement, 3);
 			for (int i = 0; i < 16; ++i)
 			{
 				content.salt[i] = hextobyte(hex[i]);
 			}
 		}
 
-	private:
-		constexpr static const char* ColumnNames[] =
-		{
-			"id",
-			"password",
-			"salt"
-		};
-
-		constexpr static const char* CreateTable =
-		{
-			R"__(
-			CREATE TABLE "players" (
-				"id"	INTEGER NOT NULL,
-				"password"	BLOB,
-				"salt"	BLOB,
-				PRIMARY KEY("id")
-			);)__"
-		};
-
 		const ColumnValuesContainer getAllColumnValues() override
 		{
 			ColumnValuesContainer container;
 
 			container.emplace_back(ColumnNames[0], std::to_string(primary.id));
-			container.emplace_back(ColumnNames[1], '\'' + carrtohexstr(content.password, 20) + '\'');
-			container.emplace_back(ColumnNames[2], '\'' + carrtohexstr(content.salt, 16) + '\'');
+			container.emplace_back(ColumnNames[1], content.username);
+			container.emplace_back(ColumnNames[2], '\'' + carrtohexstr(content.password, 20) + '\'');
+			container.emplace_back(ColumnNames[3], '\'' + carrtohexstr(content.salt, 16) + '\'');
 
 			return container;
 		}
@@ -94,5 +81,14 @@ namespace Database
 
 			return container;
 		}
+
+	private:
+		constexpr static const char* ColumnNames[] =
+		{
+			"id",
+			"username",
+			"password",
+			"salt"
+		};
 	};
 }

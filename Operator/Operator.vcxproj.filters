@@ -57,20 +57,20 @@
     <ClCompile Include="source\device\DatabaseDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\database\PlayerTable.cpp">
+    <ClCompile Include="source\database\KeyTable.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
     <ClCompile Include="source\database\TableBase.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
-    <ClCompile Include="source\database\KeyTable.cpp">
+    <ClCompile Include="..\Client\source\device\RandomDevice.cpp">
+      <Filter>external\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\database\PlayerAuthTable.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
-    <ClCompile Include="source\net\OperatorClientMessage.cpp">
-      <Filter>source\net</Filter>
-    </ClCompile>
-    <ClCompile Include="source\net\OperatorHostMessage.cpp">
-      <Filter>source\net</Filter>
+    <ClCompile Include="source\database\PlayerInfoTable.cpp">
+      <Filter>source\database</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,9 +107,6 @@
     <ClInclude Include="source\device\DatabaseDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\database\PlayerTable.h">
-      <Filter>source\database</Filter>
-    </ClInclude>
     <ClInclude Include="source\database\TableBase.h">
       <Filter>source\database</Filter>
     </ClInclude>
@@ -124,6 +121,15 @@
     </ClInclude>
     <ClInclude Include="source\net\OperatorClientMessage.h">
       <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\device\RandomDevice.h">
+      <Filter>external\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\database\PlayerAuthTable.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="source\database\PlayerInfoTable.h">
+      <Filter>source\database</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,14 +5,26 @@
 
 namespace Database
 {
+	// xxxxx-xxxxx-xxxxx
+	struct RegistrationKey
+	{
+		char content[15];
+	};
+
 	class KeyTable
 		:
 		public TableBase
 	{
 	public:
+		KeyTable()
+			:
+			TableBase("keys")
+		{
+		}
+
 		struct Primary
 		{
-			char key[15];
+			RegistrationKey key[15];
 
 		} primary;
 
@@ -29,7 +41,7 @@ namespace Database
 			for (int i = 0; i < 18; ++i)
 				if ((i % 6) != 5)
 				{
-					primary.key[i - i / 6] = rawKey[i];
+					primary.key->content[i - i / 6] = rawKey[i];
 				}
 
 			foreign.playerID = sqlite3_column_int64(statement, 1);
@@ -46,7 +58,7 @@ namespace Database
 			{
 				for (int i = 0; i < 5; ++i)
 				{
-					key += primary.key[column * 5 + i];
+					key += primary.key->content[column * 5 + i];
 				}
 
 				if (++column == 3)
@@ -60,28 +72,12 @@ namespace Database
 			return key;
 		}
 
-	private:
-		constexpr static const char* ColumnNames[] =
-		{
-			"key",
-			"player"
-		};
-
-		constexpr static char CreateTable[] =
-			R"__(
-			CREATE TABLE "keys" (
-				"key" BLOB NOT NULL,
-				"player" INTEGER,
-				PRIMARY KEY("key"),
-				FOREIGN KEY("player") REFERENCES "players"("id") ON DELETE SET NULL
-			);)__";
-
 		const ColumnValuesContainer getAllColumnValues() override
 		{
 			ColumnValuesContainer container;
 
 			container.emplace_back(ColumnNames[0], keyAsString());
-			container.emplace_back(ColumnNames[1], foreign.playerID);
+			container.emplace_back(ColumnNames[1], std::to_string(foreign.playerID));
 
 			return container;
 		}
@@ -94,5 +90,12 @@ namespace Database
 
 			return container;
 		}
+
+	private:
+		constexpr static const char* ColumnNames[] =
+		{
+			"key",
+			"player"
+		};
 	};
 }
