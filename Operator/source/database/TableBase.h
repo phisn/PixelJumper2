@@ -10,11 +10,10 @@ namespace Database
 {
 	class TableBase
 	{
-	protected:
+	public:
 		typedef std::pair<std::string, std::string> ColumnValuesPair;
 		typedef std::vector<ColumnValuesPair> ColumnValuesContainer;
 
-	public:
 		inline static std::vector<std::string> getTableCreation()
 		{
 			const int count = sizeof(CreateTable) / sizeof(*CreateTable);
@@ -43,6 +42,11 @@ namespace Database
 		virtual const ColumnValuesContainer getAllColumnValues() = 0;
 		virtual const ColumnValuesContainer getPrimaryKeyColumnValues() = 0;
 
+		const std::string getTableName()
+		{
+			return table;
+		}
+
 	private:
 		constexpr static const char* CreateTable[] =
 		{
@@ -55,8 +59,9 @@ namespace Database
 			);)__",
 			R"__(
 			CREATE TABLE "keys" (
-				"key" BLOB NOT NULL,
-				"player" INTEGER,
+				"key"	BLOB NOT NULL,
+				"player"	INTEGER UNIQUE,
+				"source"	INTEGER,
 				PRIMARY KEY("key"),
 				FOREIGN KEY("player") REFERENCES "players"("id") ON DELETE SET NULL
 			);)__"

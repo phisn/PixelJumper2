@@ -72,6 +72,12 @@
     <ClCompile Include="source\database\PlayerInfoTable.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
+    <ClCompile Include="source\database\StatementBase.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="source\database\EmptyKeyStatement.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\source\logger\Logger.h">
@@ -129,6 +135,12 @@
       <Filter>source\database</Filter>
     </ClInclude>
     <ClInclude Include="source\database\PlayerInfoTable.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="source\database\StatementBase.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="source\database\EmptyKeyStatement.h">
       <Filter>source\database</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 #include <Client/source/logger/Logger.h>
 
-#include <Operator/source/database/KeyTable.h>
+#include <Operator/source/database/EmptyKeyStatement.h>
 #include <iostream>
 
 namespace
@@ -37,7 +37,92 @@ namespace Device::Database
 	{
 		::Database::KeyTable key;
 
+		for (int i = 0; i < 3; ++i)
+		{
+			for (int i = 0; i < 15; ++i)
+			{
+				key.primary.key.content[i] = 'A' + rand() % 26;
+			}
+
+			sqlite3_stmt* statement;
+			int result = key.create(database, &statement);
+
+			if (result != SQLITE_OK)
+			{
+				Log::Error(L"Failed to create new key statement",
+					result, L"result");
+
+				return false;
+			}
+
+			result = sqlite3_step(statement);
+
+			if (result != SQLITE_DONE)
+			{
+				Log::Error(L"Failed to create process key statement",
+					result, L"result");
+
+				return false;
+			}
+
+			if (!FinalizeStatement(statement))
+			{
+				Log::Error(L"Failed to finalize new key statement",
+					result, L"result");
+
+				return false;
+			}
+		}
+
 		return true;
+
+		/*::Database::EmptyKeysStatement emptyKeys;
+
+		sqlite3_stmt* statement = NULL;
+		int result = emptyKeys.execute(database, &statement);
+
+		if (result != SQLITE_OK)
+		{
+			Log::Error(L"Failed to execute empty keys statement",
+				result, L"result");
+
+			if (statement != NULL)
+				FinalizeStatement(statement);
+
+			return true;
+		}
+
+		while (true)
+		{
+			result = emptyKeys.next(statement);
+
+			if (result != SQLITE_ROW)
+			{
+				break;
+			}
+
+			std::cout << "Key: ";
+
+			for (int i = 0; i < 15; ++i)
+			{
+				std::cout << emptyKeys.table.primary.key.content[i];
+
+				if (i % 5 == 4)
+				{
+					std::cout << "-";
+				}
+			}
+
+			std::cout << std::endl;
+		}
+
+		if (result != SQLITE_DONE)
+		{
+			Log::Error(L"Failed to process empty keys statement",
+				result, L"result");
+		}
+
+		return true;*/
 	}
 
 	void Unintialize()

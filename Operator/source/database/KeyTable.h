@@ -24,13 +24,13 @@ namespace Database
 
 		struct Primary
 		{
-			RegistrationKey key[15];
+			RegistrationKey key;
 
 		} primary;
 
 		struct Foreign
 		{
-			Resource::PlayerID playerID;
+			Resource::PlayerID playerID = 0;
 
 		} foreign;
 
@@ -41,7 +41,7 @@ namespace Database
 			for (int i = 0; i < 18; ++i)
 				if ((i % 6) != 5)
 				{
-					primary.key->content[i - i / 6] = rawKey[i];
+					primary.key.content[i - i / 6] = rawKey[i];
 				}
 
 			foreign.playerID = sqlite3_column_int64(statement, 1);
@@ -58,7 +58,7 @@ namespace Database
 			{
 				for (int i = 0; i < 5; ++i)
 				{
-					key += primary.key->content[column * 5 + i];
+					key += primary.key.content[column * 5 + i];
 				}
 
 				if (++column == 3)
@@ -77,7 +77,9 @@ namespace Database
 			ColumnValuesContainer container;
 
 			container.emplace_back(ColumnNames[0], keyAsString());
-			container.emplace_back(ColumnNames[1], std::to_string(foreign.playerID));
+			container.emplace_back(ColumnNames[1], foreign.playerID == 0
+				? "NULL"
+				: std::to_string(foreign.playerID));
 
 			return container;
 		}

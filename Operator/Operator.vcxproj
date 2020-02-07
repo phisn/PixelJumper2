@@ -201,9 +201,11 @@
     <ClCompile Include="..\Client\source\logger\Output.cpp" />
     <ClCompile Include="..\Client\source\logger\Section.cpp" />
     <ClCompile Include="..\Client\source\logger\SectionHost.cpp" />
+    <ClCompile Include="source\database\EmptyKeyStatement.cpp" />
     <ClCompile Include="source\database\KeyTable.cpp" />
     <ClCompile Include="source\database\PlayerAuthTable.cpp" />
     <ClCompile Include="source\database\PlayerInfoTable.cpp" />
+    <ClCompile Include="source\database\StatementBase.cpp" />
     <ClCompile Include="source\database\TableBase.cpp" />
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DatabaseDevice.cpp" />
@@ -220,9 +222,11 @@
     <ClInclude Include="..\Client\source\logger\Output.h" />
     <ClInclude Include="..\Client\source\logger\Section.h" />
     <ClInclude Include="..\Client\source\logger\SectionHost.h" />
+    <ClInclude Include="source\database\EmptyKeyStatement.h" />
     <ClInclude Include="source\database\KeyTable.h" />
     <ClInclude Include="source\database\PlayerAuthTable.h" />
     <ClInclude Include="source\database\PlayerInfoTable.h" />
+    <ClInclude Include="source\database\StatementBase.h" />
     <ClInclude Include="source\database\TableBase.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DatabaseDevice.h" />
