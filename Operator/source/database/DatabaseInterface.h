@@ -34,7 +34,7 @@ namespace Database::Interface
 
 	bool GetEmptyKeys(std::vector<std::string>& keys);
 	bool CreateNewKey(
-		std::string& key,
+		std::string* const key,
 		const Resource::PlayerID playerID = 0,
 		const std::string source = "");
 }

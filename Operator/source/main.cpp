@@ -13,13 +13,15 @@ int main()
 
 	if (Device::Core::Initialize())
 	{
+		/*
 		Resource::PlayerID player;
 		char hash[20];
 		char salt[16];
 		Device::Random::FillRandom(20, hash);
 		Device::Random::FillRandom(16, salt);
-		std::string username = "the user";
-		std::string key = "PHQGH-UMEAY-LNLFD";
+
+		std::string username = "user1";
+		std::string key = "XFIRC-VSCXG-GBWKF";
 
 		Database::Interface::CreatePlayerResult result = Database::Interface::CreateNewPlayer(
 			&player,
@@ -37,6 +39,7 @@ int main()
 			Log::Error(L"Failed to create new player",
 				(int) result, L"result");
 		}
+		*/
 
 		Device::Core::Run();
 		Device::Core::Uninitialize();

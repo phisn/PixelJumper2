@@ -249,7 +249,7 @@ bool Database::Interface::GetEmptyKeys(std::vector<std::string>& keys)
 }
 
 bool Database::Interface::CreateNewKey(
-	std::string& key,
+	std::string* const key,
 	const Resource::PlayerID playerID, 
 	const std::string source)
 {
@@ -275,18 +275,21 @@ bool Database::Interface::CreateNewKey(
 
 	if (Device::Database::Insert(&keyTable))
 	{
-		key.clear();
-		key.reserve(17);
-
-		for (int i = 0; i < 14; ++i)
+		if (key)
 		{
-			key += keyTable.primary.key.content[i];
+			key->clear();
+			key->reserve(17);
 
-			if (i % 5 == 4)
-				key += '-';
+			for (int i = 0; i < 14; ++i)
+			{
+				*key += keyTable.primary.key.content[i];
+
+				if (i % 5 == 4)
+					*key += '-';
+			}
+
+			*key += keyTable.primary.key.content[14];
 		}
-
-		key += keyTable.primary.key.content[14];
 
 		return true;
 	}

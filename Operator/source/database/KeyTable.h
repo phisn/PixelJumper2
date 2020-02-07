@@ -101,7 +101,9 @@ namespace Database
 			container.emplace_back(ColumnNames[1], foreign.playerID == 0
 				? "NULL"
 				: std::to_string(foreign.playerID));
-			container.emplace_back(ColumnNames[2], '\'' + content.source + '\'');
+			container.emplace_back(ColumnNames[2], content.source.length() == 0
+				? "NULL"
+				: '\'' + content.source + '\'');
 
 			return container;
 		}
