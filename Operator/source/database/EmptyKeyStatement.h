@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/logger/Logger.h>
+
 #include <Operator/source/database/StatementBase.h>
 #include <Operator/source/database/KeyTable.h>
 
@@ -29,16 +31,19 @@ namespace Database
 			}
 
 			ss << container.back().first;
-			const std::string command = ss.str();
 
 			ss << " FROM ";
 			ss << table.getTableName();
 			ss << " WHERE player IS NULL;";
 
+			const std::string command = ss.str();
+
+			Log::Information(L"Executing " + carrtowstr(command.c_str()));
+
 			return sqlite3_prepare_v2(
 				database,
 				command.c_str(),
-				command.size(),
+				(int) command.size(),
 				statement,
 				NULL);
 		}

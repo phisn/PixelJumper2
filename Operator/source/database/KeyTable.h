@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/logger/Logger.h>
 #include <Client/source/resource/PlayerResource.h>
 #include <Operator/source/database/TableBase.h>
 
@@ -28,6 +29,12 @@ namespace Database
 
 		} primary;
 
+		struct Content
+		{
+			std::string source;
+
+		} content;
+
 		struct Foreign
 		{
 			Resource::PlayerID playerID = 0;
@@ -36,21 +43,18 @@ namespace Database
 
 		void apply(sqlite3_stmt* const statement) override
 		{
-			const char* rawKey = (const char*) sqlite3_column_blob(statement, 0);
-
-			for (int i = 0; i < 18; ++i)
-				if ((i % 6) != 5)
-				{
-					primary.key.content[i - i / 6] = rawKey[i];
-				}
-
+			keyFromString((const char*)sqlite3_column_blob(statement, 0));
 			foreign.playerID = sqlite3_column_int64(statement, 1);
+			content.source.assign(
+				(const char*) sqlite3_column_text(statement, 2),
+				sqlite3_column_bytes(statement, 2)
+			);
 		}
 
 		std::string keyAsString() const
 		{
 			std::string key;
-			key.reserve(18);
+			key.reserve(17);
 
 			int column = 0;
 
@@ -72,14 +76,32 @@ namespace Database
 			return key;
 		}
 
+		void keyFromString(const std::string key)
+		{
+			if (key.size() < 17)
+			{
+				Log::Error(L"Unable to convert key with invalid size",
+					key.size(), L"size");
+
+				return;
+			}
+
+			for (int i = 0; i < 17; ++i)
+				if ((i % 6) != 5)
+				{
+					primary.key.content[i - i / 6] = key[i];
+				}
+		}
+
 		const ColumnValuesContainer getAllColumnValues() override
 		{
 			ColumnValuesContainer container;
 
-			container.emplace_back(ColumnNames[0], keyAsString());
+			container.emplace_back(ColumnNames[0], '\'' + keyAsString() + '\'');
 			container.emplace_back(ColumnNames[1], foreign.playerID == 0
 				? "NULL"
 				: std::to_string(foreign.playerID));
+			container.emplace_back(ColumnNames[2], '\'' + content.source + '\'');
 
 			return container;
 		}
@@ -88,7 +110,7 @@ namespace Database
 		{
 			ColumnValuesContainer container;
 
-			container.emplace_back(ColumnNames[0], keyAsString());
+			container.emplace_back(ColumnNames[0], '\'' + keyAsString() + '\'');
 
 			return container;
 		}
@@ -97,7 +119,8 @@ namespace Database
 		constexpr static const char* ColumnNames[] =
 		{
 			"key",
-			"player"
+			"player",
+			"source"
 		};
 	};
 }

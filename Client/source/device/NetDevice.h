@@ -119,7 +119,7 @@ namespace Device::Net
 			const EResult result = networkInterface->SendMessageToConnection(
 				connection,
 				&messagePipe.getData()[0],
-				messagePipe.getSize(),
+				(uint32) messagePipe.getSize(),
 				k_nSteamNetworkingSend_Reliable,
 				NULL);
 

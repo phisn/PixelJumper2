@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Client/source/resource/ResourceBase.h>
-#include <Client/source/resource/WorldResource.h>
 
 #include <string>
 
@@ -9,6 +8,7 @@ namespace Resource
 {
 	typedef sf::Uint64 PlayerID;
 	typedef sf::Uint32 RepresentationID;
+	typedef sf::Uint32 WorldId;
 
 	class PlayerClassicResource
 		:

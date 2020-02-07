@@ -1,4 +1,5 @@
 #include "TableBase.h"
+#include <Client/source/logger/Logger.h>
 
 int Database::TableBase::create(sqlite3* const database, sqlite3_stmt** const statement)
 {
@@ -35,10 +36,12 @@ int Database::TableBase::create(sqlite3* const database, sqlite3_stmt** const st
 
 	const std::string result = ss.str();
 
+	Log::Information(L"Executing " + carrtowstr(result.c_str()));
+
 	return sqlite3_prepare_v2(
 		database,
 		result.c_str(),
-		result.size(),
+		(int) result.size(),
 		statement,
 		NULL);
 }
@@ -83,10 +86,12 @@ int Database::TableBase::edit(sqlite3* const database, sqlite3_stmt** const stat
 
 	const std::string result = ss.str();
 
+	Log::Information(L"Executing " + carrtowstr(result.c_str()));
+
 	return sqlite3_prepare_v2(
 		database,
 		result.c_str(),
-		result.size(),
+		(int) result.size(),
 		statement,
 		NULL);
 }
@@ -129,10 +134,12 @@ int Database::TableBase::extract(sqlite3* const database, sqlite3_stmt** const s
 
 	const std::string result = ss.str();
 
+	Log::Information(L"Executing " + carrtowstr(result.c_str()));
+
 	return sqlite3_prepare_v2(
 		database,
 		result.c_str(),
-		result.size(),
+		(int) result.size(),
 		statement,
 		NULL);
 }

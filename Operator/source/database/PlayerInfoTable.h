@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include <Client/source/resource/PlayerResource.h>
 #include <Operator/source/database/TableBase.h>
 
@@ -40,3 +40,4 @@ namespace Database
 		};
 	};
 }
+*/

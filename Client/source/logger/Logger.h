@@ -42,7 +42,7 @@ inline unsigned char hextobyte(unsigned short hex)
 	return buffer;
 }
 
-inline std::string carrtohexstr(const unsigned char* arr, int length = 0)
+inline std::string carrtohexstr(const unsigned char* arr, size_t length = 0)
 {
 	if (length == 0)
 	{

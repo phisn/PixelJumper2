@@ -33,9 +33,9 @@ namespace Database
 		{
 		}
 
-		virtual int create(sqlite3* const database, sqlite3_stmt** const statement);
-		virtual int edit(sqlite3* const database, sqlite3_stmt** const statement);
-		virtual int extract(sqlite3* const database, sqlite3_stmt** const statement);
+		int create(sqlite3* const database, sqlite3_stmt** const statement);
+		int edit(sqlite3* const database, sqlite3_stmt** const statement);
+		int extract(sqlite3* const database, sqlite3_stmt** const statement);
 
 		virtual void apply(sqlite3_stmt* const statement) = 0;
 
@@ -61,7 +61,7 @@ namespace Database
 			CREATE TABLE "keys" (
 				"key"	BLOB NOT NULL,
 				"player"	INTEGER UNIQUE,
-				"source"	INTEGER,
+				"source"	TEXT,
 				PRIMARY KEY("key"),
 				FOREIGN KEY("player") REFERENCES "players"("id") ON DELETE SET NULL
 			);)__"

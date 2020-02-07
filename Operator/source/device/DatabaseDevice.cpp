@@ -12,7 +12,6 @@ namespace
 
 namespace Device::Database
 {
-	bool FinalizeStatement(sqlite3_stmt* const statement);
 	bool VerifyDatabase();
 
 	bool Initialize()
@@ -21,10 +20,7 @@ namespace Device::Database
 
 		if (result)
 		{
-			 Log::Error(
-				 std::wstring(L"Failed to open database (") +
-				 (const wchar_t*) sqlite3_errmsg16(database) +
-				L")",
+			 Log::Error(L"Failed to open database " + GenerateErrorMessage(),
 				 result, L"result");
 
 			 return false;
@@ -35,94 +31,7 @@ namespace Device::Database
 
 	bool VerifyDatabase()
 	{
-		::Database::KeyTable key;
-
-		for (int i = 0; i < 3; ++i)
-		{
-			for (int i = 0; i < 15; ++i)
-			{
-				key.primary.key.content[i] = 'A' + rand() % 26;
-			}
-
-			sqlite3_stmt* statement;
-			int result = key.create(database, &statement);
-
-			if (result != SQLITE_OK)
-			{
-				Log::Error(L"Failed to create new key statement",
-					result, L"result");
-
-				return false;
-			}
-
-			result = sqlite3_step(statement);
-
-			if (result != SQLITE_DONE)
-			{
-				Log::Error(L"Failed to create process key statement",
-					result, L"result");
-
-				return false;
-			}
-
-			if (!FinalizeStatement(statement))
-			{
-				Log::Error(L"Failed to finalize new key statement",
-					result, L"result");
-
-				return false;
-			}
-		}
-
 		return true;
-
-		/*::Database::EmptyKeysStatement emptyKeys;
-
-		sqlite3_stmt* statement = NULL;
-		int result = emptyKeys.execute(database, &statement);
-
-		if (result != SQLITE_OK)
-		{
-			Log::Error(L"Failed to execute empty keys statement",
-				result, L"result");
-
-			if (statement != NULL)
-				FinalizeStatement(statement);
-
-			return true;
-		}
-
-		while (true)
-		{
-			result = emptyKeys.next(statement);
-
-			if (result != SQLITE_ROW)
-			{
-				break;
-			}
-
-			std::cout << "Key: ";
-
-			for (int i = 0; i < 15; ++i)
-			{
-				std::cout << emptyKeys.table.primary.key.content[i];
-
-				if (i % 5 == 4)
-				{
-					std::cout << "-";
-				}
-			}
-
-			std::cout << std::endl;
-		}
-
-		if (result != SQLITE_DONE)
-		{
-			Log::Error(L"Failed to process empty keys statement",
-				result, L"result");
-		}
-
-		return true;*/
 	}
 
 	void Unintialize()
@@ -130,39 +39,99 @@ namespace Device::Database
 		sqlite3_close(database);
 	}
 
-	bool Extract(::Database::TableBase* const table)
+	ExtractionResult Extract(::Database::TableBase* const table)
 	{
 		sqlite3_stmt* statement;
 		int result = table->extract(database, &statement);
 
 		if (result != SQLITE_OK)
 		{
-			Log::Error(L"failed to create select statement",
+			Log::Error(L"Failed to create select statement " + GenerateErrorMessage(),
 				result, L"result");
 
-			return false;
+			return ExtractionResult::Error;
 		}
 
 		result = sqlite3_step(statement);
 		
 		if (result != SQLITE_ROW)
 		{
-			if (result != SQLITE_DONE)
-			{
-				Log::Error(L"Failed to step statement in extraction",
-					result, L"result");
-			}
-
 			FinalizeStatement(statement);
 
-			return false;
+			if (result != SQLITE_DONE)
+			{
+				Log::Error(L"Failed to step statement in extraction " + GenerateErrorMessage(),
+					result, L"result");
+
+				return ExtractionResult::Error;
+			}
+			else
+			{
+				return ExtractionResult::NotFound;
+			}
 		}
 		else
 		{
 			table->apply(statement);
 		}
 
-		return FinalizeStatement(statement);
+		return ExtractionResult::Found;
+	}
+
+	bool BeginTransaction()
+	{
+		const int result = sqlite3_exec(database, "BEGIN TRANSACTION", NULL, NULL, NULL);
+
+		if (result == SQLITE_OK)
+		{
+			return true;
+		}
+		else
+		{
+			Log::Error(L"Failed to begin transaction " + GenerateErrorMessage(),
+				result, L"result");
+
+			return false;
+		}
+	}
+
+	bool EndTransaction()
+	{
+		const int result = sqlite3_exec(database, "END TRANSACTION", NULL, NULL, NULL);
+
+		if (result == SQLITE_OK)
+		{
+			return true;
+		}
+		else
+		{
+			Log::Error(L"Failed to end transaction " + GenerateErrorMessage(),
+				result, L"result");
+
+			return false;
+		}
+	}
+
+	bool RollbackTransaction()
+	{
+		const int result = sqlite3_exec(database, "ROLLBACK TRANSACTION", NULL, NULL, NULL);
+
+		if (result == SQLITE_OK)
+		{
+			return true;
+		}
+		else
+		{
+			Log::Error(L"Failed to rollback transaction " + GenerateErrorMessage(),
+				result, L"result");
+
+			return false;
+		}
+	}
+
+	bool Exists(::Database::TableBase* const table)
+	{
+		return Extract(table) == ExtractionResult::Found;
 	}
 
 	bool Insert(::Database::TableBase* const table)
@@ -172,7 +141,7 @@ namespace Device::Database
 
 		if (result != SQLITE_OK)
 		{
-			Log::Error(L"Failed to create insert statement",
+			Log::Error(L"Failed to create insert statement " + GenerateErrorMessage(),
 				result, L"result");
 
 			return false;
@@ -182,7 +151,7 @@ namespace Device::Database
 
 		if (result != SQLITE_DONE)
 		{
-			Log::Error(L"Failed to step statement",
+			Log::Error(L"Failed to step statement " + GenerateErrorMessage(),
 				result, L"result");
 
 			return false;
@@ -198,7 +167,7 @@ namespace Device::Database
 
 		if (result != SQLITE_OK)
 		{
-			Log::Error(L"Failed to create update statement",
+			Log::Error(L"Failed to create update statement " + GenerateErrorMessage(),
 				result, L"result");
 
 			return false;
@@ -208,7 +177,7 @@ namespace Device::Database
 
 		if (result != SQLITE_DONE)
 		{
-			Log::Error(L"Failed to step statement",
+			Log::Error(L"Failed to step statement " + GenerateErrorMessage(),
 				result, L"result");
 
 			return false;
@@ -223,7 +192,7 @@ namespace Device::Database
 
 		if (result != SQLITE_OK)
 		{
-			Log::Error(L"Failed to finalize statement",
+			Log::Error(L"Failed to finalize statement " + GenerateErrorMessage(),
 				result, L"result");
 
 			return false;
@@ -235,5 +204,10 @@ namespace Device::Database
 	sqlite3* GetConnection()
 	{
 		return database;
+	}
+
+	std::wstring GenerateErrorMessage()
+	{
+		return L'(' + carrtowstr(sqlite3_errmsg(database)) + L')';
 	}
 }

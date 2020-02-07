@@ -66,7 +66,7 @@ namespace Database
 			ColumnValuesContainer container;
 
 			container.emplace_back(ColumnNames[0], std::to_string(primary.id));
-			container.emplace_back(ColumnNames[1], content.username);
+			container.emplace_back(ColumnNames[1], '\'' + content.username + '\'');
 			container.emplace_back(ColumnNames[2], '\'' + carrtohexstr(content.password, 20) + '\'');
 			container.emplace_back(ColumnNames[3], '\'' + carrtohexstr(content.salt, 16) + '\'');
 

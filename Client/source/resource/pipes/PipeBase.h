@@ -51,7 +51,7 @@ namespace Resource
 		}
 
 		template <typename T>
-		bool writeVector(const std::vector<T>* const vector)
+		bool writeVector(const std::vector<T>* const _vector)
 		{
 			sf::Uint32 count;
 			if (!writeValue(&count))
@@ -60,7 +60,7 @@ namespace Resource
 			}
 
 			return writeContentSafe(
-				vector.data(),
+				(char*)_vector->data(),
 				count * sizeof(T));
 		}
 
@@ -139,7 +139,7 @@ namespace Resource
 			vector->resize(count);
 
 			return readContentForce(
-				vector->data(),
+				(char*) vector->data(),
 				count * sizeof(T));
 		}
 		
@@ -271,11 +271,12 @@ namespace Resource
 	template<>
 	inline bool ReadPipe::readValue(float* const value)
 	{
-		const bool result = readContentForce((char*)value, 4);
+		unsigned int temp;
+		const bool result = readContentForce((char*) &temp, 4);
 
 		if (result)
 		{
-			*value = ntohf(*value);
+			*value = ntohf(temp);
 		}
 
 		return result;
@@ -284,11 +285,12 @@ namespace Resource
 	template<>
 	inline bool ReadPipe::readValue(double* const value)
 	{
-		const bool result = readContentForce((char*)value, 8);
+		unsigned long long temp;
+		const bool result = readContentForce((char*) &temp, 8);
 
 		if (result)
 		{
-			*value = ntohd(*value);
+			*value = ntohd(temp);
 		}
 
 		return result;
@@ -340,15 +342,15 @@ namespace Resource
 	template<>
 	inline bool WritePipe::writeValue(const float* const value)
 	{
-		const float netValue = htonf(*value);
-		return writeContentSafe((const char* const)&netValue, 4);
+		const unsigned int netValue = htonf(*value);
+		return writeContentSafe((const char* const)&netValue, sizeof(netValue));
 	}
 	
 	template<>
 	inline bool WritePipe::writeValue(const double* const value)
 	{
-		const double netValue = htond(*value);
-		return writeContentSafe((const char* const)&netValue, 4);
+		const unsigned long long netValue = htond(*value);
+		return writeContentSafe((const char* const) &netValue, sizeof(netValue));
 	}
 }
 

@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <Client/source/resource/PlayerResource.h>
@@ -16,7 +15,8 @@
 
 namespace Resource
 {
-	typedef sf::Uint32 WorldId;
+	// moved to playerresource
+	// typedef sf::Uint32 WorldId;
 
 	class World
 		:
