@@ -1,0 +1,13 @@
+#pragma once
+
+namespace Device::Encryption
+{
+	void HashCommon(
+		unsigned char result[20],
+		const unsigned char* buffer,
+		const size_t length);
+	void HashHashSalt(
+		unsigned char result[20],
+		const unsigned char hash[20],
+		const unsigned char salt[16]);
+}

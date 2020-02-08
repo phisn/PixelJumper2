@@ -6,7 +6,10 @@
 #include <Operator/source/database/FindPlayerStatement.h>
 #include <Operator/source/database/PlayerAuthTable.h>
 
-Device::Database::ExtractionResult Database::Interface::GetPlayerSalt(char salt[16], const Resource::PlayerID player)
+Device::Database::ExtractionResult Database::Interface::GetPlayerAuth(
+	char hash[OPERATOR_HASH_SIZE], 
+	char salt[OPERATOR_SALT_SIZE], 
+	const Resource::PlayerID player)
 {
 	PlayerTable playerTable;
 	playerTable.primary.id = player;
@@ -15,33 +18,21 @@ Device::Database::ExtractionResult Database::Interface::GetPlayerSalt(char salt[
 
 	if (result == Device::Database::ExtractionResult::Found)
 	{
+		memcpy(hash, playerTable.content.password, 20);
 		memcpy(salt, playerTable.content.salt, 16);
 	}
 
 	return result;
 }
 
-Device::Database::ExtractionResult Database::Interface::GetPlayerHash(char hash[20], const Resource::PlayerID player)
-{
-	PlayerTable playerTable;
-	playerTable.primary.id = player;
-
-	const Device::Database::ExtractionResult result = Device::Database::Extract(&playerTable);
-
-	if (result == Device::Database::ExtractionResult::Found)
-	{
-		memcpy(hash, playerTable.content.salt, 20);
-	}
-
-	return result;
-}
-
-Device::Database::ExtractionResult Database::Interface::GetPlayerID(
-	Resource::PlayerID* const playerID,
+Device::Database::ExtractionResult Database::Interface::GetPlayerInfo(
+	char hash[OPERATOR_HASH_SIZE], 
+	char salt[OPERATOR_SALT_SIZE], 
+	Resource::PlayerID* const playerID, 
 	const std::string username)
 {
 	FindPlayerStatement statement;
-	statement.input.username = username;
+	statement.playerTable.content.username = username;
 
 	sqlite3_stmt* raw_statement;
 	int result = statement.execute(Device::Database::GetConnection(), &raw_statement);
@@ -68,9 +59,13 @@ Device::Database::ExtractionResult Database::Interface::GetPlayerID(
 		}
 
 		if (playerID)
-		{
-			*playerID = statement.output.playerID;
-		}
+			*playerID = statement.playerTable.primary.id;
+
+		if (hash)
+			memcpy(hash, statement.playerTable.content.password, OPERATOR_HASH_SIZE);
+
+		if (salt)
+			memcpy(salt, statement.playerTable.content.salt, OPERATOR_SALT_SIZE);
 
 		return Device::Database::ExtractionResult::Found;
 

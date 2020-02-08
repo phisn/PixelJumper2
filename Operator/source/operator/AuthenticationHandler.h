@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/device/NetDevice.h>
+#include <Client/source/device/EncryptionDevice.h>
 
 #include <Operator/source/database/DatabaseInterface.h>
 #include <Operator/source/net/AuthClientMessage.h>
@@ -57,7 +58,7 @@ namespace Operator::Net
 		}
 
 	protected:
-		Status status;
+		Status status = Connecting;
 		Resource::PlayerID playerID = NULL;
 
 		// use timeout in specializations when
@@ -74,6 +75,7 @@ namespace Operator::Net
 			switch (messageID)
 			{
 			case Client::AuthMessageID::Authenticate:
+			{
 				Client::AuthenticationMessage message;
 
 				if (!message.load(pipe))
@@ -83,17 +85,37 @@ namespace Operator::Net
 						L"invalid messagecontent",
 						Device::Net::ThreatLevel::Uncommon);
 
-					beginMessage(Host::, 8);
+					beginMessage(Host::AuthMessageID::InternalError, 8);
 					sendMessage();
 
 					return;
 				}
 
-				// authentication
-
-				playerID = message.playerID;
+				onAuthenticate(message);
 
 				break;
+			}
+			case Client::AuthMessageID::Register:
+			{
+				Client::RegistrationMessage message;
+
+				if (!message.load(pipe))
+				{
+					this->onThreatIdentified(
+						messageID,
+						L"invalid messagecontent",
+						Device::Net::ThreatLevel::Uncommon);
+
+					beginMessage(Host::AuthMessageID::InternalError, 8);
+					sendMessage();
+
+					return;
+				}
+
+				onRegistration(message);
+
+				break;
+			}
 			default:
 				// could be a brute-force messageid finder
 				this->onThreatIdentified(messageID,
@@ -104,25 +126,147 @@ namespace Operator::Net
 			}
 		}
 
-		void safeMessageLoad(
+		void sendCommonMessage(
 			Device::Net::MessageID messageID,
-			NetworkMessage* const message,
-			Resource::WritePipe* const pipe)
+			Game::Net::NetworkMessage* const message)
 		{
-			if (!message->save(pipe))
+			if (!message->save(beginMessage(messageID)) || !sendMessage())
 			{
 				Log::Error(L"Unable to construct message",
 					(sf::Uint64) messageID, L"messageID");
 
 				status = Disconnecting;
 			}
-			else
-			{
-				sendMessage();
-			}
 		}
 
 	private:
-		
+		void onAuthenticate(const Client::AuthenticationMessage& request)
+		{
+			Resource::PlayerID playerID;
+
+			char hash[OPERATOR_HASH_SIZE];
+			char salt[OPERATOR_SALT_SIZE];
+
+			const Device::Database::ExtractionResult result = Database::Interface::GetPlayerInfo(
+				hash,
+				salt,
+				&playerID,
+				request.username);
+
+			switch (result)
+			{
+			case Device::Database::ExtractionResult::NotFound:
+				beginMessage(Host::AuthMessageID::RejectAuthentication);
+				sendMessage();
+
+				onThreatIdentified(
+					Client::AuthMessageID::Authenticate,
+					L"wrong username",
+					Device::Net::ThreatLevel::Suspicious);
+
+				return;
+			case Device::Database::ExtractionResult::Error:
+				beginMessage(Host::AuthMessageID::InternalError, 8);
+				sendMessage();
+
+				return;
+			}
+
+			char messageHash[OPERATOR_HASH_SIZE];
+
+			Device::Encryption::HashHashSalt(
+				(unsigned char*) messageHash,
+				(unsigned char*) hash,
+				(unsigned char*) salt);
+
+			if (memcmp(messageHash, request.content.hash, OPERATOR_HASH_SIZE) != 0)
+			{
+				beginMessage(Host::AuthMessageID::RejectAuthentication);
+				sendMessage();
+
+				return;
+			}
+
+			Host::AcceptAuthenticationMessage message;
+			message.playerID = playerID;
+
+			sendCommonMessage(
+				Host::AuthMessageID::AcceptAuthentication,
+				&message);
+			
+			status = Connected;
+			this->playerID = playerID;
+
+			onClientConnected();
+		}
+
+		void onRegistration(const Client::RegistrationMessage& request)
+		{
+			char hash[OPERATOR_HASH_SIZE];
+			char salt[OPERATOR_SALT_SIZE];
+
+			Device::Random::FillRandom(OPERATOR_SALT_SIZE, salt);
+
+			Device::Encryption::HashHashSalt(
+				(unsigned char*) hash,
+				(unsigned char*) request.content.hash,
+				(unsigned char*) salt);
+
+			Resource::PlayerID playerID;
+
+			const Database::Interface::CreatePlayerResult result = Database::Interface::CreateNewPlayer(
+				&playerID,
+				salt,
+				hash,
+				request.username,
+				request.content.key);
+
+			switch (result)
+			{
+			case Database::Interface::CreatePlayerResult::UsernameUsed:
+				Host::RejectRegistrationMessage message;
+				message.reason = Host::RejectRegistrationMessage::UsernameUsed;
+
+				sendCommonMessage(
+					Host::AuthMessageID::RejectRegistration,
+					&message);
+
+				return;
+			case Database::Interface::CreatePlayerResult::KeyUsed:
+				Host::RejectRegistrationMessage message;
+				message.reason = Host::RejectRegistrationMessage::KeyUsed;
+
+				sendCommonMessage(
+					Host::AuthMessageID::RejectRegistration,
+					&message);
+
+				return;
+			case Database::Interface::CreatePlayerResult::KeyNotFound:
+				Host::RejectRegistrationMessage message;
+				message.reason = Host::RejectRegistrationMessage::KeyInvalid;
+
+				sendCommonMessage(
+					Host::AuthMessageID::RejectRegistration,
+					&message);
+
+				return;
+			case Database::Interface::CreatePlayerResult::Error:
+				beginMessage(Host::AuthMessageID::InternalError);
+				sendMessage();
+
+				return;
+			}
+
+			Host::AcceptRegistrationMessage message;
+			message.playerID = playerID;
+			sendCommonMessage(
+				Host::AuthMessageID::AcceptRegistration,
+				&message);
+
+			status = Connected;
+			this->playerID = playerID;
+
+			onClientConnected();
+		}
 	};
 }

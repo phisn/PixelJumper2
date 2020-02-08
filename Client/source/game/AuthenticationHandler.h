@@ -95,7 +95,7 @@ namespace Game::Net
 		}
 
 	protected:
-		Status status;
+		Status status = Connecting;
 		Resource::PlayerID playerID = NULL;
 
 		// use timeout in specializations when

@@ -87,6 +87,9 @@
     <ClCompile Include="source\operator\AuthenticationHandler.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
+    <ClCompile Include="..\Client\source\device\EncryptionDevice.cpp">
+      <Filter>external\device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\source\logger\Logger.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="source\operator\AuthenticationHandler.h">
       <Filter>source\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\device\EncryptionDevice.h">
+      <Filter>external\device</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

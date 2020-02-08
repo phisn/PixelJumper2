@@ -14,17 +14,7 @@ namespace Database
 		public StatementBase
 	{
 	public:
-		struct Input
-		{
-			std::string username;
-
-		} input;
-
-		struct Output
-		{
-			Resource::PlayerID playerID;
-
-		} output;
+		PlayerTable playerTable;
 
 		int execute(
 			sqlite3* const database,
@@ -32,8 +22,21 @@ namespace Database
 		{
 			std::stringstream ss;
 
-			ss << "SELECT id FROM players WHERE username='";
-			ss << input.username;
+			ss << "SELECT ";
+
+			const TableBase::ColumnValuesContainer allContainer = playerTable.getAllColumnValues();
+			for (const TableBase::ColumnValuesPair& pair : allContainer)
+			{
+				ss << pair.first;
+
+				if (pair != allContainer.back())
+				{
+					ss << ",";
+				}
+			}
+
+			ss << " FROM players WHERE username='";
+			ss << playerTable.content.username;
 			ss << '\'';
 
 			const std::string command = ss.str();
@@ -51,7 +54,7 @@ namespace Database
 	private:
 		void apply(sqlite3_stmt* const statement) override
 		{
-			output.playerID = sqlite3_column_int64(statement, 0);
+			playerTable.apply(statement);
 		}
 	};
 }

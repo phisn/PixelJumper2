@@ -114,7 +114,7 @@ namespace Device::Net
 			return &messagePipe;
 		}
 
-		void sendMessage()
+		bool sendMessage()
 		{
 			const EResult result = networkInterface->SendMessageToConnection(
 				connection,
@@ -128,7 +128,11 @@ namespace Device::Net
 				Log::Error(L"Failed to send message",
 					(int) result, L"result",
 					messagePipe.getSize(), L"size");
+
+				return false;
 			}
+
+			return true;
 		}
 
 		ISteamNetworkingSockets* networkInterface;

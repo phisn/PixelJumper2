@@ -195,6 +195,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Client\source\device\EncryptionDevice.cpp" />
     <ClCompile Include="..\Client\source\device\NetDevice.cpp" />
     <ClCompile Include="..\Client\source\device\RandomDevice.cpp" />
     <ClCompile Include="..\Client\source\logger\Logger.cpp" />
@@ -217,6 +218,7 @@
     <ClCompile Include="source\operator\Operator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Client\source\device\EncryptionDevice.h" />
     <ClInclude Include="..\Client\source\device\NetDevice.h" />
     <ClInclude Include="..\Client\source\device\RandomDevice.h" />
     <ClInclude Include="..\Client\source\logger\Logger.h" />

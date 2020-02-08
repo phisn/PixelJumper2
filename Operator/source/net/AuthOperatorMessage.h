@@ -62,9 +62,14 @@ namespace Operator::Net::Host
 			RejectRegistration,
 
 			AcceptAuthentication,
+
+			// reject authentication does not specify
+			// reason to prevent information gathering
+			// of the database
 			RejectAuthentication,
 
 			Timeout,
+			InternalError,
 
 			_Offset
 		};
@@ -77,16 +82,8 @@ namespace Operator::Net::Host
 
 	typedef Game::Net::TrivialNetworkMessage<AcceptAuthenticationMessageContent> AcceptAuthenticationMessage;
 
-	struct RejectAuthenticationMessageContent
-	{
-
-	};
-
-	typedef Game::Net::TrivialNetworkMessage<RejectAuthenticationMessageContent> RejectAuthenticationMessage;
-
 	struct AcceptRegistrationMessageContent
 	{
-		AuthenticationToken token;
 		Resource::PlayerID playerID;
 	};
 

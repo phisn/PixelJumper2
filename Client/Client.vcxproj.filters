@@ -283,6 +283,9 @@
     <ClInclude Include="source\game\net\ServerMessage.h">
       <Filter>source\game\net</Filter>
     </ClInclude>
+    <ClInclude Include="source\device\EncryptionDevice.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -454,6 +457,9 @@
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\net\ClientMessage.cpp" />
+    <ClCompile Include="source\device\EncryptionDevice.cpp">
+      <Filter>source\device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">
