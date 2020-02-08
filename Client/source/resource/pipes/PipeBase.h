@@ -88,9 +88,8 @@ namespace Resource
 			return writeValue<sf::Uint8>(&byte);
 		}
 
-		template <typename Size = char>
-		bool writeString(
-			const std::wstring* const str)
+		template <typename String = std::wstring, typename Size = char>
+		bool writeString(const String* const str)
 		{
 			Size size = (Size) str->size();
 
@@ -99,12 +98,15 @@ namespace Resource
 				return false;
 			}
 
-			if ( !writeValue(&size) )
+			if (!writeValue(&size))
 			{
 				return false;
 			}
 
-			return writeContentSafe((char * const) str->c_str(), size * sizeof(wchar_t));
+			return writeContentSafe(
+				(char * const) str->c_str(), 
+				size * sizeof(String::value_type)
+			);
 		}
 	};
 
@@ -166,9 +168,8 @@ namespace Resource
 			return readValue<sf::Uint8>((sf::Uint8*) value);
 		}
 
-		template <typename Size = unsigned char>
-		bool readString(
-			std::wstring* const str)
+		template <typename String = std::wstring, typename Size = unsigned char>
+		bool readString(String* const str)
 		{
 			Size size;
 
@@ -185,7 +186,7 @@ namespace Resource
 			str->resize(size);
 
 			return readContentForce(
-				(char*) str->c_str(), size * sizeof(wchar_t)
+				(char*) str->c_str(), size * sizeof(String::value_type)
 			);
 		}
 	};

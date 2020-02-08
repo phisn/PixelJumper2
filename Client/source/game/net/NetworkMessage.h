@@ -52,6 +52,7 @@ namespace Game::Net
 			// cause messageID when error
 			// is send in response to a message
 			sf::Uint64 messageID;
+
 		} content;
 
 		bool load(Resource::ReadPipe* const pipe) override

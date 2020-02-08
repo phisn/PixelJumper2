@@ -224,6 +224,7 @@
     <ClInclude Include="..\Client\source\logger\Output.h" />
     <ClInclude Include="..\Client\source\logger\Section.h" />
     <ClInclude Include="..\Client\source\logger\SectionHost.h" />
+    <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\database\DatabaseInterface.h" />
     <ClInclude Include="source\database\EmptyKeyStatement.h" />
     <ClInclude Include="source\database\FindPlayerStatement.h" />
@@ -234,8 +235,7 @@
     <ClInclude Include="source\database\TableBase.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DatabaseDevice.h" />
-    <ClInclude Include="source\net\OperatorClientMessage.h" />
-    <ClInclude Include="source\net\OperatorHostMessage.h" />
+    <ClInclude Include="source\net\ClientMessage.h" />
     <ClInclude Include="source\net\OperatorMessage.h" />
     <ClInclude Include="source\operator\ElementConnection.h" />
     <ClInclude Include="source\operator\Operator.h" />

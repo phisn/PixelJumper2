@@ -128,12 +128,6 @@
     <ClInclude Include="source\net\OperatorMessage.h">
       <Filter>source\net</Filter>
     </ClInclude>
-    <ClInclude Include="source\net\OperatorHostMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\net\OperatorClientMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
     <ClInclude Include="..\Client\source\device\RandomDevice.h">
       <Filter>external\device</Filter>
     </ClInclude>
@@ -154,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="source\database\FindPlayerStatement.h">
       <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Common.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\net\ClientMessage.h">
+      <Filter>source\net</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

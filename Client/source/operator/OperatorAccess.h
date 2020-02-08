@@ -33,11 +33,6 @@ namespace Operator
 		PlayerData
 	};
 
-	struct AuthenticationToken
-	{
-		unsigned char token[20];
-	};
-
 	struct RequestHandler
 	{
 		enum Response
