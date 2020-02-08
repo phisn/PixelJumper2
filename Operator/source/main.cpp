@@ -7,12 +7,24 @@
 
 #include <iostream>
 
+// important
+// a player is not different to a server
+// both can host a game or join a game
+// a server differs from a player that it does not
+// contain graphics code
+// both have to login and authenticate
+
 int main()
 {
 	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Warning);
 
 	if (Device::Core::Initialize())
 	{
+		/*for (int i = 0; i < 10; ++i)
+		{
+			Database::Interface::CreateNewKey(NULL);
+		}*/
+
 		/*
 		Resource::PlayerID player;
 		char hash[20];
@@ -20,8 +32,8 @@ int main()
 		Device::Random::FillRandom(20, hash);
 		Device::Random::FillRandom(16, salt);
 
-		std::string username = "user1";
-		std::string key = "XFIRC-VSCXG-GBWKF";
+		std::string username = "user3";
+		std::string key = "TKQPT-DFNJX-IGXLQ";
 
 		Database::Interface::CreatePlayerResult result = Database::Interface::CreateNewPlayer(
 			&player,

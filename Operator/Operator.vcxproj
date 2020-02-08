@@ -212,6 +212,7 @@
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DatabaseDevice.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\operator\AuthenticationHandler.cpp" />
     <ClCompile Include="source\operator\ElementConnection.cpp" />
     <ClCompile Include="source\operator\Operator.cpp" />
   </ItemGroup>
@@ -235,8 +236,9 @@
     <ClInclude Include="source\database\TableBase.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DatabaseDevice.h" />
-    <ClInclude Include="source\net\ClientMessage.h" />
-    <ClInclude Include="source\net\OperatorMessage.h" />
+    <ClInclude Include="source\net\AuthClientMessage.h" />
+    <ClInclude Include="source\net\AuthOperatorMessage.h" />
+    <ClInclude Include="source\operator\AuthenticationHandler.h" />
     <ClInclude Include="source\operator\ElementConnection.h" />
     <ClInclude Include="source\operator\Operator.h" />
   </ItemGroup>

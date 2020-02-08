@@ -84,6 +84,9 @@
     <ClCompile Include="source\database\FindPlayerStatement.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
+    <ClCompile Include="source\operator\AuthenticationHandler.cpp">
+      <Filter>source\operator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\source\logger\Logger.h">
@@ -125,9 +128,6 @@
     <ClInclude Include="source\database\KeyTable.h">
       <Filter>source\database</Filter>
     </ClInclude>
-    <ClInclude Include="source\net\OperatorMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
     <ClInclude Include="..\Client\source\device\RandomDevice.h">
       <Filter>external\device</Filter>
     </ClInclude>
@@ -152,8 +152,14 @@
     <ClInclude Include="source\Common.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="source\net\ClientMessage.h">
+    <ClInclude Include="source\net\AuthClientMessage.h">
       <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\net\AuthOperatorMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\operator\AuthenticationHandler.h">
+      <Filter>source\operator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

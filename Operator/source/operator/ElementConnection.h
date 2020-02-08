@@ -2,6 +2,10 @@
 
 #include <Client/source/device/NetDevice.h>
 
+#include <Operator/source/database/DatabaseInterface.h>
+#include <Operator/source/net/AuthClientMessage.h>
+#include <Operator/source/net/AuthOperatorMessage.h>
+
 namespace Operator
 {
 	class ElementConnection
