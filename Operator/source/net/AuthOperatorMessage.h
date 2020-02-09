@@ -6,9 +6,16 @@
 #include <Operator/source/Common.h>
 
 /*
+	
+	this process is deprecated:
+		the new process hashes the player and host token. this
+		hash is then sent to the host which is then sending it
+		to the operator to validate it. the operator is the
+		only on who does know both tokens
+
 Authentication:
 	client and server authenticate identically
-	the password is hashed at clientside without
+	the hash is hashed at clientside without
 	salt and is send to the server. the server
 	hashes the hash with a salt and compares it
 	to a version in the database. if they are
@@ -61,6 +68,11 @@ namespace Operator::Net::Host
 			AcceptRegistration,
 			RejectRegistration,
 
+			// similiar like normal authentication
+			// but with token
+			AcceptToken,
+			RejectToken,
+
 			AcceptAuthentication,
 
 			// reject authentication does not specify
@@ -78,13 +90,22 @@ namespace Operator::Net::Host
 	struct AcceptAuthenticationMessageContent
 	{
 		Resource::PlayerID playerID;
+		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 
 	typedef Game::Net::TrivialNetworkMessage<AcceptAuthenticationMessageContent> AcceptAuthenticationMessage;
 
+	struct AcceptTokenMessageContent
+	{
+		Resource::PlayerID playerID;
+	};
+
+	typedef Game::Net::TrivialNetworkMessage<AcceptTokenMessageContent> AcceptTokenMessage;
+
 	struct AcceptRegistrationMessageContent
 	{
 		Resource::PlayerID playerID;
+		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 
 	typedef Game::Net::TrivialNetworkMessage<AcceptRegistrationMessageContent> AcceptRegistrationMessage;

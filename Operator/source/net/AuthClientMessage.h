@@ -6,8 +6,8 @@
 namespace Operator::Net::Client
 {
 	// authentication
-	// 1. client hashes password without salt
-	// 2. client send hashed password to operator
+	// 1. client hashes hash without salt
+	// 2. client send hashed hash to operator
 	// 3. operator hashes hash with stored salt
 	// 4. operator compares hashed hash with
 	//    stored hash
@@ -20,6 +20,10 @@ namespace Operator::Net::Client
 			// login with hash after received salt
 			// from requestlogin
 			Authenticate,
+
+			// authentication with token instead of
+			// login
+			Token,
 
 			// create a new player with valid key
 			Register,
@@ -52,6 +56,13 @@ namespace Operator::Net::Client
 				&& pipe->writeValue(&content);
 		}
 	};
+
+	struct TokenMessageContent
+	{
+		char token[OPERATOR_HASH_SIZE];
+	};
+
+	typedef Game::Net::TrivialNetworkMessage<TokenMessageContent> TokenMessage;
 
 	struct RegistrationMessage
 		:

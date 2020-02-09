@@ -9,6 +9,11 @@
 
 namespace Operator
 {
+	void _()
+	{
+		ISteamNetworkingConnectionCustomSignaling
+	}
+
 	bool Initialize();
 	void Uninitialize();
 
@@ -21,9 +26,6 @@ namespace Operator
 	};
 
 	void ProcessOperatorHandler(const OperatorHandler* const handler);
-
-	bool IsConnected();
-	bool Reconnect();
 
 	typedef sf::Uint32 RequestID;
 

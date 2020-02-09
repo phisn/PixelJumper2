@@ -8,6 +8,21 @@
 
 namespace Database
 {
+	// need to rework tablebase because of sqlinjections
+	// to prevent sqlinjections in sqlite you have to use
+	// parameterized statements where these parameters 
+	// can later be bound to as values with sepicific types
+	// because we dont know the types anymore at statement
+	// construction we have to rethink this whole structure.
+	// a another important aspect is the efficiency with
+	// larger tables and maybe the sepcialization of primary
+	// keys. because we often dont need all information or
+	// need it based on different conditions we have to
+	// add a dynamic aspect to solve this problem. this would
+	// also eliminate the problem of sqlbinding in
+	// findstatements because they would be of no need
+	// anymore
+	
 	class TableBase
 	{
 	public:
@@ -53,7 +68,7 @@ namespace Database
 			R"__(
 			CREATE TABLE "players" (
 				"id"	INTEGER NOT NULL,
-				"password"	BLOB,
+				"hash"	BLOB,
 				"salt"	BLOB,
 				PRIMARY KEY("id")
 			);)__",

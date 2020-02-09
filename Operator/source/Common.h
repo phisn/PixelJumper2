@@ -11,4 +11,6 @@ namespace Operator
 	{
 		unsigned char token[20];
 	};
+
+	typedef sf::Uint64 UserID;
 }

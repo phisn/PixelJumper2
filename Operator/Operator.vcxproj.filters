@@ -66,12 +66,6 @@
     <ClCompile Include="..\Client\source\device\RandomDevice.cpp">
       <Filter>external\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\database\PlayerAuthTable.cpp">
-      <Filter>source\database</Filter>
-    </ClCompile>
-    <ClCompile Include="source\database\PlayerInfoTable.cpp">
-      <Filter>source\database</Filter>
-    </ClCompile>
     <ClCompile Include="source\database\StatementBase.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
@@ -81,14 +75,17 @@
     <ClCompile Include="source\database\DatabaseInterface.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
-    <ClCompile Include="source\database\FindPlayerStatement.cpp">
-      <Filter>source\database</Filter>
-    </ClCompile>
     <ClCompile Include="source\operator\AuthenticationHandler.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
     <ClCompile Include="..\Client\source\device\EncryptionDevice.cpp">
       <Filter>external\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\database\UserTable.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="source\database\FindUserStatement.cpp">
+      <Filter>source\database</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,12 +131,6 @@
     <ClInclude Include="..\Client\source\device\RandomDevice.h">
       <Filter>external\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\database\PlayerAuthTable.h">
-      <Filter>source\database</Filter>
-    </ClInclude>
-    <ClInclude Include="source\database\PlayerInfoTable.h">
-      <Filter>source\database</Filter>
-    </ClInclude>
     <ClInclude Include="source\database\StatementBase.h">
       <Filter>source\database</Filter>
     </ClInclude>
@@ -147,9 +138,6 @@
       <Filter>source\database</Filter>
     </ClInclude>
     <ClInclude Include="source\database\DatabaseInterface.h">
-      <Filter>source\database</Filter>
-    </ClInclude>
-    <ClInclude Include="source\database\FindPlayerStatement.h">
       <Filter>source\database</Filter>
     </ClInclude>
     <ClInclude Include="source\Common.h">
@@ -166,6 +154,12 @@
     </ClInclude>
     <ClInclude Include="..\Client\source\device\EncryptionDevice.h">
       <Filter>external\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\database\UserTable.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="source\database\FindUserStatement.h">
+      <Filter>source\database</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

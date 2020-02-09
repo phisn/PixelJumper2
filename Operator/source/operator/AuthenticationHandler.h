@@ -142,15 +142,10 @@ namespace Operator::Net
 	private:
 		void onAuthenticate(const Client::AuthenticationMessage& request)
 		{
-			Resource::PlayerID playerID;
+			Database::User user;
 
-			char hash[OPERATOR_HASH_SIZE];
-			char salt[OPERATOR_SALT_SIZE];
-
-			const Device::Database::ExtractionResult result = Database::Interface::GetPlayerInfo(
-				hash,
-				salt,
-				&playerID,
+			const Device::Database::ExtractionResult result = Database::Interface::GetUserInfo(
+				&user,
 				request.username);
 
 			switch (result)
@@ -176,8 +171,8 @@ namespace Operator::Net
 
 			Device::Encryption::HashHashSalt(
 				(unsigned char*) messageHash,
-				(unsigned char*) hash,
-				(unsigned char*) salt);
+				(unsigned char*) user.hash,
+				(unsigned char*) user.salt);
 
 			if (memcmp(messageHash, request.content.hash, OPERATOR_HASH_SIZE) != 0)
 			{
@@ -188,6 +183,17 @@ namespace Operator::Net
 			}
 
 			Host::AcceptAuthenticationMessage message;
+
+			if (!Database::Interface::CreatePlayerToken(
+					message.authenticationToken,
+					user.userID))
+			{
+				beginMessage(Host::AuthMessageID::InternalError, 8);
+				sendMessage();
+
+				return;
+			}
+
 			message.playerID = playerID;
 
 			sendCommonMessage(
@@ -224,30 +230,15 @@ namespace Operator::Net
 			switch (result)
 			{
 			case Database::Interface::CreatePlayerResult::UsernameUsed:
-				Host::RejectRegistrationMessage message;
-				message.reason = Host::RejectRegistrationMessage::UsernameUsed;
-
-				sendCommonMessage(
-					Host::AuthMessageID::RejectRegistration,
-					&message);
+				RejectRegistration(Host::RejectRegistrationMessage::UsernameUsed);
 
 				return;
 			case Database::Interface::CreatePlayerResult::KeyUsed:
-				Host::RejectRegistrationMessage message;
-				message.reason = Host::RejectRegistrationMessage::KeyUsed;
-
-				sendCommonMessage(
-					Host::AuthMessageID::RejectRegistration,
-					&message);
+				RejectRegistration(Host::RejectRegistrationMessage::KeyUsed);
 
 				return;
 			case Database::Interface::CreatePlayerResult::KeyNotFound:
-				Host::RejectRegistrationMessage message;
-				message.reason = Host::RejectRegistrationMessage::KeyInvalid;
-
-				sendCommonMessage(
-					Host::AuthMessageID::RejectRegistration,
-					&message);
+				RejectRegistration(Host::RejectRegistrationMessage::KeyInvalid);
 
 				return;
 			case Database::Interface::CreatePlayerResult::Error:
@@ -258,7 +249,19 @@ namespace Operator::Net
 			}
 
 			Host::AcceptRegistrationMessage message;
+			
+			if (!Database::Interface::CreatePlayerToken(
+					message.authenticationToken,
+					playerID))
+			{
+				beginMessage(Host::AuthMessageID::InternalError, 8);
+				sendMessage();
+
+				return;
+			}
+			
 			message.playerID = playerID;
+			
 			sendCommonMessage(
 				Host::AuthMessageID::AcceptRegistration,
 				&message);
@@ -267,6 +270,35 @@ namespace Operator::Net
 			this->playerID = playerID;
 
 			onClientConnected();
+		}
+
+		void RejectRegistration(const Host::RejectRegistrationMessage::Reason reason)
+		{
+			Host::RejectRegistrationMessage message;
+			message.reason = reason;
+
+			sendCommonMessage(
+				Host::AuthMessageID::RejectRegistration,
+				&message);
+		}
+
+		void onTokenAuthentication(const Client::TokenMessage& request)
+		{
+			Database::User user;
+
+			Device::Database::ExtractionResult result = Database::Interface::GetUserInfo(
+				&user,
+				request.token);
+
+			switch (result)
+			{
+			case Device::Database::ExtractionResult::NotFound:
+
+				break;
+			case Device::Database::ExtractionResult::Error:
+				
+				break;
+			}
 		}
 	};
 }

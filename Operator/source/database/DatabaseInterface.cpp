@@ -3,37 +3,13 @@
 #include <Client/source/device/RandomDevice.h>
 
 #include <Operator/source/database/EmptyKeyStatement.h>
-#include <Operator/source/database/FindPlayerStatement.h>
-#include <Operator/source/database/PlayerAuthTable.h>
+#include <Operator/source/database/FindUserStatement.h>
+#include <Operator/source/database/UserTable.h>
 
-Device::Database::ExtractionResult Database::Interface::GetPlayerAuth(
-	char hash[OPERATOR_HASH_SIZE], 
-	char salt[OPERATOR_SALT_SIZE], 
-	const Resource::PlayerID player)
+Device::Database::ExtractionResult FindUserWithStatement(
+	Database::User* const user,
+	Database::FindUserStatement& statement)
 {
-	PlayerTable playerTable;
-	playerTable.primary.id = player;
-
-	const Device::Database::ExtractionResult result = Device::Database::Extract(&playerTable);
-
-	if (result == Device::Database::ExtractionResult::Found)
-	{
-		memcpy(hash, playerTable.content.password, 20);
-		memcpy(salt, playerTable.content.salt, 16);
-	}
-
-	return result;
-}
-
-Device::Database::ExtractionResult Database::Interface::GetPlayerInfo(
-	char hash[OPERATOR_HASH_SIZE], 
-	char salt[OPERATOR_SALT_SIZE], 
-	Resource::PlayerID* const playerID, 
-	const std::string username)
-{
-	FindPlayerStatement statement;
-	statement.playerTable.content.username = username;
-
 	sqlite3_stmt* raw_statement;
 	int result = statement.execute(Device::Database::GetConnection(), &raw_statement);
 
@@ -58,14 +34,15 @@ Device::Database::ExtractionResult Database::Interface::GetPlayerInfo(
 			return Device::Database::ExtractionResult::Error;
 		}
 
-		if (playerID)
-			*playerID = statement.playerTable.primary.id;
+		if (user)
+		{
+			user->userID = statement.userTable.primary.id;
+			user->username = statement.userTable.content.username;
 
-		if (hash)
-			memcpy(hash, statement.playerTable.content.password, OPERATOR_HASH_SIZE);
-
-		if (salt)
-			memcpy(salt, statement.playerTable.content.salt, OPERATOR_SALT_SIZE);
+			memcpy(user->hash, statement.userTable.content.hash, OPERATOR_HASH_SIZE);
+			memcpy(user->salt, statement.userTable.content.salt, OPERATOR_SALT_SIZE);
+			memcpy(user->token, statement.userTable.content.token, OPERATOR_HASH_SIZE);
+		}
 
 		return Device::Database::ExtractionResult::Found;
 
@@ -77,11 +54,76 @@ Device::Database::ExtractionResult Database::Interface::GetPlayerInfo(
 	}
 }
 
+Device::Database::ExtractionResult Database::Interface::GetPlayerAuth(
+	char hash[OPERATOR_HASH_SIZE], 
+	char salt[OPERATOR_SALT_SIZE], 
+	const Resource::PlayerID player)
+{
+	UserTable playerTable;
+	playerTable.primary.id = player;
+
+	const Device::Database::ExtractionResult result = Device::Database::Extract(&playerTable);
+
+	if (result == Device::Database::ExtractionResult::Found)
+	{
+		memcpy(hash, playerTable.content.hash, 20);
+		memcpy(salt, playerTable.content.salt, 16);
+	}
+
+	return result;
+}
+
+Device::Database::ExtractionResult Database::Interface::GetUserInfo(
+	User* const user, 
+	const Operator::UserID userID)
+{
+	UserTable playerTable;
+	playerTable.primary.id = userID;
+
+	const Device::Database::ExtractionResult result = Device::Database::Extract(&playerTable);
+
+	if (result == Device::Database::ExtractionResult::Found && user)
+	{
+		user->userID = userID;
+		user->username = std::move(playerTable.content.username);
+
+		memcpy(user->hash, playerTable.content.hash, OPERATOR_HASH_SIZE);
+		memcpy(user->salt, playerTable.content.salt, OPERATOR_SALT_SIZE);
+		memcpy(user->token, playerTable.content.token, OPERATOR_HASH_SIZE);
+	}
+
+	return result;
+}
+
+Device::Database::ExtractionResult Database::Interface::GetUserInfo(
+	User* const user, 
+	const char token[OPERATOR_HASH_SIZE])
+{
+	FindUserStatement statement;
+	statement.setConditionToken(token);
+
+	return FindUserWithStatement(
+		user,
+		statement);
+}
+
+Device::Database::ExtractionResult Database::Interface::GetUserInfo(
+	User* const user,
+	const std::string username)
+{
+	FindUserStatement statement;
+	statement.setConditionUsername(username);
+
+	return FindUserWithStatement(
+		user, 
+		statement);
+}
+
 Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
-	Resource::PlayerID* resultPlayerID, 
-	char salt[16], 
-	char hash[20], 
-	const std::string username,
+	Operator::UserID* resultPlayerID, 
+	char salt[OPERATOR_SALT_SIZE], 
+	char hash[OPERATOR_HASH_SIZE], 
+	const std::string username, 
 	const std::string key)
 {
 	KeyTable keyTable;
@@ -102,7 +144,7 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 		return CreatePlayerResult::KeyUsed;
 	}
 
-	switch (GetPlayerID(NULL, username))
+	switch (GetUserInfo(NULL, username))
 	{
 	case Device::Database::ExtractionResult::Found:
 		return CreatePlayerResult::UsernameUsed;
@@ -129,7 +171,7 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 			continue;
 		}
 
-		PlayerTable table;
+		UserTable table;
 		table.primary.id = playerID;
 
 		Device::Database::ExtractionResult result = Device::Database::Extract(&table);
@@ -142,7 +184,7 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 		{
 			if (result == Device::Database::ExtractionResult::Error)
 			{
-				Log::Error(L"Failed to generate playerID for new player");
+				Log::Error(L"Failed to generate userID for new player");
 
 				return CreatePlayerResult::Error;
 			}
@@ -154,12 +196,12 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 		return CreatePlayerResult::Error;
 	}
 
-	PlayerTable playerTable;
+	UserTable playerTable;
 
 	playerTable.primary.id = playerID;
 	playerTable.content.username = username;
 
-	memcpy(playerTable.content.password, hash, 20);
+	memcpy(playerTable.content.hash, hash, 20);
 	memcpy(playerTable.content.salt, salt, 16);
 
 	if (!Device::Database::Insert(&playerTable))
@@ -187,6 +229,33 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 	{
 		return CreatePlayerResult::Error;
 	}
+}
+
+bool Database::Interface::CreatePlayerToken(
+	char token[OPERATOR_HASH_SIZE],
+	const Operator::UserID userID)
+{
+	UserTable userTable;
+	userTable.primary.id = userID;
+
+	if (Device::Database::Extract(&userTable) != Device::Database::ExtractionResult::Found)
+	{
+		return false;
+	}
+
+	Device::Random::FillRandom(
+		OPERATOR_HASH_SIZE, 
+		(char*) userTable.content.token
+	);
+
+	if (token)
+	{
+		memcpy(token,
+			userTable.content.token,
+			OPERATOR_HASH_SIZE);
+	}
+
+	return Device::Database::Edit(&userTable);
 }
 
 bool Database::Interface::GetEmptyKeys(std::vector<std::string>& keys)
