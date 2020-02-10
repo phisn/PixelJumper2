@@ -2,7 +2,6 @@
 
 #include <Client/source/logger/Logger.h>
 
-#include <Operator/source/database/EmptyKeyStatement.h>
 #include <iostream>
 
 namespace
@@ -37,45 +36,6 @@ namespace Device::Database
 	void Unintialize()
 	{
 		sqlite3_close(database);
-	}
-
-	ExtractionResult Extract(::Database::TableBase* const table)
-	{
-		sqlite3_stmt* statement;
-		int result = table->extract(database, &statement);
-
-		if (result != SQLITE_OK)
-		{
-			Log::Error(L"Failed to create select statement " + GenerateErrorMessage(),
-				result, L"result");
-
-			return ExtractionResult::Error;
-		}
-
-		result = sqlite3_step(statement);
-		
-		if (result != SQLITE_ROW)
-		{
-			FinalizeStatement(statement);
-
-			if (result != SQLITE_DONE)
-			{
-				Log::Error(L"Failed to step statement in extraction " + GenerateErrorMessage(),
-					result, L"result");
-
-				return ExtractionResult::Error;
-			}
-			else
-			{
-				return ExtractionResult::NotFound;
-			}
-		}
-		else
-		{
-			table->apply(statement);
-		}
-
-		return ExtractionResult::Found;
 	}
 
 	bool BeginTransaction()
@@ -127,63 +87,6 @@ namespace Device::Database
 
 			return false;
 		}
-	}
-
-	bool Exists(::Database::TableBase* const table)
-	{
-		return Extract(table) == ExtractionResult::Found;
-	}
-
-	bool Insert(::Database::TableBase* const table)
-	{
-		sqlite3_stmt* statement;
-		int result = table->create(database, &statement);
-
-		if (result != SQLITE_OK)
-		{
-			Log::Error(L"Failed to create insert statement " + GenerateErrorMessage(),
-				result, L"result");
-
-			return false;
-		}
-
-		result = sqlite3_step(statement);
-
-		if (result != SQLITE_DONE)
-		{
-			Log::Error(L"Failed to step statement " + GenerateErrorMessage(),
-				result, L"result");
-
-			return false;
-		}
-
-		return FinalizeStatement(statement);
-	}
-
-	bool Edit(::Database::TableBase* const table)
-	{
-		sqlite3_stmt* statement;
-		int result = table->edit(database, &statement);
-
-		if (result != SQLITE_OK)
-		{
-			Log::Error(L"Failed to create update statement " + GenerateErrorMessage(),
-				result, L"result");
-
-			return false;
-		}
-
-		result = sqlite3_step(statement);
-
-		if (result != SQLITE_DONE)
-		{
-			Log::Error(L"Failed to step statement " + GenerateErrorMessage(),
-				result, L"result");
-
-			return false;
-		}
-
-		return FinalizeStatement(statement);
 	}
 
 	bool FinalizeStatement(sqlite3_stmt* const statement)

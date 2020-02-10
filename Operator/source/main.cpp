@@ -31,8 +31,11 @@ int main()
 		Device::Random::FillRandom(20, hash);
 		Device::Random::FillRandom(16, salt);
 
-		std::string username = "user4";
-		std::string key = "XNVVG-MRCRU-SWCGD";
+		std::string username = "user1";
+		Database::RegistrationKey key;
+		memcpy(key.content,
+			"ASCTGZGMURUKQYD",
+			OPERATOR_KEY_SIZE);
 
 		Database::Interface::CreatePlayerResult result = Database::Interface::CreateNewPlayer(
 			&player,
@@ -40,7 +43,7 @@ int main()
 			hash,
 			username,
 			key);
-		
+
 		if (result == Database::Interface::CreatePlayerResult::Success)
 		{
 			std::cout << "Create new player: " << player << std::endl;

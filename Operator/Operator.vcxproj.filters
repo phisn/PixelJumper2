@@ -84,9 +84,6 @@
     <ClCompile Include="source\database\UserTable.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
-    <ClCompile Include="source\database\FindUserStatement.cpp">
-      <Filter>source\database</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\source\logger\Logger.h">
@@ -156,9 +153,6 @@
       <Filter>external\device</Filter>
     </ClInclude>
     <ClInclude Include="source\database\UserTable.h">
-      <Filter>source\database</Filter>
-    </ClInclude>
-    <ClInclude Include="source\database\FindUserStatement.h">
       <Filter>source\database</Filter>
     </ClInclude>
   </ItemGroup>

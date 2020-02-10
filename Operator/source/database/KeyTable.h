@@ -16,10 +16,22 @@ namespace Database
 		:
 		public TableBase
 	{
+		static const TableDefinition definition;
+
 	public:
+		struct Column
+		{
+			enum
+			{
+				Key,
+				Player,
+				Source
+			};
+		};
+
 		KeyTable()
 			:
-			TableBase("keys")
+			TableBase(&definition)
 		{
 		}
 
@@ -41,88 +53,116 @@ namespace Database
 
 		} foreign;
 
-		void apply(sqlite3_stmt* const statement) override
+		static inline const TableDefinition* getTableDefinition()
 		{
-			keyFromString((const char*)sqlite3_column_blob(statement, 0));
-			foreign.playerID = sqlite3_column_int64(statement, 1);
-			content.source.assign(
-				(const char*) sqlite3_column_text(statement, 2),
-				sqlite3_column_bytes(statement, 2)
-			);
-		}
-
-		std::string keyAsString() const
-		{
-			std::string key;
-			key.reserve(17);
-
-			int column = 0;
-
-			while (true)
-			{
-				for (int i = 0; i < 5; ++i)
-				{
-					key += primary.key.content[column * 5 + i];
-				}
-
-				if (++column == 3)
-				{
-					break;
-				}
-
-				key += '-';
-			}
-
-			return key;
-		}
-
-		void keyFromString(const std::string key)
-		{
-			if (key.size() < 17)
-			{
-				Log::Error(L"Unable to convert key with invalid size",
-					key.size(), L"size");
-
-				return;
-			}
-
-			for (int i = 0; i < 17; ++i)
-				if ((i % 6) != 5)
-				{
-					primary.key.content[i - i / 6] = key[i];
-				}
-		}
-
-		const ColumnValuesContainer getAllColumnValues() override
-		{
-			ColumnValuesContainer container;
-
-			container.emplace_back(ColumnNames[0], '\'' + keyAsString() + '\'');
-			container.emplace_back(ColumnNames[1], foreign.playerID == 0
-				? "NULL"
-				: std::to_string(foreign.playerID));
-			container.emplace_back(ColumnNames[2], content.source.length() == 0
-				? "NULL"
-				: '\'' + content.source + '\'');
-
-			return container;
-		}
-
-		const ColumnValuesContainer getPrimaryKeyColumnValues() override
-		{
-			ColumnValuesContainer container;
-
-			container.emplace_back(ColumnNames[0], '\'' + keyAsString() + '\'');
-
-			return container;
+			return &definition;
 		}
 
 	private:
-		constexpr static const char* ColumnNames[] =
+		int bindColumnValue(
+			sqlite3_stmt* const statement,
+			const int column,
+			const int columnIndex) const override
 		{
-			"key",
-			"player",
-			"source"
-		};
+			switch (column)
+			{
+			case Column::Key:
+				return sqlite3_bind_blob(
+					statement,
+					columnIndex,
+					primary.key.content,
+					OPERATOR_KEY_SIZE,
+					SQLITE_STATIC);
+
+			case Column::Player:
+				if (foreign.playerID == NULL)
+				{
+					return sqlite3_bind_null(statement, columnIndex);
+				}
+
+				return sqlite3_bind_int64(
+					statement,
+					columnIndex,
+					foreign.playerID);
+
+			case Column::Source:
+				return sqlite3_bind_text(
+					statement,
+					columnIndex,
+					content.source.c_str(),
+					content.source.size(),
+					SQLITE_STATIC);
+
+			}
+
+			Log::Error(L"Got invalid column in bindcolumn",
+				column, L"column",
+				columnIndex, L"index");
+
+			return SQLITE_ERROR;
+		}
+
+		bool adoptColumnValue(
+			sqlite3_stmt* const statement,
+			const int column,
+			const int columnIndex) override
+		{
+			if (sqlite3_column_type(statement, columnIndex) == SQLITE_NULL)
+			{
+				switch (column)
+				{
+				case Column::Player:
+					foreign.playerID = NULL;
+
+					break;
+				case Column::Source:
+					content.source.clear();
+
+					break;
+				default:
+					Log::Error(L"Invalid null type in adoptcolumnvalue",
+						column, L"column",
+						columnIndex, L"columnindex");
+
+					return false;
+				}
+
+				return true;
+			}
+
+			switch (column)
+			{
+			case Column::Key:
+				memcpy(primary.key.content,
+					sqlite3_column_blob(statement, columnIndex),
+					OPERATOR_KEY_SIZE);
+
+				break;
+			case Column::Player:
+				foreign.playerID = sqlite3_column_int64(statement, columnIndex);
+
+				break;
+			case Column::Source:
+			{
+				content.source.clear();
+
+				const int usernameLength = sqlite3_column_bytes(statement, columnIndex);
+				content.source.reserve(usernameLength / 2);
+				content.source.assign(
+					(const char*)sqlite3_column_blob(statement, columnIndex)
+				);
+
+				break;
+			}
+			default:
+				Log::Error(L"Got invalid column in adoptcolumn",
+					column, L"column",
+					columnIndex, L"index");
+
+				return false;
+			}
+
+			return true;
+		}
 	};
 }

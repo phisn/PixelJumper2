@@ -3,6 +3,8 @@
 #include <Operator/source/database/TableBase.h>
 #include <Operator/source/database/StatementBase.h>
 
+#include <string>
+
 namespace Device::Database
 {
 	bool Initialize();
@@ -18,12 +20,6 @@ namespace Device::Database
 	bool BeginTransaction();
 	bool EndTransaction();
 	bool RollbackTransaction();
-
-	bool Exists(::Database::TableBase* const table);
-	bool Insert(::Database::TableBase* const table);
-	bool Edit(::Database::TableBase* const table);
-
-	ExtractionResult Extract(::Database::TableBase* const table);
 
 	bool FinalizeStatement(sqlite3_stmt* const statement);
 

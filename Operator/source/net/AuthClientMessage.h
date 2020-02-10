@@ -73,7 +73,7 @@ namespace Operator::Net::Client
 		struct Content
 		{
 			char hash[OPERATOR_HASH_SIZE];
-			char key[OPERATOR_KEY_SIZE];
+			Database::RegistrationKey key;
 
 		} content;
 

@@ -3,138 +3,107 @@
 #include <Client/source/device/RandomDevice.h>
 
 #include <Operator/source/database/EmptyKeyStatement.h>
-#include <Operator/source/database/FindUserStatement.h>
 #include <Operator/source/database/UserTable.h>
 
-Device::Database::ExtractionResult FindUserWithStatement(
-	Database::User* const user,
-	Database::FindUserStatement& statement)
-{
-	sqlite3_stmt* raw_statement;
-	int result = statement.execute(Device::Database::GetConnection(), &raw_statement);
 
-	if (result != SQLITE_OK)
-	{
-		if (raw_statement)
-			Device::Database::FinalizeStatement(raw_statement);
 
-		return Device::Database::ExtractionResult::Error;
-	}
-
-	result = statement.next(raw_statement);
-
-	switch (result)
-	{
-	case SQLITE_DONE:
-		return Device::Database::ExtractionResult::NotFound;
-
-	case SQLITE_ROW:
-		if (!Device::Database::FinalizeStatement(raw_statement))
-		{
-			return Device::Database::ExtractionResult::Error;
-		}
-
-		if (user)
-		{
-			user->userID = statement.userTable.primary.id;
-			user->username = statement.userTable.content.username;
-
-			memcpy(user->hash, statement.userTable.content.hash, OPERATOR_HASH_SIZE);
-			memcpy(user->salt, statement.userTable.content.salt, OPERATOR_SALT_SIZE);
-			memcpy(user->token, statement.userTable.content.token, OPERATOR_HASH_SIZE);
-		}
-
-		return Device::Database::ExtractionResult::Found;
-
-	default:
-		Log::Error(L"Failed to next findplayer statement " + Device::Database::GenerateErrorMessage(),
-			result, L"result");
-
-		return Device::Database::ExtractionResult::Error;
-	}
-}
-
-Device::Database::ExtractionResult Database::Interface::GetPlayerAuth(
-	char hash[OPERATOR_HASH_SIZE], 
-	char salt[OPERATOR_SALT_SIZE], 
-	const Resource::PlayerID player)
-{
-	UserTable playerTable;
-	playerTable.primary.id = player;
-
-	const Device::Database::ExtractionResult result = Device::Database::Extract(&playerTable);
-
-	if (result == Device::Database::ExtractionResult::Found)
-	{
-		memcpy(hash, playerTable.content.hash, 20);
-		memcpy(salt, playerTable.content.salt, 16);
-	}
-
-	return result;
-}
-
-Device::Database::ExtractionResult Database::Interface::GetUserInfo(
-	User* const user, 
-	const Operator::UserID userID)
-{
-	UserTable playerTable;
-	playerTable.primary.id = userID;
-
-	const Device::Database::ExtractionResult result = Device::Database::Extract(&playerTable);
-
-	if (result == Device::Database::ExtractionResult::Found && user)
-	{
-		user->userID = userID;
-		user->username = std::move(playerTable.content.username);
-
-		memcpy(user->hash, playerTable.content.hash, OPERATOR_HASH_SIZE);
-		memcpy(user->salt, playerTable.content.salt, OPERATOR_SALT_SIZE);
-		memcpy(user->token, playerTable.content.token, OPERATOR_HASH_SIZE);
-	}
-
-	return result;
-}
-
-Device::Database::ExtractionResult Database::Interface::GetUserInfo(
-	User* const user, 
-	const char token[OPERATOR_HASH_SIZE])
-{
-	FindUserStatement statement;
-	statement.setConditionToken(token);
-
-	return FindUserWithStatement(
-		user,
-		statement);
-}
-
-Device::Database::ExtractionResult Database::Interface::GetUserInfo(
-	User* const user,
+Database::ConditionResult Database::Interface::GetPlayerAuth(
+	UserAuthentication& authentication,
 	const std::string username)
 {
-	FindUserStatement statement;
-	statement.setConditionUsername(username);
+	UserTable userTable;
+	const ConditionResult result = userTable.extractCommon(
+		username,
+		{
+			UserTable::Column::PlayerID,
+			UserTable::Column::Hash,
+			UserTable::Column::Salt
+		});
 
-	return FindUserWithStatement(
-		user, 
-		statement);
+	if (result == ConditionResult::Found)
+	{
+		authentication.userID = userTable.primary.id;
+
+		memcpy(authentication.hash, userTable.content.hash, 20);
+		memcpy(authentication.salt, userTable.content.salt, 16);
+	}
+
+	return result;
+}
+
+Database::ConditionResult Database::Interface::FindUserID(
+	Operator::UserID* const userID, 
+	const std::string username)
+{
+	UserTable playerTable;
+
+	const ConditionResult result = playerTable.extractCommon(
+		username,
+		{
+			UserTable::Column::PlayerID
+		});
+
+	if (result == ConditionResult::Found && userID)
+	{
+		*userID = playerTable.primary.id;
+	}
+
+	return result;
+}
+
+Database::ConditionResult Database::Interface::FindUserID(
+	Operator::UserID* const userID, 
+	const char token[OPERATOR_HASH_SIZE])
+{
+	UserTable playerTable;
+
+	memcpy(playerTable.content.token,
+		token,
+		OPERATOR_HASH_SIZE);
+
+	const ConditionResult result = playerTable.extract(
+		{
+			UserTable::Column::PlayerID
+		},
+		{
+			UserTable::Column::Token
+		});
+
+	if (result == ConditionResult::Found && userID)
+	{
+		*userID = playerTable.primary.id;
+	}
+
+	return result;
 }
 
 Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 	Operator::UserID* resultPlayerID, 
 	char salt[OPERATOR_SALT_SIZE], 
 	char hash[OPERATOR_HASH_SIZE], 
-	const std::string username, 
-	const std::string key)
+	const std::string username,
+	const Database::RegistrationKey key)
 {
 	KeyTable keyTable;
-	keyTable.keyFromString(key);
 
-	switch (Device::Database::Extract(&keyTable))
+	memcpy(keyTable.primary.key.content,
+		key.content,
+		OPERATOR_KEY_SIZE);
+
+	ConditionResult result = keyTable.extract(
+		{
+			KeyTable::Column::Player
+		},
+		{
+			KeyTable::Column::Key
+		});
+
+	switch (result)
 	{
-	case Device::Database::ExtractionResult::NotFound:
+	case ConditionResult::NotFound:
 		return CreatePlayerResult::KeyNotFound;
 
-	case Device::Database::ExtractionResult::Error:
+	case ConditionResult::Error:
 		return CreatePlayerResult::Error;
 
 	}
@@ -144,12 +113,12 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 		return CreatePlayerResult::KeyUsed;
 	}
 
-	switch (GetUserInfo(NULL, username))
+	switch (FindUserID(NULL, username))
 	{
-	case Device::Database::ExtractionResult::Found:
+	case ConditionResult::Found:
 		return CreatePlayerResult::UsernameUsed;
 
-	case Device::Database::ExtractionResult::Error:
+	case ConditionResult::Error:
 		return CreatePlayerResult::Error;
 
 	}
@@ -174,15 +143,15 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 		UserTable table;
 		table.primary.id = playerID;
 
-		Device::Database::ExtractionResult result = Device::Database::Extract(&table);
+		result = table.exists({ UserTable::Column::PlayerID });
 
-		if (result == Device::Database::ExtractionResult::NotFound)
+		if (result == ConditionResult::NotFound)
 		{
 			break;
 		}
 		else
 		{
-			if (result == Device::Database::ExtractionResult::Error)
+			if (result == ConditionResult::Error)
 			{
 				Log::Error(L"Failed to generate userID for new player");
 
@@ -201,10 +170,10 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 	playerTable.primary.id = playerID;
 	playerTable.content.username = username;
 
-	memcpy(playerTable.content.hash, hash, 20);
-	memcpy(playerTable.content.salt, salt, 16);
+	memcpy(playerTable.content.hash, hash, OPERATOR_HASH_SIZE);
+	memcpy(playerTable.content.salt, salt, OPERATOR_SALT_SIZE);
 
-	if (!Device::Database::Insert(&playerTable))
+	if (!playerTable.create())
 	{
 		Device::Database::RollbackTransaction();
 		return CreatePlayerResult::Error;
@@ -212,7 +181,13 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 
 	keyTable.foreign.playerID = playerID;
 
-	if (!Device::Database::Edit(&keyTable))
+	if (keyTable.edit(
+		{
+			KeyTable::Column::Player
+		},
+		{
+			KeyTable::Column::Key
+		}) != ConditionResult::Found)
 	{
 		Device::Database::RollbackTransaction();
 		return CreatePlayerResult::Error;
@@ -236,9 +211,13 @@ bool Database::Interface::CreatePlayerToken(
 	const Operator::UserID userID)
 {
 	UserTable userTable;
-	userTable.primary.id = userID;
+	
+	ConditionResult result = userTable.extractCommon(userID,
+		{
+			UserTable::Column::Token
+		});
 
-	if (Device::Database::Extract(&userTable) != Device::Database::ExtractionResult::Found)
+	if (result != ConditionResult::Found)
 	{
 		return false;
 	}
@@ -255,10 +234,17 @@ bool Database::Interface::CreatePlayerToken(
 			OPERATOR_HASH_SIZE);
 	}
 
-	return Device::Database::Edit(&userTable);
+	return userTable.edit(
+		{
+			UserTable::Column::Token
+		},
+		{
+			UserTable::Column::PlayerID
+		}) 
+		== ConditionResult::Found;
 }
 
-bool Database::Interface::GetEmptyKeys(std::vector<std::string>& keys)
+bool Database::Interface::GetEmptyKeys(std::vector<Database::RegistrationKey>& keys)
 {
 	Database::EmptyKeysStatement emptyKeys;
 
@@ -287,20 +273,12 @@ bool Database::Interface::GetEmptyKeys(std::vector<std::string>& keys)
 			break;
 		}
 
-		std::string key;
-		key.reserve(17);
+		keys.emplace_back();
 
-		for (int i = 0; i < 14; ++i)
-		{
-			key += emptyKeys.table.primary.key.content[i];
-
-			if (i % 5 == 4)
-				key += '-';
-		}
-
-		key += emptyKeys.table.primary.key.content[14];
-
-		keys.push_back(key);
+		memcpy(
+			keys.back().content,
+			emptyKeys.key.content,
+			OPERATOR_KEY_SIZE);
 	}
 
 	if (result != SQLITE_DONE)
@@ -313,7 +291,7 @@ bool Database::Interface::GetEmptyKeys(std::vector<std::string>& keys)
 }
 
 bool Database::Interface::CreateNewKey(
-	std::string* const key,
+	Database::RegistrationKey* const key,
 	const Resource::PlayerID playerID, 
 	const std::string source)
 {
@@ -337,23 +315,12 @@ bool Database::Interface::CreateNewKey(
 
 	sqlite3_stmt* statement;
 
-	if (Device::Database::Insert(&keyTable))
+	if (keyTable.create())
 	{
-		if (key)
-		{
-			key->clear();
-			key->reserve(17);
-
-			for (int i = 0; i < 14; ++i)
-			{
-				*key += keyTable.primary.key.content[i];
-
-				if (i % 5 == 4)
-					*key += '-';
-			}
-
-			*key += keyTable.primary.key.content[14];
-		}
+		if (key) 
+			memcpy(key->content,
+				keyTable.primary.key.content,
+				OPERATOR_KEY_SIZE);
 
 		return true;
 	}

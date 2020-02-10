@@ -17,7 +17,10 @@ namespace Database
 
 			if (result == SQLITE_ROW)
 			{
-				apply(statement);
+				if (!apply(statement))
+				{
+					return SQLITE_ERROR;
+				}
 			}
 			else
 			{
@@ -33,6 +36,6 @@ namespace Database
 		}
 
 	protected:
-		virtual void apply(sqlite3_stmt* const statement) = 0;
+		virtual bool apply(sqlite3_stmt* const statement) = 0;
 	};
 }

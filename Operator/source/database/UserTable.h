@@ -14,6 +14,8 @@ namespace Database
 		:
 		public TableBase
 	{
+		static const TableDefinition definition;
+
 	public:
 		struct Column
 		{
@@ -25,11 +27,11 @@ namespace Database
 				Salt,
 				Token
 			};
-		}
+		};
 
 		UserTable()
 			:
-			TableBase("users")
+			TableBase(&definition)
 		{
 		}
 
@@ -50,69 +52,170 @@ namespace Database
 
 		} content;
 
-		void apply(sqlite3_stmt* const statement) override
+		ConditionResult extractCommon(
+			const Operator::UserID userID,
+			const Columns info)
 		{
-			primary.id = sqlite3_column_int64(statement, 0);
+			primary.id = userID;
+			Columns condition{ Column::PlayerID };
 
-			content.username.clear();
-			const int usernameLength = sqlite3_column_bytes(statement, 1);
-			content.username.reserve(usernameLength / 2);
-			content.username.assign((const char*) sqlite3_column_blob(statement, 1));
-
-			unsigned short* hex = (unsigned short*) sqlite3_column_blob(statement, 2);
-			for (int i = 0; i < 20; ++i)
-			{
-				content.hash[i] = hextobyte(hex[i]);
-			}
-
-			hex = (unsigned short*) sqlite3_column_blob(statement, 3);
-			for (int i = 0; i < 16; ++i)
-			{
-				content.salt[i] = hextobyte(hex[i]);
-			}
-
-			if (sqlite3_column_type(statement, 0) != SQLITE_NULL)
-			{
-				hex = (unsigned short*) sqlite3_column_blob(statement, 4);
-			
-				for (int i = 0; i < 16; ++i)
-				{
-					content.token[i] = hextobyte(hex[i]);
-				}
-			}
+			return extract(info, condition);
 		}
 
-		const ColumnValuesContainer getAllColumnValues() override
+		ConditionResult extractCommon(
+			const std::string username,
+			const Columns info)
 		{
-			ColumnValuesContainer container;
+			content.username = username;
+			Columns condition{ Column::Username };
 
-			container.emplace_back(ColumnNames[0], std::to_string(primary.id));
-			container.emplace_back(ColumnNames[1], '\'' + content.username + '\'');
-			container.emplace_back(ColumnNames[2], '\'' + carrtohexstr(content.hash, OPERATOR_HASH_SIZE) + '\'');
-			container.emplace_back(ColumnNames[3], '\'' + carrtohexstr(content.salt, OPERATOR_SALT_SIZE) + '\'');
-			container.emplace_back(ColumnNames[4], '\'' + carrtohexstr(content.token, OPERATOR_HASH_SIZE) + '\'');
-
-
-			return container;
+			return extract(info, condition);
 		}
 
-		const ColumnValuesContainer getPrimaryKeyColumnValues() override
+		static inline const TableDefinition* getTableDefinition()
 		{
-			ColumnValuesContainer container;
-
-			container.emplace_back(ColumnNames[0], std::to_string(primary.id));
-
-			return container;
+			return &definition;
 		}
 
 	private:
-		constexpr static const char* ColumnNames[] =
+		int bindColumnValue(
+			sqlite3_stmt* const statement,
+			const int column,
+			const int columnIndex) const override
 		{
-			"id",
-			"username",
-			"hash",
-			"salt",
-			"token"
-		};
+			switch (column)
+			{
+			case Column::PlayerID:
+				return sqlite3_bind_int64(
+					statement, 
+					columnIndex, 
+					primary.id);
+
+			case Column::Username:
+				return sqlite3_bind_text(
+					statement, 
+					columnIndex, 
+					content.username.c_str(),
+					content.username.size(),
+					SQLITE_STATIC);
+
+			case Column::Hash:
+				return sqlite3_bind_blob(
+					statement,
+					columnIndex,
+					content.hash,
+					OPERATOR_HASH_SIZE,
+					SQLITE_STATIC);
+
+			case Column::Salt:
+				return sqlite3_bind_blob(
+					statement,
+					columnIndex,
+					content.salt,
+					OPERATOR_SALT_SIZE,
+					SQLITE_STATIC);
+
+			case Column::Token:
+				bool null = true;
+
+				for (int i = 0; i < OPERATOR_HASH_SIZE; ++i)
+					if (content.token[i])
+					{
+						null = false;
+						break;
+					}
+
+				if (null)
+				{
+					return sqlite3_bind_null(statement, columnIndex);
+				}
+
+				return sqlite3_bind_blob(
+					statement,
+					columnIndex,
+					content.token,
+					OPERATOR_HASH_SIZE,
+					SQLITE_STATIC);
+			}
+
+			Log::Error(L"Got invalid column in bindcolumn",
+				column, L"column",
+				columnIndex, L"index");
+
+			return SQLITE_ERROR;
+		}
+
+		bool adoptColumnValue(
+			sqlite3_stmt* const statement,
+			const int column,
+			const int columnIndex) override
+		{
+			if (sqlite3_column_type(statement, columnIndex) == SQLITE_NULL)
+			{
+				switch (column)
+				{
+				case Column::Token:
+					for (int i = 0; i < OPERATOR_HASH_SIZE; ++i)
+					{
+						content.token[i] = 0;
+					}
+
+					break;
+				default:
+					Log::Error(L"Invalid null type in adoptcolumnvalue",
+						column, L"column",
+						columnIndex, L"columnindex");
+
+					return false;
+				}
+
+				return true;
+			}
+
+			switch (column)
+			{
+			case Column::PlayerID:
+				primary.id = sqlite3_column_int64(statement, columnIndex);
+
+				break;
+			case Column::Username:
+			{
+				content.username.clear();
+
+				const int usernameLength = sqlite3_column_bytes(statement, columnIndex);
+				content.username.reserve(usernameLength / 2);
+				content.username.assign(
+					(const char*) sqlite3_column_blob(statement, columnIndex)
+				);
+			}
+				break;
+			case Column::Hash:
+				memcpy(content.hash,
+					sqlite3_column_blob(statement, columnIndex),
+					OPERATOR_HASH_SIZE);
+
+				break;
+			case Column::Salt:
+				memcpy(content.salt,
+					sqlite3_column_blob(statement, columnIndex),
+					OPERATOR_SALT_SIZE);
+
+				break;
+			case Column::Token:
+				memcpy(content.token,
+					sqlite3_column_blob(statement, columnIndex),
+					OPERATOR_HASH_SIZE);
+
+				break;
+			default:
+				Log::Error(L"Got invalid column in adoptcolumn",
+					column, L"column",
+					columnIndex, L"index");
+
+				return false;
+			}
+
+			return true;
+		}
 	};
 }

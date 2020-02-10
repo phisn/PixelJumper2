@@ -142,15 +142,14 @@ namespace Operator::Net
 	private:
 		void onAuthenticate(const Client::AuthenticationMessage& request)
 		{
-			Database::User user;
-
-			const Device::Database::ExtractionResult result = Database::Interface::GetUserInfo(
-				&user,
+			Database::UserAuthentication user;
+			const Database::ConditionResult result = Database::Interface::GetPlayerAuth(
+				user,
 				request.username);
 
 			switch (result)
 			{
-			case Device::Database::ExtractionResult::NotFound:
+			case Database::ConditionResult::NotFound:
 				beginMessage(Host::AuthMessageID::RejectAuthentication);
 				sendMessage();
 
@@ -160,7 +159,7 @@ namespace Operator::Net
 					Device::Net::ThreatLevel::Suspicious);
 
 				return;
-			case Device::Database::ExtractionResult::Error:
+			case Database::ConditionResult::Error:
 				beginMessage(Host::AuthMessageID::InternalError, 8);
 				sendMessage();
 
@@ -171,10 +170,10 @@ namespace Operator::Net
 
 			Device::Encryption::HashHashSalt(
 				(unsigned char*) messageHash,
-				(unsigned char*) user.hash,
+				(unsigned char*) request.content.hash,
 				(unsigned char*) user.salt);
 
-			if (memcmp(messageHash, request.content.hash, OPERATOR_HASH_SIZE) != 0)
+			if (memcmp(messageHash, user.hash, OPERATOR_HASH_SIZE) != 0)
 			{
 				beginMessage(Host::AuthMessageID::RejectAuthentication);
 				sendMessage();
@@ -284,18 +283,17 @@ namespace Operator::Net
 
 		void onTokenAuthentication(const Client::TokenMessage& request)
 		{
-			Database::User user;
-
-			Device::Database::ExtractionResult result = Database::Interface::GetUserInfo(
-				&user,
+			UserID userID;
+			Database::ConditionResult result = Database::Interface::FindUserID(
+				&userID,
 				request.token);
 
 			switch (result)
 			{
-			case Device::Database::ExtractionResult::NotFound:
+			case Database::ConditionResult::NotFound:
 
 				break;
-			case Device::Database::ExtractionResult::Error:
+			case Database::ConditionResult::Error:
 				
 				break;
 			}

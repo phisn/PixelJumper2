@@ -12,7 +12,7 @@ namespace Database
 		public StatementBase
 	{
 	public:
-		KeyTable table;
+		RegistrationKey key;
 
 		int execute(
 			sqlite3* const database,
@@ -22,18 +22,10 @@ namespace Database
 
 			ss << "SELECT ";
 
-			const TableBase::ColumnValuesContainer& container = table.getAllColumnValues();
-			for (TableBase::ColumnValuesContainer::const_iterator iterator = container.cbegin();
-				iterator != container.cend() - 1; ++iterator)
-			{
-				ss << iterator->first;
-				ss << ",";
-			}
-
-			ss << container.back().first;
+			ss << KeyTable::getTableDefinition()->columns[KeyTable::Column::Key];
 
 			ss << " FROM ";
-			ss << table.getTableName();
+			ss << KeyTable::getTableDefinition()->name;
 			ss << " WHERE player IS NULL;";
 
 			const std::string command = ss.str();
@@ -49,9 +41,20 @@ namespace Database
 		}
 
 	private:
-		void apply(sqlite3_stmt* const statement) override
+		bool apply(sqlite3_stmt* const statement) override
 		{
-			table.apply(statement);
+			if (sqlite3_column_type(statement, 1) == SQLITE_NULL)
+			{
+				Log::Error(L"Got null in apply in emptykey statement");
+
+				return false;
+			}
+
+			memcpy(key.content,
+				sqlite3_column_blob(statement, 1),
+				OPERATOR_KEY_SIZE);
+
+			return true;
 		}
 	};
 }

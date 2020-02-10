@@ -204,7 +204,6 @@
     <ClCompile Include="..\Client\source\logger\SectionHost.cpp" />
     <ClCompile Include="source\database\DatabaseInterface.cpp" />
     <ClCompile Include="source\database\EmptyKeyStatement.cpp" />
-    <ClCompile Include="source\database\FindUserStatement.cpp" />
     <ClCompile Include="source\database\KeyTable.cpp" />
     <ClCompile Include="source\database\UserTable.cpp" />
     <ClCompile Include="source\database\StatementBase.cpp" />
@@ -229,7 +228,6 @@
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\database\DatabaseInterface.h" />
     <ClInclude Include="source\database\EmptyKeyStatement.h" />
-    <ClInclude Include="source\database\FindUserStatement.h" />
     <ClInclude Include="source\database\KeyTable.h" />
     <ClInclude Include="source\database\UserTable.h" />
     <ClInclude Include="source\database\StatementBase.h" />
