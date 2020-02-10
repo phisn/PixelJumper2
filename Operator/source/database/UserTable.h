@@ -15,6 +15,18 @@ namespace Database
 		public TableBase
 	{
 	public:
+		struct Column
+		{
+			enum
+			{
+				PlayerID,
+				Username,
+				Hash,
+				Salt,
+				Token
+			};
+		}
+
 		UserTable()
 			:
 			TableBase("users")
