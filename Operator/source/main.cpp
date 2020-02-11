@@ -14,6 +14,12 @@
 // contain graphics code
 // both have to login and authenticate
 
+// important
+// all players are accepted and hold as long as 
+// possible. the player with the longest idel time
+// is being disconnected when a max of connections
+// is reached
+
 int main()
 {
 	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Warning);

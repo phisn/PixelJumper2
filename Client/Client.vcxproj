@@ -121,6 +121,7 @@
     <ClInclude Include="source\menu\MenuLabel.h" />
     <ClInclude Include="source\menu\MenuRootBase.h" />
     <ClInclude Include="source\operator\OperatorAccess.h" />
+    <ClInclude Include="source\operator\OperatorAuthenticator.h" />
     <ClInclude Include="source\resource\pipes\FilePipe.h" />
     <ClInclude Include="source\resource\pipes\MemoryPipe.h" />
     <ClInclude Include="source\resource\pipes\PacketPipe.h" />
@@ -133,9 +134,11 @@
     <ClInclude Include="source\resource\StaticResource.h" />
     <ClInclude Include="source\resource\TileResource.h" />
     <ClInclude Include="source\resource\WorldResource.h" />
+    <ClInclude Include="source\scene\AuthenticationScene.h" />
     <ClInclude Include="source\scene\EditorScene.h" />
     <ClInclude Include="source\scene\GameBaseScene.h" />
     <ClInclude Include="source\scene\GameJoinScene.h" />
+    <ClInclude Include="source\scene\LoadingScreenScene.h" />
     <ClInclude Include="source\scene\LocalGameScene.h" />
     <ClInclude Include="source\scene\MainSceneBase.h" />
     <ClInclude Include="source\scene\MenuBaseScene.h" />
@@ -183,6 +186,7 @@
     <ClCompile Include="source\menu\MenuProperty.cpp" />
     <ClCompile Include="source\menu\MenuRootBase.cpp" />
     <ClCompile Include="source\operator\OperatorAccess.cpp" />
+    <ClCompile Include="source\operator\OperatorAuthenticator.cpp" />
     <ClCompile Include="source\resource\pipes\FilePipe.cpp" />
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp" />
     <ClCompile Include="source\resource\pipes\PacketPipe.cpp" />
@@ -193,9 +197,11 @@
     <ClCompile Include="source\resource\StaticResource.cpp" />
     <ClCompile Include="source\resource\TileResource.cpp" />
     <ClCompile Include="source\resource\WorldResource.cpp" />
+    <ClCompile Include="source\scene\AuthenticationScene.cpp" />
     <ClCompile Include="source\scene\EditorScene.cpp" />
     <ClCompile Include="source\scene\GameBaseScene.cpp" />
     <ClCompile Include="source\scene\GameJoinScene.cpp" />
+    <ClCompile Include="source\scene\LoadingScreenScene.cpp" />
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />

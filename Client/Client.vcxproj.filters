@@ -73,11 +73,11 @@
     <Filter Include="source\game\world">
       <UniqueIdentifier>{562fb688-8187-4001-acea-9f78f9217ece}</UniqueIdentifier>
     </Filter>
-    <Filter Include="operator">
-      <UniqueIdentifier>{661ad6e3-ac5d-4c9b-a35f-466dc962ba1b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\game\player\tiletrait">
       <UniqueIdentifier>{69b9c64d-ffe4-408e-ac6a-79f90bd91212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\operator">
+      <UniqueIdentifier>{661ad6e3-ac5d-4c9b-a35f-466dc962ba1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -269,7 +269,7 @@
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\operator\OperatorAccess.h">
-      <Filter>operator</Filter>
+      <Filter>source\operator</Filter>
     </ClInclude>
     <ClInclude Include="source\game\AuthenticationHandler.h">
       <Filter>source\game</Filter>
@@ -285,6 +285,15 @@
     </ClInclude>
     <ClInclude Include="source\device\EncryptionDevice.h">
       <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\operator\OperatorAuthenticator.h">
+      <Filter>source\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\AuthenticationScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\LoadingScreenScene.h">
+      <Filter>source\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -451,7 +460,7 @@
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\operator\OperatorAccess.cpp">
-      <Filter>operator</Filter>
+      <Filter>source\operator</Filter>
     </ClCompile>
     <ClCompile Include="source\game\AuthenticationHandler.cpp">
       <Filter>source\game</Filter>
@@ -459,6 +468,15 @@
     <ClCompile Include="source\game\net\ClientMessage.cpp" />
     <ClCompile Include="source\device\EncryptionDevice.cpp">
       <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\operator\OperatorAuthenticator.cpp">
+      <Filter>source\operator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\AuthenticationScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\LoadingScreenScene.cpp">
+      <Filter>source\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

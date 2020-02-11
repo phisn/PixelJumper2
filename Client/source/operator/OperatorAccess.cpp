@@ -1,51 +1,32 @@
 #include "OperatorAccess.h"
-#include <future>
+
+namespace
+{
+	Operator::AuthenticationToken token;
+}
 
 namespace Operator
 {
-	const RequestID Operator::Request(
-		RequestType request, 
-		RequestHandler* const handler)
+	bool Initialize()
 	{
-		// wipe and start creating real operator
-		/*
-		const RequestID requestID = Device::Random::MakeRandom<RequestID>();
+		return true;
+	}
 
-		// simulate requests based on connection with 200ms work time
-		std::async(std::launch::async, 
-			[request, handler, requestID]()
-			{
-				std::this_thread::sleep_for(std::chrono::milliseconds(200));
+	void Uninitialize()
+	{
+	}
 
-				switch (request)
-				{
-				case RequestType::AuthenticationToken:
-					AuthenticationToken token;
+	void ProcessAuthenticationHandler(AuthenticationEventHandler* const handler)
+	{
+	}
 
-					for (int i = 0; i < 20; ++i)
-					{
-						token.token[i] = i;
-					}
+	void AuthenticateCredentials(
+		const char hash[OPERATOR_HASH_SIZE],
+		const std::string username)
+	{
+	}
 
-					Resource::MemoryReadPipe pipe(
-						(const char*) &token,
-						sizeof(token));
-
-					handler->handle(
-						RequestHandler::Done,
-						requestID,
-						RequestType::AuthenticationToken,
-						&pipe);
-
-					break;
-				case RequestType::PlayerData:
-
-
-					break;
-				}
-			});
-
-		return requestID;
-		*/
+	void AuthenticateToken(const char token[OPERATOR_HASH_SIZE])
+	{
 	}
 }

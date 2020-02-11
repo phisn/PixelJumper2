@@ -291,12 +291,28 @@ namespace Operator::Net
 			switch (result)
 			{
 			case Database::ConditionResult::NotFound:
+				beginMessage(Host::AuthMessageID::RejectToken);
+				sendMessage();
 
 				break;
 			case Database::ConditionResult::Error:
-				
+				beginMessage(Host::AuthMessageID::InternalError);
+				sendMessage();
+
 				break;
 			}
+
+			Host::AcceptTokenMessage message;
+			message.playerID = userID;
+
+			sendCommonMessage(
+				Host::AuthMessageID::AcceptToken,
+				&message);
+
+			status = Connected;
+			this->playerID = userID;
+
+			onClientConnected();
 		}
 	};
 }

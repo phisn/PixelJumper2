@@ -7,26 +7,59 @@
 
 #include <future>
 
+// game runs:
+// authentication scene is pushed first
+// authentication scene shows loading screen
+// authentication asks operatoraccess auth
+//  with stored token or credentials when
+//  possible
+// authentication asks cliend for credentials
+//  when not stored or old ones do not work
+// authentication scene pops and
+//  operatoraccess status shows result
+// operatoraccess accepts a eventhandler to
+//  push events to like disconnected or
+//  request answers?
+
 namespace Operator
 {
-	void _()
-	{
-		ISteamNetworkingConnectionCustomSignaling
-	}
-
 	bool Initialize();
 	void Uninitialize();
 
-	struct OperatorHandler
+	struct AuthenticationEventHandler
 	{
-		virtual void onConnected();
-		virtual void onDisconnected();
+		virtual void onConnected() = 0;
+		virtual void onDisconnected() = 0;
+		
+		virtual void onTokenRejected() = 0;
+		virtual void onAuthenticationRejected() = 0;
+		virtual void onRegistrationRejected() = 0;
 
-		virtual void onMessage();
+		virtual void onTokenRejected() = 0;
+		virtual void onAuthenticationRejected() = 0;
+		virtual void onREgistrationRejected() = 0;
+
+		virtual void onTimeout() = 0;
+		virtual void onInternalError() = 0;
 	};
 
-	void ProcessOperatorHandler(const OperatorHandler* const handler);
+	void ProcessAuthenticationHandler(AuthenticationEventHandler* const handler);
 
+	void AuthenticateCredentials(
+		const char hash[OPERATOR_HASH_SIZE],
+		const std::string username);
+	void AuthenticateToken(const char token[OPERATOR_HASH_SIZE]);
+
+	enum class Status
+	{
+		Connecting,
+		Connected,
+		Unconnected
+	};
+
+	const Status getStatus();
+
+	/*
 	typedef sf::Uint32 RequestID;
 
 	enum class RequestType : sf::Uint8
@@ -34,73 +67,5 @@ namespace Operator
 		AuthenticationToken,
 		PlayerData
 	};
-
-	struct RequestHandler
-	{
-		enum Response
-		{
-			Done,
-			Denied,
-			Error
-		};
-
-		virtual void handle(
-			const Response response,
-			const RequestID requestID,
-			const RequestType requestType,
-			Resource::ReadPipe* const pipe) = 0;
-	};
-
-	const RequestID Request(RequestType request, RequestHandler* const handler);
-	
-	struct OperatorAccessClient
-	{
-		// client token was accepted and client is valid
-		// called with playerID to prevent playerID spoofing
-		virtual void onOperatorClientConnected(const Resource::PlayerID playerID) = 0;
-
-		// client token was rejected. potential identifier
-		// for cheating but could also be a disconnection while
-		// validating
-		virtual void onOperatorClientRejected() = 0;
-		
-		// client disconnected from operator and the token is
-		// no longer valid. client should be kicked if not already
-		// done
-		virtual void onOperatorClientDisconnected() = 0;
-	};
-
-	struct ClientIdentifactor
-	{
-		AuthenticationToken token;
-		unsigned char salt[16];
-	};
-
-	// identificate a client as a server
-	// used to prove a client real
-	void RegisterClient(
-		ClientIdentifactor* const identificator,
-		OperatorAccessClient* const client);
-
-	struct AuthenticationHandler
-		:
-		public ISteamNetworkingSocketsCallbacks,
-		public OperatorAccessClient
-	{
-		/*
-		
-		onOperatorClientConnected:
-			now create remoteconnection
-		
-		*/
-
-		void onClientIdentifiactorReceived(ClientIdentifactor identificator)
-		{
-			RegisterClient(&identificator, this);
-		}
-	};
-
-
-	std::future<sf::Uint64> CreateAuthentication();
-	bool ValidateAuthentication();
+	*/
 }
