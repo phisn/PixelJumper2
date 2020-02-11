@@ -1,14 +1,21 @@
 #include "OperatorAccess.h"
+#include <Client/source/operator/DefaultAuthEventHandler.h>
+#include <Client/source/operator/OperatorAuthenticator.h>
 
 namespace
 {
-	Operator::AuthenticationToken token;
+	Operator::AuthenticationEventHandler* eventHandler = NULL;
+	Operator::DefaultAuthEventHandler* defaultEventHandler;
+	Operator::Authenticator* authenticator;
 }
 
 namespace Operator
 {
 	bool Initialize()
 	{
+		defaultEventHandler = new DefaultAuthEventHandler();
+		authenticator = new Operator::Authenticator();
+
 		return true;
 	}
 
@@ -16,17 +23,26 @@ namespace Operator
 	{
 	}
 
-	void ProcessAuthenticationHandler(AuthenticationEventHandler* const handler)
+	void Process()
 	{
+		if (!authenticator->process())
+		{
+			// ...
+		}
 	}
 
-	void AuthenticateCredentials(
-		const char hash[OPERATOR_HASH_SIZE],
-		const std::string username)
+	void PutAuthenticationEventHandler(AuthenticationEventHandler* const eventHandler)
 	{
+		::eventHandler = eventHandler;
 	}
 
-	void AuthenticateToken(const char token[OPERATOR_HASH_SIZE])
+	void PopAuthenticationEventHandler()
 	{
+		eventHandler = NULL;
+	}
+
+	AuthenticationEventHandler* getActiveAuthenticationEventHandler()
+	{
+		return eventHandler ? eventHandler : defaultEventHandler;
 	}
 }

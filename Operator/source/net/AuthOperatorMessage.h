@@ -89,7 +89,7 @@ namespace Operator::Net::Host
 
 	struct AcceptAuthenticationMessageContent
 	{
-		Resource::PlayerID playerID;
+		UserID userID;
 		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 
@@ -97,14 +97,14 @@ namespace Operator::Net::Host
 
 	struct AcceptTokenMessageContent
 	{
-		Resource::PlayerID playerID;
+		UserID userID;
 	};
 
 	typedef Game::Net::TrivialNetworkMessage<AcceptTokenMessageContent> AcceptTokenMessage;
 
 	struct AcceptRegistrationMessageContent
 	{
-		Resource::PlayerID playerID;
+		UserID userID;
 		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 

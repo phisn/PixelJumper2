@@ -59,7 +59,7 @@ namespace Operator::Net
 
 	protected:
 		Status status = Connecting;
-		Resource::PlayerID playerID = NULL;
+		UserID userID = NULL;
 
 		// use timeout in specializations when
 		// needed to abuse unused memory after
@@ -193,14 +193,14 @@ namespace Operator::Net
 				return;
 			}
 
-			message.playerID = playerID;
+			message.userID = userID;
 
 			sendCommonMessage(
 				Host::AuthMessageID::AcceptAuthentication,
 				&message);
 			
 			status = Connected;
-			this->playerID = playerID;
+			this->userID = userID;
 
 			onClientConnected();
 		}
@@ -217,10 +217,10 @@ namespace Operator::Net
 				(unsigned char*) request.content.hash,
 				(unsigned char*) salt);
 
-			Resource::PlayerID playerID;
+			UserID userID;
 
 			const Database::Interface::CreatePlayerResult result = Database::Interface::CreateNewPlayer(
-				&playerID,
+				&userID,
 				salt,
 				hash,
 				request.username,
@@ -251,7 +251,7 @@ namespace Operator::Net
 			
 			if (!Database::Interface::CreatePlayerToken(
 					message.authenticationToken,
-					playerID))
+					userID))
 			{
 				beginMessage(Host::AuthMessageID::InternalError, 8);
 				sendMessage();
@@ -259,14 +259,14 @@ namespace Operator::Net
 				return;
 			}
 			
-			message.playerID = playerID;
+			message.userID = userID;
 			
 			sendCommonMessage(
 				Host::AuthMessageID::AcceptRegistration,
 				&message);
 
 			status = Connected;
-			this->playerID = playerID;
+			this->userID = userID;
 
 			onClientConnected();
 		}
@@ -303,14 +303,14 @@ namespace Operator::Net
 			}
 
 			Host::AcceptTokenMessage message;
-			message.playerID = userID;
+			message.userID = userID;
 
 			sendCommonMessage(
 				Host::AuthMessageID::AcceptToken,
 				&message);
 
 			status = Connected;
-			this->playerID = userID;
+			this->userID = userID;
 
 			onClientConnected();
 		}

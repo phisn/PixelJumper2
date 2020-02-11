@@ -25,12 +25,6 @@
     <Filter Include="source\framework">
       <UniqueIdentifier>{e6571033-ad24-4860-8fad-429aaa5b6a10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\resource">
-      <UniqueIdentifier>{66b67bfc-0010-45cc-80b8-4ec868cce6b1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\resource\pipes">
-      <UniqueIdentifier>{713d3fec-01b0-46d3-9089-e2730258018c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\logger">
       <UniqueIdentifier>{e27b5282-e150-43bb-a9a9-0172ea1c17bd}</UniqueIdentifier>
     </Filter>
@@ -78,6 +72,12 @@
     </Filter>
     <Filter Include="source\operator">
       <UniqueIdentifier>{661ad6e3-ac5d-4c9b-a35f-466dc962ba1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\resource">
+      <UniqueIdentifier>{66b67bfc-0010-45cc-80b8-4ec868cce6b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\resource\pipes">
+      <UniqueIdentifier>{713d3fec-01b0-46d3-9089-e2730258018c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +295,9 @@
     <ClInclude Include="source\scene\LoadingScreenScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
+    <ClInclude Include="source\operator\DefaultAuthEventHandler.h">
+      <Filter>source\operator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -477,6 +480,9 @@
     </ClCompile>
     <ClCompile Include="source\scene\LoadingScreenScene.cpp">
       <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\operator\DefaultAuthEventHandler.cpp">
+      <Filter>source\operator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

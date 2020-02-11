@@ -7,7 +7,6 @@ namespace Scene
 {
 	class TestMenuScene
 		:
-		public Operator::AuthenticationEventHandler,
 		public MenuBaseScene
 	{
 	public:
@@ -23,7 +22,7 @@ namespace Scene
 				0xa2, 0x86, 0x25, 0x51, 0x3f
 			};
 			
-			Operator::AuthenticateCredentials(hash, username);
+			// Operator::AuthenticateCredentials(hash, username);
 		}
 
 		void onScenePopped(const int size) override
@@ -43,8 +42,5 @@ namespace Scene
 		}
 
 	private:
-		void onConnected() override
-		{
-		}
 	};
 }

@@ -1,11 +1,7 @@
 #pragma once
 
 #include <Client/source/device/NetDevice.h>
-#include <Client/source/resource/PlayerResource.h>
-
-#include <openssl/sha.h>
-
-#include <future>
+#include <Operator/source/Common.h>
 
 // game runs:
 // authentication scene is pushed first
@@ -23,49 +19,88 @@
 
 namespace Operator
 {
+	// poll events instead of anything else?
+
 	bool Initialize();
 	void Uninitialize();
 
-	struct AuthenticationEventHandler
+	void Process();
+
+	// think about adding connect
+	class AuthenticatorAccess
 	{
+	public:
+		enum Status
+		{
+			// currently connecting to operator
+			Connecting,
+			// connected to operator but not authenticated
+			// timeout if not authenticated in time
+			Connected,
+			// currently waiting for authentication
+			// response
+			Authenticating,
+			// authenticated and connected to operator
+			// ready for requests
+			Authenticated,
+			// authenticated but not connected to operator
+			// connect before sending requests
+			Idle,
+			// not connected to operator
+			// caused by timeout or invalid
+			// authentication
+			Unconnected,
+			// same as unconnected but caused
+			// by an unexpected error
+			Error
+		};
+
+		virtual bool AuthenticateCredentials(
+			const char hash[OPERATOR_HASH_SIZE],
+			const std::string username) = 0;
+		virtual bool AuthenticateToken(const char token[OPERATOR_HASH_SIZE]) = 0;
+
+		Status getStatus() const
+		{
+			return status;
+		}
+
+	protected:
+		Status status = Unconnected;
+	};
+
+	class AuthenticationEventHandler
+	{
+	public:
+		virtual void initialize(AuthenticatorAccess* const authenticator)
+		{
+			this->authenticator = authenticator;
+		}
+
 		virtual void onConnected() = 0;
 		virtual void onDisconnected() = 0;
-		
+
+		virtual void onTokenAccepted() = 0;
+		virtual void onAuthenticationAccepted() = 0;
+		virtual void onRegistrationAccepted() = 0;
+
 		virtual void onTokenRejected() = 0;
 		virtual void onAuthenticationRejected() = 0;
 		virtual void onRegistrationRejected() = 0;
 
-		virtual void onTokenRejected() = 0;
-		virtual void onAuthenticationRejected() = 0;
-		virtual void onREgistrationRejected() = 0;
-
 		virtual void onTimeout() = 0;
 		virtual void onInternalError() = 0;
+
+	protected:
+		AuthenticatorAccess* authenticator;
 	};
 
-	void ProcessAuthenticationHandler(AuthenticationEventHandler* const handler);
+	// if authenticationeventhandler is already placed
+	// the old one is replaced
+	void PutAuthenticationEventHandler(AuthenticationEventHandler* const eventHandler);
+	// if no authenticationeventhandler is placed this
+	// function does nothing
+	void PopAuthenticationEventHandler();
 
-	void AuthenticateCredentials(
-		const char hash[OPERATOR_HASH_SIZE],
-		const std::string username);
-	void AuthenticateToken(const char token[OPERATOR_HASH_SIZE]);
-
-	enum class Status
-	{
-		Connecting,
-		Connected,
-		Unconnected
-	};
-
-	const Status getStatus();
-
-	/*
-	typedef sf::Uint32 RequestID;
-
-	enum class RequestType : sf::Uint8
-	{
-		AuthenticationToken,
-		PlayerData
-	};
-	*/
+	AuthenticationEventHandler* getActiveAuthenticationEventHandler();
 }

@@ -76,7 +76,7 @@ namespace Game::Net
 			{
 				status = Disconnecting;
 
-				if (playerID == NULL)
+				if (userID == NULL)
 				{
 					beginMessage(Host::AuthenticationMessageID::Timeout, 8);
 					sendMessage();
@@ -96,7 +96,7 @@ namespace Game::Net
 
 	protected:
 		Status status = Connecting;
-		Resource::PlayerID playerID = NULL;
+		Resource::PlayerID userID = NULL;
 
 		// use timeout in specializations when
 		// needed to abuse unused memory after
@@ -116,7 +116,7 @@ namespace Game::Net
 
 				// playerid cant be null to identify operator
 				// timeout
-				if (!message.load(pipe) && message.playerID != NULL)
+				if (!message.load(pipe) && message.userID != NULL)
 				{
 					this->onThreatIdentified(
 						messageID,
@@ -130,7 +130,7 @@ namespace Game::Net
 				}
 
 				Operator::RegisterClient(&message.identificator, this);
-				playerID = message.playerID;
+				userID = message.userID;
 
 				break;
 			default:
@@ -162,9 +162,9 @@ namespace Game::Net
 		}
 
 	private:
-		void onOperatorClientConnected(const Resource::PlayerID playerID)
+		void onOperatorClientConnected(const Resource::PlayerID userID)
 		{
-			if (this->playerID != playerID)
+			if (this->userID != userID)
 			{
 				beginMessage(Host::AuthenticationMessageID::InvalidPlayerID, 8);
 				sendMessage();

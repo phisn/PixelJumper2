@@ -120,6 +120,7 @@
     <ClInclude Include="source\menu\MenuElementBase.h" />
     <ClInclude Include="source\menu\MenuLabel.h" />
     <ClInclude Include="source\menu\MenuRootBase.h" />
+    <ClInclude Include="source\operator\DefaultAuthEventHandler.h" />
     <ClInclude Include="source\operator\OperatorAccess.h" />
     <ClInclude Include="source\operator\OperatorAuthenticator.h" />
     <ClInclude Include="source\resource\pipes\FilePipe.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="source\menu\MenuLabel.cpp" />
     <ClCompile Include="source\menu\MenuProperty.cpp" />
     <ClCompile Include="source\menu\MenuRootBase.cpp" />
+    <ClCompile Include="source\operator\DefaultAuthEventHandler.cpp" />
     <ClCompile Include="source\operator\OperatorAccess.cpp" />
     <ClCompile Include="source\operator\OperatorAuthenticator.cpp" />
     <ClCompile Include="source\resource\pipes\FilePipe.cpp" />
