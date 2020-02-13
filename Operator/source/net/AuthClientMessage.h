@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/game/net/NetworkMessage.h>
+
 #include <Operator/source/Common.h>
 
 namespace Operator::Net::Client
@@ -73,7 +74,7 @@ namespace Operator::Net::Client
 		struct Content
 		{
 			char hash[OPERATOR_HASH_SIZE];
-			Database::RegistrationKey key;
+			RegistrationKey key;
 
 		} content;
 

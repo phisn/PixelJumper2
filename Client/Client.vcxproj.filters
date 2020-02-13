@@ -268,9 +268,6 @@
     <ClInclude Include="source\game\RemoteConnection.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\operator\OperatorAccess.h">
-      <Filter>source\operator</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\AuthenticationHandler.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -286,16 +283,13 @@
     <ClInclude Include="source\device\EncryptionDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\operator\OperatorAuthenticator.h">
-      <Filter>source\operator</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\AuthenticationScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
     <ClInclude Include="source\scene\LoadingScreenScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\operator\DefaultAuthEventHandler.h">
+    <ClInclude Include="source\operator\OperatorConnectionHandler.h">
       <Filter>source\operator</Filter>
     </ClInclude>
   </ItemGroup>
@@ -343,9 +337,6 @@
       <Filter>source\resource</Filter>
     </ClCompile>
     <ClCompile Include="source\logger\Output.cpp">
-      <Filter>source\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="source\logger\Section.cpp">
       <Filter>source\logger</Filter>
     </ClCompile>
     <ClCompile Include="source\logger\Logger.cpp">
@@ -462,9 +453,6 @@
     <ClCompile Include="source\game\RemoteConnection.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\operator\OperatorAccess.cpp">
-      <Filter>source\operator</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\AuthenticationHandler.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
@@ -472,16 +460,16 @@
     <ClCompile Include="source\device\EncryptionDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\operator\OperatorAuthenticator.cpp">
-      <Filter>source\operator</Filter>
-    </ClCompile>
     <ClCompile Include="source\scene\AuthenticationScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
     <ClCompile Include="source\scene\LoadingScreenScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\operator\DefaultAuthEventHandler.cpp">
+    <ClCompile Include="source\logger\Section.cpp">
+      <Filter>source\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="source\operator\OperatorConnectionHandler.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
   </ItemGroup>

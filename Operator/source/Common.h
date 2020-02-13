@@ -12,5 +12,11 @@ namespace Operator
 		unsigned char token[20];
 	};
 
+	// xxxxx-xxxxx-xxxxx
+	struct RegistrationKey
+	{
+		char content[15];
+	};
+
 	typedef sf::Uint64 UserID;
 }

@@ -6,12 +6,6 @@
 
 namespace Database
 {
-	// xxxxx-xxxxx-xxxxx
-	struct RegistrationKey
-	{
-		char content[15];
-	};
-
 	class KeyTable
 		:
 		public TableBase

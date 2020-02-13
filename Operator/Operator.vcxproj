@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugStatic|Win32">
@@ -212,8 +212,8 @@
     <ClCompile Include="source\device\DatabaseDevice.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\operator\AuthenticationHandler.cpp" />
-    <ClCompile Include="source\operator\ElementConnection.cpp" />
     <ClCompile Include="source\operator\Operator.cpp" />
+    <ClCompile Include="source\operator\RequestHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\source\device\EncryptionDevice.h" />
@@ -225,6 +225,7 @@
     <ClInclude Include="..\Client\source\logger\Output.h" />
     <ClInclude Include="..\Client\source\logger\Section.h" />
     <ClInclude Include="..\Client\source\logger\SectionHost.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\database\DatabaseInterface.h" />
     <ClInclude Include="source\database\EmptyKeyStatement.h" />
@@ -237,8 +238,8 @@
     <ClInclude Include="source\net\AuthClientMessage.h" />
     <ClInclude Include="source\net\AuthOperatorMessage.h" />
     <ClInclude Include="source\operator\AuthenticationHandler.h" />
-    <ClInclude Include="source\operator\ElementConnection.h" />
     <ClInclude Include="source\operator\Operator.h" />
+    <ClInclude Include="source\operator\RequestHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

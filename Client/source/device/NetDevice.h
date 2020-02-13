@@ -366,7 +366,7 @@ namespace Device::Net
 			return true;
 		}
 
-		bool process() override
+		virtual bool process() override
 		{
 			networkInterface->RunCallbacks(this);
 			return ClientHandler::process();

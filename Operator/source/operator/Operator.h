@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/device/NetDevice.h>
-#include <Operator/source/operator/ElementConnection.h>
+#include <Operator/source/operator/RequestHandler.h>
 
 namespace Operator
 {
@@ -29,22 +29,27 @@ namespace Operator
 
 		bool askClientConnect(SteamNetworkingIPAddr* const ipAddress) override
 		{
+			Log::Information(L"Client in coming");
+
 			return true;
 		}
 
 		void onClientConnect(const HSteamNetConnection connection) override
 		{
-			connections.emplace_back(connection);
+			Log::Information(L"Client connected");
+			connections.emplace_back(connection, sf::seconds(20));
 		}
 
 		void onClientDisconnected(const HSteamNetConnection connection) override
 		{
+			Log::Information(L"Client disconnected");
 		}
 
 		void onClientLost(const HSteamNetConnection connection) override
 		{
+			Log::Information(L"Client lost");
 		}
 
-		std::vector<ElementConnection> connections;
+		std::vector<Net::RequestHandler> connections;
 	};
 }

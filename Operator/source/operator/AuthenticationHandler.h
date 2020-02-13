@@ -33,8 +33,11 @@ namespace Operator::Net
 			Disconnected,
 		};
 
-		AuthenticationHandler(const sf::Uint32 timeout = 100)
+		AuthenticationHandler(
+			const HSteamNetConnection connection,
+			const sf::Uint32 timeout = 100)
 			:
+			ClientHandler(connection),
 			timeout(timeout)
 		{
 		}
@@ -66,7 +69,7 @@ namespace Operator::Net
 		// status connecting
 		sf::Uint32 timeout;
 
-		virtual void onClientConnected() = 0;
+		virtual void onClientAuthenticated() = 0;
 
 		virtual void onMessage(
 			const Device::Net::MessageID messageID,

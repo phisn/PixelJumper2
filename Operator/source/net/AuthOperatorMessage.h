@@ -80,6 +80,9 @@ namespace Operator::Net::Host
 			// of the database
 			RejectAuthentication,
 
+			// closes connection to accept new ones
+			IdleConnection,
+
 			Timeout,
 			InternalError,
 

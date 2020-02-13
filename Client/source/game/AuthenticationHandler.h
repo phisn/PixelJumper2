@@ -8,28 +8,6 @@
 namespace Game::Net
 {
 	/*
-	
-		1. Client requests operator
-		   auth token
-		2. Operator checks credentials
-		   and sends auth token
-		3. Client hashes auth token
-		   with random salt to auth
-		4. Client requests auth at
-		   simulator
-		5. AuthHandler requests operator 
-		   confirmation
-		6. Operator confirms auth
-		   playerid
-		7. AuthHandler accept client 
-		   auth
-		8. Client requests start of 
-		   simulation
-		9. Simulation accepts request 
-		   and starts
-	
-	*/
-
 	struct AuthenticationMessage
 	{
 		Operator::ClientIdentifactor identification;
@@ -202,4 +180,5 @@ namespace Game::Net
 			status = Disconnected;
 		}
 	};
+*/
 }
