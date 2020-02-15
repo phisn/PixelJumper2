@@ -75,6 +75,8 @@ namespace Operator::Net
 			const Device::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
+			Log::Information(L"got message", messageID, L"messageID");
+
 			switch (messageID)
 			{
 			case Client::AuthMessageID::Authenticate:
@@ -205,7 +207,7 @@ namespace Operator::Net
 			status = Connected;
 			this->userID = userID;
 
-			onClientConnected();
+			onClientAuthenticated();
 		}
 
 		void onRegistration(const Client::RegistrationMessage& request)
@@ -271,7 +273,7 @@ namespace Operator::Net
 			status = Connected;
 			this->userID = userID;
 
-			onClientConnected();
+			onClientAuthenticated();
 		}
 
 		void RejectRegistration(const Host::RejectRegistrationMessage::Reason reason)
@@ -315,7 +317,7 @@ namespace Operator::Net
 			status = Connected;
 			this->userID = userID;
 
-			onClientConnected();
+			onClientAuthenticated();
 		}
 	};
 }

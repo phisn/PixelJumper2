@@ -43,18 +43,18 @@ namespace Database::Interface
 
 	CreatePlayerResult CreateNewPlayer(
 		Operator::UserID* playerID,
-		char salt[OPERATOR_SALT_SIZE],
-		char hash[OPERATOR_HASH_SIZE],
+		const char salt[OPERATOR_SALT_SIZE],
+		const char hash[OPERATOR_HASH_SIZE],
 		const std::string username,
-		const RegistrationKey key);
+		const Operator::RegistrationKey key);
 
 	bool CreatePlayerToken(
 		char token[OPERATOR_HASH_SIZE],
 		const Operator::UserID user);
 
-	bool GetEmptyKeys(std::vector<Database::RegistrationKey>& keys);
+	bool GetEmptyKeys(std::vector<Operator::RegistrationKey>& keys);
 	bool CreateNewKey(
-		RegistrationKey* const key,
+		Operator::RegistrationKey* const key,
 		const Resource::PlayerID playerID = 0,
 		const std::string source = "");
 }

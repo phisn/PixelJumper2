@@ -8,6 +8,7 @@
 
 namespace Game::Net
 {
+	/*
 	class RemoteConnection
 		:
 		public AuthenticationHandler
@@ -117,12 +118,12 @@ namespace Game::Net
 				// missing * cant happen in remote connection
 				// results in error
 
-				/*
-				sendError(
+				
+				/*sendError(
 					Log::Convert(L"Got invalid simulation status",
 						(int) simulation->getStatus(), L"status"),
 					Error::InvalidSimulationState);
-					*/
+					
 
 			}
 		}
@@ -241,5 +242,5 @@ namespace Game::Net
 		}
 
 		void onClientConnected() override;
-	};
+	};*/
 }

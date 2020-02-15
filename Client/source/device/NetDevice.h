@@ -369,7 +369,13 @@ namespace Device::Net
 		virtual bool process() override
 		{
 			networkInterface->RunCallbacks(this);
-			return ClientHandler::process();
+
+			if (connection)
+			{
+				return ClientHandler::process();
+			}
+
+			return true;
 		}
 
 	protected:

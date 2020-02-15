@@ -31,7 +31,7 @@ namespace Database
 
 		struct Primary
 		{
-			RegistrationKey key;
+			Operator::RegistrationKey key;
 
 		} primary;
 

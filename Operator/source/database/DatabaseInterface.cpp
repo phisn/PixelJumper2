@@ -24,8 +24,8 @@ Database::ConditionResult Database::Interface::GetPlayerAuth(
 	{
 		authentication.userID = userTable.primary.id;
 
-		memcpy(authentication.hash, userTable.content.hash, 20);
-		memcpy(authentication.salt, userTable.content.salt, 16);
+		memcpy(authentication.hash, userTable.content.hash, OPERATOR_HASH_SIZE);
+		memcpy(authentication.salt, userTable.content.salt, OPERATOR_SALT_SIZE);
 	}
 
 	return result;
@@ -79,10 +79,10 @@ Database::ConditionResult Database::Interface::FindUserID(
 
 Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 	Operator::UserID* resultPlayerID, 
-	char salt[OPERATOR_SALT_SIZE], 
-	char hash[OPERATOR_HASH_SIZE], 
+	const char salt[OPERATOR_SALT_SIZE], 
+	const char hash[OPERATOR_HASH_SIZE], 
 	const std::string username,
-	const Database::RegistrationKey key)
+	const Operator::RegistrationKey key)
 {
 	KeyTable keyTable;
 
@@ -244,7 +244,7 @@ bool Database::Interface::CreatePlayerToken(
 		== ConditionResult::Found;
 }
 
-bool Database::Interface::GetEmptyKeys(std::vector<Database::RegistrationKey>& keys)
+bool Database::Interface::GetEmptyKeys(std::vector<Operator::RegistrationKey>& keys)
 {
 	Database::EmptyKeysStatement emptyKeys;
 
@@ -291,7 +291,7 @@ bool Database::Interface::GetEmptyKeys(std::vector<Database::RegistrationKey>& k
 }
 
 bool Database::Interface::CreateNewKey(
-	Database::RegistrationKey* const key,
+	Operator::RegistrationKey* const key,
 	const Resource::PlayerID playerID, 
 	const std::string source)
 {

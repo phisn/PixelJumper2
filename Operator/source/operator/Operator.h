@@ -10,6 +10,8 @@ namespace Operator
 		public Device::Net::Server
 	{
 	public:
+		using Server::Server;
+
 		enum Status
 		{
 			Starting,
@@ -23,6 +25,22 @@ namespace Operator
 			return status;
 		}
 
+		void process() override
+		{
+			Server::process();
+
+
+
+			for (Net::RequestHandler& connection : connections)
+			{
+				connection.process();
+				
+				if (connection.getStatus() == Net::AuthenticationHandler::Status::Connecting)
+				{
+					connection.update();
+				}
+			}
+		}
 
 	private:
 		Status status;
@@ -37,7 +55,7 @@ namespace Operator
 		void onClientConnect(const HSteamNetConnection connection) override
 		{
 			Log::Information(L"Client connected");
-			connections.emplace_back(connection, sf::seconds(20));
+			connections.emplace_back(connection, 20);
 		}
 
 		void onClientDisconnected(const HSteamNetConnection connection) override

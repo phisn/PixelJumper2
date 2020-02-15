@@ -31,6 +31,7 @@ int main()
 			Database::Interface::CreateNewKey(NULL);
 		}*/
 
+		/*
 		Resource::PlayerID player;
 		char hash[20];
 		char salt[16];
@@ -59,7 +60,7 @@ int main()
 			Log::Error(L"Failed to create new player",
 				(int) result, L"result");
 		}
-
+		*/
 		Device::Core::Run();
 		Device::Core::Uninitialize();
 

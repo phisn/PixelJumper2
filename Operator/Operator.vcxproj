@@ -225,7 +225,6 @@
     <ClInclude Include="..\Client\source\logger\Output.h" />
     <ClInclude Include="..\Client\source\logger\Section.h" />
     <ClInclude Include="..\Client\source\logger\SectionHost.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\database\DatabaseInterface.h" />
     <ClInclude Include="source\database\EmptyKeyStatement.h" />

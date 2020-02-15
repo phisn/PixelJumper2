@@ -3,7 +3,6 @@
 #include <Client/source/game/PlayerInformation.h>
 
 #include <Client/source/game/net/NetworkMessage.h>
-#include <Client/source/operator/OperatorAccess.h>
 
 namespace Game::Net::Client
 {
@@ -19,14 +18,6 @@ namespace Game::Net::Client
 			_Offset
 		};
 	};
-
-	struct AuthenticationMessageContent
-	{
-		Resource::PlayerID playerID;
-		Operator::ClientIdentifactor identificator;
-	};
-
-	typedef TrivialNetworkMessage<AuthenticationMessageContent> AuthenticationMessage;
 
 	struct ClassicalConnectionMessageID
 	{

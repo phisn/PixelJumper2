@@ -14,8 +14,8 @@ namespace Game
 		{
 			PlayerInformation information;
 
-			information.playerId = resource->connection.content.playerId;
-			information.name = resource->connection.content.userName;
+			information.playerId = resource->content.playerID;
+			information.name = resource->username;
 
 			information.color = sf::Color::Red;
 

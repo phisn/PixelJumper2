@@ -37,6 +37,7 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
     <Import Project="..\config\win64_debug_static.props" />
+    <Import Project="..\config\ClientLibraries.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugDynamic|x64'">
     <Import Project="..\config\win64_debug_dynamic.props" />

@@ -81,10 +81,12 @@ namespace Database
 			const Columns columns)
 		{
 			for (int i = 0; i < columns.size(); ++i)
-				if (!adoptColumnValue(statement, columns[i], i + 1))
+				if (!adoptColumnValue(statement, columns[i], i))
 				{
 					return false;
 				}
+
+			return true;
 		}
 
 		// only use if polymorphic traits are needed

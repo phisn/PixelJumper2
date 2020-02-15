@@ -3,8 +3,6 @@
 #include <Client/source/game/net/ClientMessage.h>
 #include <Client/source/game/net/ServerMessage.h>
 
-#include <Client/source/operator/OperatorAccess.h>
-
 namespace Game::Net
 {
 	/*

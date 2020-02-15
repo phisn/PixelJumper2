@@ -45,9 +45,6 @@
     <ClCompile Include="..\Client\source\device\NetDevice.cpp">
       <Filter>external\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\operator\ElementConnection.cpp">
-      <Filter>source\operator</Filter>
-    </ClCompile>
     <ClCompile Include="source\operator\Operator.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
@@ -84,6 +81,7 @@
     <ClCompile Include="source\database\UserTable.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
+    <ClCompile Include="source\operator\RequestHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\source\logger\Logger.h">
@@ -106,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="..\Client\source\device\NetDevice.h">
       <Filter>external\device</Filter>
-    </ClInclude>
-    <ClInclude Include="source\operator\ElementConnection.h">
-      <Filter>source\operator</Filter>
     </ClInclude>
     <ClInclude Include="source\operator\Operator.h">
       <Filter>source\operator</Filter>
@@ -155,5 +150,6 @@
     <ClInclude Include="source\database\UserTable.h">
       <Filter>source\database</Filter>
     </ClInclude>
+    <ClInclude Include="source\operator\RequestHandler.h" />
   </ItemGroup>
 </Project>

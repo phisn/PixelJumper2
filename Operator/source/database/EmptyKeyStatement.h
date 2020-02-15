@@ -12,7 +12,7 @@ namespace Database
 		public StatementBase
 	{
 	public:
-		RegistrationKey key;
+		Operator::RegistrationKey key;
 
 		int execute(
 			sqlite3* const database,

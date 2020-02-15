@@ -15,7 +15,8 @@
 
 #include <Client/source/resource/ResourceInterface.h>
 
-#include <Client/source/scene/EditorScene.h>
+#include <Client/source/scene/AuthenticationScene.h>
+// #include <Client/source/scene/EditorScene.h>
 // #include <Client/source/scene/TestGameScene.h>
 // #include <Client/source/scene/TestMenuScene.h>
 // #include <Client/source/scene/TestReleaseGameScene.h>
@@ -25,7 +26,7 @@ namespace Device
 {
 	bool PushMainContext()
 	{
-		return Framework::Context::Push<Scene::EditorScene>();
+		return Framework::Context::Push<Scene::AuthenticationScene>();
 	}
 
 	Core::Error Core::Initialize()

@@ -27,6 +27,7 @@ namespace Operator
 	{
 		enum class Reason
 		{
+			AuthenticationFailed,
 			ConnectionClosed,
 			ConnectionLost,
 			OperatorInternalError,
@@ -40,8 +41,6 @@ namespace Operator
 		virtual bool processEvent(
 			const Device::Net::MessageID messageID,
 			void* const message) = 0;
-
-		typedef void (FailCallback)(const Reason reason);
 	};
 
 	enum class Status
@@ -89,46 +88,40 @@ namespace Operator
 				return false;
 			}
 
-			Request* const request;
+			Request* request;
 
 		private:
-			const sf::Time timeout;
+			sf::Time timeout;
 			sf::Time time;
 		};
 
-		ConnectionHandler()
+		struct NetworkMessageContainer
+		{
+			Device::Net::MessageID messageID;
+			Game::Net::NetworkMessage* message;
+			Request* request;
+		};
+
+		ConnectionHandler(const SteamNetworkingIPAddr ipAddress)
+			:
+			ipAddress(ipAddress)
 		{
 		}
 
 		static ConnectionHandler* instance;
 
+		static sf::Time processDelay;
+		static sf::Time processCounter;
+
 	public:
-		// used when already been authenticated and
-		// want to reauthenticate when status is idle
-		// else onAuthenticated is called as soon as
-		// possible. inherited by other requests and
-		// called
-		class ReauthenticateRequest
+		// process delay for operator connection does not have
+		// to be under 100ms
+		static void Initialize(
+			const SteamNetworkingIPAddr ipAddress,
+			const sf::Time processDelay = sf::milliseconds(100))
 		{
-		public:
-			virtual void onAuthenticated() = 0;
-			virtual void onRejected() = 0;
-
-			// needed inside connectionhandler
-			// because of status == idle and authtoken
-		};
-
-		static bool Initialize(const SteamNetworkingIPAddr ipAddress)
-		{
-			instance = new ConnectionHandler();
-
-			if (!instance->connect(ipAddress))
-			{
-				delete instance;
-				return false;
-			}
-
-			return true;
+			ConnectionHandler::processDelay = processDelay;
+			instance = new ConnectionHandler(ipAddress);
 		}
 
 		static void Uninitialize()
@@ -137,19 +130,51 @@ namespace Operator
 				delete instance;
 		}
 
+		static void Process(const sf::Time time)
+		{
+			processCounter += time;
+
+			if (processCounter > processDelay)
+			{
+				processCounter = sf::Time::Zero;
+				instance->process();
+			}
+
+			instance->processLogic(time);
+		}
+
 		static bool PushRequest(
 			const Device::Net::MessageID messageID,
 			Game::Net::NetworkMessage* const message,
 			Request* const request)
 		{
-			if (!instance->sendCommonMessage(messageID, message))
+			if (instance->status == Status::Connected)
 			{
-				return false;
+				if (!instance->sendCommonMessage(messageID, message))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (!instance->connect(instance->ipAddress))
+				{
+					return false;
+				}
+
+				instance->pendingMessages.push_back(
+					NetworkMessageContainer{ messageID, message, request }
+				);
 			}
 
 			instance->requests.emplace_back(request, sf::seconds(20));
 
 			return true;
+		}
+
+		static void PopRequest(Request* const request)
+		{
+			return instance->removeRequest(request);
 		}
 
 		bool process() override
@@ -180,6 +205,14 @@ namespace Operator
 		}
 		
 	private:
+		const SteamNetworkingIPAddr ipAddress;
+
+		// authenticated means that the stored token is valid
+		// but does not specify weather a connection is established
+		// or not. if a connection is not established then the
+		// connection is idle and will be restored when a requests
+		// is made. requests made while unconnected are pushed to
+		// pendingmessages
 		bool authenticated = false;
 		Status status = Status::Unconnected;
 
@@ -187,6 +220,7 @@ namespace Operator
 		AuthenticationToken token;
 
 		std::vector<RequestContainer> requests;
+		std::vector<NetworkMessageContainer> pendingMessages;
 
 		void onMessage(
 			const Device::Net::MessageID messageID, 
@@ -198,7 +232,7 @@ namespace Operator
 			{
 				Operator::Net::Host::AcceptRegistrationMessage message;
 
-				if (loadCommonMessage(messageID, &message, pipe))
+				if (!loadCommonMessage(messageID, &message, pipe))
 				{
 					break;
 				}
@@ -302,6 +336,20 @@ namespace Operator
 		void onConnectionOpen() override
 		{
 			status = Status::Connected;
+
+			// authentication requests happen before the authentication
+			// a connection is only established when a attempt is made to
+			// authenticate or send a request. because common requsts need
+			// authentication the authentication is restored first and
+			// pending messages restored later. for have to be send now
+			if (authenticated)
+			{
+				restoreAuthentication();
+			}
+			else
+			{
+				processPendingMessages();
+			}
 		}
 
 		void onConnectionLost(const int reason) override
@@ -353,15 +401,78 @@ namespace Operator
 			Log::Information(L"Token accepted");
 
 			userID = message.userID;
-			authenticated = true;
+
+			// the client can already be authenticated when the connection
+			// was idle and restored because of a new requsts. this requests
+			// has now to be send
+			if (authenticated)
+			{
+				processPendingMessages();
+			}
+			else
+			{
+				authenticated = true;
+			}
+		}
+
+		void removeRequest(Request* const request)
+		{
+			for (decltype(requests)::iterator iterator = requests.begin(); iterator != requests.end(); ++iterator)
+				if (iterator->request == request)
+				{
+					requests.erase(iterator);
+					delete request;
+				}
 		}
 
 		void failRequests(const Request::Reason reason)
 		{
 			for (RequestContainer& request : requests)
+			{
 				request.request->onRequestFailed(reason);
+				delete request.request;
+			}
 
+			for (NetworkMessageContainer& message : pendingMessages)
+				delete message.message;
+
+			// where no requsts there no pending messages
 			requests.clear();
+			pendingMessages.clear();
+		}
+		
+		void restoreAuthentication()
+		{
+			Operator::Net::Client::TokenMessage message;
+
+			memcpy(message.token,
+				token.token,
+				OPERATOR_HASH_SIZE);
+
+			if (!sendCommonMessage(
+					Operator::Net::Client::AuthMessageID::Token,
+					&message))
+			{
+				authenticated = false;
+				failRequests(Request::Reason::AuthenticationFailed);
+			}
+		}
+		
+		void processPendingMessages()
+		{
+			for (NetworkMessageContainer& container : pendingMessages)
+			{
+				if (!sendCommonMessage(
+						container.messageID,
+						container.message))
+				{
+					removeRequest(container.request);
+				}
+
+				delete container.message;
+			}
+
+			pendingMessages.clear();
 		}
 
 		void processRequests(
@@ -374,7 +485,8 @@ namespace Operator
 			{
 				if (iterator->request->processEvent(messageID, message))
 				{
-					requests.erase(iterator);
+					delete iterator->request;
+					iterator = requests.erase(iterator);
 				}
 				else
 				{
@@ -437,17 +549,19 @@ namespace Operator
 					(Operator::Net::Host::AcceptRegistrationMessage*) rawMessage;
 
 				onAccepted(message->userID);
-				break;
+				return true;
 			}
 			case Operator::Net::Host::AuthMessageID::RejectRegistration:
 			{
 				Operator::Net::Host::RejectRegistrationMessage* message =
 					(Operator::Net::Host::RejectRegistrationMessage*) rawMessage;
 
-				onAccepted(message->reason);
-				break;
+				onRejected(message->reason);
+				return true;
 			}
 			}
+
+			return false;
 		}
 	};
 
@@ -458,7 +572,7 @@ namespace Operator
 	public:
 		typedef std::function<void(const Operator::UserID)> AcceptCallback;
 		typedef std::function<void(const Operator::Net::Host::RejectRegistrationMessage::Reason)> RejectCallback;
-		typedef std::function<FailCallback> FullFailCallback;
+		typedef std::function<void(const Reason)> FullFailCallback;
 
 		CommonRegistrationRequest(
 			const AcceptCallback acceptCallback,
