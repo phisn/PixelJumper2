@@ -1,7 +1,6 @@
 #pragma once
 
-#include <SFML/System/Time.hpp>
-#include <SFML/Window/Event.hpp>
+#include <SFML/Graphics.hpp>
 
 #ifndef SCENE
 #define SCENE ::Scene
@@ -29,11 +28,8 @@ namespace Scene
 		{
 		}
 
-		virtual void onEvent(
-			const sf::Event event) = 0;
-		virtual void onLogic(
-			const sf::Time time) = 0;
-		virtual void onDraw(
-			sf::RenderTarget* const target) = 0;
+		virtual void onEvent(const sf::Event event) = 0;
+		virtual void onLogic(const sf::Time time) = 0;
+		virtual void onDraw(sf::RenderTarget* const target) = 0;
 	};
 }

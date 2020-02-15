@@ -292,6 +292,12 @@
     <ClInclude Include="source\operator\OperatorConnectionHandler.h">
       <Filter>source\operator</Filter>
     </ClInclude>
+    <ClInclude Include="source\operator\OperatorRequest.h">
+      <Filter>source\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\operator\AuthenticationRequest.h">
+      <Filter>source\operator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -470,6 +476,9 @@
       <Filter>source\logger</Filter>
     </ClCompile>
     <ClCompile Include="source\operator\OperatorConnectionHandler.cpp">
+      <Filter>source\operator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\operator\AuthenticationRequest.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
   </ItemGroup>

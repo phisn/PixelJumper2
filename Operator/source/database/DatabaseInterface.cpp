@@ -211,16 +211,7 @@ bool Database::Interface::CreatePlayerToken(
 	const Operator::UserID userID)
 {
 	UserTable userTable;
-	
-	ConditionResult result = userTable.extractCommon(userID,
-		{
-			UserTable::Column::Token
-		});
-
-	if (result != ConditionResult::Found)
-	{
-		return false;
-	}
+	userTable.primary.id = userID;
 
 	Device::Random::FillRandom(
 		OPERATOR_HASH_SIZE, 

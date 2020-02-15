@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/device/NetDevice.h>
+#include <Client/source/operator/OperatorRequest.h>
 
 #include <Operator/source/net/AuthClientMessage.h>
 #include <Operator/source/net/AuthOperatorMessage.h>
@@ -23,26 +23,6 @@
 
 namespace Operator
 {
-	struct Request
-	{
-		enum class Reason
-		{
-			AuthenticationFailed,
-			ConnectionClosed,
-			ConnectionLost,
-			OperatorInternalError,
-			OperatorTimeout,
-			Timeout
-		};
-
-		virtual void onRequestFailed(const Reason reason) = 0;
-
-		// return is finished request
-		virtual bool processEvent(
-			const Device::Net::MessageID messageID,
-			void* const message) = 0;
-	};
-
 	enum class Status
 	{
 		// currently connecting to operator
@@ -527,82 +507,5 @@ namespace Operator
 
 			return true;
 		}
-	};
-
-	class RegistrationRequest
-		:
-		public Request
-	{
-	public:
-		virtual void onAccepted(const Operator::UserID userID) = 0;
-		virtual void onRejected(const Operator::Net::Host::RejectRegistrationMessage::Reason reason) = 0;
-
-		bool processEvent(
-			const Device::Net::MessageID messageID,
-			void* const rawMessage)
-		{
-			switch (messageID)
-			{
-			case Operator::Net::Host::AuthMessageID::AcceptRegistration:
-			{
-				Operator::Net::Host::AcceptRegistrationMessage* message =
-					(Operator::Net::Host::AcceptRegistrationMessage*) rawMessage;
-
-				onAccepted(message->userID);
-				return true;
-			}
-			case Operator::Net::Host::AuthMessageID::RejectRegistration:
-			{
-				Operator::Net::Host::RejectRegistrationMessage* message =
-					(Operator::Net::Host::RejectRegistrationMessage*) rawMessage;
-
-				onRejected(message->reason);
-				return true;
-			}
-			}
-
-			return false;
-		}
-	};
-
-	class CommonRegistrationRequest
-		:
-		public RegistrationRequest
-	{
-	public:
-		typedef std::function<void(const Operator::UserID)> AcceptCallback;
-		typedef std::function<void(const Operator::Net::Host::RejectRegistrationMessage::Reason)> RejectCallback;
-		typedef std::function<void(const Reason)> FullFailCallback;
-
-		CommonRegistrationRequest(
-			const AcceptCallback acceptCallback,
-			const RejectCallback rejectCallback,
-			const FullFailCallback failCallback)
-			:
-			acceptCallback(acceptCallback),
-			rejectCallback(rejectCallback),
-			failCallback(failCallback)
-		{
-		}
-
-		void onRequestFailed(const Reason reason) override
-		{
-			failCallback(reason);
-		}
-
-	private:
-		void onAccepted(const Operator::UserID userID) override
-		{
-			acceptCallback(userID);
-		}
-
-		void onRejected(const Operator::Net::Host::RejectRegistrationMessage::Reason reason) override
-		{
-			rejectCallback(reason);
-		}
-
-		const AcceptCallback acceptCallback;
-		const RejectCallback rejectCallback;
-		const FullFailCallback failCallback;
 	};
 }

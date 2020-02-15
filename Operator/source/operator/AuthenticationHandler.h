@@ -198,14 +198,14 @@ namespace Operator::Net
 				return;
 			}
 
-			message.userID = userID;
+			message.userID = user.userID;
 
 			sendCommonMessage(
 				Host::AuthMessageID::AcceptAuthentication,
 				&message);
 			
 			status = Connected;
-			this->userID = userID;
+			userID = user.userID;
 
 			onClientAuthenticated();
 		}
