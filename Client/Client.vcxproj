@@ -122,6 +122,7 @@
     <ClInclude Include="source\menu\MenuLabel.h" />
     <ClInclude Include="source\menu\MenuRootBase.h" />
     <ClInclude Include="source\operator\AuthenticationRequest.h" />
+    <ClInclude Include="source\operator\ConnectionKeyRequest.h" />
     <ClInclude Include="source\operator\OperatorConnectionHandler.h" />
     <ClInclude Include="source\operator\OperatorRequest.h" />
     <ClInclude Include="source\resource\pipes\FilePipe.h" />
@@ -187,7 +188,6 @@
     <ClCompile Include="source\menu\MenuLabel.cpp" />
     <ClCompile Include="source\menu\MenuProperty.cpp" />
     <ClCompile Include="source\menu\MenuRootBase.cpp" />
-    <ClCompile Include="source\operator\AuthenticationRequest.cpp" />
     <ClCompile Include="source\operator\OperatorConnectionHandler.cpp" />
     <ClCompile Include="source\resource\pipes\FilePipe.cpp" />
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp" />

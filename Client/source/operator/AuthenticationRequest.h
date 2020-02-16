@@ -35,9 +35,6 @@ namespace Operator
 		public Request
 	{
 	public:
-		virtual void onAccepted(const Operator::UserID userID) = 0;
-		virtual void onRejected() = 0;
-
 		bool processEvent(
 			const Device::Net::MessageID messageID,
 			void* const rawMessage)
@@ -60,6 +57,10 @@ namespace Operator
 
 			return false;
 		}
+		
+	protected:
+		virtual void onAccepted(const Operator::UserID userID) = 0;
+		virtual void onRejected() = 0;
 	};
 
 	class CommonTokenRequest
@@ -92,9 +93,6 @@ namespace Operator
 		public Request
 	{
 	public:
-		virtual void onAccepted(const Operator::UserID userID) = 0;
-		virtual void onRejected() = 0;
-
 		bool processEvent(
 			const Device::Net::MessageID messageID,
 			void* const rawMessage)
@@ -117,6 +115,10 @@ namespace Operator
 
 			return false;
 		}
+
+	protected:
+		virtual void onAccepted(const Operator::UserID userID) = 0;
+		virtual void onRejected() = 0;
 	};
 
 	class CommonAuthenticationRequest
@@ -149,9 +151,6 @@ namespace Operator
 		public Request
 	{
 	public:
-		virtual void onAccepted(const Operator::UserID userID) = 0;
-		virtual void onRejected(const Operator::Net::Host::RejectRegistrationMessage::Reason reason) = 0;
-
 		bool processEvent(
 			const Device::Net::MessageID messageID,
 			void* const rawMessage)
@@ -178,6 +177,10 @@ namespace Operator
 
 			return false;
 		}
+
+	protected:
+		virtual void onAccepted(const Operator::UserID userID) = 0;
+		virtual void onRejected(const Operator::Net::Host::RejectRegistrationMessage::Reason reason) = 0;
 	};
 
 	class CommonRegistrationRequest

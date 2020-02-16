@@ -59,11 +59,26 @@ Authentication:
 
 namespace Operator::Net::Host
 {
+	struct ConnectionClosedReason
+	{
+		enum
+		{
+			IdleConnection,
+			Authentication
+		};
+	};
+
 	struct AuthMessageID
 	{
 		enum
 		{
 			_Begin = Game::Net::CommonMessageID::_Offset - 1,
+
+			InternalError,
+			Timeout,
+
+			// closes connection to accept new ones
+			IdleConnection,
 
 			AcceptRegistration,
 			RejectRegistration,
@@ -79,12 +94,6 @@ namespace Operator::Net::Host
 			// reason to prevent information gathering
 			// of the database
 			RejectAuthentication,
-
-			// closes connection to accept new ones
-			IdleConnection,
-
-			Timeout,
-			InternalError,
 
 			_Offset
 		};

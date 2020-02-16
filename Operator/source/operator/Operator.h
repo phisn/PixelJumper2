@@ -3,14 +3,24 @@
 #include <Client/source/device/NetDevice.h>
 #include <Operator/source/operator/RequestHandler.h>
 
-namespace Operator
+namespace Operator::Net
 {
 	class Operator
 		:
 		public Device::Net::Server
 	{
 	public:
-		using Server::Server;
+		struct Settings
+		{
+			sf::Uint32 maxClientCount;
+			sf::Uint32 authenticationTimeout;
+		};
+
+		Operator(const Settings settings)
+			:
+			settings(settings)
+		{
+		}
 
 		enum Status
 		{
@@ -20,30 +30,42 @@ namespace Operator
 			Shutdown
 		};
 
+		void process() override
+		{
+			Server::process();
+
+			decltype(connections)::iterator iterator = connections.begin();
+
+			while (iterator != connections.end())
+			{
+				if (iterator->getStatus() == AuthenticationHandler::Status::Disconnected ||
+					iterator->getStatus() == AuthenticationHandler::Status::Disconnecting)
+				{
+					removeConnection(
+						iterator->getConnection(),
+						Host::ConnectionClosedReason::Authentication,
+						false);
+
+					iterator = connections.erase(iterator);
+				}
+				else
+				{
+					iterator->update();
+					++iterator;
+				}
+			}
+		}
+
 		Status getStatus() const
 		{
 			return status;
 		}
 
-		void process() override
-		{
-			Server::process();
-
-
-
-			for (Net::RequestHandler& connection : connections)
-			{
-				connection.process();
-				
-				if (connection.getStatus() == Net::AuthenticationHandler::Status::Connecting)
-				{
-					connection.update();
-				}
-			}
-		}
-
 	private:
+		const Settings settings;
 		Status status;
+
+		std::vector<Net::RequestHandler> connections;
 
 		bool askClientConnect(SteamNetworkingIPAddr* const ipAddress) override
 		{
@@ -55,7 +77,13 @@ namespace Operator
 		void onClientConnect(const HSteamNetConnection connection) override
 		{
 			Log::Information(L"Client connected");
-			connections.emplace_back(connection, 20);
+
+			if (connections.size() > settings.maxClientCount)
+			{
+				idleOldConnection();
+			}
+
+			connections.emplace_back(connection, settings.authenticationTimeout);
 		}
 
 		void onClientDisconnected(const HSteamNetConnection connection) override
@@ -68,6 +96,25 @@ namespace Operator
 			Log::Information(L"Client lost");
 		}
 
-		std::vector<Net::RequestHandler> connections;
+		void idleOldConnection()
+		{
+			decltype(connections)::iterator iterator = connections.begin();
+			decltype(connections)::iterator old = iterator;
+
+			while (++iterator != connections.end())
+				if (iterator->getAge() > old->getAge())
+				{
+					old = iterator;
+				}
+
+			old->close();
+
+			removeConnection(
+				old->getConnection(), 
+				Host::ConnectionClosedReason::IdleConnection, 
+				true);
+
+			connections.erase(old);
+		}
 	};
 }

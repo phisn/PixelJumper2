@@ -236,6 +236,8 @@
     <ClInclude Include="source\device\DatabaseDevice.h" />
     <ClInclude Include="source\net\AuthClientMessage.h" />
     <ClInclude Include="source\net\AuthOperatorMessage.h" />
+    <ClInclude Include="source\net\RequestClientMessage.h" />
+    <ClInclude Include="source\net\RequestOperatorMessage.h" />
     <ClInclude Include="source\operator\AuthenticationHandler.h" />
     <ClInclude Include="source\operator\Operator.h" />
     <ClInclude Include="source\operator\RequestHandler.h" />

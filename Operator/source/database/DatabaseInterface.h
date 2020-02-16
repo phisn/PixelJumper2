@@ -21,6 +21,12 @@ namespace Database
 
 namespace Database::Interface
 {
+	// token should not be sent to a player and
+	// only used in hash. to send a player a token
+	// a new one has to be created
+	ConditionResult GetPlayerToken(
+		Operator::AuthenticationToken& token,
+		const Operator::UserID userID);
 	ConditionResult GetPlayerAuth(
 		UserAuthentication& authentication,
 		const std::string username);

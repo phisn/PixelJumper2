@@ -88,6 +88,11 @@ namespace Device::Net
 			}
 		}
 
+		HSteamNetConnection getConnection() const
+		{
+			return connection;
+		}
+
 	protected:
 		virtual void onMessage(const MessageID messageID, Resource::ReadPipe* const pipe) = 0;
 
@@ -215,8 +220,17 @@ namespace Device::Net
 			return false;
 		}
 
-		bool removeConnection(const HSteamNetConnection connection)
+		bool removeConnection(
+			const HSteamNetConnection connection,
+			const int reason,
+			const bool linger)
 		{
+			const bool result = networkInterface->CloseConnection(
+				connection,
+				reason,
+				"closed",
+				linger);
+
 			decltype(connections)::const_iterator iterator = std::find(
 				connections.cbegin(),
 				connections.cend(),
@@ -226,11 +240,9 @@ namespace Device::Net
 			{
 				return false;
 			}
-			else
-			{
-				connections.erase(iterator);
-				return true;
-			}
+
+			connections.erase(iterator);
+			return result;
 		}
 
 		// ask weather accept the connection or
@@ -288,33 +300,27 @@ namespace Device::Net
 			case k_ESteamNetworkingConnectionState_ClosedByPeer:
 				onClientDisconnected(event->m_hConn);
 
-				if (!networkInterface->CloseConnection(
+				if (!removeConnection(
 						event->m_hConn,
 						1,
-						"closed by peer",
 						false))
 				{
 					Log::Warning(L"Tried to close invalid connection handle after connection was closed by peer",
 						event->m_info.m_addrRemote.GetIPv4(), L"ip");
 				}
 
-				removeConnection(event->m_hConn);
-
 				break;
 			case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
 				onClientLost(event->m_hConn);
 
-				if (!networkInterface->CloseConnection(
-					event->m_hConn,
-					1,
-					"lost connection",
-					false))
+				if (!removeConnection(
+						event->m_hConn,
+						9,
+						false))
 				{
 					Log::Warning(L"Tried to close invalid connection after lost client",
 						event->m_info.m_addrRemote.GetIPv4(), L"ip");
 				}
-
-				removeConnection(event->m_hConn);
 
 				break;
 			default:

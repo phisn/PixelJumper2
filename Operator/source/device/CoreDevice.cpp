@@ -11,7 +11,7 @@
 
 namespace
 {
-	Operator::Operator* server;
+	Operator::Net::Operator* server;
 }
 
 namespace Device::Core
@@ -36,7 +36,7 @@ namespace Device::Core
 			return false;
 		}
 
-		server = new Operator::Operator();
+		server = new Operator::Net::Operator(Operator::Net::Operator::Settings{ 100, 20 });
 		if (!server->initialize())
 		{
 			Log::Error(L"Failed to initialize server");
@@ -60,11 +60,15 @@ namespace Device::Core
 
 	void Run()
 	{
-		while (server->getStatus() != Operator::Operator::Shutdown)
+		sf::Time interval = sf::milliseconds(100);
+		sf::Clock clock;
+
+		while (server->getStatus() != Operator::Net::Operator::Shutdown)
 		{
 			server->process();
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(50));
+			if (const sf::Time time = clock.restart(); time < interval)
+				sf::sleep(interval - time);
 		}
 	}
 }

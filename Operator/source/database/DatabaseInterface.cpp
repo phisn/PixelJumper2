@@ -7,6 +7,25 @@
 
 
 
+Database::ConditionResult Database::Interface::GetPlayerToken(
+	Operator::AuthenticationToken& token, 
+	const Operator::UserID userID)
+{
+	UserTable userTable;
+	const ConditionResult result = userTable.extractCommon(
+		userID,
+		{
+			UserTable::Column::Token
+		});
+
+	if (result == ConditionResult::Found)
+	{
+		memcpy(token.token, userTable.content.token, sizeof(token));
+	}
+
+	return result;
+}
+
 Database::ConditionResult Database::Interface::GetPlayerAuth(
 	UserAuthentication& authentication,
 	const std::string username)

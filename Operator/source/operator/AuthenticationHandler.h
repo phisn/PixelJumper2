@@ -18,10 +18,10 @@ namespace Operator::Net
 		{
 			// user is not authenticated and
 			// identification not known
-			Connecting,
+			Authenticating,
 			// user is authenticated and
 			// identification known
-			Connected,
+			Authenticated,
 
 			// user is still connected or
 			// connecting but connection will
@@ -42,15 +42,39 @@ namespace Operator::Net
 		{
 		}
 
-		// has to override and only be called
-		// when status == Connecting
 		virtual void update()
 		{
-			if (--timeout == 0)
+			if (status == Authenticating && --timeout == 0)
 			{
 				status = Disconnecting;
 
 				beginMessage(Host::AuthMessageID::Timeout, 8);
+				sendMessage();
+
+				return;
+			}
+
+			if (!process())
+			{
+				status = Disconnecting;
+
+				// think about removing this because
+				// it has a very high chance to fail
+				// (gurranted?)
+				beginMessage(Host::AuthMessageID::InternalError, 8);
+				sendMessage();
+
+				return;
+			}
+
+			++age;
+		}
+
+		void close()
+		{
+			if (status == Authenticated)
+			{
+				beginMessage(Host::AuthMessageID::IdleConnection);
 				sendMessage();
 			}
 		}
@@ -60,14 +84,27 @@ namespace Operator::Net
 			return status;
 		}
 
+		bool isAuthenticated() const
+		{
+			return status == Authenticated;
+		}
+
+		sf::Uint32 getAge() const
+		{
+			return age;
+		}
+
 	protected:
-		Status status = Connecting;
+		using ClientHandler::process;
+
+		Status status = Authenticating;
 		UserID userID = NULL;
 
 		// use timeout in specializations when
 		// needed to abuse unused memory after
 		// status connecting
 		sf::Uint32 timeout;
+		sf::Uint32 age = 0;
 
 		virtual void onClientAuthenticated() = 0;
 
@@ -83,16 +120,8 @@ namespace Operator::Net
 			{
 				Client::AuthenticationMessage message;
 
-				if (!message.load(pipe))
+				if (loadCommonMessage(messageID, &message, pipe))
 				{
-					this->onThreatIdentified(
-						messageID,
-						L"invalid messagecontent",
-						Device::Net::ThreatLevel::Uncommon);
-
-					beginMessage(Host::AuthMessageID::InternalError, 8);
-					sendMessage();
-
 					return;
 				}
 
@@ -104,20 +133,25 @@ namespace Operator::Net
 			{
 				Client::RegistrationMessage message;
 
-				if (!message.load(pipe))
+				if (loadCommonMessage(messageID, &message, pipe))
 				{
-					this->onThreatIdentified(
-						messageID,
-						L"invalid messagecontent",
-						Device::Net::ThreatLevel::Uncommon);
-
-					beginMessage(Host::AuthMessageID::InternalError, 8);
-					sendMessage();
-
 					return;
 				}
 
 				onRegistration(message);
+
+				break;
+			}
+			case Client::AuthMessageID::Token:
+			{
+				Client::TokenMessage message;
+
+				if (loadCommonMessage(messageID, &message, pipe))
+				{
+					return;
+				}
+
+				onTokenAuthentication(message);
 
 				break;
 			}
@@ -142,6 +176,27 @@ namespace Operator::Net
 
 				status = Disconnecting;
 			}
+		}
+
+		bool loadCommonMessage(
+			const Device::Net::MessageID messageID,
+			Game::Net::NetworkMessage* const message,
+			Resource::ReadPipe* const pipe)
+		{
+			if (!message->load(pipe))
+			{
+				onThreatIdentified(
+					messageID,
+					L"operator invalid messagecontent",
+					Device::Net::ThreatLevel::Uncommon);
+
+				beginMessage(Host::AuthMessageID::InternalError, 8);
+				sendMessage();
+
+				return false;
+			}
+
+			return true;
 		}
 
 	private:
@@ -204,7 +259,7 @@ namespace Operator::Net
 				Host::AuthMessageID::AcceptAuthentication,
 				&message);
 			
-			status = Connected;
+			status = Authenticated;
 			userID = user.userID;
 
 			onClientAuthenticated();
@@ -270,7 +325,7 @@ namespace Operator::Net
 				Host::AuthMessageID::AcceptRegistration,
 				&message);
 
-			status = Connected;
+			status = Authenticated;
 			this->userID = userID;
 
 			onClientAuthenticated();
@@ -314,7 +369,7 @@ namespace Operator::Net
 				Host::AuthMessageID::AcceptToken,
 				&message);
 
-			status = Connected;
+			status = Authenticated;
 			this->userID = userID;
 
 			onClientAuthenticated();
