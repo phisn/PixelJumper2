@@ -1,20 +1,18 @@
 #pragma once
 
-#include <Client/source/game/net/ClientMessage.h>
-#include <Client/source/game/net/ServerMessage.h>
+#include <Client/source/device/NetDevice.h>
+
+#include <Client/source/game/net/UserAuthClientMessage.h>
+#include <Client/source/game/net/UserAuthHostMessage.h>
+
+#include <Client/source/operator/OperatorConnectionHandler.h>
 
 namespace Game::Net
 {
-	/*
-	struct AuthenticationMessage
-	{
-		Operator::ClientIdentifactor identification;
-	};
-
 	// authhandler as base for remoteconnection
+	// should not be run without authentication
 	class AuthenticationHandler
 		:
-		public Operator::OperatorAccessClient,
 		public Device::Net::ClientHandler
 	{
 	public:
@@ -37,7 +35,6 @@ namespace Game::Net
 			Disconnected,
 		};
 
-		// timeout in ticks in 100ms
 		AuthenticationHandler(const sf::Uint32 timeout = 100)
 			:
 			timeout(timeout)
@@ -48,20 +45,27 @@ namespace Game::Net
 		// when status == Connecting
 		virtual void update()
 		{
-			if (--timeout == 0)
+			if (status == Connecting && --timeout == 0)
 			{
 				status = Disconnecting;
 
-				if (userID == NULL)
-				{
-					beginMessage(Host::AuthenticationMessageID::Timeout, 8);
-					sendMessage();
-				}
-				else
-				{
-					beginMessage(Host::AuthenticationMessageID::OperatorTimeout, 8);
-					sendMessage();
-				}
+				beginMessage(Host::AuthenticationMessageID::Timeout, 8);
+				sendMessage();
+
+				return;
+			}
+
+			if (!process())
+			{
+				status = Disconnecting;
+
+				// think about removing this because
+				// it has a very high chance to fail
+				// (gurranted?)
+				beginMessage(Host::AuthenticationMessageID::InternalError, 8);
+				sendMessage();
+
+				return;
 			}
 		}
 
@@ -71,6 +75,8 @@ namespace Game::Net
 		}
 
 	protected:
+		using ClientHandler::process;
+
 		Status status = Connecting;
 		Resource::PlayerID userID = NULL;
 
@@ -82,33 +88,23 @@ namespace Game::Net
 		virtual void onClientConnected() = 0;
 
 		virtual void onMessage(
-			const Device::Net::MessageID messageID, 
+			const Device::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
 			switch (messageID)
 			{
 			case Client::AuthenticationMessageID::Authenticate:
+			{
 				Client::AuthenticationMessage message;
 
-				// playerid cant be null to identify operator
-				// timeout
-				if (!message.load(pipe) && message.userID != NULL)
+				if (loadCommonMessage(messageID, &message, pipe))
 				{
-					this->onThreatIdentified(
-						messageID,
-						L"invalid messagecontent",
-						Device::Net::ThreatLevel::Uncommon);
-
-					beginMessage(Host::AuthenticationMessageID::InvalidAuthentication, 8);
-					sendMessage();
-
 					return;
 				}
 
-				Operator::RegisterClient(&message.identificator, this);
-				userID = message.userID;
-
+				onAuthenticate(message);
 				break;
+			}
 			default:
 				// could be a brute-force messageid finder
 				this->onThreatIdentified(messageID,
@@ -119,64 +115,81 @@ namespace Game::Net
 			}
 		}
 
-		void safeMessageLoad(
-			Device::Net::MessageID messageID,
-			NetworkMessage* const message,
-			Resource::WritePipe* const pipe)
+		void sendSimpleMessage(Device::Net::MessageID messageID)
 		{
-			if (!message->save(pipe))
+			if (beginMessage(messageID) || !sendMessage())
+			{
+				Log::Error(L"Unable to send message",
+					(sf::Uint64) messageID, L"messageID");
+
+				status = Disconnecting;
+			}
+		}
+
+		void sendCommonMessage(
+			Device::Net::MessageID messageID,
+			Game::Net::NetworkMessage* const message)
+		{
+			if (!message->save(beginMessage(messageID)) || !sendMessage())
 			{
 				Log::Error(L"Unable to construct message",
 					(sf::Uint64) messageID, L"messageID");
 
 				status = Disconnecting;
 			}
-			else
+		}
+
+		bool loadCommonMessage(
+			const Device::Net::MessageID messageID,
+			Game::Net::NetworkMessage* const message,
+			Resource::ReadPipe* const pipe)
+		{
+			if (!message->load(pipe))
 			{
+				status = Disconnecting;
+
+				onThreatIdentified(
+					messageID,
+					L"operator invalid messagecontent",
+					Device::Net::ThreatLevel::Uncommon);
+
+				beginMessage(Host::AuthenticationMessageID::InternalError, 8);
 				sendMessage();
+
+				return false;
 			}
+
+			return true;
 		}
 
 	private:
-		void onOperatorClientConnected(const Resource::PlayerID userID)
+		void onAuthenticate(const Client::AuthenticationMessage& request)
 		{
-			if (this->userID != userID)
-			{
-				beginMessage(Host::AuthenticationMessageID::InvalidPlayerID, 8);
-				sendMessage();
+			Operator::ConnectionKeySource keySource;
 
-				status = Disconnecting;
-			}
-			else
+			memcpy(keySource.token.token,
+				Operator::ConnectionHandler::GetToken().token,
+				OPERATOR_HASH_SIZE);
+			keySource.userID = request.userID;
+
+			if (request.key.validate(keySource))
 			{
-				beginMessage(Host::AuthenticationMessageID::AcceptAuthentication, 8);
-				sendMessage();
+				sendSimpleMessage(Host::AuthenticationMessageID::AuthenticationAccepted);
 
 				status = Connected;
+				userID = request.userID;
 
 				onClientConnected();
 			}
-		}
+			else
+			{
+				Host::AuthenticationRejectedMessage message;
+				message.reason = Host::AuthenticationRejectedMessageContent::Reason::InvalidConnectionKey;
 
-		void onOperatorClientRejected() override
-		{
-			beginMessage(Host::AuthenticationMessageID::InvalidToken, 8);
-			sendMessage();
-
-			status = Disconnecting;
-			onThreatIdentified(
-				Client::AuthenticationMessageID::Authenticate,
-				L"invalid token",
-				Device::Net::ThreatLevel::Suspicious);
-		}
-
-		void onOperatorClientDisconnected() override
-		{
-			beginMessage(Host::AuthenticationMessageID::OperatorDisconnect);
-			sendMessage();
-
-			status = Disconnected;
+				sendCommonMessage(
+					Host::AuthenticationMessageID::AuthenticationRejected,
+					&message);
+			}
 		}
 	};
-*/
 }

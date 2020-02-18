@@ -208,6 +208,7 @@
     <ClCompile Include="source\database\UserTable.cpp" />
     <ClCompile Include="source\database\StatementBase.cpp" />
     <ClCompile Include="source\database\TableBase.cpp" />
+    <ClCompile Include="source\database\UserTypeByID.cpp" />
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DatabaseDevice.cpp" />
     <ClCompile Include="source\main.cpp" />
@@ -225,6 +226,8 @@
     <ClInclude Include="..\Client\source\logger\Output.h" />
     <ClInclude Include="..\Client\source\logger\Section.h" />
     <ClInclude Include="..\Client\source\logger\SectionHost.h" />
+    <ClInclude Include="ClassicSimClientMessage.h" />
+    <ClInclude Include="ClassicSimOperatorMessage.h" />
     <ClInclude Include="source\Common.h" />
     <ClInclude Include="source\database\DatabaseInterface.h" />
     <ClInclude Include="source\database\EmptyKeyStatement.h" />
@@ -232,6 +235,7 @@
     <ClInclude Include="source\database\UserTable.h" />
     <ClInclude Include="source\database\StatementBase.h" />
     <ClInclude Include="source\database\TableBase.h" />
+    <ClInclude Include="source\database\UserTypeByID.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DatabaseDevice.h" />
     <ClInclude Include="source\net\AuthClientMessage.h" />

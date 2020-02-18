@@ -218,4 +218,29 @@ namespace Database
 			return true;
 		}
 	};
+
+	template <typename Source, typename Target>
+	std::string CreateTableJoin(
+		const TableBase::ColumnIndex sourceKey,
+		const TableBase::ColumnIndex targetKey)
+	{
+		std::stringstream ss;
+
+		ss << " JOIN ";
+		ss << Target::getTableDefinition()->name;
+		ss << " ON ";
+
+		ss << Source::getTableDefinition()->name;
+		ss << ".";
+		ss << Source::getTableDefinition()->columns[sourceKey];
+
+		ss << "=";
+
+		ss << Target::getTableDefinition()->name;
+		ss << ".";
+		ss << Target::getTableDefinition()->columns[targetKey];
+		ss << " ";
+
+		return ss.str();
+	}
 }

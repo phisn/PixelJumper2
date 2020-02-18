@@ -3,7 +3,7 @@
 #include <Client/source/game/net/NetworkMessage.h>
 
 #include <Operator/source/Common.h>
-#include <Operator/source/net/RequestClientMessage.h>
+#include <Operator/source/net/AuthClientMessage.h>
 
 namespace Operator::Net::Client
 {

@@ -19,7 +19,8 @@ namespace Database
 			{
 				Key,
 				Player,
-				Source
+				Source,
+				Type
 			};
 		};
 
@@ -38,6 +39,7 @@ namespace Database
 		struct Content
 		{
 			std::string source;
+			Operator::UserType type;
 
 		} content;
 
@@ -86,6 +88,12 @@ namespace Database
 					content.source.c_str(),
 					content.source.size(),
 					SQLITE_STATIC);
+
+			case Column::Type:
+				return sqlite3_bind_int(
+					statement,
+					columnIndex,
+					(int) content.type);
 
 			}
 
@@ -148,6 +156,10 @@ namespace Database
 
 				break;
 			}
+			case Column::Type:
+				content.type = (Operator::UserType) sqlite3_column_int(statement, columnIndex);
+
+				break;
 			default:
 				Log::Error(L"Got invalid column in adoptcolumn",
 					column, L"column",

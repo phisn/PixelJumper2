@@ -27,10 +27,6 @@ namespace Operator::Net
 		}
 
 	private:
-		void onClientAuthenticated()
-		{
-
-		}
 
 		void onMessage(
 			const Device::Net::MessageID messageID,

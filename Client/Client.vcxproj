@@ -98,10 +98,12 @@
     <ClInclude Include="source\game\ControllablePlayer.h" />
     <ClInclude Include="source\game\Environment.h" />
     <ClInclude Include="source\game\GameState.h" />
-    <ClInclude Include="source\game\net\ClientMessage.h" />
+    <ClInclude Include="source\game\net\ClassicSimClientMessage.h" />
+    <ClInclude Include="source\game\net\ClassicSimHostMessage.h" />
+    <ClInclude Include="source\game\net\UserAuthClientMessage.h" />
     <ClInclude Include="source\game\net\FrameStatus.h" />
     <ClInclude Include="source\game\net\NetworkMessage.h" />
-    <ClInclude Include="source\game\net\ServerMessage.h" />
+    <ClInclude Include="source\game\net\UserAuthHostMessage.h" />
     <ClInclude Include="source\game\RemoteConnection.h" />
     <ClInclude Include="source\game\tiletrait\CollidableTile.h" />
     <ClInclude Include="source\game\tiletrait\DrawableTile.h" />

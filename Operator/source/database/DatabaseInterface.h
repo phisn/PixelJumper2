@@ -31,6 +31,10 @@ namespace Database::Interface
 		UserAuthentication& authentication,
 		const std::string username);
 
+	ConditionResult GetUserType(
+		Operator::UserType& userType,
+		const Operator::UserID userID);
+
 	ConditionResult FindUserID(
 		Operator::UserID* const userID,
 		const std::string username);

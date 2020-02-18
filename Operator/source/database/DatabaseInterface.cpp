@@ -4,8 +4,7 @@
 
 #include <Operator/source/database/EmptyKeyStatement.h>
 #include <Operator/source/database/UserTable.h>
-
-
+#include <Operator/source/database/UserTypeByID.h>
 
 Database::ConditionResult Database::Interface::GetPlayerToken(
 	Operator::AuthenticationToken& token, 
@@ -48,6 +47,50 @@ Database::ConditionResult Database::Interface::GetPlayerAuth(
 	}
 
 	return result;
+}
+
+Database::ConditionResult Database::Interface::GetUserType(
+	Operator::UserType& userType, 
+	const Operator::UserID userID)
+{
+	Database::UserTypeByID utbID;
+	utbID.userID = userID;
+
+	sqlite3_stmt* statement = NULL;
+	int result = utbID.execute(Device::Database::GetConnection(), &statement);
+
+	if (result != SQLITE_OK)
+	{
+		Log::Error(L"Failed to execute statement " + Device::Database::GenerateErrorMessage(),
+			result, L"result");
+
+		if (statement != NULL)
+			Device::Database::FinalizeStatement(statement);
+
+		return Database::ConditionResult::Error;
+	}
+
+	result = utbID.next(statement);
+
+	switch (result)
+	{
+	case SQLITE_DONE:
+		return Database::ConditionResult::NotFound;
+
+	case SQLITE_ROW:
+		userType = utbID.userType;
+
+		break;
+	default:
+		Log::Error(L"Failed to process statement " + Device::Database::GenerateErrorMessage(),
+			result, L"result");
+
+		return Database::ConditionResult::Error;
+	}
+
+	Device::Database::FinalizeStatement(statement);
+	
+	return Database::ConditionResult::Found;
 }
 
 Database::ConditionResult Database::Interface::FindUserID(

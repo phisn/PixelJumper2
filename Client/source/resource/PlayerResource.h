@@ -11,49 +11,11 @@ namespace Resource
 	typedef sf::Uint32 RepresentationID;
 	typedef sf::Uint32 WorldId;
 
-	class PlayerClassicResource
-		:
-		public ResourceBase
-	{
-	public:
-		struct Content
-		{
-			
-		} content;
-
-		std::vector<RepresentationID> representations;
-		std::vector<Resource::WorldId> activeWorldSpawns;
-
-		bool make(ReadPipe* const pipe) override
-		{
-			return pipe->readVector(&representations)
-				&& pipe->readVector(&activeWorldSpawns);
-		}
-
-		bool save(WritePipe* const pipe) override
-		{
-			return pipe->writeVector(&representations)
-				&& pipe->writeVector(&activeWorldSpawns);
-		}
-
-		bool setup() override
-		{
-			return true;
-		}
-
-		bool validate() override
-		{
-			return true;
-		}
-	};
-
 	class PlayerResource
 		:
 		public ResourceBase
 	{
 	public:
-		PlayerClassicResource classic;
-
 		struct Content
 		{
 			PlayerID playerID;

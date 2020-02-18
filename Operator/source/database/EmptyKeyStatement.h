@@ -43,7 +43,7 @@ namespace Database
 	private:
 		bool apply(sqlite3_stmt* const statement) override
 		{
-			if (sqlite3_column_type(statement, 1) == SQLITE_NULL)
+			if (sqlite3_column_type(statement, 0) == SQLITE_NULL)
 			{
 				Log::Error(L"Got null in apply in emptykey statement");
 
@@ -51,7 +51,7 @@ namespace Database
 			}
 
 			memcpy(key.content,
-				sqlite3_column_blob(statement, 1),
+				sqlite3_column_blob(statement, 0),
 				OPERATOR_KEY_SIZE);
 
 			return true;

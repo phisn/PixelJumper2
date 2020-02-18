@@ -185,6 +185,8 @@ namespace Operator::Net
 		{
 			if (!message->load(pipe))
 			{
+				status = Disconnecting;
+
 				onThreatIdentified(
 					messageID,
 					L"operator invalid messagecontent",

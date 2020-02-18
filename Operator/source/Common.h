@@ -9,6 +9,22 @@
 
 namespace Operator
 {
+	enum class UserType
+	{
+		// available to everyone
+		Common,
+		
+		// only used for public / global
+		// servers not hosted by players
+		Trusted,
+
+		// used as an administration
+		// tool
+		Admin
+	};
+
+	typedef sf::Uint64 UserID;
+
 	struct AuthenticationToken
 	{
 		unsigned char token[OPERATOR_HASH_SIZE];
@@ -51,6 +67,4 @@ namespace Operator
 	{
 		char content[OPERATOR_HASH_SIZE];
 	};
-
-	typedef sf::Uint64 UserID;
 }

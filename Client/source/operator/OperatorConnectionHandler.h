@@ -128,12 +128,16 @@ namespace Operator
 			Game::Net::NetworkMessage* const message,
 			Request* const request)
 		{
+			// save message permamently because of possible lose
+			// when operator disconnects in same time
 			if (instance->status == Status::Connected)
 			{
 				if (!instance->sendCommonMessage(messageID, message))
 				{
 					return false;
 				}
+
+				delete message;
 			}
 			else
 			{
@@ -179,9 +183,24 @@ namespace Operator
 			}
 		}
 
-		Status getStatus()
+		static Status GetStatus()
 		{
-			return status;
+			return instance->status;
+		}
+
+		static bool IsAuthenticated()
+		{
+			return instance->authenticated;
+		}
+
+		static UserID GetUserID()
+		{
+			return instance->userID;
+		}
+
+		static const AuthenticationToken& GetToken()
+		{
+			return instance->token;
 		}
 		
 	private:

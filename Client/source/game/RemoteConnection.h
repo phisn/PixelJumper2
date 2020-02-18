@@ -1,28 +1,21 @@
 #pragma once
 
-#include <Client/source/device/NetDevice.h>
-
 #include <Client/source/game/AuthenticationHandler.h>
 #include <Client/source/game/Simulation.h>
 #include <Client/source/game/VirtualPlayer.h>
 
+#include <Client/source/game/net/ClassicSimClientMessage.h>
+#include <Client/source/game/net/ClassicSimHostMessage.h>
+
 namespace Game::Net
 {
-	/*
-	class RemoteConnection
+	typedef std::map<Resource::WorldId, Resource::World*> WorldResourceContainer;
+
+	class ClassicSimulationHandler
 		:
 		public AuthenticationHandler
 	{
 	public:
-		struct Error
-		{
-			enum : sf::Uint32
-			{
-				_Begin = 0xa0,
-				InvalidSimulationState
-			};
-		};
-
 		struct Settings
 		{
 			// time after how many updates the current 
@@ -38,100 +31,33 @@ namespace Game::Net
 			int maxTickrateDifference;
 		};
 
-		RemoteConnection(const Settings settings)
+		ClassicSimulationHandler(
+			const Settings settings,
+			const WorldResourceContainer& container)
 			:
-			settings(settings)
+			simulation(container),
+			settings(settings),
+			container(container)
 		{
-		}
+			playerResource = new Resource::PlayerResource();
+			playerResource->username = L"username";
+			playerResource->content.playerID = 0;
 
-		bool initialize()
-		{
-		}
+			player = new VirtualPlayer(Game::PlayerInformation::Create(playerResource));
 
-		// called on every 
-		bool processLogic()
-		{
-			if (simulation->getStatus() == ClassicSimulation::Running)
-			{
-				if (player->hasUpdate())
-				{
-					if (simulation->processLogic())
-					{
-					}
-				}
-			}
+			simulation.pushPlayer(player);
 		}
 
 		void update() override
 		{
-			if (!process())
-			{
-				CommonErrorMessage message;
-
-				message.content.errorID = CommonErrorID::InvalidConnectionInClientHandlerProcess;
-				message.content.messageID = 0;
-				message.message = L"Internal server error";
-
-				Resource::WritePipe* const pipe = beginMessage(CommonMessageID::Error,
-					sizeof(message.content) + message.message.size() * 2 + 8);
-
-				if (!message.save(pipe))
-				{
-					Log::Error(L"Failed to create error message");
-					status = Disconnecting;
-				}
-				else
-				{
-					sendMessage();
-				}
-
-				status = Disconnecting;
-
-				return;
-			}
-
-			switch (status)
-			{
-			case Connecting:
-				AuthenticationHandler::update();
-
-				break;
-			case Connected:
-
-
-				break;
-			default:
-				// update should neither be called with
-				// disconnecting nor disconnected
-				Log::Error(L"Got invalid status in update in remoteconnection");
-
-				break;
-			}
-
-			switch (simulation->getStatus())
-			{
-			case ClassicSimulation::Status::Running:
-			case ClassicSimulation::Status::Shutdown:
-			case ClassicSimulation::Status::Error:
-
-			default:
-				// missing * cant happen in remote connection
-				// results in error
-
-				
-				/*sendError(
-					Log::Convert(L"Got invalid simulation status",
-						(int) simulation->getStatus(), L"status"),
-					Error::InvalidSimulationState);
-					
-
-			}
+			AuthenticationHandler::update();
 		}
 
 	private:
 		const Settings settings;
+		const WorldResourceContainer& container;
 
-		ClassicSimulation* simulation = NULL;
+		ClassicSimulation simulation;
 		VirtualPlayer* player = NULL;
 
 		Resource::PlayerResource* playerResource;
@@ -140,81 +66,59 @@ namespace Game::Net
 			const Device::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
-			switch (status)
+			if (status == Connecting)
 			{
-			case Connecting:
 				AuthenticationHandler::onMessage(messageID, pipe);
+				return;
+			}
 
-				break;
-			case Connected:
-				switch (messageID)
+			switch (messageID)
+			{
+			case Client::ClassicSimMessageID::PrepareSimulation:
+			{
+				Client::PrepareSimulationMessage message;
+
+				if (!loadCommonMessage(messageID, &message, pipe))
 				{
-				case Client::ClassicalConnectionMessageID::RequestSimulation:
-					onRequestSimulation(pipe);
-
-					break;
-				case Client::ClassicalConnectionMessageID::AcceptSync:
-					
-					
-					break;
-				case Client::ClassicalConnectionMessageID::RequestSync:
-					
-					
-					break;
-				case Client::ClassicalConnectionMessageID::PushMovement:
-					
-					
-					break;
+					return;
 				}
 
-				break;
+
+			}
 			default:
-				// onMessage should neither be called with
-				// disconnecting nor disconnected
-				Log::Error(L"Got invalid status in onMessage in remoteconnection");
 
 				break;
 			}
 		}
 
-		void onRequestSimulation(Resource::ReadPipe* const pipe)
+		void onRequestSimulation(const Client::PrepareSimulationMessage& request)
 		{
-			if (simulation == NULL)
+			if (simulation.getStatus() == ClassicSimulation::Status::Running)
 			{
 				Host::RejectSimulationRequestMessage message;
-				message.reason = message.SimulationAlreadyRunning;
+				message.reason = Host::RejectSimulationRequestMessage::SimulationAlreadyRunning;
 
-				safeMessageLoad(
+				sendCommonMessage(
 					Host::ClassicalConnectionMessageID::RejectSimulationRequest,
-					&message,
-					beginMessage(Host::ClassicalConnectionMessageID::RejectSimulationRequest)
-				);
-
-				return;
+					&message);
 			}
 
-			Client::RequestSimulationMessage message;
-
-			if (!message.load(pipe) && message.world != NULL)
+			WorldResourceContainer::const_iterator iterator = container.find(request.world);
+			
+			if (iterator == container.cend())
 			{
-				onThreatIdentified(
-					Client::ClassicalConnectionMessageID::RequestSimulation,
-					L"invalid message content",
-					Device::Net::ThreatLevel::Uncommon);
-
 				Host::RejectSimulationRequestMessage message;
-				message.reason = message.InvalidSimulationRequestContent;
+				message.reason = Host::RejectSimulationRequestMessage::InvalidWorldID;
 
-				safeMessageLoad(
+				sendCommonMessage(
 					Host::ClassicalConnectionMessageID::RejectSimulationRequest,
-					&message,
-					beginMessage(Host::ClassicalConnectionMessageID::RejectSimulationRequest)
-				);
-
-				return;
+					&message);
 			}
 
-			// .........
+			if (!simulation.pushWorld(request.world))
+			{
+
+			}
 		}
 
 		void onThreatIdentified(
@@ -241,6 +145,9 @@ namespace Game::Net
 			}
 		}
 
-		void onClientConnected() override;
-	};*/
+		void onClientConnected() override
+		{
+			// request playerdata from operator
+		}
+	};
 }

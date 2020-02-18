@@ -5,5 +5,6 @@ const Database::TableDefinition Database::KeyTable::definition
 	"keys",
 	"key",
 	"player",
-	"source"
+	"source",
+	"type"
 };

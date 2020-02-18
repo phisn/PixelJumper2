@@ -8,7 +8,7 @@
 #include <Client/source/game/RemoteConnection.h>
 #include <Client/source/game/UserConnection.h>
 
-namespace Game
+namespace Game::Net
 {
 	// need something like a host structure
 	// while the host self has all connections
@@ -17,24 +17,20 @@ namespace Game
 	// informations? and their current position
 	// can optionally request more player data
 
-	class HostOperator
+	class ClassicSimulator
 		:
 		public Device::Net::Server,
 		public GameState
 	{
-		typedef std::map<Resource::WorldId, Resource::World*> ResourceContainer;
-
 	public:
 		struct Settings
 		{
 			sf::Uint64 tickrate = 100'000; // 100ms
 			unsigned short port = 9928;
 			int maxClients = 128;
-
-			RemoteConnection::Settings connectionSettings;
 		};
 
-		HostOperator(const Settings settings = Settings{ })
+		ClassicSimulator(const Settings settings = Settings{ })
 			:
 			settings(settings)
 		{
@@ -71,17 +67,9 @@ namespace Game
 			{
 				if (connections.back()->initialize())
 					connections.push_back(
-						new RemoteConnection(settings.connectionSettings)
+						new ClassicSimulationHandler(settings.connectionSettings)
 					);
 			}*/
-		}
-
-		virtual bool pushConnection(RemoteConnection* const connection)
-		{
-		}
-
-		virtual void removeConnection(RemoteConnection* const connection)
-		{
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
@@ -125,8 +113,8 @@ namespace Game
 
 		// last element represents empty connection
 		// to accept new tcpsockets
-		std::vector<RemoteConnection*> connections;
-		ResourceContainer resources;
+		std::vector<ClassicSimulationHandler*> connections;
+		WorldResourceContainer resources;
 	};
 
 	/*class LocalClassicTestSimulator

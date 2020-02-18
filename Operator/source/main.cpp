@@ -4,6 +4,7 @@
 #include <Operator/source/device/CoreDevice.h>
 
 #include <Operator/source/database/DatabaseInterface.h>
+#include <Operator/source/database/UserTypeByID.h>
 
 #include <iostream>
 
@@ -26,6 +27,28 @@ int main()
 
 	if (Device::Core::Initialize())
 	{
+		Operator::UserType type;
+
+		Database::ConditionResult result = Database::Interface::GetUserType(
+			type,
+			947092158557685219);
+
+		switch (result)
+		{
+		case Database::ConditionResult::Found:
+			std::cout << "type: " << (int) type << std::endl;
+
+			break;
+		case Database::ConditionResult::NotFound:
+			std::cout << "user not found" << std::endl;
+
+			break;
+		case Database::ConditionResult::Error:
+			std::cout << "getusertype failed" << std::endl;
+
+			break;
+		}
+
 		/*for (int i = 0; i < 10; ++i)
 		{
 			Database::Interface::CreateNewKey(NULL);
