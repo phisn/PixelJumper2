@@ -9,7 +9,17 @@
 
 namespace Game::Net
 {
-	typedef std::map<Resource::WorldId, Resource::World*> WorldResourceContainer;
+	/*
+	
+		Welten komplett dynamisieren?
+		-> transitiv wohin man will
+		-> vorher nicht unbedingt erkennbar wohin es geht
+
+		Spieler gibt es nicht mehr als resource
+
+		Überlegen wie man asynchrone abfragen handhabt
+	
+	*/
 
 	class ClassicSimulationHandler
 		:
@@ -83,7 +93,8 @@ namespace Game::Net
 					return;
 				}
 
-
+				onPrepareSimulation(message);
+				break;
 			}
 			default:
 
@@ -91,7 +102,7 @@ namespace Game::Net
 			}
 		}
 
-		void onRequestSimulation(const Client::PrepareSimulationMessage& request)
+		void onPrepareSimulation(const Client::PrepareSimulationMessage& request)
 		{
 			if (simulation.getStatus() == ClassicSimulation::Status::Running)
 			{
@@ -117,7 +128,7 @@ namespace Game::Net
 
 			if (!simulation.pushWorld(request.world))
 			{
-
+				simulation.
 			}
 		}
 

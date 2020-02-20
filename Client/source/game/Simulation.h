@@ -12,6 +12,8 @@
 
 namespace Game
 {
+	typedef std::map<Resource::WorldId, Resource::World*> WorldResourceContainer;
+
 	class Simulation
 		:
 		public GameState
@@ -26,6 +28,293 @@ namespace Game
 
 		virtual void pushPlayer(PlayerBase* const player) = 0;
 		virtual void popPlayer(PlayerBase* const player) = 0;
+	};
+
+	class _ClassicSimulation
+	{
+	public:
+		typedef std::future<World*> LoadingWorld;
+		typedef std::vector<LoadingWorld> LoadingWorldContainer;
+		typedef std::vector<World*> WorldContainer;
+
+		enum Status
+		{
+			Waiting,
+			Running,
+			Error
+		};
+
+		_ClassicSimulation(const WorldResourceContainer& worldResources)
+			:
+			worldResources(worldResources)
+		{
+		}
+
+		Status getStatus()
+		{
+			return status;
+		}
+
+	protected:
+		Game::PlayerBase* player = NULL;
+		World* world;
+
+		enum class WorldFailure
+		{
+			Success,
+			PlayerEmpty,
+			PreloadingFailed,
+			ResourceNotFound,
+			MissingResource,
+			InitializeFailed
+		};
+
+		// has to be called before a world is pushed
+		void setPlayer(Game::PlayerBase* const player)
+		{
+			// when world is not null then player
+			// can not be null
+			if (world != NULL)
+			{
+				world->removePlayer(this->player);
+			
+				// think about to set on correct position to
+				// allow changes of player while playing?
+				world->addPlayer(player);
+			}
+			
+			this->player = player;
+		}
+
+		WorldFailure runWorld(Resource::WorldId worldID)
+		{
+			if (player == NULL)
+			{
+				return WorldFailure::PlayerEmpty;
+			}
+
+			return loadWorld(worldID);
+		}
+
+		std::future<WorldFailure> prepareWorld(const Resource::WorldId worldID)
+		{
+			return std::async(
+				std::launch::async,
+				[worldID]() -> WorldFailure
+				{
+
+				});
+		}
+
+		void processLogic()
+		{
+		}
+
+		virtual bool onInitializeWorld(World* const world)
+		{
+			return world->initialize();
+		}
+
+		virtual void onBeginWorld(World* const world) = 0;
+
+	private:
+		const WorldResourceContainer& worldResources;
+		Status status = Waiting;
+		WorldFailure failure = WorldFailure::Success;
+
+		WorldContainer worlds;
+		LoadingWorldContainer loadingWorlds;
+
+		// tasks from different execution points
+		// that have to be executed later
+		std::vector<std::function<void()>> tasks;
+
+		WorldFailure loadWorld(const Resource::WorldId worldID)
+		{
+			unloadWorld();
+			WorldFailure result = enforceWorld(worldID);
+
+			if (result != WorldFailure::Success)
+			{
+				return result;
+			}
+
+			preloadNextWorlds();
+
+			world->addPlayer(player);
+			return WorldFailure::Success;
+		}
+
+		void unloadWorld()
+		{
+			if (world)
+				world->removePlayer(player);
+		}
+
+		// false if some resource was not found
+		bool preloadNextWorlds()
+		{
+			for (TransitiveTile* tile : world->getEnvironment()->getTileType<TransitiveTile>())
+				if (std::find_if(
+						worlds.begin(),
+						worlds.end(),
+					[tile](World* const world)
+					{
+						return world->getInformation()->worldId == tile->getTarget();
+
+					}) == worlds.end())
+				{
+					if (!preloadNextWorld(tile->getTarget()))
+						return false;
+				}
+
+			return true;
+		}
+
+		// false if some resource was not found
+		bool preloadNextWorld(const Resource::WorldId worldID)
+		{
+			WorldResourceContainer::const_iterator resource = worldResources.find(worldID);
+
+			if (resource == worldResources.end())
+			{
+				return false;
+			}
+
+			loadingWorlds.push_back(
+				std::async(
+					std::launch::async,
+					[this](Resource::World* const resource) -> World*
+					{
+						World* const world = new World(resource);
+
+						if (!this->onInitializeWorld(world))
+						{
+							delete world;
+							return NULL;
+						}
+
+						for (ExitableTile* const tile : world->getEnvironment()->getTileType<ExitableTile>())
+							tile->onExit.addListener(
+								[this]()
+								{
+									tasks.push_back(
+										[this]()
+										{
+										});
+								});
+
+						for (TransitiveTile* const tile : world->getEnvironment()->getTileType<TransitiveTile>())
+							tile->onTransition.addListener(
+								[this, tile](const TransitiveTile::Event& event)
+								{
+									tasks.push_back(
+										[this, tile]()
+										{
+										});
+								});
+					},
+					resource->second));
+
+			return true;
+		}
+
+		WorldFailure enforceWorld(const Resource::WorldId worldID)
+		{
+			switch (processPreloadedWorlds(worldID))
+			{
+			case PreloadingResult::Error:
+				return WorldFailure::PreloadingFailed;
+
+			case PreloadingResult::Found:
+				return WorldFailure::Success;
+
+			}
+
+			for (World* const world : worlds)
+				if (world->getInformation()->worldId == worldID)
+				{
+					this->world = world;
+					return WorldFailure::Success;
+				}
+
+			return createWorld(worldID);
+		}
+
+		enum class PreloadingResult
+		{
+			Found,
+			NotFound,
+			Error
+		};
+
+		PreloadingResult processPreloadedWorlds(const Resource::WorldId worldID)
+		{
+			PreloadingResult result = PreloadingResult::NotFound;
+
+			for (LoadingWorld& loadingWorld : loadingWorlds)
+			{
+				// can potentially be that loading world is yet
+				// not downloaded. this will cause an lag and potentially
+				// cause a timeout. because this should never happen
+				// because the world sizes and the normaly loading time
+				// are extremly tiny
+				World* const loadedWorld = loadingWorld.get();
+
+				if (loadedWorld == NULL)
+				{
+					return PreloadingResult::Error;
+				}
+
+				if (loadedWorld->getInformation()->worldId == worldID)
+				{
+					world = loadedWorld;
+					result = PreloadingResult::Found;
+				}
+
+				worlds.push_back(loadedWorld);
+			}
+
+			return result;
+		}
+
+		WorldFailure tansitiveLoadWorld(const Resource::WorldId worldID)
+		{
+			unloadWorld();
+			const WorldFailure failure = enforceWorld(worldID);
+
+			if (failure == WorldFailure::Success)
+			{
+				world->addTransitivePlayer(
+					);
+			}
+
+			return failure;
+		}
+
+		WorldFailure createWorld(const Resource::WorldId worldID)
+		{
+			WorldResourceContainer::const_iterator iterator = worldResources.find(worldID);
+
+			if (iterator == worldResources.end())
+			{
+				return WorldFailure::MissingResource;
+			}
+
+			World* const world = new World(iterator->second);
+
+			if (!onInitializeWorld(world))
+			{
+				delete world;
+				return WorldFailure::InitializeFailed;
+			}
+
+			worlds.push_back(world);
+			this->world = world;
+
+			return WorldFailure::Success;
+		}
+
 	};
 
 	/*
