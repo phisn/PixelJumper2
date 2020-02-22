@@ -7,6 +7,7 @@
 
 namespace Game
 {
+	// duplex
 	class DynamicWorldTransitionComponent
 		:
 		public DynamicWorldEntry,
@@ -15,9 +16,13 @@ namespace Game
 	public:
 		DynamicWorldTransitionComponent(
 			const WorldEntryID worldEntryID,
+			const Resource::WorldId targetWorld, 
+			const WorldEntryID targetEntry,
 			const TileContent tilecontent)
 			:
 			DynamicWorldEntry(worldEntryID),
+			targetWorld(targetWorld),
+			targetEntry(targetEntry),
 			tilecontent(tilecontent)
 		{
 		}
@@ -26,10 +31,24 @@ namespace Game
 			PlayerBase* const player,
 			const DynamicWorldEntryEvent& dwee) override
 		{
-			player->getProperties().position = *player->getProperties().position + dwee.offsetSource - tilecontent.position;
+			player->getProperties().position += tilecontent.position - dwee.offsetSource;
+		}
+
+	protected:
+		void notifyOnExit()
+		{
+			DynamicWorldExitEvent event;
+
+			event.offset = tilecontent.position;
+			event.targetWorld = targetWorld;
+			event.targetEntry = targetEntry;
+			
+			DynamicWorldExit::notifyOnExit(event);
 		}
 
 	private:
+		const Resource::WorldId targetWorld;
+		const WorldEntryID targetEntry;
 		const TileContent tilecontent;
 	};
 }
