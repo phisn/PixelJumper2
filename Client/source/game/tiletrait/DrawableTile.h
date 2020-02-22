@@ -1,21 +1,13 @@
 #pragma once
 
-#include <Client/source/game/Environment.h>
-#include <Client/source/game/tiletrait/GameTileBase.h>
+#include <SFML/Graphics.hpp>
 
 namespace Game
 {
 	// not possible with static tiles
-	class DrawableTile 
-		: 
-		public RegisterableType
+	class DrawableTile
 	{
 	public:
-		void registerType(Environment* const env)
-		{
-			env->registerTile<DrawableTile>(this);
-		}
-
 		virtual void onDraw(sf::RenderTarget* const target) = 0;
 	};
 }

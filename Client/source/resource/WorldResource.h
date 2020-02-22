@@ -26,6 +26,8 @@ namespace Resource
 		{
 			sf::Uint16 tileInstanceCount;
 			sf::Uint16 tileCount;
+
+			sf::Uint8 targetCount;
 		};
 
 	public:
@@ -49,6 +51,8 @@ namespace Resource
 
 		std::vector<TileInstanceWrapper> tileInstances;
 		std::vector<Tile> tiles;
+
+		std::vector<Resource::WorldId> targets;
 		
 		bool make(ReadPipe* const pipe) override
 		{
@@ -64,7 +68,6 @@ namespace Resource
 			}
 
 			tileInstances.resize(privateContent.tileInstanceCount);
-			tiles.resize(privateContent.tileCount);
 
 			for (TileInstanceWrapper& instance : tileInstances)
 				if (!instance.make(pipe))
@@ -72,13 +75,19 @@ namespace Resource
 					return false;
 				}
 
+			tiles.resize(privateContent.tileCount);
+
 			for (Tile& tile : tiles)
 				if (!tile.make(pipe))
 				{
 					return false;
 				}
 
-			return true;
+			targets.resize(privateContent.targetCount);
+
+			return pipe->readContentForce(
+				(char*) &targets[0],
+				privateContent.targetCount);
 		}
 
 		bool save(WritePipe* const pipe) override
@@ -108,8 +117,11 @@ namespace Resource
 				{
 					return false;
 				}
-
-			return true;
+			
+			return pipe->writeContentSafe(
+				(const char*) targets.data(),
+				targets.size() * sizeof(decltype(targets)::value_type)
+			);
 		}
 
 		bool setup() override
@@ -131,90 +143,6 @@ namespace Resource
 
 		sf::Uint32 generateCheckSum();
 	};
-
-	/*
-	class _N_World
-		:
-		public Resource::ResourceBase
-	{
-		typedef unsigned char AuthorNameSize;	// 0 - 255
-		typedef unsigned char MapNameSize;		// 0 - 255
-
-	public:
-		struct
-		{
-			AUTO sf::Uint32 magic = WORLD_MAGIC;
-			EDIT WorldId worldID = NULL;
-		} HeaderIntro;
-
-		struct
-		{
-			EDIT std::wstring authorName;
-			EDIT std::wstring mapName;
-		} HeaderAuth = { };
-
-		struct
-		{
-			EDIT sf::Uint16 width, height;
-
-			AUTO sf::Uint16 tileContentCount;
-			AUTO sf::Uint16 tileCount;
-
-			AUTO sf::Uint32 tileCheckSum;
-
-		} HeaderProperties = { };
-
-		bool make(ReadPipe* const pipe) override;
-		bool save(WritePipe* const pipe) override;
-
-		bool setup()
-		{
-			HeaderIntro.magic = WORLD_MAGIC;
-
-			if (!validateHeaderIntro() ||
-				!validateHeaderAuth())
-			{
-				return false;
-			}
-
-			HeaderProperties.tileCount = (sf::Int16) TileContainer.size();
-			HeaderProperties.tileCheckSum = generateCheckSum();
-
-			if (!validateHeaderProperties())
-			{
-				return false;
-			}
-
-			for (Tile& tile : TileContainer)
-				if (!tile.setup())
-				{
-					return false;
-				}
-
-			return true;
-		}
-
-		EDIT std::vector<Resource::Tile> TileContainer;
-	private:
-		const sf::Uint64 HEADER_SIZE
-			= sizeof(HeaderIntro)
-			+ 4 // headerAuth
-			+ sizeof(HeaderProperties);
-
-		sf::Uint32 generateCheckSum();
-
-		bool readHeaderIntro(
-			ReadPipe* const pipe);
-		bool readHeaderAuth(
-			ReadPipe* const pipe);
-		bool readHeaderProperties(
-			ReadPipe* const pipe);
-
-		bool validateHeaderIntro() const;
-		bool validateHeaderAuth() const;
-		bool validateHeaderProperties() const;
-	};
-	*/
 }
 
 #pragma pack(pop)

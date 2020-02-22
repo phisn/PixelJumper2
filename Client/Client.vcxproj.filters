@@ -10,9 +10,6 @@
     <Filter Include="source\device">
       <UniqueIdentifier>{3c5ec0a8-907f-4a53-8d68-9f6dfb341cd4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\game">
-      <UniqueIdentifier>{038f029f-f416-4f5f-adf3-02047141e720}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\scene">
       <UniqueIdentifier>{82fc5087-42aa-4e96-8d10-f03557382342}</UniqueIdentifier>
     </Filter>
@@ -58,18 +55,6 @@
     <Filter Include="source\editor\tilechoice">
       <UniqueIdentifier>{49e6bfc2-000c-4a69-903f-d1fdbddacc72}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\game\net">
-      <UniqueIdentifier>{b7b847ab-a31e-4993-be03-bec9e7e1cebb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\game\player">
-      <UniqueIdentifier>{ecf5eb69-cc65-4123-8dc1-86bbd0a3bbdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\game\world">
-      <UniqueIdentifier>{562fb688-8187-4001-acea-9f78f9217ece}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\game\player\tiletrait">
-      <UniqueIdentifier>{69b9c64d-ffe4-408e-ac6a-79f90bd91212}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\operator">
       <UniqueIdentifier>{661ad6e3-ac5d-4c9b-a35f-466dc962ba1b}</UniqueIdentifier>
     </Filter>
@@ -78,6 +63,18 @@
     </Filter>
     <Filter Include="source\resource\pipes">
       <UniqueIdentifier>{713d3fec-01b0-46d3-9089-e2730258018c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game">
+      <UniqueIdentifier>{784b7fff-7d14-4f75-b736-a7f318945c5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game\net">
+      <UniqueIdentifier>{f20b9fbc-0df6-40a0-b7ec-124b93c65235}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game\tiletrait">
+      <UniqueIdentifier>{31f632b2-6af5-44b7-a611-c9f1ed95dd54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game\component">
+      <UniqueIdentifier>{e6dc4b96-992a-4cd9-a42c-bedb9c0086be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -168,27 +165,6 @@
     <ClInclude Include="source\resource\PlayerResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\CollisionEngine.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameState.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\CollidableTile.h">
-      <Filter>source\game\player\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\DrawableTile.h">
-      <Filter>source\game\player\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\DynamicTile.h">
-      <Filter>source\game\player\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\StaticTile.h">
-      <Filter>source\game\player\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
-      <Filter>source\game\player\tiletrait</Filter>
-    </ClInclude>
     <ClInclude Include="source\device\CoreDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
@@ -200,9 +176,6 @@
     </ClInclude>
     <ClInclude Include="source\device\DeviceConfig.h">
       <Filter>source\device</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\InitializableTile.h">
-      <Filter>source\game\player\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="source\scene\TestGameScene.h">
       <Filter>source\scene</Filter>
@@ -228,15 +201,6 @@
     <ClInclude Include="source\editor\tile\TileTemplateFactory.h">
       <Filter>source\editor\tile</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\net\FrameStatus.h">
-      <Filter>source\game\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\ControllablePlayer.h">
-      <Filter>source\game\player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\Environment.h">
-      <Filter>source\game\world</Filter>
-    </ClInclude>
     <ClInclude Include="source\scene\GameJoinScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
@@ -246,39 +210,15 @@
     <ClInclude Include="source\shared\tiles\TileDescription.h">
       <Filter>source\shared\tiles</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\VirtualPlayer.h">
-      <Filter>source\game\player</Filter>
-    </ClInclude>
     <ClInclude Include="source\shared\ValueDefinitions.h">
       <Filter>source\shared</Filter>
     </ClInclude>
     <ClInclude Include="source\shared\tiles\TransitivePortal.h">
       <Filter>source\shared\tiles</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\tiletrait\GameElementBase.h">
-      <Filter>source\game\player\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\GameTileBase.h">
-      <Filter>source\game\player\tiletrait</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\resource\pipes\MemoryPipe.h">
       <Filter>source\resource\pipes</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\RemoteConnection.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\AuthenticationHandler.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\ClientMessage.h">
-      <Filter>source\game\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\NetworkMessage.h">
-      <Filter>source\game\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\ServerMessage.h">
-      <Filter>source\game\net</Filter>
     </ClInclude>
     <ClInclude Include="source\device\EncryptionDevice.h">
       <Filter>source\device</Filter>
@@ -300,6 +240,132 @@
     </ClInclude>
     <ClInclude Include="source\operator\ConnectionKeyRequest.h">
       <Filter>source\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\AuthenticationHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\CollisionEngine.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ControllablePlayer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\DependentTileData.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\Environment.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameEvent.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GamePlayer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameProperty.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameState.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameWorld.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\LocalPlayer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\PlayerInformation.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\PlayerProperties.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\PlayerRepresentation.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\RemoteConnection.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\Simulation.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\Simulator.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\UserConnection.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\VirtualPlayer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\WorldInformation.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\WorldProperties.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameElementBase.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\GameTileBase.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\CollidableTile.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\DrawableTile.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\DynamicTile.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\DynamicWorldEntry.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\ExitableTile.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\InitializableTile.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\StaticTile.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\TransitiveTile.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\component\SolidCollisionComponent.h">
+      <Filter>source\game\component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\FrameStatus.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\NetworkMessage.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\ClassicSimClientMessage.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\ClassicSimHostMessage.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\UserAuthHostMessage.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\UserAuthClientMessage.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\TileContent.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\tiletrait\DynamicWorldExit.h">
+      <Filter>source\game\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\component\DynamicWorldTransitionComponent.h">
+      <Filter>source\game\component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -372,9 +438,6 @@
     <ClCompile Include="source\resource\PlayerResource.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\CollisionEngine.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\resource\ResourceDefinition.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
@@ -417,24 +480,6 @@
     <ClCompile Include="source\shared\tiles\TileWall.cpp">
       <Filter>source\shared\tiles</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\ControllablePlayer.cpp">
-      <Filter>source\game\player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\PlayerRepresentation.cpp">
-      <Filter>source\game\player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\VirtualPlayer.cpp">
-      <Filter>source\game\player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GameWorld.cpp">
-      <Filter>source\game\world</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\Environment.cpp">
-      <Filter>source\game\world</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GamePlayer.cpp">
-      <Filter>source\game\player</Filter>
-    </ClCompile>
     <ClCompile Include="source\scene\GameJoinScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
@@ -459,12 +504,6 @@
     <ClCompile Include="source\device\CoreDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\RemoteConnection.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\AuthenticationHandler.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\net\ClientMessage.cpp" />
     <ClCompile Include="source\device\EncryptionDevice.cpp">
       <Filter>source\device</Filter>
@@ -481,6 +520,54 @@
     <ClCompile Include="source\operator\OperatorConnectionHandler.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
+    <ClCompile Include="source\game\AuthenticationHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\CollisionEngine.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\ControllablePlayer.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\Environment.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GamePlayer.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameProperty.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\GameWorld.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\LocalPlayer.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\PlayerProperties.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\PlayerRepresentation.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\RemoteConnection.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\Simulation.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\Simulator.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\UserConnection.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\VirtualPlayer.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\WorldProperties.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">
@@ -488,6 +575,9 @@
     </Image>
     <Image Include="source\resource\IMAG0011.jpg">
       <Filter>source\resource</Filter>
+    </Image>
+    <Image Include="source\game\PlayerSpecificModel.jpeg">
+      <Filter>source\game</Filter>
     </Image>
     <Image Include="source\game\Small_Architecture.jpg">
       <Filter>source\game</Filter>
@@ -722,59 +812,8 @@
     <None Include="source\menu\MenuBackground.cpp">
       <Filter>source\menu</Filter>
     </None>
-    <None Include="source\game\GameProperty.cpp">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\GameProperty.h">
-      <Filter>source\game</Filter>
-    </None>
     <None Include="source\shared\tiles\TileExit.h">
       <Filter>source\shared\tiles</Filter>
-    </None>
-    <None Include="source\game\GameEvent.h">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\tiletrait\ExitableTile.h">
-      <Filter>source\game\player\tiletrait</Filter>
-    </None>
-    <None Include="source\game\GamePlayer.h">
-      <Filter>source\game\player</Filter>
-    </None>
-    <None Include="source\game\LocalPlayer.cpp">
-      <Filter>source\game\player</Filter>
-    </None>
-    <None Include="source\game\LocalPlayer.h">
-      <Filter>source\game\player</Filter>
-    </None>
-    <None Include="source\game\PlayerInformation.h">
-      <Filter>source\game\player</Filter>
-    </None>
-    <None Include="source\game\PlayerProperties.cpp">
-      <Filter>source\game\player</Filter>
-    </None>
-    <None Include="source\game\PlayerProperties.h">
-      <Filter>source\game\player</Filter>
-    </None>
-    <None Include="source\game\PlayerRepresentation.h">
-      <Filter>source\game\player</Filter>
-    </None>
-    <None Include="source\game\GameWorld.h">
-      <Filter>source\game\world</Filter>
-    </None>
-    <None Include="source\game\WorldInformation.h">
-      <Filter>source\game\world</Filter>
-    </None>
-    <None Include="source\game\WorldProperties.cpp">
-      <Filter>source\game\world</Filter>
-    </None>
-    <None Include="source\game\WorldProperties.h">
-      <Filter>source\game\world</Filter>
-    </None>
-    <None Include="source\game\UserConnection.h">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\UserConnection.cpp">
-      <Filter>source\game</Filter>
     </None>
     <None Include="source\device\NetDevice.h">
       <Filter>source\device</Filter>
@@ -784,24 +823,6 @@
     </None>
     <None Include="source\shared\tiles\TileCommon.h">
       <Filter>source\shared\tiles</Filter>
-    </None>
-    <None Include="source\game\DependentTileData.h">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\Simulation.cpp">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\Simulation.h">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\tiletrait\TransitiveTile.h">
-      <Filter>source\game\player\tiletrait</Filter>
-    </None>
-    <None Include="source\game\Simulator.cpp">
-      <Filter>source\game</Filter>
-    </None>
-    <None Include="source\game\Simulator.h">
-      <Filter>source\game</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

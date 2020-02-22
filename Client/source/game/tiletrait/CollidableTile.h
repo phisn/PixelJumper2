@@ -1,9 +1,9 @@
 #pragma once
 
 #include <Client/source/game/CollisionEngine.h>
-#include <Client/source/game/Environment.h>
 #include <Client/source/game/GameEvent.h>
 #include <Client/source/game/GamePlayer.h>
+#include <Client/source/game/tiletrait/TileContent.h>
 
 #include <utility>
 #include <vector>
@@ -28,10 +28,14 @@ namespace Game
 	};
 
 	class CollidableTile
-		:
-		public virtual GameTileBase
 	{
 	public:
+		CollidableTile(const TileContent& content)
+			:
+			content(content)
+		{
+		}
+
 		/*
 			Return: repeated movement without physics,
 			used for sliding or bouncing (normal walls slide too [ignores phyiscs])
@@ -44,19 +48,9 @@ namespace Game
 			const CollisionType*, const Collision*
 		> collisionEvent;
 
+		const TileContent& content;
+
 	protected:
-		void registerCollisionType(
-			Environment* const env,
-			const CollisionType type) // alternative to register
-		{
-			env->registerCollisionType(type, this);
-		}
-
-		void registerType(Environment* const env)
-		{
-			env->registerTile<CollidableTile>(this);
-		}
-
 		void notifyCollisionEvent(
 			const CollisionType* type,
 			const Collision* collision)

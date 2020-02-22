@@ -7,6 +7,8 @@
 #include <Client/source/game/tiletrait/InitializableTile.h>
 #include <Client/source/game/tiletrait/StaticTile.h>
 
+#include <Client/source/game/GameElementBase.h>
+
 #include <Client/source/logger/Logger.h>
 
 #include <Client/source/shared/tiles/TileDescription.h>
@@ -44,7 +46,7 @@ namespace Game
 
 		for (GameElementBase* const tile : getTileType<GameElementBase>())
 		{
-			tile->registerType(this);
+			tile->registerComponents(this);
 		}
 
 		return true;
@@ -54,8 +56,6 @@ namespace Game
 	{
 		for (StaticTile* const tile : getTileType<StaticTile>())
 		{
-			GameTileBase* const gameTile = (GameTileBase*) tile;
-
 			sf::VertexBuffer vertexBuffer(sf::PrimitiveType::Quads);
 
 			if (!vertexBuffer.create(4))
@@ -69,13 +69,13 @@ namespace Game
 
 			for (int i = 0; i < 4; ++i)
 			{
-				vertices[i].color = tile->getColor();
+				vertices[i].color = tile->color;
 			}
 
-			vertices[0].position = tile->getPosition();
-			vertices[1].position = tile->getPosition() + sf::Vector2f(tile->getSize().x, 0);
-			vertices[2].position = tile->getPosition() + tile->getSize();
-			vertices[3].position = tile->getPosition() + sf::Vector2f(0, tile->getSize().y);
+			vertices[0].position = tile->position;
+			vertices[1].position = tile->position + sf::Vector2f(tile->size.x, 0);
+			vertices[2].position = tile->position + tile->size;
+			vertices[3].position = tile->position + sf::Vector2f(0, tile->size.y);
 
 			vertexBuffer.update((const sf::Vertex*) & vertices);
 

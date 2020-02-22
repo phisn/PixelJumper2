@@ -1,11 +1,10 @@
 #pragma once
 
 #include <Client/source/game/CollisionEngine.h>
-#include <Client/source/game/tiletrait/GameElementBase.h>
-
 #include <Client/source/resource/WorldResource.h>
 
 #include <cassert>
+#include <typeindex>
 #include <typeinfo>
 #include <unordered_map>
 #include <vector>
@@ -19,6 +18,9 @@ namespace Game
 	class Environment
 	{
 	public:
+		typedef std::vector<void*> TileContainer;
+		typedef std::vector<CollidableTile*> CollidableTileContainer;
+
 		bool initialize(const Resource::World* const resource);
 		bool initializeGraphics()
 		{
@@ -26,17 +28,17 @@ namespace Game
 		}
 
 		// let hash | valuetype open for ex. diff. collision types
-		template <typename HashType, typename ValueType = HashType>
-		const std::vector<ValueType*>& getTileType() const
+		template <typename TileType>
+		const std::vector<TileType*>& getTileType() const
 		{
-			decltype(tiles)::const_iterator iterator = tiles.find(typeid(HashType).hash_code());
+			decltype(tiles)::const_iterator iterator = tiles.find(typeid(TileType));
 
 			if (iterator == tiles.cend())
 			{
-				return (const std::vector<ValueType*>&) emptyVector;
+				return (const std::vector<TileType*>&) emptyVector;
 			}
 
-			return (const std::vector<ValueType*>&) iterator->second;
+			return (const std::vector<TileType*>&) iterator->second;
 		}
 
 		const std::vector<CollidableTile*>& getCollisionTileType(const CollisionType type)
@@ -51,10 +53,10 @@ namespace Game
 			return iterator->second;
 		}
 
-		template <typename HashType, typename ValueType = HashType>
-		void registerTile(ValueType* const tile)
+		template <typename TileType>
+		void registerTile(TileType* const tile)
 		{
-			tiles[typeid(HashType).hash_code()].push_back((void*) tile);
+			tiles[typeid(TileType)].push_back((void*) tile);
 		}
 		
 		void processLogic();
@@ -85,15 +87,8 @@ namespace Game
 		bool initializeCreateAndRegister(const Resource::World* const resource);
 		bool initializeVertex();
 
-		std::unordered_map<
-			size_t,
-			std::vector<void*>
-		> tiles;
-
-		std::unordered_map<
-			CollisionType,
-			std::vector<CollidableTile*>
-		> collisionTypeTiles;
+		std::unordered_map<std::type_index, TileContainer> tiles;
+		std::unordered_map<CollisionType, CollidableTileContainer> collisionTypeTiles;
 
 		std::vector<CollisionType> collisionTypes;
 		std::vector<void*> emptyVector;

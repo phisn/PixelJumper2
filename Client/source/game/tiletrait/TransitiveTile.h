@@ -8,8 +8,6 @@
 namespace Game
 {
 	class TransitiveTile
-		:
-		public virtual GameTileBase
 	{
 	public:
 		typedef sf::Uint8 Index;
@@ -26,11 +24,6 @@ namespace Game
 		{
 		}
 
-		void registerType(Environment* const env) override
-		{
-			env->registerTile<TransitiveTile>(this);
-		}
-
 		GameEvent<TransitiveTile, const Event&> onTransition;
 
 		Resource::WorldId getTarget() const
@@ -43,7 +36,7 @@ namespace Game
 		{
 			Event event;
 			
-			event.sourceOffset = getPosition();
+			// event.sourceOffset = getPosition();
 			event.target = target;
 
 			onTransition.notify(event);

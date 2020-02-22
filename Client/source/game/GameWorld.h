@@ -166,7 +166,7 @@ namespace Game
 				return false;
 			}
 
-			player->properties.position.setValue(tile->getPosition() + player->properties.position.getValue() - offset);
+			// player->properties.position.setValue(tile->getPosition() + player->properties.position.getValue() - offset);
 			players.push_back(player);
 			properties.setPlayerCount(*properties.playerCount + 1);
 
@@ -248,8 +248,8 @@ namespace Game
 					for (CollidableTile* const tile : environment.getCollisionTileType(collisionType))
 						if (CollisionEngine::FindCollision(
 								&collisionContext,
-								tile->getSize(),
-								tile->getPosition()))
+								tile->content.size,
+								tile->content.position))
 						{
 							const CollisionEngine::CollisionInfo collisionInfo =
 								CollisionEngine::GetLastCollision();

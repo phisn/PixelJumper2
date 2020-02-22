@@ -19,13 +19,6 @@
 namespace Shared
 {
 	const extern TileDescription TileWall;
-
-	struct WallContent
-	{
-		float density;
-		float inputForceAddition;
-		float friction;
-	};
 }
 
 namespace Game
