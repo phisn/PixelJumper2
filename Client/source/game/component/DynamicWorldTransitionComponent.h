@@ -7,6 +7,13 @@
 
 namespace Game
 {
+	struct DynamicWorldTransitionContent
+	{
+		WorldEntryID worldEntryID;
+		Resource::WorldId targetWorld;
+		WorldEntryID targetEntry;
+	};
+
 	// duplex
 	class DynamicWorldTransitionComponent
 		:
@@ -15,14 +22,12 @@ namespace Game
 	{
 	public:
 		DynamicWorldTransitionComponent(
-			const WorldEntryID worldEntryID,
-			const Resource::WorldId targetWorld, 
-			const WorldEntryID targetEntry,
-			const TileContent tilecontent)
+			const DynamicWorldTransitionContent content,
+			const TileContent& tilecontent)
 			:
-			DynamicWorldEntry(worldEntryID),
-			targetWorld(targetWorld),
-			targetEntry(targetEntry),
+			DynamicWorldEntry(content.worldEntryID),
+			targetWorld(content.targetWorld),
+			targetEntry(content.targetEntry),
 			tilecontent(tilecontent)
 		{
 		}
@@ -34,7 +39,6 @@ namespace Game
 			player->getProperties().position += tilecontent.position - dwee.offsetSource;
 		}
 
-	protected:
 		void notifyOnExit()
 		{
 			DynamicWorldExitEvent event;
@@ -46,9 +50,15 @@ namespace Game
 			DynamicWorldExit::notifyOnExit(event);
 		}
 
+		void registerComponent(Environment* const env)
+		{
+			env->registerTile<DynamicWorldEntry>(this);
+			env->registerTile<DynamicWorldExit>(this);
+		}
+
 	private:
 		const Resource::WorldId targetWorld;
 		const WorldEntryID targetEntry;
-		const TileContent tilecontent;
+		const TileContent& tilecontent;
 	};
 }

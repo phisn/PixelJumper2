@@ -334,9 +334,6 @@
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
       <Filter>source\game\tiletrait</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\tiletrait\TransitiveTile.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\component\SolidCollisionComponent.h">
       <Filter>source\game\component</Filter>
     </ClInclude>
@@ -365,6 +362,9 @@
       <Filter>source\game\tiletrait</Filter>
     </ClInclude>
     <ClInclude Include="source\game\component\DynamicWorldTransitionComponent.h">
+      <Filter>source\game\component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\component\EmptyCollisionComponent.h">
       <Filter>source\game\component</Filter>
     </ClInclude>
   </ItemGroup>

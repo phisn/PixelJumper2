@@ -3,7 +3,6 @@
 #include <Client/source/game/GameWorld.h>
 
 #include <Client/source/game/tiletrait/ExitableTile.h>
-#include <Client/source/game/tiletrait/TransitiveTile.h>
 
 #include <Client/source/framework/Context.h>
 
@@ -30,7 +29,9 @@ namespace Game
 		virtual void popPlayer(PlayerBase* const player) = 0;
 	};
 
-	class _ClassicSimulation
+	class ClassicSimulation
+		:
+		public GameState
 	{
 	public:
 		typedef std::future<World*> LoadingWorld;
@@ -44,10 +45,62 @@ namespace Game
 			Error
 		};
 
-		_ClassicSimulation(const WorldResourceContainer& worldResources)
+		ClassicSimulation(const WorldResourceContainer& worldResources)
 			:
 			worldResources(worldResources)
 		{
+		}
+
+		virtual bool processLogic()
+		{
+			world->processLogic();
+
+			for (const Task& task : tasks)
+			{
+				WorldFailure result = task();
+
+				if (result != WorldFailure::Success)
+				{
+					Log::Error(L"Simulation task failed",
+						(int) result, L"reason");
+
+					status = Error;
+					return false;
+				}
+			}
+
+			tasks.clear();
+			return true;
+		}
+
+		bool writeState(Resource::WritePipe* const writePipe) override
+		{
+			if (!writePipe->writeValue(&world->getInformation()->worldId))
+			{
+				return false;
+			}
+
+			return world->writeState(writePipe);
+		}
+
+		bool readState(Resource::ReadPipe* const readPipe) override
+		{
+			// synchronize when world is different
+			Resource::WorldId worldID;
+			if (!readPipe->readValue(&worldID))
+			{
+				return false;
+			}
+
+			// when worldid differes load real worldid
+			// if loading fails return false
+			if (world->getInformation()->worldId != worldID &&
+				loadWorld(worldID) != WorldFailure::Success)
+			{
+				return false;
+			}
+
+			return world->readState(readPipe);
 		}
 
 		Status getStatus()
@@ -66,7 +119,8 @@ namespace Game
 			PreloadingFailed,
 			ResourceNotFound,
 			MissingResource,
-			InitializeFailed
+			InitializeFailed,
+			DynamicEntryNotFound
 		};
 
 		// has to be called before a world is pushed
@@ -106,13 +160,38 @@ namespace Game
 				});
 		}
 
-		void processLogic()
-		{
-		}
-
 		virtual bool onInitializeWorld(World* const world)
 		{
-			return world->initialize();
+			if (!world->initialize())
+			{
+				return false;
+			}
+
+			for (ExitableTile* const tile : world->getEnvironment()->getTileType<ExitableTile>())
+				tile->onExit.addListener(
+					[this]()
+					{
+						tasks.push_back(
+							[this]() -> WorldFailure
+							{
+								// game is finished here and simulation
+								// should stop
+
+							});
+					});
+
+			for (DynamicWorldExit* const tile : world->getEnvironment()->getTileType<DynamicWorldExit>())
+				tile->onExit.addListener(
+					[this](const DynamicWorldExitEvent& event)
+					{
+						tasks.push_back(
+							[this, event]()->WorldFailure
+						{
+							return loadWorldDynamicTransition(event);
+						});
+					});
+
+			return true;
 		}
 
 		virtual void onBeginWorld(World* const world) = 0;
@@ -125,9 +204,10 @@ namespace Game
 		WorldContainer worlds;
 		LoadingWorldContainer loadingWorlds;
 
+		typedef std::function<WorldFailure()> Task;
 		// tasks from different execution points
 		// that have to be executed later
-		std::vector<std::function<void()>> tasks;
+		std::vector<Task> tasks;
 
 		WorldFailure loadWorld(const Resource::WorldId worldID)
 		{
@@ -154,17 +234,17 @@ namespace Game
 		// false if some resource was not found
 		bool preloadNextWorlds()
 		{
-			for (TransitiveTile* tile : world->getEnvironment()->getTileType<TransitiveTile>())
+			for (const Resource::WorldId worldID : world->getTargets())
 				if (std::find_if(
 						worlds.begin(),
 						worlds.end(),
-					[tile](World* const world)
+					[worldID](World* const world)
 					{
-						return world->getInformation()->worldId == tile->getTarget();
+						return world->getInformation()->worldId == worldID;
 
 					}) == worlds.end())
 				{
-					if (!preloadNextWorld(tile->getTarget()))
+					if (!preloadNextWorld(worldID))
 						return false;
 				}
 
@@ -194,25 +274,7 @@ namespace Game
 							return NULL;
 						}
 
-						for (ExitableTile* const tile : world->getEnvironment()->getTileType<ExitableTile>())
-							tile->onExit.addListener(
-								[this]()
-								{
-									tasks.push_back(
-										[this]()
-										{
-										});
-								});
-
-						for (TransitiveTile* const tile : world->getEnvironment()->getTileType<TransitiveTile>())
-							tile->onTransition.addListener(
-								[this, tile](const TransitiveTile::Event& event)
-								{
-									tasks.push_back(
-										[this, tile]()
-										{
-										});
-								});
+						return world;
 					},
 					resource->second));
 
@@ -235,6 +297,7 @@ namespace Game
 				if (world->getInformation()->worldId == worldID)
 				{
 					this->world = world;
+
 					return WorldFailure::Success;
 				}
 
@@ -278,18 +341,26 @@ namespace Game
 			return result;
 		}
 
-		WorldFailure tansitiveLoadWorld(const Resource::WorldId worldID)
+		WorldFailure loadWorldDynamicTransition(const DynamicWorldExitEvent& event)
 		{
 			unloadWorld();
-			const WorldFailure failure = enforceWorld(worldID);
+			WorldFailure result = enforceWorld(event.targetWorld);
 
-			if (failure == WorldFailure::Success)
+			if (result == WorldFailure::Success)
 			{
-				world->addTransitivePlayer(
-					);
+				DynamicWorldEntryEvent entryEvent;
+				entryEvent.offsetSource = event.offset;
+
+				if (!world->addPlayerDynamicTransition(
+						player,
+						event.targetEntry,
+						entryEvent))
+				{
+					result = WorldFailure::DynamicEntryNotFound;
+				}
 			}
 
-			return failure;
+			return result;
 		}
 
 		WorldFailure createWorld(const Resource::WorldId worldID)
@@ -317,371 +388,7 @@ namespace Game
 
 	};
 
-	/*
-
-		A simulation consists of worlds which can be connected
-		transitivly with each other meaning the player can switch
-		between them without interrupts.
-		A loaded world will preload all transitivly connected
-		worlds to prevent any interrupts by loading. preloaded
-		worlds will be loaded asynchronous and evaluated when
-		needed. an error in loading a world will be first discovered
-		when the world is loaded. when the worlds are evaluated
-		first all worlds are moved to loadedworlds then the targeted
-		worlds will be loaded and possibly new worlds moved into
-		preloadedworlds.
-		it is important to reset all worlds when the player resets
-		or dies to prevent an overallocation of resources. that
-		either mean that there will only be a low count of active
-		worlds when the player often respawns and dies or that there
-		will be currently many loaded worlds
-
-	*/
-	class ClassicSimulation
-		:
-		public Simulation
-	{
-	public:
-		typedef std::future<World*> WorldPreloader;
-		typedef std::map<Resource::WorldId, Resource::World*> ResourceContainer;
-		typedef std::map<Resource::WorldId, World*> WorldContainer;
-
-		enum Status
-		{
-			Running,
-			MissingPlayer,   // waiting for player being added
-			MissingWorld,    // waiting for world being run
-			MissingResource, // waiting for missing resource
-			Shutdown,        // manually shutdown
-			Error            // fault in load world or resource
-		};
-
-		ClassicSimulation(const ResourceContainer& resourceContainer)
-			:
-			loadedWorldResources(resourceContainer)
-		{
-		}
-
-		bool initialize() override
-		{
-			return true;
-		}
-
-		bool pushWorld(Resource::WorldId const world)
-		{
-			return commonLoadWorld(world);
-		}
-
-		bool processLogic() override
-		{
-			currentWorld->processLogic();
-
-			if (transitiveSwitchRequest)
-			{
-				transitiveLoadWorld(transitiveSwitchEvent);
-				transitiveSwitchRequest = false;
-			}
-
-			return true;
-		}
-
-		void pushPlayer(PlayerBase* const player) override
-		{
-			if (this->player != NULL)
-			{
-				currentWorld->removePlayer(player);
-			}
-
-			this->player = player;
-
-			if (currentWorldID)
-			{
-				commonLoadWorld(currentWorldID);
-			}
-			else
-			{
-				adjustStatus(MissingWorld);
-			}
-		}
-		
-		void popPlayer(PlayerBase* const player) override
-		{
-			if (this->player != player)
-			{
-				const Resource::PlayerID existing = this->player
-					? this->player->getInformation().playerId 
-					: 0;
-
-				Log::Error(L"Tried to remove invaid player in simulation",
-					existing, L"existing",
-					player->getInformation().playerId, L"remove");
-			}
-			else
-			{
-				currentWorld->removePlayer(player);
-				this->player = NULL;
-				adjustStatus(MissingPlayer);
-			}
-		}
-
-		bool writeState(Resource::WritePipe* const writePipe) override
-		{
-			if (!writePipe->writeValue(&currentWorld->getInformation()->worldId))
-			{
-				return false;
-			}
-
-			return currentWorld->writeState(writePipe);
-		}
-
-		bool readState(Resource::ReadPipe* const readPipe) override
-		{
-			// synchronize when world is different
-			Resource::WorldId worldID;
-			if (!readPipe->readValue(&worldID))
-			{
-				return false;
-			}
-
-			if (currentWorld->getInformation()->worldId != worldID && !commonLoadWorld(worldID))
-			{
-				return false;
-			}
-
-			return currentWorld->readState(readPipe);
-		}
-
-		const World* getCurrentWorld() const
-		{
-			return currentWorld;
-		}
-
-		Status getStatus() const
-		{
-			return status;
-		}
-
-		sf::Uint64 getTickCount() const
-		{
-			return currentWorld->getProperties().tickCount.getValue();
-		}
-
-	protected:
-		virtual bool initializeWorld(World* const world)
-		{
-			return world->initialize();
-		}
-
-	private:
-		bool processTileDependencies()
-		{
-			for (ExitableTile* const tile : currentWorld->getEnvironment()->getTileType<ExitableTile>())
-			{
-				tile->onExit.addListener(
-					[this]()
-					{
-						// ...
-
-					}, GameEventIdentifier::ClassicSimulation);
-			}
-
-			// preload transtive tiles because environment uses maps
-			const std::vector<TransitiveTile*>& transitiveTiles = currentWorld->getEnvironment()->getTileType<TransitiveTile>();
-
-			// prepare preloading size to prevent resize
-			preloadingWorlds.reserve(transitiveTiles.size());
-
-			for (TransitiveTile* tile : transitiveTiles)
-			{
-				tile->onTransition.addListener(
-					[this, tile](const TransitiveTile::Event& event)
-					{
-						transitiveSwitchRequest = true;
-						transitiveSwitchEvent = event;
-
-					}, GameEventIdentifier::ClassicSimulation);
-
-				if (!preloadWorld(tile->getTarget()))
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		void removeTileDependencies()
-		{
-			for (ExitableTile* const tile : currentWorld->getEnvironment()->getTileType<ExitableTile>())
-			{
-				tile->onExit.popListener(GameEventIdentifier::ClassicSimulation);
-			}
-
-			for (TransitiveTile* const tile : currentWorld->getEnvironment()->getTileType<TransitiveTile>())
-			{
-				tile->onTransition.popListener(GameEventIdentifier::ClassicSimulation);
-			}
-		}
-
-		bool preloadWorld(const Resource::WorldId worldID)
-		{
-			if (loadedWorlds.find(worldID) == loadedWorlds.cend())
-			{
-				ResourceContainer::const_iterator worldResource = loadedWorldResources.find(worldID);
-
-				// ignore missing here to hope for getting it later
-				if (worldResource != loadedWorldResources.cend())
-				{
-					preloadingWorlds.push_back(
-						std::async(
-							std::launch::async,
-							[this](Resource::World* const worldResource) -> World*
-							{
-								World* const world = new World(worldResource);
-
-								if (!initializeWorld(world))
-								{
-									delete world;
-									return NULL;
-								}
-
-								return world;
-							}, worldResource->second));
-				}
-			}
-
-			return true;
-		}
-
-		bool commonLoadWorld(const Resource::WorldId worldID)
-		{
-			if (prepareWorld(worldID))
-			{
-				currentWorld->addPlayer(player);
-				return true;
-			}
-
-			return false;
-		}
-
-		bool transitiveLoadWorld(const TransitiveTile::Event& event)
-		{
-			const Resource::WorldId source = currentWorld->getInformation()->worldId;
-
-			if (prepareWorld(event.target))
-			{
-				currentWorld->addTransitivePlayer(
-					player,
-					event.sourceOffset, 
-					source);
-
-				return true;
-			}
-
-			return false;
-		}
-
-		bool prepareWorld(const Resource::WorldId worldID)
-		{
-			currentWorldID = worldID;
-
-			World* const world = getWorld(worldID);
-			if (currentWorld)
-			{
-				removeTileDependencies();
-				currentWorld->removePlayer(player);
-			}
-
-			currentWorld = world;
-			if (!processTileDependencies())
-			{
-				return false;
-			}
-
-			return true;
-		}
-
-		World* getWorld(const Resource::WorldId worldID)
-		{
-			if (World* world = processPreloadedWorlds(worldID); world)
-			{
-				return world;
-			}
-
-			decltype(loadedWorlds)::const_iterator world = loadedWorlds.find(worldID);
-			if (world == loadedWorlds.cend())
-			{
-				return createWorld(worldID);
-			}
-
-			return world->second;
-		}
-
-		World* createWorld(const Resource::WorldId worldID)
-		{
-			ResourceContainer::const_iterator worldResource = loadedWorldResources.find(worldID);
-			if (worldResource == loadedWorldResources.cend())
-			{
-				adjustStatus(Status::MissingResource);
-				return NULL;
-			}
-
-			World* const world = new World(worldResource->second);
-			if (!initializeWorld(world))
-			{
-				delete world;
-				adjustStatus(Status::Error);
-				return NULL;
-			}
-			loadedWorlds[worldID] = world;
-
-			return world;
-		}
-
-		World* processPreloadedWorlds(const Resource::WorldId worldID)
-		{
-			World* world = NULL;
-
-			for (WorldPreloader& preloader : preloadingWorlds)
-			{
-				World* const preloadedWorld = preloader.get();
-				const Resource::WorldId preloadedWorldID = preloadedWorld->getInformation()->worldId;
-
-				if (preloadedWorldID == worldID)
-				{
-					world = preloadedWorld;
-				}
-
-				loadedWorlds[preloadedWorldID] = preloadedWorld;
-			}
-
-			preloadingWorlds.clear();
-
-			return world;
-		}
-
-		void adjustStatus(const Status status)
-		{
-			if (this->status < status)
-				this->status = status;
-		}
-
-		Status status = MissingPlayer;
-
-		TransitiveTile::Event transitiveSwitchEvent;
-		bool transitiveSwitchRequest = false;
-
-		PlayerBase* player;
-
-		Resource::WorldId currentWorldID;
-		World* currentWorld = NULL;
-
-		const ResourceContainer& loadedWorldResources;
-		WorldContainer loadedWorlds;
-		std::vector<WorldPreloader> preloadingWorlds;
-	};
-
-	class VisualClassicSimulation
+	/*class VisualClassicSimulation
 		:
 		public ClassicSimulation
 	{
@@ -699,7 +406,7 @@ namespace Game
 			return ClassicSimulation::initializeWorld(world) 
 				&& world->initializeGraphics();
 		}
-	};
+	};*/
 
 	/*
 	class ClassicGamemodeCreator

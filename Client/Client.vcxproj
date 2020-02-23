@@ -96,6 +96,7 @@
     <ClInclude Include="source\game\AuthenticationHandler.h" />
     <ClInclude Include="source\game\CollisionEngine.h" />
     <ClInclude Include="source\game\component\DynamicWorldTransitionComponent.h" />
+    <ClInclude Include="source\game\component\EmptyCollisionComponent.h" />
     <ClInclude Include="source\game\component\SolidCollisionComponent.h" />
     <ClInclude Include="source\game\ControllablePlayer.h" />
     <ClInclude Include="source\game\DependentTileData.h" />
@@ -130,7 +131,6 @@
     <ClInclude Include="source\game\tiletrait\StaticTile.h" />
     <ClInclude Include="source\game\tiletrait\SynchronizableTile.h" />
     <ClInclude Include="source\game\tiletrait\TileContent.h" />
-    <ClInclude Include="source\game\tiletrait\TransitiveTile.h" />
     <ClInclude Include="source\game\UserConnection.h" />
     <ClInclude Include="source\game\VirtualPlayer.h" />
     <ClInclude Include="source\game\WorldInformation.h" />

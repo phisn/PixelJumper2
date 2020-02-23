@@ -10,9 +10,10 @@
 
 #include <Client/source/game/GameWorld.h>
 
-#include <Client/source/game/tiletrait/CollidableTile.h>
+#include <Client/source/game/component/DynamicWorldTransitionComponent.h>
+#include <Client/source/game/component/EmptyCollisionComponent.h>
+#include <Client/source/game/GameTileBase.h>
 #include <Client/source/game/tiletrait/StaticTile.h>
-#include <Client/source/game/tiletrait/TransitiveTile.h>
 
 #include <Client/source/shared/tiles/TileDescription.h>
 #include <Client/source/shared/ValueDefinitions.h>
@@ -26,9 +27,8 @@ namespace Game
 {
 	class TileTransitivePortal
 		:
-		public CollidableTile,
-		public StaticTile,
-		public TransitiveTile
+		public GameTileBase,
+		public StaticTile
 	{
 	public:
 		static GameTileBase* Create(
@@ -38,61 +38,37 @@ namespace Game
 
 		TileTransitivePortal(
 			const TileIdentity identity,
-			const sf::Vector2f position,
-			const sf::Vector2f size,
-			const Resource::WorldId target)
+			const TileContent content,
+			const DynamicWorldTransitionContent transitionContent)
 			:
 			GameTileBase(
 				identity,
-				position,
-				size),
-			StaticTile(Shared::TileTransitivePortal.gameColor),
-			TransitiveTile(target)
+				content),
+			StaticTile(
+				Shared::TileTransitivePortal.gameColor, 
+				content),
+			collisionComponent(content),
+			transitionComponent(
+				transitionContent,
+				content)
 		{
 		}
 
-		void registerType(Environment* const env) override
+		void registerComponents(Environment* const environment) override
 		{
-			env->registerTile<TileTransitivePortal>(this);
-			CollidableTile::registerCollisionType(
-				env,
-				Game::CollisionType{
+			collisionComponent.registerComponent(
+				environment,
+				CollisionType{
 					true,
 					false,
 					true
 				});
-			GameTileBase::registerType(env);
-			TransitiveTile::registerType(env);
-			// StaticTile::registerType(env);
+			transitionComponent.registerComponent(environment);
 		}
 
-		sf::Vector2f onCollision(
-			const CollisionType type,
-			const Collision& collision) override
-		{
-			notifyTransitionEvent();
-			
-			if (collision.info.isHorizontal())
-			{
-				collision.player->getProperties().position =
-				{
-					collision.target.x,
-					collision.info.position.y
-				};
-
-				return { 0.f, collision.target.y - collision.info.position.y };
-			}
-			else
-			{
-				collision.player->getProperties().position =
-				{
-					collision.info.position.x,
-					collision.target.y
-				};
-
-				return { collision.target.x - collision.info.position.x, 0.f };
-			}
-		}
+	private:
+		DynamicWorldTransitionComponent transitionComponent;
+		EmptyCollisionComponent collisionComponent;
 	};
 }
 
@@ -232,11 +208,7 @@ namespace Resource
 		public ResourceBase
 	{
 	public:
-		struct Content
-		{
-			Resource::WorldId world;
-
-		} content;
+		Game::DynamicWorldTransitionContent content;
 
 		bool make(ReadPipe* const pipe) override
 		{

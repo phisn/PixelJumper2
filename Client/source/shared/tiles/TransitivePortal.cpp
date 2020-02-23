@@ -18,13 +18,13 @@ Game::GameTileBase* Game::TileTransitivePortal::Create(
 {
 	return new TileTransitivePortal(
 		identity,
-		sf::Vector2f(
-			tile->content.x,
-			tile->content.y
-		),
-		sf::Vector2f(
-			tile->content.width,
-			tile->content.height
-		),
-		instanceWrapper->getInstance<Resource::TileTransitivePortal>()->content.world);
+		{
+			sf::Vector2f(
+				tile->content.x,
+				tile->content.y),
+			sf::Vector2f(
+				tile->content.width,
+				tile->content.height)
+		},
+		instanceWrapper->getInstance<Resource::TileTransitivePortal>()->content);
 }

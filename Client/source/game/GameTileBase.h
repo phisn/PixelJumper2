@@ -11,7 +11,7 @@ namespace Game
 	{
 	public:
 		GameTileBase(
-			const int identity,
+			const TileIdentity identity,
 			const TileContent content)
 			:
 			GameElementBase(identity),

@@ -24,76 +24,15 @@ namespace Game
 	{
 		return new WallTile(
 			identity,
-			sf::Vector2f(
-				tile->content.x,
-				tile->content.y
-			),
-			sf::Vector2f(
-				tile->content.width,
-				tile->content.height
-			),
+			{
+				sf::Vector2f(
+					tile->content.x,
+					tile->content.y),
+				sf::Vector2f(
+					tile->content.width,
+					tile->content.height)
+			},
 			instanceWrapper->getInstance<Resource::WallTile>()->content);
-	}
-
-	void WallTile::registerType(Environment* const env)
-	{
-		env->registerTile<Game::WallTile>(this);
-
-		CollidableTile::registerType(env);
-		CollidableTile::registerCollisionType(
-			env,
-			CollisionType::NormalCollision
-		);
-		StaticTile::registerType(env);
-	}
-	
-	sf::Vector2f WallTile::onCollision(const CollisionType type, const Collision& collision)
-	{
-		collision.player->getProperties().position = collision.info.position;
-
-		sf::Vector2f movement = {};
-		sf::Vector2f remainOffset = {};
-
-		if (collision.info.isHorizontal())
-		{
-			movement.y = collision.player->getProperties().movement->y;
-			remainOffset.y = (collision.target.y - collision.info.position.y);
-
-			if (fabsf(movement.y) < content.friction)
-			{
-				movement.y = 0;
-			}
-			else
-			{
-				movement.y += movement.y > 0 ? -content.friction : content.friction;
-			}
-		}
-		else
-		{
-			movement.x = collision.player->getProperties().movement->x;
-			remainOffset.x = (collision.target.x - collision.info.position.x);
-
-			if (fabsf(movement.x) < content.friction)
-			{
-				movement.x = 0;
-			}
-			else
-			{
-				movement.x += movement.x > 0 ? -content.friction : content.friction;
-			}
-		}
-
-		collision.player->getCollisionContainer().setCollider(
-			collision.info.type,
-			CollisionContainer::Collider{
-				content.inputForceAddition,
-				content.density
-			});
-
-		collision.player->getProperties().movement = movement;
-		notifyCollisionEvent(&type, &collision);
-
-		return remainOffset;
 	}
 }
 

@@ -7,7 +7,7 @@
 #include <Client/source/game/WorldProperties.h>
 
 #include <Client/source/game/tiletrait/CollidableTile.h>
-#include <Client/source/game/tiletrait/TransitiveTile.h>
+#include <Client/source/game/tiletrait/DynamicWorldExit.h>
 
 #include <Client/source/logger/Logger.h>
 
@@ -140,6 +140,11 @@ namespace Game
 			return &information;
 		}
 
+		const std::vector<Resource::WorldId>& getTargets() const
+		{
+			return resource->targets;
+		}
+
 	protected:
 		const WorldInformation information;
 
@@ -150,34 +155,35 @@ namespace Game
 		bool initializeTiles();
 
 	public: // player
-		bool addTransitivePlayer(
-			PlayerType* const player, 
-			const sf::Vector2f offset,
-			Resource::WorldId source)
-		{
-			TransitiveTile* const tile = findTransitiveTarget(source);
-
-			if (tile == NULL)
-			{
-				Log::Error(L"Target world not found", 
-					source, L"target", 
-					information.worldId, L"id");
-
-				return false;
-			}
-
-			// player->properties.position.setValue(tile->getPosition() + player->properties.position.getValue() - offset);
-			players.push_back(player);
-			properties.setPlayerCount(*properties.playerCount + 1);
-
-			return true;
-		}
-
 		void addPlayer(PlayerType* const player)
 		{
 			player->getProperties().loadDefault(information);
 			players.push_back(player);
 			properties.setPlayerCount(*properties.playerCount + 1);
+		}
+
+		bool addPlayerDynamicTransition(
+			PlayerType* const player,
+			const WorldEntryID entryID,
+			const DynamicWorldEntryEvent event)
+		{
+			DynamicWorldEntry* const entry = environment.getEntry(entryID);
+
+			if (entry == NULL)
+			{
+				Log::Error(L"Target entry not found",
+					entryID, L"target",
+					information.worldId, L"id");
+
+				return false;
+			}
+
+			players.push_back(player);
+			properties.setPlayerCount(*properties.playerCount + 1);
+
+			entry->handleWorldEntry(player, event);
+
+			return true;
 		}
 
 		void removePlayer(PlayerType* const player)
@@ -291,17 +297,6 @@ namespace Game
 					break;
 				}
 			}
-		}
-
-		TransitiveTile* const findTransitiveTarget(const Resource::WorldId world)
-		{
-			for (TransitiveTile* const tile : environment.getTileType<TransitiveTile>())
-				if (tile->getTarget() == world)
-				{
-					return tile;
-				}
-
-			return NULL;
 		}
 	};
 }

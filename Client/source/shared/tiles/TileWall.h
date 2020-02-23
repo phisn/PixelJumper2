@@ -10,7 +10,8 @@
 
 #include <Client/source/game/GameWorld.h>
 
-#include <Client/source/game/tiletrait/CollidableTile.h>
+#include <Client/source/game/component/SolidCollisionComponent.h>
+#include <Client/source/game/GameTileBase.h>
 #include <Client/source/game/tiletrait/StaticTile.h>
 
 #include <Client/source/shared/tiles/TileDescription.h>
@@ -25,7 +26,7 @@ namespace Game
 {
 	class WallTile
 		:
-		public CollidableTile,
+		public GameTileBase,
 		public StaticTile
 	{
 	public:
@@ -36,27 +37,26 @@ namespace Game
 
 		WallTile(
 			const TileIdentity identity,
-			const sf::Vector2f position,
-			const sf::Vector2f size,
-			const Shared::WallContent content)
+			const TileContent content,
+			const SolidCollisionContent collisionContent)
 			:
-			GameTileBase(
-				identity,
-				position,
-				size),
-			StaticTile(Shared::TileWall.gameColor),
-			content(content)
+			GameTileBase(identity, content),
+			StaticTile(
+				Shared::TileWall.gameColor, 
+				GameTileBase::content),
+			collisionComponent(
+				GameTileBase::content,
+				collisionContent)
 		{
 		}
 
-		void registerType(Environment* const env) override;
-
-		virtual sf::Vector2f onCollision(
-			const CollisionType type,
-			const Collision& collision) override;
+		void registerComponents(Environment* const environment) override
+		{
+			collisionComponent.registerComponent(environment);
+		}
 
 	private:
-		Shared::WallContent content;
+		SolidCollisionComponent collisionComponent;
 	};
 }
 
@@ -103,7 +103,7 @@ namespace Editor
 		}
 
 	private:
-		Shared::WallContent content;
+		Game::SolidCollisionContent content;
 		sf::RectangleShape shape;
 	};
 
