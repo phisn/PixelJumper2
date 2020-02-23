@@ -241,9 +241,6 @@
     <ClInclude Include="source\operator\ConnectionKeyRequest.h">
       <Filter>source\operator</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\AuthenticationHandler.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\CollisionEngine.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -281,15 +278,6 @@
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\PlayerRepresentation.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\RemoteConnection.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\Simulation.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\Simulator.h">
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\UserConnection.h">
@@ -366,6 +354,24 @@
     </ClInclude>
     <ClInclude Include="source\game\component\EmptyCollisionComponent.h">
       <Filter>source\game\component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ClassicSimulation.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\ClientAuthenticationHandler.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\ClientClassicSimulation.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\HostClassicSimulator.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\HostAuthenticationHandler.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\HostClassicSimulation.h">
+      <Filter>source\game\net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -520,9 +526,6 @@
     <ClCompile Include="source\operator\OperatorConnectionHandler.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\AuthenticationHandler.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\CollisionEngine.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
@@ -550,15 +553,6 @@
     <ClCompile Include="source\game\PlayerRepresentation.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\RemoteConnection.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\Simulation.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\Simulator.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\UserConnection.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
@@ -567,6 +561,24 @@
     </ClCompile>
     <ClCompile Include="source\game\WorldProperties.cpp">
       <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\ClassicSimulation.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\net\ClientAuthenticationHandler.cpp">
+      <Filter>source\game\net</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\net\ClientClassicSimulation.cpp">
+      <Filter>source\game\net</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\net\HostAuthenticationHandler.cpp">
+      <Filter>source\game\net</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\net\HostClassicSimulation.cpp">
+      <Filter>source\game\net</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\net\HostClassicSimulator.cpp">
+      <Filter>source\game\net</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

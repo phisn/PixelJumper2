@@ -3,9 +3,8 @@
 #include <Client/source/device/NetDevice.h>
 
 #include <Client/source/game/GameWorld.h>
-#include <Client/source/game/Simulation.h>
 
-#include <Client/source/game/RemoteConnection.h>
+#include <Client/source/game/net/HostClassicSimulation.h>
 #include <Client/source/game/UserConnection.h>
 
 namespace Game::Net
@@ -17,7 +16,7 @@ namespace Game::Net
 	// informations? and their current position
 	// can optionally request more player data
 
-	class ClassicSimulator
+	class HostClassicSimulator
 		:
 		public Device::Net::Server,
 		public GameState
@@ -30,7 +29,7 @@ namespace Game::Net
 			int maxClients = 128;
 		};
 
-		ClassicSimulator(const Settings settings = Settings{ })
+		HostClassicSimulator(const Settings settings = Settings{ })
 			:
 			settings(settings)
 		{
@@ -61,15 +60,6 @@ namespace Game::Net
 			{
 
 			}
-
-
-			/*while (listener.accept(connections.back()->getSocket()))
-			{
-				if (connections.back()->initialize())
-					connections.push_back(
-						new ClassicSimulationHandler(settings.connectionSettings)
-					);
-			}*/
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
@@ -113,7 +103,7 @@ namespace Game::Net
 
 		// last element represents empty connection
 		// to accept new tcpsockets
-		std::vector<ClassicSimulationHandler*> connections;
+		std::vector<HostClassicSimulation*> connections;
 		WorldResourceContainer resources;
 	};
 

@@ -54,7 +54,8 @@ namespace Game::Net::Host
 		enum Reason
 		{
 			SimulationAlreadyRunning,
-			InvalidWorldID
+			InvalidWorldID,
+			SimulationRunFailed
 
 		} reason;
 	};

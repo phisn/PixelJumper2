@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Client/source/game/net/FrameStatus.h>
+
 namespace Game::Net::Client
 {
 	struct ClassicSimMessageID
@@ -29,19 +31,29 @@ namespace Game::Net::Client
 		};
 	};
 
-	struct QuarySimulationMessage
-	{
-	};
-
-	struct OpenSimulationMessageContent
+	struct PrepareSimulationMessageContent
 	{
 		Resource::WorldId world;
 	};
 
-	typedef TrivialNetworkMessage<OpenSimulationMessageContent> PrepareSimulationMessage;
-
-	struct RequestSyncMessage
+	typedef TrivialNetworkMessage<PrepareSimulationMessageContent> PrepareSimulationMessage;
+	
+	class PushMovementMessage
+		:
+		public NetworkMessage
 	{
+	public:
+		PackedFrameStatus packetFrameStatus;
+
+		bool load(Resource::ReadPipe* const pipe) override
+		{
+			return frameStatus.readState(pipe);
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return frameStatus.writeState(pipe);
+		}
 	};
 
 	struct AcceptSyncMessageContent

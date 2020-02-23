@@ -11,7 +11,7 @@ namespace Game::Net
 {
 	// authhandler as base for remoteconnection
 	// should not be run without authentication
-	class AuthenticationHandler
+	class HostAuthenticationHandler
 		:
 		public Device::Net::ClientHandler
 	{
@@ -35,7 +35,7 @@ namespace Game::Net
 			Disconnected,
 		};
 
-		AuthenticationHandler(const sf::Uint32 timeout = 100)
+		HostAuthenticationHandler(const sf::Uint32 timeout = 100)
 			:
 			timeout(timeout)
 		{

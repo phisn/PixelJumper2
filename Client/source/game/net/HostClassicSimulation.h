@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Client/source/game/AuthenticationHandler.h>
-#include <Client/source/game/Simulation.h>
+#include <Client/source/game/ClassicSimulation.h>
+#include <Client/source/game/net/HostAuthenticationHandler.h>
 #include <Client/source/game/VirtualPlayer.h>
 
 #include <Client/source/game/net/ClassicSimClientMessage.h>
@@ -9,21 +9,9 @@
 
 namespace Game::Net
 {
-	/*
-	
-		Welten komplett dynamisieren?
-		-> transitiv wohin man will
-		-> vorher nicht unbedingt erkennbar wohin es geht
-
-		Spieler gibt es nicht mehr als resource
-
-		Überlegen wie man asynchrone abfragen handhabt
-	
-	*/
-
-	class ClassicSimulationHandler
+	class HostClassicSimulation
 		:
-		public AuthenticationHandler
+		public HostAuthenticationHandler
 	{
 	public:
 		struct Settings
@@ -41,7 +29,7 @@ namespace Game::Net
 			int maxTickrateDifference;
 		};
 
-		ClassicSimulationHandler(
+		HostClassicSimulation(
 			const Settings settings,
 			const WorldResourceContainer& container)
 			:
@@ -54,13 +42,27 @@ namespace Game::Net
 			playerResource->content.playerID = 0;
 
 			player = new VirtualPlayer(Game::PlayerInformation::Create(playerResource));
-
-			simulation.pushPlayer(player);
+			simulation.setPlayer(player);
 		}
 
 		void update() override
 		{
-			AuthenticationHandler::update();
+			HostAuthenticationHandler::update();
+		}
+
+		void processLogic()
+		{
+			if (player->hasUpdate())
+			{
+				if (!simulation.processLogic())
+				{
+					// simulation has error
+				}
+			}
+			else
+			{
+				++missingFrames;
+			}
 		}
 
 	private:
@@ -69,8 +71,9 @@ namespace Game::Net
 
 		ClassicSimulation simulation;
 		VirtualPlayer* player = NULL;
-
 		Resource::PlayerResource* playerResource;
+
+		sf::Uint64 missingFrames = 0;
 
 		void onMessage(
 			const Device::Net::MessageID messageID,
@@ -78,7 +81,7 @@ namespace Game::Net
 		{
 			if (status == Connecting)
 			{
-				AuthenticationHandler::onMessage(messageID, pipe);
+				HostAuthenticationHandler::onMessage(messageID, pipe);
 				return;
 			}
 
@@ -96,6 +99,18 @@ namespace Game::Net
 				onPrepareSimulation(message);
 				break;
 			}
+			case Client::ClassicSimMessageID::PushMovement:
+			{
+				Client::PushMovementMessage message;
+
+				if (!loadCommonMessage(messageID, &message, pipe))
+				{
+					return;
+				}
+
+				onPushMovement(message);
+				break;
+			}
 			default:
 
 				break;
@@ -106,29 +121,50 @@ namespace Game::Net
 		{
 			if (simulation.getStatus() == ClassicSimulation::Status::Running)
 			{
-				Host::RejectSimulationRequestMessage message;
-				message.reason = Host::RejectSimulationRequestMessage::SimulationAlreadyRunning;
-
-				sendCommonMessage(
-					Host::ClassicalConnectionMessageID::RejectSimulationRequest,
-					&message);
+				sendRejectSimulationRequestMessage(Host::RejectSimulationRequestMessage::SimulationAlreadyRunning);
 			}
 
 			WorldResourceContainer::const_iterator iterator = container.find(request.world);
 			
 			if (iterator == container.cend())
 			{
-				Host::RejectSimulationRequestMessage message;
-				message.reason = Host::RejectSimulationRequestMessage::InvalidWorldID;
-
-				sendCommonMessage(
-					Host::ClassicalConnectionMessageID::RejectSimulationRequest,
-					&message);
+				sendRejectSimulationRequestMessage(Host::RejectSimulationRequestMessage::InvalidWorldID);
 			}
 
-			if (!simulation.pushWorld(request.world))
+			const ClassicSimulation::WorldFailure result = simulation.runWorld(request.world);
+
+			if (result != ClassicSimulation::WorldFailure::Success)
 			{
-				simulation.
+				Log::Error(L"Failed to start simulation",
+					(int) result, L"result");
+
+				sendRejectSimulationRequestMessage(Host::RejectSimulationRequestMessage::SimulationRunFailed);
+			}
+		}
+
+		void sendRejectSimulationRequestMessage(Host::RejectSimulationRequestMessage::Reason reason)
+		{
+			Host::RejectSimulationRequestMessage message;
+			message.reason = reason;
+
+			sendCommonMessage(
+				Host::ClassicalConnectionMessageID::RejectSimulationRequest,
+				&message);
+		}
+
+		void onPushMovement(const Client::PushMovementMessage& request)
+		{
+			for (const FrameStatus& frameStatus : request.packetFrameStatus.frames)
+				player->pushUpdate(frameStatus);
+
+			while (missingFrames > 0 && player->hasUpdate())
+			{
+				if (!simulation.processLogic())
+				{
+					// simulation has error
+				}
+
+				--missingFrames;
 			}
 		}
 

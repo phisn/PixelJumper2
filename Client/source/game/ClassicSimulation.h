@@ -13,22 +13,6 @@ namespace Game
 {
 	typedef std::map<Resource::WorldId, Resource::World*> WorldResourceContainer;
 
-	class Simulation
-		:
-		public GameState
-	{
-	public:
-		virtual ~Simulation()
-		{
-		}
-
-		virtual bool initialize() = 0;
-		virtual bool processLogic() = 0;
-
-		virtual void pushPlayer(PlayerBase* const player) = 0;
-		virtual void popPlayer(PlayerBase* const player) = 0;
-	};
-
 	class ClassicSimulation
 		:
 		public GameState
@@ -43,6 +27,18 @@ namespace Game
 			Waiting,
 			Running,
 			Error
+		};
+
+		enum class WorldFailure
+		{
+			Success,
+
+			DynamicEntryNotFound,
+			InitializeFailed,
+			MissingResource,
+			PlayerEmpty,
+			PreloadingFailed,
+			ResourceNotFound
 		};
 
 		ClassicSimulation(const WorldResourceContainer& worldResources)
@@ -103,25 +99,6 @@ namespace Game
 			return world->readState(readPipe);
 		}
 
-		Status getStatus()
-		{
-			return status;
-		}
-
-	protected:
-		Game::PlayerBase* player = NULL;
-		World* world;
-
-		enum class WorldFailure
-		{
-			Success,
-			PlayerEmpty,
-			PreloadingFailed,
-			ResourceNotFound,
-			MissingResource,
-			InitializeFailed,
-			DynamicEntryNotFound
-		};
 
 		// has to be called before a world is pushed
 		void setPlayer(Game::PlayerBase* const player)
@@ -131,12 +108,12 @@ namespace Game
 			if (world != NULL)
 			{
 				world->removePlayer(this->player);
-			
+
 				// think about to set on correct position to
 				// allow changes of player while playing?
 				world->addPlayer(player);
 			}
-			
+
 			this->player = player;
 		}
 
@@ -160,7 +137,18 @@ namespace Game
 				});
 		}
 
-		virtual bool onInitializeWorld(World* const world)
+		GameEvent<ClassicSimulation, World*> onWorldLoad;
+
+		Status getStatus()
+		{
+			return status;
+		}
+
+	protected:
+		Game::PlayerBase* player = NULL;
+		World* world;
+
+		bool onInitializeWorld(World* const world)
 		{
 			if (!world->initialize())
 			{
@@ -193,8 +181,6 @@ namespace Game
 
 			return true;
 		}
-
-		virtual void onBeginWorld(World* const world) = 0;
 
 	private:
 		const WorldResourceContainer& worldResources;
@@ -289,19 +275,28 @@ namespace Game
 				return WorldFailure::PreloadingFailed;
 
 			case PreloadingResult::Found:
-				return WorldFailure::Success;
+				onWorldLoad.notify(world);
 
+				return WorldFailure::Success;
 			}
 
 			for (World* const world : worlds)
 				if (world->getInformation()->worldId == worldID)
 				{
 					this->world = world;
+					onWorldLoad.notify(world);
 
 					return WorldFailure::Success;
 				}
 
-			return createWorld(worldID);
+			const WorldFailure result = createWorld(worldID);
+
+			if (result == WorldFailure::Success)
+			{
+				onWorldLoad.notify(world);
+			}
+			
+			return result;
 		}
 
 		enum class PreloadingResult
@@ -382,7 +377,6 @@ namespace Game
 
 			worlds.push_back(world);
 			this->world = world;
-
 			return WorldFailure::Success;
 		}
 
