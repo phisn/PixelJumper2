@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/editor/tile/TileTemplate.h>
-#include <Client/source/game/tiletrait/GameTileBase.h>
+#include <Client/source/game/GameTileBase.h>
 #include <Client/source/resource/TileResource.h>
 
 #include <string>

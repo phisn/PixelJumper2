@@ -72,10 +72,10 @@ namespace Game
 				vertices[i].color = tile->color;
 			}
 
-			vertices[0].position = tile->position;
-			vertices[1].position = tile->position + sf::Vector2f(tile->size.x, 0);
-			vertices[2].position = tile->position + tile->size;
-			vertices[3].position = tile->position + sf::Vector2f(0, tile->size.y);
+			vertices[0].position = tile->content.position;
+			vertices[1].position = tile->content.position + sf::Vector2f(tile->content.size.x, 0);
+			vertices[2].position = tile->content.position + tile->content.size;
+			vertices[3].position = tile->content.position + sf::Vector2f(0, tile->content.size.y);
 
 			vertexBuffer.update((const sf::Vertex*) & vertices);
 

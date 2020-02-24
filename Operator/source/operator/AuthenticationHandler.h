@@ -7,108 +7,48 @@
 #include <Operator/source/net/AuthClientMessage.h>
 #include <Operator/source/net/AuthOperatorMessage.h>
 
+#include <Client/source/net/RequestHandlerBase.h>
+
 namespace Operator::Net
 {
-	class AuthenticationHandler
+	struct AuthenticationHandlerCallback
+	{
+		virtual void onAuthenticated(const Operator::UserID userID) = 0;
+		virtual void onAuthenticationDenied() = 0;
+	};
+
+	/*
+		registration can currently fail but create the player
+		without the player knowing the creation. when the creation
+		of a token fails at a registration 
+	*/
+	class _AuthenticationHandler
 		:
-		public Device::Net::ClientHandler
+		public ::Net::RequestHandler
 	{
 	public:
-		enum Status
-		{
-			// user is not authenticated and
-			// identification not known
-			Authenticating,
-			// user is authenticated and
-			// identification known
-			Authenticated,
-
-			// user is still connected or
-			// connecting but connection will
-			// be closed soon. identification
-			// may not be known
-			Disconnecting,
-			// user is not connected. identification
-			// may not be known
-			Disconnected,
-		};
-
-		AuthenticationHandler(
-			const HSteamNetConnection connection,
-			const sf::Uint32 timeout = 100)
+		_AuthenticationHandler(
+			AuthenticationHandlerCallback* const callback,
+			const sf::Uint32 timeout)
 			:
-			ClientHandler(connection),
+			callback(callback),
 			timeout(timeout)
 		{
 		}
 
-		virtual void update()
+		void update() override
 		{
-			if (status == Authenticating && --timeout == 0)
+			if (--timeout == 0)
 			{
-				status = Disconnecting;
+				access->accessSendMessage(
+					Host::AuthMessageID::Timeout,
+					NULL);
 
-				beginMessage(Host::AuthMessageID::Timeout, 8);
-				sendMessage();
-
-				return;
-			}
-
-			if (!process())
-			{
-				status = Disconnecting;
-
-				// think about removing this because
-				// it has a very high chance to fail
-				// (gurranted?)
-				beginMessage(Host::AuthMessageID::InternalError, 8);
-				sendMessage();
-
-				return;
-			}
-
-			++age;
-		}
-
-		void close()
-		{
-			if (status == Authenticated)
-			{
-				beginMessage(Host::AuthMessageID::IdleConnection);
-				sendMessage();
+				callback->onAuthenticationDenied();
 			}
 		}
-
-		Status getStatus() const
-		{
-			return status;
-		}
-
-		bool isAuthenticated() const
-		{
-			return status == Authenticated;
-		}
-
-		sf::Uint32 getAge() const
-		{
-			return age;
-		}
-
-	protected:
-		using ClientHandler::process;
-
-		Status status = Authenticating;
-		UserID userID = NULL;
-
-		// use timeout in specializations when
-		// needed to abuse unused memory after
-		// status connecting
-		sf::Uint32 timeout;
-		sf::Uint32 age = 0;
-
-		virtual void onClientAuthenticated() = 0;
-
-		virtual void onMessage(
+		
+		bool onMessage(
 			const Device::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
@@ -117,91 +57,38 @@ namespace Operator::Net
 			switch (messageID)
 			{
 			case Client::AuthMessageID::Authenticate:
-			{
-				Client::AuthenticationMessage message;
-
-				if (loadCommonMessage(messageID, &message, pipe))
+				if (Client::AuthenticationMessage message; loadMessage(messageID, &message, pipe))
 				{
-					return;
+					onAuthenticate(message);
 				}
 
-				onAuthenticate(message);
+				return true;
 
-				break;
-			}
 			case Client::AuthMessageID::Register:
-			{
-				Client::RegistrationMessage message;
-
-				if (loadCommonMessage(messageID, &message, pipe))
+				if (Client::RegistrationMessage message; loadMessage(messageID, &message, pipe))
 				{
-					return;
+					onRegistration(message);
 				}
 
-				onRegistration(message);
+				return true;
 
-				break;
-			}
 			case Client::AuthMessageID::Token:
-			{
-				Client::TokenMessage message;
-
-				if (loadCommonMessage(messageID, &message, pipe))
+				if (Client::TokenMessage message; loadMessage(messageID, &message, pipe))
 				{
-					return;
+					onTokenAuthentication(message);
 				}
 
-				onTokenAuthentication(message);
-
-				break;
-			}
-			default:
-				// could be a brute-force messageid finder
-				this->onThreatIdentified(messageID,
-					L"invalid messageid",
-					Device::Net::ThreatLevel::Suspicious);
-
-				break;
-			}
-		}
-
-		void sendCommonMessage(
-			Device::Net::MessageID messageID,
-			Game::Net::NetworkMessage* const message)
-		{
-			if (!message->save(beginMessage(messageID)) || !sendMessage())
-			{
-				Log::Error(L"Unable to construct message",
-					(sf::Uint64) messageID, L"messageID");
-
-				status = Disconnecting;
-			}
-		}
-
-		bool loadCommonMessage(
-			const Device::Net::MessageID messageID,
-			Game::Net::NetworkMessage* const message,
-			Resource::ReadPipe* const pipe)
-		{
-			if (!message->load(pipe))
-			{
-				status = Disconnecting;
-
-				onThreatIdentified(
-					messageID,
-					L"operator invalid messagecontent",
-					Device::Net::ThreatLevel::Uncommon);
-
-				beginMessage(Host::AuthMessageID::InternalError, 8);
-				sendMessage();
-
-				return false;
+				return true;
 			}
 
-			return true;
+			return false;
 		}
 
 	private:
+		AuthenticationHandlerCallback* const callback;
+
+		sf::Uint32 timeout;
+
 		void onAuthenticate(const Client::AuthenticationMessage& request)
 		{
 			Database::UserAuthentication user;
@@ -212,18 +99,20 @@ namespace Operator::Net
 			switch (result)
 			{
 			case Database::ConditionResult::NotFound:
-				beginMessage(Host::AuthMessageID::RejectAuthentication);
-				sendMessage();
-
-				onThreatIdentified(
+				access->accessSendMessage(
+					Host::AuthMessageID::RejectAuthentication,
+					NULL);
+				
+				access->accessOnThreatIdentified(
 					Client::AuthMessageID::Authenticate,
 					L"wrong username",
 					Device::Net::ThreatLevel::Suspicious);
 
 				return;
 			case Database::ConditionResult::Error:
-				beginMessage(Host::AuthMessageID::InternalError, 8);
-				sendMessage();
+				access->accessSendMessage(
+					Host::AuthMessageID::InternalError,
+					NULL);
 
 				return;
 			}
@@ -237,8 +126,9 @@ namespace Operator::Net
 
 			if (memcmp(messageHash, user.hash, OPERATOR_HASH_SIZE) != 0)
 			{
-				beginMessage(Host::AuthMessageID::RejectAuthentication);
-				sendMessage();
+				access->accessSendMessage(
+					Host::AuthMessageID::RejectAuthentication,
+					NULL);
 
 				return;
 			}
@@ -246,25 +136,23 @@ namespace Operator::Net
 			Host::AcceptAuthenticationMessage message;
 
 			if (!Database::Interface::CreatePlayerToken(
-					message.authenticationToken,
-					user.userID))
+				message.authenticationToken,
+				user.userID))
 			{
-				beginMessage(Host::AuthMessageID::InternalError, 8);
-				sendMessage();
+				access->accessSendMessage(
+					Host::AuthMessageID::InternalError,
+					NULL);
 
 				return;
 			}
 
 			message.userID = user.userID;
 
-			sendCommonMessage(
+			access->accessSendMessage(
 				Host::AuthMessageID::AcceptAuthentication,
 				&message);
-			
-			status = Authenticated;
-			userID = user.userID;
 
-			onClientAuthenticated();
+			callback->onAuthenticated(user.userID);
 		}
 
 		void onRegistration(const Client::RegistrationMessage& request)
@@ -275,9 +163,9 @@ namespace Operator::Net
 			Device::Random::FillRandom(OPERATOR_SALT_SIZE, salt);
 
 			Device::Encryption::HashHashSalt(
-				(unsigned char*) hash,
-				(unsigned char*) request.content.hash,
-				(unsigned char*) salt);
+				(unsigned char*)hash,
+				(unsigned char*)request.content.hash,
+				(unsigned char*)salt);
 
 			UserID userID;
 
@@ -303,34 +191,33 @@ namespace Operator::Net
 
 				return;
 			case Database::Interface::CreatePlayerResult::Error:
-				beginMessage(Host::AuthMessageID::InternalError);
-				sendMessage();
+				access->accessSendMessage(
+					Host::AuthMessageID::InternalError,
+					NULL);
 
 				return;
 			}
 
 			Host::AcceptRegistrationMessage message;
-			
+
 			if (!Database::Interface::CreatePlayerToken(
-					message.authenticationToken,
-					userID))
+				message.authenticationToken,
+				userID))
 			{
-				beginMessage(Host::AuthMessageID::InternalError, 8);
-				sendMessage();
+				access->accessSendMessage(
+					Host::AuthMessageID::InternalError,
+					NULL);
 
 				return;
 			}
-			
+
 			message.userID = userID;
-			
-			sendCommonMessage(
+
+			access->accessSendMessage(
 				Host::AuthMessageID::AcceptRegistration,
 				&message);
 
-			status = Authenticated;
-			this->userID = userID;
-
-			onClientAuthenticated();
+			callback->onAuthenticated(userID);
 		}
 
 		void RejectRegistration(const Host::RejectRegistrationMessage::Reason reason)
@@ -338,7 +225,7 @@ namespace Operator::Net
 			Host::RejectRegistrationMessage message;
 			message.reason = reason;
 
-			sendCommonMessage(
+			access->accessSendMessage(
 				Host::AuthMessageID::RejectRegistration,
 				&message);
 		}
@@ -353,13 +240,15 @@ namespace Operator::Net
 			switch (result)
 			{
 			case Database::ConditionResult::NotFound:
-				beginMessage(Host::AuthMessageID::RejectToken);
-				sendMessage();
+				access->accessSendMessage(
+					Host::AuthMessageID::RejectToken,
+					NULL);
 
 				break;
 			case Database::ConditionResult::Error:
-				beginMessage(Host::AuthMessageID::InternalError);
-				sendMessage();
+				access->accessSendMessage(
+					Host::AuthMessageID::InternalError,
+					NULL);
 
 				break;
 			}
@@ -367,14 +256,11 @@ namespace Operator::Net
 			Host::AcceptTokenMessage message;
 			message.userID = userID;
 
-			sendCommonMessage(
+			access->accessSendMessage(
 				Host::AuthMessageID::AcceptToken,
 				&message);
 
-			status = Authenticated;
-			this->userID = userID;
-
-			onClientAuthenticated();
+			callback->onAuthenticated(userID);
 		}
 	};
 }

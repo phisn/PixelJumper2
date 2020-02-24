@@ -47,12 +47,12 @@ namespace Game::Net::Client
 
 		bool load(Resource::ReadPipe* const pipe) override
 		{
-			return frameStatus.readState(pipe);
+			return packetFrameStatus.readState(pipe);
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
 		{
-			return frameStatus.writeState(pipe);
+			return packetFrameStatus.writeState(pipe);
 		}
 	};
 

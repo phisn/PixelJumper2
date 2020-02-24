@@ -4,6 +4,7 @@
 
 #include <Client/source/resource/CommonResourceTypes.h>
 
+// TODO: rework all these definitions
 namespace Editor
 {
 	typedef sf::Int64 TilePosition;
@@ -19,6 +20,8 @@ namespace Resource
 
 namespace Game
 {
+	typedef int TileIdentity;
+	
 	typedef Resource::TilePosition TilePosition;
 	typedef Resource::TileSize TileSize;
 

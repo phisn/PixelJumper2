@@ -81,11 +81,14 @@
     <ClCompile Include="source\database\UserTable.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
-    <ClCompile Include="source\operator\RequestHandler.cpp">
-      <Filter>source\operator</Filter>
-    </ClCompile>
     <ClCompile Include="source\database\UserTypeByID.cpp">
       <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="source\operator\ClientRequestHandler.cpp">
+      <Filter>source\operator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\operator\OperatorClientHandler.cpp">
+      <Filter>source\operator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,9 +158,6 @@
     <ClInclude Include="source\database\UserTable.h">
       <Filter>source\database</Filter>
     </ClInclude>
-    <ClInclude Include="source\operator\RequestHandler.h">
-      <Filter>source\operator</Filter>
-    </ClInclude>
     <ClInclude Include="source\net\RequestClientMessage.h">
       <Filter>source\net</Filter>
     </ClInclude>
@@ -172,6 +172,15 @@
     </ClInclude>
     <ClInclude Include="source\database\UserTypeByID.h">
       <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="source\operator\ClientRequestHandler.h">
+      <Filter>source\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\operator\RequestHandlerBase.h">
+      <Filter>source\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="source\operator\OperatorClientHandler.h">
+      <Filter>source\operator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -420,7 +420,7 @@ namespace Operator
 				if (iterator->request == request)
 				{
 					requests.erase(iterator);
-					delete request;
+					break;
 				}
 		}
 
@@ -429,7 +429,6 @@ namespace Operator
 			for (RequestContainer& request : requests)
 			{
 				request.request->onRequestFailed(reason);
-				delete request.request;
 			}
 
 			for (NetworkMessageContainer& message : pendingMessages)
@@ -484,7 +483,6 @@ namespace Operator
 			{
 				if (iterator->request->processEvent(messageID, message))
 				{
-					delete iterator->request;
 					iterator = requests.erase(iterator);
 				}
 				else

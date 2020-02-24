@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Client/source/operator/OperatorRequest.h>
+#include <Operator/source/net/RequestClientMessage.h>
 #include <Operator/source/net/RequestOperatorMessage.h>
 
 namespace Operator
@@ -17,12 +18,14 @@ namespace Operator
 			switch (messageID)
 			{
 			case Net::Host::RequestMessageID::ConnectionKey:
+			{
 				Net::Host::ConnectionKeyMessage const* message =
 					(Net::Host::ConnectionKeyMessage*) rawMessage;
 
 				onConnectionKeyReceived(message->key);
 
 				return true;
+			}
 			case Net::Host::RequestMessageID::ConnectionKeyFailed:
 				onConnectionKeyFailed();
 
@@ -66,6 +69,11 @@ namespace Operator
 		void onConnectionKeyFailed()
 		{
 			connectionKeyFailedCallback();
+		}
+
+		void onRequestFailed(const Reason reason)
+		{
+			requestFailCallback(reason);
 		}
 	};
 }

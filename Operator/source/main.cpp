@@ -27,7 +27,7 @@ int main()
 
 	if (Device::Core::Initialize())
 	{
-		Operator::UserType type;
+		/*Operator::UserType type;
 
 		Database::ConditionResult result = Database::Interface::GetUserType(
 			type,

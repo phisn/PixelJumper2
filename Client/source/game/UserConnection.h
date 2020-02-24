@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #include <Client/source/game/ControllablePlayer.h>
 #include <Client/source/game/Simulation.h>
 #include <Client/source/game/VirtualPlayer.h>
@@ -115,3 +116,4 @@ namespace Game
 	};
 
 }
+*/

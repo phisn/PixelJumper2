@@ -1,8 +1,8 @@
 #pragma once
 
+#include <Client/source/Common.h>
 #include <Client/source/game/GameProperty.h>
 #include <Client/source/game/GameState.h>
-#include <Client/source/game/tiletrait/GameTileBase.h>
 #include <Client/source/game/WorldInformation.h>
 
 #include <Client/source/resource/PlayerResource.h>

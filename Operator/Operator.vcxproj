@@ -214,7 +214,8 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\operator\AuthenticationHandler.cpp" />
     <ClCompile Include="source\operator\Operator.cpp" />
-    <ClCompile Include="source\operator\RequestHandler.cpp" />
+    <ClCompile Include="source\operator\ClientRequestHandler.cpp" />
+    <ClCompile Include="source\operator\OperatorClientHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\source\device\EncryptionDevice.h" />
@@ -244,7 +245,9 @@
     <ClInclude Include="source\net\RequestOperatorMessage.h" />
     <ClInclude Include="source\operator\AuthenticationHandler.h" />
     <ClInclude Include="source\operator\Operator.h" />
-    <ClInclude Include="source\operator\RequestHandler.h" />
+    <ClInclude Include="source\operator\ClientRequestHandler.h" />
+    <ClInclude Include="source\operator\OperatorClientHandler.h" />
+    <ClInclude Include="source\operator\RequestHandlerBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

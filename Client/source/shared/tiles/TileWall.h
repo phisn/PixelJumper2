@@ -193,7 +193,7 @@ namespace Resource
 		public ResourceBase
 	{
 	public:
-		Shared::WallContent content;
+		Game::SolidCollisionContent content;
 
 		WallTile()
 		{

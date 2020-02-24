@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/device/NetDevice.h>
-#include <Operator/source/operator/RequestHandler.h>
+#include <Operator/source/operator/OperatorClientHandler.h>
 
 namespace Operator::Net
 {
@@ -38,8 +38,7 @@ namespace Operator::Net
 
 			while (iterator != connections.end())
 			{
-				if (iterator->getStatus() == AuthenticationHandler::Status::Disconnected ||
-					iterator->getStatus() == AuthenticationHandler::Status::Disconnecting)
+				if (iterator->getStatus() == OperatorClientHandler::Status::Closing)
 				{
 					removeConnection(
 						iterator->getConnection(),
@@ -65,7 +64,7 @@ namespace Operator::Net
 		const Settings settings;
 		Status status;
 
-		std::vector<Net::RequestHandler> connections;
+		std::vector<OperatorClientHandler> connections;
 
 		bool askClientConnect(SteamNetworkingIPAddr* const ipAddress) override
 		{
@@ -107,7 +106,7 @@ namespace Operator::Net
 					old = iterator;
 				}
 
-			old->close();
+			// old->close();
 
 			removeConnection(
 				old->getConnection(), 

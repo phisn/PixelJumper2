@@ -44,6 +44,8 @@ namespace Device::Database
 
 		if (result == SQLITE_OK)
 		{
+			Log::Information(L"Begin transaction");
+
 			return true;
 		}
 		else
@@ -61,6 +63,8 @@ namespace Device::Database
 
 		if (result == SQLITE_OK)
 		{
+			Log::Information(L"End transaction");
+
 			return true;
 		}
 		else

@@ -76,6 +76,9 @@
     <Filter Include="source\game\component">
       <UniqueIdentifier>{e6dc4b96-992a-4cd9-a42c-bedb9c0086be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\net">
+      <UniqueIdentifier>{0706a364-2e60-406f-965f-43a476add683}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\device\InputDevice.h">
@@ -331,12 +334,6 @@
     <ClInclude Include="source\game\net\NetworkMessage.h">
       <Filter>source\game\net</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\net\ClassicSimClientMessage.h">
-      <Filter>source\game\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\ClassicSimHostMessage.h">
-      <Filter>source\game\net</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\net\UserAuthHostMessage.h">
       <Filter>source\game\net</Filter>
     </ClInclude>
@@ -358,20 +355,38 @@
     <ClInclude Include="source\game\ClassicSimulation.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\net\ClientAuthenticationHandler.h">
+    <ClInclude Include="source\game\ClientClassicSimulation.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostAuthenticationHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSimulation.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSimulator.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\net\ClassicSimClientMessage.h">
       <Filter>source\game\net</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\net\ClientClassicSimulation.h">
+    <ClInclude Include="source\game\net\ClassicSimHostMessage.h">
       <Filter>source\game\net</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\net\HostClassicSimulator.h">
-      <Filter>source\game\net</Filter>
+    <ClInclude Include="source\game\ClassicalClientAuthenticationHandler.h">
+      <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\net\HostAuthenticationHandler.h">
-      <Filter>source\game\net</Filter>
+    <ClInclude Include="source\operator\ClassicalConnectionRequest.h">
+      <Filter>source\operator</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\net\HostClassicSimulation.h">
-      <Filter>source\game\net</Filter>
+    <ClInclude Include="source\net\RequestHandlerBase.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\net\DynamicClientHandler.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\net\RequestHandlerContainer.h">
+      <Filter>source\net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -565,20 +580,20 @@
     <ClCompile Include="source\game\ClassicSimulation.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\net\ClientAuthenticationHandler.cpp">
-      <Filter>source\game\net</Filter>
+    <ClCompile Include="source\game\ClientClassicSimulation.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\net\ClientClassicSimulation.cpp">
-      <Filter>source\game\net</Filter>
+    <ClCompile Include="source\game\HostAuthenticationHandler.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\net\HostAuthenticationHandler.cpp">
-      <Filter>source\game\net</Filter>
+    <ClCompile Include="source\game\HostClassicSimulation.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\net\HostClassicSimulation.cpp">
-      <Filter>source\game\net</Filter>
+    <ClCompile Include="source\game\HostClassicSimulator.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\net\HostClassicSimulator.cpp">
-      <Filter>source\game\net</Filter>
+    <ClCompile Include="source\game\ClassicalClientAuthenticationHandler.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -38,18 +38,17 @@ namespace Resource
 		bool save(WritePipe* const pipe) override
 		{
 			return pipe->writeValue(&content)
-				&& pipe->writeString(&username)
-				&& classic.save(pipe);
+				&& pipe->writeString(&username);
 		}
 
 		bool setup() override
 		{
-			return content.playerID != NULL && classic.setup();
+			return content.playerID != NULL;
 		}
 
 		bool validate() override
 		{
-			return content.playerID != NULL && classic.validate();
+			return content.playerID != NULL;
 		}
 	};
 }

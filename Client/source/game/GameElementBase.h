@@ -1,11 +1,10 @@
 #pragma once
 
+#include <Client/source/Common.h>
 #include <Client/source/game/Environment.h>
 
 namespace Game
 {
-	typedef int TileIdentity;
-
 	class GameElementBase
 	{
 	public:

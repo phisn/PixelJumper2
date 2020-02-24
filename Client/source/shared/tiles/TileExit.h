@@ -25,7 +25,8 @@ namespace Game
 		:
 		public CollidableTile,
 		public ExitableTile,
-		public StaticTile
+		public StaticTile,
+		public GameTileBase
 	{
 	public:
 		static GameTileBase* Create(
@@ -35,18 +36,17 @@ namespace Game
 
 		TileExit(
 			const TileIdentity identity,
-			const sf::Vector2f position,
-			const sf::Vector2f size)
+			const TileContent content)
 			:
 			GameTileBase(
 				identity,
-				position,
-				size),
-			StaticTile(Shared::TileExit.gameColor)
+				content),
+			StaticTile(
+				Shared::TileExit.gameColor,
+				content),
+			CollidableTile(content)
 		{
 		}
-
-		void registerType(Environment* env) override;
 
 		sf::Vector2f onCollision(
 			const CollisionType type,
@@ -57,6 +57,18 @@ namespace Game
 
 			collision.player->getProperties().position = collision.target;
 			return { };
+		}
+
+		void registerComponents(Environment* const environment) override
+		{
+			environment->registerCollisionType(
+				CollisionType::NormalCollision, 
+				this);
+
+			environment->registerTile<CollidableTile>(this);
+			environment->registerTile<ExitableTile>(this);
+			environment->registerTile<StaticTile>(this);
+			environment->registerTile<GameTileBase>(this);
 		}
 	};
 }

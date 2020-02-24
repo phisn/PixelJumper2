@@ -24,25 +24,16 @@ namespace Game
 	{
 		return new TileExit(
 			identity,
-			sf::Vector2f(
+			{
+				sf::Vector2f(
 				tile->content.x,
 				tile->content.y
 			),
 			sf::Vector2f(
 				tile->content.width,
-				tile->content.height
-		));
-	}
-
-	void TileExit::registerType(Environment* env)
-	{
-		CollidableTile::registerType(env);
-		CollidableTile::registerCollisionType(
-			env,
-			CollisionType::NormalCollision
+				tile->content.height)
+			}
 		);
-		ExitableTile::registerType(env);
-		StaticTile::registerType(env);
 	}
 }
 
