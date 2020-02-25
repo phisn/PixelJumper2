@@ -44,6 +44,8 @@ namespace Device::Core
 
 			return false;
 		}
+
+		return true;
 	}
 
 	// does not check for already beeing initialized

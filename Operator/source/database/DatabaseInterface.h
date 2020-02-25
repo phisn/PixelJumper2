@@ -51,8 +51,11 @@ namespace Database::Interface
 		Error,
 	};
 
+	// has to be inside a transaction to prevent
+	// failure of following statements
 	CreatePlayerResult CreateNewPlayer(
-		Operator::UserID* playerID,
+		Operator::UserID* const playerID,
+		char token[OPERATOR_HASH_SIZE],
 		const char salt[OPERATOR_SALT_SIZE],
 		const char hash[OPERATOR_HASH_SIZE],
 		const std::string username,

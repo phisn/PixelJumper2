@@ -1,8 +1,11 @@
 #pragma once
 
+
 #include <Client/source/net/DynamicClientHandler.h>
 
+
 #include <Operator/source/operator/AuthenticationHandler.h>
+#include <Operator/source/operator/CommonRequestHandler.h>
 
 namespace Operator::Net
 {
@@ -11,7 +14,8 @@ namespace Operator::Net
 	class OperatorClientHandler
 		:
 		public ::Net::DynamicClientHandler,
-		public AuthenticationHandlerCallback
+		public AuthenticationHandlerCallback,
+		public CommonRequestHandlerCallback
 	{
 	public:
 		enum class Status
@@ -33,7 +37,7 @@ namespace Operator::Net
 			DynamicClientHandler(connection)
 		{
 			addRequestHandler(
-				new _AuthenticationHandler(
+				new AuthenticationHandler(
 					this,
 					timeout)
 			);
@@ -89,13 +93,24 @@ namespace Operator::Net
 			status = Status::Authenticated;
 			this->userID = userID;
 
-			removeRequestHandler<_AuthenticationHandler>();
+			removeRequestHandler<AuthenticationHandler>();
+			// addRequestHandler<CommonRequestHandler>();
+
 			// push common handler
 		}
 
 		void onAuthenticationDenied() override
 		{
 			status = Status::Closing;
+		}
+
+		void registerAsClassicHost() override
+		{
+
+			/*if (existsRequestHandler<int>())
+			{
+
+			}*/
 		}
 
 		void onThreatIdentified(

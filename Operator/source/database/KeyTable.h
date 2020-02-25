@@ -86,7 +86,7 @@ namespace Database
 					statement,
 					columnIndex,
 					content.source.c_str(),
-					content.source.size(),
+					(int) content.source.size(),
 					SQLITE_STATIC);
 
 			case Column::Type:

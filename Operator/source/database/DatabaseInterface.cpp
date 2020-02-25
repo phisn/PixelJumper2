@@ -140,7 +140,8 @@ Database::ConditionResult Database::Interface::FindUserID(
 }
 
 Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
-	Operator::UserID* resultPlayerID, 
+	Operator::UserID* const resultPlayerID,
+	char token[OPERATOR_HASH_SIZE],
 	const char salt[OPERATOR_SALT_SIZE], 
 	const char hash[OPERATOR_HASH_SIZE], 
 	const std::string username,
@@ -231,9 +232,20 @@ Database::Interface::CreatePlayerResult Database::Interface::CreateNewPlayer(
 
 	playerTable.primary.id = playerID;
 	playerTable.content.username = username;
-
+	
 	memcpy(playerTable.content.hash, hash, OPERATOR_HASH_SIZE);
 	memcpy(playerTable.content.salt, salt, OPERATOR_SALT_SIZE);
+
+	Device::Random::FillRandom(
+		OPERATOR_HASH_SIZE,
+		(char*) playerTable.content.token);
+	
+	if (token)
+	{
+		memcpy(token,
+			playerTable.content.token,
+			OPERATOR_HASH_SIZE);
+	}
 
 	if (!playerTable.create())
 	{

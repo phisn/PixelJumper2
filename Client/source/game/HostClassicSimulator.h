@@ -103,7 +103,7 @@ namespace Game::Net
 
 		// last element represents empty connection
 		// to accept new tcpsockets
-		std::vector<HostClassicSimulation*> connections;
+		std::vector<ClassicClientHandler*> connections;
 		WorldResourceContainer resources;
 	};
 

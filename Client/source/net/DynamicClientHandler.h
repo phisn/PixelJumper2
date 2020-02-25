@@ -1,17 +1,22 @@
 #pragma once
 
 #include <Client/source/device/NetDevice.h>
-#include <Client/source/net/RequestHandlerContainer.h>
+#include <Client/source/net/RequestHandlerBase.h>
 
 #include <typeindex>
 #include <vector>
 
 namespace Net
 {
+	// move to client handlerbecause other types
+	// of clienthandlers are not used
+	// think about creating a clienthandler with
+	// the basic function of authentication as
+	// needed for most (all) clienthandlers
 	class DynamicClientHandler
 		:
 		public Device::Net::ClientHandler,
-		public RequestHandlerContainer
+		public ClientHandlerAccess
 	{
 	public:
 		DynamicClientHandler(const HSteamNetConnection connection)
@@ -68,6 +73,60 @@ namespace Net
 			return true;
 		}
 
+		template <typename T>
+		// value has to be created with new and wont be
+		// available after remove has been called
+		void addRequestHandler(T* const value)
+		{
+			requestHandlers.push_back(value);
+			value->initialize(this);
+			requestHandlerTypes.push_back(typeid(T));
+		}
+
+		template <typename T>
+		bool existsRequestHandler()
+		{
+			return std::find(
+				requestHandlers.begin(),
+				requestHandlers.end(),
+				typeid(T)
+			) != requestHandlers.end();
+		}
+
+		template <typename T>
+		void removeRequestHandler()
+		{
+			for (int i = 0; i < requestHandlerTypes.size(); ++i)
+				if (requestHandlerTypes[i] == typeid(T))
+				{
+					delete requestHandlers[i];
+
+					requestHandlers.erase(requestHandlers.begin() + i);
+					requestHandlerTypes.erase(requestHandlerTypes.begin() + i);
+
+					break;
+				}
+		}
+
+		bool callHandlersOnMessage(
+			const Device::Net::MessageID messageID,
+			Resource::ReadPipe* const pipe)
+		{
+			for (RequestHandler* const handler : requestHandlers)
+				if (handler->onMessage(messageID, pipe))
+				{
+					return true;
+				}
+
+			return false;
+		}
+
+		void callHandlersUpdate()
+		{
+			for (RequestHandler* const handler : requestHandlers)
+				handler->update();
+		}
+
 	private:
 		void accessOnThreatIdentified(
 			const Device::Net::MessageID messageID,
@@ -79,5 +138,8 @@ namespace Net
 				note,
 				level);
 		}
+
+		std::vector<RequestHandler*> requestHandlers;
+		std::vector<std::type_index> requestHandlerTypes;
 	};
 }

@@ -1,8 +1,7 @@
 #pragma once
 
 #include <Client/source/operator/OperatorRequest.h>
-#include <Operator/source/net/RequestClientMessage.h>
-#include <Operator/source/net/RequestOperatorMessage.h>
+#include <Operator/source/net/CommonRequestMessage.h>
 
 namespace Operator
 {

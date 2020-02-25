@@ -84,10 +84,13 @@
     <ClCompile Include="source\database\UserTypeByID.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
-    <ClCompile Include="source\operator\ClientRequestHandler.cpp">
+    <ClCompile Include="source\operator\OperatorClientHandler.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
-    <ClCompile Include="source\operator\OperatorClientHandler.cpp">
+    <ClCompile Include="source\operator\CommonRequestHandler.cpp">
+      <Filter>source\operator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\operator\ClassicHostRequestHandler.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,12 +146,6 @@
     <ClInclude Include="source\Common.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="source\net\AuthClientMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\net\AuthOperatorMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
     <ClInclude Include="source\operator\AuthenticationHandler.h">
       <Filter>source\operator</Filter>
     </ClInclude>
@@ -158,29 +155,30 @@
     <ClInclude Include="source\database\UserTable.h">
       <Filter>source\database</Filter>
     </ClInclude>
-    <ClInclude Include="source\net\RequestClientMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\net\RequestOperatorMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
-    <ClInclude Include="ClassicSimOperatorMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
-    <ClInclude Include="ClassicSimClientMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
     <ClInclude Include="source\database\UserTypeByID.h">
       <Filter>source\database</Filter>
     </ClInclude>
-    <ClInclude Include="source\operator\ClientRequestHandler.h">
-      <Filter>source\operator</Filter>
+    <ClInclude Include="source\net\AuthenticationMessage.h">
+      <Filter>source\net</Filter>
     </ClInclude>
-    <ClInclude Include="source\operator\RequestHandlerBase.h">
+    <ClInclude Include="ClassicSimulatorMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\net\CommonRequestMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\operator\CommonRequestHandler.h">
       <Filter>source\operator</Filter>
     </ClInclude>
     <ClInclude Include="source\operator\OperatorClientHandler.h">
       <Filter>source\operator</Filter>
     </ClInclude>
+    <ClInclude Include="source\operator\ClassicHostRequestHandler.h">
+      <Filter>source\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Operator.rc" />
   </ItemGroup>
 </Project>

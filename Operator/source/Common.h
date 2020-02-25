@@ -23,6 +23,12 @@ namespace Operator
 		Admin
 	};
 
+	inline bool IsUserTrusted(const UserType type)
+	{
+		return type == UserType::Trusted
+			|| type == UserType::Admin;
+	}
+
 	typedef sf::Uint64 UserID;
 
 	struct AuthenticationToken

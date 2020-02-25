@@ -1,11 +1,11 @@
 #pragma once
 
+#include <Client/source/Common.h>
 #include <Client/source/device/NetDevice.h>
 #include <Client/source/device/EncryptionDevice.h>
 
 #include <Operator/source/database/DatabaseInterface.h>
-#include <Operator/source/net/AuthClientMessage.h>
-#include <Operator/source/net/AuthOperatorMessage.h>
+#include <Operator/source/net/AuthenticationMessage.h>
 
 #include <Client/source/net/RequestHandlerBase.h>
 
@@ -13,21 +13,16 @@ namespace Operator::Net
 {
 	struct AuthenticationHandlerCallback
 	{
-		virtual void onAuthenticated(const Operator::UserID userID) = 0;
+		virtual void onAuthenticated(const UserID userID) = 0;
 		virtual void onAuthenticationDenied() = 0;
 	};
 
-	/*
-		registration can currently fail but create the player
-		without the player knowing the creation. when the creation
-		of a token fails at a registration 
-	*/
-	class _AuthenticationHandler
+	class AuthenticationHandler
 		:
 		public ::Net::RequestHandler
 	{
 	public:
-		_AuthenticationHandler(
+		AuthenticationHandler(
 			AuthenticationHandlerCallback* const callback,
 			const sf::Uint32 timeout)
 			:
@@ -47,7 +42,7 @@ namespace Operator::Net
 				callback->onAuthenticationDenied();
 			}
 		}
-		
+
 		bool onMessage(
 			const Device::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
@@ -102,7 +97,7 @@ namespace Operator::Net
 				access->accessSendMessage(
 					Host::AuthMessageID::RejectAuthentication,
 					NULL);
-				
+
 				access->accessOnThreatIdentified(
 					Client::AuthMessageID::Authenticate,
 					L"wrong username",
@@ -120,9 +115,9 @@ namespace Operator::Net
 			char messageHash[OPERATOR_HASH_SIZE];
 
 			Device::Encryption::HashHashSalt(
-				(unsigned char*) messageHash,
-				(unsigned char*) request.content.hash,
-				(unsigned char*) user.salt);
+				(unsigned char*)messageHash,
+				(unsigned char*)request.content.hash,
+				(unsigned char*)user.salt);
 
 			if (memcmp(messageHash, user.hash, OPERATOR_HASH_SIZE) != 0)
 			{
@@ -167,10 +162,10 @@ namespace Operator::Net
 				(unsigned char*)request.content.hash,
 				(unsigned char*)salt);
 
-			UserID userID;
-
+			Host::AcceptRegistrationMessage message;
 			const Database::Interface::CreatePlayerResult result = Database::Interface::CreateNewPlayer(
-				&userID,
+				&message.userID,
+				message.authenticationToken,
 				salt,
 				hash,
 				request.username,
@@ -198,26 +193,11 @@ namespace Operator::Net
 				return;
 			}
 
-			Host::AcceptRegistrationMessage message;
-
-			if (!Database::Interface::CreatePlayerToken(
-				message.authenticationToken,
-				userID))
-			{
-				access->accessSendMessage(
-					Host::AuthMessageID::InternalError,
-					NULL);
-
-				return;
-			}
-
-			message.userID = userID;
-
 			access->accessSendMessage(
 				Host::AuthMessageID::AcceptRegistration,
 				&message);
 
-			callback->onAuthenticated(userID);
+			callback->onAuthenticated(message.userID);
 		}
 
 		void RejectRegistration(const Host::RejectRegistrationMessage::Reason reason)
