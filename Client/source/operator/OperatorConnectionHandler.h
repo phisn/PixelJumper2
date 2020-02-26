@@ -1,7 +1,10 @@
 #pragma once
 
 #include <Client/source/operator/OperatorRequest.h>
+
 #include <Operator/source/net/AuthenticationMessage.h>
+#include <Operator/source/net/ClassicSimulatorMessage.h>
+#include <Operator/source/net/CommonRequestMessage.h>
 
 #include <functional>
 
@@ -225,6 +228,7 @@ namespace Operator
 		{
 			switch (messageID)
 			{
+				// authentication
 			case Operator::Net::Host::AuthMessageID::AcceptRegistration:
 			{
 				Operator::Net::Host::AcceptRegistrationMessage message;
@@ -311,6 +315,14 @@ namespace Operator
 				failRequests(Request::Reason::OperatorInternalError);
 
 				break;
+				// classic
+			case Operator::Net::Host::ClassicHostID::RequestClientData:
+
+
+				break;
+			case Operator::Net::Host::ClassicHostID::RequestClientDataFailed:
+
+
 			default:
 				onThreatIdentified(messageID,
 					L"operator invalid messageid",

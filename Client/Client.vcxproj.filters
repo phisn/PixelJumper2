@@ -592,6 +592,9 @@
     <ClCompile Include="source\game\ClientAuthenticationHandler.cpp">
       <Filter>source\game\net</Filter>
     </ClCompile>
+    <ClCompile Include="source\operator\ClassicHostRequest.h">
+      <Filter>source\operator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">

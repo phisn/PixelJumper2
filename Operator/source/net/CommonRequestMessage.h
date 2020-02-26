@@ -19,6 +19,15 @@ namespace Operator::Net::Client
 
 			RequestConnectionKey,
 
+			// find classic host
+			HostFindClassic,
+
+			// resolves userid to ip address
+			// if userid is currently hosting
+			HostResolveUserID,
+
+			// registers as classic host and
+			// enables classic requests
 			RegisterClassicHost,
 
 			_Offset
@@ -31,6 +40,8 @@ namespace Operator::Net::Client
 	};
 
 	typedef Game::Net::TrivialNetworkMessage<RequestConnectionKeyMessageContent> RequestConnectionKeyMessage;
+
+
 }
 
 namespace Operator::Net::Host
@@ -51,6 +62,12 @@ namespace Operator::Net::Host
 			RegisterClassicHostRejected,
 			RegisterClassicHostAccepted,
 
+			HostFindClassicRejected,
+			HostFindClassic,
+
+			HostResolveUserIDRejected,
+			HostResolveUserID,
+
 			_Offset
 		};
 	};
@@ -61,4 +78,25 @@ namespace Operator::Net::Host
 	};
 
 	typedef Game::Net::TrivialNetworkMessage<ConnectionKeyMessageContent> ConnectionKeyMessage;
+
+	struct HostFindClassicMessageContent
+	{
+		ConnectionKey key;
+		UserID userID;
+		SteamNetworkingIPAddr address;
+	};
+
+	typedef Game::Net::TrivialNetworkMessage<HostFindClassicMessageContent> HostFindClassicMessage;
+
+	struct HostFindClassicRejectedMessageContent
+	{
+		enum
+		{
+			InvalidUserMode,
+			NoHostAvailable
+			
+		} type;
+	};
+
+	typedef Game::Net::TrivialNetworkMessage<HostFindClassicRejectedMessageContent> HostFindClassicRejectedMessage;
 }

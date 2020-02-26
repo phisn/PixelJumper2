@@ -4,6 +4,7 @@
 
 #include <Operator/source/Common.h>
 #include <Operator/source/net/ClassicSimulatorMessage.h>
+#include <Operator/source/operator/ActiveUserContainer.h>
 
 namespace Operator::Net
 {
@@ -37,10 +38,37 @@ namespace Operator::Net
 			switch (messageID)
 			{
 			case Client::ClassicHostID::RequestClientData:
+				if (Client::RequestClientDataMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onRequestClientData(message);
+				}
+
+				return true;
+
 			}
+
+			return false;
 		}
 
 	private:
 		const UserID userID;
+
+		void onRequestClientData(const Client::RequestClientDataMessage& request)
+		{
+			if (UserContainer::GetUserMode(request.userID) != ActiveUserMode::Waiting)
+			{
+				Host::RequestClientDataFailedMessage message;
+				message.type = message.InvalidUserMode;
+
+				access->accessSendMessage(
+					Host::ClassicHostID::RequestClientDataFailed,
+					&message);
+			}
+			
+			Host::RequestClientDataMessage message;
+			access->accessSendMessage(
+				Host::ClassicHostID::RequestClientDataFailed,
+				&message);
+		}
 	};
 }

@@ -9,6 +9,8 @@
 
 #include <Client/source/net/DynamicClientHandler.h>
 
+#include <Operator/source/net/ClassicSimulatorMessage.h>
+
 namespace Game::Net
 {
 	class _ClassicClientHandler
@@ -128,6 +130,10 @@ namespace Game::Net
 		Operator::UserID userID = NULL;
 		Status status = Status::Authenticating;
 		
+		void onRequestFailed(const Operator::Reason reason) override
+		{
+		}
+
 		void onAuthenticated(const Operator::UserID userID)
 		{
 			Log::Information(L"Client authenticated",
@@ -137,8 +143,7 @@ namespace Game::Net
 			this->userID = userID;
 
 			removeRequestHandler<AuthenticationHandler>();
-			// addRequestHandler<
-
+			addRequestHandler<>
 
 			// add get player data request
 			// Operator::ConnectionHandler::PushRequest();

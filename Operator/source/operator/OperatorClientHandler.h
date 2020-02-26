@@ -23,6 +23,10 @@ namespace Operator::Net
 			Authenticating,
 			Authenticated,
 
+			// user is officially hosting and
+			// should not be disconnected
+			Hosting,
+
 			// cause for closing is not specified
 			// it can be an error, timeout, rejection
 			// or different. if bad that it is already
@@ -85,7 +89,7 @@ namespace Operator::Net
 		Status status = Status::Authenticating;
 		Age age = 0;
 
-		void onAuthenticated(const Operator::UserID userID) override
+		void onAuthenticated(const UserID userID) override
 		{
 			Log::Information(L"Client authenticated",
 				userID, L"userID");
@@ -106,11 +110,12 @@ namespace Operator::Net
 
 		void registerAsClassicHost() override
 		{
-
-			/*if (existsRequestHandler<int>())
+			if (status != Status::Hosting)
 			{
+				status = Status::Hosting;
 
-			}*/
+				// addRequestHandler
+			}
 		}
 
 		void onThreatIdentified(

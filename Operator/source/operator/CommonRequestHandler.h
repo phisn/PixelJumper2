@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Operator/source/operator/ActiveUserContainer.h>
 #include <Operator/source/operator/AuthenticationHandler.h>
 #include <Operator/source/net/CommonRequestMessage.h>
 
@@ -44,6 +45,11 @@ namespace Operator::Net
 
 			case Client::CommonRequestMessageID::RegisterClassicHost:
 				onRegisterClassicHost();
+
+				return true;
+
+			case Client::CommonRequestMessageID::HostFindClassic:
+				
 
 				return true;
 			}
@@ -133,6 +139,77 @@ namespace Operator::Net
 					Host::CommonRequestMessageID::RegisterClassicHostRejected,
 					NULL);
 			}
+		}
+
+		void onHostFindClassic()
+		{
+			if (UserContainer::GetUserMode(userID) != ActiveUserMode::Waiting)
+			{
+				Host::HostFindClassicRejectedMessage message;
+				message.type = Host::HostFindClassicRejectedMessageContent::InvalidUserMode;
+
+				access->accessSendMessage(
+					Host::CommonRequestMessageID::HostFindClassicRejected,
+					&message);
+
+				return;
+			}
+
+			const UserID hostID = ClassicHostContainer::FindHost();
+
+			if (hostID == NULL)
+			{
+				Host::HostFindClassicRejectedMessage message;
+				message.type = Host::HostFindClassicRejectedMessageContent::NoHostAvailable;
+
+				access->accessSendMessage(
+					Host::CommonRequestMessageID::HostFindClassicRejected,
+					&message);
+
+				return;
+			}
+
+			ConnectionKeySource keySource;
+
+			const Database::ConditionResult result = Database::Interface::GetPlayerToken(
+				keySource.token,
+				hostID);
+
+			switch (result)
+			{
+			case Database::ConditionResult::Error:
+				Log::Error(L"GetPlayerToken failed in findclassic host",
+					hostID, L"hostID",
+					userID, L"userID");
+
+				access->accessSendMessage(
+					Host::CommonRequestMessageID::InternalError,
+					NULL);
+
+				break;
+			case Database::ConditionResult::NotFound:
+				Log::Error(L"Failed to retrive host token in find classic host",
+					hostID, L"hostID",
+					userID, L"userID");
+
+				access->accessSendMessage(
+					Host::CommonRequestMessageID::InternalError,
+					NULL);
+
+				break;
+			}
+
+			keySource.userID = hostID;
+
+			Host::HostFindClassicMessage message;
+
+			message.userID = hostID;
+			message.address;
+			message.key.make(keySource);
+
+			access->accessSendMessage(
+				Host::CommonRequestMessageID::RegisterClassicHostAccepted,
+				&message);
 		}
 	};
 }
