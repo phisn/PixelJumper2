@@ -79,7 +79,7 @@ namespace Scene
 		bool onCreate() override
 		{
 			SteamNetworkingIPAddr ipAddress;
-			ipAddress.SetIPv6LocalHost(9928);
+			ipAddress.ParseString("109.230.236.76:9928");
 
 			Operator::ConnectionHandler::Initialize(ipAddress);			
 

@@ -4,7 +4,7 @@
 
 #include <Client/source/game/GameWorld.h>
 
-#include <Client/source/game/HostClassicSimulation.h>
+#include <Client/source/game/ClassicClientHandler.h>
 #include <Client/source/game/UserConnection.h>
 
 namespace Game::Net

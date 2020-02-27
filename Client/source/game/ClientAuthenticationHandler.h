@@ -34,7 +34,7 @@ namespace Game::Net
 			message->userID = userID;
 
 			return Operator::ConnectionHandler::PushRequest(
-				Operator::Net::Client::RequestMessageID::RequestConnectionKey,
+				Operator::Net::Client::Req::RequestConnectionKey,
 				message,
 				(Operator::ConnectionKeyRequest*) this);
 		}

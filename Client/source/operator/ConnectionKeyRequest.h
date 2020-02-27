@@ -16,7 +16,7 @@ namespace Operator
 		{
 			switch (messageID)
 			{
-			case Net::Host::RequestMessageID::ConnectionKey:
+			/*case Net::Host::RequestMessageID::ConnectionKey:
 			{
 				Net::Host::ConnectionKeyMessage const* message =
 					(Net::Host::ConnectionKeyMessage*) rawMessage;
@@ -29,6 +29,7 @@ namespace Operator
 				onConnectionKeyFailed();
 
 				return true;
+				*/
 			}
 		}
 

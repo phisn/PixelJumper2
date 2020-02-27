@@ -30,7 +30,7 @@ namespace Operator
 		}
 
 	protected:
-		virtual void onClientDataReceived(Operator::) = 0;
+		// virtual void onClientDataReceived(Operator:) = 0;
 		virtual void onClientDataFailed() = 0;
 	};
 }

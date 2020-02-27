@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/game/ClassicSimulation.h>
-#include <Client/source/game/HostAuthenticationHandler.h>
+#include <Client/source/game/SimulatorAuthenticationHandler.h>
 #include <Client/source/game/VirtualPlayer.h>
 
 #include <Client/source/game/net/ClassicSimClientMessage.h>
@@ -130,9 +130,10 @@ namespace Game::Net
 		Operator::UserID userID = NULL;
 		Status status = Status::Authenticating;
 		
-		void onRequestFailed(const Operator::Reason reason) override
+	/*	void onRequestFailed(const ::Net::Request::Reason reason) override
 		{
 		}
+		*/
 
 		void onAuthenticated(const Operator::UserID userID)
 		{
@@ -143,7 +144,7 @@ namespace Game::Net
 			this->userID = userID;
 
 			removeRequestHandler<AuthenticationHandler>();
-			addRequestHandler<>
+			// addRequestHandler<>
 
 			// add get player data request
 			// Operator::ConnectionHandler::PushRequest();
@@ -202,12 +203,14 @@ namespace Game::Net
 		};
 
 		ClassicClientHandler(
+			const HSteamNetConnection connection,
 			const Settings settings,
 			const WorldResourceContainer& container)
 			:
 			simulation(container),
 			settings(settings),
-			container(container)
+			container(container),
+			DynamicClientHandler(connection)
 		{
 			playerResource = new Resource::PlayerResource();
 			playerResource->username = L"username";
@@ -217,10 +220,10 @@ namespace Game::Net
 			simulation.setPlayer(player);
 		}
 
-		void update() override
+		/*void update() override
 		{
 			HostAuthenticationHandler::update();
-		}
+		}*/
 
 		void processLogic()
 		{
@@ -251,7 +254,7 @@ namespace Game::Net
 			const Device::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
-			if (status == Connecting)
+			/*if (status == Connecting)
 			{
 				HostAuthenticationHandler::onMessage(messageID, pipe);
 				return;
@@ -286,7 +289,7 @@ namespace Game::Net
 			default:
 
 				break;
-			}
+			*/
 		}
 
 		void onPrepareSimulation(const Client::PrepareSimulationMessage& request)
@@ -319,9 +322,9 @@ namespace Game::Net
 			Host::RejectSimulationRequestMessage message;
 			message.reason = reason;
 
-			sendCommonMessage(
+			/*sendCommonMessage(
 				Host::ClassicalConnectionMessageID::RejectSimulationRequest,
-				&message);
+				&message);*/
 		}
 
 		void onPushMovement(const Client::PushMovementMessage& request)
@@ -364,9 +367,9 @@ namespace Game::Net
 			}
 		}
 
-		void onClientConnected() override
+		/*void onClientConnected() override
 		{
 			// request playerdata from operator
-		}
+		}*/
 	};
 }
