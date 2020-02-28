@@ -7,6 +7,17 @@
 #include <Client/source/game/ClassicClientHandler.h>
 #include <Client/source/game/UserConnection.h>
 
+/*
+	classic process:
+		1. authentication with simulatorauthentication
+		2. getplayerdata request is sent to operator and
+		   waiting for result
+		3. classicsimulation is pushed handles all common 
+		   simulator requests and allows the creation of a
+		   simulation
+		4. simulation is created
+*/
+
 namespace Game::Net
 {
 	// need something like a host structure

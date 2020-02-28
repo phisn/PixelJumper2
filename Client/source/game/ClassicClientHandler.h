@@ -4,10 +4,8 @@
 #include <Client/source/game/SimulatorAuthenticationHandler.h>
 #include <Client/source/game/VirtualPlayer.h>
 
-#include <Client/source/game/net/ClassicSimClientMessage.h>
-#include <Client/source/game/net/ClassicSimHostMessage.h>
-
 #include <Client/source/net/DynamicClientHandler.h>
+#include <Client/source/operator/request/ClassicHostRequest.h>
 
 #include <Operator/source/net/ClassicSimulatorMessage.h>
 
@@ -16,7 +14,9 @@ namespace Game::Net
 	class _ClassicClientHandler
 		:
 		public ::Net::DynamicClientHandler,
-		public AuthenticationHandlerCallback
+		public AuthenticationHandlerCallback,
+
+		public Operator::ClassicClientDataRequest
 	{
 	public:
 		struct Settings
@@ -69,29 +69,11 @@ namespace Game::Net
 					this, 
 					settings.authenticationTimeout)
 			);
+		}
 
-			/*
-			
-				1. wait for user
-				2. authenticate user
-				3. accept authentication
-				// think about send request
-				// after 5
-
-				// think about if player should
-				// be able to no play and be in
-				// waiting mode (yes should it)
-				4. send player data request
-				   to operator
-				5. wait for player
-				   simulation request
-				6. await player data if not
-				   yet received
-				7. create simulation with
-				   playerdata
-				8. running
-			
-			*/
+		~_ClassicClientHandler()
+		{
+			Operator::ConnectionHandler::PopRequest((Operator::ClassicClientDataRequest*) this);
 		}
 
 		virtual void update()
@@ -144,10 +126,22 @@ namespace Game::Net
 			this->userID = userID;
 
 			removeRequestHandler<AuthenticationHandler>();
-			// addRequestHandler<>
 
-			// add get player data request
-			// Operator::ConnectionHandler::PushRequest();
+			Operator::Net::Client::RequestClientDataMessage message;
+			message.userID = userID;
+
+			if (!Operator::ConnectionHandler::PushRequest(
+					Operator::Net::Client::ClassicHostID::RequestClientData,
+					&message,
+					(Operator::ClassicClientDataRequest*) this))
+			{
+				// send error message
+
+				status = Status::Closing;
+
+				Log::Error(L"Failed to retrive client data from operator",
+					userID, L"userID");
+			}
 		}
 	
 		void onAuthenticationDenied() override

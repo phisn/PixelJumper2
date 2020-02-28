@@ -3,6 +3,8 @@
 #include <Client/source/game/net/FrameStatus.h>
 #include <Client/source/game/net/SimulatorAuthenticationMessage.h>
 
+#include <Client/source/resource/ClassicPlayerResource.h>
+
 namespace Game::Net::Client
 {
 	struct ClassicSelectionMessageID
@@ -38,6 +40,8 @@ namespace Game::Net::Host
 		{
 			_Begin = AuthenticationMessageID::_Offset - 1,
 
+			InitializeClient,
+
 			AcceptSimulationRequest,
 			RejectSimulationRequest,
 
@@ -45,9 +49,63 @@ namespace Game::Net::Host
 		};
 	};
 
+	struct InitializeClientMessage
+		:
+		public NetworkMessage
+	{
+		// them
+		std::vector<Resource::PlayerResource*> players;
+
+		// you
+		Resource::PlayerResource* playerResource;
+		Resource::ClassicPlayerResource* classicResource;
+
+		bool load(Resource::ReadPipe* const pipe) override
+		{
+			return playerResource->make(pipe)
+				&& classicResource->make(pipe);
+		}
+		
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return playerResource->save(pipe)
+				&& classicResource->save(pipe);
+		}
+	};
+
+	struct AcceptSimulationRequestMessage
+		:
+		public NetworkMessage
+	{
+		// selected world plus surrounding
+		std::vector<Resource::World*> initialWorlds;
+
+		bool load(Resource::ReadPipe* const pipe) override
+		{
+			for (Resource::World* const world : initialWorlds)
+				if (!world->make(pipe))
+				{
+					return false;
+				}
+
+			return true;
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			for (Resource::World* const world : initialWorlds)
+				if (!world->save(pipe))
+				{
+					return false;
+				}
+
+			return true;
+		}
+	};
+
 	struct RejectSimulationRequestMessageContent
 	{
-		enum Reason
+		enum
 		{
 			SimulationAlreadyRunning,
 			InvalidWorldID,

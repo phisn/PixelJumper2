@@ -149,11 +149,13 @@
     <ClInclude Include="source\menu\MenuRootBase.h" />
     <ClInclude Include="source\net\DynamicClientHandler.h" />
     <ClInclude Include="source\net\RequestHandlerBase.h" />
-    <ClInclude Include="source\operator\AuthenticationRequest.h" />
     <ClInclude Include="source\operator\ClassicalConnectionRequest.h" />
-    <ClInclude Include="source\operator\ConnectionKeyRequest.h" />
     <ClInclude Include="source\operator\OperatorConnectionHandler.h" />
-    <ClInclude Include="source\operator\OperatorRequest.h" />
+    <ClInclude Include="source\operator\request\AuthenticationRequest.h" />
+    <ClInclude Include="source\operator\request\ClassicHostRequest.h" />
+    <ClInclude Include="source\operator\request\ConnectionKeyRequest.h" />
+    <ClInclude Include="source\operator\request\OperatorRequest.h" />
+    <ClInclude Include="source\resource\ClassicPlayerResource.h" />
     <ClInclude Include="source\resource\pipes\FilePipe.h" />
     <ClInclude Include="source\resource\pipes\MemoryPipe.h" />
     <ClInclude Include="source\resource\pipes\PacketPipe.h" />
@@ -208,6 +210,7 @@
     <ClCompile Include="source\game\GamePlayer.cpp" />
     <ClCompile Include="source\game\GameProperty.cpp" />
     <ClCompile Include="source\game\GameWorld.cpp" />
+    <ClCompile Include="source\game\net\ClassicSelectionMessage.cpp" />
     <ClCompile Include="source\game\SimulatorAuthenticationHandler.cpp" />
     <ClCompile Include="source\game\ClassicClientHandler.cpp" />
     <ClCompile Include="source\game\HostClassicSimulator.cpp" />
@@ -228,8 +231,8 @@
     <ClCompile Include="source\menu\MenuLabel.cpp" />
     <ClCompile Include="source\menu\MenuProperty.cpp" />
     <ClCompile Include="source\menu\MenuRootBase.cpp" />
-    <ClCompile Include="source\operator\ClassicHostRequest.h" />
     <ClCompile Include="source\operator\OperatorConnectionHandler.cpp" />
+    <ClCompile Include="source\resource\ClassicPlayerResource.cpp" />
     <ClCompile Include="source\resource\pipes\FilePipe.cpp" />
     <ClCompile Include="source\resource\pipes\MemoryPipe.cpp" />
     <ClCompile Include="source\resource\pipes\PacketPipe.cpp" />

@@ -2,12 +2,10 @@
 
 #include <Client/source/device/NetDevice.h>
 
-#include <Client/source/game/net/UserAuthClientMessage.h>
-#include <Client/source/game/net/UserAuthHostMessage.h>
-
+#include <Client/source/game/net/SimulatorAuthenticationMessage.h>
+#include <Client/source/net/RequestHandlerBase.h>
 #include <Client/source/operator/OperatorConnectionHandler.h>
 
-#include <Client/source/net/RequestHandlerBase.h>
 
 namespace Game::Net
 {

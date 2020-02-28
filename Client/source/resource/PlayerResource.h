@@ -19,20 +19,16 @@ namespace Resource
 		struct Content
 		{
 			PlayerID playerID;
+			RepresentationID representationID;
 
 		} content;
 
-		std::wstring username;
+		std::string username;
 		
 		bool make(ReadPipe* const pipe) override
 		{
-			if (!pipe->readValue(&content) ||
-				!pipe->readString(&username))
-			{
-				return false;
-			}
-
-
+			return pipe->readValue(&content) 
+				&& pipe->readString(&username);
 		}
 
 		bool save(WritePipe* const pipe) override

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/operator/OperatorRequest.h>
+#include <Client/source/operator/request/OperatorRequest.h>
 
 #include <Operator/source/net/AuthenticationMessage.h>
 #include <Operator/source/net/ClassicSimulatorMessage.h>

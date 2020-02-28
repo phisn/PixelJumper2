@@ -29,6 +29,18 @@ namespace Game::Net
 
 	struct CommonMessageID
 	{
+
+		/*
+			// known / open error
+			rethink error / internal error concept
+			-	error with detailed message and
+			    code for the user
+
+			// unkown / internal error
+			-	error without code or explaination
+			    to prevent unauthorized access of internal
+				information
+		*/
 		enum
 		{
 			Error,
