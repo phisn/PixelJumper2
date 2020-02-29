@@ -373,9 +373,6 @@
     <ClInclude Include="source\game\ClassicSelectionRequestHandler.h">
       <Filter>source\game\net\host</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\ClassicSimulatorRequestHandler.h">
-      <Filter>source\game\net\host</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\SimulatorAuthenticationHandler.h">
       <Filter>source\game\net\host</Filter>
     </ClInclude>
@@ -400,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="source\operator\request\ClassicHostRequest.h">
       <Filter>source\operator\request</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ClassicSimulationRequestHandler.h">
+      <Filter>source\game\net\host</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -608,14 +608,14 @@
     <ClCompile Include="source\game\ClassicSelectionRequestHandler.cpp">
       <Filter>source\game\net\host</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\ClassicSimulatorRequestHandler.cpp">
-      <Filter>source\game\net\host</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\SimulatorAuthenticationHandler.cpp">
       <Filter>source\game\net\host</Filter>
     </ClCompile>
     <ClCompile Include="source\game\net\ClassicSelectionMessage.cpp" />
     <ClCompile Include="source\resource\ClassicPlayerResource.cpp" />
+    <ClCompile Include="source\game\ClassicSimulationRequestHandler.cpp">
+      <Filter>source\game\net\host</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="source\resource\IMAG0005.jpg">

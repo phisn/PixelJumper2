@@ -21,7 +21,9 @@ namespace Net
 	{
 		// request guranteed to return immediately and can
 		// be directly shutdown
-		virtual void accessOnRequestFailed(const RequestFailure reason) = 0;
+		virtual void accessOnRequestFailed(
+			const Device::Net::MessageID messageID,
+			const RequestFailure reason) = 0;
 		// for messages without message content null can be passed as
 		// message
 		virtual bool accessSendMessage(
@@ -62,8 +64,10 @@ namespace Net
 				access->accessOnThreatIdentified(
 					messageID,
 					L"failed to load message",
-					Device::Net::ThreatLevel::Uncommon);
-				access->accessOnRequestFailed(RequestFailure::Loading);
+					Device::Net::ThreatLevel::Suspicious);
+				access->accessOnRequestFailed(
+					messageID,
+					RequestFailure::Loading);
 
 				return false;
 			}

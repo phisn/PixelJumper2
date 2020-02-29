@@ -106,7 +106,7 @@ namespace Operator::Net
 				return;
 			case Database::ConditionResult::Error:
 				access->accessSendMessage(
-					Host::AuthMessageID::InternalError,
+					Game::Net::CommonMessageID::InternalError,
 					NULL);
 
 				return;
@@ -135,7 +135,7 @@ namespace Operator::Net
 				user.userID))
 			{
 				access->accessSendMessage(
-					Host::AuthMessageID::InternalError,
+					Game::Net::CommonMessageID::InternalError,
 					NULL);
 
 				return;
@@ -187,7 +187,7 @@ namespace Operator::Net
 				return;
 			case Database::Interface::CreatePlayerResult::Error:
 				access->accessSendMessage(
-					Host::AuthMessageID::InternalError,
+					Game::Net::CommonMessageID::InternalError,
 					NULL);
 
 				return;
@@ -227,7 +227,7 @@ namespace Operator::Net
 				break;
 			case Database::ConditionResult::Error:
 				access->accessSendMessage(
-					Host::AuthMessageID::InternalError,
+					Game::Net::CommonMessageID::InternalError,
 					NULL);
 
 				break;

@@ -56,7 +56,7 @@ namespace Operator::Net
 				// think about removing this because
 				// it has a very high chance to fail
 				// (gurranted?)
-				beginMessage(Host::AuthMessageID::InternalError, 8);
+				beginMessage(Game::Net::CommonMessageID::InternalError, 8);
 				sendMessage();
 
 				return;
@@ -131,7 +131,7 @@ namespace Operator::Net
 		void accessOnRequestFailed(const ::Net::RequestFailure reason) override
 		{
 			accessSendMessage(
-				Host::AuthMessageID::InternalError,
+				Game::Net::CommonMessageID::InternalError,
 				NULL);
 			status = Status::Closing;
 		}
@@ -139,7 +139,7 @@ namespace Operator::Net
 		void onMessageSendFailed(const SendFailure reason) override
 		{
 			accessSendMessage(
-				Host::AuthMessageID::InternalError,
+				Game::Net::CommonMessageID::InternalError,
 				NULL);
 			status = Status::Closing;
 		}

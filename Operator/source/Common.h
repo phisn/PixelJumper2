@@ -7,6 +7,9 @@
 
 #include <Client/source/device/EncryptionDevice.h>
 
+#include <SFML/Main.hpp>
+#include <cstring>
+
 namespace Operator
 {
 	enum class UserType

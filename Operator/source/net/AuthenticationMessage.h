@@ -162,7 +162,6 @@ namespace Operator::Net::Host
 		{
 			_Begin = Game::Net::CommonMessageID::_Offset - 1,
 
-			InternalError,
 			Timeout,
 
 			// closes connection to accept new ones

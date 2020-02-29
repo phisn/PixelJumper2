@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <Client/source/operator/request/OperatorRequest.h>
@@ -203,7 +204,7 @@ namespace Operator
 		{
 			return instance->token;
 		}
-		
+
 	private:
 		const SteamNetworkingIPAddr ipAddress;
 
@@ -223,11 +224,18 @@ namespace Operator
 		std::vector<NetworkMessageContainer> pendingMessages;
 
 		void onMessage(
-			const Device::Net::MessageID messageID, 
+			const Device::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
 			switch (messageID)
 			{
+				// common
+			case Game::Net::CommonMessageID::InternalError:
+				processRequests(messageID, NULL);
+				status = Status::Error;
+				failRequests(Request::Reason::OperatorInternalError);
+
+				break;
 				// authentication
 			case Operator::Net::Host::AuthMessageID::AcceptRegistration:
 			{
@@ -239,7 +247,7 @@ namespace Operator
 				}
 
 				onAcceptRegistration(message);
-				processRequests(messageID, (void*) &message);
+				processRequests(messageID, (void*)&message);
 				break;
 			}
 			case Operator::Net::Host::AuthMessageID::RejectRegistration:
@@ -257,7 +265,7 @@ namespace Operator
 				}
 
 				onRejectRegistration(message);
-				processRequests(messageID, (void*) &message);
+				processRequests(messageID, (void*)&message);
 				break;
 			}
 			case Operator::Net::Host::AuthMessageID::AcceptToken:
@@ -275,7 +283,7 @@ namespace Operator
 				}
 
 				onAcceptToken(message);
-				processRequests(messageID, (void*) &message);
+				processRequests(messageID, (void*)&message);
 				break;
 			}
 			case Operator::Net::Host::AuthMessageID::RejectToken:
@@ -297,7 +305,7 @@ namespace Operator
 				}
 
 				onAcceptAuthentication(message);
-				processRequests(messageID, (void*) &message);
+				processRequests(messageID, (void*)&message);
 				break;
 			}
 			case Operator::Net::Host::AuthMessageID::RejectAuthentication:
@@ -307,12 +315,6 @@ namespace Operator
 			case Operator::Net::Host::AuthMessageID::Timeout:
 				processRequests(messageID, NULL);
 				failRequests(Request::Reason::OperatorTimeout);
-
-				break;
-			case Operator::Net::Host::AuthMessageID::InternalError:
-				processRequests(messageID, NULL);
-				status = Status::Error;
-				failRequests(Request::Reason::OperatorInternalError);
 
 				break;
 				// classic
@@ -333,8 +335,8 @@ namespace Operator
 		}
 
 		void onThreatIdentified(
-			const Device::Net::MessageID messageID, 
-			const wchar_t* const note, 
+			const Device::Net::MessageID messageID,
+			const wchar_t* const note,
 			const Device::Net::ThreatLevel level) override
 		{
 			Log::Warning(L"Threat identified (" + std::wstring(note) + L")",
@@ -448,7 +450,7 @@ namespace Operator
 			requests.clear();
 			pendingMessages.clear();
 		}
-		
+
 		void restoreAuthentication()
 		{
 			Operator::Net::Client::TokenMessage message;
@@ -458,21 +460,21 @@ namespace Operator
 				OPERATOR_HASH_SIZE);
 
 			if (!sendCommonMessage(
-					Operator::Net::Client::AuthMessageID::Token,
-					&message))
+				Operator::Net::Client::AuthMessageID::Token,
+				&message))
 			{
 				authenticated = false;
 				failRequests(Request::Reason::AuthenticationFailed);
 			}
 		}
-		
+
 		void processPendingMessages()
 		{
 			for (NetworkMessageContainer& container : pendingMessages)
 			{
 				if (!sendCommonMessage(
-						container.messageID,
-						container.message))
+					container.messageID,
+					container.message))
 				{
 					removeRequest(container.request);
 				}

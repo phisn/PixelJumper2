@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Client/source/game/ClassicSimulation.h>
 #include <Client/source/game/SimulatorAuthenticationHandler.h>
-#include <Client/source/game/VirtualPlayer.h>
+#include <Client/source/game/ClassicSelectionRequestHandler.h>
+#include <Client/source/game/ClassicSimulationRequestHandler.h>
 
 #include <Client/source/net/DynamicClientHandler.h>
 #include <Client/source/operator/request/ClassicHostRequest.h>
@@ -15,7 +15,6 @@ namespace Game::Net
 		:
 		public ::Net::DynamicClientHandler,
 		public AuthenticationHandlerCallback,
-
 		public Operator::ClassicClientDataRequest
 	{
 	public:
@@ -111,11 +110,9 @@ namespace Game::Net
 
 		Operator::UserID userID = NULL;
 		Status status = Status::Authenticating;
-		
-	/*	void onRequestFailed(const ::Net::Request::Reason reason) override
-		{
-		}
-		*/
+
+		std::string username;
+		Resource::ClassicPlayerResource classicResource;
 
 		void onAuthenticated(const Operator::UserID userID)
 		{
@@ -135,7 +132,14 @@ namespace Game::Net
 					&message,
 					(Operator::ClassicClientDataRequest*) this))
 			{
-				// send error message
+				ExternalErrorMessage error;
+				error.content.errorID = CommonErrorID::OperatorRequestFailed;
+				error.content.messageID = Operator::Net::Client::ClassicHostID::RequestClientData;
+				error.message = L"Failed to retrive clientdata";
+
+				this->accessSendMessage(
+					CommonMessageID::ExternalError,
+					&error);
 
 				status = Status::Closing;
 
@@ -149,20 +153,86 @@ namespace Game::Net
 			status = Status::Closing;
 		}
 
-		void accessOnRequestFailed(const ::Net::RequestFailure reason) override
+		void onClientDataReceived(Operator::Net::Host::RequestClientDataMessage* const answer) override
 		{
-			accessSendMessage(
-				Host::AuthenticationMessageID::InternalError,
-				NULL);
-			status = Status::Closing;
+			username = answer->username;
+			classicResource = std::move(answer->resource);
+
+			Host::InitializeClientMessage message;
+			message.classicResource = &classicResource;
+			message.username = username;
+
+			// message.players;
+			
+			if (accessSendMessage(
+					Host::ClassicSelectionMessageID::InitializeClient,
+					&message))
+			{
+				addRequestHandler<ClassicSelectionRequestHandler>(
+					new ClassicSelectionRequestHandler()
+				);
+			}
 		}
 
-		void onMessageSendFailed(const SendFailure reason) override
+		void onClientDataFailed(Operator::Net::Host::RequestClientDataFailedMessage* const message) override
+		{
+
+		}
+
+		// general failure
+	private:
+		void onRequestFailed(const Reason reason) override
+		{
+			ExternalErrorMessage message;
+			message.content.errorID = CommonErrorID::OperatorRequestFailed;
+			message.content.messageID = Operator::Net::Client::ClassicHostID::RequestClientData;
+			message.message = L"Failed to retrive clientdata";
+
+			this->accessSendMessage(
+				CommonMessageID::ExternalError,
+				&message);
+
+			status = Status::Closing;
+
+			Log::Error(L"Operator request failed",
+				(int) reason, L"reason");
+		}
+
+		void accessOnRequestFailed(
+			const Device::Net::MessageID messageID,
+			const ::Net::RequestFailure reason) override
 		{
 			accessSendMessage(
 				Host::AuthenticationMessageID::InternalError,
 				NULL);
 			status = Status::Closing;
+
+			Log::Error(L"Request failed",
+				messageID, L"messageID",
+				(int) reason, L"reason");
+		}
+
+		void onMessageSendFailed(
+			const Device::Net::MessageID messageID, 
+			const SendFailure reason) override
+		{
+			// unable to let the user know what happened because
+			// we already failed to transmit a message to him
+			// we could send him an error message if the reason is
+			// not send but we still have to prevent recrusion
+
+			status = Status::Closing;
+
+			Log::Error(L"Request failed",
+				messageID, L"messageID",
+				(int)reason, L"reason");
+		}
+
+		void onInvalidMessageID(const Device::Net::MessageID messageID) override
+		{
+			status = Status::Closing;
+
+			Log::Error(L"Got invalid messageID");
 		}
 
 		void onThreatIdentified(

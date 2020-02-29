@@ -94,7 +94,7 @@
     <ClInclude Include="source\framework\FrameworkInterface.h" />
     <ClInclude Include="source\framework\ResourceContext.h" />
     <ClInclude Include="source\game\ClassicSelectionRequestHandler.h" />
-    <ClInclude Include="source\game\ClassicSimulatorRequestHandler.h" />
+    <ClInclude Include="source\game\ClassicSimulationRequestHandler.h" />
     <ClInclude Include="source\game\ClientAuthenticationHandler.h" />
     <ClInclude Include="source\game\ClientClassicSimulation.h" />
     <ClInclude Include="source\game\CollisionEngine.h" />
@@ -201,7 +201,7 @@
     <ClCompile Include="source\framework\FrameworkInterface.cpp" />
     <ClCompile Include="source\framework\ResourceContext.cpp" />
     <ClCompile Include="source\game\ClassicSelectionRequestHandler.cpp" />
-    <ClCompile Include="source\game\ClassicSimulatorRequestHandler.cpp" />
+    <ClCompile Include="source\game\ClassicSimulationRequestHandler.cpp" />
     <ClCompile Include="source\game\ClientAuthenticationHandler.cpp" />
     <ClCompile Include="source\game\ClientClassicSimulation.cpp" />
     <ClCompile Include="source\game\CollisionEngine.cpp" />

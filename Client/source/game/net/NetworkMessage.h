@@ -29,26 +29,22 @@ namespace Game::Net
 
 	struct CommonMessageID
 	{
-
-		/*
-			// known / open error
-			rethink error / internal error concept
-			-	error with detailed message and
-			    code for the user
-
-			// unkown / internal error
-			-	error without code or explaination
-			    to prevent unauthorized access of internal
-				information
-		*/
 		enum
 		{
-			Error,
+			// only internally important and no
+			// message or code is provided to the
+			// user
+			InternalError,
+
+			// external error often caused by the user
+			// with error message and error code
+			ExternalError,
+
 			_Offset
 		};
 	};
 
-	class CommonErrorMessage
+	class ExternalErrorMessage
 		:
 		public NetworkMessage
 	{
@@ -84,7 +80,8 @@ namespace Game::Net
 	{
 		enum
 		{
-			InvalidConnectionInClientHandlerProcess
+			InvalidConnectionInClientHandlerProcess,
+			OperatorRequestFailed
 		};
 	};
 }

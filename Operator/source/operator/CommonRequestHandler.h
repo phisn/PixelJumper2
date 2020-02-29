@@ -91,7 +91,7 @@ namespace Operator::Net
 				return;
 			case Database::ConditionResult::Error:
 				access->accessSendMessage(
-					Host::CommonRequestMessageID::InternalError,
+					Game::Net::CommonMessageID::InternalError,
 					NULL);
 
 				return;
@@ -121,7 +121,7 @@ namespace Operator::Net
 					(int) result, L"result");
 
 				access->accessSendMessage(
-					Host::CommonRequestMessageID::InternalError,
+					Game::Net::CommonMessageID::InternalError,
 					NULL);
 			}
 
@@ -183,7 +183,7 @@ namespace Operator::Net
 					userID, L"userID");
 
 				access->accessSendMessage(
-					Host::CommonRequestMessageID::InternalError,
+					Game::Net::CommonMessageID::InternalError,
 					NULL);
 
 				break;
@@ -193,7 +193,7 @@ namespace Operator::Net
 					userID, L"userID");
 
 				access->accessSendMessage(
-					Host::CommonRequestMessageID::InternalError,
+					Game::Net::CommonMessageID::InternalError,
 					NULL);
 
 				break;

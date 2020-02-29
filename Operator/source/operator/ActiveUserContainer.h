@@ -1,8 +1,9 @@
 #pragma once
 
-#include <steam/steamnetworkingsockets.h>
-
 #include <Operator/source/Common.h>
+
+#include <steam/steamnetworkingsockets.h>
+#include <vector>
 
 namespace Operator::Net
 {
@@ -27,7 +28,7 @@ namespace Operator::Net
 		ActiveUserMode GetUserMode(const UserID userID);
 	}
 
-	struct Host
+	struct HostContent
 	{
 		SteamNetworkingIPAddr address;
 		UserID userID;
@@ -38,12 +39,12 @@ namespace Operator::Net
 	// to be valid
 	namespace HostContainer
 	{
-		
+
 	}
 
 	struct ClassicHostConfig
 	{
-		Host host;
+		HostContent host;
 
 		int maxPlayers;
 	};
@@ -82,13 +83,13 @@ namespace Operator::Net
 
 			users.push_back(userID);
 		}
-		 
+
 		void unregisterUser(const UserID userID)
 		{
 			decltype(users)::iterator iterator = std::find(
 				users.begin(),
 				users.end(), userID);
-			
+
 			if (iterator != users.end())
 			{
 				UserContainer::SetUserMode(
@@ -105,7 +106,7 @@ namespace Operator::Net
 
 		float getUserCapacityUsage() const
 		{
-			return (float) users.size() / (float) config.maxPlayers;
+			return (float)users.size() / (float)config.maxPlayers;
 		}
 
 		const ClassicHostConfig& getConfig() const

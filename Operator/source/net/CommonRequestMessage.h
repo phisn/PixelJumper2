@@ -52,7 +52,6 @@ namespace Operator::Net::Host
 		{
 			_Begin = AuthMessageID::_Offset - 1,
 
-			InternalError,
 			ConnectionKey,
 
 			// currently is only caused by userid

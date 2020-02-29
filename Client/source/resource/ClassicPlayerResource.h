@@ -4,6 +4,9 @@
 
 namespace Resource
 {
+	// used between operator, simulator and client
+	// created by operator from database
+	// usally not saved, maybe for caching but questionable
 	class ClassicPlayerResource
 		:
 		public ResourceBase

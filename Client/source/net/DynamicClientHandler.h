@@ -32,7 +32,11 @@ namespace Net
 			Send
 		};
 
-		virtual void onMessageSendFailed(const SendFailure reason) = 0;
+		virtual void onMessageSendFailed(
+			const Device::Net::MessageID messageID,
+			const SendFailure reason) = 0;
+		virtual void onInvalidMessageID(
+			const Device::Net::MessageID messageID) = 0;
 		virtual void onMessage(
 			const Device::Net::MessageID messageID, 
 			Resource::ReadPipe* const pipe)
@@ -43,6 +47,8 @@ namespace Net
 					messageID,
 					L"invalid messageid",
 					Device::Net::ThreatLevel::Suspicious);
+
+				onInvalidMessageID(messageID);
 			}
 		}
 
@@ -55,7 +61,7 @@ namespace Net
 			{
 				if (!message->save(beginMessage(messageID)))
 				{
-					onMessageSendFailed(SendFailure::Save);
+					onMessageSendFailed(messageID, SendFailure::Save);
 					return false;
 				}
 			}
@@ -66,7 +72,7 @@ namespace Net
 
 			if (!ClientHandler::sendMessage())
 			{
-				onMessageSendFailed(SendFailure::Send);
+				onMessageSendFailed(messageID, SendFailure::Send);
 				return false;
 			}
 

@@ -57,18 +57,18 @@ namespace Game::Net::Host
 		std::vector<Resource::PlayerResource*> players;
 
 		// you
-		Resource::PlayerResource* playerResource;
+		std::string username;
 		Resource::ClassicPlayerResource* classicResource;
 
 		bool load(Resource::ReadPipe* const pipe) override
 		{
-			return playerResource->make(pipe)
+			return pipe->readString(&username)
 				&& classicResource->make(pipe);
 		}
 		
 		bool save(Resource::WritePipe* const pipe) override
 		{
-			return playerResource->save(pipe)
+			return pipe->writeString(&username)
 				&& classicResource->save(pipe);
 		}
 	};
