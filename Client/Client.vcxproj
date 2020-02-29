@@ -124,6 +124,7 @@
     <ClInclude Include="source\game\PlayerProperties.h" />
     <ClInclude Include="source\game\PlayerRepresentation.h" />
     <ClInclude Include="source\game\ClassicSimulation.h" />
+    <ClInclude Include="source\game\SimulatorContext.h" />
     <ClInclude Include="source\game\tiletrait\CollidableTile.h" />
     <ClInclude Include="source\game\tiletrait\DrawableTile.h" />
     <ClInclude Include="source\game\tiletrait\DynamicTile.h" />
@@ -215,11 +216,11 @@
     <ClCompile Include="source\game\ClassicClientHandler.cpp" />
     <ClCompile Include="source\game\HostClassicSimulator.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
-    <ClCompile Include="source\game\net\ClientMessage.cpp" />
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
     <ClCompile Include="source\game\PlayerProperties.cpp" />
     <ClCompile Include="source\game\PlayerRepresentation.cpp" />
     <ClCompile Include="source\game\ClassicSimulation.cpp" />
+    <ClCompile Include="source\game\SimulatorContext.cpp" />
     <ClCompile Include="source\game\UserConnection.cpp" />
     <ClCompile Include="source\game\VirtualPlayer.cpp" />
     <ClCompile Include="source\game\WorldProperties.cpp" />

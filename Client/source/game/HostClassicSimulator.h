@@ -5,6 +5,7 @@
 #include <Client/source/game/GameWorld.h>
 
 #include <Client/source/game/ClassicClientHandler.h>
+#include <Client/source/game/SimulatorContext.h>
 #include <Client/source/game/UserConnection.h>
 
 /*
@@ -82,6 +83,21 @@ namespace Game::Net
 		}
 
 	private:
+		const Settings settings;
+
+		sf::Uint64 logicCounter = 0,
+				nextGameProcess = 0,
+				nextUserProcess = 0;
+
+		sf::Uint64 tickCount = 0;
+
+		// last element represents empty connection
+		// to accept new tcpsockets
+		std::vector<ClassicClientHandler*> connections;
+
+		SimulatorContext context;
+		WorldResourceContainer resources;
+
 		bool askClientConnect(SteamNetworkingIPAddr* const ipAddress) override
 		{
 			Log::Information(L"New client connects",
@@ -103,19 +119,6 @@ namespace Game::Net
 		void onClientLost(const HSteamNetConnection connection) override
 		{
 		}
-
-		const Settings settings;
-
-		sf::Uint64 logicCounter = 0,
-				nextGameProcess = 0,
-				nextUserProcess = 0;
-
-		sf::Uint64 tickCount = 0;
-
-		// last element represents empty connection
-		// to accept new tcpsockets
-		std::vector<ClassicClientHandler*> connections;
-		WorldResourceContainer resources;
 	};
 
 	/*class LocalClassicTestSimulator

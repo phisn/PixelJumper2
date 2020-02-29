@@ -15,7 +15,8 @@ namespace Game::Net
 		:
 		public ::Net::DynamicClientHandler,
 		public AuthenticationHandlerCallback,
-		public Operator::ClassicClientDataRequest
+		public Operator::ClassicClientDataRequest,
+		public SimulatorContextCallback
 	{
 	public:
 		struct Settings
@@ -57,10 +58,12 @@ namespace Game::Net
 		_ClassicClientHandler(
 			const HSteamNetConnection connection,
 			const Settings settings,
+			SimulatorContext& context,
 			const WorldResourceContainer& container)
 			:
 			DynamicClientHandler(connection),
 			settings(settings),
+			context(context),
 			container(container)
 		{
 			addRequestHandler<AuthenticationHandler>(
@@ -73,6 +76,9 @@ namespace Game::Net
 		~_ClassicClientHandler()
 		{
 			Operator::ConnectionHandler::PopRequest((Operator::ClassicClientDataRequest*) this);
+
+			if (userID)
+				context.unregisterPlayer(userID);
 		}
 
 		virtual void update()
@@ -107,6 +113,7 @@ namespace Game::Net
 	private:
 		const Settings settings;
 		const WorldResourceContainer& container;
+		SimulatorContext& context;
 
 		Operator::UserID userID = NULL;
 		Status status = Status::Authenticating;
@@ -159,17 +166,22 @@ namespace Game::Net
 			classicResource = std::move(answer->resource);
 
 			Host::InitializeClientMessage message;
+
 			message.classicResource = &classicResource;
 			message.username = username;
-
-			// message.players;
+			message.players = context.getActivePlayers();
 			
 			if (accessSendMessage(
 					Host::ClassicSelectionMessageID::InitializeClient,
 					&message))
 			{
+				Resource::PlayerResource* const resource = new Resource::PlayerResource();
+				resource->content.playerID = userID;
+				resource->username = username;
+				context.registerPlayer(resource, this);
+
 				addRequestHandler<ClassicSelectionRequestHandler>(
-					new ClassicSelectionRequestHandler()
+					new ClassicSelectionRequestHandler(classicResource)
 				);
 			}
 		}
@@ -177,6 +189,17 @@ namespace Game::Net
 		void onClientDataFailed(Operator::Net::Host::RequestClientDataFailedMessage* const message) override
 		{
 
+		}
+
+		void playerRegistered(Resource::PlayerResource* const player) override
+		{
+			// send message to player that a new player
+			// was registered
+		}
+
+		void playerUnregistered(const Operator::UserID userID) override
+		{
+			// send message to player that a player unregistered
 		}
 
 		// general failure

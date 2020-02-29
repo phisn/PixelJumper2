@@ -10,6 +10,12 @@ namespace Game::Net
 		public ::Net::RequestHandler
 	{
 	public:
+		ClassicSelectionRequestHandler(const Resource::ClassicPlayerResource& classicResource)
+			:
+			classicResource(classicResource)
+		{
+		}
+
 		void update() override
 		{
 
@@ -22,7 +28,7 @@ namespace Game::Net
 			switch (messageID)
 			{
 			case Client::ClassicSelectionMessageID::PrepareSimulation:
-
+				
 
 				break;
 			case Client::ClassicSelectionMessageID::QuerySimulation:
@@ -33,5 +39,27 @@ namespace Game::Net
 		}
 
 	private:
+		const Resource::ClassicPlayerResource& classicResource;
+
+		void onPrepareSimulation(const Client::PrepareSimulationMessage& request)
+		{
+			if (std::find(
+					classicResource.unlockedWorlds.begin(),
+					classicResource.unlockedWorlds.end(),
+				request.world)
+				== classicResource.unlockedWorlds.end())
+			{
+				Host::RejectSimulationRequestMessage message;
+				message.reason = message.InvalidWorldID;
+
+				access->accessSendMessage(
+					Host::ClassicSelectionMessageID::RejectSimulationRequest,
+					&message);
+			}
+			else
+			{
+
+			}
+		}
 	};
 }

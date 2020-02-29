@@ -11,6 +11,42 @@ namespace Resource
 	typedef sf::Uint32 RepresentationID;
 	typedef sf::Uint32 WorldId;
 
+	class PlayerResource
+		:
+		public ResourceBase
+	{
+	public:
+		struct Content
+		{
+			PlayerID playerID;
+
+		} content;
+
+		std::string username;
+
+		bool make(ReadPipe* const pipe) override
+		{
+			return pipe->readValue(&content)
+				&& pipe->readString(&username);
+		}
+
+		bool save(WritePipe* const pipe) override
+		{
+			return pipe->writeValue(&content)
+				&& pipe->writeString(&username);
+		}
+
+		bool setup() override
+		{
+			return content.playerID != NULL;
+		}
+
+		bool validate() override
+		{
+			return content.playerID != NULL;
+		}
+	};
+
 	// playerresource as a whole in the current game state
 	// questionable because all data is stored in the database anyway
 	// and transmition data is stored in message structs

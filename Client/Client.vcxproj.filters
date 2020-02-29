@@ -385,7 +385,6 @@
     <ClInclude Include="source\game\net\ClassicSimulatorMessage.h">
       <Filter>source\game\net\message</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\ClassicPlayerResource.h" />
     <ClInclude Include="source\operator\request\AuthenticationRequest.h">
       <Filter>source\operator\request</Filter>
     </ClInclude>
@@ -399,6 +398,12 @@
       <Filter>source\operator\request</Filter>
     </ClInclude>
     <ClInclude Include="source\game\ClassicSimulationRequestHandler.h">
+      <Filter>source\game\net\host</Filter>
+    </ClInclude>
+    <ClInclude Include="source\resource\ClassicPlayerResource.h">
+      <Filter>source\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\SimulatorContext.h">
       <Filter>source\game\net\host</Filter>
     </ClInclude>
   </ItemGroup>
@@ -538,7 +543,6 @@
     <ClCompile Include="source\device\CoreDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\net\ClientMessage.cpp" />
     <ClCompile Include="source\device\EncryptionDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
@@ -611,9 +615,16 @@
     <ClCompile Include="source\game\SimulatorAuthenticationHandler.cpp">
       <Filter>source\game\net\host</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\net\ClassicSelectionMessage.cpp" />
-    <ClCompile Include="source\resource\ClassicPlayerResource.cpp" />
     <ClCompile Include="source\game\ClassicSimulationRequestHandler.cpp">
+      <Filter>source\game\net\host</Filter>
+    </ClCompile>
+    <ClCompile Include="source\resource\ClassicPlayerResource.cpp">
+      <Filter>source\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\net\ClassicSelectionMessage.cpp">
+      <Filter>source\game\net\message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\SimulatorContext.cpp">
       <Filter>source\game\net\host</Filter>
     </ClCompile>
   </ItemGroup>
