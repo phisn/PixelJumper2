@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Client/source/game/net/FrameStatus.h>
-#include <Client/source/game/net/SimulatorAuthenticationMessage.h>
+#include <Client/source/game/net/ClassicCommonMessage.h>
 
 #include <Client/source/resource/ClassicPlayerResource.h>
 
@@ -11,7 +11,7 @@ namespace Game::Net::Client
 	{
 		enum
 		{
-			_Begin = AuthenticationMessageID::_Offset - 1,
+			_Begin = ClassicCommonMessageID::_Offset - 1,
 
 			// request simulation informations
 			QuerySimulation,
@@ -39,39 +39,13 @@ namespace Game::Net::Host
 	{
 		enum
 		{
-			_Begin = AuthenticationMessageID::_Offset - 1,
-
-			InitializeClient,
+			_Begin = ClassicCommonMessageID::_Offset - 1,
 
 			AcceptSimulationRequest,
 			RejectSimulationRequest,
 
 			_Offset
 		};
-	};
-
-	struct InitializeClientMessage
-		:
-		public NetworkMessage
-	{
-		// them
-		std::vector<Resource::PlayerResource*> players;
-
-		// you
-		std::string username;
-		Resource::ClassicPlayerResource* classicResource;
-
-		bool load(Resource::ReadPipe* const pipe) override
-		{
-			return pipe->readString(&username)
-				&& classicResource->make(pipe);
-		}
-		
-		bool save(Resource::WritePipe* const pipe) override
-		{
-			return pipe->writeString(&username)
-				&& classicResource->save(pipe);
-		}
 	};
 
 	struct AcceptSimulationRequestMessage
@@ -83,17 +57,33 @@ namespace Game::Net::Host
 
 		bool load(Resource::ReadPipe* const pipe) override
 		{
-			for (Resource::World* const world : initialWorlds)
-				if (!world->make(pipe))
-				{
+			sf::Uint8 count;
+			if (!pipe->readValue(&count))
+			{
+				return false;
+			}
+
+			initialWorlds.resize(count);
+
+			for (int i = 0; i < initialWorlds.size(); ++i)
+			{
+				initialWorlds[i] = new Resource::World();
+
+				if (!initialWorlds[i]->make(pipe))
 					return false;
-				}
+			}
 
 			return true;
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
 		{
+			sf::Uint8 count = initialWorlds.size();
+			if (!pipe->writeValue(&count))
+			{
+				return false;
+			}
+
 			for (Resource::World* const world : initialWorlds)
 				if (!world->save(pipe))
 				{
@@ -106,7 +96,7 @@ namespace Game::Net::Host
 
 	struct RejectSimulationRequestMessageContent
 	{
-		enum
+		enum Reason
 		{
 			SimulationAlreadyRunning,
 			InvalidWorldID,

@@ -13,6 +13,12 @@ namespace Game
 {
 	typedef std::map<Resource::WorldId, Resource::World*> WorldResourceContainer;
 
+	struct SimulationBootInformation
+	{
+		Resource::WorldId worldID;
+		Resource::RepresentationID representationID;
+	};
+
 	class ClassicSimulation
 		:
 		public GameState

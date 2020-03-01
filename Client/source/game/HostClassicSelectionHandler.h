@@ -6,18 +6,9 @@
 
 namespace Game::Net
 {
-	enum class ClassicSelectionFailure
-	{
-		WorldResourceMissing
-	};
-
 	struct ClassicSelectionHandlerCallback
 	{
 		virtual void onSimulationCreated(const SimulationBootInformation& info) = 0;
-
-		// called when error handling is internally already done
-		// sending error message and optional threat
-		virtual void onSelectionFailed(const ClassicSelectionFailure reason) = 0;
 	};
 
 	class ClassicSelectionHandler
@@ -161,8 +152,9 @@ namespace Game::Net
 			access->accessSendMessage(
 				Host::ClassicSelectionMessageID::RejectSimulationRequest,
 				&message);
-
-			callback->onSelectionFailed(ClassicSelectionFailure::WorldResourceMissing);
+			access->accessOnRequestFailed(
+				Client::ClassicSelectionMessageID::PrepareSimulation,
+				::Net::RequestFailure::Internal);
 		}
 	};
 }

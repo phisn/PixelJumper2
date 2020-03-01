@@ -114,10 +114,7 @@ namespace Device
 
 		void enable()
 		{
-			Screen::SetView(view);
+			Screen::SetView(*this);
 		}
-
-	private:
-		sf::View view;
 	};
 }

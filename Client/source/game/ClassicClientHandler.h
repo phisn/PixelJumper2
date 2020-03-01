@@ -2,6 +2,7 @@
 
 #include <Client/source/game/HostSimulatorAuthenticationHandler.h>
 #include <Client/source/game/SimulatorContext.h>
+#include <Client/source/game/HostClassicCommonHandler.h>
 #include <Client/source/game/HostClassicSelectionHandler.h>
 #include <Client/source/game/HostClassicSimulationHandler.h>
 
@@ -12,13 +13,11 @@
 
 namespace Game::Net
 {
-	class _ClassicClientHandler
+	class ClassicClientHandler
 		:
 		public ::Net::DynamicClientHandler,
 		public SimulatorContextCallback,
-		// operator requests
-		public Operator::ClassicClientDataRequest,
-		// request handlers
+
 		public AuthenticationHandlerCallback,
 		public ClassicSelectionHandlerCallback,
 		public ClassicSimulatorHandlerCallback
@@ -60,7 +59,7 @@ namespace Game::Net
 			Closing
 		};
 
-		_ClassicClientHandler(
+		ClassicClientHandler(
 			const HSteamNetConnection connection,
 			const Settings settings,
 			SimulatorContext& context,
@@ -78,7 +77,7 @@ namespace Game::Net
 			);
 		}
 
-		~_ClassicClientHandler()
+		~ClassicClientHandler()
 		{
 			Operator::ConnectionHandler::PopRequest((Operator::ClassicClientDataRequest*) this);
 
@@ -105,8 +104,7 @@ namespace Game::Net
 				// think about removing this because
 				// it has a very high chance to fail
 				// (gurranted?)
-				beginMessage(Host::AuthenticationMessageID::InternalError, 8);
-				sendMessage();
+				accessSendMessage(CommonMessageID::InternalError);
 
 				return;
 			}
@@ -119,7 +117,7 @@ namespace Game::Net
 			// no status check needed because it is
 			// already done outside
 
-			simulationHandler->getSimulation().processLogic();
+			simulationHandler->processLogic();
 		}
 
 		Status getStatus() const
@@ -154,19 +152,39 @@ namespace Game::Net
 		// deleted if not currently running
 		ClassicSimulationHandler* simulationHandler;
 
-		void onClientDataReceived(Operator::Net::Host::RequestClientDataMessage* const answer) override
+		void playerRegistered(Resource::PlayerResource* const player) override
 		{
-			username = answer->username;
-			classicResource = std::move(answer->resource);
+			// send message to player that a new player
+			// was registered
+			// need to add a common request handler to
+			// both client and host
+		}
+
+		void playerUnregistered(const Operator::UserID userID) override
+		{
+			// send message to player that a player unregistered
+		}
+
+		// request handlers
+	private:
+		void onAuthenticated(
+			const Operator::UserID userID,
+			Operator::Net::Host::RequestClientDataMessage* const answer) override
+		{
+			Log::Information(L"Client authenticated",
+				userID, L"userID");
+
+			status = Status::Waiting;
+			this->userID = userID;
+
+			delete removeRequestHandler<AuthenticationHandler>();
+			addRequestHandler(new HostClassicCommonHandler);
 
 			Host::InitializeClientMessage message;
-
-			message.classicResource = &classicResource;
-			message.username = username;
 			message.players = context.getActivePlayers();
-			
+
 			if (accessSendMessage(
-					Host::ClassicSelectionMessageID::InitializeClient,
+					Host::ClassicCommonMessageID::InitializeClient,
 					&message))
 			{
 				Resource::PlayerResource* const resource = new Resource::PlayerResource();
@@ -181,58 +199,6 @@ namespace Game::Net
 
 				addRequestHandler(selectionHandler);
 				status = Status::Waiting;
-			}
-		}
-
-		void onClientDataFailed(Operator::Net::Host::RequestClientDataFailedMessage* const message) override
-		{
-
-		}
-
-		void playerRegistered(Resource::PlayerResource* const player) override
-		{
-			// send message to player that a new player
-			// was registered
-		}
-
-		void playerUnregistered(const Operator::UserID userID) override
-		{
-			// send message to player that a player unregistered
-		}
-
-		// request handlers
-	private:
-		void onAuthenticated(const Operator::UserID userID)
-		{
-			Log::Information(L"Client authenticated",
-				userID, L"userID");
-
-			status = Status::Waiting;
-			this->userID = userID;
-
-			delete removeRequestHandler<AuthenticationHandler>();
-
-			Operator::Net::Client::RequestClientDataMessage message;
-			message.userID = userID;
-
-			if (!Operator::ConnectionHandler::PushRequest(
-				Operator::Net::Client::ClassicHostID::RequestClientData,
-				&message,
-				(Operator::ClassicClientDataRequest*) this))
-			{
-				ExternalErrorMessage error;
-				error.content.errorID = CommonErrorID::OperatorRequestFailed;
-				error.content.messageID = Operator::Net::Client::ClassicHostID::RequestClientData;
-				error.message = L"Failed to retrive clientdata";
-
-				this->accessSendMessage(
-					CommonMessageID::ExternalError,
-					&error);
-
-				status = Status::Closing;
-
-				Log::Error(L"Failed to retrive client data from operator",
-					userID, L"userID");
 			}
 		}
 
@@ -254,7 +220,7 @@ namespace Game::Net
 				userInfo,
 				bootInfo);
 
-			if (!simulationHandler->initialize())
+			if (!simulationHandler->initializeSimulation())
 			{
 				// already logged by simulationhandler
 				// creation of simulation failed
@@ -290,27 +256,11 @@ namespace Game::Net
 
 		// general failure
 	private:
-		// operator request
-		void onRequestFailed(const Reason reason) override
-		{
-			this->accessSendMessage(
-				CommonMessageID::InternalError,
-				NULL);
-
-			status = Status::Closing;
-
-			Log::Error(L"Operator request failed",
-				(int) reason, L"reason");
-		}
-
-		// client request
 		void accessOnRequestFailed(
 			const Device::Net::MessageID messageID,
 			const ::Net::RequestFailure reason) override
 		{
-			accessSendMessage(
-				Host::AuthenticationMessageID::InternalError,
-				NULL);
+			accessSendMessage(CommonMessageID::InternalError);
 			status = Status::Closing;
 
 			Log::Error(L"Request failed",

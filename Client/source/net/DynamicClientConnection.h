@@ -5,7 +5,7 @@
 
 namespace Net
 {
-	class DynamicClientHandler
+	class DynamicClientConnection
 		:
 		public Device::Net::Client,
 		public DynamicRequestContainer

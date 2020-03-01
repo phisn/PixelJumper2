@@ -64,8 +64,8 @@ namespace Game::Net
 
 			while (logicCounter > nextGameProcess)
 			{
-				for (_ClassicClientHandler* const clientHandler : connections)
-					if (clientHandler->getStatus() == _ClassicClientHandler::Status::Running)
+				for (ClassicClientHandler* const clientHandler : connections)
+					if (clientHandler->getStatus() == ClassicClientHandler::Status::Running)
 					{
 
 					}
@@ -98,7 +98,7 @@ namespace Game::Net
 
 		// last element represents empty connection
 		// to accept new tcpsockets
-		std::vector<_ClassicClientHandler*> connections;
+		std::vector<ClassicClientHandler*> connections;
 
 		SimulatorContext context;
 		WorldResourceContainer resources;

@@ -8,17 +8,16 @@
 
 namespace Game::Net
 {
-	struct SimulationBootInformation
-	{
-		Resource::WorldId worldID;
-		Resource::RepresentationID representationID;
-	};
-
 	struct ClassicSimulatorHandlerCallback
 	{
 		virtual void onSimulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
 	};
 
+	// currently transitive reached worlds are not sent to the 
+	// player so he wont be able to load other worlds than the
+	// initial ones
+	// player worlds will potentially send multiple times. it has
+	// to be logged if the world was already sent
 	class ClassicSimulationHandler
 		:
 		public ::Net::RequestHandler
@@ -40,7 +39,7 @@ namespace Game::Net
 
 		// needs custom initialize function because a simulation
 		// can fail to boot up
-		bool initialize()
+		bool initializeSimulation()
 		{
 			const Game::ClassicSimulation::WorldFailure result = simulation.runWorld(this->bootInfo.worldID);
 

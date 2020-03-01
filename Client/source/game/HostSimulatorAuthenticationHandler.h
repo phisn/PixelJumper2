@@ -11,13 +11,16 @@ namespace Game::Net
 {
 	struct AuthenticationHandlerCallback
 	{
-		virtual void onAuthenticated(const Operator::UserID userID) = 0;
+		virtual void onAuthenticated(
+			const Operator::UserID userID,
+			Operator::Net::Host::RequestClientDataMessage* const answer) = 0;
 		virtual void onAuthenticationDenied() = 0;
 	};
 
 	class AuthenticationHandler
 		:
-		public ::Net::RequestHandler
+		public ::Net::RequestHandler,
+		public Operator::ClassicClientDataRequest
 	{
 	public:
 		AuthenticationHandler(
@@ -63,6 +66,7 @@ namespace Game::Net
 		AuthenticationHandlerCallback* const callback;
 
 		sf::Uint32 timeout;
+		Operator::UserID userID;
 
 		void onAuthenticate(const Client::AuthenticationMessage& request)
 		{
@@ -75,23 +79,76 @@ namespace Game::Net
 
 			if (request.key.validate(keySource))
 			{
-				access->accessSendMessage(
-					Host::AuthenticationMessageID::AuthenticationAccepted,
-					NULL);
+				Operator::Net::Client::RequestClientDataMessage message;
+				message.userID = userID = request.userID;
 
-				callback->onAuthenticated(request.userID);
+				if (!Operator::ConnectionHandler::PushRequest(
+						Operator::Net::Client::ClassicHostID::RequestClientData,
+						&message,
+						(Operator::ClassicClientDataRequest*) this))
+				{
+					sendAuthenticationRejectedMessage(
+						Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
+					);
+
+					Log::Error(L"Failed to retrive client data from operator",
+						userID, L"userID");
+
+					callback->onAuthenticationDenied();
+				}
 			}
 			else
 			{
-				Host::AuthenticationRejectedMessage message;
-				message.reason = Host::AuthenticationRejectedMessageContent::Reason::InvalidConnectionKey;
-
-				access->accessSendMessage(
-					Host::AuthenticationMessageID::AuthenticationRejected,
-					&message);
+				sendAuthenticationRejectedMessage(
+					Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
+				);
 
 				callback->onAuthenticationDenied();
 			}
+		}
+
+		void sendAuthenticationRejectedMessage(const Host::AuthenticationRejectedMessageContent::Reason reason)
+		{
+			Host::AuthenticationRejectedMessage message;
+			message.reason = reason;
+
+			access->accessSendMessage(
+				Host::AuthenticationMessageID::AuthenticationRejected,
+				&message);
+		}
+
+
+		void onClientDataReceived(Operator::Net::Host::RequestClientDataMessage* const answer) override
+		{
+			Host::AuthenticationAcceptedMessage message;
+
+			message.resource = &answer->resource;
+			message.username = &answer->username;
+
+			if (access->accessSendMessage(
+					Host::AuthenticationMessageID::AuthenticationAccepted,
+					&message))
+			{
+				callback->onAuthenticated(userID, answer);
+			}
+		}
+
+		void onClientDataFailed(Operator::Net::Host::RequestClientDataFailedMessage* const message) override
+		{
+			Log::Error(L"Failed to retrive client data",
+				(int) message->type, L"type");
+			callback->onAuthenticationDenied();
+		}
+
+		void onRequestFailed(const Reason reason) override
+		{
+			sendAuthenticationRejectedMessage(
+				Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
+			);
+
+			Log::Error(L"Getclientdata request failed",
+				(int)reason, L"reason");
+			callback->onAuthenticationDenied();
 		}
 	};
 }

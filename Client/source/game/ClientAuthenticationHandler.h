@@ -1,66 +1,88 @@
 #pragma once
 
-#include <Client/source/device/NetDevice.h>
-#include <Client/source/operator/OperatorConnectionHandler.h>
-#include <Client/source/operator/ConnectionKeyRequest.h>
+#include <Client/source/game/net/SimulatorAuthenticationMessage.h>
+#include <Client/source/net/RequestHandlerBase.h>
 
 namespace Game::Net
 {
-	class OfficalClientAuthenticationHandler
+	enum class ClientAuthenticationFailure
+	{
+		InternalTimeout,
+		ExternalTimeout
+	};
+
+	struct ClientAuthenticationHandlerCallback
+	{
+		virtual void onAuthenticated(Host::AuthenticationAcceptedMessage* const answer) = 0;
+	};
+
+	class ClientAuthenticationHandler
 		:
-		/*
-			hides:
-			-	connect
-			-	process
-		*/
-		protected Device::Net::Client,
-		protected Operator::ConnectionKeyRequest
+		public ::Net::RequestHandler
 	{
 	public:
-		~OfficalClientAuthenticationHandler()
+		ClientAuthenticationHandler(
+			ClientAuthenticationHandlerCallback* const callback,
+			const sf::Uint32 timeout)
+			:
+			callback(callback),
+			timeout(timeout)
 		{
-			cancel();
 		}
 
-		bool connect(const Operator::UserID userID)
+		void update() override
 		{
-			if (!Operator::ConnectionHandler::IsAuthenticated())
+			if (--timeout == 0)
 			{
-				return false;
+				onAuthenticationFailed(ClientAuthenticationFailure::InternalTimeout);
+			}
+		}
+
+		bool onMessage(
+			const Device::Net::MessageID messageID,
+			Resource::ReadPipe* const pipe) override
+		{
+			switch (messageID)
+			{
+			case Host::AuthenticationMessageID::AuthenticationAccepted:
+			{
+				Resource::ClassicPlayerResource playerResource;
+				std::string username;
+
+				Host::AuthenticationAcceptedMessage message;
+
+				message.resource = &playerResource;
+				message.username = &username;
+
+				if (loadMessage(messageID, &message, pipe))
+				{
+					callback->onAuthenticated(&message);
+				}
+
+				return true;
+			}
+			case Host::AuthenticationMessageID::AuthenticationRejected:
+				if (Host::AuthenticationRejectedMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onAuthenticationRejected(message.reason);
+				}
+
+				return true;
+			case Host::AuthenticationMessageID::Timeout:
+				onAuthenticationFailed(ClientAuthenticationFailure::ExternalTimeout);
+
+				return true;
 			}
 
-			Operator::Net::Client::RequestConnectionKeyMessage* message = 
-				new Operator::Net::Client::RequestConnectionKeyMessage;
-			message->userID = userID;
-
-			return Operator::ConnectionHandler::PushRequest(
-				Operator::Net::Client::Req::RequestConnectionKey,
-				message,
-				(Operator::ConnectionKeyRequest*) this);
+			return false;
 		}
 
-		void cancel()
-		{
-			// removes all possible requests instead of logging them because
-			// cancel is rare and the overhead is extremly small
-			Operator::ConnectionHandler::PopRequest((Operator::ConnectionKeyRequest*) this);
-		}
+	protected:
+		virtual void onAuthenticationRejected(const Host::AuthenticationRejectedMessage::Reason reason) = 0;
+		virtual void onAuthenticationFailed(const ClientAuthenticationFailure reason) = 0;
 
 	private:
-		void onConnectionKeyRetrieved()
-		{
-		}
-
-		void onConnectionOpen() override
-		{
-		}
-
-		void onConnectionLost(const int reason) override
-		{
-		}
-
-		void onConnectionClosed(const int reason) override
-		{
-		}
+		ClientAuthenticationHandlerCallback* const callback;
+		sf::Uint32 timeout;
 	};
 }
