@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/game/ClassicSimulation.h>
 #include <Client/source/game/net/FrameStatus.h>
 #include <Client/source/game/net/ClassicSelectionMessage.h>
 
@@ -59,6 +60,9 @@ namespace Game::Net::Host
 		{
 			_Begin = AuthenticationMessageID::_Offset - 1,
 
+			// failed to initiated or load a world
+			SimulationFailed,
+
 			// adds or removes player from 
 			// client view
 			RemovePlayer,
@@ -92,5 +96,10 @@ namespace Game::Net::Host
 		};
 	};
 
+	struct SimulationFailureMessageContent
+	{
+		ClassicSimulation::WorldFailure reason;
+	};
 
+	typedef TrivialNetworkMessage<SimulationFailureMessageContent> SimulationFailureMessage;
 }

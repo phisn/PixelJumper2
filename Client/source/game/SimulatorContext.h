@@ -18,6 +18,9 @@ namespace Game::Net
 		virtual void playerUnregistered(const Operator::UserID userID) = 0;
 	};
 
+	// TODO: need to add the possiblity to get players by world
+	// to allow the simulation to show other players ghost in the
+	// same world
 	class SimulatorContext
 	{
 	public:

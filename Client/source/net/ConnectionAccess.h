@@ -36,46 +36,4 @@ namespace Net
 			const Device::Net::ThreatLevel level) = 0;
 	};
 
-	class RequestHandler
-	{
-	public:
-		virtual void initialize(ConnectionAccess* const access)
-		{
-			this->access = access;
-		}
-
-		virtual void update() = 0;
-
-		// true when messageid was used to find messages with
-		// unused (supsicous) ids
-		virtual bool onMessage(
-			const Device::Net::MessageID messageID,
-			Resource::ReadPipe* const pipe) = 0;
-
-	protected:
-		// request is needed to return immediately and
-		// not acceess internal values when reveivced false
-		bool loadMessage(
-			const Device::Net::MessageID messageID,
-			Game::Net::NetworkMessage* const message,
-			Resource::ReadPipe* const pipe)
-		{
-			if (!message->load(pipe))
-			{
-				access->accessOnThreatIdentified(
-					messageID,
-					L"failed to load message",
-					Device::Net::ThreatLevel::Suspicious);
-				access->accessOnRequestFailed(
-					messageID,
-					RequestFailure::Loading);
-
-				return false;
-			}
-
-			return true;
-		}
-
-		ConnectionAccess* access;
-	};
 }

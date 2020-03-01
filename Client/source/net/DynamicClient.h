@@ -7,16 +7,9 @@ namespace Net
 {
 	class DynamicClientHandler
 		:
-		public Device::Net::ClientHandler,
+		public Device::Net::Client,
 		public DynamicRequestContainer
 	{
-	public:
-		DynamicClientHandler(const HSteamNetConnection connection)
-			:
-			ClientHandler(connection)
-		{
-		}
-
 	protected:
 		bool accessSendMessage(
 			const Device::Net::MessageID messageID,

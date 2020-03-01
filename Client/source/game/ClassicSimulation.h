@@ -47,26 +47,31 @@ namespace Game
 		{
 		}
 
-		virtual bool processLogic()
+		virtual WorldFailure processLogic()
 		{
 			world->processLogic();
 
-			for (const Task& task : tasks)
+			// prevent repetetive deletion of tasks
+			if (tasks.size() > 0)
 			{
-				WorldFailure result = task();
-
-				if (result != WorldFailure::Success)
+				for (const Task& task : tasks)
 				{
-					Log::Error(L"Simulation task failed",
-						(int) result, L"reason");
+					WorldFailure result = task();
 
-					status = Error;
-					return false;
+					if (result != WorldFailure::Success)
+					{
+						Log::Error(L"Simulation task failed",
+							(int) result, L"reason");
+
+						status = Error;
+						return result;
+					}
 				}
+
+				tasks.clear();
 			}
 
-			tasks.clear();
-			return true;
+			return WorldFailure::Success;
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override

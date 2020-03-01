@@ -64,6 +64,11 @@ namespace Game::Net
 
 			while (logicCounter > nextGameProcess)
 			{
+				for (_ClassicClientHandler* const clientHandler : connections)
+					if (clientHandler->getStatus() == _ClassicClientHandler::Status::Running)
+					{
+
+					}
 
 				nextGameProcess += LogicTimeStep;
 			}
@@ -93,7 +98,7 @@ namespace Game::Net
 
 		// last element represents empty connection
 		// to accept new tcpsockets
-		std::vector<ClassicClientHandler*> connections;
+		std::vector<_ClassicClientHandler*> connections;
 
 		SimulatorContext context;
 		WorldResourceContainer resources;
@@ -118,6 +123,8 @@ namespace Game::Net
 
 		void onClientLost(const HSteamNetConnection connection) override
 		{
+			// think about allowing lost connections for 
+			// about an hour to stay and reconnect if possible
 		}
 	};
 

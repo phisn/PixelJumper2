@@ -88,6 +88,9 @@
     <Filter Include="source\operator\request">
       <UniqueIdentifier>{6108c41b-b05d-4584-a976-3a02760f3385}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\game\net\client">
+      <UniqueIdentifier>{aa8e562b-7d65-4664-83a6-26f985360444}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\device\InputDevice.h">
@@ -358,22 +361,10 @@
     <ClInclude Include="source\game\ClassicSimulation.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\ClientClassicSimulation.h">
-      <Filter>source\game\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\ClientAuthenticationHandler.h">
-      <Filter>source\game\net</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\ClassicClientHandler.h">
       <Filter>source\game\net\host</Filter>
     </ClInclude>
     <ClInclude Include="source\game\HostClassicSimulator.h">
-      <Filter>source\game\net\host</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\ClassicSelectionRequestHandler.h">
-      <Filter>source\game\net\host</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\SimulatorAuthenticationHandler.h">
       <Filter>source\game\net\host</Filter>
     </ClInclude>
     <ClInclude Include="source\game\net\SimulatorAuthenticationMessage.h">
@@ -397,13 +388,37 @@
     <ClInclude Include="source\operator\request\ClassicHostRequest.h">
       <Filter>source\operator\request</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\ClassicSimulationRequestHandler.h">
-      <Filter>source\game\net\host</Filter>
-    </ClInclude>
     <ClInclude Include="source\resource\ClassicPlayerResource.h">
       <Filter>source\resource</Filter>
     </ClInclude>
     <ClInclude Include="source\game\SimulatorContext.h">
+      <Filter>source\game\net\host</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ClientAuthenticationHandler.h">
+      <Filter>source\game\net\client</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ClientClassicConnection.h">
+      <Filter>source\game\net\client</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ClientClassicSimulationModule.h">
+      <Filter>source\game\net\client</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ClientClassicSelectionModule.h">
+      <Filter>source\game\net\client</Filter>
+    </ClInclude>
+    <ClInclude Include="source\net\DynamicClient.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\net\DynamicRequestContainer.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSelectionHandler.h">
+      <Filter>source\game\net\host</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSimulationHandler.h">
+      <Filter>source\game\net\host</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostSimulatorAuthenticationHandler.h">
       <Filter>source\game\net\host</Filter>
     </ClInclude>
   </ItemGroup>
@@ -597,34 +612,37 @@
     <ClCompile Include="source\game\ClassicSimulation.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\ClientClassicSimulation.cpp">
-      <Filter>source\game\net</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\ClientAuthenticationHandler.cpp">
-      <Filter>source\game\net</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\ClassicClientHandler.cpp">
       <Filter>source\game\net\host</Filter>
     </ClCompile>
     <ClCompile Include="source\game\HostClassicSimulator.cpp">
       <Filter>source\game\net\host</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\ClassicSelectionRequestHandler.cpp">
-      <Filter>source\game\net\host</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\SimulatorAuthenticationHandler.cpp">
-      <Filter>source\game\net\host</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\ClassicSimulationRequestHandler.cpp">
-      <Filter>source\game\net\host</Filter>
-    </ClCompile>
     <ClCompile Include="source\resource\ClassicPlayerResource.cpp">
       <Filter>source\resource</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\net\ClassicSelectionMessage.cpp">
-      <Filter>source\game\net\message</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\SimulatorContext.cpp">
+      <Filter>source\game\net\host</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\ClientAuthenticationHandler.cpp">
+      <Filter>source\game\net\client</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\ClientClassicConnection.cpp">
+      <Filter>source\game\net\client</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\ClientClassicSimulationModule.cpp">
+      <Filter>source\game\net\client</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\ClientClassicSelectionModule.cpp">
+      <Filter>source\game\net\client</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicSelectionHandler.cpp">
+      <Filter>source\game\net\host</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicSimulationHandler.cpp">
+      <Filter>source\game\net\host</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostSimulatorAuthenticationHandler.cpp">
       <Filter>source\game\net\host</Filter>
     </ClCompile>
   </ItemGroup>

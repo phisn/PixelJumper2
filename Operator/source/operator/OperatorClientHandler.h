@@ -97,7 +97,7 @@ namespace Operator::Net
 			status = Status::Authenticated;
 			this->userID = userID;
 
-			removeRequestHandler<AuthenticationHandler>();
+			delete removeRequestHandler<AuthenticationHandler>();
 			// addRequestHandler<CommonRequestHandler>();
 
 			// push common handler

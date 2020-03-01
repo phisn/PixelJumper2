@@ -27,6 +27,7 @@ namespace Game::Net::Client
 	struct PrepareSimulationMessageContent
 	{
 		Resource::WorldId world;
+		Resource::RepresentationID representationID;
 	};
 
 	typedef TrivialNetworkMessage<PrepareSimulationMessageContent> PrepareSimulationMessage;
@@ -109,6 +110,8 @@ namespace Game::Net::Host
 		{
 			SimulationAlreadyRunning,
 			InvalidWorldID,
+			InvalidRepresentationID,
+			InternalResourceMissing,
 			SimulationRunFailed
 
 		} reason;

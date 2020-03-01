@@ -24,11 +24,11 @@ namespace Game
 
 		PlayerInformation(
 			const Resource::PlayerID playerId,
-			const sf::Color color,
-			const std::wstring name)
+			const Resource::RepresentationID representationID,
+			const std::string name)
 			:
 			playerId(playerId),
-			color(color),
+			representationID(representationID),
 			name(name)
 		{
 		}
@@ -36,12 +36,12 @@ namespace Game
 		PlayerInformation()
 			:
 			playerId(0),
-			color(sf::Color::White)
+			representationID(0)
 		{
 		}
 
 		Resource::PlayerID playerId;
-		sf::Color color;
-		std::wstring name;
+		Resource::RepresentationID representationID;
+		std::string name;
 	};
 }
