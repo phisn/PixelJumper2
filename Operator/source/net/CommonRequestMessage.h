@@ -40,8 +40,6 @@ namespace Operator::Net::Client
 	};
 
 	typedef Game::Net::TrivialNetworkMessage<RequestConnectionKeyMessageContent> RequestConnectionKeyMessage;
-
-
 }
 
 namespace Operator::Net::Host

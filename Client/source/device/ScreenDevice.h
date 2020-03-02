@@ -98,6 +98,8 @@ namespace Device
 		public sf::View
 	{
 	public:
+		using sf::View::View;
+
 		void setRect(const sf::FloatRect rect)
 		{
 			setSize(

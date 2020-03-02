@@ -43,7 +43,8 @@ namespace Game::Net
 
 		HostClassicSimulator(const Settings settings = Settings{ })
 			:
-			settings(settings)
+			settings(settings),
+			clientSettings{ }
 		{
 		}
 
@@ -67,7 +68,7 @@ namespace Game::Net
 				for (ClassicClientHandler* const clientHandler : connections)
 					if (clientHandler->getStatus() == ClassicClientHandler::Status::Running)
 					{
-
+						clientHandler->processSimulation();
 					}
 
 				nextGameProcess += LogicTimeStep;
@@ -75,20 +76,38 @@ namespace Game::Net
 
 			if (logicCounter > nextUserProcess)
 			{
+				decltype(connections)::iterator iterator = connections.begin();
 
+				while (iterator != connections.end())
+				{
+					ClassicClientHandler* const handler = *iterator;
+
+					if (handler->getStatus() == ClassicClientHandler::Status::Closing)
+					{
+						iterator = connections.erase(iterator);
+					}
+					else
+					{
+						handler->update();
+						++iterator;
+					}
+				}
 			}
 		}
 
 		bool writeState(Resource::WritePipe* const writePipe) override
 		{
+			return true;
 		}
 
 		bool readState(Resource::ReadPipe* const readPipe) override
 		{
+			return true;
 		}
 
 	private:
 		const Settings settings;
+		const ClassicClientHandler::Settings clientSettings;
 
 		sf::Uint64 logicCounter = 0,
 				nextGameProcess = 0,
@@ -114,17 +133,37 @@ namespace Game::Net
 
 		void onClientConnect(const HSteamNetConnection connection) override
 		{
-
+			connections.push_back(new ClassicClientHandler(
+				connection,
+				clientSettings,
+				context,
+				resources));
 		}
 
 		void onClientDisconnected(const HSteamNetConnection connection) override
 		{
+			removeClient(connection);
 		}
 
 		void onClientLost(const HSteamNetConnection connection) override
 		{
 			// think about allowing lost connections for 
 			// about an hour to stay and reconnect if possible
+
+			removeClient(connection);
+		}
+
+		void removeClient(const HSteamNetConnection connection)
+		{
+			connections.erase(
+				std::find_if(
+					connections.begin(),
+					connections.end(),
+					[connection](const ClassicClientHandler* const handler)
+					{
+						return handler->getConnection() == connection;
+					})
+			);
 		}
 	};
 

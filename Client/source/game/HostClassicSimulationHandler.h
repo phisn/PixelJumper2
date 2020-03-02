@@ -90,17 +90,28 @@ namespace Game::Net
 			switch (messageID)
 			{
 			case Client::ClassicSimulatorMessageID::AcceptSync:
-				break;
+
+				return true;
 			case Client::ClassicSimulatorMessageID::PushMovement:
-				if (Client::PushMovementMessage message; loadMessage(messageID, &message, pipe))
+			{
+				PackedFrameStatus packedFrameStatus;
+
+				Client::PushMovementMessage message;
+				message.packetFrameStatus = &packedFrameStatus;
+
+				if (loadMessage(messageID, &message, pipe))
 				{
 					onPushMovement(message);
 				}
 
-				break;
-			case Client::ClassicSimulatorMessageID::RequestSync:
-				break;
+				return true;
 			}
+			case Client::ClassicSimulatorMessageID::RequestSync:
+
+				return true;
+			}
+
+			return false;
 		}
 
 	private:
@@ -115,7 +126,7 @@ namespace Game::Net
 		virtual void onPushMovement(const Client::PushMovementMessage& message)
 		{
 			// needs more checks later
-			for (const FrameStatus& frameStatus : message.packetFrameStatus.frames)
+			for (const FrameStatus& frameStatus : message.packetFrameStatus->frames)
 				player.pushUpdate(frameStatus);
 
 			// TODO: think about making this async

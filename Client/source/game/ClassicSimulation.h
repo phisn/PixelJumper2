@@ -176,6 +176,7 @@ namespace Game
 								// game is finished here and simulation
 								// should stop
 
+								return WorldFailure::Success;
 							});
 					});
 
@@ -393,7 +394,7 @@ namespace Game
 
 	};
 
-	/*class VisualClassicSimulation
+	class VisualClassicSimulation
 		:
 		public ClassicSimulation
 	{
@@ -402,16 +403,16 @@ namespace Game
 
 		void draw(sf::RenderTarget* const target)
 		{
-			getCurrentWorld()->getEnvironment()->draw(target);
+			world->getEnvironment()->draw(target);
 		}
 
 	private:
-		bool initializeWorld(World* const world)
+		bool onInitializeWorld(World* const world)
 		{
-			return ClassicSimulation::initializeWorld(world) 
+			return ClassicSimulation::onInitializeWorld(world) 
 				&& world->initializeGraphics();
 		}
-	};*/
+	};
 
 	/*
 	class ClassicGamemodeCreator

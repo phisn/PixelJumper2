@@ -36,6 +36,17 @@ namespace Game::Net
 		public ClientClassicSimulationHandlerCallback
 	{
 	public:
+		struct Settings
+		{
+			sf::Uint64 tickrate = 25'000;
+		};
+
+		ClientClassicConnection(const Settings settings = { })
+			:
+			settings(settings)
+		{
+		}
+
 		~ClientClassicConnection()
 		{
 			if (selectionHandler)
@@ -60,7 +71,33 @@ namespace Game::Net
 			return this->connect(info.address);
 		}
 
+		virtual void onLogic(const sf::Time time)
+		{
+			logicCounter += time.asMicroseconds();
+
+			if (simulationRunning)
+				while (logicCounter > nextGameProcess)
+				{
+					simulatorHandler->processLogic();
+					nextGameProcess += LogicTimeStep;
+				}
+
+			if (logicCounter > nextUserProcess)
+			{
+				if (!process())
+				{
+					onProcessFailed();
+					return;
+				}
+
+				callHandlersUpdate();
+				nextUserProcess += settings.tickrate;
+			}
+		}
+
 	protected:
+		const Settings settings;
+
 		Resource::ClassicPlayerResource classicPlayerResource;
 		std::string username;
 
@@ -68,22 +105,14 @@ namespace Game::Net
 			ClientAuthenticationHandlerCallback* const callback,
 			const sf::Uint32 timeout) = 0;
 		virtual ClientClassicCommonHandler* createCommonHandler() = 0;
-		virtual ClientClassicSelectionHandler* createSelectionHandler(ClientClassicSelectionHandlerCallback* const callback) = 0;
+		virtual ClientClassicSelectionHandler* createSelectionHandler(
+			ClientClassicSelectionHandlerCallback* const callback) = 0;
 		virtual ClientClassicSimulationHandler* createSimulationHandler(
 			ClientClassicSimulationHandlerCallback* const callback,
 			const SimulationBootInformation info,
 			const WorldResourceContainer& worldContainer) = 0;
 
-		virtual void onConnectionLost(const int reason) override
-		{
-			// think about allowing lost connections for 
-			// about an hour to stay and reconnect if possible
-		}
-
-		virtual void onConnectionClosed(const int reason) override
-		{
-
-		}
+		virtual void onProcessFailed() = 0;
 
 	private:
 		ClassicConnectionInformation connectionInfo;
@@ -98,6 +127,12 @@ namespace Game::Net
 		// stored as variable to allow quick access though
 		// processsimulation
 		ClientClassicSimulationHandler* simulatorHandler;
+
+		sf::Uint64 logicCounter = 0,
+			nextGameProcess = 0,
+			nextUserProcess = 0;
+
+		bool simulationRunning = false;
 
 		void onConnectionOpen() override
 		{
@@ -149,7 +184,10 @@ namespace Game::Net
 				worldContainer[world->content.id] = world;
 			}
 
-			ClientClassicSimulationHandler* const simulationHandler = createSimulationHandler(this, info, worldContainer);
+			ClientClassicSimulationHandler* const simulationHandler = createSimulationHandler(
+				this, 
+				info, 
+				worldContainer);
 
 			if (!simulationHandler->initializeSimulation())
 			{
@@ -158,6 +196,7 @@ namespace Game::Net
 			}
 
 			addRequestHandler(simulationHandler);
+			simulationRunning = true;
 		}
 
 		void onThreatIdentified(

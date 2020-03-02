@@ -32,20 +32,6 @@ namespace Net
 			const SendFailure reason) = 0;
 		virtual void onInvalidMessageID(
 			const Device::Net::MessageID messageID) = 0;
-		virtual void onMessage(
-			const Device::Net::MessageID messageID,
-			Resource::ReadPipe* const pipe)
-		{
-			if (!callHandlersOnMessage(messageID, pipe))
-			{
-				accessOnThreatIdentified(
-					messageID,
-					L"invalid messageid",
-					Device::Net::ThreatLevel::Suspicious);
-
-				onInvalidMessageID(messageID);
-			}
-		}
 
 		template <typename T>
 		// value has to be created with new and wont be
@@ -73,7 +59,7 @@ namespace Net
 			for (int i = 0; i < requestHandlerTypes.size(); ++i)
 				if (requestHandlerTypes[i] == typeid(T))
 				{
-					T* const value = requestHandlers[i];
+					T* const value = (T*) requestHandlers[i];
 
 					requestHandlers.erase(requestHandlers.begin() + i);
 					requestHandlerTypes.erase(requestHandlerTypes.begin() + i);

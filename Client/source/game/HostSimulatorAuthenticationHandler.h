@@ -5,7 +5,7 @@
 #include <Client/source/game/net/SimulatorAuthenticationMessage.h>
 #include <Client/source/net/RequestHandlerBase.h>
 #include <Client/source/operator/OperatorConnectionHandler.h>
-
+#include <Client/source/operator/request/ClassicHostRequest.h>
 
 namespace Game::Net
 {

@@ -319,12 +319,75 @@ namespace Operator
 				break;
 				// classic
 			case Operator::Net::Host::ClassicHostID::RequestClientData:
+			{
+				Operator::Net::Host::RequestClientDataMessage message;
 
+				if (!message.load(pipe))
+				{
+					onThreatIdentified(
+						messageID,
+						L"invalid messagecontent",
+						Device::Net::ThreatLevel::Uncommon);
+
+					return;
+				}
+
+				processRequests(messageID, (void*)&message);
 
 				break;
+			}
 			case Operator::Net::Host::ClassicHostID::RequestClientDataFailed:
+			{
+				Operator::Net::Host::RequestClientDataFailedMessage message;
 
+				if (!message.load(pipe))
+				{
+					onThreatIdentified(
+						messageID,
+						L"invalid messagecontent",
+						Device::Net::ThreatLevel::Uncommon);
 
+					return;
+				}
+
+				processRequests(messageID, (void*)&message);
+				break;
+			}
+			case Operator::Net::Host::CommonRequestMessageID::HostFindClassic:
+			{
+				Operator::Net::Host::HostFindClassicMessage message;
+
+				if (!message.load(pipe))
+				{
+					onThreatIdentified(
+						messageID,
+						L"invalid messagecontent",
+						Device::Net::ThreatLevel::Uncommon);
+
+					return;
+				}
+
+				processRequests(messageID, (void*)&message);
+
+				break;
+			}
+			case Operator::Net::Host::CommonRequestMessageID::HostFindClassicRejected:
+			{
+				Operator::Net::Host::HostFindClassicRejectedMessage message;
+
+				if (!message.load(pipe))
+				{
+					onThreatIdentified(
+						messageID,
+						L"invalid messagecontent",
+						Device::Net::ThreatLevel::Uncommon);
+
+					return;
+				}
+
+				processRequests(messageID, (void*)&message);
+				break;
+			}
 			default:
 				onThreatIdentified(messageID,
 					L"operator invalid messageid",

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/operator/AuthenticationRequest.h>
+#include <Client/source/operator/request/AuthenticationRequest.h>
 #include <Client/source/operator/OperatorConnectionHandler.h>
 
 #include <Client/source/scene/MainSceneBase.h>

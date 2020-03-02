@@ -128,7 +128,8 @@ namespace Operator::Net
 				(int)level, L"level");
 		}
 
-		void accessOnRequestFailed(const ::Net::RequestFailure reason) override
+
+		void onInvalidMessageID(const Device::Net::MessageID messageID) override
 		{
 			accessSendMessage(
 				Game::Net::CommonMessageID::InternalError,
@@ -136,12 +137,24 @@ namespace Operator::Net
 			status = Status::Closing;
 		}
 
-		void onMessageSendFailed(const SendFailure reason) override
+		void onMessageSendFailed(
+			const Device::Net::MessageID messageID,
+			const SendFailure reason) override
 		{
 			accessSendMessage(
 				Game::Net::CommonMessageID::InternalError,
 				NULL);
 			status = Status::Closing;
 		}
-	};
+
+		void accessOnRequestFailed(
+			const Device::Net::MessageID messageID,
+			const ::Net::RequestFailure reason) override
+		{
+			accessSendMessage(
+				Game::Net::CommonMessageID::InternalError,
+				NULL);
+			status = Status::Closing;
+		}
+	} ;
 }

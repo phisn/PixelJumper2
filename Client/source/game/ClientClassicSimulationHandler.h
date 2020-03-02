@@ -2,6 +2,7 @@
 
 #include <Client/source/game/CachedControllablePlayer.h>
 #include <Client/source/game/ClassicSimulation.h>
+#include <Client/source/game/net/ClassicSimulatorMessage.h>
 #include <Client/source/net/RequestHandlerBase.h>
 
 namespace Game::Net
@@ -48,7 +49,7 @@ namespace Game::Net
 			}
 			else
 			{
-				onSImulationFailed(result);
+				onSimulationFailed(result);
 				return false;
 			}
 		}
@@ -66,9 +67,21 @@ namespace Game::Net
 			}
 		}
 
+		virtual void onDraw(sf::RenderTarget* const target)
+		{
+			simulation.draw(target);
+		}
+
 		void update() override
 		{
-			player.packedFrameStatus;
+			Client::PushMovementMessage message;
+			message.packetFrameStatus = &player.packedFrameStatus;
+			
+			access->accessSendMessage(
+				Client::ClassicSimulatorMessageID::PushMovement,
+				&message);
+
+			player.packedFrameStatus.frames.clear();
 		}
 
 		bool onMessage(
@@ -78,7 +91,11 @@ namespace Game::Net
 			switch (messageID)
 			{
 			case Host::ClassicSimulatorMessageID::PlayerMovement:
+
+				return true;
 			case Host::ClassicSimulatorMessageID::PushResource:
+
+				return true;
 			}
 
 			return false;
@@ -86,14 +103,14 @@ namespace Game::Net
 
 	protected:
 		virtual void onSimulationStarted() = 0;
-		virtual void onSImulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
+		virtual void onSimulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
 
 	private:
 		ClientClassicSimulationHandlerCallback* const callback;
 		const SimulationBootInformation info;
 		const WorldResourceContainer& worldContainer;
 
-		ClassicSimulation simulation;
+		VisualClassicSimulation simulation;
 		CachedControllablePlayer player;
 	};
 }

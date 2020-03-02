@@ -31,16 +31,16 @@ namespace Game::Net::Client
 		public NetworkMessage
 	{
 	public:
-		PackedFrameStatus packetFrameStatus;
+		PackedFrameStatus* packetFrameStatus;
 
 		bool load(Resource::ReadPipe* const pipe) override
 		{
-			return packetFrameStatus.readState(pipe);
+			return packetFrameStatus->readState(pipe);
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
 		{
-			return packetFrameStatus.writeState(pipe);
+			return packetFrameStatus->writeState(pipe);
 		}
 	};
 

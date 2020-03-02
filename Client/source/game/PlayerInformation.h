@@ -17,8 +17,6 @@ namespace Game
 			information.playerId = resource->content.playerID;
 			information.name = resource->username;
 
-			information.color = sf::Color::Red;
-
 			return information;
 		}
 

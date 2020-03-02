@@ -163,6 +163,7 @@
     <ClInclude Include="source\operator\OperatorConnectionHandler.h" />
     <ClInclude Include="source\operator\request\AuthenticationRequest.h" />
     <ClInclude Include="source\operator\request\ClassicHostRequest.h" />
+    <ClInclude Include="source\operator\request\CommonRequest.h" />
     <ClInclude Include="source\operator\request\ConnectionKeyRequest.h" />
     <ClInclude Include="source\operator\request\OperatorRequest.h" />
     <ClInclude Include="source\resource\ClassicPlayerResource.h" />
@@ -187,6 +188,8 @@
     <ClInclude Include="source\scene\MainSceneBase.h" />
     <ClInclude Include="source\scene\MenuBaseScene.h" />
     <ClInclude Include="source\scene\SubSceneBase.h" />
+    <ClInclude Include="source\scene\TestClassicClientScene.h" />
+    <ClInclude Include="source\scene\TestClassicSimulatorScene.h" />
     <ClInclude Include="source\scene\TestGameScene.h" />
     <ClInclude Include="source\scene\TestMenuScene.h" />
     <ClInclude Include="source\shared\tiles\TileDescription.h" />
@@ -264,6 +267,8 @@
     <ClCompile Include="source\scene\LocalGameScene.cpp" />
     <ClCompile Include="source\scene\MenuBaseScene.cpp" />
     <ClCompile Include="source\scene\SubSceneBase.cpp" />
+    <ClCompile Include="source\scene\TestClassicClientScene.cpp" />
+    <ClCompile Include="source\scene\TestClassicSimulatorScene.cpp" />
     <ClCompile Include="source\scene\TestGameScene.cpp" />
     <ClCompile Include="source\scene\TestMenuScene.cpp" />
     <ClCompile Include="source\shared\tiles\TileDescription.cpp" />

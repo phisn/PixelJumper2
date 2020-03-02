@@ -56,13 +56,13 @@ namespace Game::Net::Host
 		bool load(Resource::ReadPipe* const pipe) override
 		{
 			return resource->make(pipe)
-				&& pipe->readString(&username);
+				&& pipe->readString(username);
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
 		{
 			return resource->save(pipe)
-				&& pipe->writeString(&username);
+				&& pipe->writeString(username);
 		}
 	};
 

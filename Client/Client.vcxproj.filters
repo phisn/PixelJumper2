@@ -436,6 +436,15 @@
     <ClInclude Include="source\game\CachedControllablePlayer.h">
       <Filter>source\game</Filter>
     </ClInclude>
+    <ClInclude Include="source\scene\TestClassicClientScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\scene\TestClassicSimulatorScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\operator\request\CommonRequest.h">
+      <Filter>source\operator\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
@@ -665,6 +674,12 @@
     </ClCompile>
     <ClCompile Include="source\game\ClientClassicCommonHandler.cpp">
       <Filter>source\game\net\client</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\TestClassicClientScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\scene\TestClassicSimulatorScene.cpp">
+      <Filter>source\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

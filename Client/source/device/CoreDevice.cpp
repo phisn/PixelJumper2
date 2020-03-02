@@ -15,7 +15,8 @@
 
 #include <Client/source/resource/ResourceInterface.h>
 
-#include <Client/source/scene/AuthenticationScene.h>
+#include <Client/source/scene/TestClassicSimulatorScene.h>
+#include <Client/source/scene/TestClassicClientScene.h>
 // #include <Client/source/scene/EditorScene.h>
 // #include <Client/source/scene/TestGameScene.h>
 // #include <Client/source/scene/TestMenuScene.h>
@@ -26,7 +27,7 @@ namespace Device
 {
 	bool PushMainContext()
 	{
-		return Framework::Context::Push<Scene::AuthenticationScene>();
+		return Framework::Context::Push<Scene::TestClassicClientScene>();
 	}
 
 	Core::Error Core::Initialize()
@@ -109,7 +110,9 @@ namespace Device
 				Framework::Interface::Event(event);
 			}
 
-			Framework::Interface::Update(clock.restart());
+			const sf::Time delta = clock.restart();
+			Framework::Interface::Update(delta);
+			Operator::ConnectionHandler::Process(delta);
 
 			Device::Screen::BeginDraw();
 			Framework::Interface::Draw(Device::Screen::GetTarget());

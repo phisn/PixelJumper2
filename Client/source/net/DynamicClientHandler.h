@@ -18,6 +18,19 @@ namespace Net
 		}
 
 	protected:
+		virtual void onMessage(
+			const Device::Net::MessageID messageID,
+			Resource::ReadPipe* const pipe) override
+		{
+			if (!callHandlersOnMessage(messageID, pipe))
+			{
+				onThreatIdentified(
+					messageID,
+					L"invalid messageid",
+					Device::Net::ThreatLevel::Suspicious);
+			}
+		}
+
 		bool accessSendMessage(
 			const Device::Net::MessageID messageID,
 			Game::Net::NetworkMessage* const message = NULL) override
