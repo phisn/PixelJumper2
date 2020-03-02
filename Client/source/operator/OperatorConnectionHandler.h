@@ -139,7 +139,8 @@ namespace Operator
 					return false;
 				}
 
-				delete message;
+				if (message)
+					delete message;
 			}
 			else
 			{
@@ -176,7 +177,7 @@ namespace Operator
 			{
 				if (iterator->processForTimeout(time))
 				{
-					requests.erase(iterator);
+					iterator = requests.erase(iterator);
 				}
 				else
 				{
@@ -388,6 +389,12 @@ namespace Operator
 				processRequests(messageID, (void*)&message);
 				break;
 			}
+			case Operator::Net::Host::CommonRequestMessageID::RegisterClassicHostAccepted:
+				processRequests(messageID, NULL);
+				break;
+			case Operator::Net::Host::CommonRequestMessageID::RegisterClassicHostRejected:
+				processRequests(messageID, NULL);
+				break;
 			default:
 				onThreatIdentified(messageID,
 					L"operator invalid messageid",
@@ -507,7 +514,8 @@ namespace Operator
 			}
 
 			for (NetworkMessageContainer& message : pendingMessages)
-				delete message.message;
+				if (message.message)
+					delete message.message;
 
 			// where no requsts there no pending messages
 			requests.clear();
@@ -536,13 +544,14 @@ namespace Operator
 			for (NetworkMessageContainer& container : pendingMessages)
 			{
 				if (!sendCommonMessage(
-					container.messageID,
-					container.message))
+						container.messageID,
+						container.message))
 				{
 					removeRequest(container.request);
 				}
 
-				delete container.message;
+				if (container.message)
+					delete container.message;
 			}
 
 			pendingMessages.clear();
@@ -571,7 +580,11 @@ namespace Operator
 			const Device::Net::MessageID messageID,
 			Game::Net::NetworkMessage* const message)
 		{
-			if (!message->save(beginMessage(messageID)) || !sendMessage())
+			Resource::WritePipe* const pipe = beginMessage(messageID);
+
+			if (message
+				? !message->save(pipe) || !sendMessage()
+				: !sendMessage())
 			{
 				Log::Error(L"Unable to construct message",
 					(sf::Uint64) messageID, L"messageID");

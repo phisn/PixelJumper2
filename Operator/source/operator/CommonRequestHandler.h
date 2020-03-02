@@ -49,7 +49,7 @@ namespace Operator::Net
 				return true;
 
 			case Client::CommonRequestMessageID::HostFindClassic:
-				
+				onHostFindClassic();
 
 				return true;
 			}

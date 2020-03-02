@@ -3,8 +3,8 @@
 
 #include <Client/source/net/DynamicClientHandler.h>
 
-
 #include <Operator/source/operator/AuthenticationHandler.h>
+#include <Operator/source/operator/ClassicHostRequestHandler.h>
 #include <Operator/source/operator/CommonRequestHandler.h>
 
 namespace Operator::Net
@@ -98,9 +98,11 @@ namespace Operator::Net
 			this->userID = userID;
 
 			delete removeRequestHandler<AuthenticationHandler>();
-			// addRequestHandler<CommonRequestHandler>();
-
-			// push common handler
+			addRequestHandler<CommonRequestHandler>(
+				new CommonRequestHandler(
+					this,
+					userID)
+			);
 		}
 
 		void onAuthenticationDenied() override
@@ -114,7 +116,10 @@ namespace Operator::Net
 			{
 				status = Status::Hosting;
 
-				// addRequestHandler
+				addRequestHandler<ClassicHostRequestHandler>(
+					new ClassicHostRequestHandler(
+						userID)
+				);
 			}
 		}
 

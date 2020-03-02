@@ -152,6 +152,11 @@ namespace Device::Net
 		public ISteamNetworkingSocketsCallbacks
 	{
 	public:
+		Server()
+		{
+			networkInterface = SteamNetworkingSockets();
+		}
+
 		virtual ~Server()
 		{
 			SteamNetConnectionInfo_t info;
@@ -178,8 +183,6 @@ namespace Device::Net
 
 		virtual bool initialize(const sf::Uint16 port = DEV_NET_PORT)
 		{
-			networkInterface = SteamNetworkingSockets();
-			
 			SteamNetworkingIPAddr localAddress;
 			localAddress.Clear();
 			localAddress.m_port = port;
@@ -343,6 +346,7 @@ namespace Device::Net
 		Client()
 		{
 			connection = k_HSteamNetConnection_Invalid;
+			networkInterface = SteamNetworkingSockets();
 		}
 
 		~Client()
@@ -353,8 +357,6 @@ namespace Device::Net
 
 		bool connect(const SteamNetworkingIPAddr& ipAddress)
 		{
-			networkInterface = SteamNetworkingSockets();
-
 			connection = networkInterface->ConnectByIPAddress(
 				ipAddress,
 				0,

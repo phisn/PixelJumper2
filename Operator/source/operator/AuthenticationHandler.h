@@ -180,9 +180,19 @@ namespace Operator::Net
 			case Database::Interface::CreatePlayerResult::KeyUsed:
 				RejectRegistration(Host::RejectRegistrationMessage::KeyUsed);
 
+				access->accessOnThreatIdentified(
+					Client::AuthMessageID::Authenticate,
+					L"used key",
+					Device::Net::ThreatLevel::Suspicious);
+
 				return;
 			case Database::Interface::CreatePlayerResult::KeyNotFound:
 				RejectRegistration(Host::RejectRegistrationMessage::KeyInvalid);
+
+				access->accessOnThreatIdentified(
+					Client::AuthMessageID::Authenticate,
+					L"invalid key",
+					Device::Net::ThreatLevel::Uncommon);
 
 				return;
 			case Database::Interface::CreatePlayerResult::Error:
