@@ -122,18 +122,6 @@ namespace Game
 			listeners.push_back(listener);
 		}
 
-		void removeListener(const Listener listener)
-		{
-			for (decltype(listeners)::iterator iterator = listeners.begin()
-				; iterator != listeners.end(); ++iterator)
-				if (iterator->target<void>() == listener.target<void>())
-				{
-					listeners.erase(iterator);
-
-					break;
-				}
-		}
-
 		void hook(Listener function)
 		{
 			currentFunction = function;

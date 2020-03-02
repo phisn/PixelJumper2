@@ -130,7 +130,7 @@ namespace Game
 				});
 		}
 
-		void onInternalUpdate() override
+		virtual void onInternalUpdate() override
 		{
 			handleInput();
 			PlayerBase::onInternalUpdate();

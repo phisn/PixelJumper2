@@ -238,14 +238,6 @@ namespace Game::Net
 			status = Status::Running;
 		}
 
-		void onSelectionFailed(const ClassicSelectionFailure reason) override
-		{
-			status = Status::Closing;
-
-			// logging and error message sending is already
-			// done by selectionhandler
-		}
-
 		void onSimulationFailed(const ClassicSimulation::WorldFailure reason) override
 		{
 			status = Status::Closing;

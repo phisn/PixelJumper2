@@ -93,6 +93,7 @@
     <ClInclude Include="source\framework\Context.h" />
     <ClInclude Include="source\framework\FrameworkInterface.h" />
     <ClInclude Include="source\framework\ResourceContext.h" />
+    <ClInclude Include="source\game\CachedControllablePlayer.h" />
     <ClInclude Include="source\game\ClientClassicCommonHandler.h" />
     <ClInclude Include="source\game\HostClassicCommonHandler.h" />
     <ClInclude Include="source\game\HostClassicSelectionHandler.h" />

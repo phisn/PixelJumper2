@@ -63,11 +63,6 @@ namespace Game::Net::Host
 			// failed to initiated or load a world
 			SimulationFailed,
 
-			// adds or removes player from 
-			// client view
-			RemovePlayer,
-			AddPlayer,
-
 			// load other player movement
 			PlayerMovement,
 

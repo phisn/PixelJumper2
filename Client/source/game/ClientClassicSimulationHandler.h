@@ -1,7 +1,7 @@
 #pragma once
 
+#include <Client/source/game/CachedControllablePlayer.h>
 #include <Client/source/game/ClassicSimulation.h>
-#include <Client/source/game/ControllablePlayer.h>
 #include <Client/source/net/RequestHandlerBase.h>
 
 namespace Game::Net
@@ -34,15 +34,41 @@ namespace Game::Net
 				view),
 			simulation(worldContainer)
 		{
+			simulation.setPlayer(&player);
 		}
 
 		virtual bool initializeSimulation()
 		{
+			const ClassicSimulation::WorldFailure result = simulation.runWorld(info.worldID);
 
+			if (result == ClassicSimulation::WorldFailure::Success)
+			{
+				onSimulationStarted();
+				return true;
+			}
+			else
+			{
+				onSImulationFailed(result);
+				return false;
+			}
+		}
+
+		void processLogic()
+		{
+			const ClassicSimulation::WorldFailure result = simulation.processLogic();
+
+			if (result != ClassicSimulation::WorldFailure::Success)
+			{
+				// call parent virtual pure
+
+				Log::Error(L"Failed to process simulation",
+					(int)result, L"result");
+			}
 		}
 
 		void update() override
 		{
+			player.packedFrameStatus;
 		}
 
 		bool onMessage(
@@ -51,18 +77,23 @@ namespace Game::Net
 		{
 			switch (messageID)
 			{
-
+			case Host::ClassicSimulatorMessageID::PlayerMovement:
+			case Host::ClassicSimulatorMessageID::PushResource:
 			}
 
 			return false;
 		}
+
+	protected:
+		virtual void onSimulationStarted() = 0;
+		virtual void onSImulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
 
 	private:
 		ClientClassicSimulationHandlerCallback* const callback;
 		const SimulationBootInformation info;
 		const WorldResourceContainer& worldContainer;
 
-		ControllablePlayer player;
 		ClassicSimulation simulation;
+		CachedControllablePlayer player;
 	};
 }

@@ -433,6 +433,9 @@
     <ClInclude Include="source\game\ClientClassicSimulationHandler.h">
       <Filter>source\game\net\client</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\CachedControllablePlayer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">
