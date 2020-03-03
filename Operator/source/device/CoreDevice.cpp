@@ -67,6 +67,7 @@ namespace Device::Core
 
 		while (server->getStatus() != Operator::Net::Operator::Shutdown)
 		{
+			Device::Net::Process();
 			server->process();
 
 			if (const sf::Time time = clock.restart(); time < interval)

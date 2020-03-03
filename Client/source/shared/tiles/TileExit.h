@@ -102,6 +102,10 @@ namespace Editor
 		{
 		}
 
+		void adoptInWorld(Resource::World* const world) override
+		{
+		}
+
 		virtual void setPosition(const sf::Vector2f position)
 		{
 			TileBase::setPosition(position);

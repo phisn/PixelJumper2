@@ -27,7 +27,7 @@ namespace Operator::Net::ClassicHostContainer
 		std::unordered_map<UserID, ClassicHost*> hosts;
 	}
 
-	UserID FindHost()
+	ClassicHost* FindHost()
 	{
 		constexpr float optimalUsage = 0.8f;
 
@@ -38,7 +38,7 @@ namespace Operator::Net::ClassicHostContainer
 
 		decltype(hosts)::const_iterator iterator = hosts.cbegin();
 
-		UserID optimalHost = iterator->first;
+		decltype(hosts)::const_iterator optimalHost = iterator;
 		float optimalHostCapacity = iterator->second->getUserCapacityUsage();
 
 		while (++iterator != hosts.cend())
@@ -48,12 +48,12 @@ namespace Operator::Net::ClassicHostContainer
 			if (iteratorCapacity < optimalUsage &&
 				iteratorCapacity > optimalHostCapacity)
 			{
-				optimalHost = iterator->first;
+				optimalHost = iterator;
 				optimalHostCapacity = iteratorCapacity;
 			}
 		}
 
-		return optimalHost;
+		return optimalHost->second;
 	}
 
 	ClassicHost* CreateHost(const ClassicHostConfig& config)
@@ -63,6 +63,7 @@ namespace Operator::Net::ClassicHostContainer
 
 	void RemoveHost(const UserID userID)
 	{
+		delete hosts[userID];
 		hosts.erase(userID);
 	}
 

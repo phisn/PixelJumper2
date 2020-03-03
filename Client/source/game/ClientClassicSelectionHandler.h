@@ -57,8 +57,10 @@ namespace Game::Net
 		void requestSimulation(SimulationBootInformation info)
 		{
 			Client::PrepareSimulationMessage message;
+
 			message.representationID = info.representationID;
 			message.world = info.worldID;
+			currentBootInfo = info;
 
 			access->accessSendMessage(
 				Client::ClassicSelectionMessageID::PrepareSimulation,

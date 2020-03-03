@@ -20,9 +20,6 @@ namespace Device::Net
 		Malicious
 	};
 
-	bool Initialize();
-	void Uninitialize();
-
 	class ClientHandler
 	{
 	protected:
@@ -51,7 +48,7 @@ namespace Device::Net
 				const int count = networkInterface->ReceiveMessagesOnConnection(
 					connection,
 					&message,
-					4);
+					1);
 
 				if (count == 0)
 				{
@@ -64,10 +61,10 @@ namespace Device::Net
 					return false;
 				}
 
-				for (int i = 0; i < count; ++i)
+				if (message->m_cbSize >= sizeof(MessageID))
 				{
 					Resource::MemoryReadPipe pipe(
-						(const char*) message->m_pData,
+						(const char*)message->m_pData,
 						message->m_cbSize);
 
 					if (MessageID messageID; pipe.readValue(&messageID))
@@ -78,13 +75,20 @@ namespace Device::Net
 					{
 						onThreatIdentified(
 							-1,
-							L"invalid messageid",
+							L"invalid message content",
 							ThreatLevel::Uncommon);
 					}
 
-					message->Release();
-					++message;
 				}
+				else
+				{
+					onThreatIdentified(
+						-1,
+						L"invalid message content hard",
+						ThreatLevel::Suspicious);
+				}
+
+				message->Release();
 			}
 		}
 
@@ -148,64 +152,88 @@ namespace Device::Net
 	};
 
 	class Server
-		:
-		public ISteamNetworkingSocketsCallbacks
 	{
 	public:
-		Server()
-		{
-			networkInterface = SteamNetworkingSockets();
-		}
+		Server();
+		virtual ~Server();
 
-		virtual ~Server()
-		{
-			SteamNetConnectionInfo_t info;
+		virtual bool initialize(const sf::Uint16 port = DEV_NET_PORT);
 
-			for (const HSteamNetConnection connection : connections)
+		void onConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event)
+		{
+			switch (event->m_info.m_eState)
 			{
-				if (networkInterface->GetConnectionInfo(
-						connection,
-						&info))
+			case k_ESteamNetworkingConnectionState_Connected:
+			case k_ESteamNetworkingConnectionState_None:
+				// both ignored
+				// connected is only as client important
+
+				break;
+			case k_ESteamNetworkingConnectionState_Connecting:
+				if (existsConnection(event->m_hConn))
 				{
-					if (info.m_eState != k_ESteamNetworkingConnectionState_None)
-					{
-						networkInterface->CloseConnection(
-							connection,
-							2,
-							"server closed",
-							false);
-					}
+					Log::Error(L"Connection already exists",
+						event->m_info.m_addrRemote.GetIPv4(), L"ip",
+						event->m_info.m_addrRemote.m_port, L"port");
+
+					break;
 				}
+
+				if (!askClientConnect(&event->m_info.m_addrRemote))
+				{
+					networkInterface->CloseConnection(
+						event->m_hConn,
+						0,
+						"connection denied",
+						false);
+
+					break;
+				}
+
+				if (networkInterface->AcceptConnection(event->m_hConn) != k_EResultOK)
+				{
+					Log::Error(L"Server is unable to deny the connection",
+						event->m_info.m_addrRemote.GetIPv4(), L"ip",
+						event->m_info.m_addrRemote.m_port, L"port");
+
+					break;
+				}
+
+				onClientConnect(event->m_hConn);
+
+				break;
+			case k_ESteamNetworkingConnectionState_ClosedByPeer:
+				onClientDisconnected(event->m_hConn);
+
+				if (!removeConnection(
+					event->m_hConn,
+					1,
+					false))
+				{
+					Log::Warning(L"Tried to close invalid connection handle after connection was closed by peer",
+						event->m_info.m_addrRemote.GetIPv4(), L"ip");
+				}
+
+				break;
+			case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+				onClientLost(event->m_hConn);
+
+				if (!removeConnection(
+					event->m_hConn,
+					9,
+					false))
+				{
+					Log::Warning(L"Tried to close invalid connection after lost client",
+						event->m_info.m_addrRemote.GetIPv4(), L"ip");
+				}
+
+				break;
+			default:
+				Log::Information(L"Got unusual new connection status",
+					(int)event->m_info.m_eState, L"state");
+
+				break;
 			}
-
-			networkInterface->CloseListenSocket(listenSocket);
-		}
-
-		virtual bool initialize(const sf::Uint16 port = DEV_NET_PORT)
-		{
-			SteamNetworkingIPAddr localAddress;
-			localAddress.Clear();
-			localAddress.m_port = port;
-
-			listenSocket = networkInterface->CreateListenSocketIP(
-				localAddress,
-				0,
-				NULL);
-
-			if (listenSocket == k_HSteamListenSocket_Invalid)
-			{
-				Log::Error(L"Failed to initialize server listener",
-					(int) port, L"port");
-
-				return false;
-			}
-
-			return true;
-		}
-
-		virtual void process()
-		{
-			networkInterface->RunCallbacks(this);
 		}
 
 	protected:
@@ -257,127 +285,21 @@ namespace Device::Net
 		virtual void onClientLost(const HSteamNetConnection connection) = 0;
 
 	private:
-		void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event) override
-		{
-			switch (event->m_info.m_eState)
-			{
-			case k_ESteamNetworkingConnectionState_Connected:
-			case k_ESteamNetworkingConnectionState_None:
-				// both ignored
-				// connected is only as client important
-
-				break;
-			case k_ESteamNetworkingConnectionState_Connecting:
-				if (existsConnection(event->m_hConn))
-				{
-					Log::Error(L"Connection already exists",
-						event->m_info.m_addrRemote.GetIPv4(), L"ip",
-						event->m_info.m_addrRemote.m_port, L"port");
-
-					break;
-				}
-
-				if (!askClientConnect(&event->m_info.m_addrRemote))
-				{
-					networkInterface->CloseConnection(
-						event->m_hConn,
-						0,
-						"connection denied",
-						false);
-
-					break;
-				}
-				
-				if (networkInterface->AcceptConnection(event->m_hConn) != k_EResultOK)
-				{
-					Log::Error(L"Server is unable to deny the connection",
-						event->m_info.m_addrRemote.GetIPv4(), L"ip",
-						event->m_info.m_addrRemote.m_port, L"port");
-
-					break;
-				}
-
-				onClientConnect(event->m_hConn);
-
-				break;
-			case k_ESteamNetworkingConnectionState_ClosedByPeer:
-				onClientDisconnected(event->m_hConn);
-
-				if (!removeConnection(
-						event->m_hConn,
-						1,
-						false))
-				{
-					Log::Warning(L"Tried to close invalid connection handle after connection was closed by peer",
-						event->m_info.m_addrRemote.GetIPv4(), L"ip");
-				}
-
-				break;
-			case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
-				onClientLost(event->m_hConn);
-
-				if (!removeConnection(
-						event->m_hConn,
-						9,
-						false))
-				{
-					Log::Warning(L"Tried to close invalid connection after lost client",
-						event->m_info.m_addrRemote.GetIPv4(), L"ip");
-				}
-
-				break;
-			default:
-				Log::Information(L"Got unusual new connection status",
-					(int) event->m_info.m_eState, L"state");
-
-				break;
-			}
-		}
-
 		HSteamListenSocket listenSocket;
 	};
 
 	class Client
 		:
-		public ISteamNetworkingSocketsCallbacks,
 		public ClientHandler
 	{
 	public:
-		Client()
-		{
-			connection = k_HSteamNetConnection_Invalid;
-			networkInterface = SteamNetworkingSockets();
-		}
+		Client();
+		virtual ~Client();
 
-		~Client()
-		{
-			if (connection != k_HSteamNetConnection_Invalid)
-				closeConnection(4, "client destructor");
-		}
-
-		bool connect(const SteamNetworkingIPAddr& ipAddress)
-		{
-			connection = networkInterface->ConnectByIPAddress(
-				ipAddress,
-				0,
-				NULL);
-
-			if (connection == k_HSteamNetConnection_Invalid)
-			{
-				Log::Error(L"Failed to create connection to server",
-					ipAddress.GetIPv4(), L"ip",
-					ipAddress.m_port, L"port");
-
-				return false;
-			}
-
-			return true;
-		}
+		bool connect(const SteamNetworkingIPAddr& ipAddress);
 
 		virtual bool process() override
 		{
-			networkInterface->RunCallbacks(this);
-
 			if (connection)
 			{
 				return ClientHandler::process();
@@ -386,33 +308,19 @@ namespace Device::Net
 			return true;
 		}
 
-	protected:
-		void closeConnection(
-			const int reasonID,
-			const char* reason,
-			const bool linger = false)
+		void onConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event)
 		{
-			if (!networkInterface->CloseConnection(connection, reasonID, reason, linger))
-			{
-				Log::Error(L"Got invalid connection while closing connection");
-			}
+			Log::Information(L"onsteamnetconnectionstatuschanged",
+				(unsigned long long) event->m_hConn, L"connection",
+				(unsigned long long) event->m_info.m_hListenSocket, L"listenconnection");
 
-			connection = k_HSteamNetConnection_Invalid;
-		}
-
-		virtual void onConnectionOpen() = 0;
-		virtual void onConnectionLost(const int reason) = 0;
-		virtual void onConnectionClosed(const int reason) = 0;
-
-	private:
-		void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event) override
-		{
 			if (connection != event->m_hConn &&
 				connection != k_HSteamNetConnection_Invalid)
 			{
 				Log::Error(L"Got invalid connection in callback",
-					(int) connection, L"connection",
-					(int) event->m_info.m_eState, L"state");
+					(int)event->m_hConn, L"iconnection",
+					(int)connection, L"connection",
+					(int)event->m_info.m_eState, L"state");
 
 				return;
 			}
@@ -446,7 +354,20 @@ namespace Device::Net
 				break;
 			}
 		}
+
+	protected:
+		void closeConnection(
+			const int reasonID,
+			const char* reason,
+			const bool linger = false);
+
+		virtual void onConnectionOpen() = 0;
+		virtual void onConnectionLost(const int reason) = 0;
+		virtual void onConnectionClosed(const int reason) = 0;
 	};
 
-}
+	bool Initialize();
+	void Uninitialize();
 
+	void Process();
+}

@@ -40,6 +40,14 @@ namespace Operator::Net::Client
 	};
 
 	typedef Game::Net::TrivialNetworkMessage<RequestConnectionKeyMessageContent> RequestConnectionKeyMessage;
+
+	struct RegisterClassicHostMessageContent
+	{
+		sf::Uint16 maxPlayers;
+		sf::Uint16 port;
+	};
+
+	typedef Game::Net::TrivialNetworkMessage<RegisterClassicHostMessageContent> RegisterClassicHostMessage;
 }
 
 namespace Operator::Net::Host

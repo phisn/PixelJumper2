@@ -45,7 +45,6 @@ namespace Operator::Net
 	struct ClassicHostConfig
 	{
 		HostContent host;
-
 		int maxPlayers;
 	};
 
@@ -125,8 +124,7 @@ namespace Operator::Net
 	// to be valid
 	namespace ClassicHostContainer
 	{
-		UserID FindHost();
-
+		ClassicHost* FindHost();
 		ClassicHost* CreateHost(const ClassicHostConfig& config);
 
 		void RemoveHost(const UserID userID);

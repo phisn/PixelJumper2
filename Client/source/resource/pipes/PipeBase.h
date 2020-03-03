@@ -53,7 +53,7 @@ namespace Resource
 		template <typename T>
 		bool writeVector(const std::vector<T>* const _vector)
 		{
-			sf::Uint32 count;
+			sf::Uint32 count = _vector->size();
 			if (!writeValue(&count))
 			{
 				return false;
@@ -93,7 +93,7 @@ namespace Resource
 		{
 			Size size = (Size) str->size();
 
-			if (size <= 0)
+			if (size < 0)
 			{
 				return false;
 			}
@@ -178,7 +178,7 @@ namespace Resource
 				return false;
 			}
 
-			if (size <= 0)
+			if (size < 0)
 			{
 				return false;
 			}

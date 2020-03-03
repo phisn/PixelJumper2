@@ -37,7 +37,7 @@ namespace Game::Net
 		struct Settings
 		{
 			sf::Uint64 tickrate = 100'000; // 100ms
-			unsigned short port = 9928;
+			unsigned short port = 9927;
 			int maxClients = 128;
 		};
 
@@ -55,6 +55,8 @@ namespace Game::Net
 				Log::Error(L"Failed to initialize server");
 				return false;
 			}
+
+			Log::Information(L"Server started");
 
 			return true;
 		}
@@ -92,6 +94,8 @@ namespace Game::Net
 						++iterator;
 					}
 				}
+
+				nextUserProcess = logicCounter + settings.tickrate;
 			}
 		}
 
@@ -105,8 +109,14 @@ namespace Game::Net
 			return true;
 		}
 
-	private:
+		void pushResource(Resource::World* const world)
+		{
+			resources[world->content.id] = world;
+		}
+
 		const Settings settings;
+
+	private:
 		const ClassicClientHandler::Settings clientSettings;
 
 		sf::Uint64 logicCounter = 0,
@@ -133,6 +143,8 @@ namespace Game::Net
 
 		void onClientConnect(const HSteamNetConnection connection) override
 		{
+			Log::Information(L"Client connected");
+
 			connections.push_back(new ClassicClientHandler(
 				connection,
 				clientSettings,
@@ -142,6 +154,8 @@ namespace Game::Net
 
 		void onClientDisconnected(const HSteamNetConnection connection) override
 		{
+			Log::Information(L"client disconnected");
+
 			removeClient(connection);
 		}
 
@@ -149,6 +163,8 @@ namespace Game::Net
 		{
 			// think about allowing lost connections for 
 			// about an hour to stay and reconnect if possible
+
+			Log::Information(L"client lost");
 
 			removeClient(connection);
 		}

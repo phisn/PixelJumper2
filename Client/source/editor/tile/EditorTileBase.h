@@ -2,6 +2,7 @@
 
 #include <Client/source/device/ScreenDevice.h>
 #include <Client/source/resource/TileResource.h>
+#include <Client/source/resource/WorldResource.h>
 #include <Client/source/shared/tiles/TileCommon.h>
 
 #include <SFML/Graphics.hpp>
@@ -57,6 +58,7 @@ namespace Editor
 
 		virtual bool adopt(const Resource::TileInstanceWrapper* const instanceWrapper) = 0;
 		virtual void assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const = 0;
+		virtual void adoptInWorld(Resource::World* const world) = 0;
 
 		virtual void draw(sf::RenderTarget* const target) const = 0;
 

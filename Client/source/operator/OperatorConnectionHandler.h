@@ -228,6 +228,7 @@ namespace Operator
 			const Device::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
+			Log::Information(L"recv", messageID, L"id");
 			switch (messageID)
 			{
 				// common
@@ -581,6 +582,8 @@ namespace Operator
 			Game::Net::NetworkMessage* const message)
 		{
 			Resource::WritePipe* const pipe = beginMessage(messageID);
+
+			Log::Information(L"send", messageID, L"id");
 
 			if (message
 				? !message->save(pipe) || !sendMessage()

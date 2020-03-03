@@ -8,7 +8,7 @@ namespace Operator::Net
 {
 	struct CommonRequestHandlerCallback
 	{
-		virtual void registerAsClassicHost() = 0;
+		virtual void registerAsClassicHost(const Client::RegisterClassicHostMessage& message) = 0;
 	};
 
 	class CommonRequestHandler
@@ -44,7 +44,10 @@ namespace Operator::Net
 				return true;
 
 			case Client::CommonRequestMessageID::RegisterClassicHost:
-				onRegisterClassicHost();
+				if (Client::RegisterClassicHostMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onRegisterClassicHost(message);
+				}
 
 				return true;
 
@@ -107,7 +110,7 @@ namespace Operator::Net
 				&message);
 		}
 
-		void onRegisterClassicHost()
+		void onRegisterClassicHost(const Client::RegisterClassicHostMessage& message)
 		{
 			UserType type;
 			const Database::ConditionResult result = Database::Interface::GetUserType(
@@ -131,7 +134,7 @@ namespace Operator::Net
 					Host::CommonRequestMessageID::RegisterClassicHostAccepted,
 					NULL);
 
-				callback->registerAsClassicHost();
+				callback->registerAsClassicHost(message);
 			}
 			else
 			{
@@ -155,9 +158,9 @@ namespace Operator::Net
 				return;
 			}
 
-			const UserID hostID = ClassicHostContainer::FindHost();
+			const ClassicHost* host = ClassicHostContainer::FindHost();
 
-			if (hostID == NULL)
+			if (host == NULL)
 			{
 				Host::HostFindClassicRejectedMessage message;
 				message.type = Host::HostFindClassicRejectedMessageContent::NoHostAvailable;
@@ -173,13 +176,13 @@ namespace Operator::Net
 
 			const Database::ConditionResult result = Database::Interface::GetPlayerToken(
 				keySource.token,
-				hostID);
+				host->getConfig().host.userID);
 
 			switch (result)
 			{
 			case Database::ConditionResult::Error:
 				Log::Error(L"GetPlayerToken failed in findclassic host",
-					hostID, L"hostID",
+					host->getConfig().host.userID, L"hostID",
 					userID, L"userID");
 
 				access->accessSendMessage(
@@ -189,7 +192,7 @@ namespace Operator::Net
 				break;
 			case Database::ConditionResult::NotFound:
 				Log::Error(L"Failed to retrive host token in find classic host",
-					hostID, L"hostID",
+					host->getConfig().host.userID, L"hostID",
 					userID, L"userID");
 
 				access->accessSendMessage(
@@ -199,16 +202,16 @@ namespace Operator::Net
 				break;
 			}
 
-			keySource.userID = hostID;
+			keySource.userID = userID;
 
 			Host::HostFindClassicMessage message;
 
-			message.userID = hostID;
-			message.address;
+			message.userID = host->getConfig().host.userID;
+			message.address = host->getConfig().host.address;
 			message.key.make(keySource);
 
 			access->accessSendMessage(
-				Host::CommonRequestMessageID::RegisterClassicHostAccepted,
+				Host::CommonRequestMessageID::HostFindClassic,
 				&message);
 		}
 	};

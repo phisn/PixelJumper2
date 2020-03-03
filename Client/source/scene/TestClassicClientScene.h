@@ -16,11 +16,13 @@ namespace
 	private:
 		void onAuthenticationRejected(const Game::Net::Host::AuthenticationRejectedMessage::Reason reason) override
 		{
+			Log::Error(L"Authentication rejected", (int) reason, L"reason");
 			Framework::Context::Pop();
 		}
 
 		void onAuthenticationFailed(const Game::Net::ClientAuthenticationFailure reason) override
 		{
+			Log::Error(L"Authentication failed", (int)reason, L"reason");
 			Framework::Context::Pop();
 		}
 	};
@@ -31,6 +33,8 @@ namespace
 	{
 	public:
 		using ClientClassicCommonHandler::ClientClassicCommonHandler;
+
+
 	};
 
 	class TestClientSelectionHandler
@@ -50,7 +54,7 @@ namespace
 			if (!selected)
 			{
 				Game::SimulationBootInformation info;
-				info.worldID;
+				info.worldID = 0x48f1da35;
 				info.representationID = 0;
 
 				requestSimulation(info);
@@ -61,6 +65,7 @@ namespace
 
 		void onSimulationRequestFailed(const Game::Net::Host::RejectSimulationRequestMessage::Reason reason) override
 		{
+			Log::Error(L"simulation request failed", (int)reason, L"reason");
 			Framework::Context::Pop();
 		}
 	};
@@ -74,17 +79,19 @@ namespace
 
 		~TestClientSimulationHandler()
 		{
+			Log::Error(L"destructor");
 			Framework::Context::PopScene();
 		}
 
 	private:
 		void onSimulationStarted() override
 		{
-			Framework::Context::Pop();
+			Log::Information(L"simulation started");
 		}
 
 		void onSimulationFailed(const Game::ClassicSimulation::WorldFailure reason) override
 		{
+			Log::Error(L"Simulation failed", (int)reason, L"reason");
 			Framework::Context::Pop();
 		}
 	};
@@ -108,6 +115,9 @@ namespace Scene
 
 		bool onCreate() override
 		{
+			Log::Error(L"scene created");
+
+
 			return true;
 		}
 
@@ -149,6 +159,19 @@ namespace Scene
 		
 		bool onCreate() override
 		{
+			Resource::World* const world = new Resource::World;
+			if (!Resource::Interface::LoadResource(
+				world,
+				Resource::ResourceType::World,
+				L"right"))
+			{
+				Log::Error(L"Failed to load resource");
+
+				return false;
+			}
+
+			worldContainer[world->content.id] = world;
+
 			return Operator::ConnectionHandler::PushRequest(
 				Operator::Net::Client::CommonRequestMessageID::HostFindClassic,
 				NULL,
@@ -198,11 +221,15 @@ namespace Scene
 
 		void onHostFindClassic(Operator::Net::Host::HostFindClassicMessage* const answer) override
 		{
+			char buffer[SteamNetworkingIPAddr::k_cchMaxString] = { };
+			answer->address.ToString(buffer, SteamNetworkingIPAddr::k_cchMaxString, true);
+			Log::Information(L"Got host '" + carrtowstr(buffer) + L"'");
+
 			connectionInfo.address = answer->address;
 			connectionInfo.authenticationTimeout = 800; // 20sec
 			connectionInfo.key = answer->key;
 			connectionInfo.userID = answer->userID;
-
+			
 			if (!ClientClassicConnection::initialize(connectionInfo))
 			{
 				Log::Error(L"Failed to initialize classic connection");
@@ -242,6 +269,8 @@ namespace Scene
 			const Game::SimulationBootInformation info,
 			const Game::WorldResourceContainer& worldContainer) override
 		{
+			Log::Error(L"creating simulation handler");
+
 			TestClientSimulationHandler* const handler = new TestClientSimulationHandler(
 				callback,
 				info,
@@ -259,6 +288,7 @@ namespace Scene
 			const Device::Net::MessageID messageID,
 			const ::Net::RequestFailure reason) override
 		{
+			Log::Error(L"access on request failed", (int)reason, L"reason");
 			Framework::Context::Pop();
 		}
 
@@ -266,11 +296,13 @@ namespace Scene
 			const Device::Net::MessageID messageID,
 			const SendFailure reason) override
 		{
+			Log::Error(L"message send failed", (int)reason, L"reason");
 			Framework::Context::Pop();
 		}
 
 		void onInvalidMessageID(const Device::Net::MessageID messageID) override
 		{
+			Log::Error(L"invalid messge id");
 			Framework::Context::Pop();
 		}
 
@@ -278,17 +310,19 @@ namespace Scene
 		{
 			// think about allowing lost connections for 
 			// about an hour to stay and reconnect if possible
-
+			Log::Error(L"conneciton lost", (int)reason, L"reason");
 			Framework::Context::Pop();
 		}
 
 		void onConnectionClosed(const int reason) override
 		{
+			Log::Error(L"connection closed", (int)reason, L"reason");
 			Framework::Context::Pop();
 		}
 
 		void onProcessFailed() override
 		{
+			Log::Error(L"process failed");
 			Framework::Context::Pop();
 		}
 	};

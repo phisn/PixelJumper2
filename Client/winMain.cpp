@@ -56,6 +56,7 @@ void awaitOperator(bool& waiting)
 	while (waiting)
 	{
 		Operator::ConnectionHandler::Process(clock.restart());
+		Device::Net::Process();
 
 		std::this_thread::sleep_for(
 			std::chrono::milliseconds(20)

@@ -11,6 +11,8 @@
 #include <Client/source/game/net/ClassicSimulatorMessage.h>
 #include <Client/source/game/net/SimulatorAuthenticationMessage.h>
 
+#include <Client/source/operator/OperatorConnectionHandler.h>
+
 #include <Operator/source/Common.h>
 
 namespace Game::Net
@@ -91,7 +93,7 @@ namespace Game::Net
 				}
 
 				callHandlersUpdate();
-				nextUserProcess += settings.tickrate;
+				nextUserProcess = logicCounter + settings.tickrate;
 			}
 		}
 
@@ -114,9 +116,11 @@ namespace Game::Net
 
 		virtual void onProcessFailed() = 0;
 
+		// common needs to add here
+		WorldResourceContainer worldContainer;
+
 	private:
 		ClassicConnectionInformation connectionInfo;
-		WorldResourceContainer worldContainer;
 
 		// saved to prevent repetitive creation of selection
 		// handler
@@ -139,7 +143,7 @@ namespace Game::Net
 			Net::Client::AuthenticationMessage message;
 
 			message.key = connectionInfo.key;
-			message.userID = connectionInfo.userID;
+			message.userID = Operator::ConnectionHandler::GetUserID();
 
 			if (accessSendMessage(
 					Net::Client::AuthenticationMessageID::Authenticate,
@@ -184,18 +188,18 @@ namespace Game::Net
 				worldContainer[world->content.id] = world;
 			}
 
-			ClientClassicSimulationHandler* const simulationHandler = createSimulationHandler(
+			simulatorHandler = createSimulationHandler(
 				this, 
 				info, 
 				worldContainer);
 
-			if (!simulationHandler->initializeSimulation())
+			if (!simulatorHandler->initializeSimulation())
 			{
-				delete simulationHandler;
+				delete simulatorHandler;
 				return;
 			}
 
-			addRequestHandler(simulationHandler);
+			addRequestHandler(simulatorHandler);
 			simulationRunning = true;
 		}
 

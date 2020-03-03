@@ -47,7 +47,6 @@ namespace Game::Net::Host
 			}
 
 			players.resize(playerCount);
-
 			for (Resource::PlayerResource* const player : players)
 				if (!player->make(pipe))
 				{

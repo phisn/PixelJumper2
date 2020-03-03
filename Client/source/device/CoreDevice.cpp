@@ -17,7 +17,7 @@
 
 #include <Client/source/scene/TestClassicSimulatorScene.h>
 #include <Client/source/scene/TestClassicClientScene.h>
-// #include <Client/source/scene/EditorScene.h>
+#include <Client/source/scene/EditorScene.h>
 // #include <Client/source/scene/TestGameScene.h>
 // #include <Client/source/scene/TestMenuScene.h>
 // #include <Client/source/scene/TestReleaseGameScene.h>
@@ -109,6 +109,9 @@ namespace Device
 			{
 				Framework::Interface::Event(event);
 			}
+
+			// check with profiler
+			Net::Process();
 
 			const sf::Time delta = clock.restart();
 			Framework::Interface::Update(delta);

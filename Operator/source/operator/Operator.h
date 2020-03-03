@@ -30,18 +30,18 @@ namespace Operator::Net
 			Shutdown
 		};
 
-		void process() override
+		void process()
 		{
-			Server::process();
-
 			decltype(connections)::iterator iterator = connections.begin();
 
 			while (iterator != connections.end())
 			{
-				if (iterator->getStatus() == OperatorClientHandler::Status::Closing)
+				OperatorClientHandler* const clientHandler = *iterator;
+
+				if (clientHandler->getStatus() == OperatorClientHandler::Status::Closing)
 				{
 					removeConnection(
-						iterator->getConnection(),
+						clientHandler->getConnection(),
 						Host::ConnectionClosedReason::Authentication,
 						false);
 
@@ -49,7 +49,7 @@ namespace Operator::Net
 				}
 				else
 				{
-					iterator->update();
+					clientHandler->update();
 					++iterator;
 				}
 			}
@@ -64,7 +64,7 @@ namespace Operator::Net
 		const Settings settings;
 		Status status;
 
-		std::vector<OperatorClientHandler> connections;
+		std::vector<OperatorClientHandler*> connections;
 
 		bool askClientConnect(SteamNetworkingIPAddr* const ipAddress) override
 		{
@@ -82,7 +82,11 @@ namespace Operator::Net
 				idleOldConnection();
 			}
 
-			connections.emplace_back(connection, settings.authenticationTimeout);
+			connections.emplace_back(
+				new OperatorClientHandler(
+					connection, 
+					settings.authenticationTimeout)
+			);
 		}
 
 		void onClientDisconnected(const HSteamNetConnection connection) override
@@ -101,7 +105,7 @@ namespace Operator::Net
 			decltype(connections)::iterator old = iterator;
 
 			while (++iterator != connections.end())
-				if (iterator->getAge() > old->getAge())
+				if ((*iterator)->getAge() > (*old)->getAge())
 				{
 					old = iterator;
 				}
@@ -109,7 +113,7 @@ namespace Operator::Net
 			// old->close();
 
 			removeConnection(
-				old->getConnection(), 
+				(*old)->getConnection(), 
 				Host::ConnectionClosedReason::IdleConnection, 
 				true);
 

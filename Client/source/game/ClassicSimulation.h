@@ -157,9 +157,9 @@ namespace Game
 
 	protected:
 		Game::PlayerBase* player = NULL;
-		World* world;
+		World* world = NULL;
 
-		bool onInitializeWorld(World* const world)
+		virtual bool onInitializeWorld(World* const world)
 		{
 			if (!world->initialize())
 			{
@@ -407,7 +407,7 @@ namespace Game
 		}
 
 	private:
-		bool onInitializeWorld(World* const world)
+		bool onInitializeWorld(World* const world) override
 		{
 			return ClassicSimulation::onInitializeWorld(world) 
 				&& world->initializeGraphics();

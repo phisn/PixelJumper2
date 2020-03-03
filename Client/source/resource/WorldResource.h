@@ -68,7 +68,6 @@ namespace Resource
 			}
 
 			tileInstances.resize(privateContent.tileInstanceCount);
-
 			for (TileInstanceWrapper& instance : tileInstances)
 				if (!instance.make(pipe))
 				{
@@ -85,9 +84,13 @@ namespace Resource
 
 			targets.resize(privateContent.targetCount);
 
-			return pipe->readContentForce(
-				(char*) &targets[0],
-				privateContent.targetCount);
+			for (Resource::WorldId& worldID : targets)
+				if (!pipe->readValue(&worldID))
+				{
+					return false;
+				}
+
+			return true;
 		}
 
 		bool save(WritePipe* const pipe) override
@@ -98,8 +101,10 @@ namespace Resource
 			}
 
 			PrivateContent privateContent;
+
 			privateContent.tileInstanceCount = tileInstances.size();
 			privateContent.tileCount = tiles.size();
+			privateContent.targetCount = targets.size();
 
 			if (!pipe->writeValue(&privateContent))
 			{
@@ -117,11 +122,14 @@ namespace Resource
 				{
 					return false;
 				}
+
+			for (Resource::WorldId& worldID : targets)
+				if (!pipe->writeValue(&worldID))
+				{
+					return false;
+				}
 			
-			return pipe->writeContentSafe(
-				(const char*) targets.data(),
-				targets.size() * sizeof(decltype(targets)::value_type)
-			);
+			return true;
 		}
 
 		bool setup() override

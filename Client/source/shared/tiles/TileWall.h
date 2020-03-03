@@ -53,6 +53,7 @@ namespace Game
 		void registerComponents(Environment* const environment) override
 		{
 			collisionComponent.registerComponent(environment);
+			environment->registerTile<StaticTile>(this);
 		}
 
 	private:
@@ -83,6 +84,7 @@ namespace Editor
 		}
 
 		void assignInstance(const Resource::TileInstanceWrapper* const instanceWrapper) const override;
+		void adoptInWorld(Resource::World* const world) override { }
 		bool adopt(const Resource::TileInstanceWrapper* const instanceWrapper) override;
 
 		virtual void setPosition(const sf::Vector2f position)

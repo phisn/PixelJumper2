@@ -70,6 +70,8 @@ namespace Game::Net
 
 		void onAuthenticate(const Client::AuthenticationMessage& request)
 		{
+			Log::Information(L"authenticate");
+
 			Operator::ConnectionKeySource keySource;
 
 			memcpy(keySource.token.token,
@@ -79,14 +81,16 @@ namespace Game::Net
 
 			if (request.key.validate(keySource))
 			{
-				Operator::Net::Client::RequestClientDataMessage message;
-				message.userID = userID = request.userID;
+				Log::Information(L"authenticate2");
+				Operator::Net::Client::RequestClientDataMessage* message = new Operator::Net::Client::RequestClientDataMessage;
+				message->userID = userID = request.userID;
 
 				if (!Operator::ConnectionHandler::PushRequest(
 						Operator::Net::Client::ClassicHostID::RequestClientData,
-						&message,
+						message,
 						(Operator::ClassicClientDataRequest*) this))
 				{
+					Log::Information(L"authenticate3");
 					sendAuthenticationRejectedMessage(
 						Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
 					);
@@ -96,9 +100,12 @@ namespace Game::Net
 
 					callback->onAuthenticationDenied();
 				}
+				Log::Information(L"authenticate4");
 			}
 			else
 			{
+				Log::Information(L"authentication failed");
+
 				sendAuthenticationRejectedMessage(
 					Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
 				);
@@ -130,6 +137,10 @@ namespace Game::Net
 					&message))
 			{
 				callback->onAuthenticated(userID, answer);
+			}
+			else
+			{
+				callback->onAuthenticationDenied();
 			}
 		}
 

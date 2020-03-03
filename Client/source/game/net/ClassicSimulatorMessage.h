@@ -10,7 +10,7 @@ namespace Game::Net::Client
 	{
 		enum
 		{
-			_Begin = AuthenticationMessageID::_Offset - 1,
+			_Begin = ClassicSelectionMessageID::_Offset - 1,
 
 			// request a sync instead of 
 			// waiting for the next one
@@ -58,7 +58,7 @@ namespace Game::Net::Host
 	{
 		enum
 		{
-			_Begin = AuthenticationMessageID::_Offset - 1,
+			_Begin = ClassicSelectionMessageID::_Offset - 1,
 
 			// failed to initiated or load a world
 			SimulationFailed,

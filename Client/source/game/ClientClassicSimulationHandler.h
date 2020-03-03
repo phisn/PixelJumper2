@@ -70,6 +70,7 @@ namespace Game::Net
 		virtual void onDraw(sf::RenderTarget* const target)
 		{
 			simulation.draw(target);
+			player.onDraw(target);
 		}
 
 		void update() override

@@ -66,8 +66,13 @@ namespace Operator::Net
 			}
 			
 			Host::RequestClientDataMessage message;
+
+			message.username = "username";
+			message.resource.unlockedRepresentations = { 0 };
+			message.resource.unlockedWorlds = { 0x48f1da35 };
+
 			access->accessSendMessage(
-				Host::ClassicHostID::RequestClientDataFailed,
+				Host::ClassicHostID::RequestClientData,
 				&message);
 		}
 	};

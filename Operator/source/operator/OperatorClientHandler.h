@@ -110,7 +110,7 @@ namespace Operator::Net
 			status = Status::Closing;
 		}
 
-		void registerAsClassicHost() override
+		void registerAsClassicHost(const Client::RegisterClassicHostMessage& message) override
 		{
 			if (status != Status::Hosting)
 			{
@@ -120,6 +120,24 @@ namespace Operator::Net
 					new ClassicHostRequestHandler(
 						userID)
 				);
+
+				ClassicHostConfig config;
+
+				SteamNetConnectionInfo_t connectionInfo;
+				if (!networkInterface->GetConnectionInfo(
+						connection,
+						&connectionInfo))
+				{
+					Log::Error(L"Failed to retrive connection info");
+					status = Status::Closing;
+				}
+
+				config.host.address = connectionInfo.m_addrRemote;
+				config.host.address.m_port = message.port;
+				config.host.userID = userID;
+				config.maxPlayers = message.maxPlayers;
+
+				ClassicHostContainer::CreateHost(config);
 			}
 		}
 
@@ -146,6 +164,8 @@ namespace Operator::Net
 			const Device::Net::MessageID messageID,
 			const SendFailure reason) override
 		{
+			Log::Error(L"Failed to send message");
+
 			accessSendMessage(
 				Game::Net::CommonMessageID::InternalError,
 				NULL);

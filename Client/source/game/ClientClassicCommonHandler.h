@@ -22,6 +22,7 @@ namespace Game::Net
 			{
 			case Host::ClassicCommonMessageID::InitializeClient:
 
+
 				return true;
 			case Host::ClassicCommonMessageID::AddPlayer:
 

@@ -91,9 +91,10 @@ void Editor::World::prepareTiles(
 	for (int i = 0; i < tileGroups.size(); ++i)
 	{
 		TileBase* const tile = tileGroups[i][0];
-
 		world->tileInstances.emplace_back(tile->getTileId());
+
 		tile->assignInstance(&world->tileInstances.back());
+		tile->adoptInWorld(world);
 	}
 
 	groupTiles(groupedTiles, &tileGroups);

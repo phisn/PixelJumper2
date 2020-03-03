@@ -174,8 +174,9 @@ namespace Game::Net
 			Log::Information(L"Client authenticated",
 				userID, L"userID");
 
-			status = Status::Waiting;
 			this->userID = userID;
+			classicResource = std::move(answer->resource);
+			username = answer->username;
 
 			delete removeRequestHandler<AuthenticationHandler>();
 			addRequestHandler(new HostClassicCommonHandler);
@@ -240,7 +241,7 @@ namespace Game::Net
 
 		void onSimulationFailed(const ClassicSimulation::WorldFailure reason) override
 		{
-			status = Status::Closing;
+			//status = Status::Closing;
 
 			// logging and error message sending is already
 			// done by simulationhandler

@@ -14,15 +14,32 @@ namespace Scene
 	public:
 		bool onCreate() override
 		{
+			Resource::World* const world = new Resource::World;
+			if (!Resource::Interface::LoadResource(
+					world,
+					Resource::ResourceType::World,
+					L"right"))
+			{
+				Log::Error(L"Failed to load resource");
+
+				return false;
+			}
+
+			simulator.pushResource(world);
+
+			Operator::Net::Client::RegisterClassicHostMessage* message 
+				= new Operator::Net::Client::RegisterClassicHostMessage;
+			message->maxPlayers = 100;
+			message->port = simulator.settings.port;
+
 			return Operator::ConnectionHandler::PushRequest(
 				Operator::Net::Client::CommonRequestMessageID::RegisterClassicHost,
-				NULL,
+				message,
 				this);
 		}
 
 		void onRemove() override
 		{
-
 		}
 
 		void initialize() override
@@ -53,7 +70,6 @@ namespace Scene
 		
 	private:
 		Game::Net::HostClassicSimulator simulator;
-
 		bool initialized = false;
 
 		void onRequestFailed(const Reason reason) override

@@ -94,6 +94,16 @@ namespace Editor
 		{
 		}
 
+		void adoptInWorld(Resource::World* const world) override
+		{
+			if (std::find(
+					world->targets.begin(),
+					world->targets.end(),
+					content.targetWorld) 
+				== world->targets.end())
+				world->targets.push_back(content.targetWorld);
+		}
+
 		bool adopt(const Resource::TileInstanceWrapper* const instanceWrapper) override
 		{
 			return true;
@@ -117,6 +127,7 @@ namespace Editor
 		}
 
 	private:
+		Game::DynamicWorldTransitionContent content;
 		sf::RectangleShape shape;
 	};
 
