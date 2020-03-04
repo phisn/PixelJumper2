@@ -1,8 +1,10 @@
 #pragma once
 
 #include <Client/source/game/ClassicSimulation.h>
-#include <Client/source/game/net/FrameStatus.h>
+
 #include <Client/source/game/net/ClassicSelectionMessage.h>
+#include <Client/source/game/net/FrameStatus.h>
+#include <Client/source/game/net/NetPlayerMovement.h>
 
 namespace Game::Net::Client
 {
@@ -64,7 +66,14 @@ namespace Game::Net::Host
 			SimulationFailed,
 
 			// load other player movement
-			PlayerMovement,
+			PushMovement,
+
+			// add player in same location
+			// with representation
+			PushPlayer,
+
+			// remove player from location
+			PopPlayer,
 
 			// used to adjust client game
 			// speed acording to connection
@@ -97,4 +106,37 @@ namespace Game::Net::Host
 	};
 
 	typedef TrivialNetworkMessage<SimulationFailureMessageContent> SimulationFailureMessage;
+
+	class PlayerMovementMessage
+		:
+		public NetworkMessage
+	{
+	public:
+		NetPlayerMovement* movement;
+
+		bool load(Resource::ReadPipe* const pipe) override
+		{
+			return movement->make(pipe);
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return movement->save(pipe);
+		}
+	};
+
+	struct PushPlayerMessageContent
+	{
+		Resource::PlayerID playerID;
+		Resource::RepresentationID representationID;
+	};
+
+	typedef TrivialNetworkMessage<PushPlayerMessageContent> PushPlayerMessage;
+
+	struct PopPlayerMessageContent
+	{
+		Resource::PlayerID playerID;
+	};
+
+	typedef TrivialNetworkMessage<PopPlayerMessageContent> PopPlayerMessage;
 }

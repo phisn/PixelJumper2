@@ -217,6 +217,7 @@ namespace Game::Net
 
 			simulationHandler = new ClassicSimulationHandler(
 				this,
+				context,
 				container,
 				userInfo,
 				bootInfo);

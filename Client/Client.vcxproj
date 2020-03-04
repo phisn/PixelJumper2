@@ -124,6 +124,7 @@
     <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\net\ClassicSelectionMessage.h" />
     <ClInclude Include="source\game\net\FrameStatus.h" />
+    <ClInclude Include="source\game\net\NetPlayerMovement.h" />
     <ClInclude Include="source\game\net\NetworkMessage.h" />
     <ClInclude Include="source\game\net\SimulatorAuthenticationMessage.h" />
     <ClInclude Include="source\game\PlayerInformation.h" />

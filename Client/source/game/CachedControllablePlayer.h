@@ -14,6 +14,8 @@ namespace Game
 
 		void onInternalUpdate() override
 		{
+			ControllablePlayer::onInternalUpdate();
+
 			Net::FrameStatus& status = packedFrameStatus.frames.emplace_back();
 
 			status.setKey(Device::GameCoreInputSymbol::Trigger, interactController.getCurrentState());

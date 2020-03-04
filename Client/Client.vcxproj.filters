@@ -445,6 +445,9 @@
     <ClInclude Include="source\operator\request\CommonRequest.h">
       <Filter>source\operator\request</Filter>
     </ClInclude>
+    <ClInclude Include="source\game\net\NetPlayerMovement.h">
+      <Filter>source\game\net</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winMain.cpp">

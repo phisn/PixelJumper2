@@ -3,4 +3,11 @@
   <PropertyGroup>
     <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
+    <RemoteDebuggerCommand>C:\Users\Administrator\Desktop\operator\Client_x64.exe</RemoteDebuggerCommand>
+    <DebuggerFlavor>WindowsRemoteDebugger</DebuggerFlavor>
+    <RemoteDebuggerWorkingDirectory>C:\Users\Administrator\Desktop\operator</RemoteDebuggerWorkingDirectory>
+    <RemoteDebuggerServerName>109.230.236.76:4024</RemoteDebuggerServerName>
+    <DeploymentDirectory>C:\Users\Administrator\Desktop\operator</DeploymentDirectory>
+  </PropertyGroup>
 </Project>

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Client/source/game/net/NetPlayerMovement.h>
 #include <Client/source/resource/PlayerResource.h>
 
 #include <vector>
@@ -17,6 +18,50 @@ namespace Game::Net
 		// removed player callback is not called
 		virtual void playerUnregistered(const Operator::UserID userID) = 0;
 	};
+	
+	struct LocationPlayer;
+	struct SimulatorContextLocationCallback
+	{
+		virtual void onNetPlayerMovementPush(NetPlayerMovement* const movement) = 0;
+		virtual void onNetPlayerAdded(LocationPlayer* const locationPlayer) = 0;
+		virtual void onNetPlayerRemoved(const Resource::PlayerID playerID) = 0;
+	};
+
+	struct LocationPlayer
+	{
+		SimulatorContextLocationCallback* callback;
+		Resource::PlayerID playerID;
+		Resource::RepresentationID representationID;
+	};
+
+	struct Location
+	{
+		std::vector<LocationPlayer*> players;
+
+		void removePlayer(const Resource::PlayerID playerID)
+		{
+			players.erase(
+				std::find_if(
+					players.begin(),
+					players.end(),
+					[playerID](LocationPlayer* const player)
+					{
+						return player->playerID == playerID;
+					})
+			);
+		}
+
+		void pushMovement(NetPlayerMovement* const movement)
+		{
+			for (LocationPlayer* const player : players)
+				if (player->playerID != movement->content.playerID)
+				{
+					player->callback->onNetPlayerMovementPush(movement);
+				}
+
+			movement->positions.clear();
+		}
+	};
 
 	// TODO: need to add the possiblity to get players by world
 	// to allow the simulation to show other players ghost in the
@@ -24,6 +69,20 @@ namespace Game::Net
 	class SimulatorContext
 	{
 	public:
+		Location* putPlayer(
+			LocationPlayer* const player,
+			const Resource::WorldId worldID)
+		{
+			Location* const location = &locationPlayers[worldID];
+
+			for (LocationPlayer* const locationPlayer : location->players)
+				locationPlayer->callback->onNetPlayerAdded(player);
+			
+			location->players.push_back(player);
+			
+			return location;
+		}
+
 		void registerPlayer(
 			Resource::PlayerResource* const player,
 			SimulatorContextCallback* const callback)
@@ -62,6 +121,8 @@ namespace Game::Net
 		}
 		
 	private:
+		std::map<Resource::WorldId, Location> locationPlayers;
+
 		// callbacks are parallel to players. not implemented
 		// as pair to allow easy return of players container without
 		// exposing callbacks

@@ -5,6 +5,7 @@
 
 #include <Client/source/device/InputDevice.h>
 
+#include <bitset>
 #include <queue>
 
 namespace Game
@@ -52,73 +53,52 @@ namespace Game
 			:
 			public GameState
 		{
+			typedef std::bitset<(int) Device::GameCoreInputSymbol::_Length> Bitset;
+
 		public:
 			void setKey(
 				const Device::GameCoreInputSymbol key,
 				const bool state)
 			{
-				keyStates[(int)key] = state;
+				states.set((int) key, state);
 			}
 
 			bool getKey(const Device::GameCoreInputSymbol key) const
 			{
-				return keyStates[(int)key];
+				return states.test((int) key);
 			}
 
 			bool writeState(Resource::WritePipe* const writePipe)
 			{
-				char buffer;
-
-				for (int i = 0; i < (int)Device::GameCoreInputSymbol::_Length / 8 + 1; ++i)
-				{
-					buffer = 0;
-
-					for (int j = 0; j < 8; ++j)
-					{
-						buffer |= keyStates[i] << j;
-					}
-
-					if (!writePipe->writeValue(&buffer))
-					{
-						return false;
-					}
-				}
-
-				return true;
+				unsigned long content = states.to_ulong();
+				return writePipe->writeValue(&content);
 			}
 
 			bool readState(Resource::ReadPipe* const readPipe)
 			{
-				char buffer;
-
-				for (int i = 0; i < (int)Device::GameCoreInputSymbol::_Length / 8 + 1; ++i)
+				unsigned long content;
+				if (!readPipe->readValue(&content))
 				{
-					if (!readPipe->readValue(&buffer))
-					{
-						return false;
-					}
-
-					for (int j = 8 - 1; j > 0 - 1; --j)
-					{
-						keyStates[i] = !!(buffer & 1 << j);
-					}
+					return false;
 				}
+
+				states = Bitset(content);
 
 				return true;
 			}
 
 			bool operator==(const FrameStatus& frame) const
 			{
-				return memcmp(keyStates, frame.keyStates, sizeof(keyStates)) == 0;
+				return states == frame.states;
 			}
 
 			bool operator!=(const FrameStatus& frame) const
 			{
-				return !(*this == frame);
+				return states != frame.states;
 			}
 
 		private:
-			bool keyStates[(int) Device::GameCoreInputSymbol::_Length];
+			Bitset states;
 		};
 
 		class PackedFrameStatus
@@ -144,7 +124,9 @@ namespace Game
 
 				for (FrameStatus& frame : frames)
 				{
-					if (current != frame || currentLength == 255)
+					bool frameChanged = current != frame;
+
+					if (frameChanged || currentLength == std::numeric_limits<decltype(currentLength)>::max() - 1)
 					{
 						if (!writePipe->writeValue(&currentLength) ||
 							!current.writeState(writePipe))
@@ -153,14 +135,12 @@ namespace Game
 						}
 
 						currentLength = 0;
+
+						if (frameChanged)
+							current = frame;
 					}
 
 					++currentLength;
-
-					if (current != frame)
-					{
-						current = frame;
-					}
 				}
 
 				return writePipe->writeValue(&currentLength)
