@@ -43,8 +43,15 @@ namespace Game
 			PlayerBase::onInternalUpdate();
 		}
 
+		size_t getFrameCount() const
+		{
+			return statusDeque.size();
+		}
+		
+		std::deque<Net::FrameStatus> statusDeque;
+
 	private:
 		void handleFrameStatus(const Net::FrameStatus& status);
-		std::deque<Net::FrameStatus> statusDeque;
+
 	};
 }

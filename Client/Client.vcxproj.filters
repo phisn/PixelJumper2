@@ -582,9 +582,6 @@
     <ClCompile Include="source\device\NetDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="source\device\CoreDevice.cpp">
-      <Filter>source\device</Filter>
-    </ClCompile>
     <ClCompile Include="source\device\EncryptionDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
@@ -683,6 +680,9 @@
     </ClCompile>
     <ClCompile Include="source\scene\TestClassicSimulatorScene.cpp">
       <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\device\CoreDevice.cpp">
+      <Filter>source\device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

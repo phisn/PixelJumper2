@@ -11,6 +11,8 @@ namespace Game::Net
 {
 	class ArtificialPlayer
 	{
+		static constexpr float maxSmoothDifference = 1.f;
+
 	public:
 		ArtificialPlayer(
 			const Resource::PlayerID playerID,
@@ -33,17 +35,54 @@ namespace Game::Net
 
 		void process(const sf::Time time)
 		{
+			// think about adding smoothing
 			representation->update(time);
 		}
 
 		void processLogic()
 		{
-			if (++procesLogicCounter > NetMovementCaptureTime && movement.size() > 0)
+			if (procesLogicCounter >= NetMovementCaptureTime)
 			{
-				representation->setPosition(movement.front());
-				movement.pop_front();
+				if (movement.size() > 0)
+				{
+					source = target;
+					target = movement.front();
 
-				procesLogicCounter = 0;
+					movement.pop_front();
+
+					procesLogicCounter = 1;
+
+					sf::Vector2f positiveDifference = target - source;
+					
+					if (positiveDifference.x < 0) positiveDifference.x *= -1.f;
+					if (positiveDifference.y < 0) positiveDifference.y *= -1.f;
+
+					if (positiveDifference.x > maxSmoothDifference || positiveDifference.y > maxSmoothDifference)
+					{
+						smoothEnabled = false;
+						representation->setPosition(target);
+					}
+					else
+					{
+						smoothEnabled = true;
+					}
+
+				}
+				else return;
+			}
+			else
+			{
+				++procesLogicCounter;
+			}
+			
+			if (smoothEnabled)
+			{
+				sf::Vector2f current = source;
+
+				current.x += (target.x - source.x) * procesLogicCounter / NetMovementCaptureTime;
+				current.y += (target.y - source.y) * procesLogicCounter / NetMovementCaptureTime;
+
+				representation->setPosition(current);
 			}
 		}
 
@@ -56,6 +95,11 @@ namespace Game::Net
 		{
 			for (sf::Vector2f singleMovement : fullMovement->positions)
 				movement.push_back(singleMovement);
+
+			while (movement.size() > NetMovementPushCount)
+			{
+				movement.pop_front();
+			}
 		}
 
 		const PlayerInformation& getInformation() const
@@ -64,9 +108,12 @@ namespace Game::Net
 		}
 
 	private:
+		bool smoothEnabled;
+
+		sf::Vector2f source, target;
 		std::deque<sf::Vector2f> movement;
 
-		size_t procesLogicCounter = 0;
+		size_t procesLogicCounter = NetMovementCaptureTime;
 
 		PlayerInformation playerInfo;
 		PlayerRepresentation* representation;
@@ -119,22 +166,34 @@ namespace Game::Net
 			}
 		}
 
-		void processLogic()
+		void onLogic(const sf::Time time)
 		{
-			const ClassicSimulation::WorldFailure result = simulation.processLogic();
+			logicCounter += time.asMicroseconds();
 
-			if (result != ClassicSimulation::WorldFailure::Success)
+			if (gameSpeedAdjusted)
 			{
-				// call parent virtual pure
+				const float adjustedTimeStep = LogicTimeStep * currentGameSpeed;
 
-				Log::Error(L"Failed to process simulation",
-					(int)result, L"result");
+				while (logicCounter > adjustedTimeStep)
+				{
+					logicCounter -= adjustedTimeStep;
+
+					processLogic();
+
+					if (--remainingGameSpeedAdjustment == 0)
+					{
+						gameSpeedAdjusted = false;
+						break;
+					}
+				}
 			}
-
-			for (ArtificialPlayer* const artificialPlayer : artificialPlayers)
+			else
 			{
-				artificialPlayer->processLogic();
-				artificialPlayer->process(sf::microseconds(LogicTimeStep));
+				while (logicCounter > LogicTimeStep)
+				{
+					logicCounter -= LogicTimeStep;
+					processLogic();
+				}
 			}
 		}
 
@@ -193,6 +252,13 @@ namespace Game::Net
 
 				return true;
 			}
+			case Host::ClassicSimulatorMessageID::TemporarilySpeedAdjustment:
+				if (Host::TemporarilySpeedAdjustmentMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onTemporarilySpeedAdjustment(message);
+				}
+
+				return true;
 			}
 
 			return false;
@@ -211,6 +277,13 @@ namespace Game::Net
 		CachedControllablePlayer player;
 
 		std::vector<ArtificialPlayer*> artificialPlayers;
+
+		sf::Uint64 logicCounter = 0;
+
+		// used to remove tick indifference with server
+		bool gameSpeedAdjusted = false;
+		float currentGameSpeed;
+		sf::Uint64 remainingGameSpeedAdjustment;
 
 		void onPushPlayer(const Host::PushPlayerMessage& message)
 		{
@@ -243,6 +316,36 @@ namespace Game::Net
 					artificialPlayer->pushMovement(message.movement);
 					break;
 				}
+		}
+
+		void onTemporarilySpeedAdjustment(const Host::TemporarilySpeedAdjustmentMessage& message)
+		{
+			currentGameSpeed = message.speedAdjustment;
+			gameSpeedAdjusted = true;
+			remainingGameSpeedAdjustment = message.speedAdjustmentLength;
+
+			Log::Information(L"speed adjusted",
+				currentGameSpeed, L"speed",
+				remainingGameSpeedAdjustment, L"length");
+		}
+
+		void processLogic()
+		{
+			const ClassicSimulation::WorldFailure result = simulation.processLogic();
+
+			if (result != ClassicSimulation::WorldFailure::Success)
+			{
+				// call parent virtual pure
+
+				Log::Error(L"Failed to process simulation",
+					(int)result, L"result");
+			}
+
+			for (ArtificialPlayer* const artificialPlayer : artificialPlayers)
+			{
+				artificialPlayer->processLogic();
+				artificialPlayer->process(sf::microseconds(LogicTimeStep));
+			}
 		}
 	};
 }

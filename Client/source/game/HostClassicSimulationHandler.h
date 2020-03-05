@@ -25,6 +25,11 @@ namespace Game::Net
 		public ::Net::RequestHandler,
 		public SimulatorContextLocationCallback
 	{
+		static constexpr sf::Uint64 SpeedAdjustmentTimeOffset = 1000; // 1s
+		static constexpr sf::Uint64 SpeedAdjustmentTime = 10000; // 10s
+		static constexpr sf::Uint64 MaxFrameDifference = 1000; // 1s
+		static constexpr sf::Uint64 ToleratedFrameDifference = 100; // 50ms
+
 	public:
 		ClassicSimulationHandler(
 			ClassicSimulatorHandlerCallback* const callback,
@@ -119,26 +124,83 @@ namespace Game::Net
 		{
 			if (player.hasUpdate())
 			{
-				const ClassicSimulation::WorldFailure result = simulation.processLogic();
-
-				if (result != ClassicSimulation::WorldFailure::Success)
-					processLogicFailed(result);
-
-				if (++processLogicCounter > NetMovementCaptureTime)
-				{
-					movementBuffer.positions.push_back(
-						player.getProperties().position
-					);
-
-					if (movementBuffer.positions.size() > NetMovementPushCount)
-						location->pushMovement(&movementBuffer);
-
-					processLogicCounter = 0;
-				}
+				processSimulationLogic();
 			}
 			else
 			{
 				++missingFrames;
+			}
+
+			/*
+				player client can potentially be faster than the server
+				or have too many frames sent at the beginning
+				to compensate these frames the client speed is adjusted to
+				have zero remaining frames in SpeedAdjustmentTime
+				this process is triggered when the amount of remaining frames
+				is above ToleratedFrameDifference and removes the client when
+				the amount is above MaxFrameDifference
+				SpeedAdjustmentTimeOffset is used to compensate lag between 
+				clients
+				this process is repeated if the remaining frames are still
+				above ToleratedFrameDifference after the process and the player
+				connection is not aborted because the player client could
+				potentially always run at some minor higher speed like 0.05%
+			*/
+			if (adjustedGameSpeed)
+			{
+				if (--remainingAdjustedGameSpeed <= 0)
+					adjustedGameSpeed = false;
+			}
+			else
+			{
+				const bool isMissingFrame = missingFrames != 0;
+				const size_t playerFrameDifference = isMissingFrame
+					? missingFrames
+					: player.getFrameCount();
+
+				if (playerFrameDifference > ToleratedFrameDifference)
+				{
+					if (playerFrameDifference > MaxFrameDifference)
+					{
+						// simulation completly failed
+						access->accessOnThreatIdentified(
+							-1,
+							L"invalid client speed",
+							Device::Net::ThreatLevel::Malicious);
+					}
+					else
+					{
+						adjustedGameSpeed = true;
+						remainingAdjustedGameSpeed = SpeedAdjustmentTime + SpeedAdjustmentTimeOffset;
+
+						Host::TemporarilySpeedAdjustmentMessage message;
+
+						message.speedAdjustment = (float) SpeedAdjustmentTime / 
+							(
+								(float) SpeedAdjustmentTime + (isMissingFrame
+									?  (float) playerFrameDifference
+									: -(float) playerFrameDifference)
+							);
+						message.speedAdjustmentLength = SpeedAdjustmentTime;
+
+						access->accessSendMessage(
+							Host::ClassicSimulatorMessageID::TemporarilySpeedAdjustment,
+							&message);
+
+						Log::Information(L"speed adjustment",
+							message.speedAdjustment, L"speed",
+							message.speedAdjustmentLength, L"length");
+					}
+				}
+			}
+
+			static int i = 0;
+			if (++i > 400)
+			{
+				i = 0;
+				Log::Information(L"process100", 
+					missingFrames, L"missingframes",
+					player.statusDeque.size(), L"awaiting");
 			}
 		}
 
@@ -192,21 +254,23 @@ namespace Game::Net
 		size_t processLogicCounter = 0;
 		sf::Uint64 missingFrames = 0;
 
+		bool adjustedGameSpeed = false;
+		sf::Uint64 remainingAdjustedGameSpeed;
+
+
 		virtual void onPushMovement(const Client::PushMovementMessage& message)
 		{
 			// needs more checks later
 			for (const FrameStatus& frameStatus : message.packetFrameStatus->frames)
+			{
 				player.pushUpdate(frameStatus);
+			}
 
 			// TODO: think about making this async
 			while (missingFrames > 0 && player.hasUpdate())
 			{
-				const ClassicSimulation::WorldFailure result = simulation.processLogic();
-
-				if (result != ClassicSimulation::WorldFailure::Success)
+				if (!processSimulationLogic())
 				{
-					processLogicFailed(result);
-
 					// skiping other entries because simulation
 					// is going to be closed anyway
 					break;
@@ -216,6 +280,31 @@ namespace Game::Net
 			}
 		}
 
+		bool processSimulationLogic()
+		{
+			const ClassicSimulation::WorldFailure result = simulation.processLogic();
+
+			if (result != ClassicSimulation::WorldFailure::Success)
+			{
+				processLogicFailed(result);
+				return false;
+			}
+
+			if (++processLogicCounter > NetMovementCaptureTime)
+			{
+				movementBuffer.positions.push_back(
+					player.getProperties().position
+				);
+
+				if (movementBuffer.positions.size() >= NetMovementPushCount)
+					location->pushMovement(&movementBuffer);
+
+				processLogicCounter = 1;
+			}
+
+			return true;
+		}
+
 		void onNetPlayerMovementPush(NetPlayerMovement* const movement) override
 		{
 			Host::PlayerMovementMessage message;
@@ -223,7 +312,8 @@ namespace Game::Net
 
 			access->accessSendMessage(
 				Host::ClassicSimulatorMessageID::PushMovement,
-				&message);
+				&message,
+				k_nSteamNetworkingSend_Unreliable);
 		}
 
 		void onNetPlayerAdded(LocationPlayer* const locationPlayer) override

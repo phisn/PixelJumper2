@@ -75,15 +75,8 @@ namespace Game::Net::Host
 			// remove player from location
 			PopPlayer,
 
-			// used to adjust client game
-			// speed acording to connection
-			// slow connections should have
-			// higher delays and to achive
-			// that a speeddown at the client
-			// is used to cause a "falling
-			// behind"
-			SpeedUp,
-			SpeedDown,
+			// used to sync with player speed
+			TemporarilySpeedAdjustment,
 
 			// measure tick delay between client
 			// and server
@@ -139,4 +132,12 @@ namespace Game::Net::Host
 	};
 
 	typedef TrivialNetworkMessage<PopPlayerMessageContent> PopPlayerMessage;
+
+	struct TemporarilySpeedAdjustmentMessageContent
+	{
+		float speedAdjustment;
+		sf::Uint64 speedAdjustmentLength;
+	};
+
+	typedef TrivialNetworkMessage<TemporarilySpeedAdjustmentMessageContent> TemporarilySpeedAdjustmentMessage;
 }

@@ -1,3 +1,4 @@
+#include <WinSock2.h>
 #include <iostream>
 
 #include <Client/source/device/CoreDevice.h>
@@ -5,7 +6,7 @@
 
 bool loginOperator();
 
-#if defined(_DEBUG) || !defined(_WIN32)
+#if defined(_DEBUG) || !defined(_WIN32) || true
 	int main()
 #else
 	#include <Windows.h>
@@ -171,8 +172,8 @@ bool loginRegister(std::string username, std::string password, std::string key)
 bool loginOperator()
 {
 	SteamNetworkingIPAddr ipAddress;
-	ipAddress.ParseString("109.230.236.76:9928");
-	// ipAddress.SetIPv6LocalHost(9928);
+	// ipAddress.ParseString("109.230.236.76:9928");
+	ipAddress.SetIPv6LocalHost(9928);
 
 	Operator::ConnectionHandler::Initialize(ipAddress);
 

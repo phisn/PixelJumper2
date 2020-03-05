@@ -29,7 +29,8 @@ namespace Net
 		// result usually not used
 		virtual bool accessSendMessage(
 			const Device::Net::MessageID messageID,
-			Game::Net::NetworkMessage* const message = NULL) = 0;
+			Game::Net::NetworkMessage* const message = NULL,
+			const int flags = k_nSteamNetworkingSend_Reliable) = 0;
 		virtual void accessOnThreatIdentified(
 			const Device::Net::MessageID messageID,
 			const wchar_t* const note,

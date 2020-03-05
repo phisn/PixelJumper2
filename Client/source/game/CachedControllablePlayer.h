@@ -10,7 +10,14 @@ namespace Game
 		public ControllablePlayer
 	{
 	public:
-		using ControllablePlayer::ControllablePlayer;
+		CachedControllablePlayer(
+			const Device::Input::PlayerID playerId,
+			const PlayerInformation information,
+			Device::View* const view)
+			:
+			ControllablePlayer(playerId, information, view)
+		{
+		}
 
 		void onInternalUpdate() override
 		{
@@ -20,6 +27,7 @@ namespace Game
 
 			status.setKey(Device::GameCoreInputSymbol::Trigger, interactController.getCurrentState());
 			status.setKey(Device::GameCoreInputSymbol::Reset, respawnController.getCurrentState());
+
 			status.setKey(Device::GameCoreInputSymbol::Up, upController.getCurrentState());
 			status.setKey(Device::GameCoreInputSymbol::Left, leftController.getCurrentState());
 			status.setKey(Device::GameCoreInputSymbol::Down, downController.getCurrentState());

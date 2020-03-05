@@ -26,7 +26,8 @@ namespace Net
 
 		bool accessSendMessage(
 			const Device::Net::MessageID messageID,
-			Game::Net::NetworkMessage* const message = NULL) override
+			Game::Net::NetworkMessage* const message = NULL,
+			const int flags = k_nSteamNetworkingSend_Reliable) override
 		{
 			// message can be null
 			if (message)
@@ -42,7 +43,7 @@ namespace Net
 				beginMessage(messageID, 8);
 			}
 
-			if (!ClientHandler::sendMessage())
+			if (!ClientHandler::sendMessage(flags))
 			{
 				onMessageSendFailed(messageID, SendFailure::Send);
 				return false;

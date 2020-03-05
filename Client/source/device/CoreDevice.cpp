@@ -27,7 +27,7 @@ namespace Device
 {
 	bool PushMainContext()
 	{
-		return Framework::Context::Push<Scene::TestClassicSimulatorScene>();
+		return Framework::Context::Push<Scene::TestClassicClientScene>();
 	}
 
 	Core::Error Core::Initialize()
@@ -48,10 +48,10 @@ namespace Device
 
 		Random::Initialize();
 
-		/*if (!Screen::Initialize())
+		if (!Screen::Initialize())
 		{
 			return Core::Error::ScreenError;
-		}*/
+		}
 		
 		if (!Input::Initialize())
 		{
@@ -77,7 +77,7 @@ namespace Device
 
 	int Core::RunGameLoop()
 	{
-		//Screen::_CreateWindow();
+		Screen::_CreateWindow();
 
 		sf::Clock clock;
 		sf::Event event;
@@ -105,10 +105,10 @@ namespace Device
 				break;
 			}
 
-			/*while (Device::Screen::PollEvent(event))
+			while (Device::Screen::PollEvent(event))
 			{
 				Framework::Interface::Event(event);
-			}*/
+			}
 
 			// check with profiler
 			Net::Process();
@@ -117,9 +117,9 @@ namespace Device
 			Framework::Interface::Update(delta);
 			Operator::ConnectionHandler::Process(delta);
 
-			// Device::Screen::BeginDraw();
-			// Framework::Interface::Draw(Device::Screen::GetTarget());
-			// Device::Screen::EndDraw();
+			Device::Screen::BeginDraw();
+			Framework::Interface::Draw(Device::Screen::GetTarget());
+			Device::Screen::EndDraw();
 		}
 
 		return 0;

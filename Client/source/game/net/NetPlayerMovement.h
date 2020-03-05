@@ -5,7 +5,7 @@
 namespace Game::Net
 {
 	constexpr size_t NetMovementCaptureTime = 10; // 10 ms
-	constexpr size_t NetMovementPushCount = 100; // every 1s
+	constexpr size_t NetMovementPushCount = 10; // every 100ms
 
 	// movement is sent in one per 10 ms
 	// allowing to be fluid up to 100 fps

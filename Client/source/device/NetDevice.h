@@ -123,13 +123,13 @@ namespace Device::Net
 			return &messagePipe;
 		}
 
-		bool sendMessage()
+		bool sendMessage(const int flags = k_nSteamNetworkingSend_Reliable)
 		{
 			const EResult result = networkInterface->SendMessageToConnection(
 				connection,
 				&messagePipe.getData()[0],
 				(uint32) messagePipe.getSize(),
-				k_nSteamNetworkingSend_Reliable,
+				flags,
 				NULL);
 
 			if (result != EResult::k_EResultOK)

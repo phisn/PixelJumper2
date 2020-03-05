@@ -78,11 +78,7 @@ namespace Game::Net
 			logicCounter += time.asMicroseconds();
 
 			if (simulationRunning)
-				while (logicCounter > nextGameProcess)
-				{
-					simulatorHandler->processLogic();
-					nextGameProcess += LogicTimeStep;
-				}
+				simulatorHandler->onLogic(time);
 
 			if (logicCounter > nextUserProcess)
 			{
@@ -133,7 +129,6 @@ namespace Game::Net
 		ClientClassicSimulationHandler* simulatorHandler;
 
 		sf::Uint64 logicCounter = 0,
-			nextGameProcess = 0,
 			nextUserProcess = 0;
 
 		bool simulationRunning = false;

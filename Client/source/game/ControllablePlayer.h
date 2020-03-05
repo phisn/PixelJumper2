@@ -39,9 +39,7 @@ namespace Game
 		template <>
 		void handleKey<InputMode::Active>()
 		{
-			currentState = input->isKeyPressed(key);
-
-			if (currentState)
+			if (currentState = input->isKeyPressed(key))
 			{
 				routine.call();
 			}
@@ -50,9 +48,14 @@ namespace Game
 		template <>
 		void handleKey<InputMode::Passive>()
 		{
-			if (input->isKeyPressed(key) != currentState && (currentState = !currentState))
+			if (input->isKeyPressed(key) != lastState && (lastState = !lastState))
 			{
 				routine.call();
+				currentState = true;
+			}
+			else
+			{
+				currentState = false;
 			}
 		}
 		
@@ -62,7 +65,8 @@ namespace Game
 		}
 
 	private:
-		bool currentState = false;
+		bool currentState = true;
+		bool lastState = false;
 
 		const LocalRoutine& routine;
 		const Device::GameCoreInputSymbol key;
@@ -78,7 +82,6 @@ namespace Game
 		Device::GameInput* const input;
 
 	public:
-
 		ControllablePlayer(
 			const Device::Input::PlayerID playerId,
 			const PlayerInformation information,
