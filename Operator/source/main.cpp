@@ -1,3 +1,4 @@
+#include <Client/source/menu/MenuProperty.h>
 #include <Client/source/logger/Logger.h>
 #include <Client/source/device/RandomDevice.h>
 

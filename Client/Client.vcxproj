@@ -23,6 +23,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
     <PlatformToolset>v142</PlatformToolset>
+    <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='DebugDynamic|x64'">
     <PlatformToolset>v142</PlatformToolset>
@@ -43,8 +44,8 @@
     <Import Project="..\config\win64_debug_dynamic.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_|x64'">
-    <Import Project="..\config\win64_debug_static.props" />
     <Import Project="..\config\ClientLibraries_Release.props" />
+    <Import Project="..\config\win64_release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_|x64'">
@@ -58,11 +59,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
     <ClCompile>
       <SupportJustMyCode>true</SupportJustMyCode>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <Profile>true</Profile>
       <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic_|x64'">
     <ClCompile>
@@ -70,12 +75,16 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\include;$(SolutionDir)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>NotSet</SubSystem>
       <AdditionalDependencies>sfml-graphics-2.lib;sfml-window-2.lib;sfml-audio-2.lib;sfml-network-2.lib;sfml-system-2.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;jpeg.lib;ws2_32.lib;libcrypto.lib;libssl.lib;libprotobuf.lib;gns_release.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\lib</AdditionalLibraryDirectories>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -95,9 +104,6 @@
     <ClInclude Include="source\framework\ResourceContext.h" />
     <ClInclude Include="source\game\CachedControllablePlayer.h" />
     <ClInclude Include="source\game\ClientClassicCommonHandler.h" />
-    <ClInclude Include="source\game\HostClassicCommonHandler.h" />
-    <ClInclude Include="source\game\HostClassicSelectionHandler.h" />
-    <ClInclude Include="source\game\HostClassicSimulationHandler.h" />
     <ClInclude Include="source\game\ClientAuthenticationHandler.h" />
     <ClInclude Include="source\game\ClientClassicConnection.h" />
     <ClInclude Include="source\game\ClientClassicSelectionHandler.h" />
@@ -118,9 +124,6 @@
     <ClInclude Include="source\game\GameWorld.h" />
     <ClInclude Include="source\game\net\ClassicCommonMessage.h" />
     <ClInclude Include="source\game\net\ClassicSimulatorMessage.h" />
-    <ClInclude Include="source\game\HostSimulatorAuthenticationHandler.h" />
-    <ClInclude Include="source\game\ClassicClientHandler.h" />
-    <ClInclude Include="source\game\HostClassicSimulator.h" />
     <ClInclude Include="source\game\LocalPlayer.h" />
     <ClInclude Include="source\game\net\ClassicSelectionMessage.h" />
     <ClInclude Include="source\game\net\FrameStatus.h" />
@@ -215,9 +218,6 @@
     <ClCompile Include="source\framework\FrameworkInterface.cpp" />
     <ClCompile Include="source\framework\ResourceContext.cpp" />
     <ClCompile Include="source\game\ClientClassicCommonHandler.cpp" />
-    <ClCompile Include="source\game\HostClassicCommonHandler.cpp" />
-    <ClCompile Include="source\game\HostClassicSelectionHandler.cpp" />
-    <ClCompile Include="source\game\HostClassicSimulationHandler.cpp" />
     <ClCompile Include="source\game\ClientAuthenticationHandler.cpp" />
     <ClCompile Include="source\game\ClientClassicConnection.cpp" />
     <ClCompile Include="source\game\ClientClassicSelectionHandler.cpp" />
@@ -228,9 +228,6 @@
     <ClCompile Include="source\game\GamePlayer.cpp" />
     <ClCompile Include="source\game\GameProperty.cpp" />
     <ClCompile Include="source\game\GameWorld.cpp" />
-    <ClCompile Include="source\game\HostSimulatorAuthenticationHandler.cpp" />
-    <ClCompile Include="source\game\ClassicClientHandler.cpp" />
-    <ClCompile Include="source\game\HostClassicSimulator.cpp" />
     <ClCompile Include="source\game\LocalPlayer.cpp" />
     <ClCompile Include="source\editor\manipulator\Manipulator.cpp" />
     <ClCompile Include="source\game\PlayerProperties.cpp" />

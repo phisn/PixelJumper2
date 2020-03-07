@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugStatic|x64">
+      <Configuration>DebugStatic</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseStatic|x64">
+      <Configuration>ReleaseStatic</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="_DebugStatic|x64">
+      <Configuration>_DebugStatic</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{CAECECFC-570F-45F0-985B-AFCC26BB9C2A}</ProjectGuid>
+    <RootNamespace>Simulator</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='_DebugStatic|x64'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\config\win64_release.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugStatic|x64'">
+    <Import Project="..\config\ClientLibraries.props" />
+    <Import Project="..\config\win64_debug_static.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='_DebugStatic|x64'">
+    <Import Project="..\config\ClientLibraries.props" />
+    <Import Project="..\config\win64_debug_static.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStatic|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <BrowseInformation>true</BrowseInformation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Client\source\device\EncryptionDevice.cpp" />
+    <ClCompile Include="..\Client\source\device\NetDevice.cpp" />
+    <ClCompile Include="..\Client\source\editor\manipulator\Manipulator.cpp" />
+    <ClCompile Include="..\Client\source\editor\tile\TileTemplateFactory.cpp" />
+    <ClCompile Include="..\Client\source\framework\Context.cpp" />
+    <ClCompile Include="..\Client\source\framework\FrameworkInterface.cpp" />
+    <ClCompile Include="..\Client\source\framework\ResourceContext.cpp" />
+    <ClCompile Include="..\Client\source\game\ClassicSimulation.cpp" />
+    <ClCompile Include="..\Client\source\game\CollisionEngine.cpp" />
+    <ClCompile Include="..\Client\source\game\Environment.cpp" />
+    <ClCompile Include="..\Client\source\game\GamePlayer.cpp" />
+    <ClCompile Include="..\Client\source\game\GameProperty.cpp" />
+    <ClCompile Include="..\Client\source\game\GameWorld.cpp" />
+    <ClCompile Include="..\Client\source\game\PlayerProperties.cpp" />
+    <ClCompile Include="..\Client\source\game\SimulatorContext.cpp" />
+    <ClCompile Include="..\Client\source\game\VirtualPlayer.cpp" />
+    <ClCompile Include="..\Client\source\game\WorldProperties.cpp" />
+    <ClCompile Include="..\Client\source\logger\Logger.cpp" />
+    <ClCompile Include="..\Client\source\logger\Output.cpp" />
+    <ClCompile Include="..\Client\source\logger\Section.cpp" />
+    <ClCompile Include="..\Client\source\logger\SectionHost.cpp" />
+    <ClCompile Include="..\Client\source\menu\MenuProperty.cpp" />
+    <ClCompile Include="..\Client\source\menu\MenuSpecialProperties.cpp" />
+    <ClCompile Include="..\Client\source\operator\OperatorConnectionHandler.cpp" />
+    <ClCompile Include="..\Client\source\resource\ClassicPlayerResource.cpp" />
+    <ClCompile Include="..\Client\source\resource\pipes\FilePipe.cpp" />
+    <ClCompile Include="..\Client\source\resource\pipes\MemoryPipe.cpp" />
+    <ClCompile Include="..\Client\source\resource\pipes\PacketPipe.cpp" />
+    <ClCompile Include="..\Client\source\resource\pipes\PipeBase.cpp" />
+    <ClCompile Include="..\Client\source\resource\PlayerResource.cpp" />
+    <ClCompile Include="..\Client\source\resource\ResourceDefinition.cpp" />
+    <ClCompile Include="..\Client\source\resource\ResourceInterface.cpp" />
+    <ClCompile Include="..\Client\source\resource\StaticResource.cpp" />
+    <ClCompile Include="..\Client\source\resource\TileResource.cpp" />
+    <ClCompile Include="..\Client\source\resource\WorldResource.cpp" />
+    <ClCompile Include="..\Client\source\shared\tiles\TileDescription.cpp" />
+    <ClCompile Include="..\Client\source\shared\tiles\TileExit.cpp" />
+    <ClCompile Include="..\Client\source\shared\tiles\TileWall.cpp" />
+    <ClCompile Include="..\Client\source\shared\tiles\TransitivePortal.cpp" />
+    <ClCompile Include="source\device\CoreDevice.cpp" />
+    <ClCompile Include="source\game\ClassicClientHandler.cpp" />
+    <ClCompile Include="source\game\HostClassicCommonHandler.cpp" />
+    <ClCompile Include="source\game\HostClassicSelectionHandler.cpp" />
+    <ClCompile Include="source\game\HostClassicSimulationHandler.cpp" />
+    <ClCompile Include="source\game\HostClassicSimulator.cpp" />
+    <ClCompile Include="source\game\HostSimulatorAuthenticationHandler.cpp" />
+    <ClCompile Include="source\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Client\source\device\EncryptionDevice.h" />
+    <ClInclude Include="..\Client\source\device\NetDevice.h" />
+    <ClInclude Include="..\Client\source\editor\manipulator\Manipulator.h" />
+    <ClInclude Include="..\Client\source\editor\tile\TileTemplateFactory.h" />
+    <ClInclude Include="..\Client\source\framework\Context.h" />
+    <ClInclude Include="..\Client\source\framework\FrameworkInterface.h" />
+    <ClInclude Include="..\Client\source\framework\ResourceContext.h" />
+    <ClInclude Include="..\Client\source\game\ClassicSimulation.h" />
+    <ClInclude Include="..\Client\source\game\CollisionEngine.h" />
+    <ClInclude Include="..\Client\source\game\DependentTileData.h" />
+    <ClInclude Include="..\Client\source\game\Environment.h" />
+    <ClInclude Include="..\Client\source\game\GameElementBase.h" />
+    <ClInclude Include="..\Client\source\game\GameEvent.h" />
+    <ClInclude Include="..\Client\source\game\GamePlayer.h" />
+    <ClInclude Include="..\Client\source\game\GameProperty.h" />
+    <ClInclude Include="..\Client\source\game\GameState.h" />
+    <ClInclude Include="..\Client\source\game\GameTileBase.h" />
+    <ClInclude Include="..\Client\source\game\GameWorld.h" />
+    <ClInclude Include="..\Client\source\game\net\ClassicCommonMessage.h" />
+    <ClInclude Include="..\Client\source\game\net\ClassicSelectionMessage.h" />
+    <ClInclude Include="..\Client\source\game\net\ClassicSimulatorMessage.h" />
+    <ClInclude Include="..\Client\source\game\net\FrameStatus.h" />
+    <ClInclude Include="..\Client\source\game\net\NetPlayerMovement.h" />
+    <ClInclude Include="..\Client\source\game\net\NetworkMessage.h" />
+    <ClInclude Include="..\Client\source\game\net\SimulatorAuthenticationMessage.h" />
+    <ClInclude Include="..\Client\source\game\PlayerInformation.h" />
+    <ClInclude Include="..\Client\source\game\PlayerProperties.h" />
+    <ClInclude Include="..\Client\source\game\SimulatorContext.h" />
+    <ClInclude Include="..\Client\source\game\VirtualPlayer.h" />
+    <ClInclude Include="..\Client\source\game\WorldInformation.h" />
+    <ClInclude Include="..\Client\source\game\WorldProperties.h" />
+    <ClInclude Include="..\Client\source\logger\Logger.h" />
+    <ClInclude Include="..\Client\source\logger\LoggerLevel.h" />
+    <ClInclude Include="..\Client\source\logger\Names.h" />
+    <ClInclude Include="..\Client\source\logger\Output.h" />
+    <ClInclude Include="..\Client\source\logger\Section.h" />
+    <ClInclude Include="..\Client\source\logger\SectionHost.h" />
+    <ClInclude Include="..\Client\source\menu\MenuProperty.h" />
+    <ClInclude Include="..\Client\source\menu\MenuSpecialProperties.h" />
+    <ClInclude Include="..\Client\source\net\DynamicClientConnection.h" />
+    <ClInclude Include="..\Client\source\net\DynamicClientHandler.h" />
+    <ClInclude Include="..\Client\source\net\DynamicRequestContainer.h" />
+    <ClInclude Include="..\Client\source\net\RequestHandlerBase.h" />
+    <ClInclude Include="..\Client\source\net\RequestHandlerTemplate.h" />
+    <ClInclude Include="..\Client\source\operator\ClassicalConnectionRequest.h" />
+    <ClInclude Include="..\Client\source\operator\OperatorConnectionHandler.h" />
+    <ClInclude Include="..\Client\source\operator\request\AuthenticationRequest.h" />
+    <ClInclude Include="..\Client\source\operator\request\ClassicHostRequest.h" />
+    <ClInclude Include="..\Client\source\operator\request\CommonRequest.h" />
+    <ClInclude Include="..\Client\source\operator\request\ConnectionKeyRequest.h" />
+    <ClInclude Include="..\Client\source\operator\request\OperatorRequest.h" />
+    <ClInclude Include="..\Client\source\resource\ClassicPlayerResource.h" />
+    <ClInclude Include="..\Client\source\resource\CommonResourceTypes.h" />
+    <ClInclude Include="..\Client\source\resource\pipes\FilePipe.h" />
+    <ClInclude Include="..\Client\source\resource\pipes\MemoryPipe.h" />
+    <ClInclude Include="..\Client\source\resource\pipes\PacketPipe.h" />
+    <ClInclude Include="..\Client\source\resource\pipes\PipeBase.h" />
+    <ClInclude Include="..\Client\source\resource\PlayerResource.h" />
+    <ClInclude Include="..\Client\source\resource\ResourceBase.h" />
+    <ClInclude Include="..\Client\source\resource\ResourceDefinition.h" />
+    <ClInclude Include="..\Client\source\resource\ResourceInterface.h" />
+    <ClInclude Include="..\Client\source\resource\ResourceType.h" />
+    <ClInclude Include="..\Client\source\resource\StaticResource.h" />
+    <ClInclude Include="..\Client\source\resource\TileResource.h" />
+    <ClInclude Include="..\Client\source\resource\WorldResource.h" />
+    <ClInclude Include="..\Client\source\shared\tiles\TileCommon.h" />
+    <ClInclude Include="..\Client\source\shared\tiles\TileDescription.h" />
+    <ClInclude Include="..\Client\source\shared\tiles\TileExit.h" />
+    <ClInclude Include="..\Client\source\shared\tiles\TileWall.h" />
+    <ClInclude Include="..\Client\source\shared\tiles\TransitivePortal.h" />
+    <ClInclude Include="..\Client\source\shared\ValueDefinitions.h" />
+    <ClInclude Include="..\Client\source\shared\WorldDefinitions.h" />
+    <ClInclude Include="source\device\CoreDevice.h" />
+    <ClInclude Include="source\game\ClassicClientHandler.h" />
+    <ClInclude Include="source\game\HostClassicCommonHandler.h" />
+    <ClInclude Include="source\game\HostClassicSelectionHandler.h" />
+    <ClInclude Include="source\game\HostClassicSimulationHandler.h" />
+    <ClInclude Include="source\game\HostClassicSimulator.h" />
+    <ClInclude Include="source\game\HostSimulatorAuthenticationHandler.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

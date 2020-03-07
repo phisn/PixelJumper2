@@ -1,8 +1,9 @@
 #pragma once
 
-#include <Client/source/game/HostClassicSimulator.h>
+#include <Simulator/source/game/HostClassicSimulator.h>
 #include <Client/source/operator/request/CommonRequest.h>
 #include <Client/source/scene/MainSceneBase.h>
+#include <Client/source/framework/FrameworkInterface.h>
 
 namespace Scene
 {

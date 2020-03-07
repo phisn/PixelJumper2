@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{d41aff0f-8073-479d-acff-78f9281728d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{790ebb56-3f99-4270-85b9-e16b07e9ba6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client">
+      <UniqueIdentifier>{9f0b46e0-75fe-4d84-b3ec-595b079d535a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\game">
+      <UniqueIdentifier>{dc787ec9-f383-4408-97c2-9d465a369622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\logger">
+      <UniqueIdentifier>{81b80466-f0b3-4978-ab5b-76599f95ea8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\resource">
+      <UniqueIdentifier>{0f9eb2ee-76e6-4c68-9db3-4992c23dbce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\device">
+      <UniqueIdentifier>{8378cb52-0e39-4b5c-a7fe-9a1a75f96cde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\net">
+      <UniqueIdentifier>{cec7f44e-e31e-4277-afef-c0d327554749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\game\net">
+      <UniqueIdentifier>{8311bfb9-2015-4b45-bf97-3e57d12c7103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\device">
+      <UniqueIdentifier>{d0adc88e-d305-429f-a4bb-f9e86e10939a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game">
+      <UniqueIdentifier>{72408594-373a-497d-8184-0b0e38198a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game\handler">
+      <UniqueIdentifier>{0b49bb0a-02f1-4915-b1c1-96a2357cf9b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\resource\pipe">
+      <UniqueIdentifier>{d36b0044-6103-4fdd-9541-6589b45dad32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\operator">
+      <UniqueIdentifier>{c4a48268-3e1a-4f5e-8d92-9c030c9c79d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\operator\request">
+      <UniqueIdentifier>{501d5d81-e6b8-4847-b979-78bd96ca113d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\shared">
+      <UniqueIdentifier>{aca40a17-21e6-4287-8267-19f0ce965f4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\shared\tile">
+      <UniqueIdentifier>{0fde5964-e631-4246-b414-c9f33bd75879}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Client\source\game\ClassicSimulation.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\game\CollisionEngine.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\game\Environment.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\game\GamePlayer.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\game\GameProperty.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\game\GameWorld.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\game\PlayerProperties.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\game\SimulatorContext.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\game\VirtualPlayer.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\game\WorldProperties.cpp">
+      <Filter>external\Client\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\device\CoreDevice.cpp">
+      <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\ClassicClientHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostSimulatorAuthenticationHandler.cpp">
+      <Filter>source\game\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicSimulationHandler.cpp">
+      <Filter>source\game\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicSelectionHandler.cpp">
+      <Filter>source\game\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicSimulator.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\device\EncryptionDevice.cpp">
+      <Filter>external\Client\device</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\device\NetDevice.cpp">
+      <Filter>external\Client\device</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\logger\Logger.cpp">
+      <Filter>external\Client\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\logger\Output.cpp">
+      <Filter>external\Client\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\logger\Section.cpp">
+      <Filter>external\Client\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\logger\SectionHost.cpp">
+      <Filter>external\Client\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\ClassicPlayerResource.cpp">
+      <Filter>external\Client\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\PlayerResource.cpp">
+      <Filter>external\Client\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\ResourceDefinition.cpp">
+      <Filter>external\Client\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\ResourceInterface.cpp">
+      <Filter>external\Client\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\StaticResource.cpp">
+      <Filter>external\Client\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\TileResource.cpp">
+      <Filter>external\Client\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\WorldResource.cpp">
+      <Filter>external\Client\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\pipes\FilePipe.cpp">
+      <Filter>external\Client\resource\pipe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\pipes\MemoryPipe.cpp">
+      <Filter>external\Client\resource\pipe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\pipes\PacketPipe.cpp">
+      <Filter>external\Client\resource\pipe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\resource\pipes\PipeBase.cpp">
+      <Filter>external\Client\resource\pipe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\operator\OperatorConnectionHandler.cpp">
+      <Filter>external\Client\operator</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicCommonHandler.cpp">
+      <Filter>source\game\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\shared\tiles\TileDescription.cpp">
+      <Filter>external\Client\shared\tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\shared\tiles\TileExit.cpp">
+      <Filter>external\Client\shared\tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\shared\tiles\TileWall.cpp">
+      <Filter>external\Client\shared\tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\shared\tiles\TransitivePortal.cpp">
+      <Filter>external\Client\shared\tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\menu\MenuProperty.cpp">
+      <Filter>external\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\menu\MenuSpecialProperties.cpp">
+      <Filter>external\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\framework\FrameworkInterface.cpp">
+      <Filter>external\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\editor\manipulator\Manipulator.cpp">
+      <Filter>external\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\editor\tile\TileTemplateFactory.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\framework\ResourceContext.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Client\source\framework\Context.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Client\source\game\ClassicSimulation.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\CollisionEngine.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\DependentTileData.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\Environment.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\GameElementBase.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\GameEvent.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\GamePlayer.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\GameProperty.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\GameState.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\GameTileBase.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\GameWorld.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\PlayerInformation.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\PlayerProperties.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\SimulatorContext.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\VirtualPlayer.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\WorldInformation.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\WorldProperties.h">
+      <Filter>external\Client\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\net\ClassicCommonMessage.h">
+      <Filter>external\Client\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\net\ClassicSelectionMessage.h">
+      <Filter>external\Client\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\net\ClassicSimulatorMessage.h">
+      <Filter>external\Client\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\net\FrameStatus.h">
+      <Filter>external\Client\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\net\NetPlayerMovement.h">
+      <Filter>external\Client\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\net\NetworkMessage.h">
+      <Filter>external\Client\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\game\net\SimulatorAuthenticationMessage.h">
+      <Filter>external\Client\game\net</Filter>
+    </ClInclude>
+    <ClInclude Include="source\device\CoreDevice.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ClassicClientHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostSimulatorAuthenticationHandler.h">
+      <Filter>source\game\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSimulationHandler.h">
+      <Filter>source\game\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSelectionHandler.h">
+      <Filter>source\game\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicCommonHandler.h">
+      <Filter>source\game\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSimulator.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\net\DynamicClientConnection.h">
+      <Filter>external\Client\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\net\DynamicClientHandler.h">
+      <Filter>external\Client\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\net\DynamicRequestContainer.h">
+      <Filter>external\Client\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\net\RequestHandlerBase.h">
+      <Filter>external\Client\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\net\RequestHandlerTemplate.h">
+      <Filter>external\Client\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\device\EncryptionDevice.h">
+      <Filter>external\Client\device</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\device\NetDevice.h">
+      <Filter>external\Client\device</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\logger\Logger.h">
+      <Filter>external\Client\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\logger\LoggerLevel.h">
+      <Filter>external\Client\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\logger\Names.h">
+      <Filter>external\Client\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\logger\Output.h">
+      <Filter>external\Client\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\logger\Section.h">
+      <Filter>external\Client\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\logger\SectionHost.h">
+      <Filter>external\Client\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\ClassicPlayerResource.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\CommonResourceTypes.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\PlayerResource.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\ResourceBase.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\ResourceDefinition.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\ResourceInterface.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\ResourceType.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\StaticResource.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\TileResource.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\WorldResource.h">
+      <Filter>external\Client\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\pipes\FilePipe.h">
+      <Filter>external\Client\resource\pipe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\pipes\MemoryPipe.h">
+      <Filter>external\Client\resource\pipe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\pipes\PacketPipe.h">
+      <Filter>external\Client\resource\pipe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\resource\pipes\PipeBase.h">
+      <Filter>external\Client\resource\pipe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\operator\ClassicalConnectionRequest.h">
+      <Filter>external\Client\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\operator\OperatorConnectionHandler.h">
+      <Filter>external\Client\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\operator\request\AuthenticationRequest.h">
+      <Filter>external\Client\operator\request</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\operator\request\ClassicHostRequest.h">
+      <Filter>external\Client\operator\request</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\operator\request\CommonRequest.h">
+      <Filter>external\Client\operator\request</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\operator\request\ConnectionKeyRequest.h">
+      <Filter>external\Client\operator\request</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\operator\request\OperatorRequest.h">
+      <Filter>external\Client\operator\request</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\shared\ValueDefinitions.h">
+      <Filter>external\Client\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\shared\WorldDefinitions.h">
+      <Filter>external\Client\shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\shared\tiles\TileCommon.h">
+      <Filter>external\Client\shared\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\shared\tiles\TileDescription.h">
+      <Filter>external\Client\shared\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\shared\tiles\TileExit.h">
+      <Filter>external\Client\shared\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\shared\tiles\TileWall.h">
+      <Filter>external\Client\shared\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\shared\tiles\TransitivePortal.h">
+      <Filter>external\Client\shared\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\menu\MenuProperty.h">
+      <Filter>external\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\menu\MenuSpecialProperties.h">
+      <Filter>external\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\framework\FrameworkInterface.h">
+      <Filter>external\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\editor\manipulator\Manipulator.h">
+      <Filter>external\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\editor\tile\TileTemplateFactory.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\framework\ResourceContext.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Client\source\framework\Context.h">
+      <Filter>external</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

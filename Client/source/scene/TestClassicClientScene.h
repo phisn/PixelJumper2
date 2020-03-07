@@ -3,6 +3,7 @@
 #include <Client/source/game/ClientClassicConnection.h>
 #include <Client/source/operator/OperatorConnectionHandler.h>
 #include <Client/source/operator/request/CommonRequest.h>
+#include <Client/source/framework/FrameworkInterface.h>
 
 namespace
 {

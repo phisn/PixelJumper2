@@ -67,10 +67,12 @@ namespace Device::Core
 
 		while (server->getStatus() != Operator::Net::Operator::Shutdown)
 		{
+			clock.restart();
+
 			Device::Net::Process();
 			server->process();
 
-			if (const sf::Time time = clock.restart(); time < interval)
+			if (const sf::Time time = clock.getElapsedTime(); time < interval)
 				sf::sleep(interval - time);
 		}
 	}

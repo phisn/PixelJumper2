@@ -10,7 +10,8 @@
     <ClCompile>
       <PreprocessorDefinitions>_MBCS; UNICODE; SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\include;$(SolutionDir)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>sfml-graphics-2.lib;sfml-window-2.lib;sfml-audio-2.lib;sfml-network-2.lib;sfml-system-2.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;jpeg.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
