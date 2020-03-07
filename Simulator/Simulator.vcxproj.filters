@@ -16,9 +16,6 @@
     <Filter Include="external\Client\logger">
       <UniqueIdentifier>{81b80466-f0b3-4978-ab5b-76599f95ea8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="external\Client\resource">
-      <UniqueIdentifier>{0f9eb2ee-76e6-4c68-9db3-4992c23dbce4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="external\Client\device">
       <UniqueIdentifier>{8378cb52-0e39-4b5c-a7fe-9a1a75f96cde}</UniqueIdentifier>
     </Filter>
@@ -37,9 +34,6 @@
     <Filter Include="source\game\handler">
       <UniqueIdentifier>{0b49bb0a-02f1-4915-b1c1-96a2357cf9b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="external\Client\resource\pipe">
-      <UniqueIdentifier>{d36b0044-6103-4fdd-9541-6589b45dad32}</UniqueIdentifier>
-    </Filter>
     <Filter Include="external\Client\operator">
       <UniqueIdentifier>{c4a48268-3e1a-4f5e-8d92-9c030c9c79d2}</UniqueIdentifier>
     </Filter>
@@ -51,6 +45,12 @@
     </Filter>
     <Filter Include="external\Client\shared\tile">
       <UniqueIdentifier>{0fde5964-e631-4246-b414-c9f33bd75879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\resource">
+      <UniqueIdentifier>{0f9eb2ee-76e6-4c68-9db3-4992c23dbce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Client\resource\pipe">
+      <UniqueIdentifier>{d36b0044-6103-4fdd-9541-6589b45dad32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

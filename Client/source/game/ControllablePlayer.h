@@ -3,8 +3,8 @@
 #include <Client/source/device/InputDevice.h>
 #include <Client/source/device/ScreenDevice.h>
 
-#include <Client/source/game/LocalPlayer.h>
-#include <Client/source/game/tiletrait/CollidableTile.h>
+#include "LocalPlayer.h"
+#include "tiletrait/CollidableTile.h"
 
 namespace Game
 {

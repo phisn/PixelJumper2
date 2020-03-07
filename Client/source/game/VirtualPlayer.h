@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Client/source/game/GamePlayer.h>
-#include <Client/source/game/GameWorld.h>
+#include "GamePlayer.h"
+#include "GameWorld.h"
 
 #include <Client/source/game/net/FrameStatus.h>
 

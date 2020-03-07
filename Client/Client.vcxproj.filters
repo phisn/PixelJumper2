@@ -168,9 +168,6 @@
     <ClInclude Include="source\resource\pipes\PipeBase.h">
       <Filter>source\resource\pipes</Filter>
     </ClInclude>
-    <ClInclude Include="source\Common.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="source\device\RandomDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Client/source/game/ControllablePlayer.h>
+#include "ControllablePlayer.h"
 #include <Client/source/game/net/FrameStatus.h>
 
 namespace Game

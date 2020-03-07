@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{d354550e-0df3-4a6b-9607-0b474b1de568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\component">
+      <UniqueIdentifier>{15e33101-a55b-4186-b8d9-b37297604859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\tiletrait">
+      <UniqueIdentifier>{4db520f9-1d28-4a21-8b80-d10d91c7c78c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ClassicSimulation.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEngine.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="DependentTileData.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameElementBase.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEvent.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePlayer.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameProperty.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTileBase.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWorld.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalPlayer.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInformation.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerProperties.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRepresentation.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldInformation.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldProperties.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\CollidableTile.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\DrawableTile.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\DynamicTile.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\DynamicWorldEntry.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\DynamicWorldExit.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\ExitableTile.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\InitializableTile.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\StaticTile.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\SynchronizableTile.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="tiletrait\TileContent.h">
+      <Filter>source\tiletrait</Filter>
+    </ClInclude>
+    <ClInclude Include="component\DynamicWorldTransitionComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="component\EmptyCollisionComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="component\SolidCollisionComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="component\ComponentBase.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ClassicSimulation.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionEngine.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePlayer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameProperty.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameWorld.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalPlayer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerProperties.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRepresentation.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldProperties.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
