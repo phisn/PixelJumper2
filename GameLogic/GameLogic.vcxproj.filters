@@ -7,8 +7,8 @@
     <Filter Include="source\component">
       <UniqueIdentifier>{15e33101-a55b-4186-b8d9-b37297604859}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\tiletrait">
-      <UniqueIdentifier>{4db520f9-1d28-4a21-8b80-d10d91c7c78c}</UniqueIdentifier>
+    <Filter Include="source\tile">
+      <UniqueIdentifier>{5437a8da-5062-40d0-9d42-19df7a2fdba0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,36 +63,6 @@
     <ClInclude Include="WorldProperties.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="tiletrait\CollidableTile.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="tiletrait\DrawableTile.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="tiletrait\DynamicTile.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="tiletrait\DynamicWorldEntry.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="tiletrait\DynamicWorldExit.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="tiletrait\ExitableTile.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="tiletrait\InitializableTile.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="tiletrait\StaticTile.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="tiletrait\SynchronizableTile.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="tiletrait\TileContent.h">
-      <Filter>source\tiletrait</Filter>
-    </ClInclude>
     <ClInclude Include="component\DynamicWorldTransitionComponent.h">
       <Filter>source\component</Filter>
     </ClInclude>
@@ -104,6 +74,45 @@
     </ClInclude>
     <ClInclude Include="component\ComponentBase.h">
       <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\CollidableTile.h">
+      <Filter>source\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\DrawableTile.h">
+      <Filter>source\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\DynamicTile.h">
+      <Filter>source\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\DynamicWorldEntry.h">
+      <Filter>source\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\DynamicWorldExit.h">
+      <Filter>source\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\ExitableTile.h">
+      <Filter>source\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\InitializableTile.h">
+      <Filter>source\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\StaticTile.h">
+      <Filter>source\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\SynchronizableTile.h">
+      <Filter>source\tile</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityView.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentFactory.h">
+      <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +144,15 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="WorldProperties.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentFactory.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

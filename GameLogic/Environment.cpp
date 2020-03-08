@@ -1,17 +1,13 @@
 #include "Environment.h"
 
-#include <Client/source/device/ScreenDevice.h>
+#include "tiletrait/DrawableTile.h"
+#include "tiletrait/DynamicTile.h"
+#include "tiletrait/InitializableTile.h"
+#include "tiletrait/StaticTile.h"
 
-#include <Client/source/game/tiletrait/DrawableTile.h>
-#include <Client/source/game/tiletrait/DynamicTile.h>
-#include <Client/source/game/tiletrait/InitializableTile.h>
-#include <Client/source/game/tiletrait/StaticTile.h>
+#include "GameElementBase.h"
 
-#include <Client/source/game/GameElementBase.h>
-
-#include <Client/source/logger/Logger.h>
-
-#include <Client/source/shared/tiles/TileDescription.h>
+#include "Logger/Logger.h"
 
 namespace Game
 {
@@ -29,11 +25,15 @@ namespace Game
 		for (int i = 0; i < resource->tiles.size(); ++i)
 		{
 			const Resource::Tile& tileResource = resource->tiles[i];
-			const Resource::TileInstanceWrapper* const tileInstance = &resource->components[tileResource.content.instanceIndex];
+			resource->components[tileResource.componentIndex].;
 
-			GameElementBase* const tile = Shared::TileDescription::Find(
-				tileInstance->getID()
-			)->creation.createGameTile(&tileResource, tileInstance, i);
+			/*
+				const Resource::TileInstanceWrapper* const tileInstance = &resource->components[tileResource.content.instanceIndex];
+
+				GameElementBase* const tile = Shared::TileDescription::Find(
+					tileInstance->getID()
+				)->creation.createGameTile(&tileResource, tileInstance, i);
+			*/
 
 			if (tile == NULL)
 			{

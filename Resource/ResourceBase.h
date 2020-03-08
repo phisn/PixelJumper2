@@ -10,6 +10,10 @@ namespace Resource
 	class ResourceBase
 	{
 	public:
+		virtual ~ResourceBase()
+		{
+		}
+
 		virtual bool make(ReadPipe* const pipe) = 0; 
 		virtual bool save(WritePipe* const pipe) = 0;
 

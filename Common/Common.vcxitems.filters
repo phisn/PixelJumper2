@@ -9,14 +9,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Common.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\phisn\source\repos\PixelJumper2\Common\SharedDefinitions.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\phisn\source\repos\PixelJumper2\Common\OperatorDefinitions.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Tiles.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)OperatorDefinitions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharedDefinitions.h" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "CollisionEngine.h"
-#include "tiletrait/DynamicWorldEntry.h"
+#include "Component.h"
+#include "Entity.h"
+#include "trait/DynamicWorldEntry.h"
 
 #include "Resource/WorldResource.h"
 
@@ -16,6 +18,42 @@
 
 namespace Game
 {
+	struct EnvironmentAccess
+	{
+
+	};
+
+	class _Environment
+	{
+	public:
+		bool initialize(const Resource::World* const worldResource)
+		{
+			for (const Resource::EntityResource& entityResource : worldResource->entities)
+			{
+				Entity* entity = new Entity;
+
+				for (const Resource::ComponentResource& componentResource : worldResource->components)
+					entity->addComponent(Component::Create(componentResource));
+
+				entities.push_back(entity);
+			}
+
+			for (Entity* const entity : entities)
+				if (!entity->)
+
+			for (Entity* const entity : entities)
+				if (!entity->initialize())
+				{
+					return false;
+				}
+
+			return true;
+		}
+
+	private:
+		std::vector<Entity*> entities;
+	};
+	
 	class CollidableTile;
 	class Environment
 	{

@@ -7,7 +7,7 @@
     <Filter Include="source\pipes">
       <UniqueIdentifier>{e2d90934-241c-4b46-af1c-269a22d603ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\components">
+    <Filter Include="source\component">
       <UniqueIdentifier>{575e8a8f-a12c-4882-83be-bde6594cb904}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -27,9 +27,6 @@
     <ClCompile Include="StaticResource.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="TileResource.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="WorldResource.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -46,6 +43,9 @@
       <Filter>source\pipes</Filter>
     </ClCompile>
     <ClCompile Include="ComponentResource.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityResource.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,9 +74,6 @@
     <ClInclude Include="StaticResource.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="TileResource.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="WorldResource.h">
       <Filter>source</Filter>
     </ClInclude>
@@ -92,23 +89,29 @@
     <ClInclude Include="pipes\PipeBase.h">
       <Filter>source\pipes</Filter>
     </ClInclude>
-    <ClInclude Include="component\SolidCollisionComponent.h">
-      <Filter>source\components</Filter>
-    </ClInclude>
-    <ClInclude Include="component\CommonExitComponent.h">
-      <Filter>source\components</Filter>
-    </ClInclude>
-    <ClInclude Include="component\DynamicWorldTransitionComponent.h">
-      <Filter>source\components</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentResource.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="TrivialResource.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="EntityResource.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="component\DynamicTransitionComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
     <ClInclude Include="component\ScriptComponent.h">
-      <Filter>source\components</Filter>
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="component\SolidCollisionComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="component\StaticVisibleComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="component\TileComponent.h">
+      <Filter>source\component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

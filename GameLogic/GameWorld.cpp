@@ -1,6 +1,6 @@
 #include "GameWorld.h"
 
-#include <Client/source/game/tiletrait/InitializableTile.h>
+#include "tiletrait/InitializableTile.h"
 
 namespace Game
 {

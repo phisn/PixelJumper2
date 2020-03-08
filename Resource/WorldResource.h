@@ -3,8 +3,8 @@
 #include "Common.h"
 
 #include "ComponentResource.h"
+#include "EntityResource.h"
 #include "PlayerResource.h"
-#include "TileResource.h"
 
 #include <SFML/Main.hpp>
 
@@ -24,8 +24,8 @@ namespace Resource
 	{
 		struct PrivateContent
 		{
+			sf::Uint16 entityCount;
 			sf::Uint16 componentCount;
-			sf::Uint16 tileCount;
 
 			sf::Uint8 targetCount;
 		};
@@ -35,8 +35,6 @@ namespace Resource
 		// pushed components
 		~World()
 		{
-			for (ComponentResource* const component : components)
-				delete component;
 		}
 
 		struct Content
@@ -53,8 +51,8 @@ namespace Resource
 
 		} content;
 
-		std::vector<ComponentResource*> components;
-		std::vector<Tile> tiles;
+		std::vector<EntityResource> entities;
+		std::vector<ComponentResource> components;
 
 		std::vector<Resource::WorldId> targets;
 		
@@ -74,20 +72,16 @@ namespace Resource
 			components.reserve(privateContent.componentCount);
 			for (int i = 0; i < privateContent.componentCount; ++i)
 			{
-				ComponentID id;
-				if (!pipe->readValue(&id))
-					return false;
+				components.emplace_back();
 
-				components.push_back(ComponentResource::Create(id));
-
-				if (!components.back()->make(pipe))
+				if (!components.back().make(pipe))
 					return false;
 			}
 
-			tiles.resize(privateContent.tileCount);
+			entities.resize(privateContent.entityCount);
 
-			for (Tile& tile : tiles)
-				if (!tile.make(pipe))
+			for (EntityResource& entity : entities)
+				if (!entity.make(pipe))
 				{
 					return false;
 				}
@@ -112,8 +106,8 @@ namespace Resource
 
 			PrivateContent privateContent;
 
+			privateContent.entityCount = entities.size();
 			privateContent.componentCount = components.size();
-			privateContent.tileCount = tiles.size();
 			privateContent.targetCount = targets.size();
 
 			if (!pipe->writeValue(&privateContent))
@@ -121,18 +115,14 @@ namespace Resource
 				return false;
 			}
 
-			for (ComponentResource* const component : components)
-			{
-				const ComponentID componentID = component->getID();
-				if (!pipe->writeValue(&componentID))
+			for (ComponentResource& component : components)
+				if (!component.save(pipe))
+				{
 					return false;
+				}
 
-				if (!component->save(pipe))
-					return false;
-			}
-
-			for (Tile& tile : tiles)
-				if (!tile.save(pipe))
+			for (EntityResource& entity : entities)
+				if (!entity.save(pipe))
 				{
 					return false;
 				}

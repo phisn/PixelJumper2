@@ -78,11 +78,15 @@
   <ItemGroup>
     <ClInclude Include="ClassicSimulation.h" />
     <ClInclude Include="CollisionEngine.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="component\ComponentBase.h" />
     <ClInclude Include="component\DynamicWorldTransitionComponent.h" />
     <ClInclude Include="component\EmptyCollisionComponent.h" />
     <ClInclude Include="component\SolidCollisionComponent.h" />
     <ClInclude Include="DependentTileData.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityView.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="GameElementBase.h" />
     <ClInclude Include="GameEvent.h" />
@@ -95,22 +99,24 @@
     <ClInclude Include="PlayerInformation.h" />
     <ClInclude Include="PlayerProperties.h" />
     <ClInclude Include="PlayerRepresentation.h" />
-    <ClInclude Include="tiletrait\CollidableTile.h" />
-    <ClInclude Include="tiletrait\DrawableTile.h" />
-    <ClInclude Include="tiletrait\DynamicTile.h" />
-    <ClInclude Include="tiletrait\DynamicWorldEntry.h" />
-    <ClInclude Include="tiletrait\DynamicWorldExit.h" />
-    <ClInclude Include="tiletrait\ExitableTile.h" />
-    <ClInclude Include="tiletrait\InitializableTile.h" />
-    <ClInclude Include="tiletrait\StaticTile.h" />
-    <ClInclude Include="tiletrait\SynchronizableTile.h" />
-    <ClInclude Include="tiletrait\TileContent.h" />
+    <ClInclude Include="trait\CollidableTile.h" />
+    <ClInclude Include="trait\DrawableTile.h" />
+    <ClInclude Include="trait\DynamicTile.h" />
+    <ClInclude Include="trait\DynamicWorldEntry.h" />
+    <ClInclude Include="trait\DynamicWorldExit.h" />
+    <ClInclude Include="trait\ExitableTile.h" />
+    <ClInclude Include="trait\InitializableTile.h" />
+    <ClInclude Include="trait\StaticTile.h" />
+    <ClInclude Include="trait\SynchronizableTile.h" />
     <ClInclude Include="WorldInformation.h" />
     <ClInclude Include="WorldProperties.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClassicSimulation.cpp" />
     <ClCompile Include="CollisionEngine.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentFactory.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="GamePlayer.cpp" />
     <ClCompile Include="GameProperty.cpp" />

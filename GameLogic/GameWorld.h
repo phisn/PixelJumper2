@@ -11,8 +11,6 @@
 
 #include "Logger/Logger.h"
 
-#include <Client/source/shared/tiles/TileDescription.h>
-
 #include <vector>
 
 namespace Game

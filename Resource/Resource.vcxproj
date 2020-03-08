@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClCompile Include="ClassicPlayerResource.cpp" />
     <ClCompile Include="ComponentResource.cpp" />
+    <ClCompile Include="EntityResource.cpp" />
     <ClCompile Include="pipes\FilePipe.cpp" />
     <ClCompile Include="pipes\MemoryPipe.cpp" />
     <ClCompile Include="pipes\PacketPipe.cpp" />
@@ -88,17 +89,18 @@
     <ClCompile Include="ResourceDefinition.cpp" />
     <ClCompile Include="ResourceInterface.cpp" />
     <ClCompile Include="StaticResource.cpp" />
-    <ClCompile Include="TileResource.cpp" />
     <ClCompile Include="WorldResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassicPlayerResource.h" />
     <ClInclude Include="CommonResourceTypes.h" />
     <ClInclude Include="ComponentResource.h" />
-    <ClInclude Include="component\CommonExitComponent.h" />
-    <ClInclude Include="component\DynamicWorldTransitionComponent.h" />
+    <ClInclude Include="component\DynamicTransitionComponent.h" />
     <ClInclude Include="component\ScriptComponent.h" />
     <ClInclude Include="component\SolidCollisionComponent.h" />
+    <ClInclude Include="component\StaticVisibleComponent.h" />
+    <ClInclude Include="component\TileComponent.h" />
+    <ClInclude Include="EntityResource.h" />
     <ClInclude Include="pipes\FilePipe.h" />
     <ClInclude Include="pipes\MemoryPipe.h" />
     <ClInclude Include="pipes\PacketPipe.h" />
@@ -109,7 +111,6 @@
     <ClInclude Include="ResourceInterface.h" />
     <ClInclude Include="ResourceType.h" />
     <ClInclude Include="StaticResource.h" />
-    <ClInclude Include="TileResource.h" />
     <ClInclude Include="TrivialResource.h" />
     <ClInclude Include="WorldResource.h" />
   </ItemGroup>

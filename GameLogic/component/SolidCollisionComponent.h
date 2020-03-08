@@ -1,24 +1,19 @@
 #pragma once
 
 #include "Environment.h"
-#include "tiletrait/CollidableTile.h"
+#include "trait/CollidableTile.h"
 
 #include "Resource/component/SolidCollisionComponent.h"
 
 namespace Game
 {
-	typedef Resource::SolidCollisionComponentContent SolidCollisionContent;
-
 	class SolidCollisionComponent
 		:
 		public CollidableTile
 	{
 	public:
-		SolidCollisionComponent(
-			const TileContent& tileContent,
-			const SolidCollisionContent content)
+		SolidCollisionComponent(const Resource::SolidCollisionComponent content)
 			:
-			CollidableTile(tileContent),
 			content(content)
 		{
 		}

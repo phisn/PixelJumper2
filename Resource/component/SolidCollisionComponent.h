@@ -5,12 +5,12 @@
 
 namespace Resource
 {
-	struct SolidCollisionComponentContent
+	struct SolidCollisionContainerContent
 	{
 		float density;
 		float inputForceAddition;
 		float friction;
 	};
 
-	typedef TrivialResource<SolidCollisionComponentContent> SolidCollisionComponent;
+	typedef TrivialResource<SolidCollisionContainerContent> SolidCollisionComponent;
 }

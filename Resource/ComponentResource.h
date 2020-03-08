@@ -1,14 +1,17 @@
 #pragma once
 
+#include "Logger/Logger.h"
 #include "ResourceBase.h"
 
 namespace Resource
 {
 	enum class ComponentID : sf::Uint16
 	{
-		CommonExit,
 		DynamicWorldTransition,
-		SolidCollision
+		CommonExit,
+		SolidCollision,
+		StaticVisible,
+		Tile,
 	};
 
 	class ComponentResource
@@ -16,24 +19,78 @@ namespace Resource
 		public ResourceBase
 	{
 	public:
-		static ComponentResource* Create(const ComponentID componentID);
-		
-		ComponentResource(const ComponentID id)
+		ComponentResource(ComponentResource&&) = default;
+		ComponentResource& operator=(ComponentResource&&) = default;
+
+		// passing responsibility for instance
+		template <typename Component>
+		ComponentResource(
+			const ComponentID componentID,
+			Component* const instance)
 			:
-			id(id)
+			componentID(componentID),
+			resource((ResourceBase*) instance),
+			instance((void*) instance)
 		{
 		}
 
-		virtual ~ComponentResource()
+		ComponentResource()
+			:
+			resource(NULL)
 		{
+		}
+
+		~ComponentResource()
+		{
+			Log::Warning(L"Component deleted");
+
+			if (resource)
+				delete resource;
+		}
+
+		bool make(ReadPipe* const pipe) override
+		{
+			return resource->make(pipe);
+		}
+
+		bool save(WritePipe* const pipe) override
+		{
+			return resource->save(pipe);
+		}
+
+		bool setup() override
+		{
+			return resource->setup();
+		}
+
+		bool validate() override
+		{
+			return resource->validate();
+		}
+
+		template <typename Component>
+		Component* getInstance() const
+		{
+			return (Component*) instance;
 		}
 
 		ComponentID getID() const
 		{
-			return id;
+			return componentID;
+		}
+		
+	private:
+		void initiate(const ComponentID componentID);
+
+		template <typename Component>
+		void initiateFromComponent(Component* const instance)
+		{
+			this->instance = (void*) instance;
+			resource = (ResourceBase*) instance;
 		}
 
-	private:
-		const ComponentID id;
+		ComponentID componentID;
+		void* instance;
+		Resource::ResourceBase* resource;
 	};
 }
