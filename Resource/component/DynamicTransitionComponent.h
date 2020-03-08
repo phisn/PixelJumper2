@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ComponentResource.h"
-#include "WorldResource.h"
+#include "Resource/ComponentResource.h"
+#include "Resource/WorldResource.h"
 
-#include "TrivialResource.h"
+#include "Resource/TrivialResource.h"
 
 namespace Resource
 {

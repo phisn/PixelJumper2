@@ -6,11 +6,9 @@
 #include "WorldInformation.h"
 #include "WorldProperties.h"
 
-#include "tiletrait/CollidableTile.h"
-#include "tiletrait/DynamicWorldExit.h"
-
 #include "Logger/Logger.h"
 
+#include <cassert>
 #include <vector>
 
 namespace Game
@@ -47,7 +45,7 @@ namespace Game
 
 			section.information(L"Map: " + resource->content.author);
 			section.information(L"ID: " + std::to_wstring(resource->content.id));
-			section.information(L"TileCount: " + std::to_wstring(resource->tiles.size()));
+			section.information(L"Entities: " + std::to_wstring(resource->entities.size()));
 			section.information(L"Width: " + std::to_wstring(resource->content.width));
 			section.information(L"Height: " + std::to_wstring(resource->content.height));
 
@@ -165,9 +163,9 @@ namespace Game
 			const WorldEntryID entryID,
 			const DynamicWorldEntryEvent event)
 		{
-			DynamicWorldEntry* const entry = environment.getEntry(entryID);
+			DynamicWorldEntryHandler* const handler = environment.findDynamicWorldEntry(entryID);
 
-			if (entry == NULL)
+			if (handler == NULL)
 			{
 				Log::Error(L"Target entry not found",
 					entryID, L"target",
@@ -179,7 +177,7 @@ namespace Game
 			players.push_back(player);
 			properties.setPlayerCount(*properties.playerCount + 1);
 
-			entry->handleWorldEntry(player, event);
+			handler->handleWorldEntry(player, event);
 
 			return true;
 		}
@@ -228,7 +226,7 @@ namespace Game
 			struct
 			{
 				const CollisionType* type;
-				CollidableTile* tile = NULL;
+				CollidableTraitHandler* tile = NULL;
 				CollisionEngine::CollisionInfo info;
 				float distance = 0;
 
@@ -240,7 +238,7 @@ namespace Game
 			{
 				const sf::Vector2f target = offset + *player->properties.position;
 
-				for (const CollisionType& collisionType : environment.getCollisionTypes())
+				for (const CollisionType& collisionType : environment.getActiveCollisionTypes())
 				{
 					const CollisionEngine::CollisionContext collisionContext =
 						CollisionEngine::SetupCollisionContext(
@@ -249,11 +247,11 @@ namespace Game
 							collisionType
 						);
 
-					for (CollidableTile* const tile : environment.getCollisionTileType(collisionType))
+					for (const CollidableTrait& tile : environment.findCollidableTrait(collisionType))
 						if (CollisionEngine::FindCollision(
 								&collisionContext,
-								tile->content.size,
-								tile->content.position))
+								tile.info.size,
+								tile.info.position))
 						{
 							const CollisionEngine::CollisionInfo collisionInfo =
 								CollisionEngine::GetLastCollision();
@@ -267,7 +265,7 @@ namespace Game
 							if (collisionDistance < collisionData.distance || collisionData.tile == NULL)
 							{
 								collisionData.distance = collisionDistance;
-								collisionData.tile = tile;
+								collisionData.tile = tile.handler;
 								collisionData.info = collisionInfo;
 								collisionData.type = &collisionType;
 							}
@@ -276,7 +274,7 @@ namespace Game
 
 				if (collisionData.tile)
 				{
-					Collision collision;
+					CollidableEvent collision;
 
 					collision.info = collisionData.info;
 					collision.player = (PlayerBase*) player;

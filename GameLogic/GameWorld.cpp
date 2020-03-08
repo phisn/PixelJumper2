@@ -1,12 +1,12 @@
 #include "GameWorld.h"
 
-#include "tiletrait/InitializableTile.h"
+#include "trait/InitializableTrait.h"
 
 namespace Game
 {
 	bool World::initializeTiles()
 	{
-		for (InitializableTile* const tile : environment.getTileType<InitializableTile>())
+		for (InitializableTraitHandler* const tile : environment.getInitializableTrait())
 			if (!tile->initialize(this))
 			{
 				return false;

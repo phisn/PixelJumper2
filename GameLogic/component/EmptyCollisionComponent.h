@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Environment.h"
-#include "tiletrait/CollidableTile.h"
-
+#include "trait/CollidableTrait.h"
+/*
 namespace Game
 {
 	class EmptyCollisionComponent
 		:
-		public CollidableTile
+		public CollidableTrait
 	{
 	public:
 		EmptyCollisionComponent(const TileContent& tileContent)
@@ -18,7 +18,7 @@ namespace Game
 
 		sf::Vector2f onCollision(
 			const CollisionType type,
-			const Collision& collision) override
+			const CollidableEvent& collision) override
 		{
 			sf::Vector2f result;
 
@@ -57,3 +57,4 @@ namespace Game
 
 	};
 }
+*/

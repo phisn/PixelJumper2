@@ -24,14 +24,25 @@ namespace Game
 		bool initialize()
 		{
 			for (Component* const component : components)
-				component->initialize(this);
+				if (!component->initialize(this))
+				{
+					return false;
+				}
+
+			return true;
 		}
 
 		template <typename T>
 		void registerComponent(T* const component)
 		{
 			accessComponents[component->getID()] = (void*) component;
-			components[component->getID()] = component;
+			components.push_back(component);
+		}
+
+		void registerTraits(EnvironmentView* const environment)
+		{
+			for (Component* const component : components)
+				component->registerTraits(environment);
 		}
 
 	private:

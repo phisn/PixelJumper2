@@ -12,8 +12,8 @@ namespace Game
 		{
 			decltype(accessComponents)::iterator component = accessComponents.find(componentID);
 			return component == accessComponents.end()
-				? NULL
-				: component->second;
+				? (T*) NULL
+				: (T*) component->second;
 		}
 
 	protected:

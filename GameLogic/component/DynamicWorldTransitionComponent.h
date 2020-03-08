@@ -1,63 +1,106 @@
 #pragma once
 
 #include "Environment.h"
+#include "TileComponent.h"
 
-#include "tiletrait/DynamicWorldEntry.h"
-#include "tiletrait/DynamicWorldExit.h"
+#include "trait/DynamicWorldEntry.h"
+#include "trait/DynamicWorldExit.h"
 
-#include "tiletrait/TileContent.h"
-
-#include "Resource/component/DynamicWorldTransitionComponent.h"
+#include "Resource/component/DynamicTransitionComponent.h"
 
 namespace Game
 {
-	typedef Resource::DynamicWorldTransitionComponentContent DynamicWorldTransitionContent;
-
 	// duplex
 	class DynamicWorldTransitionComponent
 		:
-		public DynamicWorldEntry,
-		public DynamicWorldExit
+		public Component,
+		public CollidableTraitHandler,
+		public DynamicWorldEntryHandler,
+		public DynamicWorldExitHandler
 	{
 	public:
-		DynamicWorldTransitionComponent(
-			const DynamicWorldTransitionContent content,
-			const TileContent& tilecontent)
+		DynamicWorldTransitionComponent(const Resource::ComponentResource* const resource)
 			:
-			DynamicWorldEntry(content.worldEntryID),
-			targetWorld(content.targetWorld),
-			targetEntry(content.targetEntry),
-			tilecontent(tilecontent)
+			content(*(Resource::DynamicWorldTransitionComponent*)
+				resource->getInstance<Resource::DynamicWorldTransitionComponent>()
+			)
 		{
+		}
+
+		bool initialize(EntityView* const entity) override
+		{
+			tileComponent = entity->findComponent<TileComponent>(Resource::ComponentID::Tile);
+			return tileComponent != NULL;
+		}
+		
+		void registerTraits(EnvironmentView* const environment) override
+		{
+			CollidableTrait collidableTrait;
+			collidableTrait.handler = this;
+			collidableTrait.info.position = sf::Vector2f(tileComponent->content->position);
+			collidableTrait.info.size = sf::Vector2f(tileComponent->content->size);
+
+			environment->pushCollidableTrait(
+				CollisionType{ true, false, true },
+				collidableTrait);
+
+			environment->pushDynamicWorldEntry(
+				this,
+				content.worldEntryID);
+			environment->pushDynamicWorldExit(this);
 		}
 
 		void handleWorldEntry(
 			PlayerBase* const player,
 			const DynamicWorldEntryEvent& dwee) override
 		{
-			player->getProperties().position += tilecontent.position - dwee.offsetSource;
+			player->getProperties().position += sf::Vector2f(tileComponent->content->position) - dwee.offsetSource;
 		}
 
 		void notifyOnExit()
 		{
 			DynamicWorldExitEvent event;
 
-			event.offset = tilecontent.position;
-			event.targetWorld = targetWorld;
-			event.targetEntry = targetEntry;
+			event.offset = sf::Vector2f(tileComponent->content->position);
+			event.targetWorld = content.targetWorld;
+			event.targetEntry = content.targetEntry;
 			
-			DynamicWorldExit::notifyOnExit(event);
+			DynamicWorldExitHandler::notifyOnExit(event);
 		}
 
-		void registerComponent(Environment* const env)
+		sf::Vector2f onCollision(
+			const CollisionType type,
+			const CollidableEvent& collision) override
 		{
-			env->registerTile<DynamicWorldEntry>(this);
-			env->registerTile<DynamicWorldExit>(this);
+			sf::Vector2f result;
+
+			if (collision.info.isHorizontal())
+			{
+				collision.player->getProperties().position =
+				{
+					collision.target.x,
+					collision.info.position.y
+				};
+
+				result = { 0.f, collision.target.y - collision.info.position.y };
+			}
+			else
+			{
+				collision.player->getProperties().position =
+				{
+					collision.info.position.x,
+					collision.target.y
+				};
+
+				result = { collision.target.x - collision.info.position.x, 0.f };
+			}
+
+			notifyOnExit();
+			return result;
 		}
 
 	private:
-		const Resource::WorldId targetWorld;
-		const WorldEntryID targetEntry;
-		const TileContent& tilecontent;
+		TileComponent* tileComponent;
+		const Resource::DynamicWorldTransitionComponentContent content;
 	};
 }

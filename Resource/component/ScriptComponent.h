@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ComponentResource.h"
+#include "Resource/ComponentResource.h"
 
 #include <string>
 

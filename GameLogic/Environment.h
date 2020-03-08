@@ -1,11 +1,18 @@
 #pragma once
 
-#include "CollisionEngine.h"
+
 #include "Component.h"
+#include "ComponentFactory.h"
 #include "Entity.h"
-#include "trait/DynamicWorldEntry.h"
 
 #include "Resource/WorldResource.h"
+
+#include "trait/CollidableTrait.h"
+#include "trait/DrawableTrait.h"
+
+
+#include "CollisionEngine.h"
+#include "trait/DynamicWorldEntry.h"
 
 #include <cassert>
 #include <typeindex>
@@ -18,141 +25,31 @@
 
 namespace Game
 {
-	struct EnvironmentAccess
-	{
-
-	};
-
-	class _Environment
+	class Environment
+		:
+		public EnvironmentView
 	{
 	public:
-		bool initialize(const Resource::World* const worldResource)
+		bool initialize(const Resource::World* const worldResource);
+		bool initializeGraphics();
+
+		void draw(sf::RenderTarget* const target) const
 		{
-			for (const Resource::EntityResource& entityResource : worldResource->entities)
-			{
-				Entity* entity = new Entity;
+			for (const sf::VertexBuffer& vertexTile : vertexWorld)
+				target->draw(vertexTile);
 
-				for (const Resource::ComponentResource& componentResource : worldResource->components)
-					entity->addComponent(Component::Create(componentResource));
+			for (DrawableTraitHandler* const handler : drawables)
+				handler->onDraw(target);
+		}
 
-				entities.push_back(entity);
-			}
-
-			for (Entity* const entity : entities)
-				if (!entity->)
-
-			for (Entity* const entity : entities)
-				if (!entity->initialize())
-				{
-					return false;
-				}
-
-			return true;
+		void processLogic()
+		{
+			for (DynamicTrait* const dynamic : dynamics)
+				dynamic->processLogic();
 		}
 
 	private:
 		std::vector<Entity*> entities;
-	};
-	
-	class CollidableTile;
-	class Environment
-	{
-	public:
-		typedef std::vector<void*> TileContainer;
-		typedef std::vector<CollidableTile*> CollidableTileContainer;
-
-		bool initialize(const Resource::World* const resource);
-		bool initializeGraphics()
-		{
-			return initializeVertex();
-		}
-		
-		void processLogic();
-
-		void draw(sf::RenderTarget* const target) const;
-		void onEvent(const sf::Event event);
-		
-		template <typename TileType>
-		void registerTile(TileType* const tile)
-		{
-			tiles[typeid(TileType)].push_back((void*)tile);
-		}
-
-		// let hash | valuetype open for ex. diff. collision types
-		template <typename TileType>
-		const std::vector<TileType*>& getTileType() const
-		{
-			decltype(tiles)::const_iterator iterator = tiles.find(typeid(TileType));
-
-			if (iterator == tiles.cend())
-			{
-				return (const std::vector<TileType*>&) emptyVector;
-			}
-
-			return (const std::vector<TileType*>&) iterator->second;
-		}
-
-		void registerCollisionType(
-			const CollisionType type, 
-			CollidableTile* const tile)
-		{
-			std::vector<CollidableTile*>& tiles = collisionTypeTiles[type];
-
-			if (tiles.size() == 0)
-			{
-				collisionTypes.push_back(type);
-			}
-
-			tiles.push_back(tile);
-		}
-
-		const std::vector<CollisionType>& getCollisionTypes()
-		{
-			return collisionTypes;
-		}
-
-		const std::vector<CollidableTile*>& getCollisionTileType(const CollisionType type)
-		{
-			decltype(collisionTypeTiles)::iterator iterator = collisionTypeTiles.find(type);
-
-			if (iterator == collisionTypeTiles.cend())
-			{
-				return (const std::vector<CollidableTile*>&) emptyVector;
-			}
-
-			return iterator->second;
-		}
-
-		void registerEntry(
-			const WorldEntryID entryID,
-			DynamicWorldEntry* const entry)
-		{
-			entries[entryID] = entry;
-		}
-
-		DynamicWorldEntry* getEntry(const WorldEntryID entryID)
-		{
-			decltype(entries)::iterator iterator = entries.find(entryID);
-
-			if (iterator == entries.cend())
-			{
-				return NULL;
-			}
-
-			return iterator->second;
-		}
-
-	private:
-		bool initializeCreateAndRegister(const Resource::World* const resource);
-		bool initializeVertex();
-
-		std::unordered_map<std::type_index, TileContainer> tiles;
-		std::unordered_map<CollisionType, CollidableTileContainer> collisionTypeTiles;
-		std::unordered_map<WorldEntryID, DynamicWorldEntry*> entries;
-
-		std::vector<CollisionType> collisionTypes;
-		std::vector<void*> emptyVector;
-
 		std::vector<sf::VertexBuffer> vertexWorld;
 	};
 }

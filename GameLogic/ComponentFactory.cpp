@@ -4,7 +4,7 @@
 namespace Game
 {
 	bool ComponentFactory::CreateComponent(Entity* const entity, 
-		Resource::ComponentResource* const componentResource)
+		const Resource::ComponentResource* const componentResource)
 	{
 		switch (componentResource->getID())
 		{
@@ -15,8 +15,8 @@ namespace Game
 
 			return true;
 		case Resource::ComponentID::SolidCollision:
-			entity->registerComponent(new SolidCollisionComponent(
-				componentResource->getInstance<Resource::SolidCollisionComponent>())
+			entity->registerComponent(
+				new SolidCollisionComponent(componentResource)
 			);
 
 			return true;

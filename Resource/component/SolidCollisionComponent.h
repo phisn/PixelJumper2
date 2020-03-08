@@ -1,16 +1,16 @@
 #pragma once
 
-#include "ComponentResource.h"
-#include "TrivialResource.h"
+#include "Resource/ComponentResource.h"
+#include "Resource/TrivialResource.h"
 
 namespace Resource
 {
-	struct SolidCollisionContainerContent
+	struct SolidCollisionComponentContent
 	{
 		float density;
 		float inputForceAddition;
 		float friction;
 	};
 
-	typedef TrivialResource<SolidCollisionContainerContent> SolidCollisionComponent;
+	typedef TrivialResource<SolidCollisionComponentContent> SolidCollisionComponent;
 }

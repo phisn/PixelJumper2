@@ -1,26 +1,27 @@
 #pragma once
 
-#include "Environment.h"
-#include "trait/CollidableTile.h"
-
+#include "Component.h"
 #include "Resource/component/SolidCollisionComponent.h"
+#include "TileComponent.h"
+#include "trait/CollidableTrait.h"
 
 namespace Game
 {
 	class SolidCollisionComponent
 		:
-		public CollidableTile
+		public Component,
+		public CollidableTraitHandler
 	{
 	public:
-		SolidCollisionComponent(const Resource::SolidCollisionComponent content)
+		SolidCollisionComponent(const Resource::ComponentResource* const content)
 			:
-			content(content)
+			content(*(Resource::SolidCollisionComponentContent*) content->getInstance<Resource::TileComponent>())
 		{
 		}
 
 		sf::Vector2f onCollision(
 			const CollisionType type,
-			const Collision& collision) override
+			const CollidableEvent& collision) override
 		{
 			collision.player->getProperties().position = collision.info.position;
 
@@ -64,20 +65,30 @@ namespace Game
 				});
 
 			collision.player->getProperties().movement = movement;
-			notifyCollisionEvent(&type, &collision);
-
 			return remainOffset;
 		}
 
-		void registerComponent(Environment* const env)
+		bool initialize(EntityView* const entity) override
 		{
-			env->registerCollisionType(
-				Game::CollisionType::NormalCollision,
-				this);
-			env->registerTile<CollidableTile>(this);
+			tileComponent = entity->findComponent<TileComponent>(Resource::ComponentID::Tile);
+			return tileComponent != NULL;
+		}
+
+		void registerTraits(EnvironmentView* const environment) override
+		{
+			Game::CollidableTrait trait;
+
+			trait.handler = this;
+			trait.info.position = sf::Vector2f(tileComponent->content->position);
+			trait.info.size = sf::Vector2f(tileComponent->content->size);
+
+			environment->pushCollidableTrait(
+				CollisionType::NormalCollision,
+				trait);
 		}
 
 	private:
-		const SolidCollisionContent content;
+		TileComponent* tileComponent;
+		Resource::SolidCollisionComponentContent content;
 	};
 }

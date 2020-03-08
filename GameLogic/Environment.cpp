@@ -1,60 +1,35 @@
 #include "Environment.h"
-
-#include "tiletrait/DrawableTile.h"
-#include "tiletrait/DynamicTile.h"
-#include "tiletrait/InitializableTile.h"
-#include "tiletrait/StaticTile.h"
-
-#include "GameElementBase.h"
-
 #include "Logger/Logger.h"
 
 namespace Game
 {
-	bool Environment::initialize(
-		const Resource::World* const resource)
+	bool Environment::initialize(const Resource::World* const worldResource)
 	{
-		Log::Section section(L"initialize Environment");
-
-		// vertex init moved
-		return initializeCreateAndRegister(resource);
-	}
-
-	bool Environment::initializeCreateAndRegister(const Resource::World* const resource)
-	{
-		for (int i = 0; i < resource->tiles.size(); ++i)
+		for (const Resource::EntityResource& entityResource : worldResource->entities)
 		{
-			const Resource::Tile& tileResource = resource->tiles[i];
-			resource->components[tileResource.componentIndex].;
+			Entity* entity = new Entity;
 
-			/*
-				const Resource::TileInstanceWrapper* const tileInstance = &resource->components[tileResource.content.instanceIndex];
+			for (const Resource::ComponentResource& componentResource : worldResource->components)
+				ComponentFactory::CreateComponent(entity, &componentResource);
 
-				GameElementBase* const tile = Shared::TileDescription::Find(
-					tileInstance->getID()
-				)->creation.createGameTile(&tileResource, tileInstance, i);
-			*/
+			entities.push_back(entity);
+		}
 
-			if (tile == NULL)
+		for (Entity* const entity : entities)
+			if (!entity->initialize())
 			{
-				Log::Error(L"Failed to create tile");
 				return false;
 			}
 
-			registerTile<GameElementBase>(tile);
-		}
-
-		for (GameElementBase* const tile : getTileType<GameElementBase>())
-		{
-			tile->registerComponents(this);
-		}
+		for (Entity* const entity : entities)
+			entity->registerTraits(this);
 
 		return true;
 	}
 
-	bool Environment::initializeVertex()
+	bool Environment::initializeGraphics()
 	{
-		for (StaticTile* const tile : getTileType<StaticTile>())
+		for (const StaticVisibleTrait& tile : staticVisibles)
 		{
 			sf::VertexBuffer vertexBuffer(sf::PrimitiveType::Quads);
 
@@ -65,50 +40,26 @@ namespace Game
 				return false;
 			}
 
-			sf::Vertex vertices[4] = { };
+			sf::Vertex vertices[4] = {};
 
 			for (int i = 0; i < 4; ++i)
-			{
-				vertices[i].color = tile->color;
-			}
+				vertices[i].color = tile.color;
 
-			vertices[0].position = tile->content.position;
-			vertices[1].position = tile->content.position + sf::Vector2f(tile->content.size.x, 0);
-			vertices[2].position = tile->content.position + tile->content.size;
-			vertices[3].position = tile->content.position + sf::Vector2f(0, tile->content.size.y);
+			vertices[0].position = tile.position;
+			vertices[1].position = tile.position + sf::Vector2f(tile.size.x, 0);
+			vertices[2].position = tile.position + tile.size;
+			vertices[3].position = tile.position + sf::Vector2f(0, tile.size.y);
 
 			vertexBuffer.update((const sf::Vertex*) & vertices);
-
-			vertexWorld.push_back(
-				std::move(vertexBuffer)
-			);
+			vertexWorld.push_back(std::move(vertexBuffer));
 		}
+
+		for (DrawableTraitHandler* const handler : drawables)
+			if (!handler->initializeGraphics())
+			{
+				return false;
+			}
 
 		return true;
-	}
-
-	void Environment::processLogic()
-	{
-		for (DynamicTile* const tile : getTileType<DynamicTile>())
-		{
-			tile->processLogic();
-		}
-	}
-
-	void Environment::draw(sf::RenderTarget* const target) const
-	{
-		for (const sf::VertexBuffer& vertexTile : vertexWorld)
-		{
-			target->draw(vertexTile);
-		}
-
-		for (DrawableTile* const tile : getTileType<DrawableTile>())
-		{
-			tile->onDraw(target);
-		}
-	}
-
-	void Environment::onEvent(const sf::Event event)
-	{
 	}
 }

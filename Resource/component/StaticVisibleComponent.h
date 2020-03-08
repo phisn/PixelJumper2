@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ComponentResource.h"
-#include "TrivialResource.h"
+#include "Resource/ComponentResource.h"
+#include "Resource/TrivialResource.h"
 
 #include "SFML/Graphics/Color.hpp"
 

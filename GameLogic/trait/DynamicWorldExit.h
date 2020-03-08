@@ -12,15 +12,32 @@ namespace Game
 		WorldEntryID targetEntry;
 	};
 
-	class DynamicWorldExit
+	class DynamicWorldExitHandler
 	{
 	public:
-		GameEvent<DynamicWorldExit, const DynamicWorldExitEvent&> onExit;
-		
+		GameEvent<DynamicWorldExitHandler, const DynamicWorldExitEvent&> onExit;
+
 	protected:
 		void notifyOnExit(const DynamicWorldExitEvent& event)
 		{
 			onExit.notify(event);
 		}
+	};
+
+	class DynamicWorldExitContainer
+	{
+	public:
+		void pushDynamicWorldExit(DynamicWorldExitHandler* const handler)
+		{
+			dynamicWorldExits.push_back(handler);
+		}
+
+		const std::vector<DynamicWorldExitHandler*>& getDynamicWorldExit() const
+		{
+			return dynamicWorldExits;
+		}
+
+	protected:
+		std::vector<DynamicWorldExitHandler*> dynamicWorldExits;
 	};
 }

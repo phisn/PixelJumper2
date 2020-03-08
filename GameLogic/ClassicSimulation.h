@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameWorld.h"
-#include "tiletrait/ExitableTile.h"
+#include "trait/ExitableTrait.h"
 
 #include <future>
 #include <vector>
@@ -163,8 +163,8 @@ namespace Game
 				return false;
 			}
 
-			for (ExitableTile* const tile : world->getEnvironment()->getTileType<ExitableTile>())
-				tile->onExit.addListener(
+			for (ExitableTraitHandler* const handler : world->getEnvironment()->getExitableTraitTrait())
+				handler->onExit.addListener(
 					[this]()
 					{
 						tasks.push_back(
@@ -177,8 +177,8 @@ namespace Game
 							});
 					});
 
-			for (DynamicWorldExit* const tile : world->getEnvironment()->getTileType<DynamicWorldExit>())
-				tile->onExit.addListener(
+			for (DynamicWorldExitHandler* const dynamicExit : world->getEnvironment()->getDynamicWorldExit())
+				dynamicExit->onExit.addListener(
 					[this](const DynamicWorldExitEvent& event)
 					{
 						tasks.push_back(

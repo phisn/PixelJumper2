@@ -16,6 +16,8 @@ namespace Game
 	{
 	};
 
+
+	// add worldid to identity
 	class TileDataStorage
 		:
 		public GameState

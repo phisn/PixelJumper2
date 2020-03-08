@@ -2,6 +2,8 @@
 
 #include "GamePlayer.h"
 
+#include <unordered_map>
+
 namespace Game
 {
 	typedef sf::Uint32 WorldEntryID;
@@ -11,19 +13,36 @@ namespace Game
 		sf::Vector2f offsetSource;
 	};
 
-	class DynamicWorldEntry
+	struct DynamicWorldEntryHandler
 	{
-	public:
-		DynamicWorldEntry(const WorldEntryID id)
-			:
-			id(id)
-		{
-		}
-
 		virtual void handleWorldEntry(
 			PlayerBase* const player,
 			const DynamicWorldEntryEvent& dwee) = 0;
+	};
 
-		const WorldEntryID id;
+	class DynamicWorldEntryContainer
+	{
+	public:
+		void pushDynamicWorldEntry(
+			DynamicWorldEntryHandler* const handler,
+			const WorldEntryID entryID)
+		{
+			dynamicWorldEntries[entryID] = handler;
+		}
+
+		DynamicWorldEntryHandler* findDynamicWorldEntry(const WorldEntryID entryID) const
+		{
+			decltype(dynamicWorldEntries)::const_iterator entry = dynamicWorldEntries.find(entryID);
+
+			if (entry == dynamicWorldEntries.end())
+			{
+				return NULL;
+			}
+
+			return entry->second;
+		}
+
+	protected:
+		std::unordered_map<WorldEntryID, DynamicWorldEntryHandler*> dynamicWorldEntries;
 	};
 }

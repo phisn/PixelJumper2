@@ -6,5 +6,5 @@
 namespace Game::ComponentFactory
 {
 	bool CreateComponent(Entity* const entity,
-		Resource::ComponentResource* componentResource);
+		const Resource::ComponentResource* const componentResource);
 }
