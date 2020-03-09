@@ -63,6 +63,37 @@ inline std::string carrtohexstr(const unsigned char* arr, size_t length = 0)
 	return buffer;
 }
 
+
+template <typename T>
+std::wstring convert_to_wstring(T value)
+{
+	return std::to_wstring(value);
+}
+
+template <>
+std::wstring convert_to_wstring<std::wstring>(const std::wstring value)
+{
+	return value;
+}
+
+template <>
+std::wstring convert_to_wstring<const wchar_t*>(const wchar_t* value)
+{
+	return std::wstring(value);
+}
+
+template <>
+std::wstring convert_to_wstring<std::string>(const std::string value)
+{
+	return carrtowstr(value.c_str());
+}
+
+template <>
+std::wstring convert_to_wstring<const char*>(const char* value)
+{
+	return carrtowstr(value);
+}
+
 namespace Log
 {
 	/*
@@ -158,25 +189,25 @@ namespace Log
 	template <typename T, typename... Args>
 	std::wstring Convert_Parameter(const T var, const std::wstring label, Args... args)
 	{
-		return label + L"=" + std::to_wstring(var) + L" " + Convert_Parameter(args...);
+		return label + L"=" + convert_to_wstring(var) + L" " + Convert_Parameter(args...);
 	}
 
 	template <typename T, typename... Args>
 	std::wstring Convert_Parameter(const T var, const wchar_t* const label, Args... args)
 	{
-		return std::wstring(label) + L"=" + std::to_wstring(var) + L" " + Convert_Parameter(args...);
+		return std::wstring(label) + L"=" + convert_to_wstring(var) + L" " + Convert_Parameter(args...);
 	}
 
 	template <typename T>
 	std::wstring Convert_Parameter(const T var, const std::wstring label)
 	{
-		return label + L"=" + std::to_wstring(var) + L" ";
+		return label + L"=" + convert_to_wstring(var) + L" ";
 	}
 
 	template <typename T>
 	std::wstring Convert_Parameter(const T var, const wchar_t* const label)
 	{
-		return std::wstring(label) + L"=" + std::to_wstring(var) + L" ";
+		return std::wstring(label) + L"=" + convert_to_wstring(var) + L" ";
 	}
 
 	template <typename... Args>

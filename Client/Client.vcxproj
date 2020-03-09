@@ -113,7 +113,6 @@
     <ClInclude Include="source\game\net\ClassicSelectionMessage.h" />
     <ClInclude Include="source\game\net\FrameStatus.h" />
     <ClInclude Include="source\game\net\NetPlayerMovement.h" />
-    <ClInclude Include="source\game\net\NetworkMessage.h" />
     <ClInclude Include="source\game\net\SimulatorAuthenticationMessage.h" />
     <ClInclude Include="source\game\PlayerRepresentation.h" />
     <ClInclude Include="source\game\SimulatorContext.h" />
@@ -152,7 +151,6 @@
     <ClCompile Include="source\device\DeviceConfig.cpp" />
     <ClCompile Include="source\device\EncryptionDevice.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
-    <ClCompile Include="source\device\NetDevice.cpp" />
     <ClCompile Include="source\device\RandomDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
     <ClCompile Include="source\editor\manipulator\EditorWorld.cpp" />
@@ -197,7 +195,6 @@
     <Image Include="source\game\Small_Architecture.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\device\NetDevice.h" />
     <None Include="source\editor\manipulator\CacheElement.cpp" />
     <None Include="source\editor\manipulator\CacheElement.h" />
     <None Include="source\editor\manipulator\EditorCache.cpp" />

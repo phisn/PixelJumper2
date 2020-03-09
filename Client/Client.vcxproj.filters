@@ -132,59 +132,11 @@
     <ClInclude Include="source\framework\ResourceContext.h">
       <Filter>source\framework</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\StaticResource.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="source\logger\Output.h">
-      <Filter>source\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="source\logger\Section.h">
-      <Filter>source\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="source\logger\Logger.h">
-      <Filter>source\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="source\logger\SectionHost.h">
-      <Filter>source\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="source\logger\Names.h">
-      <Filter>source\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\ResourceInterface.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\ResourceBase.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\WorldResource.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\TileResource.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\pipes\FilePipe.h">
-      <Filter>source\resource\pipes</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\pipes\PipeBase.h">
-      <Filter>source\resource\pipes</Filter>
-    </ClInclude>
     <ClInclude Include="source\device\RandomDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="source\logger\LoggerLevel.h">
-      <Filter>source\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\PlayerResource.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
     <ClInclude Include="source\device\CoreDevice.h">
       <Filter>source\device</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\ResourceType.h">
-      <Filter>source\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\ResourceDefinition.h">
-      <Filter>source\resource</Filter>
     </ClInclude>
     <ClInclude Include="source\device\DeviceConfig.h">
       <Filter>source\device</Filter>
@@ -207,31 +159,13 @@
     <ClInclude Include="source\editor\tilechoice\TileChoiceButton.h">
       <Filter>source\editor\tilechoice</Filter>
     </ClInclude>
-    <ClInclude Include="source\shared\tiles\TileWall.h">
-      <Filter>source\shared\tiles</Filter>
-    </ClInclude>
     <ClInclude Include="source\editor\tile\TileTemplateFactory.h">
       <Filter>source\editor\tile</Filter>
     </ClInclude>
     <ClInclude Include="source\scene\GameJoinScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\resource\pipes\PacketPipe.h">
-      <Filter>source\resource\pipes</Filter>
-    </ClInclude>
-    <ClInclude Include="source\shared\tiles\TileDescription.h">
-      <Filter>source\shared\tiles</Filter>
-    </ClInclude>
-    <ClInclude Include="source\shared\ValueDefinitions.h">
-      <Filter>source\shared</Filter>
-    </ClInclude>
-    <ClInclude Include="source\shared\tiles\TransitivePortal.h">
-      <Filter>source\shared\tiles</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="source\resource\pipes\MemoryPipe.h">
-      <Filter>source\resource\pipes</Filter>
-    </ClInclude>
     <ClInclude Include="source\device\EncryptionDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
@@ -244,107 +178,17 @@
     <ClInclude Include="source\operator\OperatorConnectionHandler.h">
       <Filter>source\operator</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\CollisionEngine.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\ControllablePlayer.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\DependentTileData.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\Environment.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameEvent.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GamePlayer.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameProperty.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameState.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameWorld.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\LocalPlayer.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\PlayerInformation.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\PlayerProperties.h">
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\PlayerRepresentation.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\UserConnection.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\VirtualPlayer.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\game\WorldInformation.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\WorldProperties.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameElementBase.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\GameTileBase.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\CollidableTile.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\DrawableTile.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\DynamicTile.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\DynamicWorldEntry.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\ExitableTile.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\InitializableTile.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\StaticTile.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\SynchronizableTile.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\component\SolidCollisionComponent.h">
-      <Filter>source\game\component</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\net\FrameStatus.h">
       <Filter>source\game\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\NetworkMessage.h">
-      <Filter>source\game\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\TileContent.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\tiletrait\DynamicWorldExit.h">
-      <Filter>source\game\tiletrait</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\component\DynamicWorldTransitionComponent.h">
-      <Filter>source\game\component</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\component\EmptyCollisionComponent.h">
-      <Filter>source\game\component</Filter>
     </ClInclude>
     <ClInclude Include="source\operator\ClassicalConnectionRequest.h">
       <Filter>source\operator</Filter>
@@ -354,9 +198,6 @@
     </ClInclude>
     <ClInclude Include="source\net\DynamicClientHandler.h">
       <Filter>source\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\ClassicSimulation.h">
-      <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\net\SimulatorAuthenticationMessage.h">
       <Filter>source\game\net\message</Filter>
@@ -378,9 +219,6 @@
     </ClInclude>
     <ClInclude Include="source\operator\request\ClassicHostRequest.h">
       <Filter>source\operator\request</Filter>
-    </ClInclude>
-    <ClInclude Include="source\resource\ClassicPlayerResource.h">
-      <Filter>source\resource</Filter>
     </ClInclude>
     <ClInclude Include="source\game\SimulatorContext.h">
       <Filter>source\game\net\host</Filter>
@@ -468,38 +306,8 @@
     <ClCompile Include="source\framework\ResourceContext.cpp">
       <Filter>source\framework</Filter>
     </ClCompile>
-    <ClCompile Include="source\resource\StaticResource.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
-    <ClCompile Include="source\logger\Output.cpp">
-      <Filter>source\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="source\logger\Logger.cpp">
-      <Filter>source\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="source\logger\SectionHost.cpp">
-      <Filter>source\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\ResourceInterface.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\WorldResource.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\TileResource.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\pipes\FilePipe.cpp">
-      <Filter>source\resource\pipes</Filter>
-    </ClCompile>
     <ClCompile Include="source\device\RandomDevice.cpp">
       <Filter>source\device</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\PlayerResource.cpp">
-      <Filter>source\resource</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\ResourceDefinition.cpp">
-      <Filter>source\resource</Filter>
     </ClCompile>
     <ClCompile Include="source\device\DeviceConfig.cpp">
       <Filter>source\device</Filter>
@@ -519,9 +327,6 @@
     <ClCompile Include="source\scene\TestMenuScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\resource\pipes\PipeBase.cpp">
-      <Filter>source\resource\pipes</Filter>
-    </ClCompile>
     <ClCompile Include="source\editor\manipulator\EditorWorld.cpp">
       <Filter>source\editor\manipulator</Filter>
     </ClCompile>
@@ -534,32 +339,11 @@
     <ClCompile Include="source\editor\tile\TileTemplateFactory.cpp">
       <Filter>source\editor\tile</Filter>
     </ClCompile>
-    <ClCompile Include="source\shared\tiles\TileExit.cpp">
-      <Filter>source\shared\tiles</Filter>
-    </ClCompile>
-    <ClCompile Include="source\shared\tiles\TileWall.cpp">
-      <Filter>source\shared\tiles</Filter>
-    </ClCompile>
     <ClCompile Include="source\scene\GameJoinScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
     <ClCompile Include="source\menu\MenuProperty.cpp">
       <Filter>source\menu</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\pipes\PacketPipe.cpp">
-      <Filter>source\resource\pipes</Filter>
-    </ClCompile>
-    <ClCompile Include="source\shared\tiles\TileDescription.cpp">
-      <Filter>source\shared\tiles</Filter>
-    </ClCompile>
-    <ClCompile Include="source\shared\tiles\TransitivePortal.cpp">
-      <Filter>source\shared\tiles</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\pipes\MemoryPipe.cpp">
-      <Filter>source\resource\pipes</Filter>
-    </ClCompile>
-    <ClCompile Include="source\device\NetDevice.cpp">
-      <Filter>source\device</Filter>
     </ClCompile>
     <ClCompile Include="source\device\EncryptionDevice.cpp">
       <Filter>source\device</Filter>
@@ -570,53 +354,17 @@
     <ClCompile Include="source\scene\LoadingScreenScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\logger\Section.cpp">
-      <Filter>source\logger</Filter>
-    </ClCompile>
     <ClCompile Include="source\operator\OperatorConnectionHandler.cpp">
       <Filter>source\operator</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\CollisionEngine.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\ControllablePlayer.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\Environment.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GamePlayer.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GameProperty.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\GameWorld.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\LocalPlayer.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\PlayerProperties.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\PlayerRepresentation.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="source\game\UserConnection.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\VirtualPlayer.cpp">
       <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\WorldProperties.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\ClassicSimulation.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\resource\ClassicPlayerResource.cpp">
-      <Filter>source\resource</Filter>
     </ClCompile>
     <ClCompile Include="source\game\SimulatorContext.cpp">
       <Filter>source\game\net\host</Filter>
@@ -647,12 +395,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="source\resource\IMAG0005.jpg">
-      <Filter>source\resource</Filter>
-    </Image>
-    <Image Include="source\resource\IMAG0011.jpg">
-      <Filter>source\resource</Filter>
-    </Image>
     <Image Include="source\game\PlayerSpecificModel.jpeg">
       <Filter>source\game</Filter>
     </Image>
@@ -829,9 +571,6 @@
     <None Include="source\editor\tilechoice\TileChoiceWorker.h">
       <Filter>source\editor\tilechoice</Filter>
     </None>
-    <None Include="source\resource\CommonResourceTypes.h">
-      <Filter>source\resource</Filter>
-    </None>
     <None Include="source\menu\MenuFPSLabel.h">
       <Filter>source\menu</Filter>
     </None>
@@ -888,18 +627,6 @@
     </None>
     <None Include="source\menu\MenuBackground.cpp">
       <Filter>source\menu</Filter>
-    </None>
-    <None Include="source\shared\tiles\TileExit.h">
-      <Filter>source\shared\tiles</Filter>
-    </None>
-    <None Include="source\device\NetDevice.h">
-      <Filter>source\device</Filter>
-    </None>
-    <None Include="source\shared\WorldDefinitions.h">
-      <Filter>source\shared</Filter>
-    </None>
-    <None Include="source\shared\tiles\TileCommon.h">
-      <Filter>source\shared\tiles</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

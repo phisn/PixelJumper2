@@ -8,8 +8,6 @@
 namespace Net
 {
 	class RequestContainer
-		:
-		public ConnectionAccess
 	{
 	public:
 		virtual ~RequestContainer()

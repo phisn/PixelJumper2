@@ -129,6 +129,65 @@ namespace Net
 		return true;
 	}
 
+	void ClientInterface::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event)
+	{
+		Log::Information(L"onsteamnetconnectionstatuschanged",
+			(unsigned long long) event->m_hConn, L"connection",
+			(unsigned long long) event->m_info.m_hListenSocket, L"listenconnection");
+
+		if (socket != event->m_hConn &&
+			socket != k_HSteamNetConnection_Invalid)
+		{
+			Log::Error(L"Got invalid connection in callback",
+				(int)event->m_hConn, L"iconnection",
+				(int)socket, L"connection",
+				(int)event->m_info.m_eState, L"state");
+
+			return;
+		}
+
+		switch (event->m_info.m_eState)
+		{
+		case k_ESteamNetworkingConnectionState_Connecting:
+		case k_ESteamNetworkingConnectionState_None:
+			// both ignored
+			// connecting is only as server important
+
+			break;
+		case k_ESteamNetworkingConnectionState_Connected:
+			onConnectionOpened();
+
+			break;
+		case k_ESteamNetworkingConnectionState_ClosedByPeer:
+			onConnectionClosed(event->m_info.m_eEndReason);
+
+			networkInterface->CloseConnection(
+				socket,
+				0,
+				"closed by peer",
+				false);
+			socket = k_HSteamNetConnection_Invalid;
+
+			break;
+		case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+			onConnectionLost(event->m_info.m_eEndReason);
+
+			networkInterface->CloseConnection(
+				socket,
+				0,
+				"problem detected locally",
+				false);
+			socket = k_HSteamNetConnection_Invalid;
+
+			break;
+		default:
+			Log::Information(L"Got unusual new connection status",
+				(int)event->m_info.m_eState, L"state");
+
+			break;
+		}
+	}
+
 	ISteamNetworkingSockets* ClientInterface::getNetworkInterface() const
 	{
 		return networkInterface;
@@ -163,6 +222,75 @@ namespace Net
 
 		servers[socket] = this;
 		return true;
+	}
+
+	void ServerInterface::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event)
+	{
+		switch (event->m_info.m_eState)
+		{
+		case k_ESteamNetworkingConnectionState_Connected:
+		case k_ESteamNetworkingConnectionState_None:
+			// both ignored
+			// connected is only as client important
+
+			break;
+		case k_ESteamNetworkingConnectionState_Connecting:
+			if (!askClientConnect(event))
+			{
+				networkInterface->CloseConnection(
+					socket,
+					1,
+					"connection was denied by parent",
+					false);
+
+				break;
+			}
+
+			if (const EResult result = networkInterface->AcceptConnection(event->m_hConn);
+				result != k_EResultOK)
+			{
+				Log::Error(L"unable to accept conncetion",
+					(int)result, L"result",
+					Util::ConvertIPAddress(&event->m_info.m_addrRemote), L"ip");
+
+				networkInterface->CloseConnection(
+					event->m_hConn,
+					1,
+					"closing failed to accept connection",
+					false);
+			}
+			else
+			{
+				onClientConnect(event->m_hConn);
+			}
+
+			break;
+		case k_ESteamNetworkingConnectionState_ClosedByPeer:
+			onClientDisconnected(event->m_hConn);
+
+			networkInterface->CloseConnection(
+				event->m_hConn,
+				1,
+				"closing failed to accept connection",
+				false);
+
+			break;
+		case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+			onClientLost(event->m_hConn);
+
+			networkInterface->CloseConnection(
+				event->m_hConn,
+				1,
+				"closing failed to accept connection",
+				false);
+
+			break;
+		default:
+			Log::Information(L"Got unusual new connection status",
+				(int)event->m_info.m_eState, L"state");
+
+			break;
+		}
 	}
 
 	ISteamNetworkingSockets* ServerInterface::getNetworkInterface() const
