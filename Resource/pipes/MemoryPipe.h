@@ -14,6 +14,14 @@ namespace Resource
 		void reset()
 		{
 			buffer.clear();
+
+			// if vectors memory is bigger than
+			// 512kb free memory
+			if (buffer.capacity() > 1024 * 512)
+			{
+				buffer.shrink_to_fit();
+			}
+
 			position = 0;
 		}
 
@@ -52,6 +60,11 @@ namespace Resource
 		const std::vector<char>& getData() const
 		{
 			return buffer;
+		}
+
+		const char* getRawData() const
+		{
+			return &buffer[0];
 		}
 
 	private:

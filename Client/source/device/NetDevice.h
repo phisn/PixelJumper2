@@ -98,7 +98,9 @@ namespace Device::Net
 		}
 
 	protected:
-		virtual void onMessage(const MessageID messageID, Resource::ReadPipe* const pipe) = 0;
+		virtual void onMessage(
+			const MessageID messageID, 
+			Resource::ReadPipe* const pipe) = 0;
 
 		// used to log and handle invalid messages
 		// messages with invalid messageid get called

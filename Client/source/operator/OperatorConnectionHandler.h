@@ -207,7 +207,7 @@ namespace Operator
 		}
 
 	private:
-		const SteamNetworkingIPAddr ipAddress;
+		const SteamNetworkingIPAddr address;
 
 		// authenticated means that the stored token is valid
 		// but does not specify weather a connection is established

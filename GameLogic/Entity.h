@@ -39,6 +39,7 @@ namespace Game
 			components.push_back(component);
 		}
 
+
 		void registerTraits(EnvironmentView* const environment)
 		{
 			for (Component* const component : components)
