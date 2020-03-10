@@ -90,9 +90,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\device\CoreDevice.h" />
     <ClInclude Include="source\device\DeviceConfig.h" />
-    <ClInclude Include="source\device\EncryptionDevice.h" />
     <ClInclude Include="source\device\InputDevice.h" />
-    <ClInclude Include="source\device\RandomDevice.h" />
     <ClInclude Include="source\device\ScreenDevice.h" />
     <ClInclude Include="source\editor\tilechoice\TileChoiceButton.h" />
     <ClInclude Include="source\editor\tile\TileTemplateFactory.h" />
@@ -117,14 +115,6 @@
     <ClInclude Include="source\game\PlayerRepresentation.h" />
     <ClInclude Include="source\game\SimulatorContext.h" />
     <ClInclude Include="source\game\VirtualPlayer.h" />
-    <ClInclude Include="source\menu\MenuElementBase.h" />
-    <ClInclude Include="source\menu\MenuLabel.h" />
-    <ClInclude Include="source\menu\MenuRootBase.h" />
-    <ClInclude Include="source\net\DynamicClientConnection.h" />
-    <ClInclude Include="source\net\DynamicClientHandler.h" />
-    <ClInclude Include="source\net\DynamicRequestContainer.h" />
-    <ClInclude Include="source\net\RequestHandlerBase.h" />
-    <ClInclude Include="source\net\RequestHandlerTemplate.h" />
     <ClInclude Include="source\operator\ClassicalConnectionRequest.h" />
     <ClInclude Include="source\operator\OperatorConnectionHandler.h" />
     <ClInclude Include="source\operator\request\AuthenticationRequest.h" />
@@ -149,9 +139,7 @@
   <ItemGroup>
     <ClCompile Include="source\device\CoreDevice.cpp" />
     <ClCompile Include="source\device\DeviceConfig.cpp" />
-    <ClCompile Include="source\device\EncryptionDevice.cpp" />
     <ClCompile Include="source\device\InputDevice.cpp" />
-    <ClCompile Include="source\device\RandomDevice.cpp" />
     <ClCompile Include="source\device\ScreenDevice.cpp" />
     <ClCompile Include="source\editor\manipulator\EditorWorld.cpp" />
     <ClCompile Include="source\editor\tilechoice\TileChoiceButton.cpp" />
@@ -171,10 +159,6 @@
     <ClCompile Include="source\game\PlayerRepresentation.cpp" />
     <ClCompile Include="source\game\SimulatorContext.cpp" />
     <ClCompile Include="source\game\VirtualPlayer.cpp" />
-    <ClCompile Include="source\menu\MenuElementBase.cpp" />
-    <ClCompile Include="source\menu\MenuLabel.cpp" />
-    <ClCompile Include="source\menu\MenuProperty.cpp" />
-    <ClCompile Include="source\menu\MenuRootBase.cpp" />
     <ClCompile Include="source\operator\OperatorConnectionHandler.cpp" />
     <ClCompile Include="source\scene\AuthenticationScene.cpp" />
     <ClCompile Include="source\scene\EditorScene.cpp" />
@@ -236,40 +220,6 @@
     <None Include="source\editor\tile\EditorTileBase.h" />
     <None Include="source\editor\tile\TileTemplate.cpp" />
     <None Include="source\editor\tile\TileTemplate.h" />
-    <None Include="source\menu\MenuBackground.cpp" />
-    <None Include="source\menu\MenuBackground.h" />
-    <None Include="source\menu\MenuEvent.h" />
-    <None Include="source\menu\MenuFPSLabel.cpp" />
-    <None Include="source\menu\MenuFPSLabel.h" />
-    <None Include="source\menu\MenuButton.cpp" />
-    <None Include="source\menu\MenuButton.h" />
-    <None Include="source\menu\MenuButtonMaterial.cpp" />
-    <None Include="source\menu\MenuButtonMaterial.h" />
-    <None Include="source\menu\MenuButtonWithLabel.cpp" />
-    <None Include="source\menu\MenuButtonWithLabel.h" />
-    <None Include="source\menu\MenuCommon.cpp" />
-    <None Include="source\menu\MenuCommon.h" />
-    <None Include="source\menu\MenuNotifier.cpp" />
-    <None Include="source\menu\MenuNotifier.h" />
-    <None Include="source\menu\MenuProperty.h" />
-    <None Include="source\menu\MenuRenderContainer.cpp" />
-    <None Include="source\menu\MenuRenderContainer.h" />
-    <None Include="source\menu\MenuRowContainer.cpp" />
-    <None Include="source\menu\MenuRowContainer.h" />
-    <None Include="source\menu\MenuScrollContainer.cpp" />
-    <None Include="source\menu\MenuScrollContainer.h" />
-    <None Include="source\menu\MenuSlideBar.cpp" />
-    <None Include="source\menu\MenuSlideBar.h" />
-    <None Include="source\menu\MenuTextBox.cpp" />
-    <None Include="source\menu\MenuTextBox.h" />
-    <None Include="source\menu\MenuTextBoxWithInfo.cpp" />
-    <None Include="source\menu\MenuTextBoxWithInfo.h" />
-    <None Include="source\menu\PercentProperty.cpp" />
-    <None Include="source\menu\PercentProperty.h" />
-    <None Include="source\menu\shape\CrossShape.cpp" />
-    <None Include="source\menu\shape\CrossShape.h" />
-    <None Include="source\menu\MenuSpecialProperties.cpp" />
-    <None Include="source\menu\MenuSpecialProperties.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />

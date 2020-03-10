@@ -15,6 +15,7 @@
     <ProjectGuid>{CB0589F8-3D8C-41F5-AE7C-27F7BC688B20}</ProjectGuid>
     <RootNamespace>NetCore</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>NetCore</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

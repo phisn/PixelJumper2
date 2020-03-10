@@ -5,7 +5,7 @@
 #define OPERATOR_SALT_SIZE 16
 #define OPERATOR_USER_SIZE 20
 
-#include <Client/source/device/EncryptionDevice.h>
+#include "EncryptionModule.h"
 
 #include <SFML/Main.hpp>
 #include <cstring>
@@ -65,7 +65,7 @@ namespace Operator
 
 		void make(const ConnectionKeySource& source)
 		{
-			Device::Encryption::HashCommon(
+			Module::Encryption::HashCommon(
 				(unsigned char*)content,
 				(unsigned char*)&source,
 				sizeof(ConnectionKeySource));

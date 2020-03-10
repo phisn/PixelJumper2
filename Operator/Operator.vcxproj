@@ -75,6 +75,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="..\Common\Common.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -210,22 +211,20 @@
     <ClCompile Include="..\Client\source\logger\Output.cpp" />
     <ClCompile Include="..\Client\source\logger\Section.cpp" />
     <ClCompile Include="..\Client\source\logger\SectionHost.cpp" />
-    <ClCompile Include="source\database\DatabaseInterface.cpp" />
-    <ClCompile Include="source\database\EmptyKeyStatement.cpp" />
-    <ClCompile Include="source\database\KeyTable.cpp" />
-    <ClCompile Include="source\database\UserTable.cpp" />
-    <ClCompile Include="source\database\StatementBase.cpp" />
-    <ClCompile Include="source\database\TableBase.cpp" />
-    <ClCompile Include="source\database\UserTypeByID.cpp" />
-    <ClCompile Include="source\device\CoreDevice.cpp" />
-    <ClCompile Include="source\device\DatabaseDevice.cpp" />
-    <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\operator\AuthenticationHandler.cpp" />
-    <ClCompile Include="source\operator\ActiveUserContainer.cpp" />
-    <ClCompile Include="source\operator\ClassicHostRequestHandler.cpp" />
-    <ClCompile Include="source\operator\CommonRequestHandler.cpp" />
-    <ClCompile Include="source\operator\Operator.cpp" />
-    <ClCompile Include="source\operator\OperatorClientHandler.cpp" />
+    <ClCompile Include="ActiveUserContainer.cpp" />
+    <ClCompile Include="AuthenticationHandler.cpp" />
+    <ClCompile Include="ClassicHostRequestHandler.cpp" />
+    <ClCompile Include="CommonRequestHandler.cpp" />
+    <ClCompile Include="database\DatabaseInterface.cpp" />
+    <ClCompile Include="database\EmptyKeyStatement.cpp" />
+    <ClCompile Include="database\KeyTable.cpp" />
+    <ClCompile Include="database\OperatorDatabase.cpp" />
+    <ClCompile Include="database\UserTable.cpp" />
+    <ClCompile Include="database\UserTypeByID.cpp" />
+    <ClCompile Include="device\CoreDevice.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Operator.cpp" />
+    <ClCompile Include="OperatorClientHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\source\device\EncryptionDevice.h" />
@@ -237,29 +236,37 @@
     <ClInclude Include="..\Client\source\logger\Output.h" />
     <ClInclude Include="..\Client\source\logger\Section.h" />
     <ClInclude Include="..\Client\source\logger\SectionHost.h" />
+    <ClInclude Include="ActiveUserContainer.h" />
+    <ClInclude Include="AuthenticationHandler.h" />
+    <ClInclude Include="ClassicHostRequestHandler.h" />
+    <ClInclude Include="CommonRequestHandler.h" />
+    <ClInclude Include="database\DatabaseInterface.h" />
+    <ClInclude Include="database\EmptyKeyStatement.h" />
+    <ClInclude Include="database\KeyTable.h" />
+    <ClInclude Include="database\OperatorDatabase.h" />
+    <ClInclude Include="database\UserTable.h" />
+    <ClInclude Include="database\UserTypeByID.h" />
+    <ClInclude Include="device\CoreDevice.h" />
+    <ClInclude Include="Operator.h" />
+    <ClInclude Include="OperatorClientHandler.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="source\Common.h" />
-    <ClInclude Include="source\database\DatabaseInterface.h" />
-    <ClInclude Include="source\database\EmptyKeyStatement.h" />
-    <ClInclude Include="source\database\KeyTable.h" />
-    <ClInclude Include="source\database\UserTable.h" />
-    <ClInclude Include="source\database\StatementBase.h" />
-    <ClInclude Include="source\database\TableBase.h" />
-    <ClInclude Include="source\database\UserTypeByID.h" />
-    <ClInclude Include="source\device\CoreDevice.h" />
-    <ClInclude Include="source\device\DatabaseDevice.h" />
-    <ClInclude Include="source\net\AuthenticationMessage.h" />
-    <ClInclude Include="source\net\ClassicSimulatorMessage.h" />
-    <ClInclude Include="source\net\CommonRequestMessage.h" />
-    <ClInclude Include="source\operator\AuthenticationHandler.h" />
-    <ClInclude Include="source\operator\ActiveUserContainer.h" />
-    <ClInclude Include="source\operator\ClassicHostRequestHandler.h" />
-    <ClInclude Include="source\operator\Operator.h" />
-    <ClInclude Include="source\operator\CommonRequestHandler.h" />
-    <ClInclude Include="source\operator\OperatorClientHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Operator.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseCore\DatabaseCore.vcxproj">
+      <Project>{50f55989-dc3d-4134-9782-3174d0644ae9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Logger\Logger.vcxproj">
+      <Project>{2132b508-f7f2-4cfb-9b81-bbac679ae5a9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NetCore\NetCore.vcxproj">
+      <Project>{cb0589f8-3d8c-41f5-ae7c-27f7bc688b20}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Resource\Resource.vcxproj">
+      <Project>{52da07a5-220a-4d77-a4eb-b7a9ff800d9c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

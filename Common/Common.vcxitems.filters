@@ -4,15 +4,42 @@
     <Filter Include="source">
       <UniqueIdentifier>{617e3dfa-8d34-4838-af19-292e419fda13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\module">
+      <UniqueIdentifier>{c69e15e3-e1c5-4403-9b42-230b7dc91ffa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Common.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Tiles.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)OperatorDefinitions.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SharedDefinitions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Common.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EncryptionModule.h">
+      <Filter>source\module</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RandomModule.h">
+      <Filter>source\module</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharedDefinitions.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)OperatorDefinitions.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Property.h">
+      <Filter>source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EncryptionModule.cpp">
+      <Filter>source\module</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RandomModule.cpp">
+      <Filter>source\module</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Property.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

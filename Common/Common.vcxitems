@@ -15,8 +15,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Common.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EncryptionModule.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OperatorDefinitions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Property.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RandomModule.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharedDefinitions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Tiles.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EncryptionModule.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Property.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RandomModule.cpp" />
   </ItemGroup>
 </Project>

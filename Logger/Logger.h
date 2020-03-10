@@ -65,31 +65,31 @@ inline std::string carrtohexstr(const unsigned char* arr, size_t length = 0)
 
 
 template <typename T>
-std::wstring convert_to_wstring(T value)
+inline std::wstring convert_to_wstring(T value)
 {
 	return std::to_wstring(value);
 }
 
 template <>
-std::wstring convert_to_wstring<std::wstring>(const std::wstring value)
+inline std::wstring convert_to_wstring<std::wstring>(const std::wstring value)
 {
 	return value;
 }
 
 template <>
-std::wstring convert_to_wstring<const wchar_t*>(const wchar_t* value)
+inline std::wstring convert_to_wstring<const wchar_t*>(const wchar_t* value)
 {
 	return std::wstring(value);
 }
 
 template <>
-std::wstring convert_to_wstring<std::string>(const std::string value)
+inline std::wstring convert_to_wstring<std::string>(const std::string value)
 {
 	return carrtowstr(value.c_str());
 }
 
 template <>
-std::wstring convert_to_wstring<const char*>(const char* value)
+inline std::wstring convert_to_wstring<const char*>(const char* value)
 {
 	return carrtowstr(value);
 }
