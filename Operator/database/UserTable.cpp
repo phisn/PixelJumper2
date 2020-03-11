@@ -1,6 +1,6 @@
 #include "UserTable.h"
 
-const Database::TableDefinition Database::UserTable::definition
+const Database::TableDefinition Operator::UserTable::definition
 {
 	"users",
 	"id",

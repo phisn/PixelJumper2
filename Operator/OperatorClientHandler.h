@@ -1,11 +1,10 @@
 #pragma once
 
+#include "AuthenticationHandler.h"
+#include "ClassicHostRequestHandler.h"
+#include "CommonRequestHandler.h"
 
-#include <Client/source/net/DynamicClientHandler.h>
-
-#include <Operator/source/operator/AuthenticationHandler.h>
-#include <Operator/source/operator/ClassicHostRequestHandler.h>
-#include <Operator/source/operator/CommonRequestHandler.h>
+#include "NetCore/ClientHandler.h"
 
 namespace Operator::Net
 {
@@ -13,7 +12,7 @@ namespace Operator::Net
 
 	class OperatorClientHandler
 		:
-		public ::Net::DynamicClientHandler,
+		public ::Net::ClientHandler,
 		public AuthenticationHandlerCallback,
 		public CommonRequestHandlerCallback
 	{
@@ -38,7 +37,7 @@ namespace Operator::Net
 			const HSteamNetConnection connection,
 			const sf::Uint32 timeout = 100)
 			:
-			DynamicClientHandler(connection)
+			ClientHandler(connection)
 		{
 			addRequestHandler(
 				new AuthenticationHandler(
@@ -49,15 +48,14 @@ namespace Operator::Net
 
 		virtual void update()
 		{
-			if (!process())
+			if (!processMessages())
 			{
 				status = Status::Closing;
 
 				// think about removing this because
 				// it has a very high chance to fail
 				// (gurranted?)
-				beginMessage(Game::Net::CommonMessageID::InternalError, 8);
-				sendMessage();
+				sendMessage(::Net::CommonMessageID::InternalError);
 
 				return;
 			}
@@ -83,7 +81,7 @@ namespace Operator::Net
 		}
 
 	private:
-		using ClientHandler::process;
+		using ClientHandler::processMessages;
 
 		UserID userID = NULL;
 		Status status = Status::Authenticating;
@@ -142,44 +140,35 @@ namespace Operator::Net
 		}
 
 		void onThreatIdentified(
-			const Device::Net::MessageID messageID,
-			const wchar_t* const note,
-			const Device::Net::ThreatLevel level) override
+			const sf::Uint32 identifier,
+			const std::wstring& note,
+			const ::Net::ThreatLevel level) override
 		{
-			Log::Warning(L"Threat identified (" + std::wstring(note) + L")",
-				messageID, L"messageID",
-				(int)level, L"level");
-		}
-
-
-		void onInvalidMessageID(const Device::Net::MessageID messageID) override
-		{
-			accessSendMessage(
-				Game::Net::CommonMessageID::InternalError,
-				NULL);
-			status = Status::Closing;
+			Log::Warning(L"Threat identified (" + note + L")",
+				identifier, L"identifier",
+				(int) level, L"level");
 		}
 
 		void onMessageSendFailed(
-			const Device::Net::MessageID messageID,
-			const SendFailure reason) override
+			const ::Net::MessageID messageID,
+			const ::Net::SendFailure reason) override
 		{
 			Log::Error(L"Failed to send message");
 
-			accessSendMessage(
-				Game::Net::CommonMessageID::InternalError,
+			sendMessage(
+				::Net::CommonMessageID::InternalError,
 				NULL);
 			status = Status::Closing;
 		}
 
 		void accessOnRequestFailed(
-			const Device::Net::MessageID messageID,
+			const ::Net::MessageID messageID,
 			const ::Net::RequestFailure reason) override
 		{
-			accessSendMessage(
-				Game::Net::CommonMessageID::InternalError,
+			sendMessage(
+				::Net::CommonMessageID::InternalError,
 				NULL);
 			status = Status::Closing;
 		}
-	} ;
+	};
 }

@@ -1,14 +1,8 @@
+#include "device/CoreDevice.h"
 
 #include "Common/Common.h"
-#include "Common/OperatorDefinitions.h"
 #include "Common/Property.h"
-
-#include ""
-
-#include <Operator/source/device/CoreDevice.h>
-
-#include <Operator/source/database/DatabaseInterface.h>
-#include <Operator/source/database/UserTypeByID.h>
+#include "Logger/Logger.h"
 
 #include <iostream>
 
@@ -33,7 +27,7 @@ int main()
 	{
 		/*Operator::UserType type;
 
-		Database::ConditionResult result = Database::Interface::GetUserType(
+		Database::ConditionResult result = DatabaseInterface::GetUserType(
 			type,
 			947092158557685219);
 
@@ -55,15 +49,15 @@ int main()
 
 		/*for (int i = 0; i < 10; ++i)
 		{
-			Database::Interface::CreateNewKey(NULL);
+			DatabaseInterface::CreateNewKey(NULL);
 		}*/
 
 		/*
 		Resource::PlayerID player;
 		char hash[20];
 		char salt[16];
-		Device::Random::FillRandom(20, hash);
-		Device::Random::FillRandom(16, salt);
+		Module::Random::FillRandom(20, hash);
+		Module::Random::FillRandom(16, salt);
 
 		std::string username = "user1";
 		Database::RegistrationKey key;
@@ -71,14 +65,14 @@ int main()
 			"ASCTGZGMURUKQYD",
 			OPERATOR_KEY_SIZE);
 
-		Database::Interface::CreatePlayerResult result = Database::Interface::CreateNewPlayer(
+		DatabaseInterface::CreatePlayerResult result = DatabaseInterface::CreateNewPlayer(
 			&player,
 			salt,
 			hash,
 			username,
 			key);
 
-		if (result == Database::Interface::CreatePlayerResult::Success)
+		if (result == DatabaseInterface::CreatePlayerResult::Success)
 		{
 			std::cout << "Create new player: " << player << std::endl;
 		}

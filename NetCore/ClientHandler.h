@@ -8,7 +8,6 @@ namespace Net
 {
 	class ClientHandler
 		:
-		public ConnectionAccess,
 		public RequestContainer
 	{
 	public:
@@ -24,7 +23,6 @@ namespace Net
 			while (true)
 			{
 				ISteamNetworkingMessage* message = NULL;
-
 				const int count = networkInterface->ReceiveMessagesOnConnection(
 					connection,
 					&message,
@@ -61,9 +59,16 @@ namespace Net
 			}
 		}
 
+		HSteamNetConnection getConnection() const
+		{
+			return connection;
+		}
+
 	protected:
 		HSteamNetConnection connection;
 
+		// message can be null to send messageid
+		// without content
 		// does not allow reserve anymore 
 		// because pipe remains at highest send
 		// capacity
@@ -72,7 +77,7 @@ namespace Net
 		// additionally
 		bool sendMessage(
 			const MessageID messageID,
-			NetworkMessage* const message,
+			NetworkMessage* const message = NULL,
 			const int flags = k_nSteamNetworkingSend_Reliable) override
 		{
 			// guranteed to succeed
@@ -82,8 +87,8 @@ namespace Net
 			{
 				messageSendPipe.reset();
 				onMessageSendFailed(
-					SendFailure::Save,
-					messageID);
+					messageID,
+					SendFailure::Save);
 
 				return false;
 			}
@@ -93,8 +98,8 @@ namespace Net
 				messageSendPipe.reset();
 				Log::Error(L"Tried to send too big message (over 524kb)");
 				onMessageSendFailed(
-					SendFailure::Size,
-					messageID);
+					messageID,
+					SendFailure::Size);
 
 				return false;
 			}
@@ -110,8 +115,8 @@ namespace Net
 			if (result != EResult::k_EResultOK)
 			{
 				onMessageSendFailed(
-					SendFailure::Send,
-					messageID);
+					messageID,
+					SendFailure::Send);
 
 				return false;
 			}
@@ -140,11 +145,13 @@ namespace Net
 		}
 
 		virtual void onMessageSendFailed(
-			const SendFailure failure,
-			const MessageID messageID) = 0;
+			const MessageID messageID,
+			const SendFailure failure) = 0;
+
+	protected:
+		ISteamNetworkingSockets* const networkInterface;
 
 	private:
-		ISteamNetworkingSockets* const networkInterface;
 		Resource::MemoryWritePipe messageSendPipe;
 	};
 }

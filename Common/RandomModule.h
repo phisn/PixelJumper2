@@ -23,8 +23,8 @@ namespace Module::Random
 	typename std::enable_if_t<std::is_integral_v<T>, T> MakeRandom()
 	{
 		static std::uniform_int_distribution<unsigned long long> distribution(
-			std::numeric_limits<T>::min(),
-			std::numeric_limits<T>::max());
+			std::numeric_limits<std::make_unsigned_t<T>>::min(),
+			std::numeric_limits<std::make_unsigned_t<T>>::max());
 
 		return distribution(GetEngine());
 	}
@@ -33,8 +33,8 @@ namespace Module::Random
 	typename std::enable_if_t<std::is_floating_point_v<T>, T> MakeRandom()
 	{
 		static std::uniform_real_distribution<T> distribution(
-			std::numeric_limits<T>::min(),
-			std::numeric_limits<T>::max());
+			std::numeric_limits<std::make_unsigned_t<T>>::min(),
+			std::numeric_limits<std::make_unsigned_t<T>>::max());
 
 		return distribution(GetEngine());
 	}

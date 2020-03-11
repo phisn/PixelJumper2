@@ -1,10 +1,8 @@
 #pragma once
 
-#include <Client/source/game/net/NetworkMessage.h>
-#include <Client/source/resource/ClassicPlayerResource.h>
+#include "CommonRequestMessage.h"
 
-#include <Operator/source/Common.h>
-#include <Operator/source/net/CommonRequestMessage.h>
+#include "Resource/ClassicPlayerResource.h"
 
 // the client for classicsimulatior are trusted
 // classic simulators and never normal users
@@ -30,7 +28,7 @@ namespace Operator::Net::Client
 		UserID userID;
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<RequestClientDataMessageContent> RequestClientDataMessage;
+	typedef ::Net::TrivialNetworkMessage<RequestClientDataMessageContent> RequestClientDataMessage;
 }
 
 namespace Operator::Net::Host
@@ -50,7 +48,7 @@ namespace Operator::Net::Host
 
 	struct RequestClientDataMessage
 		:
-		public Game::Net::NetworkMessage
+		public ::Net::NetworkMessage
 	{
 		Resource::ClassicPlayerResource resource;
 		std::string username;
@@ -78,5 +76,5 @@ namespace Operator::Net::Host
 		} type;
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<RequestClientDataFailedMessageContent> RequestClientDataFailedMessage;
+	typedef ::Net::TrivialNetworkMessage<RequestClientDataFailedMessageContent> RequestClientDataFailedMessage;
 }

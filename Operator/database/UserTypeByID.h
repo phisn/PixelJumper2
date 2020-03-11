@@ -1,24 +1,24 @@
 #pragma once
 
-#include <Client/source/logger/Logger.h>
+#include "KeyTable.h"
+#include "UserTable.h"
 
-#include <Operator/source/database/StatementBase.h>
-#include <Operator/source/database/KeyTable.h>
-#include <Operator/source/database/UserTable.h>
+#include "DatabaseCore/StatementBase.h"
+#include "Logger/Logger.h"
 
-namespace Database
+namespace Operator
 {
 	class UserTypeByID
 		:
-		public StatementBase
+		public Database::StatementBase
 	{
 	public:
 		Operator::UserType userType;
 		Operator::UserID userID;
 
-		int execute(
-			sqlite3* const database,
-			sqlite3_stmt** const statement) override
+		int raw_execute(
+			Database::SQLiteDatabase* const database,
+			Database::SQLiteStatement& statement) override
 		{
 			std::stringstream ss;
 
@@ -38,10 +38,10 @@ namespace Database
 			Log::Information(L"Executing " + carrtowstr(command.c_str()));
 
 			const int result = sqlite3_prepare_v2(
-				database,
+				database->getSQLite(),
 				command.c_str(),
 				(int)command.size(),
-				statement,
+				&statement.statement,
 				NULL);
 
 			if (result != SQLITE_OK)
@@ -49,7 +49,7 @@ namespace Database
 				return result;
 			}
 			
-			return sqlite3_bind_int64(*statement, 1, userID);
+			return sqlite3_bind_int64(statement.statement, 1, userID);
 		}
 
 	private:
@@ -58,7 +58,6 @@ namespace Database
 			if (sqlite3_column_type(statement, 0) == SQLITE_NULL)
 			{
 				Log::Error(L"Got null in apply in emptykey statement");
-
 				return false;
 			}
 

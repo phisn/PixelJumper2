@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Operator/source/Common.h>
+#include "Common/Common.h"
 
 #include <steam/steamnetworkingsockets.h>
 #include <vector>

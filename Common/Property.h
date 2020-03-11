@@ -581,7 +581,7 @@ namespace sf
 			return Vector2<bool>(*x, *y);
 		}
 
-		Vector2<Menu::Property<T>>& operator=(const Vector2<T>& vector)
+		Vector2<Util::Property<T>>& operator=(const Vector2<T>& vector)
 		{
 			const T temp = vector.x;
 

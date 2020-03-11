@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Client/source/net/RequestHandlerBase.h>
+#include "ActiveUserContainer.h"
+#include "net/ClassicSimulatorMessage.h"
 
-#include <Operator/source/Common.h>
-#include <Operator/source/net/ClassicSimulatorMessage.h>
-#include <Operator/source/operator/ActiveUserContainer.h>
+#include "Common/Common.h"
+#include "NetCore/RequestHandler.h"
 
 namespace Operator::Net
 {
@@ -32,7 +32,7 @@ namespace Operator::Net
 		}
 
 		bool onMessage(
-			const Device::Net::MessageID messageID,
+			const ::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
 			switch (messageID)
@@ -60,7 +60,7 @@ namespace Operator::Net
 				Host::RequestClientDataFailedMessage message;
 				message.type = message.InvalidUserMode;
 
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::ClassicHostID::RequestClientDataFailed,
 					&message);
 			}
@@ -71,7 +71,7 @@ namespace Operator::Net
 			message.resource.unlockedRepresentations = { 0 };
 			message.resource.unlockedWorlds = { 0x48f1da35 };
 
-			access->accessSendMessage(
+			access->sendMessage(
 				Host::ClassicHostID::RequestClientData,
 				&message);
 		}

@@ -21,13 +21,6 @@ namespace Database
 		std::vector<std::string> columns;
 	};
 
-	enum class ConditionResult
-	{
-		Found,
-		NotFound,
-		Error
-	};
-
 	//  think about adding attribute as a class
 	
 	class TableBase

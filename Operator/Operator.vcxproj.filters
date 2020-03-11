@@ -4,44 +4,17 @@
     <Filter Include="source">
       <UniqueIdentifier>{18f47171-4607-4254-8da6-902cfac24e4c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="external">
-      <UniqueIdentifier>{da791a14-b007-4959-8e8c-d62296e83dbd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="external\logger">
-      <UniqueIdentifier>{426af3ff-884d-4f9a-9967-fdb11173c045}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="external\device">
-      <UniqueIdentifier>{17e32e12-04c0-43e6-8f96-28182f8fa17e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\device">
       <UniqueIdentifier>{710f5df5-9356-4c47-a583-ce7471aecd99}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\database">
       <UniqueIdentifier>{87036c12-5b9a-4bbc-9d9e-b1e31eacb7ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\net">
+      <UniqueIdentifier>{10d68cc2-4e9c-448e-ab27-786c2f4b139a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Client\source\logger\Logger.cpp">
-      <Filter>external\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Client\source\logger\Output.cpp">
-      <Filter>external\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Client\source\logger\Section.cpp">
-      <Filter>external\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Client\source\logger\SectionHost.cpp">
-      <Filter>external\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Client\source\device\NetDevice.cpp">
-      <Filter>external\device</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Client\source\device\RandomDevice.cpp">
-      <Filter>external\device</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Client\source\device\EncryptionDevice.cpp">
-      <Filter>external\device</Filter>
-    </ClCompile>
     <ClCompile Include="ActiveUserContainer.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -86,33 +59,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Client\source\logger\Logger.h">
-      <Filter>external\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Client\source\logger\LoggerLevel.h">
-      <Filter>external\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Client\source\logger\Names.h">
-      <Filter>external\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Client\source\logger\Output.h">
-      <Filter>external\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Client\source\logger\Section.h">
-      <Filter>external\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Client\source\logger\SectionHost.h">
-      <Filter>external\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Client\source\device\NetDevice.h">
-      <Filter>external\device</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Client\source\device\RandomDevice.h">
-      <Filter>external\device</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Client\source\device\EncryptionDevice.h">
-      <Filter>external\device</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="ActiveUserContainer.h">
       <Filter>source</Filter>
@@ -152,6 +98,15 @@
     </ClInclude>
     <ClInclude Include="database\OperatorDatabase.h">
       <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="net\AuthenticationMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\ClassicSimulatorMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\CommonRequestMessage.h">
+      <Filter>source\net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

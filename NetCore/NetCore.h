@@ -35,10 +35,7 @@ namespace Net
 		void Process();
 	};
 
-	namespace Util
-	{
-		const std::wstring ConvertIPAddress(SteamNetworkingIPAddr* const address);
-	}
+	const std::wstring ConvertIPAddress(SteamNetworkingIPAddr* const address);
 
 	struct ClientInterface
 		:

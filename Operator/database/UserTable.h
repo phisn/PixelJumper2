@@ -1,20 +1,20 @@
 #pragma once
 
-#include <Client/source/logger/Logger.h>
-#include <Client/source/resource/PlayerResource.h>
-
-#include <Operator/source/Common.h>
-#include <Operator/source/database/TableBase.h>
+#include "Common/Common.h"
+#include "DatabaseCore/TableBase.h"
+#include "Logger/Logger.h"
+#include "OperatorDatabase.h"
+#include "Resource/PlayerResource.h"
 
 #include <SFML/Main.hpp>
 
-namespace Database
+namespace Operator
 {
 	class UserTable
 		:
-		public TableBase
+		public Database::TableBase
 	{
-		static const TableDefinition definition;
+		static const Database::TableDefinition definition;
 
 	public:
 		struct Column
@@ -31,7 +31,7 @@ namespace Database
 
 		UserTable()
 			:
-			TableBase(&definition)
+			TableBase(&definition, Operator::OperatorDatabase::GetSQLiteDatabase())
 		{
 		}
 
@@ -52,7 +52,7 @@ namespace Database
 
 		} content;
 
-		ConditionResult extractCommon(
+		Database::ConditionResult extractCommon(
 			const Operator::UserID userID,
 			const Columns info)
 		{
@@ -62,7 +62,7 @@ namespace Database
 			return extract(info, condition);
 		}
 
-		ConditionResult extractCommon(
+		Database::ConditionResult extractCommon(
 			const std::string username,
 			const Columns info)
 		{
@@ -72,7 +72,7 @@ namespace Database
 			return extract(info, condition);
 		}
 
-		static inline const TableDefinition* getTableDefinition()
+		static inline const Database::TableDefinition* getTableDefinition()
 		{
 			return &definition;
 		}
@@ -221,8 +221,8 @@ namespace Database
 
 	template <typename Source, typename Target>
 	std::string CreateTableJoin(
-		const TableBase::ColumnIndex sourceKey,
-		const TableBase::ColumnIndex targetKey)
+		const Database::TableBase::ColumnIndex sourceKey,
+		const Database::TableBase::ColumnIndex targetKey)
 	{
 		std::stringstream ss;
 

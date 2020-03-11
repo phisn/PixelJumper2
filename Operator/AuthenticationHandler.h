@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Client/source/Common.h>
-#include <Client/source/device/NetDevice.h>
-#include <Client/source/device/EncryptionDevice.h>
+#include "database/DatabaseInterface.h"
+#include "net/AuthenticationMessage.h"
 
-#include <Operator/source/database/DatabaseInterface.h>
-#include <Operator/source/net/AuthenticationMessage.h>
-
-#include <Client/source/net/RequestHandlerBase.h>
+#include "Common/Common.h"
+#include "Common/EncryptionModule.h"
+#include "Common/RandomModule.h"
+#include "NetCore/NetCore.h"
+#include "NetCore/RequestHandler.h"
 
 namespace Operator::Net
 {
@@ -35,7 +35,7 @@ namespace Operator::Net
 		{
 			if (--timeout == 0)
 			{
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::AuthMessageID::Timeout,
 					NULL);
 
@@ -44,7 +44,7 @@ namespace Operator::Net
 		}
 
 		bool onMessage(
-			const Device::Net::MessageID messageID,
+			const ::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
 			Log::Information(L"got message", messageID, L"messageID");
@@ -86,27 +86,27 @@ namespace Operator::Net
 
 		void onAuthenticate(const Client::AuthenticationMessage& request)
 		{
-			Database::UserAuthentication user;
-			const Database::ConditionResult result = Database::Interface::GetPlayerAuth(
+			UserAuthentication user;
+			const Database::ConditionResult result = DatabaseInterface::GetPlayerAuth(
 				user,
 				request.username);
 
 			switch (result)
 			{
 			case Database::ConditionResult::NotFound:
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::AuthMessageID::RejectAuthentication,
 					NULL);
 
-				access->accessOnThreatIdentified(
+				access->onThreatIdentified(
 					Client::AuthMessageID::Authenticate,
 					L"wrong username",
-					Device::Net::ThreatLevel::Suspicious);
+					::Net::ThreatLevel::Suspicious);
 
 				return;
 			case Database::ConditionResult::Error:
-				access->accessSendMessage(
-					Game::Net::CommonMessageID::InternalError,
+				access->sendMessage(
+					::Net::CommonMessageID::InternalError,
 					NULL);
 
 				return;
@@ -114,14 +114,14 @@ namespace Operator::Net
 
 			char messageHash[OPERATOR_HASH_SIZE];
 
-			Device::Encryption::HashHashSalt(
+			Module::Encryption::HashHashSalt(
 				(unsigned char*)messageHash,
 				(unsigned char*)request.content.hash,
 				(unsigned char*)user.salt);
 
 			if (memcmp(messageHash, user.hash, OPERATOR_HASH_SIZE) != 0)
 			{
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::AuthMessageID::RejectAuthentication,
 					NULL);
 
@@ -130,12 +130,12 @@ namespace Operator::Net
 
 			Host::AcceptAuthenticationMessage message;
 
-			if (!Database::Interface::CreatePlayerToken(
+			if (!DatabaseInterface::CreatePlayerToken(
 				message.authenticationToken,
 				user.userID))
 			{
-				access->accessSendMessage(
-					Game::Net::CommonMessageID::InternalError,
+				access->sendMessage(
+					::Net::CommonMessageID::InternalError,
 					NULL);
 
 				return;
@@ -143,7 +143,7 @@ namespace Operator::Net
 
 			message.userID = user.userID;
 
-			access->accessSendMessage(
+			access->sendMessage(
 				Host::AuthMessageID::AcceptAuthentication,
 				&message);
 
@@ -155,15 +155,15 @@ namespace Operator::Net
 			char hash[OPERATOR_HASH_SIZE];
 			char salt[OPERATOR_SALT_SIZE];
 
-			Device::Random::FillRandom(OPERATOR_SALT_SIZE, salt);
+			Module::Random::FillRandom(OPERATOR_SALT_SIZE, salt);
 
-			Device::Encryption::HashHashSalt(
+			Module::Encryption::HashHashSalt(
 				(unsigned char*)hash,
 				(unsigned char*)request.content.hash,
 				(unsigned char*)salt);
 
 			Host::AcceptRegistrationMessage message;
-			const Database::Interface::CreatePlayerResult result = Database::Interface::CreateNewPlayer(
+			const DatabaseInterface::CreatePlayerResult result = DatabaseInterface::CreateNewPlayer(
 				&message.userID,
 				message.authenticationToken,
 				salt,
@@ -173,37 +173,37 @@ namespace Operator::Net
 
 			switch (result)
 			{
-			case Database::Interface::CreatePlayerResult::UsernameUsed:
+			case DatabaseInterface::CreatePlayerResult::UsernameUsed:
 				RejectRegistration(Host::RejectRegistrationMessage::UsernameUsed);
 
 				return;
-			case Database::Interface::CreatePlayerResult::KeyUsed:
+			case DatabaseInterface::CreatePlayerResult::KeyUsed:
 				RejectRegistration(Host::RejectRegistrationMessage::KeyUsed);
 
-				access->accessOnThreatIdentified(
+				access->onThreatIdentified(
 					Client::AuthMessageID::Authenticate,
 					L"used key",
-					Device::Net::ThreatLevel::Suspicious);
+					::Net::ThreatLevel::Suspicious);
 
 				return;
-			case Database::Interface::CreatePlayerResult::KeyNotFound:
+			case DatabaseInterface::CreatePlayerResult::KeyNotFound:
 				RejectRegistration(Host::RejectRegistrationMessage::KeyInvalid);
 
-				access->accessOnThreatIdentified(
+				access->onThreatIdentified(
 					Client::AuthMessageID::Authenticate,
 					L"invalid key",
-					Device::Net::ThreatLevel::Uncommon);
+					::Net::ThreatLevel::Uncommon);
 
 				return;
-			case Database::Interface::CreatePlayerResult::Error:
-				access->accessSendMessage(
-					Game::Net::CommonMessageID::InternalError,
+			case DatabaseInterface::CreatePlayerResult::Error:
+				access->sendMessage(
+					::Net::CommonMessageID::InternalError,
 					NULL);
 
 				return;
 			}
 
-			access->accessSendMessage(
+			access->sendMessage(
 				Host::AuthMessageID::AcceptRegistration,
 				&message);
 
@@ -215,7 +215,7 @@ namespace Operator::Net
 			Host::RejectRegistrationMessage message;
 			message.reason = reason;
 
-			access->accessSendMessage(
+			access->sendMessage(
 				Host::AuthMessageID::RejectRegistration,
 				&message);
 		}
@@ -223,21 +223,21 @@ namespace Operator::Net
 		void onTokenAuthentication(const Client::TokenMessage& request)
 		{
 			UserID userID;
-			Database::ConditionResult result = Database::Interface::FindUserID(
+			Database::ConditionResult result = DatabaseInterface::FindUserID(
 				&userID,
 				request.token);
 
 			switch (result)
 			{
 			case Database::ConditionResult::NotFound:
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::AuthMessageID::RejectToken,
 					NULL);
 
 				break;
 			case Database::ConditionResult::Error:
-				access->accessSendMessage(
-					Game::Net::CommonMessageID::InternalError,
+				access->sendMessage(
+					::Net::CommonMessageID::InternalError,
 					NULL);
 
 				break;
@@ -246,7 +246,7 @@ namespace Operator::Net
 			Host::AcceptTokenMessage message;
 			message.userID = userID;
 
-			access->accessSendMessage(
+			access->sendMessage(
 				Host::AuthMessageID::AcceptToken,
 				&message);
 

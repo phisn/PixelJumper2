@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Operator/source/operator/ActiveUserContainer.h>
-#include <Operator/source/operator/AuthenticationHandler.h>
-#include <Operator/source/net/CommonRequestMessage.h>
+#include "ActiveUserContainer.h"
+#include "AuthenticationHandler.h"
+#include "net/CommonRequestMessage.h"
 
 namespace Operator::Net
 {
@@ -30,7 +30,7 @@ namespace Operator::Net
 		}
 
 		bool onMessage(
-			const Device::Net::MessageID messageID,
+			const ::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
 			switch (messageID)
@@ -80,21 +80,21 @@ namespace Operator::Net
 		{
 			ConnectionKeySource keySource;
 
-			Database::ConditionResult result = Database::Interface::GetPlayerToken(
+			Database::ConditionResult result = DatabaseInterface::GetPlayerToken(
 				keySource.token,
 				request.userID);
 
 			switch (result)
 			{
 			case Database::ConditionResult::NotFound:
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::CommonRequestMessageID::ConnectionKeyFailed,
 					NULL);
 
 				return;
 			case Database::ConditionResult::Error:
-				access->accessSendMessage(
-					Game::Net::CommonMessageID::InternalError,
+				access->sendMessage(
+					::Net::CommonMessageID::InternalError,
 					NULL);
 
 				return;
@@ -105,7 +105,7 @@ namespace Operator::Net
 			Host::ConnectionKeyMessage message;
 			message.key.make(keySource);
 			
-			access->accessSendMessage(
+			access->sendMessage(
 				Host::CommonRequestMessageID::ConnectionKey,
 				&message);
 		}
@@ -113,7 +113,7 @@ namespace Operator::Net
 		void onRegisterClassicHost(const Client::RegisterClassicHostMessage& message)
 		{
 			UserType type;
-			const Database::ConditionResult result = Database::Interface::GetUserType(
+			const Database::ConditionResult result = DatabaseInterface::GetUserType(
 				type,
 				userID);
 			
@@ -123,14 +123,14 @@ namespace Operator::Net
 					userID, L"userID",
 					(int) result, L"result");
 
-				access->accessSendMessage(
-					Game::Net::CommonMessageID::InternalError,
+				access->sendMessage(
+					::Net::CommonMessageID::InternalError,
 					NULL);
 			}
 
 			if (IsUserTrusted(type))
 			{
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::CommonRequestMessageID::RegisterClassicHostAccepted,
 					NULL);
 
@@ -138,7 +138,7 @@ namespace Operator::Net
 			}
 			else
 			{
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::CommonRequestMessageID::RegisterClassicHostRejected,
 					NULL);
 			}
@@ -151,7 +151,7 @@ namespace Operator::Net
 				Host::HostFindClassicRejectedMessage message;
 				message.type = Host::HostFindClassicRejectedMessageContent::InvalidUserMode;
 
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::CommonRequestMessageID::HostFindClassicRejected,
 					&message);
 
@@ -165,7 +165,7 @@ namespace Operator::Net
 				Host::HostFindClassicRejectedMessage message;
 				message.type = Host::HostFindClassicRejectedMessageContent::NoHostAvailable;
 
-				access->accessSendMessage(
+				access->sendMessage(
 					Host::CommonRequestMessageID::HostFindClassicRejected,
 					&message);
 
@@ -174,7 +174,7 @@ namespace Operator::Net
 
 			ConnectionKeySource keySource;
 
-			const Database::ConditionResult result = Database::Interface::GetPlayerToken(
+			const Database::ConditionResult result = DatabaseInterface::GetPlayerToken(
 				keySource.token,
 				host->getConfig().host.userID);
 
@@ -185,8 +185,8 @@ namespace Operator::Net
 					host->getConfig().host.userID, L"hostID",
 					userID, L"userID");
 
-				access->accessSendMessage(
-					Game::Net::CommonMessageID::InternalError,
+				access->sendMessage(
+					::Net::CommonMessageID::InternalError,
 					NULL);
 
 				break;
@@ -195,8 +195,8 @@ namespace Operator::Net
 					host->getConfig().host.userID, L"hostID",
 					userID, L"userID");
 
-				access->accessSendMessage(
-					Game::Net::CommonMessageID::InternalError,
+				access->sendMessage(
+					::Net::CommonMessageID::InternalError,
 					NULL);
 
 				break;
@@ -210,7 +210,7 @@ namespace Operator::Net
 			message.address = host->getConfig().host.address;
 			message.key.make(keySource);
 
-			access->accessSendMessage(
+			access->sendMessage(
 				Host::CommonRequestMessageID::HostFindClassic,
 				&message);
 		}

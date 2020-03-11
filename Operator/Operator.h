@@ -1,13 +1,12 @@
 #pragma once
 
-#include <Client/source/device/NetDevice.h>
-#include <Operator/source/operator/OperatorClientHandler.h>
+#include "OperatorClientHandler.h"
 
 namespace Operator::Net
 {
 	class Operator
 		:
-		public Device::Net::Server
+		public ::Net::ServerInterface
 	{
 	public:
 		struct Settings
@@ -40,9 +39,10 @@ namespace Operator::Net
 
 				if (clientHandler->getStatus() == OperatorClientHandler::Status::Closing)
 				{
-					removeConnection(
+					getNetworkInterface()->CloseConnection(
 						clientHandler->getConnection(),
 						Host::ConnectionClosedReason::Authentication,
+						"status is closing",
 						false);
 
 					iterator = connections.erase(iterator);
@@ -66,9 +66,11 @@ namespace Operator::Net
 
 		std::vector<OperatorClientHandler*> connections;
 
-		bool askClientConnect(SteamNetworkingIPAddr* const ipAddress) override
+		bool askClientConnect(SteamNetConnectionStatusChangedCallback_t* const event) override
 		{
-			Log::Information(L"Client in coming");
+			Log::Information(L"Client connecting",
+				(unsigned long long) event->m_hConn, L"handle",
+				::Net::ConvertIPAddress(&event->m_info.m_addrRemote), L"address");
 
 			return true;
 		}
@@ -110,12 +112,11 @@ namespace Operator::Net
 					old = iterator;
 				}
 
-			// old->close();
-
-			removeConnection(
-				(*old)->getConnection(), 
-				Host::ConnectionClosedReason::IdleConnection, 
-				true);
+			getNetworkInterface()->CloseConnection(
+				(*old)->getConnection(),
+				-2,
+				"idle connection",
+				false);
 
 			connections.erase(old);
 		}

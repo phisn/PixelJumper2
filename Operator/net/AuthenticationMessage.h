@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Client/source/game/net/NetworkMessage.h>
-#include <Client/source/resource/PlayerResource.h>
-
-#include <Operator/source/Common.h>
+#include "Common/Common.h"
+#include "NetCore/NetworkMessage.h"
+#include "Resource/PlayerResource.h"
 
 /*
 	
@@ -69,7 +68,7 @@ namespace Operator::Net::Client
 	{
 		enum
 		{
-			_Begin = Game::Net::CommonMessageID::_Offset - 1,
+			_Begin = ::Net::CommonMessageID::_Offset - 1,
 
 			// login with hash after received salt
 			// from requestlogin
@@ -88,7 +87,7 @@ namespace Operator::Net::Client
 
 	struct AuthenticationMessage
 		:
-		public Game::Net::NetworkMessage
+		public ::Net::NetworkMessage
 	{
 		std::string username;
 
@@ -116,11 +115,11 @@ namespace Operator::Net::Client
 		char token[OPERATOR_HASH_SIZE];
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<TokenMessageContent> TokenMessage;
+	typedef ::Net::TrivialNetworkMessage<TokenMessageContent> TokenMessage;
 
 	struct RegistrationMessage
 		:
-		public Game::Net::NetworkMessage
+		public ::Net::NetworkMessage
 	{
 		std::string username;
 
@@ -160,7 +159,7 @@ namespace Operator::Net::Host
 	{
 		enum
 		{
-			_Begin = Game::Net::CommonMessageID::_Offset - 1,
+			_Begin = ::Net::CommonMessageID::_Offset - 1,
 
 			Timeout,
 
@@ -192,14 +191,14 @@ namespace Operator::Net::Host
 		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<AcceptAuthenticationMessageContent> AcceptAuthenticationMessage;
+	typedef ::Net::TrivialNetworkMessage<AcceptAuthenticationMessageContent> AcceptAuthenticationMessage;
 
 	struct AcceptTokenMessageContent
 	{
 		UserID userID;
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<AcceptTokenMessageContent> AcceptTokenMessage;
+	typedef ::Net::TrivialNetworkMessage<AcceptTokenMessageContent> AcceptTokenMessage;
 
 	struct AcceptRegistrationMessageContent
 	{
@@ -207,7 +206,7 @@ namespace Operator::Net::Host
 		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<AcceptRegistrationMessageContent> AcceptRegistrationMessage;
+	typedef ::Net::TrivialNetworkMessage<AcceptRegistrationMessageContent> AcceptRegistrationMessage;
 
 	struct RejectRegistrationMessageContent
 	{
@@ -221,5 +220,5 @@ namespace Operator::Net::Host
 		} reason;
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<RejectRegistrationMessageContent> RejectRegistrationMessage;
+	typedef ::Net::TrivialNetworkMessage<RejectRegistrationMessageContent> RejectRegistrationMessage;
 }

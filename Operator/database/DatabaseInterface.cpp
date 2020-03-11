@@ -1,26 +1,25 @@
 #include "DatabaseInterface.h"
 
 #include "Common/RandomModule.h"
-#include "EmptyKeyStatement.h"
-#include "OperatorDatabase.h"
 
-#include <Operator/source/database/UserTable.h>
-#include <Operator/source/database/UserTypeByID.h>
+#include "EmptyKeyStatement.h"
+#include "UserTable.h"
+#include "UserTypeByID.h"
 
 namespace Operator
 {
-	ConditionResult DatabaseInterface::GetPlayerToken(
+	Database::ConditionResult DatabaseInterface::GetPlayerToken(
 		Operator::AuthenticationToken& token,
 		const Operator::UserID userID)
 	{
 		UserTable userTable;
-		const ConditionResult result = userTable.extractCommon(
+		const Database::ConditionResult result = userTable.extractCommon(
 			userID,
 			{
 				UserTable::Column::Token
 			});
 
-		if (result == ConditionResult::Found)
+		if (result == Database::ConditionResult::Found)
 		{
 			memcpy(token.token, userTable.content.token, sizeof(token));
 		}
@@ -28,12 +27,12 @@ namespace Operator
 		return result;
 	}
 
-	ConditionResult DatabaseInterface::GetPlayerAuth(
+	Database::ConditionResult DatabaseInterface::GetPlayerAuth(
 		UserAuthentication& authentication,
 		const std::string username)
 	{
 		UserTable userTable;
-		const ConditionResult result = userTable.extractCommon(
+		const Database::ConditionResult result = userTable.extractCommon(
 			username,
 			{
 				UserTable::Column::PlayerID,
@@ -41,7 +40,7 @@ namespace Operator
 				UserTable::Column::Salt
 			});
 
-		if (result == ConditionResult::Found)
+		if (result == Database::ConditionResult::Found)
 		{
 			authentication.userID = userTable.primary.id;
 
@@ -52,23 +51,20 @@ namespace Operator
 		return result;
 	}
 
-	ConditionResult DatabaseInterface::GetUserType(
+	Database::ConditionResult DatabaseInterface::GetUserType(
 		Operator::UserType& userType,
 		const Operator::UserID userID)
 	{
-		Database::UserTypeByID utbID;
+		UserTypeByID utbID;
 		utbID.userID = userID;
 
-		sqlite3_stmt* statement = NULL;
-		int result = utbID.execute(Device::Database::GetConnection(), &statement);
+		Operator::OperatorDatabaseStatement statement;
+		int result = utbID.execute(statement);
 
 		if (result != SQLITE_OK)
 		{
-			Log::Error(L"Failed to execute statement " + Device::Database::GenerateErrorMessage(),
+			Log::Error(L"Failed to execute statement " + OperatorDatabase::GetErrorMessage(),
 				result, L"result");
-
-			if (statement != NULL)
-				Device::Database::FinalizeStatement(statement);
 
 			return Database::ConditionResult::Error;
 		}
@@ -85,30 +81,28 @@ namespace Operator
 
 			break;
 		default:
-			Log::Error(L"Failed to process statement " + Device::Database::GenerateErrorMessage(),
+			Log::Error(L"Failed to process statement " + OperatorDatabase::GetErrorMessage(),
 				result, L"result");
 
 			return Database::ConditionResult::Error;
 		}
 
-		Device::Database::FinalizeStatement(statement);
-
 		return Database::ConditionResult::Found;
 	}
 
-	ConditionResult DatabaseInterface::FindUserID(
+	Database::ConditionResult DatabaseInterface::FindUserID(
 		Operator::UserID* const userID,
 		const std::string username)
 	{
 		UserTable playerTable;
 
-		const ConditionResult result = playerTable.extractCommon(
+		const Database::ConditionResult result = playerTable.extractCommon(
 			username,
 			{
 				UserTable::Column::PlayerID
 			});
 
-		if (result == ConditionResult::Found && userID)
+		if (result == Database::ConditionResult::Found && userID)
 		{
 			*userID = playerTable.primary.id;
 		}
@@ -116,7 +110,7 @@ namespace Operator
 		return result;
 	}
 
-	ConditionResult Database::Interface::FindUserID(
+	Database::ConditionResult DatabaseInterface::FindUserID(
 		Operator::UserID* const userID,
 		const char token[OPERATOR_HASH_SIZE])
 	{
@@ -126,7 +120,7 @@ namespace Operator
 			token,
 			OPERATOR_HASH_SIZE);
 
-		const ConditionResult result = playerTable.extract(
+		const Database::ConditionResult result = playerTable.extract(
 			{
 				UserTable::Column::PlayerID
 			},
@@ -134,7 +128,7 @@ namespace Operator
 			UserTable::Column::Token
 		});
 
-		if (result == ConditionResult::Found && userID)
+		if (result == Database::ConditionResult::Found && userID)
 		{
 			*userID = playerTable.primary.id;
 		}
@@ -142,7 +136,7 @@ namespace Operator
 		return result;
 	}
 
-	DatabaseInterface::CreatePlayerResult Database::Interface::CreateNewPlayer(
+	DatabaseInterface::CreatePlayerResult Operator::DatabaseInterface::CreateNewPlayer(
 		Operator::UserID* const resultPlayerID,
 		char token[OPERATOR_HASH_SIZE],
 		const char salt[OPERATOR_SALT_SIZE],
@@ -156,7 +150,7 @@ namespace Operator
 			key.content,
 			OPERATOR_KEY_SIZE);
 
-		ConditionResult result = keyTable.extract(
+		Database::ConditionResult result = keyTable.extract(
 			{
 				KeyTable::Column::Player
 			},
@@ -166,10 +160,10 @@ namespace Operator
 
 		switch (result)
 		{
-		case ConditionResult::NotFound:
+		case Database::ConditionResult::NotFound:
 			return CreatePlayerResult::KeyNotFound;
 
-		case ConditionResult::Error:
+		case Database::ConditionResult::Error:
 			return CreatePlayerResult::Error;
 
 		}
@@ -181,10 +175,10 @@ namespace Operator
 
 		switch (FindUserID(NULL, username))
 		{
-		case ConditionResult::Found:
+		case Database::ConditionResult::Found:
 			return CreatePlayerResult::UsernameUsed;
 
-		case ConditionResult::Error:
+		case Database::ConditionResult::Error:
 			return CreatePlayerResult::Error;
 
 		}
@@ -193,7 +187,7 @@ namespace Operator
 
 		while (true)
 		{
-			playerID = Device::Random::MakeRandom<sf::Uint64>();
+			playerID = Module::Random::MakeRandom<sf::Uint64>();
 
 			// theoretical max 18'446'744'073'709'551'615
 			// database max 9'223'372'036'854'775'807
@@ -211,13 +205,13 @@ namespace Operator
 
 			result = table.exists({ UserTable::Column::PlayerID });
 
-			if (result == ConditionResult::NotFound)
+			if (result == Database::ConditionResult::NotFound)
 			{
 				break;
 			}
 			else
 			{
-				if (result == ConditionResult::Error)
+				if (result == Database::ConditionResult::Error)
 				{
 					Log::Error(L"Failed to generate userID for new player");
 
@@ -226,7 +220,7 @@ namespace Operator
 			}
 		}
 
-		if (!Device::Database::BeginTransaction())
+		if (!Operator::OperatorDatabase::GetSQLiteDatabase()->beginTransaction())
 		{
 			return CreatePlayerResult::Error;
 		}
@@ -239,7 +233,7 @@ namespace Operator
 		memcpy(playerTable.content.hash, hash, OPERATOR_HASH_SIZE);
 		memcpy(playerTable.content.salt, salt, OPERATOR_SALT_SIZE);
 
-		Device::Random::FillRandom(
+		Module::Random::FillRandom(
 			OPERATOR_HASH_SIZE,
 			(char*)playerTable.content.token);
 
@@ -252,7 +246,7 @@ namespace Operator
 
 		if (!playerTable.create())
 		{
-			Device::Database::RollbackTransaction();
+			Operator::OperatorDatabase::GetSQLiteDatabase()->rollbackTransaction();
 			return CreatePlayerResult::Error;
 		}
 
@@ -264,13 +258,13 @@ namespace Operator
 			},
 		{
 			KeyTable::Column::Key
-		}) != ConditionResult::Found)
+		}) != Database::ConditionResult::Found)
 		{
-			Device::Database::RollbackTransaction();
+			Operator::OperatorDatabase::GetSQLiteDatabase()->rollbackTransaction();
 			return CreatePlayerResult::Error;
 		}
 
-		if (Device::Database::EndTransaction())
+		if (Operator::OperatorDatabase::GetSQLiteDatabase()->endTransaction())
 		{
 			if (resultPlayerID)
 				*resultPlayerID = playerID;
@@ -290,9 +284,9 @@ namespace Operator
 		UserTable userTable;
 		userTable.primary.id = userID;
 
-		Device::Random::FillRandom(
+		Module::Random::FillRandom(
 			OPERATOR_HASH_SIZE,
-			(char*)userTable.content.token
+			(char*) userTable.content.token
 		);
 
 		if (token)
@@ -309,7 +303,7 @@ namespace Operator
 		{
 			UserTable::Column::PlayerID
 		})
-			== ConditionResult::Found;
+			== Database::ConditionResult::Found;
 	}
 
 	bool DatabaseInterface::GetEmptyKeys(std::vector<Operator::RegistrationKey>& keys)
@@ -358,12 +352,12 @@ namespace Operator
 		const Resource::PlayerID playerID,
 		const std::string source)
 	{
-		Database::KeyTable keyTable;
+		KeyTable keyTable;
 
 		keyTable.foreign.playerID = playerID;
 		keyTable.content.source = source;
 
-		Device::Random::FillRandom(15, keyTable.primary.key.content);
+		Module::Random::FillRandom(15, keyTable.primary.key.content);
 
 		for (int i = 0; i < 15; ++i)
 		{

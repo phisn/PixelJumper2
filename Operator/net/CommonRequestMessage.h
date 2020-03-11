@@ -1,7 +1,8 @@
 #pragma once
 
-#include <Operator/source/Common.h>
-#include <Operator/source/net/AuthenticationMessage.h>
+#include "AuthenticationMessage.h"
+
+#include <steam/steamnetworkingsockets.h>
 
 namespace Operator::Net::Client
 {
@@ -39,7 +40,7 @@ namespace Operator::Net::Client
 		UserID userID;
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<RequestConnectionKeyMessageContent> RequestConnectionKeyMessage;
+	typedef ::Net::TrivialNetworkMessage<RequestConnectionKeyMessageContent> RequestConnectionKeyMessage;
 
 	struct RegisterClassicHostMessageContent
 	{
@@ -47,7 +48,7 @@ namespace Operator::Net::Client
 		sf::Uint16 port;
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<RegisterClassicHostMessageContent> RegisterClassicHostMessage;
+	typedef ::Net::TrivialNetworkMessage<RegisterClassicHostMessageContent> RegisterClassicHostMessage;
 }
 
 namespace Operator::Net::Host
@@ -82,7 +83,7 @@ namespace Operator::Net::Host
 		ConnectionKey key;
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<ConnectionKeyMessageContent> ConnectionKeyMessage;
+	typedef ::Net::TrivialNetworkMessage<ConnectionKeyMessageContent> ConnectionKeyMessage;
 
 	struct HostFindClassicMessageContent
 	{
@@ -91,7 +92,7 @@ namespace Operator::Net::Host
 		SteamNetworkingIPAddr address;
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<HostFindClassicMessageContent> HostFindClassicMessage;
+	typedef ::Net::TrivialNetworkMessage<HostFindClassicMessageContent> HostFindClassicMessage;
 
 	struct HostFindClassicRejectedMessageContent
 	{
@@ -103,5 +104,5 @@ namespace Operator::Net::Host
 		} type;
 	};
 
-	typedef Game::Net::TrivialNetworkMessage<HostFindClassicRejectedMessageContent> HostFindClassicRejectedMessage;
+	typedef ::Net::TrivialNetworkMessage<HostFindClassicRejectedMessageContent> HostFindClassicRejectedMessage;
 }

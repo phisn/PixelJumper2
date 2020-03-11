@@ -15,7 +15,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameNet", "GameNet\GameNet.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OperatorClient", "OperatorClient\OperatorClient.vcxproj", "{BF820ACF-12DD-4C75-836C-84551731CAA6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Resource", "Resource\Resource.vcxproj", "{52DA07A5-220A-4D77-A4EB-B7A9FF800D9C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourceCore", "Resource\Resource.vcxproj", "{52DA07A5-220A-4D77-A4EB-B7A9FF800D9C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcxproj", "{003A8E49-79C7-40CA-970A-CABBD502CA90}"
 EndProject
@@ -29,6 +29,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseCore", "DatabaseCor
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Common\Common.vcxitems*{003a8e49-79c7-40ca-970a-cabbd502ca90}*SharedItemsImports = 4
 		Common\Common.vcxitems*{3f11cb66-9d73-4186-a27a-4e25ef362a18}*SharedItemsImports = 9
 		Common\Common.vcxitems*{52da07a5-220a-4d77-a4eb-b7a9ff800d9c}*SharedItemsImports = 4
 		Common\Common.vcxitems*{cb0589f8-3d8c-41f5-ae7c-27f7bc688b20}*SharedItemsImports = 4

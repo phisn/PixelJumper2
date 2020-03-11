@@ -1,12 +1,9 @@
 #pragma once
 
+#include "OperatorDatabase.h"
+
 #include "Resource/PlayerResource.h"
-
 #include "Common/OperatorDefinitions.h"
-
-#include <Operator/source/database/EmptyKeyStatement.h>
-#include <Operator/source/database/TableBase.h>
-#include <Operator/source/device/DatabaseDevice.h>
 
 namespace Operator
 {
@@ -24,21 +21,21 @@ namespace Operator::DatabaseInterface
 	// token should not be sent to a player and
 	// only used in hash. to send a player a token
 	// a new one has to be created
-	ConditionResult GetPlayerToken(
+	Database::ConditionResult GetPlayerToken(
 		Operator::AuthenticationToken& token,
 		const Operator::UserID userID);
-	ConditionResult GetPlayerAuth(
+	Database::ConditionResult GetPlayerAuth(
 		UserAuthentication& authentication,
 		const std::string username);
 
-	ConditionResult GetUserType(
+	Database::ConditionResult GetUserType(
 		Operator::UserType& userType,
 		const Operator::UserID userID);
 
-	ConditionResult FindUserID(
+	Database::ConditionResult FindUserID(
 		Operator::UserID* const userID,
 		const std::string username);
-	ConditionResult FindUserID(
+	Database::ConditionResult FindUserID(
 		Operator::UserID* const userID,
 		const char token[OPERATOR_HASH_SIZE]);
 

@@ -6,6 +6,14 @@
 
 namespace Database
 {
+	// used in tablebase
+	enum class ConditionResult
+	{
+		Found,
+		NotFound,
+		Error
+	};
+
 	class SQLiteDatabase
 	{
 	public:

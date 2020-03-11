@@ -1,10 +1,6 @@
 #include "CoreDevice.h"
 
-#include <Client/source/device/NetDevice.h>
-#include <Client/source/device/RandomDevice.h>
-
-#include <Operator/source/device/DatabaseDevice.h>
-#include <Operator/source/operator/Operator.h>
+#include "Operator/Operator.h"
 
 #include <chrono>
 #include <thread>
@@ -20,16 +16,16 @@ namespace Device::Core
 	{
 		Log::Section(L"Initializing devices");
 
-		Random::Initialize();
+		Module::Random::Initialize();
 
-		if (!Database::Initialize())
+		if (!Operator::OperatorDatabase::Initialize(L"pj2.db"))
 		{
 			Log::Error(L"Failed to initialize database");
 
 			return false;
 		}
 
-		if (!Net::Initialize())
+		if (!Net::Core::Initialize())
 		{
 			Log::Error(L"Failed to initialize net device");
 
@@ -37,7 +33,7 @@ namespace Device::Core
 		}
 
 		server = new Operator::Net::Operator(Operator::Net::Operator::Settings{ 100, 20 });
-		if (!server->initialize())
+		if (!server->initialize(9928))
 		{
 			Log::Error(L"Failed to initialize server");
 			delete server;
@@ -56,8 +52,8 @@ namespace Device::Core
 		// instantly shutdown all connection
 		delete server;
 
-		Net::Uninitialize();
-		Database::Unintialize();
+		Operator::OperatorDatabase::Uninitialize();
+		Net::Core::Uninitialize();
 	}
 
 	void Run()
@@ -69,7 +65,7 @@ namespace Device::Core
 		{
 			clock.restart();
 
-			Device::Net::Process();
+			Net::Core::Process();
 			server->process();
 
 			if (const sf::Time time = clock.getElapsedTime(); time < interval)

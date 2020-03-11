@@ -1,6 +1,3 @@
 #include "OperatorDatabase.h"
 
-bool Operator::OperatorDatabase::GetEmptyKeys(std::vector<Operator::RegistrationKey>& keys)
-{
-	return false;
-}
+Operator::OperatorDatabase* Operator::OperatorDatabase::operatorDatabase = NULL;

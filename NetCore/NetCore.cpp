@@ -61,8 +61,9 @@ namespace Net
 
 				Log::Error(L"NetworkUtils different (" + carrtowstr(message) + L")",
 					(int)type, L"type");
-			}
-		);
+			});
+
+		networkInterface = SteamNetworkingSockets();
 
 		return true;
 	}
@@ -83,7 +84,7 @@ namespace Net
 		networkInterface->RunCallbacks(&handler);
 	}
 
-	const std::wstring Util::ConvertIPAddress(SteamNetworkingIPAddr* const address)
+	const std::wstring ConvertIPAddress(SteamNetworkingIPAddr* const address)
 	{
 		// gurrantead to have leading zero byte
 		char buffer[SteamNetworkingIPAddr::k_cchMaxString] = { };
@@ -251,7 +252,7 @@ namespace Net
 			{
 				Log::Error(L"unable to accept conncetion",
 					(int)result, L"result",
-					Util::ConvertIPAddress(&event->m_info.m_addrRemote), L"ip");
+					ConvertIPAddress(&event->m_info.m_addrRemote), L"ip");
 
 				networkInterface->CloseConnection(
 					event->m_hConn,
