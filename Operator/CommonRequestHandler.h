@@ -2,13 +2,14 @@
 
 #include "ActiveUserContainer.h"
 #include "AuthenticationHandler.h"
-#include "net/CommonRequestMessage.h"
+
+#include "NetCore/message/OperatorCommonMessage.h"
 
 namespace Operator::Net
 {
 	struct CommonRequestHandlerCallback
 	{
-		virtual void registerAsClassicHost(const Client::RegisterClassicHostMessage& message) = 0;
+		virtual void registerAsClassicHost(const ::Net::Client::RegisterClassicHostMessage& message) = 0;
 	};
 
 	class CommonRequestHandler
@@ -35,23 +36,23 @@ namespace Operator::Net
 		{
 			switch (messageID)
 			{
-			case Client::CommonRequestMessageID::RequestConnectionKey:
-				if (Client::RequestConnectionKeyMessage message; loadMessage(messageID, &message, pipe))
+			case ::Net::Client::OperatorCommonMessageID::RequestConnectionKey:
+				if (::Net::Client::RequestConnectionKeyMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRequestConnnectionKey(message);
 				}
 
 				return true;
 
-			case Client::CommonRequestMessageID::RegisterClassicHost:
-				if (Client::RegisterClassicHostMessage message; loadMessage(messageID, &message, pipe))
+			case ::Net::Client::OperatorCommonMessageID::RegisterClassicHost:
+				if (::Net::Client::RegisterClassicHostMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRegisterClassicHost(message);
 				}
 
 				return true;
 
-			case Client::CommonRequestMessageID::HostFindClassic:
+			case ::Net::Client::OperatorCommonMessageID::HostFindClassic:
 				onHostFindClassic();
 
 				return true;
@@ -76,7 +77,7 @@ namespace Operator::Net
 			with this method servers to not need to stay conntected to
 			the operator
 		*/
-		void onRequestConnnectionKey(const Client::RequestConnectionKeyMessage& request)
+		void onRequestConnnectionKey(const ::Net::Client::RequestConnectionKeyMessage& request)
 		{
 			ConnectionKeySource keySource;
 
@@ -88,7 +89,7 @@ namespace Operator::Net
 			{
 			case Database::ConditionResult::NotFound:
 				access->sendMessage(
-					Host::CommonRequestMessageID::ConnectionKeyFailed,
+					Host::OperatorCommonMessageID::ConnectionKeyFailed,
 					NULL);
 
 				return;
@@ -106,11 +107,11 @@ namespace Operator::Net
 			message.key.make(keySource);
 			
 			access->sendMessage(
-				Host::CommonRequestMessageID::ConnectionKey,
+				Host::OperatorCommonMessageID::ConnectionKey,
 				&message);
 		}
 
-		void onRegisterClassicHost(const Client::RegisterClassicHostMessage& message)
+		void onRegisterClassicHost(const ::Net::Client::RegisterClassicHostMessage& message)
 		{
 			UserType type;
 			const Database::ConditionResult result = DatabaseInterface::GetUserType(
@@ -131,7 +132,7 @@ namespace Operator::Net
 			if (IsUserTrusted(type))
 			{
 				access->sendMessage(
-					Host::CommonRequestMessageID::RegisterClassicHostAccepted,
+					Host::OperatorCommonMessageID::RegisterClassicHostAccepted,
 					NULL);
 
 				callback->registerAsClassicHost(message);
@@ -139,7 +140,7 @@ namespace Operator::Net
 			else
 			{
 				access->sendMessage(
-					Host::CommonRequestMessageID::RegisterClassicHostRejected,
+					Host::OperatorCommonMessageID::RegisterClassicHostRejected,
 					NULL);
 			}
 		}
@@ -152,7 +153,7 @@ namespace Operator::Net
 				message.type = Host::HostFindClassicRejectedMessageContent::InvalidUserMode;
 
 				access->sendMessage(
-					Host::CommonRequestMessageID::HostFindClassicRejected,
+					Host::OperatorCommonMessageID::HostFindClassicRejected,
 					&message);
 
 				return;
@@ -166,7 +167,7 @@ namespace Operator::Net
 				message.type = Host::HostFindClassicRejectedMessageContent::NoHostAvailable;
 
 				access->sendMessage(
-					Host::CommonRequestMessageID::HostFindClassicRejected,
+					Host::OperatorCommonMessageID::HostFindClassicRejected,
 					&message);
 
 				return;
@@ -211,7 +212,7 @@ namespace Operator::Net
 			message.key.make(keySource);
 
 			access->sendMessage(
-				Host::CommonRequestMessageID::HostFindClassic,
+				Host::OperatorCommonMessageID::HostFindClassic,
 				&message);
 		}
 	};

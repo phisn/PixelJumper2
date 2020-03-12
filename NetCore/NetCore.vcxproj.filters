@@ -4,6 +4,12 @@
     <Filter Include="source">
       <UniqueIdentifier>{2e1fbb6f-5e17-4ff0-91c5-1c6c48f7e3f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\message">
+      <UniqueIdentifier>{bc4cc155-49d2-4300-aa54-fc6f0f85cf0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\message\operator">
+      <UniqueIdentifier>{616babdd-bd3b-43db-80b5-1820754c0264}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -43,6 +49,18 @@
     </ClInclude>
     <ClInclude Include="RequestContainer.h">
       <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="message\OperatorRequestMessage.h">
+      <Filter>source\message\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="message\OperatorCommonMessage.h">
+      <Filter>source\message\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="message\OperatorClassicSimulatorMessage.h">
+      <Filter>source\message\operator</Filter>
+    </ClInclude>
+    <ClInclude Include="message\OperatorAuthenticationMessage.h">
+      <Filter>source\message\operator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

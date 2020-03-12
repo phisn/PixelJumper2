@@ -1,12 +1,11 @@
 #pragma once
 
 #include "database/DatabaseInterface.h"
-#include "net/AuthenticationMessage.h"
 
 #include "Common/Common.h"
 #include "Common/EncryptionModule.h"
 #include "Common/RandomModule.h"
-#include "NetCore/NetCore.h"
+#include "NetCore/message/OperatorAuthenticationMessage.h"
 #include "NetCore/RequestHandler.h"
 
 namespace Operator::Net
@@ -36,7 +35,7 @@ namespace Operator::Net
 			if (--timeout == 0)
 			{
 				access->sendMessage(
-					Host::AuthMessageID::Timeout,
+					Host::OperatorAuthenticationMessageID::Timeout,
 					NULL);
 
 				callback->onAuthenticationDenied();
@@ -51,24 +50,24 @@ namespace Operator::Net
 
 			switch (messageID)
 			{
-			case Client::AuthMessageID::Authenticate:
-				if (Client::AuthenticationMessage message; loadMessage(messageID, &message, pipe))
+			case ::Net::Client::OperatorAuthenticationMessageID::Authenticate:
+				if (::Net::Client::AuthenticationMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticate(message);
 				}
 
 				return true;
 
-			case Client::AuthMessageID::Register:
-				if (Client::RegistrationMessage message; loadMessage(messageID, &message, pipe))
+			case ::Net::Client::OperatorAuthenticationMessageID::Register:
+				if (::Net::Client::RegistrationMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRegistration(message);
 				}
 
 				return true;
 
-			case Client::AuthMessageID::Token:
-				if (Client::TokenMessage message; loadMessage(messageID, &message, pipe))
+			case ::Net::Client::OperatorAuthenticationMessageID::Token:
+				if (::Net::Client::TokenMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onTokenAuthentication(message);
 				}
@@ -84,7 +83,7 @@ namespace Operator::Net
 
 		sf::Uint32 timeout;
 
-		void onAuthenticate(const Client::AuthenticationMessage& request)
+		void onAuthenticate(const ::Net::Client::AuthenticationMessage& request)
 		{
 			UserAuthentication user;
 			const Database::ConditionResult result = DatabaseInterface::GetPlayerAuth(
@@ -95,11 +94,11 @@ namespace Operator::Net
 			{
 			case Database::ConditionResult::NotFound:
 				access->sendMessage(
-					Host::AuthMessageID::RejectAuthentication,
+					Host::OperatorAuthenticationMessageID::RejectAuthentication,
 					NULL);
 
 				access->onThreatIdentified(
-					Client::AuthMessageID::Authenticate,
+					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
 					L"wrong username",
 					::Net::ThreatLevel::Suspicious);
 
@@ -122,7 +121,7 @@ namespace Operator::Net
 			if (memcmp(messageHash, user.hash, OPERATOR_HASH_SIZE) != 0)
 			{
 				access->sendMessage(
-					Host::AuthMessageID::RejectAuthentication,
+					Host::OperatorAuthenticationMessageID::RejectAuthentication,
 					NULL);
 
 				return;
@@ -144,13 +143,13 @@ namespace Operator::Net
 			message.userID = user.userID;
 
 			access->sendMessage(
-				Host::AuthMessageID::AcceptAuthentication,
+				Host::OperatorAuthenticationMessageID::AcceptAuthentication,
 				&message);
 
 			callback->onAuthenticated(user.userID);
 		}
 
-		void onRegistration(const Client::RegistrationMessage& request)
+		void onRegistration(const ::Net::Client::RegistrationMessage& request)
 		{
 			char hash[OPERATOR_HASH_SIZE];
 			char salt[OPERATOR_SALT_SIZE];
@@ -181,7 +180,7 @@ namespace Operator::Net
 				RejectRegistration(Host::RejectRegistrationMessage::KeyUsed);
 
 				access->onThreatIdentified(
-					Client::AuthMessageID::Authenticate,
+					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
 					L"used key",
 					::Net::ThreatLevel::Suspicious);
 
@@ -190,7 +189,7 @@ namespace Operator::Net
 				RejectRegistration(Host::RejectRegistrationMessage::KeyInvalid);
 
 				access->onThreatIdentified(
-					Client::AuthMessageID::Authenticate,
+					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
 					L"invalid key",
 					::Net::ThreatLevel::Uncommon);
 
@@ -204,7 +203,7 @@ namespace Operator::Net
 			}
 
 			access->sendMessage(
-				Host::AuthMessageID::AcceptRegistration,
+				Host::OperatorAuthenticationMessageID::AcceptRegistration,
 				&message);
 
 			callback->onAuthenticated(message.userID);
@@ -216,11 +215,11 @@ namespace Operator::Net
 			message.reason = reason;
 
 			access->sendMessage(
-				Host::AuthMessageID::RejectRegistration,
+				Host::OperatorAuthenticationMessageID::RejectRegistration,
 				&message);
 		}
 
-		void onTokenAuthentication(const Client::TokenMessage& request)
+		void onTokenAuthentication(const ::Net::Client::TokenMessage& request)
 		{
 			UserID userID;
 			Database::ConditionResult result = DatabaseInterface::FindUserID(
@@ -231,7 +230,7 @@ namespace Operator::Net
 			{
 			case Database::ConditionResult::NotFound:
 				access->sendMessage(
-					Host::AuthMessageID::RejectToken,
+					Host::OperatorAuthenticationMessageID::RejectToken,
 					NULL);
 
 				break;
@@ -247,7 +246,7 @@ namespace Operator::Net
 			message.userID = userID;
 
 			access->sendMessage(
-				Host::AuthMessageID::AcceptToken,
+				Host::OperatorAuthenticationMessageID::AcceptToken,
 				&message);
 
 			callback->onAuthenticated(userID);

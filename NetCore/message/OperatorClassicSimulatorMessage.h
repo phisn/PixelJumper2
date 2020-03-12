@@ -1,18 +1,18 @@
 #pragma once
 
-#include "CommonRequestMessage.h"
+#include "OperatorCommonMessage.h"
 
 #include "Resource/ClassicPlayerResource.h"
 
 // the client for classicsimulatior are trusted
 // classic simulators and never normal users
-namespace Operator::Net::Client
+namespace Net::Client
 {
-	struct ClassicHostID
+	struct OperatorClassicHostID
 	{
 		enum
 		{
-			_Begin = CommonRequestMessageID::_Offset - 1,
+			_Begin = OperatorCommonMessageID::_Offset - 1,
 
 			RequestClientData,
 
@@ -25,7 +25,7 @@ namespace Operator::Net::Client
 
 	struct RequestClientDataMessageContent
 	{
-		UserID userID;
+		Operator::UserID userID;
 	};
 
 	typedef ::Net::TrivialNetworkMessage<RequestClientDataMessageContent> RequestClientDataMessage;
@@ -33,11 +33,11 @@ namespace Operator::Net::Client
 
 namespace Operator::Net::Host
 {
-	struct ClassicHostID
+	struct OperatorClassicHostID
 	{
 		enum
 		{
-			_Begin = CommonRequestMessageID::_Offset - 1,
+			_Begin = OperatorCommonMessageID::_Offset - 1,
 
 			RequestClientData,
 			RequestClientDataFailed,

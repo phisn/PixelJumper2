@@ -10,9 +10,6 @@
     <Filter Include="source\database">
       <UniqueIdentifier>{87036c12-5b9a-4bbc-9d9e-b1e31eacb7ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\net">
-      <UniqueIdentifier>{10d68cc2-4e9c-448e-ab27-786c2f4b139a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActiveUserContainer.cpp">
@@ -98,15 +95,6 @@
     </ClInclude>
     <ClInclude Include="database\OperatorDatabase.h">
       <Filter>source\database</Filter>
-    </ClInclude>
-    <ClInclude Include="net\AuthenticationMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
-    <ClInclude Include="net\ClassicSimulatorMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
-    <ClInclude Include="net\CommonRequestMessage.h">
-      <Filter>source\net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

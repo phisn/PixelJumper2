@@ -75,7 +75,56 @@ namespace Net
 		// sendmessage returns bool if sending
 		// fails but calls onMessageSendFailed
 		// additionally
-		bool sendMessage(
+		virtual bool sendMessage(
+			const MessageID messageID,
+			NetworkMessage* const message = NULL,
+			const int flags = k_nSteamNetworkingSend_Reliable) override
+		{
+			// guranteed to succeed
+			messageSendPipe.writeValue(&messageID);
+
+			if (message && !message->save(&messageSendPipe))
+			{
+				messageSendPipe.reset();
+				onMessageSendFailed(
+					messageID,
+					SendFailure::Save);
+
+				return false;
+			}
+
+			if (messageSendPipe.getSize() > k_cbMaxSteamNetworkingSocketsMessageSizeSend)
+			{
+				messageSendPipe.reset();
+				Log::Error(L"Tried to send too big message (over 524kb)");
+				onMessageSendFailed(
+					messageID,
+					SendFailure::Size);
+
+				return false;
+			}
+
+			const EResult result = networkInterface->SendMessageToConnection(
+				connection,
+				messageSendPipe.getRawData(),
+				(uint32)messageSendPipe.getSize(),
+				flags,
+				NULL);
+
+			messageSendPipe.reset();
+			if (result != EResult::k_EResultOK)
+			{
+				onMessageSendFailed(
+					messageID,
+					SendFailure::Send);
+
+				return false;
+			}
+
+			return true;
+		}
+
+		virtual bool sendMessage(
 			const MessageID messageID,
 			NetworkMessage* const message = NULL,
 			const int flags = k_nSteamNetworkingSend_Reliable) override

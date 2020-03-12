@@ -1,10 +1,10 @@
 #pragma once
 
-#include "AuthenticationMessage.h"
+#include "OperatorAuthenticationMessage.h"
 
 #include <steam/steamnetworkingsockets.h>
 
-namespace Operator::Net::Client
+namespace Net::Client
 {
 	/*
 		ideas:
@@ -12,11 +12,11 @@ namespace Operator::Net::Client
 		-!	change password
 	
 	*/
-	struct CommonRequestMessageID
+	struct OperatorCommonMessageID
 	{
 		enum
 		{
-			_Begin = AuthMessageID::_Offset - 1,
+			_Begin = OperatorAuthenticationMessageID::_Offset - 1,
 
 			RequestConnectionKey,
 
@@ -37,7 +37,7 @@ namespace Operator::Net::Client
 
 	struct RequestConnectionKeyMessageContent
 	{
-		UserID userID;
+		Operator::UserID userID;
 	};
 
 	typedef ::Net::TrivialNetworkMessage<RequestConnectionKeyMessageContent> RequestConnectionKeyMessage;
@@ -53,11 +53,11 @@ namespace Operator::Net::Client
 
 namespace Operator::Net::Host
 {
-	struct CommonRequestMessageID
+	struct OperatorCommonMessageID
 	{
 		enum
 		{
-			_Begin = AuthMessageID::_Offset - 1,
+			_Begin = OperatorAuthenticationMessageID::_Offset - 1,
 
 			ConnectionKey,
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ActiveUserContainer.h"
-#include "net/ClassicSimulatorMessage.h"
 
 #include "Common/Common.h"
+#include "NetCore/message/OperatorClassicSimulatorMessage.h"
 #include "NetCore/RequestHandler.h"
 
 namespace Operator::Net
@@ -37,8 +37,8 @@ namespace Operator::Net
 		{
 			switch (messageID)
 			{
-			case Client::ClassicHostID::RequestClientData:
-				if (Client::RequestClientDataMessage message; loadMessage(messageID, &message, pipe))
+			case ::Net::Client::OperatorOperatorClassicHostID::RequestClientData:
+				if (::Net::Client::RequestClientDataMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRequestClientData(message);
 				}
@@ -61,7 +61,7 @@ namespace Operator::Net
 				message.type = message.InvalidUserMode;
 
 				access->sendMessage(
-					Host::ClassicHostID::RequestClientDataFailed,
+					Host::OperatorClassicHostID::RequestClientDataFailed,
 					&message);
 			}
 			
@@ -72,7 +72,7 @@ namespace Operator::Net
 			message.resource.unlockedWorlds = { 0x48f1da35 };
 
 			access->sendMessage(
-				Host::ClassicHostID::RequestClientData,
+				Host::OperatorClassicHostID::RequestClientData,
 				&message);
 		}
 	};

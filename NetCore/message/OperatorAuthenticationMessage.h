@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Common/Common.h"
 #include "NetCore/NetworkMessage.h"
+#include "OperatorRequestMessage.h"
+
+#include "Common/Common.h"
 #include "Resource/PlayerResource.h"
 
 /*
@@ -56,7 +58,7 @@ Authentication:
 
 */
 
-namespace Operator::Net::Client
+namespace Net::Client
 {
 	// authentication
 	// 1. client hashes hash without salt
@@ -64,11 +66,11 @@ namespace Operator::Net::Client
 	// 3. operator hashes hash with stored salt
 	// 4. operator compares hashed hash with
 	//    stored hash
-	struct AuthMessageID
+	struct OperatorAuthenticationMessageID
 	{
 		enum
 		{
-			_Begin = ::Net::CommonMessageID::_Offset - 1,
+			_Begin = OperatorRequestMessageID::_Offset - 1,
 
 			// login with hash after received salt
 			// from requestlogin
@@ -126,7 +128,7 @@ namespace Operator::Net::Client
 		struct Content
 		{
 			char hash[OPERATOR_HASH_SIZE];
-			RegistrationKey key;
+			Operator::RegistrationKey key;
 
 		} content;
 
@@ -144,7 +146,7 @@ namespace Operator::Net::Client
 	};
 }
 
-namespace Operator::Net::Host
+namespace Net::Host
 {
 	struct ConnectionClosedReason
 	{
@@ -155,11 +157,11 @@ namespace Operator::Net::Host
 		};
 	};
 
-	struct AuthMessageID
+	struct OperatorAuthenticationMessageID
 	{
 		enum
 		{
-			_Begin = ::Net::CommonMessageID::_Offset - 1,
+			_Begin = OperatorRequestMessageID::_Offset - 1,
 
 			Timeout,
 

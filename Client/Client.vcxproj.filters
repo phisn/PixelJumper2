@@ -151,9 +151,6 @@
     <ClInclude Include="source\game\net\FrameStatus.h">
       <Filter>todo\game\net</Filter>
     </ClInclude>
-    <ClInclude Include="source\operator\ClassicalConnectionRequest.h">
-      <Filter>todo\operator</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\net\SimulatorAuthenticationMessage.h">
       <Filter>todo\game\net\message</Filter>
     </ClInclude>

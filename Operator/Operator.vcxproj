@@ -229,9 +229,6 @@
     <ClInclude Include="database\UserTable.h" />
     <ClInclude Include="database\UserTypeByID.h" />
     <ClInclude Include="device\CoreDevice.h" />
-    <ClInclude Include="net\AuthenticationMessage.h" />
-    <ClInclude Include="net\ClassicSimulatorMessage.h" />
-    <ClInclude Include="net\CommonRequestMessage.h" />
     <ClInclude Include="Operator.h" />
     <ClInclude Include="OperatorClientHandler.h" />
     <ClInclude Include="resource.h" />

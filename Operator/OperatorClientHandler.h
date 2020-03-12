@@ -87,6 +87,12 @@ namespace Operator::Net
 		Status status = Status::Authenticating;
 		Age age = 0;
 
+		// when client send message with request header
+		// active request mode for all sent messages from
+		// this clienthandler
+		bool requestModeActive = false;
+		::Net::RequestID requestID;
+
 		void onAuthenticated(const UserID userID) override
 		{
 			Log::Information(L"Client authenticated",
@@ -108,7 +114,7 @@ namespace Operator::Net
 			status = Status::Closing;
 		}
 
-		void registerAsClassicHost(const Client::RegisterClassicHostMessage& message) override
+		void registerAsClassicHost(const ::Net::Client::RegisterClassicHostMessage& message) override
 		{
 			if (status != Status::Hosting)
 			{
@@ -139,6 +145,63 @@ namespace Operator::Net
 			}
 		}
 
+		void onMessage(
+			const ::Net::MessageID messageID,
+			Resource::ReadPipe* const pipe)
+		{
+			if (messageID == ::Net::Client::OperatorRequestMessageID::OperatorRequest)
+			{
+				::Net::OperatorRequestMessage request;
+
+				if (!request.load(pipe))
+				{
+					onThreatIdentified(
+						messageID,
+						L"invalid operator request",
+						::Net::ThreatLevel::Uncommon);
+					status = Status::Closing;
+
+					return;
+				}
+
+
+				requestID = request.content.requestID; 
+				requestModeActive = true;
+
+				ClientHandler::onMessage(request.content.messageID, pipe);
+				requestModeActive = false;
+			}
+			else
+			{
+				ClientHandler::onMessage(messageID, pipe);
+			}
+		}
+
+		bool sendMessage(
+			const ::Net::MessageID messageID,
+			::Net::NetworkMessage* const message = NULL,
+			const int flags = k_nSteamNetworkingSend_Reliable) override
+		{
+			if (requestModeActive)
+			{
+				::Net::OperatorRequestMessage interceptor;
+
+				interceptor.payload = message;
+				interceptor.content.messageID = ::Net::Host::OperatorRequestMessageID::OperatorRequest;
+				interceptor.content.requestID = requestID;
+
+				return ClientHandler::sendMessage(
+					messageID,
+					&interceptor,
+					flags);
+			}
+
+			return ClientHandler::sendMessage(
+				messageID,
+				message,
+				flags);
+		}
+
 		void onThreatIdentified(
 			const sf::Uint32 identifier,
 			const std::wstring& note,
@@ -154,7 +217,7 @@ namespace Operator::Net
 			const ::Net::SendFailure reason) override
 		{
 			Log::Error(L"Failed to send message");
-
+			
 			sendMessage(
 				::Net::CommonMessageID::InternalError,
 				NULL);

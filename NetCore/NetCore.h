@@ -10,6 +10,7 @@
 namespace Net
 {
 	typedef sf::Uint32 MessageID;
+	typedef sf::Uint64 RequestID;
 
 	enum class ThreatLevel
 	{
