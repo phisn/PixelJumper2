@@ -94,6 +94,13 @@ inline std::wstring convert_to_wstring<const char*>(const char* value)
 	return carrtowstr(value);
 }
 
+template <typename T>
+inline std::wstring convert_to_wstring(T* ptr)
+{
+	// [int*] 0x2955712398
+	return L"(" + carrtowstr(typeid(T).name()) + L"*) 0x" + convert_to_wstring((std::ptrdiff_t) ptr);
+}
+
 namespace Log
 {
 	/*

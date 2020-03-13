@@ -103,6 +103,14 @@ namespace Operator::Net
 
 		void idleOldConnection()
 		{
+			// think about how to idle a connection
+			// clienthandler has idle method
+			// - clienthandler is removed from operator
+			// - clienthandler sends idle message to client
+			// - clienthandler later deletes itself
+			// alternative idle message by closeconnection 
+			// reason (better?)
+
 			decltype(connections)::iterator iterator = connections.begin();
 			decltype(connections)::iterator old = iterator;
 
@@ -112,12 +120,14 @@ namespace Operator::Net
 					old = iterator;
 				}
 
+
 			getNetworkInterface()->CloseConnection(
 				(*old)->getConnection(),
 				-2,
 				"idle connection",
-				false);
+				true);
 
+			delete *old;
 			connections.erase(old);
 		}
 	};

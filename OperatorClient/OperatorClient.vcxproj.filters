@@ -9,9 +9,21 @@
     <ClInclude Include="OperatorClient.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="OperatorRequestHandler.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="OperatorAuthenticationHandler.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OperatorClient.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatorRequestHandler.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatorAuthenticationHandler.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

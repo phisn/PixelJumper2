@@ -6,6 +6,10 @@ namespace Net
 {
 	struct NetworkMessage
 	{
+		virtual ~NetworkMessage()
+		{
+		}
+
 		virtual bool load(Resource::ReadPipe* const pipe) = 0;
 		virtual bool save(Resource::WritePipe* const pipe) = 0;
 	};
