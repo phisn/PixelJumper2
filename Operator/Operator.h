@@ -2,6 +2,8 @@
 
 #include "OperatorClientHandler.h"
 
+#include "NetCore/message/OperatorCloseReason.h"
+
 namespace Operator::Net
 {
 	class Operator
@@ -41,7 +43,7 @@ namespace Operator::Net
 				{
 					getNetworkInterface()->CloseConnection(
 						clientHandler->getConnection(),
-						Host::ConnectionClosedReason::Authentication,
+						::Net::OperatorCloseReason::ConnectionClosed,
 						"status is closing",
 						false);
 
@@ -123,7 +125,7 @@ namespace Operator::Net
 
 			getNetworkInterface()->CloseConnection(
 				(*old)->getConnection(),
-				-2,
+				::Net::OperatorCloseReason::IdleConnection,
 				"idle connection",
 				true);
 

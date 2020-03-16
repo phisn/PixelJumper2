@@ -165,9 +165,6 @@ namespace Net::Host
 
 			Timeout,
 
-			// closes connection to accept new ones
-			IdleConnection,
-
 			AcceptRegistration,
 			RejectRegistration,
 
@@ -189,7 +186,7 @@ namespace Net::Host
 
 	struct AcceptAuthenticationMessageContent
 	{
-		UserID userID;
+		Operator::UserID userID;
 		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 
@@ -197,14 +194,14 @@ namespace Net::Host
 
 	struct AcceptTokenMessageContent
 	{
-		UserID userID;
+		Operator::UserID userID;
 	};
 
 	typedef ::Net::TrivialNetworkMessage<AcceptTokenMessageContent> AcceptTokenMessage;
 
 	struct AcceptRegistrationMessageContent
 	{
-		UserID userID;
+		Operator::UserID userID;
 		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 

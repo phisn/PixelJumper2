@@ -1,33 +1,29 @@
 #pragma once
 
+#include "request/RequestInterface.h"
+
+#include "Common/Common.h"
 #include "NetCore/RequestHandler.h"
 #include "NetCore/message/OperatorRequestMessage.h"
 
 #include <unordered_map>
 
-namespace Net
+namespace Operator
 {
-	struct RequestInterface
+	struct ClientRequestHandlerCallback
 	{
-		enum class Reason
-		{
-			Success,
-			Timeout,
-			Failure
-		};
-
-		virtual void onRequestFinished(const Reason reason) = 0;
-
-		// true if request can be removed
-		virtual bool onMessage(
-			const MessageID messageID,
-			Resource::ReadPipe* const pipe) = 0;
+		virtual void onAuthenticated(const UserID userID) = 0;
+		virtual void onAuthenticated(
+			const char token[OPERATOR_HASH_SIZE],
+			const UserID userID) = 0;
 	};
 
-	class OperatorRequestHandler
+	class ClientRequestHandler
 		:
-		public RequestHandler
+		public ::Net::RequestHandler
 	{
+		friend class ClientAuthenticationRequest;
+
 		struct RequestWrapper
 		{
 			~RequestWrapper()
@@ -38,7 +34,7 @@ namespace Net
 
 			sf::Time age;
 
-			OperatorRequestMessage message;
+			::Net::OperatorRequestMessage message;
 			RequestInterface* request;
 		};
 
@@ -49,8 +45,11 @@ namespace Net
 			sf::Time requestTimeout;
 		};
 
-		OperatorRequestHandler(const Settings settings)
+		ClientRequestHandler(
+			ClientRequestHandlerCallback* const callback,
+			const Settings settings)
 			:
+			callback(callback),
 			settings(settings)
 		{
 		}
@@ -64,7 +63,7 @@ namespace Net
 
 				if (request->age > settings.requestTimeout)
 				{
-					request->request->onRequestFinished(RequestInterface::Reason::Timeout);
+					request->request->onRequestFailure(RequestInterface::Reason::Timeout);
 					requests.erase(request);
 				}
 				else
@@ -75,12 +74,12 @@ namespace Net
 		}
 
 		bool onMessage(
-			const MessageID messageID, 
+			const ::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{
-			if (messageID == Host::OperatorRequestMessageID::OperatorRequest)
+			if (messageID == ::Net::Host::OperatorRequestMessageID::OperatorRequest)
 			{
-				OperatorRequestMessage message;
+				::Net::OperatorRequestMessage message;
 
 				if (loadMessage(messageID, &message, pipe))
 				{
@@ -101,10 +100,9 @@ namespace Net
 					else
 					{
 						if (request->request->onMessage(
-							message.content.messageID,
-							pipe))
+								message.content.messageID,
+								pipe))
 						{
-							request->request->onRequestFinished(RequestInterface::Reason::Success);
 							requests.erase(request);
 						}
 					}
@@ -120,7 +118,7 @@ namespace Net
 		{
 			for (RequestWrapper& request : requests)
 			{
-				request.request->onRequestFinished(RequestInterface::Reason::Failure);
+				request.request->onRequestFailure(RequestInterface::Reason::Internal);
 			}
 
 			requests.clear();
@@ -131,7 +129,7 @@ namespace Net
 			for (RequestWrapper& request : requests)
 			{
 				access->sendMessage(
-					Client::OperatorRequestMessageID::OperatorRequest,
+					::Net::Client::OperatorRequestMessageID::OperatorRequest,
 					&request.message);
 			}
 		}
@@ -144,6 +142,7 @@ namespace Net
 		}
 
 	private:
+		ClientRequestHandlerCallback* const callback;
 		const Settings settings;
 
 		std::vector<RequestWrapper> requests;

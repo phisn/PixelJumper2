@@ -15,6 +15,10 @@
     <ClInclude Include="OperatorAuthenticationHandler.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="request\RequestInterface.h" />
+    <ClInclude Include="request\AuthenticationRequest.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OperatorClient.cpp">
@@ -24,6 +28,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="OperatorAuthenticationHandler.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="request\AuthenticationRequest.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

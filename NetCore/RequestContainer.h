@@ -8,8 +8,6 @@
 namespace Net
 {
 	class RequestContainer
-		:
-		public ConnectionAccess
 	{
 	public:
 		virtual ~RequestContainer()
@@ -60,7 +58,7 @@ namespace Net
 
 		bool callHandlersOnMessage(
 			const Net::MessageID messageID,
-			Resource::ReadPipe* const pipe)
+			Resource::ReadPipe* const pipe) const
 		{
 			for (RequestHandler* const handler : requestHandlers)
 				if (handler->onMessage(messageID, pipe))

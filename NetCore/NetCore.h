@@ -53,6 +53,26 @@ namespace Net
 			return socket;
 		}
 
+		virtual bool disconnect(
+			const int reason = 0,
+			const char* const message = "disconnect",
+			bool linger = false)
+		{
+			if (socket == k_HSteamNetConnection_Invalid)
+			{
+				return false;
+			}
+			
+			const bool result = getNetworkInterface()->CloseConnection(
+				socket,
+				reason,
+				message,
+				linger);
+			socket = k_HSteamNetConnection_Invalid;
+
+			return result;
+		}
+
 	protected:
 		ISteamNetworkingSockets* getNetworkInterface() const;
 

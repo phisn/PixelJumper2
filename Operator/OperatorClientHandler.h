@@ -13,6 +13,7 @@ namespace Operator::Net
 	class OperatorClientHandler
 		:
 		public ::Net::ClientHandler,
+		public ::Net::RequestContainer,
 		public AuthenticationHandlerCallback,
 		public CommonRequestHandlerCallback
 	{
@@ -147,7 +148,7 @@ namespace Operator::Net
 
 		void onMessage(
 			const ::Net::MessageID messageID,
-			Resource::ReadPipe* const pipe)
+			Resource::ReadPipe* const pipe) override
 		{
 			if (messageID == ::Net::Client::OperatorRequestMessageID::OperatorRequest)
 			{
@@ -164,16 +165,28 @@ namespace Operator::Net
 					return;
 				}
 
-
 				requestID = request.content.requestID; 
 				requestModeActive = true;
 
-				ClientHandler::onMessage(request.content.messageID, pipe);
+				rawOnMessage(request.content.messageID, pipe);
 				requestModeActive = false;
 			}
 			else
 			{
-				ClientHandler::onMessage(messageID, pipe);
+				rawOnMessage(messageID, pipe);
+			}
+		}
+
+		void rawOnMessage(
+			const ::Net::MessageID messageID,
+			Resource::ReadPipe* const pipe)
+		{
+			if (!callHandlersOnMessage(messageID, pipe))
+			{
+				onThreatIdentified(
+					messageID, 
+					L"invalid messageID", 
+					::Net::ThreatLevel::Suspicious);
 			}
 		}
 

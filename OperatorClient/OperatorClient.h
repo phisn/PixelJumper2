@@ -1,37 +1,72 @@
 #pragma once
 
-#include "NetCore/Client.h"
-#include "NetCore/message/OperatorRequestMessage.h"
+#include "request/RequestInterface.h"
 
-#include "Resource/pipes/MemoryPipe.h"
+#include "Common/Common.h"
+#include "Common/RandomModule.h"
+#include "NetCore/Client.h"
+#include "NetCore/message/OperatorAuthenticationMessage.h"
+#include "NetCore/message/OperatorCloseReason.h"
+#include "NetCore/message/OperatorRequestMessage.h"
 
 #include <unordered_map>
 
-namespace Net
+namespace Operator
 {
-	struct OperatorRequest
+	struct ClientRequest
 	{
 		virtual void onMessage(
-			const MessageID messageID,
+			const ::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) = 0;
 	};
 
-	class OperatorClient
+	class Client
 		:
-		public Client
+		public ::Net::Client
 	{
-		OperatorClient(const SteamNetworkingIPAddr address)
+		// enable call to onAuthenticated
+		friend class ClientAuthenticationRequest;
+
+		struct RequestWrapper
+		{
+			~RequestWrapper()
+			{
+				if (message.payload)
+					delete message.payload;
+			}
+
+			sf::Time age;
+
+			::Net::OperatorRequestMessage message;
+			RequestInterface* request;
+		};
+
+		Client(const SteamNetworkingIPAddr address)
 			:
 			address(address)
 		{
 		}
 
-		static OperatorClient* client;
-
 		static sf::Time processInterval;
 		static sf::Time processCounter;
 
+		static Client* client;
+
 	public:
+		enum Status
+		{
+			Connecting,
+			Connected,
+			Unconnected
+		};
+
+		enum AuthenticationStatus
+		{
+			Unauthenticated,
+			Authenticated,
+			Authenticating
+		};
+
 		static void Initialize(
 			const SteamNetworkingIPAddr address,
 			const sf::Time interval = sf::milliseconds(100))
@@ -41,122 +76,326 @@ namespace Net
 			if (client)
 				delete client;
 
-			client = new OperatorClient(address);
+			client = new Client(address);
 		}
 
 		static void Process()
 		{
-			client->processMessages();
+		}
+
+		enum class PushRequestFailure
+		{
+			Success,
+			Unauthenticated, 
+			Authenticating,
+			ConnectingFailed,
+			SendingFailed
+		};
+
+		static PushRequestFailure PushRequest(
+			const ::Net::MessageID messageID,
+			::Net::NetworkMessage* const message,
+			RequestInterface* const request)
+		{
+			if (client->authenticationStatus == Authenticating)
+				return PushRequestFailure::Authenticating;
+
+			if (messageID > ::Net::Client::OperatorAuthenticationMessageID::_Begin &&
+				messageID < ::Net::Client::OperatorAuthenticationMessageID::_Offset)
+			{
+				if (client->status == Authenticated)
+					client->disconnect();
+
+				client->authenticationStatus = Authenticating;
+			}
+			else
+			{
+				if (client->authenticationStatus == Unauthenticated)
+					return PushRequestFailure::Unauthenticated;
+			}
+
+			RequestWrapper& requestWrapper = client->requests.emplace_back();
+
+			requestWrapper.request = request;
+			requestWrapper.message.content.messageID = messageID;
+			requestWrapper.message.content.requestID = Module::Random::MakeRandom<::Net::RequestID>();
+			requestWrapper.message.payload = message;
+
+			switch (client->status)
+			{
+			case Status::Unconnected:
+				if (!client->connect(client->address))
+				{
+					if (client->authenticationStatus == Authenticating)
+						client->authenticationStatus = Unauthenticated;
+
+					client->removeAllRequests();
+					return PushRequestFailure::ConnectingFailed;
+				}
+
+			case Status::Connected:
+				if (!client->sendMessage(
+						::Net::Host::OperatorRequestMessageID::OperatorRequest,
+						&requestWrapper.message))
+				{
+					if (client->authenticationStatus == Authenticating)
+						client->authenticationStatus = Unauthenticated;
+
+					// requests can already potentially be removed
+					// if sendmessage failure reason was a sendfailure
+					if (client->requests.size() > 0)
+					{
+						request->onRequestFailure(RequestInterface::Reason::Internal);
+						client->requests.pop_back();
+					}
+
+					return PushRequestFailure::SendingFailed;
+				}
+
+				break;
+			}
+
+			return PushRequestFailure::Success;
+		}
+
+		static void PushRequest(
+			const ::Net::MessageID messageID,
+			::Net::Client::TokenMessage* const message,
+			RequestInterface* const request)
+		{
+			memcpy(client->token.token,
+				message->token,
+				OPERATOR_HASH_SIZE);
+			PushRequest(
+				messageID,
+				(::Net::NetworkMessage*) message,
+				request);
+		}
+
+		static bool IsAuthenticated()
+		{
+			return client->status == Authenticated;
+		}
+
+		static Status GetStatus()
+		{
+			return client->status;
+		}
+
+		static const Operator::AuthenticationToken& GetToken()
+		{
+			return client->token;
+		}
+
+		static Operator::UserID GetUserID()
+		{
+			return client->userID;
+		}
+
+		bool disconnect(
+			const int reason = 0,
+			const char* const message = "disconnect",
+			bool linger = false) override
+		{
+			status = Unconnected;
+			return disconnect(reason, message, linger);
 		}
 
 	private:
 		const SteamNetworkingIPAddr address;
+		
+		UserID userID;
+		Operator::AuthenticationToken token;
+		
+		AuthenticationStatus authenticationStatus;
+		Status status;
 
-		std::unordered_map<RequestID, OperatorRequest*> requests;
-
-		void processMessages()
-		{
-			while (true)
-			{
-				ISteamNetworkingMessage* message = NULL;
-				const int count = getNetworkInterface()->ReceiveMessagesOnConnection(
-					getSocket(),
-					&message,
-					1);
-
-				if (count == 0)
-				{
-					break;
-				}
-
-				if (count < 0)
-				{
-					Log::Error(L"process messages in operatorclient failed");
-					break;
-				}
-
-				Resource::MemoryReadPipe pipe(
-					(const char*)message->m_pData,
-					message->m_cbSize);
-
-				if (MessageID messageID; pipe.readValue(&messageID))
-				{
-					onMessage(messageID, &pipe);
-				}
-				else
-				{
-					Log::Error(L"Got invalid message size",
-						message->m_cbSize, L"size");
-				}
-
-				message->Release();
-			}
-		}
+		std::vector<RequestWrapper> requests;
 
 		void onMessage(
-			const MessageID messageID,
-			Resource::ReadPipe* const pipe)
+			const ::Net::MessageID messageID,
+			Resource::ReadPipe* const pipe) override
 		{
 			switch (messageID)
 			{
-			case CommonMessageID::InternalError:
+			case ::Net::CommonMessageID::InternalError:
+
 
 				break;
-			case CommonMessageID::ExternalError:
-
+			case ::Net::CommonMessageID::ExternalError:
+				
+				
 				break;
-			case Host::OperatorRequestMessageID::OperatorRequest:
-				if (OperatorRequestMessage message; message.load(pipe))
+			case ::Net::Host::OperatorRequestMessageID::OperatorRequest:
+				if (::Net::OperatorRequestMessage message; loadMessage(messageID, &message, pipe))
 				{
-					onOperatorRequest(message, pipe);
+					decltype(requests)::iterator request = std::find_if(
+						requests.begin(),
+						requests.end(),
+						[&message](const RequestWrapper& request)
+						{
+							return request.message.content.requestID == message.content.requestID;
+						});
+
+					if (request == requests.end())
+					{
+						Log::Warning(L"Got invalid requestID from operator. a request probably already timed out",
+							message.content.messageID, L"messageID",
+							message.content.requestID, L"requestID");
+					}
+					else
+					{
+						if (request->request->onMessage(
+								message.content.messageID,
+								pipe))
+						{
+							requests.erase(request);
+						}
+					}
 				}
 
 				break;
 			default:
-
 				break;
 			}
 		}
 
-		void onInternalError()
-		{
-		}
-
-		void onExternalError()
-		{
-		}
-
-		void onOperatorRequest(
-			const OperatorRequestMessage& message,
+		bool loadMessage(
+			const ::Net::MessageID messageID,
+			::Net::NetworkMessage* const message,
 			Resource::ReadPipe* const pipe)
 		{
-			decltype(requests)::iterator request = requests.find(message.content.requestID);
+			if (!message->load(pipe))
+			{
+				onThreatIdentified(
+					messageID,
+					L"failed to load message",
+					::Net::ThreatLevel::Suspicious);
+				accessOnRequestFailed(
+					messageID,
+					::Net::RequestFailure::Loading);
 
-			if (request == requests.end())
-			{
-				Log::Error(L"got unkown requestid");
+				return false;
 			}
-			else
-			{
-				request->second->onMessage(
-					message.content.messageID, 
-					pipe);
-			}
+
+			return true;
+		}
+
+		// called from friend [request] ClientAuthenticationRequest
+		void onAuthenticated(
+			const char token[OPERATOR_HASH_SIZE],
+			const UserID userID)
+		{
+			authenticationStatus = Authenticated;
+
+			// null if authentication by token
+			// then already stored in token
+			if (token)
+				memcpy(this->token.token,
+					token,
+					OPERATOR_HASH_SIZE);
+			this->userID = userID;
 		}
 
 		void onConnectionOpened() override
 		{
+			Client::onConnectionOpened();
+		}
 
+		void accessOnRequestFailed(
+			const ::Net::MessageID messageID, 
+			const ::Net::RequestFailure reason) override
+		{
+			// ignore?
+		}
+
+		void onThreatIdentified(
+			const sf::Uint32 identifier, 
+			const std::wstring& note,
+			const ::Net::ThreatLevel level) override
+		{
+			Log::Warning(L"Threat identified",
+				identifier, L"id",
+				note, L"note",
+				(int)level, L"level");
+		}
+
+		void onMessageSendFailed(
+			const ::Net::MessageID messageID,
+			const ::Net::SendFailure failure) override
+		{
+			Log::Error(L"Failed to send message",
+				messageID, L"messageID");
+
+			// send failure is fatal failure
+			if (failure == ::Net::SendFailure::Send)
+			{
+				removeAllRequests();
+				disconnect();
+				adjustStatus(Unconnected);
+			}
 		}
 
 		void onConnectionLost(const int reason) override
 		{
+			Log::Error(L"connection lost from operator",
+				reason, L"reason");
 
+			removeAllRequests();
+			adjustStatus(Unconnected);
 		}
 
 		void onConnectionClosed(const int reason) override
 		{
+			adjustStatus(Client::Status::Unconnected);
 
+			if (requests.size() > 0)
+				switch (reason)
+				{
+				case ::Net::OperatorCloseReason::ConnectionClosed:
+					// closed connection probably caused by one of
+					// the requests. reconnect is pointless
+				
+					removeAllRequests();
+
+					break;
+				case ::Net::OperatorCloseReason::IdleConnection:
+					if (authenticationStatus != Authenticated)
+					{
+						Log::Information(
+							L"got probably impossible authentication"
+							L"status in connection closed by idle with"
+							L"requests remaining",
+							requests.size(), L"requests",
+							(int) authenticationStatus, L"status");
+					}
+					
+					Log::Information(L"reconnecting because of missing request in idle");
+					
+					if (!connect(address))
+					{
+						removeAllRequests();
+					}
+
+					break;
+				}
+
+		}
+
+		void removeAllRequests()
+		{
+
+		}
+
+		void adjustStatus(const Status status)
+		{
+			if (status == Unconnected)
+				if (authenticationStatus == Authenticating)
+				{
+					authenticationStatus = Unauthenticated;
+				}
+
+			this->status = status;
 		}
 	};
 }

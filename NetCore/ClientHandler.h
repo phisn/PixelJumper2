@@ -6,9 +6,32 @@
 
 namespace Net
 {
+	// default onmessage with container
+	/*
+	virtual void onMessage(
+		const MessageID messageID,
+		Resource::ReadPipe* const pipe) override
+	{
+		if (!callHandlersOnMessage(messageID, pipe))
+		{
+			onMessageUnused(messageID, pipe);
+		}
+	}
+
+	virtual void onMessageUnused(
+		const MessageID messageID,
+		Resource::ReadPipe* const pipe)
+	{
+		onThreatIdentified(
+			messageID,
+			L"invalid messageid",
+			ThreatLevel::Suspicious);
+	}
+	*/
+
 	class ClientHandler
 		:
-		public RequestContainer
+		public ConnectionAccess
 	{
 	public:
 		ClientHandler(const HSteamNetConnection connection)
@@ -65,6 +88,7 @@ namespace Net
 		}
 
 	protected:
+		ISteamNetworkingSockets* const networkInterface;
 		HSteamNetConnection connection;
 
 		// message can be null to send messageid
@@ -175,30 +199,10 @@ namespace Net
 
 		virtual void onMessage(
 			const MessageID messageID,
-			Resource::ReadPipe* const pipe)
-		{
-			if (!callHandlersOnMessage(messageID, pipe))
-			{
-				onMessageUnused(messageID, pipe);
-			}
-		}
-
-		virtual void onMessageUnused(
-			const MessageID messageID,
-			Resource::ReadPipe* const pipe)
-		{
-			onThreatIdentified(
-				messageID,
-				L"invalid messageid",
-				ThreatLevel::Suspicious);
-		}
-
+			Resource::ReadPipe* const pipe) = 0;
 		virtual void onMessageSendFailed(
 			const MessageID messageID,
 			const SendFailure failure) = 0;
-
-	protected:
-		ISteamNetworkingSockets* const networkInterface;
 
 	private:
 		Resource::MemoryWritePipe messageSendPipe;

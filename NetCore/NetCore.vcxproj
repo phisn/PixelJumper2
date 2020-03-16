@@ -99,6 +99,7 @@
     <ClInclude Include="ClientHandler.h" />
     <ClInclude Include="message\OperatorAuthenticationMessage.h" />
     <ClInclude Include="message\OperatorClassicSimulatorMessage.h" />
+    <ClInclude Include="message\OperatorCloseReason.h" />
     <ClInclude Include="message\OperatorCommonMessage.h" />
     <ClInclude Include="message\OperatorRequestMessage.h" />
     <ClInclude Include="RequestContainer.h" />

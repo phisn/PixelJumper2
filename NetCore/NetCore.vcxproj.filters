@@ -62,5 +62,8 @@
     <ClInclude Include="message\OperatorAuthenticationMessage.h">
       <Filter>source\message\operator</Filter>
     </ClInclude>
+    <ClInclude Include="message\OperatorCloseReason.h">
+      <Filter>source\message\operator</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

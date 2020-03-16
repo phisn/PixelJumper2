@@ -55,6 +55,9 @@ namespace Net
 		bool load(Resource::ReadPipe* const pipe) override
 		{
 			return pipe->readValue(&content);
+
+			// payload has to be optionally
+			// be read afterwarts
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
