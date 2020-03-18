@@ -18,7 +18,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -87,15 +87,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OperatorAuthenticationHandler.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="OperatorClient.cpp" />
-    <ClCompile Include="OperatorRequestHandler.cpp" />
     <ClCompile Include="request\AuthenticationRequest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OperatorAuthenticationHandler.h" />
     <ClInclude Include="OperatorClient.h" />
-    <ClInclude Include="OperatorRequestHandler.h" />
     <ClInclude Include="request\AuthenticationRequest.h" />
     <ClInclude Include="request\RequestInterface.h" />
   </ItemGroup>

@@ -4,13 +4,13 @@
 
 namespace Net
 {
-	class Client
+	class ClientBase
 		:
 		public ClientHandler,
 		public ClientInterface
 	{
 	public:
-		Client()
+		ClientBase()
 			:
 			ClientHandler(k_HSteamNetConnection_Invalid)
 		{
@@ -20,10 +20,10 @@ namespace Net
 		{
 			if (connection == k_HSteamNetConnection_Invalid)
 			{
-				return ClientHandler::processMessages();
+				return false;
 			}
 
-			return true;
+			return ClientHandler::processMessages();
 		}
 		
 	protected:

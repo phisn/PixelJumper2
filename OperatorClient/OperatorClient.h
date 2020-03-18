@@ -9,6 +9,7 @@
 #include "NetCore/message/OperatorCloseReason.h"
 #include "NetCore/message/OperatorRequestMessage.h"
 
+#include <cassert>
 #include <unordered_map>
 
 namespace Operator
@@ -22,7 +23,7 @@ namespace Operator
 
 	class Client
 		:
-		public ::Net::Client
+		public ::Net::ClientBase
 	{
 		// enable call to onAuthenticated
 		friend class ClientAuthenticationRequest;
@@ -35,6 +36,7 @@ namespace Operator
 					delete message.payload;
 			}
 
+			sf::Time timeout = sf::milliseconds(100);
 			sf::Time age;
 
 			::Net::OperatorRequestMessage message;
@@ -79,8 +81,48 @@ namespace Operator
 			client = new Client(address);
 		}
 
-		static void Process()
+		static void Uninitialize()
 		{
+			if (client)
+				delete client;
+		}
+
+		static void Process(const sf::Time time)
+		{
+			// caller has to ensure status equals
+			// connected
+			assert(client->status == Connected);
+
+			processCounter += time;
+
+			if (processCounter > processInterval)
+			{
+				assert(client->processMessages());
+
+				decltype(requests)::iterator request = client->requests.begin();
+				while (request != client->requests.end())
+				{
+					request->age += processInterval;
+
+					if (request->age > request->timeout)
+					{
+						// 1. unconnected
+						// 2. unauthenticated
+						// 3. unresponened
+						request->request->onRequestFailure(
+							client->status == Connected
+							? (client->authenticationStatus == Authenticated
+								? RequestInterface::Reason::TimeoutUnresponeded
+								: RequestInterface::Reason::TimeoutUnauthenticated)
+							: RequestInterface::Reason::TimeoutUnconnected);
+
+						client->requests.erase(request);
+					}
+					else ++request;
+				}
+
+				processCounter = sf::Time::Zero;
+			}
 		}
 
 		enum class PushRequestFailure
@@ -97,20 +139,23 @@ namespace Operator
 			::Net::NetworkMessage* const message,
 			RequestInterface* const request)
 		{
-			if (client->authenticationStatus == Authenticating)
+			if (!client->tokenKnown && client->authenticationStatus == Authenticating)
 				return PushRequestFailure::Authenticating;
 
 			if (messageID > ::Net::Client::OperatorAuthenticationMessageID::_Begin &&
 				messageID < ::Net::Client::OperatorAuthenticationMessageID::_Offset)
 			{
+				// removing old authentication if already
+				// authenticated
 				if (client->status == Authenticated)
 					client->disconnect();
 
 				client->authenticationStatus = Authenticating;
+				client->tokenKnown = false;
 			}
 			else
 			{
-				if (client->authenticationStatus == Unauthenticated)
+				if (!client->tokenKnown)
 					return PushRequestFailure::Unauthenticated;
 			}
 
@@ -126,14 +171,23 @@ namespace Operator
 			case Status::Unconnected:
 				if (!client->connect(client->address))
 				{
-					if (client->authenticationStatus == Authenticating)
-						client->authenticationStatus = Unauthenticated;
+					// connect is fatal failure. if currently authenticating
+					// cancel
+					client->authenticationStatus = Unauthenticated;
+					client->removeAllRequests(RequestInterface::Reason::ConnectFailed);
 
-					client->removeAllRequests();
 					return PushRequestFailure::ConnectingFailed;
 				}
 
 			case Status::Connected:
+				if (client->tokenKnown && client->authenticationStatus == Authenticating)
+				{
+					// operator currently reauthenticating
+					// sending this message later after authenticating
+
+					break;
+				}
+
 				if (!client->sendMessage(
 						::Net::Host::OperatorRequestMessageID::OperatorRequest,
 						&requestWrapper.message))
@@ -145,7 +199,7 @@ namespace Operator
 					// if sendmessage failure reason was a sendfailure
 					if (client->requests.size() > 0)
 					{
-						request->onRequestFailure(RequestInterface::Reason::Internal);
+						request->onRequestFailure(RequestInterface::Reason::SendFailed);
 						client->requests.pop_back();
 					}
 
@@ -158,7 +212,7 @@ namespace Operator
 			return PushRequestFailure::Success;
 		}
 
-		static void PushRequest(
+		static PushRequestFailure PushRequest(
 			const ::Net::MessageID messageID,
 			::Net::Client::TokenMessage* const message,
 			RequestInterface* const request)
@@ -166,15 +220,20 @@ namespace Operator
 			memcpy(client->token.token,
 				message->token,
 				OPERATOR_HASH_SIZE);
-			PushRequest(
+			return PushRequest(
 				messageID,
 				(::Net::NetworkMessage*) message,
 				request);
 		}
 
-		static bool IsAuthenticated()
+		static bool AuthenticationTokenKnown()
 		{
-			return client->status == Authenticated;
+			return client->tokenKnown;
+		}
+
+		static AuthenticationStatus GetAuthenticationStatus()
+		{
+			return client->authenticationStatus;
 		}
 
 		static Status GetStatus()
@@ -197,18 +256,29 @@ namespace Operator
 			const char* const message = "disconnect",
 			bool linger = false) override
 		{
+			authenticationStatus = Unauthenticated;
 			status = Unconnected;
-			return disconnect(reason, message, linger);
+
+			if (requests.size() > 0)
+			{
+				removeAllRequests(RequestInterface::Reason::Disconnect);
+			}
+
+			disconnect(reason, message, linger);
 		}
 
 	private:
 		const SteamNetworkingIPAddr address;
 		
-		UserID userID;
+		UserID userID = NULL;
 		Operator::AuthenticationToken token;
-		
-		AuthenticationStatus authenticationStatus;
-		Status status;
+		bool tokenKnown = false;
+
+		// represents authentication state in
+		// the view of operator. to see if already
+		// authenticated check tokenKnown
+		AuthenticationStatus authenticationStatus = Unauthenticated;
+		Status status = Unconnected;
 
 		std::vector<RequestWrapper> requests;
 
@@ -219,11 +289,82 @@ namespace Operator
 			switch (messageID)
 			{
 			case ::Net::CommonMessageID::InternalError:
+				// operator is normally going to close connection soon
+				// until then ignore this fact and hope it wont but still
+				// remove all requests because one of them can be bad
 
+				if (authenticationStatus == Authenticating)
+				{
+					Log::Error(L"reauthentication failed with internal error",
+						(int) status, L"status",
+						tokenKnown, L"tokenKnown",
+						userID, L"userID");
+
+					removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
+				}
+				else
+				{
+					Log::Error(L"got internal error from operator",
+						(int) status, L"status",
+						(int) authenticationStatus, L"authenticationstatus",
+						tokenKnown, L"tokenKnown",
+						userID, L"userID");
+
+					removeAllRequests(RequestInterface::Reason::InternalError);
+				}
 
 				break;
 			case ::Net::CommonMessageID::ExternalError:
-				
+				if (::Net::ExternalErrorMessage message; loadMessage(messageID, &message, pipe))
+				{
+					if (authenticationStatus == Authenticating)
+					{
+						Log::Error(L"reauthentication failed with external error",
+							(int)status, L"status",
+							tokenKnown, L"tokenKnown",
+							userID, L"userID",
+							message.message, L"message",
+							message.content.messageID, L"messageID",
+							message.content.errorID, L"errorID");
+
+						removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
+					}
+					else
+					{
+						Log::Error(L"got external error from operator",
+							(int)status, L"status",
+							(int)authenticationStatus, L"authenticationstatus",
+							tokenKnown, L"tokenKnown",
+							userID, L"userID",
+							message.message, L"message",
+							message.content.messageID, L"messageID",
+							message.content.errorID, L"errorID");
+
+						removeAllRequests(RequestInterface::Reason::InternalError);
+					}
+				}
+				else
+				{
+					if (authenticationStatus == Authenticating)
+					{
+						Log::Error(L"reauthentication failed with external error (message unloadable)",
+							(int)status, L"status",
+							tokenKnown, L"tokenKnown",
+							userID, L"userID");
+
+						removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
+					}
+					else
+					{
+						Log::Error(L"got external error from operator (message unloadable)",
+							(int)status, L"status",
+							(int)authenticationStatus, L"authenticationstatus",
+							tokenKnown, L"tokenKnown",
+							userID, L"userID");
+
+						removeAllRequests(RequestInterface::Reason::ExternalError);
+					}
+				}
 				
 				break;
 			case ::Net::Host::OperatorRequestMessageID::OperatorRequest:
@@ -255,7 +396,39 @@ namespace Operator
 				}
 
 				break;
+			case ::Net::Host::OperatorAuthenticationMessageID::AcceptToken:
+				if (::Net::Host::AcceptTokenMessage message; loadMessage(messageID, &message, pipe))
+				{
+					if (userID != message.userID)
+					{
+						Log::Error(L"got invalid userid in reauthentication",
+							userID, L"expected",
+							message.userID, L"received");
+
+						authenticationStatus = Unauthenticated;
+						removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
+
+						break;
+					}
+
+					authenticationStatus = Authenticated;
+					resendAllRequests();
+				}
+
+				break;
+			case ::Net::Host::OperatorAuthenticationMessageID::RejectToken:
+				Log::Error(L"token for reauthentication rejected. probably expired");
+
+				removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
+				authenticationStatus = Unauthenticated;
+
+				break;
 			default:
+				Log::Error(L"got unkown messageid from operator",
+					messageID, L"messageID");
+
+				assert(false);
+
 				break;
 			}
 		}
@@ -287,6 +460,7 @@ namespace Operator
 			const UserID userID)
 		{
 			authenticationStatus = Authenticated;
+			tokenKnown = true;
 
 			// null if authentication by token
 			// then already stored in token
@@ -295,18 +469,63 @@ namespace Operator
 					token,
 					OPERATOR_HASH_SIZE);
 			this->userID = userID;
+
+			// will not be called on restore
+			// request count can not be not one
+			assert(requests.size() == 1);
+		}
+
+		void onAuthenticationFailed()
+		{
+			authenticationStatus = Unauthenticated;
+
+			// is only a single request (authenticationrequest) 
+			// which does already know of this
 		}
 
 		void onConnectionOpened() override
 		{
-			Client::onConnectionOpened();
+			::Net::ClientBase::onConnectionOpened();
+			status = Connected;
+
+			if (tokenKnown)
+			{
+				::Net::Client::TokenMessage message;
+
+				memcpy(message.token,
+					token.token,
+					OPERATOR_HASH_SIZE);
+
+				if (sendMessage(
+						::Net::Client::OperatorAuthenticationMessageID::Token,
+						&message))
+				{
+					authenticationStatus = Authenticating;
+				}
+				else
+				{
+					tokenKnown = false;
+					authenticationStatus = Unauthenticated;
+
+					removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
+				}
+
+				//////////////////////////////////
+				// authentication restore missing
+			}
+			else
+			{
+				resendAllRequests();
+			}
 		}
 
 		void accessOnRequestFailed(
 			const ::Net::MessageID messageID, 
 			const ::Net::RequestFailure reason) override
 		{
-			// ignore?
+			Log::Warning(L"request failed",
+				messageID, L"messageID",
+				(int) reason, L"reason");
 		}
 
 		void onThreatIdentified(
@@ -330,24 +549,29 @@ namespace Operator
 			// send failure is fatal failure
 			if (failure == ::Net::SendFailure::Send)
 			{
-				removeAllRequests();
+				// already removes all requests
 				disconnect();
-				adjustStatus(Unconnected);
 			}
 		}
 
 		void onConnectionLost(const int reason) override
 		{
-			Log::Error(L"connection lost from operator",
+			Log::Warning(L"operator connection lost",
 				reason, L"reason");
 
-			removeAllRequests();
-			adjustStatus(Unconnected);
+			removeAllRequests(RequestInterface::Reason::ConnectionLost);
+
+			status = Unconnected;
+			authenticationStatus = Unauthenticated;
 		}
 
 		void onConnectionClosed(const int reason) override
 		{
-			adjustStatus(Client::Status::Unconnected);
+			Log::Information(L"operator connection closed",
+				reason, L"reason");
+
+			status = Unconnected;
+			authenticationStatus = Unauthenticated;
 
 			if (requests.size() > 0)
 				switch (reason)
@@ -356,11 +580,11 @@ namespace Operator
 					// closed connection probably caused by one of
 					// the requests. reconnect is pointless
 				
-					removeAllRequests();
+					removeAllRequests(RequestInterface::Reason::ConnectionClosed);
 
 					break;
 				case ::Net::OperatorCloseReason::IdleConnection:
-					if (authenticationStatus != Authenticated)
+					if (!tokenKnown)
 					{
 						Log::Information(
 							L"got probably impossible authentication"
@@ -368,13 +592,15 @@ namespace Operator
 							L"requests remaining",
 							requests.size(), L"requests",
 							(int) authenticationStatus, L"status");
+
+						break;
 					}
 					
 					Log::Information(L"reconnecting because of missing request in idle");
 					
 					if (!connect(address))
 					{
-						removeAllRequests();
+						removeAllRequests(RequestInterface::Reason::ConnectFailed);
 					}
 
 					break;
@@ -382,20 +608,31 @@ namespace Operator
 
 		}
 
-		void removeAllRequests()
+		void resendAllRequests()
 		{
-
+			decltype(requests)::iterator request = requests.begin();
+			
+			while (request != requests.end())
+				if (sendMessage(
+						::Net::Host::OperatorRequestMessageID::OperatorRequest,
+						&request->message))
+				{
+					++request;
+				}
+				else
+				{
+					request = requests.erase(request);
+				}
 		}
 
-		void adjustStatus(const Status status)
+		void removeAllRequests(const RequestInterface::Reason reason)
 		{
-			if (status == Unconnected)
-				if (authenticationStatus == Authenticating)
-				{
-					authenticationStatus = Unauthenticated;
-				}
+			for (RequestWrapper& request : requests)
+			{
+				request.request->onRequestFailure(reason);
+			}
 
-			this->status = status;
+			requests.clear();
 		}
 	};
 }

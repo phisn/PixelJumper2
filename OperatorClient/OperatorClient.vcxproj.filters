@@ -9,14 +9,10 @@
     <ClInclude Include="OperatorClient.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="OperatorRequestHandler.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="OperatorAuthenticationHandler.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="request\RequestInterface.h" />
     <ClInclude Include="request\AuthenticationRequest.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="request\RequestInterface.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
@@ -24,13 +20,10 @@
     <ClCompile Include="OperatorClient.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="OperatorRequestHandler.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="OperatorAuthenticationHandler.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="request\AuthenticationRequest.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

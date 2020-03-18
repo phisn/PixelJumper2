@@ -11,10 +11,29 @@ namespace Operator
 	public:
 		enum class Reason
 		{
-			External,
-			Internal,
-			Load,
-			Timeout
+			InternalError,
+			ExternalError,
+
+			// reason here is unkown
+			// normally explained before
+			ConnectionClosed,
+			ConnectionLost,
+
+			ConnectFailed,
+			AuthenticateFailed,
+
+			SendFailed,
+
+			// disconnect was called
+			// and all running requests
+			// removed
+			Disconnect,
+
+			TimeoutUnconnected,
+			TimeoutUnauthenticated,
+			TimeoutUnresponeded,
+
+			Load
 		};
 
 		virtual void onRequestFailure(const Reason reason) = 0;
