@@ -23,8 +23,5 @@
     <ClCompile Include="request\AuthenticationRequest.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

@@ -37,7 +37,7 @@ namespace Operator::Net
 		{
 			switch (messageID)
 			{
-			case ::Net::Client::OperatorOperatorClassicHostID::RequestClientData:
+			case ::Net::Client::OperatorClassicHostID::RequestClientData:
 				if (::Net::Client::RequestClientDataMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRequestClientData(message);
@@ -53,26 +53,26 @@ namespace Operator::Net
 	private:
 		const UserID userID;
 
-		void onRequestClientData(const Client::RequestClientDataMessage& request)
+		void onRequestClientData(const ::Net::Client::RequestClientDataMessage& request)
 		{
 			if (UserContainer::GetUserMode(request.userID) != ActiveUserMode::Waiting)
 			{
-				Host::RequestClientDataFailedMessage message;
+				::Net::Host::RequestClientDataFailedMessage message;
 				message.type = message.InvalidUserMode;
 
 				access->sendMessage(
-					Host::OperatorClassicHostID::RequestClientDataFailed,
+					::Net::Host::OperatorClassicHostID::RequestClientDataFailed,
 					&message);
 			}
 			
-			Host::RequestClientDataMessage message;
+			::Net::Host::RequestClientDataMessage message;
 
 			message.username = "username";
 			message.resource.unlockedRepresentations = { 0 };
 			message.resource.unlockedWorlds = { 0x48f1da35 };
 
 			access->sendMessage(
-				Host::OperatorClassicHostID::RequestClientData,
+				::Net::Host::OperatorClassicHostID::RequestClientData,
 				&message);
 		}
 	};

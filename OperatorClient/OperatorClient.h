@@ -36,7 +36,7 @@ namespace Operator
 					delete message.payload;
 			}
 
-			sf::Time timeout = sf::milliseconds(100);
+			sf::Time timeout = sf::milliseconds(10000);
 			sf::Time age;
 
 			::Net::OperatorRequestMessage message;
@@ -89,15 +89,12 @@ namespace Operator
 
 		static void Process(const sf::Time time)
 		{
-			// caller has to ensure status equals
-			// connected
-			assert(client->status == Connected);
-
 			processCounter += time;
 
 			if (processCounter > processInterval)
 			{
-				assert(client->processMessages());
+				if (client->status == Connected)
+					assert(client->processMessages());
 
 				decltype(requests)::iterator request = client->requests.begin();
 				while (request != client->requests.end())
@@ -116,7 +113,7 @@ namespace Operator
 								: RequestInterface::Reason::TimeoutUnauthenticated)
 							: RequestInterface::Reason::TimeoutUnconnected);
 
-						client->requests.erase(request);
+						request = client->requests.erase(request);
 					}
 					else ++request;
 				}
@@ -179,6 +176,7 @@ namespace Operator
 					return PushRequestFailure::ConnectingFailed;
 				}
 
+				break;
 			case Status::Connected:
 				if (client->tokenKnown && client->authenticationStatus == Authenticating)
 				{
@@ -264,7 +262,7 @@ namespace Operator
 				removeAllRequests(RequestInterface::Reason::Disconnect);
 			}
 
-			disconnect(reason, message, linger);
+			return ClientBase::disconnect(reason, message, linger);
 		}
 
 	private:

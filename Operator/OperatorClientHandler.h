@@ -17,6 +17,11 @@ namespace Operator::Net
 		public AuthenticationHandlerCallback,
 		public CommonRequestHandlerCallback
 	{
+		ConnectionAccess* getConnectionAccess() override
+		{
+			return this;
+		}
+
 	public:
 		enum class Status
 		{
@@ -200,13 +205,12 @@ namespace Operator::Net
 				::Net::OperatorRequestMessage interceptor;
 
 				interceptor.payload = message;
-				interceptor.content.messageID = ::Net::Host::OperatorRequestMessageID::OperatorRequest;
+				interceptor.content.messageID = messageID;
 				interceptor.content.requestID = requestID;
 
 				return ClientHandler::sendMessage(
-					messageID,
-					&interceptor,
-					flags);
+					::Net::Host::OperatorRequestMessageID::OperatorRequest,
+					&interceptor, flags);
 			}
 
 			return ClientHandler::sendMessage(

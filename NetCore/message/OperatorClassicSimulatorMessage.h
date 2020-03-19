@@ -31,7 +31,7 @@ namespace Net::Client
 	typedef ::Net::TrivialNetworkMessage<RequestClientDataMessageContent> RequestClientDataMessage;
 }
 
-namespace Operator::Net::Host
+namespace Net::Host
 {
 	struct OperatorClassicHostID
 	{

@@ -35,7 +35,7 @@ namespace Operator::Net
 			if (--timeout == 0)
 			{
 				access->sendMessage(
-					Host::OperatorAuthenticationMessageID::Timeout,
+					::Net::Host::OperatorAuthenticationMessageID::Timeout,
 					NULL);
 
 				callback->onAuthenticationDenied();
@@ -94,7 +94,7 @@ namespace Operator::Net
 			{
 			case Database::ConditionResult::NotFound:
 				access->sendMessage(
-					Host::OperatorAuthenticationMessageID::RejectAuthentication,
+					::Net::Host::OperatorAuthenticationMessageID::RejectAuthentication,
 					NULL);
 
 				access->onThreatIdentified(
@@ -121,13 +121,13 @@ namespace Operator::Net
 			if (memcmp(messageHash, user.hash, OPERATOR_HASH_SIZE) != 0)
 			{
 				access->sendMessage(
-					Host::OperatorAuthenticationMessageID::RejectAuthentication,
+					::Net::Host::OperatorAuthenticationMessageID::RejectAuthentication,
 					NULL);
 
 				return;
 			}
 
-			Host::AcceptAuthenticationMessage message;
+			::Net::Host::AcceptAuthenticationMessage message;
 
 			if (!DatabaseInterface::CreatePlayerToken(
 				message.authenticationToken,
@@ -143,7 +143,7 @@ namespace Operator::Net
 			message.userID = user.userID;
 
 			access->sendMessage(
-				Host::OperatorAuthenticationMessageID::AcceptAuthentication,
+				::Net::Host::OperatorAuthenticationMessageID::AcceptAuthentication,
 				&message);
 
 			callback->onAuthenticated(user.userID);
@@ -161,7 +161,7 @@ namespace Operator::Net
 				(unsigned char*)request.content.hash,
 				(unsigned char*)salt);
 
-			Host::AcceptRegistrationMessage message;
+			::Net::Host::AcceptRegistrationMessage message;
 			const DatabaseInterface::CreatePlayerResult result = DatabaseInterface::CreateNewPlayer(
 				&message.userID,
 				message.authenticationToken,
@@ -173,11 +173,11 @@ namespace Operator::Net
 			switch (result)
 			{
 			case DatabaseInterface::CreatePlayerResult::UsernameUsed:
-				RejectRegistration(Host::RejectRegistrationMessage::UsernameUsed);
+				RejectRegistration(::Net::Host::RejectRegistrationMessage::UsernameUsed);
 
 				return;
 			case DatabaseInterface::CreatePlayerResult::KeyUsed:
-				RejectRegistration(Host::RejectRegistrationMessage::KeyUsed);
+				RejectRegistration(::Net::Host::RejectRegistrationMessage::KeyUsed);
 
 				access->onThreatIdentified(
 					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
@@ -186,7 +186,7 @@ namespace Operator::Net
 
 				return;
 			case DatabaseInterface::CreatePlayerResult::KeyNotFound:
-				RejectRegistration(Host::RejectRegistrationMessage::KeyInvalid);
+				RejectRegistration(::Net::Host::RejectRegistrationMessage::KeyInvalid);
 
 				access->onThreatIdentified(
 					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
@@ -203,19 +203,19 @@ namespace Operator::Net
 			}
 
 			access->sendMessage(
-				Host::OperatorAuthenticationMessageID::AcceptRegistration,
+				::Net::Host::OperatorAuthenticationMessageID::AcceptRegistration,
 				&message);
 
 			callback->onAuthenticated(message.userID);
 		}
 
-		void RejectRegistration(const Host::RejectRegistrationMessage::Reason reason)
+		void RejectRegistration(const ::Net::Host::RejectRegistrationMessage::Reason reason)
 		{
-			Host::RejectRegistrationMessage message;
+			::Net::Host::RejectRegistrationMessage message;
 			message.reason = reason;
 
 			access->sendMessage(
-				Host::OperatorAuthenticationMessageID::RejectRegistration,
+				::Net::Host::OperatorAuthenticationMessageID::RejectRegistration,
 				&message);
 		}
 
@@ -230,7 +230,7 @@ namespace Operator::Net
 			{
 			case Database::ConditionResult::NotFound:
 				access->sendMessage(
-					Host::OperatorAuthenticationMessageID::RejectToken,
+					::Net::Host::OperatorAuthenticationMessageID::RejectToken,
 					NULL);
 
 				break;
@@ -242,11 +242,11 @@ namespace Operator::Net
 				break;
 			}
 
-			Host::AcceptTokenMessage message;
+			::Net::Host::AcceptTokenMessage message;
 			message.userID = userID;
 
 			access->sendMessage(
-				Host::OperatorAuthenticationMessageID::AcceptToken,
+				::Net::Host::OperatorAuthenticationMessageID::AcceptToken,
 				&message);
 
 			callback->onAuthenticated(userID);

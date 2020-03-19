@@ -89,7 +89,7 @@ namespace Operator::Net
 			{
 			case Database::ConditionResult::NotFound:
 				access->sendMessage(
-					Host::OperatorCommonMessageID::ConnectionKeyFailed,
+					::Net::Host::OperatorCommonMessageID::ConnectionKeyFailed,
 					NULL);
 
 				return;
@@ -103,11 +103,11 @@ namespace Operator::Net
 
 			keySource.userID = request.userID;
 
-			Host::ConnectionKeyMessage message;
+			::Net::Host::ConnectionKeyMessage message;
 			message.key.make(keySource);
 			
 			access->sendMessage(
-				Host::OperatorCommonMessageID::ConnectionKey,
+				::Net::Host::OperatorCommonMessageID::ConnectionKey,
 				&message);
 		}
 
@@ -132,7 +132,7 @@ namespace Operator::Net
 			if (IsUserTrusted(type))
 			{
 				access->sendMessage(
-					Host::OperatorCommonMessageID::RegisterClassicHostAccepted,
+					::Net::Host::OperatorCommonMessageID::RegisterClassicHostAccepted,
 					NULL);
 
 				callback->registerAsClassicHost(message);
@@ -140,7 +140,7 @@ namespace Operator::Net
 			else
 			{
 				access->sendMessage(
-					Host::OperatorCommonMessageID::RegisterClassicHostRejected,
+					::Net::Host::OperatorCommonMessageID::RegisterClassicHostRejected,
 					NULL);
 			}
 		}
@@ -149,11 +149,11 @@ namespace Operator::Net
 		{
 			if (UserContainer::GetUserMode(userID) != ActiveUserMode::Waiting)
 			{
-				Host::HostFindClassicRejectedMessage message;
-				message.type = Host::HostFindClassicRejectedMessageContent::InvalidUserMode;
+				::Net::Host::HostFindClassicRejectedMessage message;
+				message.type = ::Net::Host::HostFindClassicRejectedMessageContent::InvalidUserMode;
 
 				access->sendMessage(
-					Host::OperatorCommonMessageID::HostFindClassicRejected,
+					::Net::Host::OperatorCommonMessageID::HostFindClassicRejected,
 					&message);
 
 				return;
@@ -163,11 +163,11 @@ namespace Operator::Net
 
 			if (host == NULL)
 			{
-				Host::HostFindClassicRejectedMessage message;
-				message.type = Host::HostFindClassicRejectedMessageContent::NoHostAvailable;
+				::Net::Host::HostFindClassicRejectedMessage message;
+				message.type = ::Net::Host::HostFindClassicRejectedMessageContent::NoHostAvailable;
 
 				access->sendMessage(
-					Host::OperatorCommonMessageID::HostFindClassicRejected,
+					::Net::Host::OperatorCommonMessageID::HostFindClassicRejected,
 					&message);
 
 				return;
@@ -205,14 +205,14 @@ namespace Operator::Net
 
 			keySource.userID = userID;
 
-			Host::HostFindClassicMessage message;
+			::Net::Host::HostFindClassicMessage message;
 
 			message.userID = host->getConfig().host.userID;
 			message.address = host->getConfig().host.address;
 			message.key.make(keySource);
 
 			access->sendMessage(
-				Host::OperatorCommonMessageID::HostFindClassic,
+				::Net::Host::OperatorCommonMessageID::HostFindClassic,
 				&message);
 		}
 	};

@@ -11,7 +11,7 @@ namespace Operator
 		public RequestInterface
 	{
 	public:
-		virtual void onRequestFailure(const Reason reason) override
+		virtual void onRequestFailure(const RequestInterface::Reason reason) override
 		{
 			Operator::Client::client->onAuthenticationFailed();
 		}
@@ -39,70 +39,67 @@ namespace Operator
 		{
 			switch (messageID)
 			{
-				switch (messageID)
+			case ::Net::Host::OperatorAuthenticationMessageID::AcceptAuthentication:
+				if (::Net::Host::AcceptAuthenticationMessage message; loadMessage(messageID, &message, pipe))
 				{
-				case ::Net::Host::OperatorAuthenticationMessageID::AcceptAuthentication:
-					if (::Net::Host::AcceptAuthenticationMessage message; loadMessage(messageID, &message, pipe))
-					{
-						onAuthenticated(
-							message.authenticationToken, 
-							message.userID);
-						Operator::Client::client->onAuthenticated(
-							message.authenticationToken,
-							message.userID);
-					}
-
-					return true;
-				case ::Net::Host::OperatorAuthenticationMessageID::AcceptRegistration:
-					if (::Net::Host::AcceptRegistrationMessage message; loadMessage(messageID, &message, pipe))
-					{
-						onAuthenticated(
-							message.authenticationToken, 
-							message.userID);
-						Operator::Client::client->onAuthenticated(
-							message.authenticationToken,
-							message.userID);
-					}
-
-					return true;
-				case ::Net::Host::OperatorAuthenticationMessageID::AcceptToken:
-					if (::Net::Host::AcceptTokenMessage message; loadMessage(messageID, &message, pipe))
-					{
-						onAuthenticated(message.userID);
-						Operator::Client::client->onAuthenticated(
-							NULL,
-							message.userID);
-					}
-
-					return true;
-				case ::Net::Host::OperatorAuthenticationMessageID::RejectAuthentication:
-					Operator::Client::client->onAuthenticationFailed();
-					onAuthenticationFailed(Reason::Rejected);
-
-					return true;
-				case ::Net::Host::OperatorAuthenticationMessageID::RejectRegistration:
-					Operator::Client::client->onAuthenticationFailed();
-
-					if (::Net::Host::RejectRegistrationMessage message; loadMessage(messageID, &message, pipe))
-					{
-						onRegistrationFailed(message.reason);
-					}
-
-					return true;
-				case ::Net::Host::OperatorAuthenticationMessageID::RejectToken:
-					Operator::Client::client->onAuthenticationFailed();
-					onAuthenticationFailed(Reason::Rejected);
-
-					return true;
-				case ::Net::Host::OperatorAuthenticationMessageID::Timeout:
-					Operator::Client::client->onAuthenticationFailed();
-					onAuthenticationFailed(Reason::Timeout);
-
-					return true;
+					onAuthenticated(
+						message.authenticationToken, 
+						message.userID);
+					Operator::Client::client->onAuthenticated(
+						message.authenticationToken,
+						message.userID);
 				}
 
-				return false;
+				return true;
+			case ::Net::Host::OperatorAuthenticationMessageID::AcceptRegistration:
+				if (::Net::Host::AcceptRegistrationMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onAuthenticated(
+						message.authenticationToken, 
+						message.userID);
+					Operator::Client::client->onAuthenticated(
+						message.authenticationToken,
+						message.userID);
+				}
+
+				return true;
+			case ::Net::Host::OperatorAuthenticationMessageID::AcceptToken:
+				if (::Net::Host::AcceptTokenMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onAuthenticated(message.userID);
+					Operator::Client::client->onAuthenticated(
+						NULL,
+						message.userID);
+				}
+
+				return true;
+			case ::Net::Host::OperatorAuthenticationMessageID::RejectAuthentication:
+				Operator::Client::client->onAuthenticationFailed();
+				onAuthenticationFailed(Reason::Rejected);
+
+				return true;
+			case ::Net::Host::OperatorAuthenticationMessageID::RejectRegistration:
+				Operator::Client::client->onAuthenticationFailed();
+
+				if (::Net::Host::RejectRegistrationMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onRegistrationFailed(message.reason);
+				}
+
+				return true;
+			case ::Net::Host::OperatorAuthenticationMessageID::RejectToken:
+				Operator::Client::client->onAuthenticationFailed();
+				onAuthenticationFailed(Reason::Rejected);
+
+				return true;
+			case ::Net::Host::OperatorAuthenticationMessageID::Timeout:
+				Operator::Client::client->onAuthenticationFailed();
+				onAuthenticationFailed(Reason::Timeout);
+
+				return true;
 			}
+
+			return false;
 		}
 	};
 }

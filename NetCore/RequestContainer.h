@@ -19,13 +19,15 @@ namespace Net
 		}
 
 	protected:
+		virtual ConnectionAccess* getConnectionAccess() = 0;
+
 		template <typename T>
 		// value has to be created with new and wont be
 		// available after remove has been called
 		void addRequestHandler(T* const value)
 		{
 			requestHandlers.push_back(value);
-			value->initialize(this);
+			value->initialize(getConnectionAccess());
 			requestHandlerTypes.push_back(typeid(T));
 		}
 

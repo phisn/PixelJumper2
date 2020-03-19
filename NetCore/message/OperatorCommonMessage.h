@@ -51,7 +51,7 @@ namespace Net::Client
 	typedef ::Net::TrivialNetworkMessage<RegisterClassicHostMessageContent> RegisterClassicHostMessage;
 }
 
-namespace Operator::Net::Host
+namespace Net::Host
 {
 	struct OperatorCommonMessageID
 	{
@@ -80,15 +80,15 @@ namespace Operator::Net::Host
 
 	struct ConnectionKeyMessageContent
 	{
-		ConnectionKey key;
+		Operator::ConnectionKey key;
 	};
 
 	typedef ::Net::TrivialNetworkMessage<ConnectionKeyMessageContent> ConnectionKeyMessage;
 
 	struct HostFindClassicMessageContent
 	{
-		ConnectionKey key;
-		UserID userID;
+		Operator::ConnectionKey key;
+		Operator::UserID userID;
 		SteamNetworkingIPAddr address;
 	};
 
