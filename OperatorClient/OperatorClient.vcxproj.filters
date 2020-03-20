@@ -4,6 +4,9 @@
     <Filter Include="source">
       <UniqueIdentifier>{6df45ca6-e033-4f8a-b2b0-3acbc05474fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\request">
+      <UniqueIdentifier>{4e31324d-5cc5-4ca7-8d6e-83a8009eb175}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OperatorClient.h">

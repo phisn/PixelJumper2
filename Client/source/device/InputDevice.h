@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <Client/source/resource/ResourceBase.h>
+#include "Resource/ResourceBase.h"
 
 #include <cassert>
 #include <deque>

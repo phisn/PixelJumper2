@@ -40,32 +40,14 @@
     <Filter Include="todo\editor\tilechoice">
       <UniqueIdentifier>{49e6bfc2-000c-4a69-903f-d1fdbddacc72}</UniqueIdentifier>
     </Filter>
-    <Filter Include="todo\operator">
-      <UniqueIdentifier>{661ad6e3-ac5d-4c9b-a35f-466dc962ba1b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="todo\operator\request">
-      <UniqueIdentifier>{6108c41b-b05d-4584-a976-3a02760f3385}</UniqueIdentifier>
-    </Filter>
     <Filter Include="todo\game">
       <UniqueIdentifier>{784b7fff-7d14-4f75-b736-a7f318945c5d}</UniqueIdentifier>
     </Filter>
     <Filter Include="todo\game\net">
       <UniqueIdentifier>{f20b9fbc-0df6-40a0-b7ec-124b93c65235}</UniqueIdentifier>
     </Filter>
-    <Filter Include="todo\game\net\host">
-      <UniqueIdentifier>{edb97eec-6492-4796-8cc3-7f097b6f81c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="todo\game\net\message">
-      <UniqueIdentifier>{38e76960-3920-4fdc-bf4d-3bb58d4baacd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="todo\game\net\client">
       <UniqueIdentifier>{aa8e562b-7d65-4664-83a6-26f985360444}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="todo\game\tiletrait">
-      <UniqueIdentifier>{31f632b2-6af5-44b7-a611-c9f1ed95dd54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="todo\game\component">
-      <UniqueIdentifier>{e6dc4b96-992a-4cd9-a42c-bedb9c0086be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,44 +118,11 @@
     <ClInclude Include="source\scene\LoadingScreenScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\operator\OperatorConnectionHandler.h">
-      <Filter>todo\operator</Filter>
-    </ClInclude>
     <ClInclude Include="source\game\ControllablePlayer.h">
       <Filter>todo\game</Filter>
     </ClInclude>
     <ClInclude Include="source\game\PlayerRepresentation.h">
       <Filter>todo\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\VirtualPlayer.h">
-      <Filter>todo\game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\FrameStatus.h">
-      <Filter>todo\game\net</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\SimulatorAuthenticationMessage.h">
-      <Filter>todo\game\net\message</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\ClassicSelectionMessage.h">
-      <Filter>todo\game\net\message</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\ClassicSimulatorMessage.h">
-      <Filter>todo\game\net\message</Filter>
-    </ClInclude>
-    <ClInclude Include="source\operator\request\AuthenticationRequest.h">
-      <Filter>todo\operator\request</Filter>
-    </ClInclude>
-    <ClInclude Include="source\operator\request\ConnectionKeyRequest.h">
-      <Filter>todo\operator\request</Filter>
-    </ClInclude>
-    <ClInclude Include="source\operator\request\OperatorRequest.h">
-      <Filter>todo\operator\request</Filter>
-    </ClInclude>
-    <ClInclude Include="source\operator\request\ClassicHostRequest.h">
-      <Filter>todo\operator\request</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\SimulatorContext.h">
-      <Filter>todo\game\net\host</Filter>
     </ClInclude>
     <ClInclude Include="source\game\ClientAuthenticationHandler.h">
       <Filter>todo\game\net\client</Filter>
@@ -183,9 +132,6 @@
     </ClInclude>
     <ClInclude Include="source\game\ClientClassicSelectionHandler.h">
       <Filter>todo\game\net\client</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\ClassicCommonMessage.h">
-      <Filter>todo\game\net\message</Filter>
     </ClInclude>
     <ClInclude Include="source\game\ClientClassicCommonHandler.h">
       <Filter>todo\game\net\client</Filter>
@@ -201,12 +147,6 @@
     </ClInclude>
     <ClInclude Include="source\scene\TestClassicSimulatorScene.h">
       <Filter>source\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source\operator\request\CommonRequest.h">
-      <Filter>todo\operator\request</Filter>
-    </ClInclude>
-    <ClInclude Include="source\game\net\NetPlayerMovement.h">
-      <Filter>todo\game\net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -279,20 +219,11 @@
     <ClCompile Include="source\scene\LoadingScreenScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\operator\OperatorConnectionHandler.cpp">
-      <Filter>todo\operator</Filter>
-    </ClCompile>
     <ClCompile Include="source\game\ControllablePlayer.cpp">
       <Filter>todo\game</Filter>
     </ClCompile>
     <ClCompile Include="source\game\PlayerRepresentation.cpp">
       <Filter>todo\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\VirtualPlayer.cpp">
-      <Filter>todo\game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\game\SimulatorContext.cpp">
-      <Filter>todo\game\net\host</Filter>
     </ClCompile>
     <ClCompile Include="source\game\ClientAuthenticationHandler.cpp">
       <Filter>todo\game\net\client</Filter>

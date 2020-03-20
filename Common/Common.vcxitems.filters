@@ -30,6 +30,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Property.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SpecialProperties.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)EncryptionModule.cpp">
@@ -39,6 +42,9 @@
       <Filter>source\module</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Property.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SpecialProperties.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
