@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{d41aff0f-8073-479d-acff-78f9281728d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\device">
+      <UniqueIdentifier>{d0adc88e-d305-429f-a4bb-f9e86e10939a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game">
+      <UniqueIdentifier>{72408594-373a-497d-8184-0b0e38198a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game\handler">
+      <UniqueIdentifier>{0b49bb0a-02f1-4915-b1c1-96a2357cf9b8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\device\CoreDevice.cpp">
+      <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\ClassicClientHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostSimulatorAuthenticationHandler.cpp">
+      <Filter>source\game\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicSimulationHandler.cpp">
+      <Filter>source\game\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicSelectionHandler.cpp">
+      <Filter>source\game\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicSimulator.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\HostClassicCommonHandler.cpp">
+      <Filter>source\game\handler</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\device\CoreDevice.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\ClassicClientHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostSimulatorAuthenticationHandler.h">
+      <Filter>source\game\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSimulationHandler.h">
+      <Filter>source\game\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSelectionHandler.h">
+      <Filter>source\game\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicCommonHandler.h">
+      <Filter>source\game\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="source\game\HostClassicSimulator.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

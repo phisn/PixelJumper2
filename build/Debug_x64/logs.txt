@@ -1,0 +1,1003 @@
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Failed
+---> [Information] : resource/static/font.ttf
+---> [Section] : Mapping all resource types ... Failed
+-----> [Section] : Mapping resource type 'World' ... Failed
+-------> [Warning] : Too small or empty file 'TestWorld.wrld' (resource path: 'resource/world')
+-------> [Information] : Mapped '1' files (resource type: 'resource/world')
+-----> [Section] : Mapping resource type 'Player' ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Warning] : Resource 'TestWorld' (resouce path: 'world') not found mapping resource type (resource type: 'World')
+[Section] : Mapping resource type 'World' ... Failed
+-> [Warning] : Too small or empty file 'TestWorld.wrld' (resource path: 'resource/world')
+-> [Information] : Mapped '2' files (resource type: 'resource/world')
+[Error] : Resource 'TestWorld' (resouce path: 'world') not found (again)
+[Error] : Failed to read resource
+[Error] : Failed to create starting context
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'TestWorld.wrld' made (resource path: 'world')
+[Section] : Creating World ... Success
+[Information] : Entering game loop
+[Information] : Poping
+[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : waiting for operator
+[Information] : onsteamnetconnectionstatuschanged connection=362274266 listenconnection=0 
+[Information] : NetworkUtils message ([#362274266 UDP [::1]:9928] connected)
+[Information] : onsteamnetconnectionstatuschanged connection=362274266 listenconnection=0 
+[Information] : send id=2 
+[Information] : recv id=8 
+[Information] : Authentication accepted
+[Information] : accepted user=775958445177979378 
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'right.wrld' made (resource path: 'world')
+[Information] : send id=6 
+[Information] : Entering game loop
+[Information] : recv id=15 
+[Information] : Got host '[::1]:9927'
+[Information] : NetworkUtils message ([#4138661316 UDP [::1]:9927] connected)
+[Information] : onsteamnetconnectionstatuschanged connection=4138661316 listenconnection=0 
+[Information] : onsteamnetconnectionstatuschanged connection=4138661316 listenconnection=0 
+[Information] : Authenticated
+[Error] : creating simulation handler
+[Error] : scene created
+[Section] : Creating World ... Success
+[Information] : simulation started
+[Information] : speed adjusted speed=0.990001 length=10000 
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Informa[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : waiting for operator
+[Information] : onsteamnetconnectionstatuschanged connection=2832319154 listenconnection=0 
+[Information] : NetworkUtils message ([#2832319154 UDP [::1]:9928] connected)
+[Information] : onsteamnetconnectionstatuschanged connection=2832319154 listenconnection=0 
+[Information] : send id=2 
+[Information] : recv id=8 
+[Information] : Authentication accepted
+[Information] : accepted user=246451233370203319 
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'right.wrld' made (resource path: 'world')
+[Information] : send id=8 
+[Information] : Entering game loop
+[Information] : recv id=13 
+[Information] : Server started
+[Information] : New client connects ip=0 port=58518 
+[Information] : Client connected
+[Information] : authenticate
+[Information] : authenticate2
+[Information] : send id=9 
+[Information] : authenticate4
+[Information] : recv id=18 
+[Information] : Client authenticated userID=775958445177979378 
+[Section] : Creating World ... Success
+[Information] : speed adjustment speed=0.990001 length=10000 
+[Information] : process100 missingframes=34 awaiting=0 
+[Information] : process100 missingframes=32 awaiting=0 
+[Information] : process100 missingframes=30 awaiting=0 
+[Information] : process100 missingframes=28 awaiting=0 
+[Information] : process100 missingframes=25 awaiting=0 
+[Information] : process100 missingframes=23 awaiting=0 
+[Information] : process100 missingframes=21 awaiting=0 
+[Information] : process100 missingframes=19 awaiting=0 
+[Information] : process100 missingframes=17 awaiting=0 
+[Information] : process100 missingframes=14 awaiting=0 
+[Information] : process100 missingframes=13 awaiting=0 
+[Information] : process100 missingframes=10 awaiting=0 
+[Information] : process100 missingframes=8 awaiting=0 
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemtion] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+ented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : process100 missingframes=6 awaiting=0 
+[Information] : process100 missingframes=4 awaiting=0 
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : Not implemented yet
+[Information] : process100 missingframes=2 awaiting=0 
+[Information] : New client connects ip=0 port=58520 
+[Information] : Client connected
+[Information] : authenticate
+[Information] : authenticate2
+[Information] : send id=9 
+[Information] : authenticate4
+[Information] : process100 missingframes=0 awaiting=2 
+[Information] : recv id=18 
+[Information] : Client authenticated userID=917617762171024584 
+[Section] : Creating World ... Success
+[Information] : process100 missingframes=76 awaiting=0 
+[Information] : speed adjustment speed=0.990001 length=10000 
+[Information] : process100 missingframes=0 awaiting=12 
+[Information] : process100 missingframes=75 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=15 
+[Information] : process100 missingframes=72 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=17 
+[Information] : process100 missingframes=71 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=19 
+[Information] : process100 missingframes=69 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=21 
+[Information] : process100 missingframes=66 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=22 
+[Information] : process100 missingframes=65 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=25 
+[Information] : process100 missingframes=62 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=28 
+[Information] : process100 missingframes=60 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=26 
+[Information] : process100 missingframes=57 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=24 
+[Information] : process100 missingframes=55 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=23 
+[Information] : process100 missingframes=19 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=55 
+[Information] : process100 missingframes=17 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=54 
+[Information] : process100 missingframes=16 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=53 
+[Information] : process100 missingframes=13 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=51 
+[Information] : process100 missingframes=11 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=49 
+[Information] : process100 missingframes=9 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=48 
+[Information] : process100 missingframes=7 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=46 
+[Information] : process100 missingframes=5 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=45 
+[Information] : process100 missingframes=2 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=43 
+[Information] : process100 missingframes=0 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=42 
+[Information] : process100 missingframes=0 awaiting=2 
+[Information] : process100 missingframes=0 awaiting=40 
+[Information] : process100 missingframes=0 awaiting=4 
+[Information] : process100 missingframes=0 awaiting=38 
+[Information] : process100 missingframes=0 awaiting=7 
+[Information] : process100 missingframes=0 awaiting=38 
+[Information] : process100 missingframes=0 awaiting=8 
+[Information] : process100 missingframes=0 awaiting=35 
+[Information] : process100 missingframes=1 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=35 
+[Information] : process100 missingframes=0 awaiting=9 
+[Information] : process100 missingframes=0 awaiting=33 
+[Information] : process100 missingframes=0 awaiting=8 
+[Information] : process100 missingframes=0 awaiting=31 
+[Information] : process100 missingframes=0 awaiting=6 
+[Information] : process100 missingframes=0 awaiting=29 
+[Information] : process100 missingframes=0 awaiting=5 
+[Information] : process100 missingframes=0 awaiting=29 
+[Information] : process100 missingframes=0 awaiting=3 
+[Information] : process100 missingframes=0 awaiting=27 
+[Information] : process100 missingframes=0 awaiting=2 
+[Information] : process100 missingframes=0 awaiting=26 
+[Information] : process100 missingframes=0 awaiting=1 
+[Information] : process100 missingframes=0 awaiting=24 
+[Information] : process100 missingframes=1 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=23 
+[Information] : process100 missingframes=3 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=21 
+[Information] : process100 missingframes=4 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=20 
+[Information] : process100 missingframes=6 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=18 
+[Information] : process100 missingframes=7 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=17 
+[Information] : process100 missingframes=8 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=16 
+[Information] : process100 missingframes=10 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=14 
+[Information] : process100 missingframes=11 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=13 
+[Information] : process100 missingframes=13 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=11 
+[Information] : process100 missingframes=14 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=9 
+[Information] : process100 missingframes=16 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=9 
+[Information] : process100 missingframes=17 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=7 
+[Information] : process100 missingframes=19 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=5 
+[Information] : process100 missingframes=20 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=4 
+[Information] : process100 missingframes=22 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=2 
+[Information] : process100 missingframes=23 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=1 
+[Information] : process100 missingframes=24 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=0 
+[Information] : process100 missingframes=26 awaiting=0 
+[Information] : process100 missingframes=2 awaiting=0 
+[Information] : process100 missingframes=28 awaiting=0 
+[Information] : process100 missingframes=3 awaiting=0 
+[Information] : process100 missingframes=29 awaiting=0 
+[Information] : process100 missingframes=5 awaiting=0 
+[Information] : process100 missingframes=30 awaiting=0 
+[Information] : process100 missingframes=7 awaiting=0 
+[Information] : process100 missingframes=31 awaiting=0 
+[Information] : process100 missingframes=8 awaiting=0 
+[Information] : process100 missingframes=34 awaiting=0 
+[Information] : process100 missingframes=10 awaiting=0 
+[Information] : process100 missingframes=34 awaiting=0 
+[Information] : process100 missingframes=11 awaiting=0 
+[Information] : process100 missingframes=36 awaiting=0 
+[Information] : process100 missingframes=12 awaiting=0 
+[Information] : process100 missingframes=38 awaiting=0 
+[Information] : process100 missingframes=14 awaiting=0 
+[Information] : process100 missingframes=39 awaiting=0 
+[Information] : process100 missingframes=15 awaiting=0 
+[Information] : process100 missingframes=41 awaiting=0 
+[Information] : process100 missingframes=16 awaiting=0 
+[Information] : process100 missingframes=42 awaiting=0 
+[Information] : process100 missingframes=19 awaiting=0 
+[Information] : process100 missingframes=44 awaiting=0 
+[Information] : process100 missingframes=20 awaiting=0 
+[Information] : process100 missingframes=45 awaiting=0 
+[Information] : process100 missingframes=21 awaiting=0 
+[Information] : process100 missingframes=47 awaiting=0 
+[Information] : process100 missingframes=23 awaiting=0 
+[Information] : process100 missingframes=48 awaiting=0 
+[Information] : process100 missingframes=24 awaiting=0 
+[Information] : process100 missingframes=50 awaiting=0 
+[Information] : process100 missingframes=26 awaiting=0 
+[Information] : process100 missingframes=51 awaiting=0 
+[Information] : process100 missingframes=27 awaiting=0 
+[Information] : process100 missingframes=52 awaiting=0 
+[Information] : process100 missingframes=28 awaiting=0 
+[Information] : process100 missingframes=54 awaiting=0 
+[Information] : process100 missingframes=30 awaiting=0 
+[Information] : process100 missingframes=55 awaiting=0 
+[Information] : process100 missingframes=31 awaiting=0 
+[Information] : process100 missingframes=56 awaiting=0 
+[Information] : process100 missingframes=33 awaiting=0 
+[Information] : process100 missingframes=58 awaiting=0 
+[Information] : process100 missingframes=34 awaiting=0 
+[Information] : process100 missingframes=59 awaiting=0 
+[Information] : process100 missingframes=36 awaiting=0 
+[Information] : process100 missingframes=61 awaiting=0 
+[Information] : process100 missingframes=37 awaiting=0 
+[Information] : process100 missingframes=63 awaiting=0 
+[Information] : process100 missingframes=38 awaiting=0 
+[Information] : process100 missingframes=64 awaiting=0 
+[Information] : process100 missingframes=40 awaiting=0 
+[Information] : process100 missingframes=66 awaiting=0 
+[Information] : process100 missingframes=42 awaiting=0 
+[Information] : process100 missingframes=67 awaiting=0 
+[Information] : process100 missingframes=43 awaiting=0 
+[Information] : process100 missingframes=68 awaiting=0 
+[Information] : process100 missingframes=45 awaiting=0 
+[Information] : process100 missingframes=70 awaiting=0 
+[Information] : process100 missingframes=46 awaiting=0 
+[Information] : process100 missingframes=38 awaiting=0 
+[Information] : process100 missingframes=48 awaiting=0 
+[Information] : process100 missingframes=40 awaiting=0 
+[Information] : process100 missingframes=16 awaiting=0 
+[Information] : process100 missingframes=41 awaiting=0 
+[Information] : process100 missingframes=17 awaiting=0 
+[Information] : process100 missingframes=43 awaiting=0 
+[Information] : process100 missingframes=19 awaiting=0 
+[Information] : process100 missingframes=43 awaiting=0 
+[Information] : process100 missingframes=19 awaiting=0 
+[Information] : process100 missingframes=45 awaiting=0 
+[Information] : process100 missingframes=21 awaiting=0 
+[Information] : process100 missingframes=47 awaiting=0 
+[Information] : process100 missingframes=23 awaiting=0 
+[Information] : process100 missingframes=48 awaiting=0 
+[Information] : process100 missingframes=24 awaiting=0 
+[Information] : process100 missingframes=49 awaiting=0 
+[Information] : process100 missingframes=26 awaiting=0 
+[Information] : process100 missingframes=51 awaiting=0 
+[Information] : process100 missingframes=27 awaiting=0 
+[Information] : process100 missingframes=53 awaiting=0 
+[Information] : process100 missingframes=29 awaiting=0 
+[Information] : process100 missingframes=54 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=70 
+[Information] : process100 missingframes=0 awaiting=45 
+[Information] : process100 missingframes=0 awaiting=68 
+[Information] : process100 missingframes=0 awaiting=43 
+[Information] : process100 missingframes=0 awaiting=67 
+[Information] : process100 missingframes=0 awaiting=42 
+[Information] : process100 missingframes=0 awaiting=66 
+[Information] : process100 missingframes=0 awaiting=41 
+[Information] : process100 missingframes=0 awaiting=64 
+[Information] : process100 missingframes=0 awaiting=39 
+[Information] : process100 missingframes=0 awaiting=62 
+[Information] : process100 missingframes=0 awaiting=37 
+[Information] : process100 missingframes=0 awaiting=61 
+[Information] : process100 missingframes=0 awaiting=36 
+[Information] : process100 missingframes=0 awaiting=60 
+[Information] : process100 missingframes=0 awaiting=34 
+[Information] : process100 missingframes=0 awaiting=58 
+[Information] : process100 missingframes=0 awaiting=33 
+[Information] : process100 missingframes=0 awaiting=57 
+[Information] : process100 missingframes=0 awaiting=32 
+[Information] : process100 missingframes=0 awaiting=55 
+[Information] : process100 missingframes=0 awaiting=30 
+[Information] : process100 missingframes=0 awaiting=54 
+[Information] : process100 missingframes=0 awaiting=28 
+[Information] : process100 missingframes=0 awaiting=53 
+[Information] : process100 missingframes=0 awaiting=26 
+[Information] : process100 missingframes=0 awaiting=51 
+[Information] : process100 missingframes=0 awaiting=25 
+[Information] : process100 missingframes=0 awaiting=50 
+[Information] : process100 missingframes=0 awaiting=24 
+[Information] : process100 missingframes=0 awaiting=48 
+[Information] : process100 missingframes=0 awaiting=23 
+[Information] : process100 missingframes=0 awaiting=46 
+[Information] : process100 missingframes=0 awaiting=22 
+[Information] : process100 missingframes=0 awaiting=45 
+[Information] : process100 missingframes=0 awaiting=20 
+[Information] : process100 missingframes=0 awaiting=43 
+[Information] : process100 missingframes=0 awaiting=18 
+[Information] : process100 missingframes=0 awaiting=42 
+[Information] : process100 missingframes=0 awaiting=17 
+[Information] : process100 missingframes=0 awaiting=41 
+[Information] : process100 missingframes=0 awaiting=16 
+[Information] : process100 missingframes=0 awaiting=39 
+[Information] : process100 missingframes=0 awaiting=14 
+[Information] : process100 missingframes=0 awaiting=38 
+[Information] : process100 missingframes=0 awaiting=12 
+[Information] : process100 missingframes=0 awaiting=36 
+[Information] : process100 missingframes=0 awaiting=11 
+[Information] : process100 missingframes=0 awaiting=35 
+[Information] : process100 missingframes=0 awaiting=10 
+[Information] : process100 missingframes=0 awaiting=33 
+[Information] : process100 missingframes=0 awaiting=8 
+[Information] : process100 missingframes=0 awaiting=32 
+[Information] : process100 missingframes=0 awaiting=7 
+[Information] : process100 missingframes=0 awaiting=30 
+[Information] : process100 missingframes=0 awaiting=5 
+[Information] : process100 missingframes=0 awaiting=29 
+[Information] : process100 missingframes=0 awaiting=4 
+[Information] : process100 missingframes=0 awaiting=27 
+[Information] : process100 missingframes=0 awaiting=2 
+[Information] : process100 missingframes=0 awaiting=26 
+[Information] : process100 missingframes=0 awaiting=1 
+[Information] : process100 missingframes=0 awaiting=24 
+[Information] : process100 missingframes=0 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=23 
+[Information] : process100 missingframes=2 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=21 
+[Information] : process100 missingframes=4 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=20 
+[Information] : process100 missingframes=5 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=19 
+[Information] : process100 missingframes=7 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=17 
+[Information] : process100 missingframes=8 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=16 
+[Information] : process100 missingframes=9 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=15 
+[Information] : process100 missingframes=10 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=13 
+[Information] : process100 missingframes=12 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=12 
+[Information] : process100 missingframes=14 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=10 
+[Information] : process100 missingframes=16 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=9 
+[Information] : process100 missingframes=17 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=6 
+[Information] : process100 missingframes=19 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=6 
+[Information] : process100 missingframes=19 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=4 
+[Information] : process100 missingframes=21 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=3 
+[Information] : process100 missingframes=23 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=1 
+[Information] : process100 missingframes=24 awaiting=0 
+[Information] : process100 missingframes=1 awaiting=0 
+[Information] : process100 missingframes=25 awaiting=0 
+[Information] : process100 missingframes=2 awaiting=0 
+[Information] : process100 missingframes=26 awaiting=0 
+[Information] : process100 missingframes=3 awaiting=0 
+[Information] : process100 missingframes=29 awaiting=0 
+[Information] : process100 missingframes=4 awaiting=0 
+[Information] : process100 missingframes=30 awaiting=0 
+[Information] : process100 missingframes=5 awaiting=0 
+[Information] : process100 missingframes=31 awaiting=0 
+[Information] : process100 missingframes=7 awaiting=0 
+[Information] : process100 missingframes=32 awaiting=0 
+[Information] : process100 missingframes=9 awaiting=0 
+[Information] : process100 missingframes=35 awaiting=0 
+[Information] : process100 missingframes=11 awaiting=0 
+[Information] : process100 missingframes=36 awaiting=0 
+[Information] : process100 missingframes=12 awaiting=0 
+[Information] : process100 missingframes=38 awaiting=0 
+[Information] : process100 missingframes=13 awaiting=0 
+[Information] : process100 missingframes=39 awaiting=0 
+[Information] : process100 missingframes=15 awaiting=0 
+[Information] : process100 missingframes=40 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=0 
+[Information] : process100 missingframes=25 awaiting=0 
+[Information] : process100 missingframes=2 awaiting=0 
+[Information] : process100 missingframes=26 awaiting=0 
+[Information] : process100 missingframes=3 awaiting=0 
+[Information] : process100 missingframes=28 awaiting=0 
+[Information] : process100 missingframes=4 awaiting=0 
+[Information] : process100 missingframes=29 awaiting=0 
+[Information] : process100 missingframes=5 awaiting=0 
+[Information] : process100 missingframes=30 awaiting=0 
+[Information] : process100 missingframes=7 awaiting=0 
+[Information] : process100 missingframes=32 awaiting=0 
+[Information] : process100 missingframes=9 awaiting=0 
+[Information] : process100 missingframes=34 awaiting=0 
+[Information] : process100 missingframes=10 awaiting=0 
+[Information] : process100 missingframes=35 awaiting=0 
+[Information] : process100 missingframes=11 awaiting=0 
+[Information] : process100 missingframes=37 awaiting=0 
+[Information] : process100 missingframes=13 awaiting=0 
+[Information] : process100 missingframes=21 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=2 
+[Information] : process100 missingframes=23 awaiting=0 
+[Information] : process100 missingframes=0 awaiting=1 
+[Information] : process100 missingframes=25 awaiting=0 
+[Information] : process100 missingframes=1 awaiting=0 
+[Information] : process100 missingframes=26 awaiting=0 
+[Information] : speed adjustment speed=0.990001 length=10000 
+[Information] : process100 missingframes=1 awaiting=0 
+[Information] : process100 missingframes=394 awaiting=0 
+[Information] : process100 missingframes=2 awaiting=0 
+[Information] : process100 missingframes=795 awaiting=0 
+[Information] : process100 missingframes=5 awaiting=0 
+[Information] : NetworkUtils message ([#519593905 UDP [::1]:58520] 2 reply timeouts, last recv 1211.9ms ago.  Sending keepalive.)
+[Information] : process100 missingframes=1196 awaiting=0 
+[Information] : speed adjustment speed=0.990001 length=10000 
+[Information] : NetworkUtils message ([#519593905 UDP [::1]:58520] 3 reply timeouts, last recv 1412.9ms ago.  Sending keepalive.)
+[Information] : process100 missingframes=206 awaiting=0 
+[Information] : NetworkUtils message ([#519593905 UDP [::1]:58520] 3 reply timeouts, last recv 1613.9ms ago.  Sending keepalive.)
+[Information] : process100 missingframes=1597 awaiting=0 
+[Information] : NetworkUtils message ([#519593905 UDP [::1]:58520] 3 reply timeouts, last recv 1813.9ms ago.  Sending keepalive.)
+[Information] : process100 missingframes=607 awaiting=0 
+[Information] : NetworkUtils message ([#519593905 UDP [::1]:58520] 4 reply timeouts, last recv 2014.9ms ago.  Sending keepalive.)
+[Information] : process100 missingframes=1998 awaiting=0 
+[Information] : NetworkUtils message ([#519593905 UDP [::1]:58520] 4 reply timeouts, last recv 2214.9ms ago.  Sending keepalive.)
+[Information] : process100 missingframes=1008 awaiting=0 
+[Information] : NetworkUtils message ([#3281279148 UDP [::1]:58518] 2 reply timeouts, last recv 1234.9ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#519593905 UDP [::1]:58520] 5 reply timeouts, last recv 2414.9ms ago.  Sending keepalive.)
+[Information] : process100 missingframes=2399 awaiting=0 
+[Information] : NetworkUtils message ([#3281279148 UDP [::1]:58518] 3 reply timeouts, last recv 1435.9ms ago.  Sending keepalive.)
+[Information[Section] : Initializing Game ... Failed
+-> [Section] : Initializing resource interface ... Success
+-> [Section] : Initializing config ... Success
+-> [Error] : Resource file not found 'input.stg' (resource path: 'resource/settings')
+[Information] : waiting for operator
+[Information] : onsteamnetconnectionstatuschanged connection=1716192519 listenconnection=0 
+[Information] : NetworkUtils message ([#1716192519 UDP [::1]:9928] connected)
+[Information] : onsteamnetconnectionstatuschanged connection=1716192519 listenconnection=0 
+[Information] : send id=2 
+[Information] : recv id=8 
+[Information] : Authentication accepted
+[Information] : accepted user=775958445177979378 
+[Information] : Starting game
+[Information] : Pushing main context
+[Information] : Resource 'right.wrld' made (resource path: 'world')
+[Information] : send id=6 
+[Information] : Entering game loop
+[Information] : recv id=15 
+[Information] : Got host '[::1]:9927'
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] connected)
+[Information] : onsteamnetconnectionstatuschanged connection=2001187054 listenconnection=0 
+[Information] : onsteamnetconnectionstatuschanged connection=2001187054 listenconnection=0 
+[Information] : Authenticated
+[Error] : creating simulation handler
+[Error] : scene created
+[Section] : Creating World ... Success
+[Information] : simulation started
+[Information] : speed adjusted speed=0.990001 length=10000 
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 2 reply timeouts, last recv 867.9ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 2 reply timeouts, last recv 1068.1ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 3 reply timeouts, last recv 1269.7ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 4 reply timeouts, last recv 1673.3ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 4 reply timeouts, last recv 2075.7ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 5 reply timeouts, last recv 2276.8ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 5 reply timeouts, last recv 2478.4ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 6 reply timeouts, last recv 2679.3ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 6 reply timeouts, last recv 2881.0ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 7 reply timeouts, last recv 3081.2ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 8 reply timeouts, last recv 3682.3ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 9 reply timeouts, last recv 4083.9ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 9 reply timeouts, last recv 4284.4ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 10 reply timeouts, last recv 4684.9ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 11 reply timeouts, last recv 4886.4ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 11 reply timeouts, last recv 5087.2ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 12 reply timeouts, last recv 5287.8ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 12 reply timeouts, last recv 5489.0ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 13 reply timeouts, last recv 5889.9ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:9927] 13 reply timeouts, last recv 6090.1ms ago.  Sending keepalive.)
+[Information] : NetworkUtils message ([#2001187054 UDP [::1]:99

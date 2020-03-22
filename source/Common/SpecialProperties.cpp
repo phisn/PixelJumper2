@@ -1,0 +1,1 @@
+#include "SpecialProperties.h"
