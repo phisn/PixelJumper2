@@ -10,6 +10,12 @@ namespace Game
 	class Component
 	{
 	public:
+		Component(const Resource::ComponentID id)
+			:
+			id(id)
+		{
+		}
+
 		virtual bool initialize(EntityView* const entity) = 0;
 		virtual void registerTraits(EnvironmentView* const environment) = 0;
 

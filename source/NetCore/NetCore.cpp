@@ -49,18 +49,17 @@ namespace Net
 				if (type == ESteamNetworkingSocketsDebugOutputType::k_ESteamNetworkingSocketsDebugOutputType_Msg ||
 					type == ESteamNetworkingSocketsDebugOutputType::k_ESteamNetworkingSocketsDebugOutputType_Important)
 				{
-					Log::Information(L"NetworkUtils message (" + carrtowstr(message) + L")");
+					Log::Independent::Information(L"NetworkUtils message (" + carrtowstr(message) + L")");
 					return;
 				}
 
 				if (type >= ESteamNetworkingSocketsDebugOutputType::k_ESteamNetworkingSocketsDebugOutputType_Warning)
 				{
-					Log::Information(L"NetworkUtils warning (" + carrtowstr(message) + L")");
+					Log::Independent::Information(L"NetworkUtils warning (" + carrtowstr(message) + L")");
 					return;
 				}
 
-				Log::Error(L"NetworkUtils different (" + carrtowstr(message) + L")",
-					(int)type, L"type");
+				Log::Independent::Error(L"NetworkUtils different (" + carrtowstr(message) + L")");
 			});
 
 		networkInterface = SteamNetworkingSockets();

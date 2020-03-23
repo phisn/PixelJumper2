@@ -4,6 +4,7 @@
 
 #include "GameCore/LocalPlayer.h"
 #include "GameCore/trait/CollidableTrait.h"
+#include "FrameworkCore/ScreenDevice.h"
 
 namespace Game
 {
@@ -21,11 +22,11 @@ namespace Game
 	public:
 		KeyController(
 			const Device::GameInput* const input,
-			const Device::GameCoreInputSymbol key,
+			const Game::InputSymbol symbol,
 			const LocalRoutine& routine)
 			:
 			input(input),
-			key(key),
+			symbol(symbol),
 			routine(routine)
 		{
 		}
@@ -38,7 +39,7 @@ namespace Game
 		template <>
 		void handleKey<InputMode::Active>()
 		{
-			if (currentState = input->isKeyPressed(key))
+			if (currentState = input->isKeyPressed(symbol))
 			{
 				routine.call();
 			}
@@ -47,7 +48,7 @@ namespace Game
 		template <>
 		void handleKey<InputMode::Passive>()
 		{
-			if (input->isKeyPressed(key) != lastState && (lastState = !lastState))
+			if (input->isKeyPressed(symbol) != lastState && (lastState = !lastState))
 			{
 				routine.call();
 				currentState = true;
@@ -68,7 +69,7 @@ namespace Game
 		bool lastState = false;
 
 		const LocalRoutine& routine;
-		const Device::GameCoreInputSymbol key;
+		const Game::InputSymbol symbol;
 		const Device::GameInput* const input;
 	};
 
@@ -78,16 +79,16 @@ namespace Game
 	{
 		// needs to be at top
 		// first evaluation
-		Device::GameInput* const input;
+		const Device::GameInput input;
 
 	public:
 		ControllablePlayer(
-			const Device::Input::PlayerID playerId,
+			const int playerID,
 			const PlayerInformation information,
 			Device::View* const view)
 			:
 			LocalPlayer(information),
-			input(Device::Input::GetGameInput(playerId)),
+			input(Device::Input::GetGameInput(playerID)),
 			view(view)
 		{
 			properties.viewFollow.addListener(
@@ -102,6 +103,8 @@ namespace Game
 				{
 					if (properties.viewFollow)
 					{
+						sf::Vector2f screen_size = sf::Vector2f(Device::Screen::GetWindow()->getSize());
+
 						float size = std::max(newViewWindow.width, newViewWindow.height);
 
 						this->view->setSize(
@@ -138,13 +141,13 @@ namespace Game
 			PlayerBase::onInternalUpdate();
 		}
 
-		KeyController<InputMode::Passive> respawnController{ input, Device::GameCoreInputSymbol::Reset, respawn };
-		KeyController<InputMode::Passive> interactController{ input, Device::GameCoreInputSymbol::Trigger, interact };
+		KeyController<InputMode::Passive> respawnController{ &input, Game::InputSymbol::Reset, respawn };
+		KeyController<InputMode::Passive> interactController{ &input, Game::InputSymbol::Trigger, interact };
 
-		KeyController<InputMode::Active> upController{ input, Device::GameCoreInputSymbol::Up, up };;
-		KeyController<InputMode::Active> downController{ input, Device::GameCoreInputSymbol::Down, down };
-		KeyController<InputMode::Active> leftController{ input, Device::GameCoreInputSymbol::Left, left };
-		KeyController<InputMode::Active> rightController{ input, Device::GameCoreInputSymbol::Right, right };
+		KeyController<InputMode::Active> upController{ &input, Game::InputSymbol::Up, up };;
+		KeyController<InputMode::Active> downController{ &input, Game::InputSymbol::Down, down };
+		KeyController<InputMode::Active> leftController{ &input, Game::InputSymbol::Left, left };
+		KeyController<InputMode::Active> rightController{ &input, Game::InputSymbol::Right, right };
 
 	private:
 		void handleInput()

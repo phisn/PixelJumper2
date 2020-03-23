@@ -19,8 +19,27 @@ namespace Resource
 		public ResourceBase
 	{
 	public:
-		ComponentResource(ComponentResource&&) = default;
-		ComponentResource& operator=(ComponentResource&&) = default;
+		ComponentResource(ComponentResource&& other)
+		{
+			componentID = other.componentID;
+			instance = other.instance;
+			resource = other.resource;
+
+			other.instance = NULL;
+			other.resource = NULL;
+		}
+
+		ComponentResource& operator=(ComponentResource&& other)
+		{
+			componentID = other.componentID;
+			instance = other.instance;
+			resource = other.resource;
+			
+			other.instance = NULL;
+			other.resource = NULL;
+
+			return *this;
+		}
 
 		// passing responsibility for instance
 		template <typename Component>
@@ -50,11 +69,26 @@ namespace Resource
 
 		bool make(ReadPipe* const pipe) override
 		{
+			if (!pipe->readValue(&componentID))
+			{
+				return false;
+			}
+
+			if (!initiate(componentID))
+			{
+				return false;
+			}
+
 			return resource->make(pipe);
 		}
 
 		bool save(WritePipe* const pipe) override
 		{
+			if (!pipe->writeValue(&componentID))
+			{
+				return false;
+			}
+
 			return resource->save(pipe);
 		}
 
@@ -80,7 +114,7 @@ namespace Resource
 		}
 		
 	private:
-		void initiate(const ComponentID componentID);
+		bool initiate(const ComponentID componentID);
 
 		template <typename Component>
 		void initiateFromComponent(Component* const instance)
@@ -91,6 +125,6 @@ namespace Resource
 
 		ComponentID componentID;
 		void* instance;
-		Resource::ResourceBase* resource;
+		Resource::ResourceBase* resource = NULL;
 	};
 }

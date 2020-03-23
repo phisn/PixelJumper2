@@ -12,12 +12,18 @@
     <ClInclude Include="ScreenDevice.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="ViewChain.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="ScreenDevice.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewChain.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

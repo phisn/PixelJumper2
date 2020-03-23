@@ -6,11 +6,13 @@
 #include "component/StaticVisibleComponent.h"
 #include "component/TileComponent.h"
 
+#include "Logger/Logger.h"
+
 #include <cassert>
 
 namespace Resource
 {
-	void ComponentResource::initiate(const ComponentID componentID)
+	bool ComponentResource::initiate(const ComponentID componentID)
 	{
 		switch (componentID)
 		{
@@ -31,7 +33,12 @@ namespace Resource
 
 			break;
 		default:
-			assert(true);
+			Log::Error(L"got invalid componentid in initiate",
+				(long long) componentID, L"componentid");
+
+			return false;
 		}
+
+		return true;
 	}
 }

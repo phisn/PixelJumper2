@@ -191,5 +191,8 @@
     <ClInclude Include="InputSymbol.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="component\StaticVisibleComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

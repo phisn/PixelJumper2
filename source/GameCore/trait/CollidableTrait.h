@@ -1,8 +1,8 @@
 #pragma once
 
-#include "CollisionEngine.h"
-#include "GameEvent.h"
-#include "GamePlayer.h"
+#include "GameCore/CollisionEngine.h"
+#include "GameCore/GameEvent.h"
+#include "GameCore/GamePlayer.h"
 
 #include <utility>
 #include <vector>

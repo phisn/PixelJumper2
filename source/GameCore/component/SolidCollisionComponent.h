@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Component.h"
+#include "GameCore/Component.h"
 #include "ResourceCore/component/SolidCollisionComponent.h"
 #include "TileComponent.h"
-#include "trait/CollidableTrait.h"
+#include "GameCore/trait/CollidableTrait.h"
 
 namespace Game
 {
@@ -15,7 +15,8 @@ namespace Game
 	public:
 		SolidCollisionComponent(const Resource::ComponentResource* const content)
 			:
-			content(*(Resource::SolidCollisionComponentContent*) content->getInstance<Resource::TileComponent>())
+			Component(Resource::ComponentID::SolidCollision),
+			content(((Resource::SolidCollisionComponent*) content->getInstance<Resource::SolidCollisionComponent>())->content)
 		{
 		}
 

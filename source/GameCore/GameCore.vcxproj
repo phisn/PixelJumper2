@@ -100,6 +100,7 @@
     <ClInclude Include="component\DynamicWorldTransitionComponent.h" />
     <ClInclude Include="component\EmptyCollisionComponent.h" />
     <ClInclude Include="component\SolidCollisionComponent.h" />
+    <ClInclude Include="component\StaticVisibleComponent.h" />
     <ClInclude Include="component\TileComponent.h" />
     <ClInclude Include="InputSymbol.h" />
     <ClInclude Include="DependentTileData.h" />

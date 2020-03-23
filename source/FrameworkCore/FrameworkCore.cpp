@@ -36,7 +36,8 @@ namespace Framework
 
 	bool Core::Initialize()
 	{
-		return running = true;
+		running = true;
+		return running;
 	}
 
 	void Core::Uninitialize()

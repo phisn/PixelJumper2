@@ -55,9 +55,13 @@ namespace Resource
 		std::vector<ComponentResource> components;
 
 		std::vector<Resource::WorldId> targets;
-		
+
 		bool make(ReadPipe* const pipe) override
 		{
+			entities.clear();
+			components.clear();
+			targets.clear();
+
 			if (!pipe->readValue(&content))
 			{
 				return false;
@@ -132,7 +136,7 @@ namespace Resource
 				{
 					return false;
 				}
-			
+
 			return true;
 		}
 

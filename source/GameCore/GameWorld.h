@@ -43,7 +43,7 @@ namespace Game
 		{
 			Log::Section section(L"Creating World");
 
-			section.information(L"Map: " + resource->content.author);
+			section.information(L"Map: " + std::to_wstring(resource->content.author));
 			section.information(L"ID: " + std::to_wstring(resource->content.id));
 			section.information(L"Entities: " + std::to_wstring(resource->entities.size()));
 			section.information(L"Width: " + std::to_wstring(resource->content.width));

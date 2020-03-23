@@ -81,10 +81,12 @@
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp" />
     <ClCompile Include="ScreenDevice.cpp" />
+    <ClCompile Include="ViewChain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkCore.h" />
     <ClInclude Include="ScreenDevice.h" />
+    <ClInclude Include="ViewChain.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ResourceCore\Resource.vcxproj">

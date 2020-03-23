@@ -8,6 +8,15 @@
 
 namespace Resource
 {
+	/*
+	
+		ideas:
+		-	iterate though all resources of a kind
+		-	filter and search resources of a kind or all
+		-	load readonly resource to allow caching resources
+			and automatic "garbage collection"
+	
+	*/
 	namespace Interface
 	{
 		bool Initialize();

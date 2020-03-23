@@ -9,7 +9,7 @@ namespace Device
 {
 	struct GameInputResourceContent
 	{
-		sf::Uint8 gameKeys[(int)Game::InputSymbol::_Length];
+		sf::Uint8 gameKeys[(int) Game::InputSymbol::_Length];
 	};
 
 	struct InputResourceContent
@@ -35,13 +35,34 @@ namespace Device
 	class GameInput
 	{
 	public:
+		GameInput(const GameInputResourceContent& content)
+			:
+			content(content)
+		{
+		}
+
+		bool isKeyPressed(const Game::InputSymbol symbol) const
+		{
+			return sf::Keyboard::isKeyPressed((sf::Keyboard::Key) content.gameKeys[(int) symbol]);
+		}
 
 	private:
-		GameInputResourceContent content;
+		const GameInputResourceContent& content;
 	};
 
 	namespace Input
 	{
+		struct Player
+		{
+			enum
+			{
+				P1,
+				P2,
+				P3,
+				P4
+			};
+		};
+
 		bool Initialize();
 		void Uninitialize();
 
@@ -51,7 +72,7 @@ namespace Device
 		bool SaveInputResource();
 		void ResetInputResource();
 
-		bool IsGameInputSymbolPressed(const Game::InputSymbol symbol);
+		GameInput GetGameInput(const int player);
 	}
 
 	extern const InputResourceContent DefaultInputResource;

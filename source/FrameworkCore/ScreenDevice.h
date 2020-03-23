@@ -55,4 +55,58 @@ namespace Device
 	}
 
 	extern const ScreenResourceContent DefaultScreenResource;
+
+	// implemted in viewchain
+	class View
+	{
+	public:
+		void setCenter(const sf::Vector2f position)
+		{
+			view.setCenter(position);
+		}
+		
+		void setRect(const sf::FloatRect rect)
+		{
+			setSize(
+			{
+				rect.width,
+				rect.height
+			});
+
+			view.setCenter(sf::Vector2f(
+				rect.left,
+				rect.top
+			) + view.getSize() * 0.5f);
+		}
+
+		void setRotation(const float angle)
+		{
+			view.setRotation(angle);
+		}
+
+		virtual void setSize(const float width, const float height) = 0;
+		
+		void setSize(const sf::Vector2f& size)
+		{
+			setSize(size.x, size.y);
+		}
+
+		void enable() const
+		{
+			Screen::GetWindow()->setView(view);
+		}
+
+		const sf::Vector2f& getSize() const
+		{
+			return view.getSize();
+		}
+
+		const sf::FloatRect& getViewport() const
+		{
+			return view.getViewport();
+		}
+
+	protected:
+		sf::View view;
+	};
 }

@@ -21,9 +21,10 @@ namespace Game
 	public:
 		DynamicWorldTransitionComponent(const Resource::ComponentResource* const resource)
 			:
-			content(*(Resource::DynamicWorldTransitionComponent*)
+			Component(Resource::ComponentID::DynamicWorldTransition),
+			content(((Resource::DynamicWorldTransitionComponent*)
 				resource->getInstance<Resource::DynamicWorldTransitionComponent>()
-			)
+			)->content)
 		{
 		}
 

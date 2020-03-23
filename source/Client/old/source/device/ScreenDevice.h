@@ -92,31 +92,4 @@ namespace Device
 
 		bool PollEvent(sf::Event& event);
 	}
-
-	class View
-		:
-		public sf::View
-	{
-	public:
-		using sf::View::View;
-
-		void setRect(const sf::FloatRect rect)
-		{
-			setSize(
-				{
-					rect.width,
-					rect.height
-				});
-
-			setCenter(sf::Vector2f(
-				rect.left,
-				rect.top
-			) + getSize() * 0.5f);
-		}
-
-		void enable()
-		{
-			Screen::SetView(*this);
-		}
-	};
 }

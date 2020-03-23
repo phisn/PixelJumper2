@@ -70,8 +70,10 @@ namespace Device
 		inputResource = DefaultInputResource;
 	}
 
-	bool IsGameInputSymbolPressed(const Game::InputSymbol symbol)
+	GameInput Input::GetGameInput(const int player)
 	{
-		return sf::Keyboard::isKeyPressed((sf::Keyboard::Key) inputResource.gameKeys[(int) symbol]);
+
+		GameInput input{ inputResource.gameInputs[player] };
+		return input;
 	}
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ResourceCore/component/TileComponent.h"
-#include "Component.h"
+#include "GameCore/Component.h"
 
 namespace Game
 {
@@ -13,6 +13,7 @@ namespace Game
 	public:
 		TileComponent(const Resource::ComponentResource* const resource)
 			:
+			Component(Resource::ComponentID::Tile),
 			content(&resource->getInstance<Resource::TileComponent>()->content)
 		{
 		}

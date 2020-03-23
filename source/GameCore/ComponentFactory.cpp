@@ -1,5 +1,7 @@
 #include "ComponentFactory.h"
 #include "component/SolidCollisionComponent.h"
+#include "component/StaticVisibleComponent.h"
+#include "component/TileComponent.h"
 
 namespace Game
 {
@@ -21,9 +23,15 @@ namespace Game
 
 			return true;
 		case Resource::ComponentID::StaticVisible:
+			entity->registerComponent(
+				new StaticVisibleComponent(componentResource)
+			);
 
 			return true;
 		case Resource::ComponentID::Tile:
+			entity->registerComponent(
+				new TileComponent(componentResource)
+			);
 
 			return true;
 		}
