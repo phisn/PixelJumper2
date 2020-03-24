@@ -103,14 +103,14 @@ namespace Game
 				{
 					if (properties.viewFollow)
 					{
-						sf::Vector2f screen_size = sf::Vector2f(Device::Screen::GetWindow()->getSize());
+						// sf::Vector2f screen_size = sf::Vector2f(Device::Screen::GetWindow()->getSize());
 
-						float size = std::max(newViewWindow.width, newViewWindow.height);
+						// float size = std::max(newViewWindow.width, newViewWindow.height);
 
 						this->view->setSize(
 							{
-								this->view->getViewport().width * size,
-								this->view->getViewport().height * size
+								newViewWindow.width,
+								newViewWindow.height
 							});
 					}
 					else
@@ -148,6 +148,11 @@ namespace Game
 		KeyController<InputMode::Active> downController{ &input, Game::InputSymbol::Down, down };
 		KeyController<InputMode::Active> leftController{ &input, Game::InputSymbol::Left, left };
 		KeyController<InputMode::Active> rightController{ &input, Game::InputSymbol::Right, right };
+
+		void enableView(sf::RenderTarget* const target) const
+		{
+			view->enable(target);
+		}
 
 	private:
 		void handleInput()

@@ -3,6 +3,7 @@
 #include "Client/game/ControllablePlayer.h"
 
 #include "FrameworkCore/FrameworkCore.h"
+#include "FrameworkCore/ViewChain.h"
 #include "GameCore/ClassicSimulation.h"
 #include "Logger/Logger.h"
 #include "ResourceCore/ResourceInterface.h"
@@ -21,10 +22,11 @@ namespace Scene
 		TestGameScene()
 			:
 			simulation(resource_container),
+			viewChain(1),
 			player(
 				Device::Input::Player::P1,
 				Game::PlayerInformation{ },
-				&view)
+				&viewChain.getView(0))
 		{
 		}
 
@@ -111,6 +113,10 @@ namespace Scene
 
 		void onEvent(const sf::Event event) override
 		{
+			if (event.type == sf::Event::Resized)
+			{
+				viewChain.remakeViewViewports();
+			}
 		}
 
 		void onLogic(const sf::Time time) override
@@ -124,14 +130,12 @@ namespace Scene
 			{
 				simulation.processLogic();
 				counter -= Game::LogicTimeStep;
-
-				view.setSize(view.getSize() + sf::Vector2f{ 0.1f, 0.f });
 			}
 		}
 
 		void onDraw(sf::RenderTarget* const target) override
 		{
-			view.enable();
+			player.enableView(target);
 			simulation.draw(target);
 			player.onDraw(target);
 		}
@@ -145,7 +149,7 @@ namespace Scene
 		}
 
 	private:
-		Device::View view;
+		Framework::ViewChain viewChain;
 
 		Game::VisualClassicSimulation simulation;
 		Game::ControllablePlayer player;

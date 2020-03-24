@@ -38,6 +38,7 @@ namespace Game
 
 		virtual void onDraw(sf::RenderTarget* const target)
 		{
+
 			if (representationNeedsUpdate)
 			{
 				updateRepresentation();

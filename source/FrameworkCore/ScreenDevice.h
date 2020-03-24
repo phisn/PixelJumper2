@@ -91,9 +91,14 @@ namespace Device
 			setSize(size.x, size.y);
 		}
 
-		void enable() const
+		void enable(sf::RenderTarget* const target) const
 		{
-			Screen::GetWindow()->setView(view);
+			target->setView(view);
+		}
+
+		const sf::Vector2f& getPosition() const
+		{
+			return view.getCenter() - view.getSize() / 2.f;
 		}
 
 		const sf::Vector2f& getSize() const
