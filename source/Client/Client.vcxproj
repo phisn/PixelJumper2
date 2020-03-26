@@ -14,6 +14,7 @@
     <ClCompile Include="device\InputDevice.cpp" />
     <ClCompile Include="game\ControllablePlayer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene\OperatorAuthScene.cpp" />
     <ClCompile Include="scene\TestGameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -22,6 +23,12 @@
     </ProjectReference>
     <ProjectReference Include="..\GameCore\GameCore.vcxproj">
       <Project>{b16d1fb2-459d-4fdb-9644-946543fd3ebb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\imgui-sfml\imgui-sfml.vcxproj">
+      <Project>{a1f59ab9-4cec-41b4-b63c-885086bd4dea}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\imgui\imgui.vcxproj">
+      <Project>{9ff64964-33be-443c-8f95-b3a44651ec9a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Logger\Logger.vcxproj">
       <Project>{2132b508-f7f2-4cfb-9b81-bbac679ae5a9}</Project>
@@ -39,6 +46,7 @@
   <ItemGroup>
     <ClInclude Include="device\InputDevice.h" />
     <ClInclude Include="game\ControllablePlayer.h" />
+    <ClInclude Include="scene\OperatorAuthScene.h" />
     <ClInclude Include="scene\TestGameScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

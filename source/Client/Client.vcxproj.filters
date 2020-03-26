@@ -27,6 +27,9 @@
     <ClCompile Include="device\InputDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
+    <ClCompile Include="scene\OperatorAuthScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\TestGameScene.h">
@@ -37,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="device\InputDevice.h">
       <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\OperatorAuthScene.h">
+      <Filter>source\scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

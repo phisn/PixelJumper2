@@ -12,6 +12,8 @@
 #include "GameCore/component/StaticVisibleComponent.h"
 #include "GameCore/component/TileComponent.h"
 
+#include <imgui/imgui.h>
+
 namespace Scene
 {
 	class TestGameScene
@@ -131,6 +133,45 @@ namespace Scene
 				simulation.processLogic();
 				counter -= Game::LogicTimeStep;
 			}
+
+			if (my_tool_active)
+			{
+				ImGui::Begin("My First Tool", &my_tool_active, ImGuiWindowFlags_MenuBar);
+				if (ImGui::BeginMenuBar())
+				{
+					if (ImGui::BeginMenu("File"))
+					{
+						if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
+						if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+						if (ImGui::MenuItem("Close", "Ctrl+W")) { my_tool_active = false; }
+						ImGui::EndMenu();
+					}
+					ImGui::EndMenuBar();
+				}
+
+				// Edit a color (stored as ~4 floats)
+				ImGui::ColorEdit4("Color", colors);
+
+				// Plot some values
+				static float my_values[128];
+				for (int i = 1; i < IM_ARRAYSIZE(my_values); ++i)
+				{
+					my_values[i - 1] = my_values[i];
+				}
+
+				my_values[IM_ARRAYSIZE(my_values) - 1] = 1000.f / (time.asMicroseconds() / 1000.f);
+
+				ImGui::PlotLines("Frame Times", my_values, IM_ARRAYSIZE(my_values));
+				static char buffer[16];
+				ImGui::InputText("text", buffer, 16);
+				// Display contents in a scrolling region
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Important Stuff");
+				ImGui::BeginChild("Scrolling");
+				for (int n = 0; n < 50; n++)
+					ImGui::Text("%04d: Some text", n);
+				ImGui::EndChild();
+				ImGui::End();
+			}
 		}
 
 		void onDraw(sf::RenderTarget* const target) override
@@ -149,6 +190,9 @@ namespace Scene
 		}
 
 	private:
+		float colors[4];
+		bool my_tool_active = true;
+
 		Framework::ViewChain viewChain;
 
 		Game::VisualClassicSimulation simulation;

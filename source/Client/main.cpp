@@ -1,8 +1,9 @@
 #include "device/InputDevice.h"
-#include "scene/TestGameScene.h"
+#include "scene/OperatorAuthScene.h"
 
 #include "FrameworkCore/FrameworkCore.h"
 #include "FrameworkCore/ScreenDevice.h"
+#include "imgui-sfml/imgui-SFML.h"
 #include "NetCore/NetCore.h"
 #include "OperatorClient/OperatorClient.h"
 #include "ResourceCore/ResourceInterface.h"
@@ -82,9 +83,11 @@ int main(int argc, char** argv)
 		return 7;
 	}
 
+	ImGui::SFML::Init(*Device::Screen::GetWindow());
+
 	Log::Information(L"initialize successfull");
 
-	if (!Framework::Core::PushScene<Scene::TestGameScene>())
+	if (!Framework::Core::PushScene<Scene::OperatorAuthScene>())
 	{
 		Log::Error(L"push main scene failed");
 		return 6;
@@ -95,7 +98,17 @@ int main(int argc, char** argv)
 
 	while (true)
 	{
+		while (Device::Screen::GetWindow()->pollEvent(event))
+		{
+			ImGui::SFML::ProcessEvent(event);
+			Framework::Core::ProcessEvent(event);
+		}
+
 		const sf::Time delta = clock.restart();
+
+		ImGui::SFML::Update(
+			*Device::Screen::GetWindow(), 
+			delta);
 		Framework::Core::ProcessLogic(delta);
 		Operator::Client::Process(delta);
 
@@ -104,17 +117,16 @@ int main(int argc, char** argv)
 			break;
 		}
 
-		while (Device::Screen::GetWindow()->pollEvent(event))
-		{
-			Framework::Core::ProcessEvent(event);
-		}
-
 		Device::Screen::GetWindow()->clear();
 		Framework::Core::ProcessDraw(Device::Screen::GetWindow());
+		ImGui::SFML::Render(*Device::Screen::GetWindow());
 		Device::Screen::GetWindow()->display();
 
 		Net::Core::Process();
 	}
+
+	Device::Screen::Uninitialize();
+	ImGui::SFML::Shutdown();
 
 	return 0;
 }

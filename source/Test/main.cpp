@@ -1,88 +1,44 @@
-#include "OperatorClient/OperatorClient.h"
-#include "OperatorClient/request/AuthenticationRequest.h"
+#include "imgui/imgui.h"
+#include "imgui-sfml/imgui-SFML.h"
 
-#include <iostream>
-
-struct AuthenticationRequestHandler
-	:
-	public Operator::ClientAuthenticationRequest
-{
-	void onAuthenticated(const Operator::UserID userID) override
-	{
-		Log::Information(L"onauthenticated without hash", userID, L"userID");
-	}
-
-	void onAuthenticated(
-		const char token[OPERATOR_HASH_SIZE],
-		const Operator::UserID userID) override
-	{
-		Log::Information(L"onauthenticated with hash", userID, L"userID");
-	}
-	
-	void onAuthenticationFailed(const ClientAuthenticationRequest::Reason reason) override
-	{
-		Log::Information(L"onauthenticationfailed", (int)reason, L"reason");
-	}
-	
-	void onRegistrationFailed(const Net::Host::RejectRegistrationMessage::Reason reason) override
-	{
-		Log::Information(L"onregistrationfailed", (int)reason, L"reason");
-	}
-
-	void onRequestFailure(const RequestInterface::Reason reason) override
-	{
-		Log::Information(L"onrequestfailed", (int)reason, L"reason");
-		ClientAuthenticationRequest::onRequestFailure(reason);
-	}
-};
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 
 int main()
 {
-	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Information);
+    sf::RenderWindow window(sf::VideoMode(640, 480), "ImGui + SFML = <3");
+    window.setFramerateLimit(60);
+    ImGui::SFML::Init(window);
 
-	if (!Net::Core::Initialize())
-	{
-		Log::Error(L"failed to initialize net core");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
 
-		std::cin.ignore();
-		return 0;
-	}
+    sf::Clock deltaClock;
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            ImGui::SFML::ProcessEvent(event);
 
-	SteamNetworkingIPAddr address;
-	address.SetIPv6LocalHost(9928);
-	Operator::Client::Initialize(address);
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
 
-	Net::Client::AuthenticationMessage* message = new Net::Client::AuthenticationMessage{ };
-	message->username = "test";
-	AuthenticationRequestHandler handler;
-	
-	Module::Encryption::HashCommon(
-		(unsigned char*) message->content.hash,
-		(unsigned char*) message->username.c_str(),
-		message->username.size());
+        ImGui::SFML::Update(window, deltaClock.restart());
 
-	Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
-		Net::Client::OperatorAuthenticationMessageID::Authenticate,
-		message,
-		&handler);
+        ImGui::Begin("Hello, world!");
+        ImGui::Button("Look at this pretty button");
+        static char buffer[16];
+        ImGui::InputText("text", buffer, 16);
+        ImGui::End();
 
-	if (result != Operator::Client::PushRequestFailure::Success)
-	{
-		Log::Error(L"Operator request failed", (int) result, L"result");
+        window.clear();
+        window.draw(shape);
+        ImGui::SFML::Render(window);
+        window.display();
+    }
 
-		std::cin.ignore();
-		return 0;
-	}
-
-	sf::Clock clock;
-	while (true)
-	{
-		Net::Core::Process();
-		Operator::Client::Process(clock.restart());
-
-		sf::sleep(sf::milliseconds(50));
-	}
-
-	std::cin.ignore();
-	return 0;
+    ImGui::SFML::Shutdown();
 }

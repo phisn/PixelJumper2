@@ -64,6 +64,10 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="..\..\properties\CommonProperties.props" />
+    <Import Project="..\..\properties\ClientLibraries.props" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -139,6 +143,12 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\imgui-sfml\imgui-sfml.vcxproj">
+      <Project>{a1f59ab9-4cec-41b4-b63c-885086bd4dea}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\imgui\imgui.vcxproj">
+      <Project>{9ff64964-33be-443c-8f95-b3a44651ec9a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\OperatorClient\OperatorClient.vcxproj">
       <Project>{bf820acf-12dd-4c75-836c-84551731caa6}</Project>
     </ProjectReference>
