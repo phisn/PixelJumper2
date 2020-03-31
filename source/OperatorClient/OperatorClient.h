@@ -421,6 +421,13 @@ namespace Operator
 				authenticationStatus = Unauthenticated;
 
 				break;
+			case ::Net::Host::OperatorAuthenticationMessageID::Timeout:
+				Log::Warning(L"authentication timeout");
+
+				removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
+				authenticationStatus = Unauthenticated;
+
+				break;
 			default:
 				Log::Error(L"got unkown messageid from operator",
 					messageID, L"messageID");

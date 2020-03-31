@@ -4,6 +4,9 @@
     <Filter Include="source">
       <UniqueIdentifier>{2c91b4b4-b4e5-4e1a-909a-63e472f5d688}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\imgui">
+      <UniqueIdentifier>{14ce2057-6ad5-4867-9c6f-9f050f18abc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkCore.h">
@@ -15,6 +18,12 @@
     <ClInclude Include="ViewChain.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuiWindowComponent.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiUtil.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp">
@@ -25,6 +34,9 @@
     </ClCompile>
     <ClCompile Include="ViewChain.cpp">
       <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiWindowComponent.cpp">
+      <Filter>source\imgui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

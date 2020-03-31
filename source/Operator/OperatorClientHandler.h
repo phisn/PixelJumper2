@@ -233,11 +233,9 @@ namespace Operator::Net
 			const ::Net::MessageID messageID,
 			const ::Net::SendFailure reason) override
 		{
-			Log::Error(L"Failed to send message");
+			Log::Error(L"Failed to send message",
+				(int) reason, L"reason");
 			
-			sendMessage(
-				::Net::CommonMessageID::InternalError,
-				NULL);
 			status = Status::Closing;
 		}
 

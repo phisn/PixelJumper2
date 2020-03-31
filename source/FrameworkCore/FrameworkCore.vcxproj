@@ -80,11 +80,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp" />
+    <ClCompile Include="ImGuiWindowComponent.cpp" />
     <ClCompile Include="ScreenDevice.cpp" />
     <ClCompile Include="ViewChain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkCore.h" />
+    <ClInclude Include="ImGuiUtil.h" />
+    <ClInclude Include="ImGuiWindowComponent.h" />
     <ClInclude Include="ScreenDevice.h" />
     <ClInclude Include="ViewChain.h" />
   </ItemGroup>

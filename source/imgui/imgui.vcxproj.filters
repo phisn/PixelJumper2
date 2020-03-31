@@ -15,6 +15,9 @@
     <ClCompile Include="imgui_widgets.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="imgui_stdlib.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui.h">
@@ -33,6 +36,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="imconfig.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_stdlib.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

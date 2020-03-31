@@ -1,5 +1,6 @@
 #include "imgui/imgui.h"
 #include "imgui-sfml/imgui-SFML.h"
+#include "imgui/imgui_internal.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
@@ -11,10 +12,12 @@ int main()
     sf::RenderWindow window(sf::VideoMode(640, 480), "ImGui + SFML = <3");
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
+    ImGui::GetStyle().WindowRounding = 0;
+    ImGui::StyleColorsLight();
 
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
+    ImGuiStyleVar_WindowRounding;
     sf::Clock deltaClock;
     while (window.isOpen()) {
         sf::Event event;
@@ -25,17 +28,51 @@ int main()
                 window.close();
             }
         }
-
         ImGui::SFML::Update(window, deltaClock.restart());
+        ImGui::ShowMetricsWindow();
 
-        ImGui::Begin("Hello, world!");
-        ImGui::Button("Look at this pretty button");
-        static char buffer[16];
-        ImGui::InputText("text", buffer, 16);
+        ImGui::SetNextWindowPos(ImGui::GetIO().DisplaySize, ImGuiCond_Appearing, ImVec2{ 1.f, 1.0f });
+        ImGui::Begin("Test2", NULL);
+        
+        if (ImGui::Button("test2"))
+        {
+            ImGui::OpenPopup("popup");
+        }
+
         ImGui::End();
 
+
+        if (ImGui::BeginPopup("popup"))
+        {
+            ImGui::Text("test");
+
+            ImGui::EndPopup();
+        }
+        /*
+        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Appearing);
+        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize, ImGuiCond_Appearing);
+        ImGui::Begin("Test", NULL, ImGuiWindowFlags_MenuBar |
+            ImGuiWindowFlags_NoDocking |
+            ImGuiWindowFlags_NoTitleBar |
+            ImGuiWindowFlags_NoCollapse |
+            ImGuiWindowFlags_NoResize |
+            ImGuiWindowFlags_NoMove |
+            ImGuiWindowFlags_NoBringToFrontOnFocus |
+            ImGuiWindowFlags_NoNavFocus);
+        ImGui::Button("test");
+
+        ImGui::DockSpace(123, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
+        ImGui::End();
+
+        ImGui::Begin("Test2", NULL);
+        ImGui::Button("test2");
+        ImGui::End();
+
+        ImGui::Begin("Test3", NULL);
+        ImGui::Button("test3");
+        ImGui::End();
+        */
         window.clear();
-        window.draw(shape);
         ImGui::SFML::Render(window);
         window.display();
     }
