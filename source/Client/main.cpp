@@ -1,5 +1,5 @@
 #include "device/InputDevice.h"
-#include "scene/OperatorAuthScene.h"
+#include "scene/RootScene.h"
 
 #include "FrameworkCore/FrameworkCore.h"
 #include "FrameworkCore/ScreenDevice.h"
@@ -53,8 +53,9 @@ int main(int argc, char** argv)
 	}
 	else
 	{
-		operator_address.SetIPv6LocalHost(9928);
-		// assert(operator_address.ParseString(DEFAULT_OPERATOR_ADDRESS));
+		// operator_address.SetIPv6LocalHost(9928);
+		const bool result = operator_address.ParseString(DEFAULT_OPERATOR_ADDRESS);
+		assert(result);
 	}
 
 	if (!Resource::Interface::Initialize())
@@ -84,11 +85,14 @@ int main(int argc, char** argv)
 		return 7;
 	}
 
+	// make new device
 	ImGui::SFML::Init(*Device::Screen::GetWindow());
+	ImFont* font = ImGui::GetIO().Fonts->AddFontFromFileTTF("resource/static/font.ttf", 28.f);
+	ImGui::SFML::UpdateFontTexture();
 
 	Log::Information(L"initialize successfull");
 
-	if (!Framework::Core::PushScene<Scene::OperatorAuthScene>())
+	if (!Framework::Core::PushScene<Scene::RootScene>())
 	{
 		Log::Error(L"push main scene failed");
 		return 6;
@@ -110,8 +114,10 @@ int main(int argc, char** argv)
 		ImGui::SFML::Update(
 			*Device::Screen::GetWindow(), 
 			delta);
+		ImGui::PushFont(font);
 		Framework::Core::ProcessLogic(delta);
 		Operator::Client::Process(delta);
+		ImGui::PopFont();
 
 		if (!Framework::Core::IsRunning())
 		{

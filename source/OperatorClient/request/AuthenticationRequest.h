@@ -35,12 +35,12 @@ namespace Operator
 	private:
 		bool onMessage(
 			const ::Net::MessageID messageID,
-			Resource::ReadPipe* const pipe)
+			Resource::ReadPipe* const pipe) override
 		{
 			switch (messageID)
 			{
 			case ::Net::Host::OperatorAuthenticationMessageID::AcceptAuthentication:
-				if (::Net::Host::AcceptAuthenticationMessage message; loadMessage(messageID, &message, pipe))
+				if (::Net::Host::AcceptAuthenticationMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticated(
 						message.authenticationToken, 
@@ -52,7 +52,7 @@ namespace Operator
 
 				return true;
 			case ::Net::Host::OperatorAuthenticationMessageID::AcceptRegistration:
-				if (::Net::Host::AcceptRegistrationMessage message; loadMessage(messageID, &message, pipe))
+				if (::Net::Host::AcceptRegistrationMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticated(
 						message.authenticationToken, 
@@ -64,7 +64,7 @@ namespace Operator
 
 				return true;
 			case ::Net::Host::OperatorAuthenticationMessageID::AcceptToken:
-				if (::Net::Host::AcceptTokenMessage message; loadMessage(messageID, &message, pipe))
+				if (::Net::Host::AcceptTokenMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticated(message.userID);
 					Operator::Client::client->onAuthenticated(
@@ -81,7 +81,7 @@ namespace Operator
 			case ::Net::Host::OperatorAuthenticationMessageID::RejectRegistration:
 				Operator::Client::client->onAuthenticationFailed();
 
-				if (::Net::Host::RejectRegistrationMessage message; loadMessage(messageID, &message, pipe))
+				if (::Net::Host::RejectRegistrationMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onRegistrationFailed(message.reason);
 				}

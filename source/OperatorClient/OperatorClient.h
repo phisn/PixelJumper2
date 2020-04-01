@@ -90,11 +90,14 @@ namespace Operator
 		static void Process(const sf::Time time)
 		{
 			processCounter += time;
-
+			
 			if (processCounter > processInterval)
 			{
 				if (client->status == Connected)
-					assert(client->processMessages());
+				{
+					const bool result = client->processMessages();
+					assert(result);
+				}
 
 				decltype(requests)::iterator request = client->requests.begin();
 				while (request != client->requests.end())
@@ -222,6 +225,20 @@ namespace Operator
 				messageID,
 				(::Net::NetworkMessage*) message,
 				request);
+		}
+
+		static void PopRequest(RequestInterface* const request)
+		{
+			decltype(requests)::iterator requestWrapper = std::find_if(
+				client->requests.begin(),
+				client->requests.end(),
+				[request](RequestWrapper& requestWrapper) -> bool
+				{
+					return requestWrapper.request == request;
+				});
+
+			if (requestWrapper != client->requests.end())
+				client->requests.erase(requestWrapper);
 		}
 
 		static bool AuthenticationTokenKnown()

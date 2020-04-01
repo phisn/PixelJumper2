@@ -1,11 +1,12 @@
 #pragma once
 
+#include "SettingsScene.h"
+
 #include "FrameworkCore/FrameworkCore.h"
 #include "FrameworkCore/ImGuiUtil.h"
 #include "FrameworkCore/ImGuiWindowComponent.h"
 #include "OperatorClient/OperatorClient.h"
 #include "OperatorClient/request/AuthenticationRequest.h"
-
 
 // maybe move to framework core 
 // later to reuse in simulator
@@ -14,6 +15,46 @@ namespace Scene
 	constexpr size_t password_limit = 26;
 	constexpr size_t username_limit = 26;
 	constexpr size_t key_size = 18;
+
+	class RootWindow
+		:
+		public Framework::ImGuiWindowComponent
+	{
+	public:
+		RootWindow()
+			:
+			ImGuiWindowComponent(
+				ImGuiWindowFlags_NoSavedSettings |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoBackground |
+				ImGuiWindowFlags_MenuBar)
+		{
+			title = "###root_window";
+			useActive = true;
+		}
+
+		bool begin() override
+		{
+			ImGui::SetNextWindowPos(ImVec2(0.f, 0.f));
+			ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+
+			if (ImGuiWindowComponent::begin())
+			{
+
+				return true;
+			}
+
+			return false;
+		}
+
+		void end() override
+		{
+			ImGuiWindowComponent::end();
+		}
+	};
 
 	class LoginWindow
 		:
@@ -25,7 +66,7 @@ namespace Scene
 			ImGuiWindowComponent(WindowFlagsStatic)
 		{
 			title = "login_window";
-			Framework::ImGuiApplyColorStyle();
+			Framework::ImGuiApplyColorStyleLight();
 		}
 
 		bool begin() override
@@ -34,8 +75,6 @@ namespace Scene
 
 			if (ImGuiWindowComponent::begin())
 			{
-				ImGui::SetWindowFontScale(2.f);
-
 				return true;
 			}
 
@@ -45,18 +84,67 @@ namespace Scene
 		void end() override
 		{
 			ImGuiWindowComponent::end();
-			ImGui::PopStyleColor(pending);
-			pending = 0;
+		}
+	};
+
+	class QuestionWindow
+	{
+	public:
+		typedef std::function<void(bool)> Callback;
+
+		void process()
+		{
+			if (active)
+			{
+				ImGui::OpenPopup(name);
+				Framework::ImGuiSetRelativeNextWindowPos(ImVec2(0.5f, 0.5f));
+			}
+
+			if (ImGui::BeginPopupModal(name, NULL, Framework::ImGuiWindowComponent::WindowFlagsStatic))
+			{
+				ImGui::Text(question.c_str());
+				ImGui::Spacing();
+				ImGui::Separator();
+				ImGui::Spacing();
+
+				if (ImGui::Button("Yes"))
+				{
+					ImGui::CloseCurrentPopup();
+					active = false;
+					callback(true);
+				}
+				ImGui::SameLine();
+
+				if (ImGui::Button("No"))
+				{
+					ImGui::CloseCurrentPopup();
+					active = false;
+					callback(false);
+				}
+
+				ImGui::EndPopup();
+			}
+		}
+		
+		void open(const Callback callback, const std::string question)
+		{
+			this->callback = callback;
+			this->question = question;
+
+			active = true;
+		}
+
+		bool isActive() const
+		{
+			return active;
 		}
 
 	private:
-		int pending = 0;
+		const char* name = "###question_window";
+		bool active;
 
-		void pushStyleColor(ImGuiCol idx, const ImVec4& col)
-		{
-			ImGui::PushStyleColor(idx, col);
-			++pending;
-		}
+		Callback callback;
+		std::string question;
 	};
 	
 	class LoadingWindow
@@ -186,7 +274,29 @@ namespace Scene
 			if (!window.begin())
 			{
 				window.end();
+				return;
 			}
+
+			ImGui::BeginMainMenuBar();
+
+			if (ImGui::MenuItem("Settings"))
+			{
+				Framework::Core::PushScene<SettingsScene>();
+			}
+			
+			if (Framework::ImGuiTRCloseButton())
+			{
+				questionWindow.open(
+					[](const bool close)
+					{
+						if (close)
+						{
+							Framework::Core::PopScene();
+						}
+					}, "Do you really want do leave?");
+			}
+
+			ImGui::EndMainMenuBar();
 
 			ImGui::InputTextEx(
 				"###username", "Username",
@@ -237,6 +347,7 @@ namespace Scene
 
 			informationWindow.process();
 			loadingWindow.process();
+			questionWindow.process();
 
 			if (ImGui::BeginPopupModal("register_popup", NULL,
 					Framework::ImGuiWindowComponent::WindowFlagsStatic))
@@ -331,6 +442,8 @@ namespace Scene
 		LoadingWindow loadingWindow;
 		CenteredInformationWindow informationWindow;
 		LoginWindow window;
+		QuestionWindow questionWindow;
+		RootWindow rootWindow;
 
 		char username[username_limit];
 		char password[password_limit];
@@ -428,7 +541,7 @@ namespace Scene
 		void onAuthenticated(const Operator::UserID userID) override
 		{
 			loadingWindow.close();
-			informationWindow.open("Login successfull");
+			Framework::Core::PopScene();
 		}
 
 		void onAuthenticated(
@@ -436,7 +549,7 @@ namespace Scene
 			const Operator::UserID userID) override
 		{
 			loadingWindow.close();
-			informationWindow.open("Login successfull");
+			Framework::Core::PopScene();
 		}
 
 	};

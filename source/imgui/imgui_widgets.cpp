@@ -764,6 +764,7 @@ bool ImGui::CloseButton(ImGuiID id, const ImVec2& pos)//, float size)
 
     bool hovered, held;
     bool pressed = ButtonBehavior(bb, id, &hovered, &held);
+
     if (is_clipped)
         return pressed;
 

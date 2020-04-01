@@ -182,7 +182,10 @@ namespace Framework
 
 	void ProcessFrameworkCommand()
 	{
-		switch (currentCommand)
+		FrameworkCommand temp = currentCommand;
+		currentCommand = Empty;
+
+		switch (temp)
 		{
 		case LoadTemporary:
 			temporaryScenes.back()->initialize();

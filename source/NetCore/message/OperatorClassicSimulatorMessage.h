@@ -14,7 +14,7 @@ namespace Net::Client
 		{
 			_Begin = OperatorCommonMessageID::_Offset - 1,
 
-			RequestClientData,
+			ClientData,
 
 			UnlockRepresentation,
 			UnlockWorld,
@@ -28,7 +28,7 @@ namespace Net::Client
 		Operator::UserID userID;
 	};
 
-	typedef ::Net::TrivialNetworkMessage<RequestClientDataMessageContent> RequestClientDataMessage;
+	typedef ::Net::TrivialNetworkMessage<RequestClientDataMessageContent> ClassicRequestClientDataMessage;
 }
 
 namespace Net::Host
@@ -39,14 +39,14 @@ namespace Net::Host
 		{
 			_Begin = OperatorCommonMessageID::_Offset - 1,
 
-			RequestClientData,
+			ClientData,
 			RequestClientDataFailed,
 
 			_Offset
 		};
 	};
 
-	struct RequestClientDataMessage
+	struct ClassicRequestClientDataMessage
 		:
 		public ::Net::NetworkMessage
 	{

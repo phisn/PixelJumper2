@@ -30,6 +30,12 @@
     <ClCompile Include="scene\OperatorAuthScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
+    <ClCompile Include="scene\SettingsScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\RootScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\TestGameScene.h">
@@ -44,5 +50,16 @@
     <ClInclude Include="scene\OperatorAuthScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
+    <ClInclude Include="scene\SettingsScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\RootScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="settings.png">
+      <Filter>source</Filter>
+    </Image>
   </ItemGroup>
 </Project>

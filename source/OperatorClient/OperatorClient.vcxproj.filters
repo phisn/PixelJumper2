@@ -12,19 +12,25 @@
     <ClInclude Include="OperatorClient.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="request\ClassicHostRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
     <ClInclude Include="request\AuthenticationRequest.h">
-      <Filter>source</Filter>
+      <Filter>source\request</Filter>
     </ClInclude>
     <ClInclude Include="request\RequestInterface.h">
-      <Filter>source</Filter>
+      <Filter>source\request</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OperatorClient.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="request\ClassicHostRequest.cpp">
+      <Filter>source\request</Filter>
+    </ClCompile>
     <ClCompile Include="request\AuthenticationRequest.cpp">
-      <Filter>source</Filter>
+      <Filter>source\request</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

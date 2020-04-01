@@ -24,7 +24,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -68,7 +68,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -88,10 +89,12 @@
   <ItemGroup>
     <ClCompile Include="OperatorClient.cpp" />
     <ClCompile Include="request\AuthenticationRequest.cpp" />
+    <ClCompile Include="request\ClassicHostRequest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OperatorClient.h" />
     <ClInclude Include="request\AuthenticationRequest.h" />
+    <ClInclude Include="request\ClassicHostRequest.h" />
     <ClInclude Include="request\RequestInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

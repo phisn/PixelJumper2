@@ -44,7 +44,7 @@ namespace Operator
 			Resource::ReadPipe* const pipe) = 0;
 
 	protected:
-		bool loadMessage(
+		bool request_loadMessage(
 			const ::Net::MessageID messageID,
 			::Net::NetworkMessage* const message,
 			Resource::ReadPipe* const pipe)
