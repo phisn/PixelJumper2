@@ -36,6 +36,24 @@
     <ClCompile Include="scene\RootScene.cpp">
       <Filter>source\scene</Filter>
     </ClCompile>
+    <ClCompile Include="game\ClientAuthenticationHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientClassicCommonHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientClassicConnection.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientClassicSelectionHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientClassicSimulationHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\TestOnlineGameScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\TestGameScene.h">
@@ -54,6 +72,27 @@
       <Filter>source\scene</Filter>
     </ClInclude>
     <ClInclude Include="scene\RootScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="game\CachedControllablePlayer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ClientAuthenticationHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ClientClassicCommonHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ClientClassicConnection.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ClientClassicSelectionHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ClientClassicSimulationHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\TestOnlineGameScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
   </ItemGroup>

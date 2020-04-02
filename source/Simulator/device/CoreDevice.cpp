@@ -8,7 +8,7 @@
 
 namespace
 {
-	Game::Net::HostClassicSimulator* simulator;
+	Game::HostClassicSimulator* simulator;
 }
 
 namespace Device::Core
@@ -37,7 +37,7 @@ namespace Device::Core
 			return false;
 		}
 
-		simulator = new Game::Net::HostClassicSimulator();
+		simulator = new Game::HostClassicSimulator();
 
 		if (!LoadSimulatorResources())
 		{

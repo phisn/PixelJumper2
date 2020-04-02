@@ -9,7 +9,7 @@
 #include "HostClassicSelectionHandler.h"
 #include "HostClassicSimulationHandler.h"
 
-namespace Game::Net
+namespace Game
 {
 	class ClassicClientHandler
 		:

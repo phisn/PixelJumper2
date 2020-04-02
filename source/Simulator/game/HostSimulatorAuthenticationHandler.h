@@ -7,7 +7,7 @@
 #include "OperatorClient/OperatorClient.h"
 #include "OperatorClient/request/ClassicHostRequest.h"
 
-namespace Game::Net
+namespace Game
 {
 	struct AuthenticationHandlerCallback
 	{

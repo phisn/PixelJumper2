@@ -5,7 +5,7 @@
 #include "GameCore/net/ClassicSelectionMessage.h"
 #include "NetCore/RequestHandler.h"
 
-namespace Game::Net
+namespace Game
 {
 	struct ClassicSelectionHandlerCallback
 	{

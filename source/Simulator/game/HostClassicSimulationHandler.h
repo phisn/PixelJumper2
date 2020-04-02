@@ -8,7 +8,7 @@
 
 #include "NetCore/RequestHandler.h"
 
-namespace Game::Net
+namespace Game
 {
 	struct ClassicSimulatorHandlerCallback
 	{

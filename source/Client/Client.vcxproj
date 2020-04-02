@@ -12,12 +12,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="device\InputDevice.cpp" />
+    <ClCompile Include="game\ClientAuthenticationHandler.cpp" />
+    <ClCompile Include="game\ClientClassicCommonHandler.cpp" />
+    <ClCompile Include="game\ClientClassicConnection.cpp" />
+    <ClCompile Include="game\ClientClassicSelectionHandler.cpp" />
+    <ClCompile Include="game\ClientClassicSimulationHandler.cpp" />
     <ClCompile Include="game\ControllablePlayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene\OperatorAuthScene.cpp" />
     <ClCompile Include="scene\RootScene.cpp" />
     <ClCompile Include="scene\SettingsScene.cpp" />
     <ClCompile Include="scene\TestGameScene.cpp" />
+    <ClCompile Include="scene\TestOnlineGameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FrameworkCore\FrameworkCore.vcxproj">
@@ -47,11 +53,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="device\InputDevice.h" />
+    <ClInclude Include="game\CachedControllablePlayer.h" />
+    <ClInclude Include="game\ClientAuthenticationHandler.h" />
+    <ClInclude Include="game\ClientClassicCommonHandler.h" />
+    <ClInclude Include="game\ClientClassicConnection.h" />
+    <ClInclude Include="game\ClientClassicSelectionHandler.h" />
+    <ClInclude Include="game\ClientClassicSimulationHandler.h" />
     <ClInclude Include="game\ControllablePlayer.h" />
     <ClInclude Include="scene\OperatorAuthScene.h" />
     <ClInclude Include="scene\RootScene.h" />
     <ClInclude Include="scene\SettingsScene.h" />
     <ClInclude Include="scene\TestGameScene.h" />
+    <ClInclude Include="scene\TestOnlineGameScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="settings.png" />

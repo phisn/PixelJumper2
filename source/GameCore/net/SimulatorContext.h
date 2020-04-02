@@ -5,7 +5,7 @@
 #include "ResourceCore/PlayerResource.h"
 #include <vector>
 
-namespace Game::Net
+namespace Game
 {
 	// callback used by clienthandlers
 	struct SimulatorContextCallback

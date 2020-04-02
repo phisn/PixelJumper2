@@ -2,7 +2,7 @@
 
 #include "NetCore/RequestHandler.h"
 
-namespace Game::Net
+namespace Game
 {
 	class HostClassicCommonHandler
 		:

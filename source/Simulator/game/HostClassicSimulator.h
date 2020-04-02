@@ -18,7 +18,7 @@
 		4. simulation is created
 */
 
-namespace Game::Net
+namespace Game
 {
 	// need something like a host structure
 	// while the host self has all connections
