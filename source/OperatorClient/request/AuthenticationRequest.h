@@ -16,21 +16,21 @@ namespace Operator
 			Operator::Client::client->onAuthenticationFailed();
 		}
 
-		virtual void onAuthenticated(const UserID userID) = 0;
-		virtual void onAuthenticated(
-			const char token[OPERATOR_HASH_SIZE],
-			const UserID userID) = 0;
-
-
 		enum class Reason
 		{
 			Timeout,
 			Rejected
 		};
 
+	protected:
+		virtual void onAuthenticated(const UserID userID) = 0;
+		virtual void onAuthenticated(
+			const char token[OPERATOR_HASH_SIZE],
+			const UserID userID) = 0;
+
 		virtual void onAuthenticationFailed(const Reason reason) = 0;
 		virtual void onRegistrationFailed(
-			const ::Net::Host::RejectRegistrationMessage::Reason reason) = 0;
+			const ::Net::Host::RejectOperatorRegistrationMessage::Reason reason) = 0;
 
 	private:
 		bool onMessage(
@@ -40,7 +40,7 @@ namespace Operator
 			switch (messageID)
 			{
 			case ::Net::Host::OperatorAuthenticationMessageID::AcceptAuthentication:
-				if (::Net::Host::AcceptAuthenticationMessage message; request_loadMessage(messageID, &message, pipe))
+				if (::Net::Host::AcceptOperatorAuthenticationMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticated(
 						message.authenticationToken, 
@@ -52,7 +52,7 @@ namespace Operator
 
 				return true;
 			case ::Net::Host::OperatorAuthenticationMessageID::AcceptRegistration:
-				if (::Net::Host::AcceptRegistrationMessage message; request_loadMessage(messageID, &message, pipe))
+				if (::Net::Host::AcceptOperatorRegistrationMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticated(
 						message.authenticationToken, 
@@ -64,7 +64,7 @@ namespace Operator
 
 				return true;
 			case ::Net::Host::OperatorAuthenticationMessageID::AcceptToken:
-				if (::Net::Host::AcceptTokenMessage message; request_loadMessage(messageID, &message, pipe))
+				if (::Net::Host::AcceptOperatorTokenMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticated(message.userID);
 					Operator::Client::client->onAuthenticated(
@@ -81,7 +81,7 @@ namespace Operator
 			case ::Net::Host::OperatorAuthenticationMessageID::RejectRegistration:
 				Operator::Client::client->onAuthenticationFailed();
 
-				if (::Net::Host::RejectRegistrationMessage message; request_loadMessage(messageID, &message, pipe))
+				if (::Net::Host::RejectOperatorRegistrationMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onRegistrationFailed(message.reason);
 				}

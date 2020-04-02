@@ -215,7 +215,7 @@ namespace Operator
 
 		static PushRequestFailure PushRequest(
 			const ::Net::MessageID messageID,
-			::Net::Client::TokenMessage* const message,
+			::Net::Client::OperatorTokenMessage* const message,
 			RequestInterface* const request)
 		{
 			memcpy(client->token.token,
@@ -412,7 +412,7 @@ namespace Operator
 
 				break;
 			case ::Net::Host::OperatorAuthenticationMessageID::AcceptToken:
-				if (::Net::Host::AcceptTokenMessage message; loadMessage(messageID, &message, pipe))
+				if (::Net::Host::AcceptOperatorTokenMessage message; loadMessage(messageID, &message, pipe))
 				{
 					if (userID != message.userID)
 					{
@@ -512,7 +512,7 @@ namespace Operator
 
 			if (tokenKnown)
 			{
-				::Net::Client::TokenMessage message;
+				::Net::Client::OperatorTokenMessage message;
 
 				memcpy(message.token,
 					token.token,

@@ -34,6 +34,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="..\Common\Common.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -73,7 +74,8 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -98,6 +100,23 @@
     <ClInclude Include="game\HostClassicSimulationHandler.h" />
     <ClInclude Include="game\HostClassicSimulator.h" />
     <ClInclude Include="game\HostSimulatorAuthenticationHandler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameCore\GameCore.vcxproj">
+      <Project>{b16d1fb2-459d-4fdb-9644-946543fd3ebb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Logger\Logger.vcxproj">
+      <Project>{2132b508-f7f2-4cfb-9b81-bbac679ae5a9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NetCore\NetCore.vcxproj">
+      <Project>{cb0589f8-3d8c-41f5-ae7c-27f7bc688b20}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\OperatorClient\OperatorClient.vcxproj">
+      <Project>{bf820acf-12dd-4c75-836c-84551731caa6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ResourceCore\Resource.vcxproj">
+      <Project>{52da07a5-220a-4d77-a4eb-b7a9ff800d9c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

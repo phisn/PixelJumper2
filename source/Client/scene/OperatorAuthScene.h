@@ -313,7 +313,7 @@ namespace Scene
 
 			if (ImGui::Button("Login") && validateUsernamePassword())
 			{
-				Net::Client::AuthenticationMessage* message = new Net::Client::AuthenticationMessage();
+				Net::Client::OperatorAuthenticationMessage* message = new Net::Client::OperatorAuthenticationMessage();
 
 				Module::Encryption::HashCommon(
 					(unsigned char*) message->content.hash,
@@ -368,7 +368,7 @@ namespace Scene
 					{
 						if (strlen(key) == key_size - 1)
 						{
-							Net::Client::RegistrationMessage* message = new Net::Client::RegistrationMessage();
+							Net::Client::OperatorRegistrationMessage* message = new Net::Client::OperatorRegistrationMessage();
 
 							Module::Encryption::HashCommon(
 								(unsigned char*) message->content.hash,
@@ -513,25 +513,25 @@ namespace Scene
 
 		}
 
-		void onRegistrationFailed(const ::Net::Host::RejectRegistrationMessage::Reason reason) override
+		void onRegistrationFailed(const ::Net::Host::RejectOperatorRegistrationMessage::Reason reason) override
 		{
 			loadingWindow.close();
 
 			switch (reason)
 			{
-			case Net::Host::RejectRegistrationMessage::Reason::InternalError:
+			case Net::Host::RejectOperatorRegistrationMessage::Reason::InternalError:
 				informationWindow.open("Registration failed, internal error");
 
 				break;
-			case Net::Host::RejectRegistrationMessage::Reason::KeyInvalid:
+			case Net::Host::RejectOperatorRegistrationMessage::Reason::KeyInvalid:
 				informationWindow.open("Registration failed, invalid key");
 
 				break;
-			case Net::Host::RejectRegistrationMessage::Reason::KeyUsed:
+			case Net::Host::RejectOperatorRegistrationMessage::Reason::KeyUsed:
 				informationWindow.open("Registration failed, key already used");
 
 				break;
-			case Net::Host::RejectRegistrationMessage::Reason::UsernameUsed:
+			case Net::Host::RejectOperatorRegistrationMessage::Reason::UsernameUsed:
 				informationWindow.open("Registration failed, username already used");
 
 				break;

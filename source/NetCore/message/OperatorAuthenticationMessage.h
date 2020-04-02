@@ -87,7 +87,7 @@ namespace Net::Client
 		};
 	};
 
-	struct AuthenticationMessage
+	struct OperatorAuthenticationMessage
 		:
 		public ::Net::NetworkMessage
 	{
@@ -112,14 +112,14 @@ namespace Net::Client
 		}
 	};
 
-	struct TokenMessageContent
+	struct OperatorTokenMessageContent
 	{
 		char token[OPERATOR_HASH_SIZE];
 	};
 
-	typedef ::Net::TrivialNetworkMessage<TokenMessageContent> TokenMessage;
+	typedef ::Net::TrivialNetworkMessage<OperatorTokenMessageContent> OperatorTokenMessage;
 
-	struct RegistrationMessage
+	struct OperatorRegistrationMessage
 		:
 		public ::Net::NetworkMessage
 	{
@@ -184,30 +184,30 @@ namespace Net::Host
 		};
 	};
 
-	struct AcceptAuthenticationMessageContent
+	struct AcceptOperatorAuthenticationMessageContent
 	{
 		Operator::UserID userID;
 		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 
-	typedef ::Net::TrivialNetworkMessage<AcceptAuthenticationMessageContent> AcceptAuthenticationMessage;
+	typedef ::Net::TrivialNetworkMessage<AcceptOperatorAuthenticationMessageContent> AcceptOperatorAuthenticationMessage;
 
-	struct AcceptTokenMessageContent
+	struct AcceptOperatorTokenMessageContent
 	{
 		Operator::UserID userID;
 	};
 
-	typedef ::Net::TrivialNetworkMessage<AcceptTokenMessageContent> AcceptTokenMessage;
+	typedef ::Net::TrivialNetworkMessage<AcceptOperatorTokenMessageContent> AcceptOperatorTokenMessage;
 
-	struct AcceptRegistrationMessageContent
+	struct AcceptOperatorRegistrationMessageContent
 	{
 		Operator::UserID userID;
 		char authenticationToken[OPERATOR_HASH_SIZE];
 	};
 
-	typedef ::Net::TrivialNetworkMessage<AcceptRegistrationMessageContent> AcceptRegistrationMessage;
+	typedef ::Net::TrivialNetworkMessage<AcceptOperatorRegistrationMessageContent> AcceptOperatorRegistrationMessage;
 
-	struct RejectRegistrationMessageContent
+	struct RejectOperatorRegistrationMessageContent
 	{
 		enum Reason
 		{
@@ -219,5 +219,5 @@ namespace Net::Host
 		} reason;
 	};
 
-	typedef ::Net::TrivialNetworkMessage<RejectRegistrationMessageContent> RejectRegistrationMessage;
+	typedef ::Net::TrivialNetworkMessage<RejectOperatorRegistrationMessageContent> RejectOperatorRegistrationMessage;
 }

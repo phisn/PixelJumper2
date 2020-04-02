@@ -90,11 +90,13 @@
     <ClCompile Include="OperatorClient.cpp" />
     <ClCompile Include="request\AuthenticationRequest.cpp" />
     <ClCompile Include="request\ClassicHostRequest.cpp" />
+    <ClCompile Include="request\CommonAuthenticationRequest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OperatorClient.h" />
     <ClInclude Include="request\AuthenticationRequest.h" />
     <ClInclude Include="request\ClassicHostRequest.h" />
+    <ClInclude Include="request\CommonAuthenticationRequest.h" />
     <ClInclude Include="request\RequestInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

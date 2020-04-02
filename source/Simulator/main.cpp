@@ -1,5 +1,5 @@
-#include <Client/source/logger/Logger.h>
-#include <Simulator/source/device/CoreDevice.h>
+#include "Logger/Logger.h"
+#include "device/CoreDevice.h"
 
 int main()
 {

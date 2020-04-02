@@ -21,6 +21,9 @@
     <ClInclude Include="request\RequestInterface.h">
       <Filter>source\request</Filter>
     </ClInclude>
+    <ClInclude Include="request\CommonAuthenticationRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OperatorClient.cpp">
@@ -30,6 +33,9 @@
       <Filter>source\request</Filter>
     </ClCompile>
     <ClCompile Include="request\AuthenticationRequest.cpp">
+      <Filter>source\request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\CommonAuthenticationRequest.cpp">
       <Filter>source\request</Filter>
     </ClCompile>
   </ItemGroup>

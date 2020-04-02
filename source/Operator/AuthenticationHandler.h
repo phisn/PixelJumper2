@@ -51,7 +51,7 @@ namespace Operator::Net
 			switch (messageID)
 			{
 			case ::Net::Client::OperatorAuthenticationMessageID::Authenticate:
-				if (::Net::Client::AuthenticationMessage message; loadMessage(messageID, &message, pipe))
+				if (::Net::Client::OperatorAuthenticationMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticate(message);
 				}
@@ -59,7 +59,7 @@ namespace Operator::Net
 				return true;
 
 			case ::Net::Client::OperatorAuthenticationMessageID::Register:
-				if (::Net::Client::RegistrationMessage message; loadMessage(messageID, &message, pipe))
+				if (::Net::Client::OperatorRegistrationMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRegistration(message);
 				}
@@ -67,7 +67,7 @@ namespace Operator::Net
 				return true;
 
 			case ::Net::Client::OperatorAuthenticationMessageID::Token:
-				if (::Net::Client::TokenMessage message; loadMessage(messageID, &message, pipe))
+				if (::Net::Client::OperatorTokenMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onTokenAuthentication(message);
 				}
@@ -83,7 +83,7 @@ namespace Operator::Net
 
 		sf::Uint32 timeout;
 
-		void onAuthenticate(const ::Net::Client::AuthenticationMessage& request)
+		void onAuthenticate(const ::Net::Client::OperatorAuthenticationMessage& request)
 		{
 			UserAuthentication user;
 			const Database::ConditionResult result = DatabaseInterface::GetPlayerAuth(
@@ -127,7 +127,7 @@ namespace Operator::Net
 				return;
 			}
 
-			::Net::Host::AcceptAuthenticationMessage message;
+			::Net::Host::AcceptOperatorAuthenticationMessage message;
 
 			if (!DatabaseInterface::CreatePlayerToken(
 				message.authenticationToken,
@@ -149,7 +149,7 @@ namespace Operator::Net
 			callback->onAuthenticated(user.userID);
 		}
 
-		void onRegistration(const ::Net::Client::RegistrationMessage& request)
+		void onRegistration(const ::Net::Client::OperatorRegistrationMessage& request)
 		{
 			char hash[OPERATOR_HASH_SIZE];
 			char salt[OPERATOR_SALT_SIZE];
@@ -161,7 +161,7 @@ namespace Operator::Net
 				(unsigned char*)request.content.hash,
 				(unsigned char*)salt);
 
-			::Net::Host::AcceptRegistrationMessage message;
+			::Net::Host::AcceptOperatorRegistrationMessage message;
 			const DatabaseInterface::CreatePlayerResult result = DatabaseInterface::CreateNewPlayer(
 				&message.userID,
 				message.authenticationToken,
@@ -173,11 +173,11 @@ namespace Operator::Net
 			switch (result)
 			{
 			case DatabaseInterface::CreatePlayerResult::UsernameUsed:
-				RejectRegistration(::Net::Host::RejectRegistrationMessage::UsernameUsed);
+				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessage::UsernameUsed);
 
 				return;
 			case DatabaseInterface::CreatePlayerResult::KeyUsed:
-				RejectRegistration(::Net::Host::RejectRegistrationMessage::KeyUsed);
+				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessage::KeyUsed);
 
 				access->onThreatIdentified(
 					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
@@ -186,7 +186,7 @@ namespace Operator::Net
 
 				return;
 			case DatabaseInterface::CreatePlayerResult::KeyNotFound:
-				RejectRegistration(::Net::Host::RejectRegistrationMessage::KeyInvalid);
+				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessage::KeyInvalid);
 
 				access->onThreatIdentified(
 					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
@@ -209,9 +209,9 @@ namespace Operator::Net
 			callback->onAuthenticated(message.userID);
 		}
 
-		void RejectRegistration(const ::Net::Host::RejectRegistrationMessage::Reason reason)
+		void RejectRegistration(const ::Net::Host::RejectOperatorRegistrationMessage::Reason reason)
 		{
-			::Net::Host::RejectRegistrationMessage message;
+			::Net::Host::RejectOperatorRegistrationMessage message;
 			message.reason = reason;
 
 			access->sendMessage(
@@ -219,7 +219,7 @@ namespace Operator::Net
 				&message);
 		}
 
-		void onTokenAuthentication(const ::Net::Client::TokenMessage& request)
+		void onTokenAuthentication(const ::Net::Client::OperatorTokenMessage& request)
 		{
 			UserID userID;
 			Database::ConditionResult result = DatabaseInterface::FindUserID(
@@ -242,7 +242,7 @@ namespace Operator::Net
 				break;
 			}
 
-			::Net::Host::AcceptTokenMessage message;
+			::Net::Host::AcceptOperatorTokenMessage message;
 			message.userID = userID;
 
 			access->sendMessage(
