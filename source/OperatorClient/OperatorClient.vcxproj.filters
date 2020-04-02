@@ -24,6 +24,9 @@
     <ClInclude Include="request\CommonAuthenticationRequest.h">
       <Filter>source\request</Filter>
     </ClInclude>
+    <ClInclude Include="request\FindClassicHostRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OperatorClient.cpp">

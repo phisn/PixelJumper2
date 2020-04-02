@@ -97,6 +97,7 @@
     <ClInclude Include="request\AuthenticationRequest.h" />
     <ClInclude Include="request\ClassicHostRequest.h" />
     <ClInclude Include="request\CommonAuthenticationRequest.h" />
+    <ClInclude Include="request\FindClassicHostRequest.h" />
     <ClInclude Include="request\RequestInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

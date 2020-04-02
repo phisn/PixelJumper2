@@ -60,6 +60,7 @@
     <ClInclude Include="game\ClientClassicSelectionHandler.h" />
     <ClInclude Include="game\ClientClassicSimulationHandler.h" />
     <ClInclude Include="game\ControllablePlayer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="scene\OperatorAuthScene.h" />
     <ClInclude Include="scene\RootScene.h" />
     <ClInclude Include="scene\SettingsScene.h" />
@@ -68,6 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client1.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

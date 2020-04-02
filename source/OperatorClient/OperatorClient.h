@@ -139,6 +139,11 @@ namespace Operator
 			::Net::NetworkMessage* const message,
 			RequestInterface* const request)
 		{
+			// ensure pushrequest is never directly called as token authentication
+			// use pushtokenrequest instead
+			assert(messageID != ::Net::Client::OperatorAuthenticationMessageID::Token ||
+				memcmp(((::Net::Client::OperatorTokenMessage*) message)->token, client->token.token, OPERATOR_HASH_SIZE) == 0);
+
 			if (!client->tokenKnown && client->authenticationStatus == Authenticating)
 				return PushRequestFailure::Authenticating;
 
@@ -213,7 +218,7 @@ namespace Operator
 			return PushRequestFailure::Success;
 		}
 
-		static PushRequestFailure PushRequest(
+		static PushRequestFailure PushTokenRequest(
 			const ::Net::MessageID messageID,
 			::Net::Client::OperatorTokenMessage* const message,
 			RequestInterface* const request)
@@ -223,7 +228,7 @@ namespace Operator
 				OPERATOR_HASH_SIZE);
 			return PushRequest(
 				messageID,
-				(::Net::NetworkMessage*) message,
+				message,
 				request);
 		}
 

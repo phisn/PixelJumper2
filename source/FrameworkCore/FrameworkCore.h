@@ -11,14 +11,14 @@ namespace Framework
 		// oncreate can fail but can not call frameworkcore
 		// initialize cant fail but can call frameworkcore
 		virtual bool onCreate() = 0;
-		virtual void initialize() = 0;
+		virtual void initialize() { };
 
 		virtual void onEvent(const sf::Event event) = 0;
 		virtual void onLogic(const sf::Time time) = 0;
 		virtual void onDraw(sf::RenderTarget* const target) = 0;
 
-		virtual void onShow() = 0;
-		virtual void onHide() = 0;
+		virtual void onShow() { };
+		virtual void onHide() { };
 	};
 
 	namespace Core

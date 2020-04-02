@@ -2,6 +2,7 @@
 
 #include "OperatorAuthScene.h"
 #include "TestGameScene.h"
+#include "TestOnlineGameScene.h"
 
 namespace Scene
 {
@@ -42,7 +43,7 @@ namespace Scene
 			ImGui::Begin("Selection", NULL, Framework::ImGuiWindowComponent::WindowFlagsStatic);
 
 			if (ImGui::Button("Run", ImVec2{ 200, 0 }))
-				Framework::Core::PushScene<TestGameScene>();
+				Framework::Core::PushScene<TestClassicClientScene>();
 
 			if (ImGui::Button("Close", ImVec2{ 200, 0 }))
 				Framework::Core::PopScene();

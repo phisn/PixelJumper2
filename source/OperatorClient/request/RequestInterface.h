@@ -9,6 +9,10 @@ namespace Operator
 	class RequestInterface
 	{
 	public:
+		virtual ~RequestInterface()
+		{
+		}
+
 		enum class Reason
 		{
 			InternalError,

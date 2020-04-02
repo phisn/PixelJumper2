@@ -36,7 +36,7 @@ namespace Framework
 		};
 
 	public:
-		ViewChain(const size_t initialCount)
+		ViewChain(const size_t initialCount = 1)
 		{
 			resizeViews(initialCount);
 		}
@@ -216,65 +216,3 @@ namespace Framework
 		}
 	};
 }
-/*
-void remakeViewViewports()
-		{
-			std::vector<sf::FloatRect> windowViewRects = getWindowViewRects();
-
-			const sf::Vector2f window = sf::Vector2f(Device::Screen::GetWindow()->getSize());
-
-			int view_index = 0;
-			for (ViewChainView& view : views)
-			{
-				const sf::Vector2f view_max_size_as_viewport =
-				{
-					viewport.width * windowViewRects[view_index].width,
-					viewport.height * windowViewRects[view_index].height
-				};
-
-				const float view_max_ratio =
-					view_max_size_as_viewport.x / view_max_size_as_viewport.y;
-
-				const sf::Vector2f view_size = view.getSize();
-
-				const float view_size_ratio =
-					view_size.x / view_size.y;
-
-				if (view_max_ratio > view_size_ratio)
-				{
-					// view is too high
-
-					// additionally using double for size_to_viewport to
-					// prevent loss between conversion from small numbers to
-					// high ones
-
-					// conversion between view size to viewport derived
-					// from view size height as full height
-					// view_size_to_viewport * view_size.y == view_max_viewport.y
-					const double view_size_to_viewport =
-						(double)view_max_size_as_viewport.y / (double) view_size.y;
-
-					const float view_final_size_x_as_viewport = (float) (view_size_to_viewport * (double) view_size.x);
-					sf::FloatRect view_final_viewport =
-					{
-						(view_max_size_as_viewport.x - view_final_size_x_as_viewport) / 2.f,
-						0,
-						view_final_size_x_as_viewport,
-						view_max_size_as_viewport.y
-					};
-
-					// convert relative to real position
-					view_final_viewport.left += windowViewRects[view_index].left * viewport.width + viewport.left;
-					view_final_viewport.top += windowViewRects[view_index].top * viewport.height + viewport.top;
-
-					view.getView().setViewport(view_final_viewport);
-				}
-				else
-				{
-					// view is too wide
-				}
-
-				++view_index;
-			}
-		}
-*/

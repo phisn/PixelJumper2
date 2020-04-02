@@ -95,10 +95,14 @@
     <ClInclude Include="scene\TestOnlineGameScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="settings.png">
       <Filter>source</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client1.rc" />
   </ItemGroup>
 </Project>
