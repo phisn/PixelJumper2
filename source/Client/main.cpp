@@ -53,9 +53,9 @@ int main(int argc, char** argv)
 	}
 	else
 	{
-		// operator_address.SetIPv6LocalHost(9928);
-		const bool result = operator_address.ParseString(DEFAULT_OPERATOR_ADDRESS);
-		assert(result);
+		operator_address.SetIPv6LocalHost(9928);
+		//const bool result = operator_address.ParseString(DEFAULT_OPERATOR_ADDRESS);
+		//assert(result);
 	}
 
 	if (!Resource::Interface::Initialize())

@@ -95,8 +95,7 @@ namespace Operator
 			{
 				if (client->status == Connected)
 				{
-					const bool result = client->processMessages();
-					assert(result);
+					client->processMessages();
 				}
 
 				decltype(requests)::iterator request = client->requests.begin();

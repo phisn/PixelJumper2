@@ -80,11 +80,7 @@ namespace Game
 
 			if (logicCounter > nextUserProcess)
 			{
-				if (!processMessages())
-				{
-					onProcessFailed();
-					return;
-				}
+				processMessages();
 
 				callHandlersUpdate();
 				nextUserProcess = logicCounter + settings.tickrate;
@@ -107,8 +103,6 @@ namespace Game
 			ClientClassicSimulationHandlerCallback* const callback,
 			const SimulationBootInformation info,
 			const WorldResourceContainer& worldContainer) = 0;
-
-		virtual void onProcessFailed() = 0;
 
 		// common needs to add here
 		WorldResourceContainer worldContainer;

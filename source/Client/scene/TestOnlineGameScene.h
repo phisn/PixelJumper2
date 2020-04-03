@@ -305,11 +305,5 @@ namespace Scene
 			Log::Error(L"connection closed", (int)reason, L"reason");
 			Framework::Core::PopScene();
 		}
-
-		void onProcessFailed() override
-		{
-			Log::Error(L"process failed");
-			Framework::Core::PopScene();
-		}
 	};
 }

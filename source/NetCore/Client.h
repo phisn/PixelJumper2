@@ -16,14 +16,12 @@ namespace Net
 		{
 		}
 
-		virtual bool processMessages() override
+		virtual void processMessages() override
 		{
-			if (connection == k_HSteamNetConnection_Invalid)
+			if (connection != k_HSteamNetConnection_Invalid)
 			{
-				return false;
+				ClientHandler::processMessages();
 			}
-
-			return ClientHandler::processMessages();
 		}
 		
 	protected:

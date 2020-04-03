@@ -41,7 +41,7 @@ namespace Net
 		{
 		}
 
-		virtual bool processMessages()
+		virtual void processMessages()
 		{
 			while (true)
 			{
@@ -53,13 +53,13 @@ namespace Net
 
 				if (count == 0)
 				{
-					return true;
+					return;
 				}
 
 				if (count < 0)
 				{
 					Log::Error(L"Got invalid connection in clienthandler receive");
-					return false;
+					return;
 				}
 
 				Resource::MemoryReadPipe pipe(

@@ -73,6 +73,11 @@ namespace Net
 			return result;
 		}
 
+		bool isConnected() const
+		{
+			return socket == k_HSteamListenSocket_Invalid;
+		}
+
 	protected:
 		ISteamNetworkingSockets* getNetworkInterface() const;
 
