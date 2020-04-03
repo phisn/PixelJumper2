@@ -27,19 +27,19 @@
     <ClInclude Include="request\FindClassicHostRequest.h">
       <Filter>source\request</Filter>
     </ClInclude>
+    <ClInclude Include="request\RegisterClassicHostRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+    <ClInclude Include="request\CommonRegisterClassicHostRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+    <ClInclude Include="request\CommonRequestInterface.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OperatorClient.cpp">
       <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="request\ClassicHostRequest.cpp">
-      <Filter>source\request</Filter>
-    </ClCompile>
-    <ClCompile Include="request\AuthenticationRequest.cpp">
-      <Filter>source\request</Filter>
-    </ClCompile>
-    <ClCompile Include="request\CommonAuthenticationRequest.cpp">
-      <Filter>source\request</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

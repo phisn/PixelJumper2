@@ -4,6 +4,7 @@
 #include "Common/EncryptionModule.h"
 #include "OperatorClient/OperatorClient.h"
 #include "OperatorClient/request/CommonAuthenticationRequest.h"
+#include "OperatorClient/request/CommonRegisterClassicHostRequest.h"
 #include "ResourceCore/ResourceInterface.h"
 
 namespace
@@ -15,6 +16,7 @@ namespace Device::Core
 {
 	bool AuthenticateOperator();
 	bool LoadSimulatorResources();
+	bool RegisterAsClassicHost();
 
 	bool Initialize()
 	{
@@ -40,6 +42,11 @@ namespace Device::Core
 		simulator = new Game::HostClassicSimulator();
 
 		if (!LoadSimulatorResources())
+		{
+			return false;
+		}
+
+		if (!RegisterAsClassicHost())
 		{
 			return false;
 		}
@@ -81,31 +88,8 @@ namespace Device::Core
 			(const unsigned char*) "admin", 5);
 		message->username = "admin";
 
-		bool waiting = true, success = false;
 		Operator::CommonAuthenticationRequest request;
 		
-		request.notifyAuthenticatedToken.addListener(
-			[&waiting, &success](const char*, const Operator::UserID user)
-			{
-				waiting = false;
-				success = true;
-				Log::Information(L"accepted", user, L"user");
-			});
-
-		request.notifyRejected.addListener(
-			[&waiting](const Operator::ClientAuthenticationRequest::Reason reason)
-			{
-				waiting = false;
-				Log::Information(L"rejected", (int) reason, L"reason");
-			});
-
-		request.notifyFailed.addListener(
-			[&waiting](const Operator::RequestInterface::Reason reason)
-			{
-				waiting = false;
-				Log::Information(L"failed", (int)reason, L"reason");
-			});
-				
 		const Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
 			Net::Client::OperatorAuthenticationMessageID::Authenticate,
 			message,
@@ -118,15 +102,7 @@ namespace Device::Core
 			return false;
 		}
 
-		sf::Clock clock;
-		while (waiting)
-		{
-			Operator::Client::Process(clock.restart());
-			Net::Core::Process();
-			sf::sleep(sf::milliseconds(50));
-		}
-
-		return success;
+		return Operator::AwaitSyncRequest(&request);
 	}
 
 	bool LoadSimulatorResources()
@@ -144,5 +120,30 @@ namespace Device::Core
 
 		simulator->pushResource(world);
 		return true;
+	}
+
+	bool RegisterAsClassicHost()
+	{
+		Net::Client::RegisterClassicHostMessage* message = 
+			new Net::Client::RegisterClassicHostMessage;
+
+		message->maxPlayers = 10;
+		message->port = 9927;
+
+		Operator::CommonRegisterClassicHostRequest request;
+
+		const Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
+			Net::Client::OperatorCommonMessageID::RegisterClassicHost,
+			message,
+			&request);
+
+		if (result != Operator::Client::PushRequestFailure::Success)
+		{
+			Log::Error(L"push request failed", (int)result, L"reason");
+
+			return false;
+		}
+
+		return Operator::AwaitSyncRequest(&request);
 	}
 }
