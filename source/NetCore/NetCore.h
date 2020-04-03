@@ -56,22 +56,7 @@ namespace Net
 		virtual bool disconnect(
 			const int reason = 0,
 			const char* const message = "disconnect",
-			bool linger = false)
-		{
-			if (socket == k_HSteamNetConnection_Invalid)
-			{
-				return false;
-			}
-			
-			const bool result = getNetworkInterface()->CloseConnection(
-				socket,
-				reason,
-				message,
-				linger);
-			socket = k_HSteamNetConnection_Invalid;
-
-			return result;
-		}
+			bool linger = false);
 
 		bool isConnected() const
 		{
@@ -97,6 +82,7 @@ namespace Net
 		virtual ~ServerInterface();
 
 		bool initialize(const sf::Uint16 port = 9927);
+		bool uninitialize();
 		void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event) override;
 
 		HSteamListenSocket getSocket() const

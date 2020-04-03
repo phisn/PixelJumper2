@@ -72,6 +72,7 @@ namespace Device::Core
 			const sf::Time time = clock.restart();
 
 			Net::Core::Process();
+			Operator::Client::Process(time);
 			simulator->onLogic(time);
 
 			if (const sf::Time time = clock.getElapsedTime(); time < simulator->settings.interval)

@@ -138,6 +138,10 @@ namespace Net
 			messageSendPipe.reset();
 			if (result != EResult::k_EResultOK)
 			{
+				Log::Error(L"sendmessagetoconnection failed", 
+					(long long) result, 
+					L"result");
+
 				onMessageSendFailed(
 					messageID,
 					SendFailure::Send);

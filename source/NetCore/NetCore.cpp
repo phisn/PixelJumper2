@@ -17,13 +17,42 @@ namespace
 	public:
 		void OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const status) override
 		{
+			Log::Information(L"statuschanged",
+				status->m_eOldState, L"oldstate",
+				status->m_hConn, L"connection",
+				status->m_info.m_eState, L"state",
+				status->m_info.m_hListenSocket, L"listen");
+
 			if (status->m_info.m_hListenSocket == k_HSteamListenSocket_Invalid)
 			{
-				clients[status->m_hConn]->OnSteamNetConnectionStatusChanged(status);
+				decltype(clients)::iterator client = clients.find(status->m_hConn);
+
+				if (client == clients.end())
+				{
+					Log::Warning(L"status changed for unkown client socket",
+						status->m_hConn, L"socket",
+						status->m_info.m_eState, L"status");
+				}
+				else
+				{
+					client->second->OnSteamNetConnectionStatusChanged(status);
+				}
 			}
 			else
 			{
-				servers[status->m_info.m_hListenSocket]->OnSteamNetConnectionStatusChanged(status);
+				decltype(servers)::iterator server = servers.find(status->m_info.m_hListenSocket);
+
+				if (server == servers.end())
+				{
+					Log::Warning(L"status changed for unkown server listen socket",
+						status->m_hConn, L"socket",
+						status->m_info.m_hListenSocket, L"listen",
+						status->m_info.m_eState, L"status");
+				}
+				else
+				{
+					server->second->OnSteamNetConnectionStatusChanged(status);
+				}
 			}
 		}
 	};
@@ -98,14 +127,7 @@ namespace Net
 
 	ClientInterface::~ClientInterface()
 	{
-		clients.erase(socket);
-		
-		if (socket != k_HSteamNetConnection_Invalid)
-			networkInterface->CloseConnection(
-				socket, 
-				0, 
-				"clientinterface destructor",
-				false);
+		disconnect(0, "clientinterface destructor");
 	}
 
 	bool ClientInterface::connect(const SteamNetworkingIPAddr& address)
@@ -160,24 +182,12 @@ namespace Net
 			break;
 		case k_ESteamNetworkingConnectionState_ClosedByPeer:
 			onConnectionClosed(event->m_info.m_eEndReason);
-
-			networkInterface->CloseConnection(
-				socket,
-				0,
-				"closed by peer",
-				false);
-			socket = k_HSteamNetConnection_Invalid;
+			disconnect(0, "closed by peer");
 
 			break;
 		case k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
 			onConnectionLost(event->m_info.m_eEndReason);
-
-			networkInterface->CloseConnection(
-				socket,
-				0,
-				"problem detected locally",
-				false);
-			socket = k_HSteamNetConnection_Invalid;
+			disconnect(0, "problem detected locally");
 
 			break;
 		default:
@@ -188,6 +198,24 @@ namespace Net
 		}
 	}
 
+	bool ClientInterface::disconnect(const int reason, const char* const message, bool linger)
+	{
+		if (socket == k_HSteamNetConnection_Invalid)
+		{
+			return false;
+		}
+
+		const bool result = getNetworkInterface()->CloseConnection(
+			socket,
+			reason,
+			message,
+			linger);
+		clients.erase(socket);
+		socket = k_HSteamNetConnection_Invalid;
+
+		return result;
+	}
+
 	ISteamNetworkingSockets* ClientInterface::getNetworkInterface() const
 	{
 		return networkInterface;
@@ -195,10 +223,7 @@ namespace Net
 
 	ServerInterface::~ServerInterface()
 	{
-		servers.erase(socket);
-
-		if (socket != k_HSteamListenSocket_Invalid)
-			networkInterface->CloseListenSocket(socket);
+		uninitialize();
 	}
 
 	bool ServerInterface::initialize(const sf::Uint16 port)
@@ -222,6 +247,20 @@ namespace Net
 
 		servers[socket] = this;
 		return true;
+	}
+
+	bool ServerInterface::uninitialize()
+	{
+		if (socket == k_HSteamNetConnection_Invalid)
+		{
+			return false;
+		}
+
+		const bool result = getNetworkInterface()->CloseListenSocket(socket);
+		clients.erase(socket);
+		socket = k_HSteamNetConnection_Invalid;
+
+		return result;
 	}
 
 	void ServerInterface::OnSteamNetConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t* const event)

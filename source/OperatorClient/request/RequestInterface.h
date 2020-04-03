@@ -43,7 +43,7 @@ namespace Operator
 		virtual void onRequestFailure(const Reason reason) = 0;
 
 		// true if request can be removed
-		virtual bool onMessage(
+		virtual bool request_onMessage(
 			const ::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) = 0;
 

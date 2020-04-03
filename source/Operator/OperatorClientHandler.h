@@ -54,17 +54,7 @@ namespace Operator::Net
 
 		virtual void update()
 		{
-			if (!processMessages())
-			{
-				status = Status::Closing;
-
-				// think about removing this because
-				// it has a very high chance to fail
-				// (gurranted?)
-				sendMessage(::Net::CommonMessageID::InternalError);
-
-				return;
-			}
+			processMessages();
 
 			++age;
 

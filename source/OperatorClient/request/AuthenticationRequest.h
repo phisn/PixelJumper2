@@ -33,7 +33,7 @@ namespace Operator
 			const ::Net::Host::RejectOperatorRegistrationMessage::Reason reason) = 0;
 
 	private:
-		bool onMessage(
+		bool request_onMessage(
 			const ::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{

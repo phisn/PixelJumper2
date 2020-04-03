@@ -11,8 +11,9 @@ namespace
 
 const Device::ScreenResourceContent Device::DefaultScreenResource =
 {
-	sf::VideoMode::getDesktopMode(),
-	sf::ContextSettings{ 4, 4, 8 }, false,
+	// sf::VideoMode::getDesktopMode(),
+	sf::VideoMode{ 400, 400 },
+	sf::ContextSettings{ 4, 4, 8 }, true,
 	Device::ScreenResourceContent::VSync, 0
 };
 

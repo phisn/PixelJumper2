@@ -11,7 +11,7 @@ namespace Operator
 		public RequestInterface
 	{
 	public:
-		bool onMessage(
+		bool request_onMessage(
 			const ::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
 		{

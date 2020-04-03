@@ -158,15 +158,16 @@ namespace Game
 
 		void removeClient(const HSteamNetConnection connection)
 		{
-			connections.erase(
-				std::find_if(
-					connections.begin(),
-					connections.end(),
-					[connection](const ClassicClientHandler* const handler)
-					{
-						return handler->getConnection() == connection;
-					})
-			);
+			decltype(connections)::iterator iterator = std::find_if(
+				connections.begin(),
+				connections.end(),
+				[connection](const ClassicClientHandler* const handler)
+				{
+					return handler->getConnection() == connection;
+				});
+
+			if (iterator != connections.end())
+				connections.erase(iterator);
 		}
 	};
 

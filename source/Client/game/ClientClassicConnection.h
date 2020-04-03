@@ -145,6 +145,8 @@ namespace Game
 
 		void onConnectionOpened() override
 		{
+			ClientBase::onConnectionOpened();
+
 			Net::Client::AuthenticationMessage message;
 
 			message.key = connectionInfo.key;

@@ -130,6 +130,10 @@ namespace Game
 
 		void onClassicClientData(::Net::Host::ClassicRequestClientDataMessage& answer) override
 		{
+			Log::Information(L"received client data for",
+				answer.username, L"username",
+				userID, L"userID");
+
 			::Net::Host::AuthenticationAcceptedMessage message;
 
 			message.resource = &answer.resource;
@@ -151,6 +155,11 @@ namespace Game
 		{
 			Log::Error(L"Failed to retrive client data",
 				(int) message.type, L"type");
+			
+			sendAuthenticationRejectedMessage(
+				::Net::Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
+			);
+
 			callback->onAuthenticationDenied();
 		}
 

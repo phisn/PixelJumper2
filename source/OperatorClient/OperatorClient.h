@@ -405,7 +405,7 @@ namespace Operator
 					}
 					else
 					{
-						if (request->request->onMessage(
+						if (request->request->request_onMessage(
 								message.content.messageID,
 								pipe))
 						{
