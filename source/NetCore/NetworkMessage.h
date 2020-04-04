@@ -53,8 +53,6 @@ namespace Net
 		public NetworkMessage
 	{
 	public:
-		// message should not be longer
-		// than 255 characters
 		std::wstring message;
 
 		struct Content

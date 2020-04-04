@@ -1,4 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <RemoteDebuggerServerName>109.230.236.76:4024</RemoteDebuggerServerName>
+    <DebuggerFlavor>WindowsRemoteDebugger</DebuggerFlavor>
+    <RemoteDebuggerCommand>C:\Users\Administrator\Desktop\operator\Simulator.exe</RemoteDebuggerCommand>
+    <RemoteDebuggerCommandArguments>C:\Users\Administrator\Desktop\operator\</RemoteDebuggerCommandArguments>
+    <DeploymentDirectory>C:\Users\Administrator\Desktop\operator\</DeploymentDirectory>
+  </PropertyGroup>
 </Project>

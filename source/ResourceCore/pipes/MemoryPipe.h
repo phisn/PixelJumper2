@@ -57,6 +57,12 @@ namespace Resource
 			buffer.reserve(size);
 		}
 
+		void assign(std::vector<char> target)
+		{
+			target = std::move(buffer);
+			position = 0;
+		}
+
 		const std::vector<char>& getData() const
 		{
 			return buffer;

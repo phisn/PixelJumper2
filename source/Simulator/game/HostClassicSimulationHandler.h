@@ -26,9 +26,9 @@ namespace Game
 		public SimulatorContextLocationCallback
 	{
 		static constexpr sf::Uint64 SpeedAdjustmentTimeOffset = 1000; // 1s
-		static constexpr sf::Uint64 SpeedAdjustmentTime = 10000; // 10s
+		static constexpr sf::Uint64 SpeedAdjustmentTime = 5000; // 5s
 		static constexpr sf::Uint64 MaxFrameDifference = 1000; // 1s
-		static constexpr sf::Uint64 ToleratedFrameDifference = 100; // 50ms
+		static constexpr sf::Uint64 ToleratedFrameDifference = 100; // 100ms
 
 	public:
 		ClassicSimulationHandler(
@@ -130,6 +130,10 @@ namespace Game
 			{
 				++missingFrames;
 			}
+		}
+
+		void update() override
+		{
 
 			/*
 				player client can potentially be faster than the server
@@ -139,7 +143,7 @@ namespace Game
 				this process is triggered when the amount of remaining frames
 				is above ToleratedFrameDifference and removes the client when
 				the amount is above MaxFrameDifference
-				SpeedAdjustmentTimeOffset is used to compensate lag between 
+				SpeedAdjustmentTimeOffset is used to compensate lag between
 				clients
 				this process is repeated if the remaining frames are still
 				above ToleratedFrameDifference after the process and the player
@@ -148,25 +152,49 @@ namespace Game
 			*/
 			if (adjustedGameSpeed)
 			{
-				if (--remainingAdjustedGameSpeed <= 0)
+				if (remainingAdjustedGameSpeed -= 100 <= 0)
 					adjustedGameSpeed = false;
 			}
 			else
 			{
-				const bool isMissingFrame = missingFrames != 0;
-				const size_t playerFrameDifference = isMissingFrame
+				const size_t playerFrameDifference = missingFrames != 0
 					? missingFrames
 					: player.getFrameCount();
 
 				if (playerFrameDifference > ToleratedFrameDifference)
 				{
+					Log::Information(L"speed indifference",
+						playerFrameDifference, L"difference",
+						ToleratedFrameDifference, L"max");
+
 					if (playerFrameDifference > MaxFrameDifference)
 					{
-						// simulation completly failed
-						access->onThreatIdentified(
-							-1,
-							L"invalid client speed",
-							::Net::ThreatLevel::Malicious);
+						if (missingFrames != 0)
+						{
+							access->onThreatIdentified(
+								-1,
+								L"invalid client speed",
+								::Net::ThreatLevel::Uncommon);
+
+							for (int i = 0; i < missingFrames; ++i)
+							{
+								player.pushEmptyUpdate();
+								
+								if (!processSimulationLogic())
+									break;
+							}
+						}
+						else
+						{
+							access->onThreatIdentified(
+								-1,
+								L"invalid client speed",
+								::Net::ThreatLevel::Malicious);
+
+							player.clearFrames();
+						}
+
+						access->sendMessage(Net::Host::ClassicSimulatorMessageID::PrepareSync);
 					}
 					else
 					{
@@ -175,13 +203,16 @@ namespace Game
 
 						::Net::Host::TemporarilySpeedAdjustmentMessage message;
 
-						message.speedAdjustment = (float) SpeedAdjustmentTime / 
+						message.speedAdjustment = (float)SpeedAdjustmentTime /
 							(
-								(float) SpeedAdjustmentTime + (isMissingFrame
-									?  (float) playerFrameDifference
-									: -(float) playerFrameDifference)
-							);
-						message.speedAdjustmentLength = SpeedAdjustmentTime;
+							(float)SpeedAdjustmentTime + (missingFrames != 0
+								? (float)playerFrameDifference
+								: -(float)playerFrameDifference)
+								);
+						// because of many other factors that will change framedifferences
+						// often the is only the half length. this way a periodic speed adjustment
+						// because of following too high speed adjustments is prevented
+						message.speedAdjustmentLength = SpeedAdjustmentTime / 2.f;
 
 						access->sendMessage(
 							::Net::Host::ClassicSimulatorMessageID::TemporarilySpeedAdjustment,
@@ -195,17 +226,50 @@ namespace Game
 			}
 
 			static int i = 0;
-			if (++i > 400)
+			static int min1 = 0, min2 = 0, max1 = 0, max2 = 0, avg1 = 0, avg2 = 0;
+
+			if (min1 > missingFrames)
+			{
+				min1 = missingFrames;
+			}
+
+			if (max1 < missingFrames)
+			{
+				max1 = missingFrames;
+			}
+
+			if (min2 > player.getFrameCount())
+			{
+				min2 = player.getFrameCount();
+			}
+
+			if (max2 < player.getFrameCount())
+			{
+				max2 = player.getFrameCount();
+			}
+
+			avg1 += missingFrames;
+			avg2 += player.getFrameCount();
+
+			if (++i > 5)
 			{
 				i = 0;
-				Log::Information(L"process100", 
+				Log::Information(L"process100",
 					missingFrames, L"missingframes",
-					player.statusDeque.size(), L"awaiting");
-			}
-		}
+					min1, L"min",
+					max1, L"max",
+					avg1 / 5.f, L"avg",
+					player.getFrameCount(), L"awaiting",
+					min2, L"min",
+					max2, L"max",
+					avg2 / 5.f, L"avg");
 
-		void update() override
-		{
+				avg1 = 0;
+				avg2 = 0;
+
+				std::swap(min1, max1);
+				std::swap(min2, max2);
+			}
 		}
 
 		bool onMessage(
@@ -233,6 +297,7 @@ namespace Game
 			}
 			case ::Net::Client::ClassicSimulatorMessageID::RequestSync:
 
+
 				return true;
 			}
 
@@ -255,7 +320,7 @@ namespace Game
 		sf::Uint64 missingFrames = 0;
 
 		bool adjustedGameSpeed = false;
-		sf::Uint64 remainingAdjustedGameSpeed;
+		sf::Int64 remainingAdjustedGameSpeed;
 
 
 		virtual void onPushMovement(const ::Net::Client::PushMovementMessage& message)
@@ -336,6 +401,31 @@ namespace Game
 
 			access->sendMessage(
 				::Net::Host::ClassicSimulatorMessageID::PushPlayer,
+				&message);
+		}
+
+		void onRequestSync()
+		{
+			Resource::MemoryWritePipe pipe;
+			
+			if (!simulation.writeState(&pipe) ||
+				!player.writeState(&pipe))
+			{
+				Log::Error(L"Failed to writestates in synchronize",
+					bootInfo.representationID, L"reprID",
+					bootInfo.worldID, L"worldID",
+					player.getInformation().name, L"name",
+					player.getInformation().playerId, L"playerID");
+
+				access->sendMessage(Net::CommonMessageID::InternalError);
+				return;
+			}
+
+			Net::Host::HostSynchronizeMessage message;
+			pipe.assign(message.content);
+
+			access->sendMessage(
+				Net::Host::ClassicSimulatorMessageID::Synchronize,
 				&message);
 		}
 

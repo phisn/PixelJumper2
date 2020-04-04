@@ -14,6 +14,10 @@ namespace Net::Client
 		{
 			_Begin = ClassicSelectionMessageID::_Offset - 1,
 
+			// requests a synchronize after preparesync
+			// was called or some internal problem occurred
+			Synchronize,
+
 			// request a sync instead of 
 			// waiting for the next one
 			RequestSync,
@@ -85,9 +89,12 @@ namespace Net::Host
 			// upload world resource to client
 			PushResource,
 
-			// sync player and world properties
+			// instructs the user synchronize
+			// he can theoretically ignore it but shouldnt
 			PrepareSync,
-			MakeSync,
+			// actually synchronize after client
+			// called Client::Synchronize
+			Synchronize,
 
 			_Offset
 		};
@@ -140,4 +147,21 @@ namespace Net::Host
 	};
 
 	typedef TrivialNetworkMessage<TemporarilySpeedAdjustmentMessageContent> TemporarilySpeedAdjustmentMessage;
+
+	struct HostSynchronizeMessage
+		:
+		public NetworkMessage
+	{
+		std::vector<char> content;
+
+		bool load(Resource::ReadPipe* const pipe) override
+		{
+			return pipe->readVector(&content);
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return pipe->writeVector(&content);
+		}
+	};
 }

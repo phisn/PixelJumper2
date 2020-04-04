@@ -55,10 +55,9 @@ namespace Operator::Net
 		virtual void update()
 		{
 			processMessages();
+			callHandlersUpdate();
 
 			++age;
-
-			callHandlersUpdate();
 		}
 
 		Status getStatus() const

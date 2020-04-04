@@ -28,6 +28,11 @@ namespace Game
 			statusDeque.push_back(status);
 		}
 
+		void clearFrames()
+		{
+			statusDeque.clear();
+		}
+
 		bool hasUpdate()
 		{
 			return !statusDeque.empty();
@@ -47,11 +52,9 @@ namespace Game
 		{
 			return statusDeque.size();
 		}
-		
-		std::deque<FrameStatus> statusDeque;
 
 	private:
+		std::deque<FrameStatus> statusDeque;
 		void handleFrameStatus(const FrameStatus& status);
-
 	};
 }
