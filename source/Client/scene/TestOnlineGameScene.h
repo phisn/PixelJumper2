@@ -58,7 +58,7 @@ namespace
 			if (!selected)
 			{
 				Game::SimulationBootInformation info;
-				info.worldID = 0x48f1da35;
+				info.worldID = 0xdd0bb0dd;
 				info.representationID = 0;
 
 				requestSimulation(info);

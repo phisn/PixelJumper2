@@ -69,7 +69,7 @@ namespace Operator::Net
 
 			message.username = "username";
 			message.resource.unlockedRepresentations = { 0 };
-			message.resource.unlockedWorlds = { 0x48f1da35 };
+			message.resource.unlockedWorlds = { 0xdd0bb0dd };
 
 			access->sendMessage(
 				::Net::Host::OperatorClassicHostID::ClientData,

@@ -62,6 +62,7 @@ namespace Game
 
 		virtual void onLogic(const sf::Time time)
 		{
+			logicCounter += time.asMicroseconds();
 			while (logicCounter > LogicTimeStep)
 			{
 				for (ClassicClientHandler* const clientHandler : connections)

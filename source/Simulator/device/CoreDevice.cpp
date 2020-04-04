@@ -26,7 +26,8 @@ namespace Device::Core
 		}
 
 		SteamNetworkingIPAddr ipAddress;
-		ipAddress.SetIPv6LocalHost(9928);
+		//ipAddress.SetIPv6LocalHost(9928);
+		ipAddress.ParseString("109.230.236.76:9928");
 		Operator::Client::Initialize(ipAddress);
 
 		if (!AuthenticateOperator())

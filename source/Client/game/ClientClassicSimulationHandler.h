@@ -139,7 +139,7 @@ namespace Game
 			info(info),
 			worldContainer(worldContainer),
 			player(
-				1,
+				0,
 				PlayerInformation{
 					0,
 					info.representationID,
@@ -288,6 +288,8 @@ namespace Game
 
 		void onPushPlayer(const Net::Host::PushPlayerMessage& message)
 		{
+			Log::Information(L"player joined", message.playerID, L"playerID");
+
 			artificialPlayers.push_back(
 				new ArtificialPlayer(message.playerID, message.representationID, "")
 			);
@@ -295,6 +297,8 @@ namespace Game
 
 		void onPopPlayer(const Net::Host::PopPlayerMessage& message)
 		{
+			Log::Information(L"player left", message.playerID, L"playerID");
+
 			decltype(artificialPlayers)::iterator iterator = std::find_if(
 				artificialPlayers.begin(),
 				artificialPlayers.end(),
@@ -309,6 +313,7 @@ namespace Game
 
 		void onPlayerMovement(const Net::Host::PlayerMovementMessage& message)
 		{
+			Log::Information(L"got player movement", message.movement->content.playerID, L"playerID");
 			// if (message.movement->content.worldID != simulation.)
 
 			for (ArtificialPlayer* const artificialPlayer : artificialPlayers)

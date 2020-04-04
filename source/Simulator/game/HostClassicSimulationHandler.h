@@ -297,7 +297,9 @@ namespace Game
 				);
 
 				if (movementBuffer.positions.size() >= NetMovementPushCount)
+				{
 					location->pushMovement(&movementBuffer);
+				}
 
 				processLogicCounter = 1;
 			}
