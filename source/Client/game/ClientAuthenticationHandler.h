@@ -16,17 +16,21 @@ namespace Game
 		virtual void onAuthenticated(Net::Host::AuthenticationAcceptedMessage* const answer) = 0;
 	};
 
+	struct ClientAuthenticationHandlerArguments
+	{
+		ClientAuthenticationHandlerCallback* callback;
+		sf::Uint32 timeout;
+	};
+
 	class ClientAuthenticationHandler
 		:
 		public ::Net::RequestHandler
 	{
 	public:
-		ClientAuthenticationHandler(
-			ClientAuthenticationHandlerCallback* const callback,
-			const sf::Uint32 timeout)
+		ClientAuthenticationHandler(const ClientAuthenticationHandlerArguments& arguments)
 			:
-			callback(callback),
-			timeout(timeout)
+			callback(arguments.callback),
+			timeout(arguments.timeout)
 		{
 		}
 

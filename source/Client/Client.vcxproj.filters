@@ -39,9 +39,6 @@
     <ClCompile Include="game\ClientAuthenticationHandler.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="game\ClientClassicCommonHandler.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="game\ClientClassicConnection.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
@@ -53,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="scene\TestOnlineGameScene.cpp">
       <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientClassicSessionHandler.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,9 +80,6 @@
     <ClInclude Include="game\ClientAuthenticationHandler.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="game\ClientClassicCommonHandler.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="game\ClientClassicConnection.h">
       <Filter>source\game</Filter>
     </ClInclude>
@@ -96,6 +93,9 @@
       <Filter>source\scene</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="game\ClientClassicSessionHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="settings.png">

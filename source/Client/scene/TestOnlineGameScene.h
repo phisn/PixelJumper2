@@ -33,10 +33,10 @@ namespace
 
 	class TestClientCommonHandler
 		:
-		public Game::ClientClassicCommonHandler
+		public Game::ClientClassicSessionHandler
 	{
 	public:
-		using ClientClassicCommonHandler::ClientClassicCommonHandler;
+		using ClientClassicSessionHandler::ClientClassicSessionHandler;
 
 
 	};
@@ -220,7 +220,6 @@ namespace Scene
 			connectionInfo.address = answer.address;
 			connectionInfo.authenticationTimeout = 800; // 20sec
 			connectionInfo.key = answer.key;
-			connectionInfo.userID = answer.userID;
 
 			if (!ClientClassicConnection::initialize(connectionInfo))
 			{
@@ -238,36 +237,29 @@ namespace Scene
 			Framework::Core::PopScene();
 		}
 
-		Game::ClientAuthenticationHandler* createAuthenticationHandler(
-			ClientAuthenticationHandlerCallback* const callback,
-			const sf::Uint32 timeout) override
+		Game::ClientAuthenticationHandler* createAuthenticationHandler(const Game::ClientAuthenticationHandlerArguments& arguments) override
 		{
-			return new TestClientAuthenticationHandler(callback, timeout);
+			return new TestClientAuthenticationHandler(arguments);
 		}
 
-		Game::ClientClassicCommonHandler* createCommonHandler() override
+		Game::ClientClassicSelectionHandler* createSelectionHandler() override
 		{
-			return new TestClientCommonHandler();
+			return new TestClientSelectionHandler(this);
 		}
 
-		Game::ClientClassicSelectionHandler* createSelectionHandler(
-			ClientClassicSelectionHandlerCallback* const callback) override
+		Game::ClientClassicSessionHandler* createSessionHandler(const Game::ClientClassicSessionHandlerArguments& arguments) override
 		{
-			return new TestClientSelectionHandler(callback);
+			return new TestClientCommonHandler(arguments);
 		}
 
-		Game::ClientClassicSimulationHandler* createSimulationHandler(
-			ClientClassicSimulationHandlerCallback* const callback,
-			const Game::SimulationBootInformation info,
-			const Game::WorldResourceContainer& worldContainer) override
+		Game::ClientClassicSimulationHandler* createSimulationHandler(const Game::ClientClassicSimulationHandlerArguments& arguments) override
 		{
 			Log::Error(L"creating simulation handler");
 
 			TestClientSimulationHandler* const handler = new TestClientSimulationHandler(
-				callback,
-				info,
-				worldContainer,
-				&viewChain.getView(0));
+				arguments,
+				&viewChain.getView(0),
+				0);
 
 			Framework::Core::PushTemporaryScene(
 				new TestClassicClientSimulationSubScene(handler, &viewChain.getView(0)),

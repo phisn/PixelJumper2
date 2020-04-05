@@ -118,13 +118,14 @@
     <ClInclude Include="GameTileBase.h" />
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="LocalPlayer.h" />
-    <ClInclude Include="net\ClassicCommonMessage.h" />
+    <ClInclude Include="net\ClassicSessionMessage.h" />
     <ClInclude Include="net\ClassicSelectionMessage.h" />
     <ClInclude Include="net\ClassicSimulatorMessage.h" />
     <ClInclude Include="net\FrameStatus.h" />
     <ClInclude Include="net\NetPlayerMovement.h" />
     <ClInclude Include="net\SimulatorAuthenticationMessage.h" />
     <ClInclude Include="net\SimulatorContext.h" />
+    <ClInclude Include="net\SimulatorSettings.h" />
     <ClInclude Include="net\VirtualPlayer.h" />
     <ClInclude Include="PlayerInformation.h" />
     <ClInclude Include="PlayerProperties.h" />

@@ -7,6 +7,7 @@
 #include "GameCore/net/VirtualPlayer.h"
 
 #include "NetCore/RequestHandler.h"
+#include "ResourceCore/pipes/MemoryPipe.h"
 
 namespace Game
 {
@@ -25,10 +26,12 @@ namespace Game
 		public ::Net::RequestHandler,
 		public SimulatorContextLocationCallback
 	{
-		static constexpr sf::Uint64 SpeedAdjustmentTimeOffset = 1000; // 1s
-		static constexpr sf::Uint64 SpeedAdjustmentTime = 5000; // 5s
-		static constexpr sf::Uint64 MaxFrameDifference = 1000; // 1s
-		static constexpr sf::Uint64 ToleratedFrameDifference = 100; // 100ms
+		// time in server ticks
+		static constexpr sf::Uint64 SpeedAdjustmentTimeOffset = 500;
+		static constexpr sf::Uint64 MaxFrameDifference = 1000;
+		static constexpr sf::Uint64 ToleratedFrameDifference = 50;
+
+		static constexpr float ToleratedSpeedDifference = 0.2f;
 
 	public:
 		ClassicSimulationHandler(
@@ -152,7 +155,7 @@ namespace Game
 			*/
 			if (adjustedGameSpeed)
 			{
-				if (remainingAdjustedGameSpeed -= 100 <= 0)
+				if ((remainingAdjustedGameSpeed -= 100) <= 0)
 					adjustedGameSpeed = false;
 			}
 			else
@@ -163,10 +166,6 @@ namespace Game
 
 				if (playerFrameDifference > ToleratedFrameDifference)
 				{
-					Log::Information(L"speed indifference",
-						playerFrameDifference, L"difference",
-						ToleratedFrameDifference, L"max");
-
 					if (playerFrameDifference > MaxFrameDifference)
 					{
 						if (missingFrames != 0)
@@ -182,6 +181,8 @@ namespace Game
 								
 								if (!processSimulationLogic())
 									break;
+
+								--missingFrames;
 							}
 						}
 						else
@@ -199,24 +200,21 @@ namespace Game
 					else
 					{
 						adjustedGameSpeed = true;
-						remainingAdjustedGameSpeed = SpeedAdjustmentTime + SpeedAdjustmentTimeOffset;
-
 						::Net::Host::TemporarilySpeedAdjustmentMessage message;
 
-						message.speedAdjustment = (float)SpeedAdjustmentTime /
-							(
-							(float)SpeedAdjustmentTime + (missingFrames != 0
-								? (float)playerFrameDifference
-								: -(float)playerFrameDifference)
-								);
+						message.speedAdjustment = 1.f + (missingFrames != 0 ? -1.f : +1.f) 
+							* ToleratedSpeedDifference;
+						message.speedAdjustmentLength = playerFrameDifference / ToleratedSpeedDifference;
 						// because of many other factors that will change framedifferences
 						// often the is only the half length. this way a periodic speed adjustment
 						// because of following too high speed adjustments is prevented
-						message.speedAdjustmentLength = SpeedAdjustmentTime / 2.f;
+						message.speedAdjustmentLength *= 0.5f;
 
 						access->sendMessage(
 							::Net::Host::ClassicSimulatorMessageID::TemporarilySpeedAdjustment,
 							&message);
+
+						remainingAdjustedGameSpeed = message.speedAdjustmentLength + SpeedAdjustmentTimeOffset;
 
 						Log::Information(L"speed adjustment",
 							message.speedAdjustment, L"speed",
@@ -251,7 +249,7 @@ namespace Game
 			avg1 += missingFrames;
 			avg2 += player.getFrameCount();
 
-			if (++i > 5)
+			if (++i >= 5)
 			{
 				i = 0;
 				Log::Information(L"process100",

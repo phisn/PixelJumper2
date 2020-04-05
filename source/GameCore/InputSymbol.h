@@ -14,4 +14,6 @@ namespace Game
 
 		_Length
 	};
+
+	typedef int InputID;
 }

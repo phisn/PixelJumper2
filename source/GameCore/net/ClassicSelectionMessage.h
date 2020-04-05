@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FrameStatus.h"
-#include "ClassicCommonMessage.h"
+#include "ClassicSessionMessage.h"
 
 #include "ResourceCore/ClassicPlayerResource.h"
 
@@ -11,7 +11,7 @@ namespace Net::Client
 	{
 		enum
 		{
-			_Begin = ClassicCommonMessageID::_Offset - 1,
+			_Begin = ClassicSessionMessageID::_Offset - 1,
 
 			// request simulation informations
 			QuerySimulation,
@@ -39,7 +39,7 @@ namespace Net::Host
 	{
 		enum
 		{
-			_Begin = ClassicCommonMessageID::_Offset - 1,
+			_Begin = ClassicSessionMessageID::_Offset - 1,
 
 			AcceptSimulationRequest,
 			RejectSimulationRequest,

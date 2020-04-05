@@ -5,6 +5,8 @@
 #include "NetCore/NetCore.h"
 #include "GameCore/GameWorld.h"
 #include "GameCore/net/SimulatorContext.h"
+#include "GameCore/net/SimulatorSettings.h"
+
 // #include <Client/source/game/UserConnection.h>
 
 /*
@@ -33,17 +35,19 @@ namespace Game
 		public GameState
 	{
 	public:
-		struct Settings
+		struct HostSettings
 		{
 			unsigned short port = 9927;
 			sf::Time interval = sf::milliseconds(100);
-			int maxClients = 128;
 		};
 
-		HostClassicSimulator(const Settings settings = Settings{ })
+		HostClassicSimulator(
+			HostSettings settings = HostSettings{ },
+			SimulatorSettings simulatorSettings = SimulatorSettings{ })
 			:
+			clientSettings{ },
 			settings(settings),
-			clientSettings{ }
+			simulatorSettings(simulatorSettings)
 		{
 		}
 
@@ -106,7 +110,8 @@ namespace Game
 			resources[world->content.id] = world;
 		}
 
-		const Settings settings;
+		const HostSettings settings;
+		const SimulatorSettings simulatorSettings;
 
 	private:
 		const ClassicClientHandler::Settings clientSettings;
@@ -137,6 +142,7 @@ namespace Game
 				connection,
 				clientSettings,
 				context,
+				simulatorSettings,
 				resources));
 		}
 

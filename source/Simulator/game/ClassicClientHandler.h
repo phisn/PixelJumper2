@@ -1,13 +1,14 @@
 #pragma once
 
-#include "GameCore/net/SimulatorContext.h"
-#include "NetCore/ClientHandler.h"
-#include "OperatorClient/request/ClassicHostRequest.h"
-
 #include "HostSimulatorAuthenticationHandler.h"
-#include "HostClassicCommonHandler.h"
+#include "HostClassicSessionHandler.h"
 #include "HostClassicSelectionHandler.h"
 #include "HostClassicSimulationHandler.h"
+
+#include "GameCore/net/SimulatorContext.h"
+#include "GameCore/net/SimulatorSettings.h"
+#include "NetCore/ClientHandler.h"
+#include "OperatorClient/request/ClassicHostRequest.h"
 
 namespace Game
 {
@@ -59,13 +60,15 @@ namespace Game
 		};
 
 		ClassicClientHandler(
-			const HSteamNetConnection connection,
-			const Settings settings,
+			HSteamNetConnection connection,
+			Settings settings,
 			SimulatorContext& context,
+			SimulatorSettings simulatorSettings,
 			const WorldResourceContainer& container)
 			:
 			ClientHandler(connection),
 			settings(settings),
+			simulatorSettings(simulatorSettings),
 			context(context),
 			container(container)
 		{
@@ -121,7 +124,9 @@ namespace Game
 
 	private:
 		const Settings settings;
+		const SimulatorSettings simulatorSettings;
 		const WorldResourceContainer& container;
+
 		SimulatorContext& context;
 
 		Status status = Status::Authenticating;
@@ -179,13 +184,14 @@ namespace Game
 			username = answer->username;
 
 			delete removeRequestHandler<AuthenticationHandler>();
-			addRequestHandler(new HostClassicCommonHandler);
+			addRequestHandler(new HostClassicSessionHandler);
 
-			::Net::Host::InitializeClientMessage message;
+			::Net::Host::ClassicSessionMessage::InitializeSession message;
 			message.players = context.getActivePlayers();
+			message.content.settings = simulatorSettings;
 
 			if (sendMessage(
-					::Net::Host::ClassicCommonMessageID::InitializeClient,
+					::Net::Host::ClassicSessionMessageID::InitializeSession,
 					&message))
 			{
 				Resource::PlayerResource* const resource = new Resource::PlayerResource();

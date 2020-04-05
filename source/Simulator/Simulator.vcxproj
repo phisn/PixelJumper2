@@ -85,7 +85,7 @@
   <ItemGroup>
     <ClCompile Include="device\CoreDevice.cpp" />
     <ClCompile Include="game\ClassicClientHandler.cpp" />
-    <ClCompile Include="game\HostClassicCommonHandler.cpp" />
+    <ClCompile Include="game\HostClassicSessionHandler.cpp" />
     <ClCompile Include="game\HostClassicSelectionHandler.cpp" />
     <ClCompile Include="game\HostClassicSimulationHandler.cpp" />
     <ClCompile Include="game\HostClassicSimulator.cpp" />
@@ -95,7 +95,7 @@
   <ItemGroup>
     <ClInclude Include="device\CoreDevice.h" />
     <ClInclude Include="game\ClassicClientHandler.h" />
-    <ClInclude Include="game\HostClassicCommonHandler.h" />
+    <ClInclude Include="game\HostClassicSessionHandler.h" />
     <ClInclude Include="game\HostClassicSelectionHandler.h" />
     <ClInclude Include="game\HostClassicSimulationHandler.h" />
     <ClInclude Include="game\HostClassicSimulator.h" />

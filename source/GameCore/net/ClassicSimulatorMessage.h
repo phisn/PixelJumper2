@@ -14,6 +14,10 @@ namespace Net::Client
 		{
 			_Begin = ClassicSelectionMessageID::_Offset - 1,
 
+			// simulator does not need to know the exact reason
+			// because logging is already done to operator
+			SimulationFailure,
+
 			// requests a synchronize after preparesync
 			// was called or some internal problem occurred
 			Synchronize,

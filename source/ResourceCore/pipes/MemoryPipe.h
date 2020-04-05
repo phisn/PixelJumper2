@@ -140,6 +140,12 @@ namespace Resource
 			return realSize;
 		}
 
+		void adopt(const std::vector<char>& buffer)
+		{
+			this->buffer = &buffer[0];
+			length = buffer.size();
+		}
+
 	private:
 		const char* buffer;
 		int length;

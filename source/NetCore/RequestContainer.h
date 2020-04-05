@@ -31,6 +31,12 @@ namespace Net
 			requestHandlerTypes.push_back(typeid(T));
 		}
 
+		template <typename T, typename... Args>
+		void createRequestHandler(Args&&... arguments)
+		{
+			addRequestHandler(new T(std::forward(arguments)...));
+		}
+
 		template <typename T>
 		bool existsRequestHandler()
 		{

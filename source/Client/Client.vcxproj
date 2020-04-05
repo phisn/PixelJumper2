@@ -13,7 +13,7 @@
   <ItemGroup>
     <ClCompile Include="device\InputDevice.cpp" />
     <ClCompile Include="game\ClientAuthenticationHandler.cpp" />
-    <ClCompile Include="game\ClientClassicCommonHandler.cpp" />
+    <ClCompile Include="game\ClientClassicSessionHandler.cpp" />
     <ClCompile Include="game\ClientClassicConnection.cpp" />
     <ClCompile Include="game\ClientClassicSelectionHandler.cpp" />
     <ClCompile Include="game\ClientClassicSimulationHandler.cpp" />
@@ -55,7 +55,7 @@
     <ClInclude Include="device\InputDevice.h" />
     <ClInclude Include="game\CachedControllablePlayer.h" />
     <ClInclude Include="game\ClientAuthenticationHandler.h" />
-    <ClInclude Include="game\ClientClassicCommonHandler.h" />
+    <ClInclude Include="game\ClientClassicSessionHandler.h" />
     <ClInclude Include="game\ClientClassicConnection.h" />
     <ClInclude Include="game\ClientClassicSelectionHandler.h" />
     <ClInclude Include="game\ClientClassicSimulationHandler.h" />

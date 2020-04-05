@@ -164,9 +164,6 @@
     <ClInclude Include="trait\StaticVisibleTrait.h">
       <Filter>source\trait</Filter>
     </ClInclude>
-    <ClInclude Include="net\ClassicCommonMessage.h">
-      <Filter>source\net</Filter>
-    </ClInclude>
     <ClInclude Include="net\ClassicSelectionMessage.h">
       <Filter>source\net</Filter>
     </ClInclude>
@@ -193,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="component\StaticVisibleComponent.h">
       <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="net\ClassicSessionMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\SimulatorSettings.h">
+      <Filter>source\net</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

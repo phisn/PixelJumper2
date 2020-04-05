@@ -14,6 +14,7 @@ namespace Game
 			const Net::Host::AcceptSimulationRequestMessage& message) = 0;
 	};
 
+
 	class ClientClassicSelectionHandler
 		:
 		public ::Net::RequestHandler

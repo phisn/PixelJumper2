@@ -1,0 +1,2 @@
+C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\ResourceCore.pdb
+C:\Users\phisn\source\repos\PixelJumper2\source\ResourceCore\x64\Debug\ResourceCore.pdb

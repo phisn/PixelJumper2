@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ClientAuthenticationHandler.h"
-#include "ClientClassicCommonHandler.h"
 #include "ClientClassicSelectionHandler.h"
+#include "ClientClassicSessionHandler.h"
 #include "ClientClassicSimulationHandler.h"
 
 #include "GameCore/net/ClassicSelectionMessage.h"
@@ -14,6 +14,15 @@
 
 namespace Game
 {
+	struct ClassicHandlerCallbacks
+		:
+		public ClientAuthenticationHandlerCallback,
+		public ClientClassicSelectionHandlerCallback,
+		public ClientClassicSessionHandlerCallback,
+		public ClientClassicSimulationHandlerCallback
+	{
+	};
+
 	struct ClassicConnectionInformation
 	{
 		sf::Uint32 authenticationTimeout;
@@ -21,19 +30,19 @@ namespace Game
 		// host key and address
 		Operator::ConnectionKey key;
 		SteamNetworkingIPAddr address;
+	};
 
-		// player userid
-		Operator::UserID userID;
+	struct ClassicConnectionContext
+	{
+		std::vector<Resource::PlayerResource> players;
+		Resource::PlayerResource player;
 	};
 
 	class ClientClassicConnection
 		:
-		public Net::ClientBase,
 		public Net::RequestContainer,
-
-		public ClientAuthenticationHandlerCallback,
-		public ClientClassicSelectionHandlerCallback,
-		public ClientClassicSimulationHandlerCallback
+		public Net::ClientBase,
+		public ClassicHandlerCallbacks
 	{
 	public:
 		struct Settings
@@ -55,7 +64,6 @@ namespace Game
 				// and need to prevent multiple deletion from dynamicclienthandler
 				// works because of structor stack
 				removeRequestHandler<ClientClassicSelectionHandler>();
-
 				delete selectionHandler;
 			}
 
@@ -75,15 +83,15 @@ namespace Game
 		{
 			logicCounter += time.asMicroseconds();
 
-			if (simulationRunning)
+			if (simulatorHandler)
 				simulatorHandler->onLogic(time);
 
-			if (logicCounter > nextUserProcess)
+			if (logicCounter > settings.tickrate)
 			{
 				processMessages();
-
 				callHandlersUpdate();
-				nextUserProcess = logicCounter + settings.tickrate;
+
+				logicCounter = 0;
 			}
 		}
 
@@ -91,18 +99,16 @@ namespace Game
 		const Settings settings;
 
 		Resource::ClassicPlayerResource classicPlayerResource;
-		std::string username;
 
-		virtual ClientAuthenticationHandler* createAuthenticationHandler(
-			ClientAuthenticationHandlerCallback* const callback,
-			const sf::Uint32 timeout) = 0;
-		virtual ClientClassicCommonHandler* createCommonHandler() = 0;
-		virtual ClientClassicSelectionHandler* createSelectionHandler(
-			ClientClassicSelectionHandlerCallback* const callback) = 0;
-		virtual ClientClassicSimulationHandler* createSimulationHandler(
-			ClientClassicSimulationHandlerCallback* const callback,
-			const SimulationBootInformation info,
-			const WorldResourceContainer& worldContainer) = 0;
+		///////////////////////////////////////////////////////////
+		std::string username;
+		Operator::UserID userID;
+		///////////////////////////////////////////////////////////
+
+		virtual ClientAuthenticationHandler* createAuthenticationHandler(const ClientAuthenticationHandlerArguments& arguments) = 0;
+		virtual ClientClassicSelectionHandler* createSelectionHandler() = 0;
+		virtual ClientClassicSessionHandler* createSessionHandler(const ClientClassicSessionHandlerArguments& arguments) = 0;
+		virtual ClientClassicSimulationHandler* createSimulationHandler(const ClientClassicSimulationHandlerArguments& arguments) = 0;
 
 		// common needs to add here
 		WorldResourceContainer worldContainer;
@@ -110,20 +116,26 @@ namespace Game
 	private:
 		ClassicConnectionInformation connectionInfo;
 
+		sf::Uint64 logicCounter = 0;
+
 		// saved to prevent repetitive creation of selection
-		// handler
-		// created after authentication
+		// handler. created after authentication
 		// has to manually deleted if not currently running
 		ClientClassicSelectionHandler* selectionHandler = NULL;
 
 		// stored as variable to allow quick access though
-		// processsimulation
-		ClientClassicSimulationHandler* simulatorHandler;
+		// processsimulation. might be null
+		ClientClassicSimulationHandler* simulatorHandler = NULL;
 
-		sf::Uint64 logicCounter = 0,
-			nextUserProcess = 0;
+		// sessionhandler needed for simulationHandler to
+		// find playernames by playerID
+		// after authentication not null
+		ClientClassicSessionHandler* sessionHandler = NULL;
 
-		bool simulationRunning = false;
+		ConnectionAccess* getConnectionAccess() override
+		{
+			return this;
+		}
 
 		void onMessage(
 			const Net::MessageID messageID,
@@ -136,11 +148,6 @@ namespace Game
 					L"invalid messageid on onmessage",
 					Net::ThreatLevel::Suspicious);
 			}
-		}
-
-		ConnectionAccess* getConnectionAccess() override
-		{
-			return this;
 		}
 
 		void onConnectionOpened() override
@@ -156,27 +163,31 @@ namespace Game
 					Net::Client::AuthenticationMessageID::Authenticate,
 					&message))
 			{
-				addRequestHandler(
-					createAuthenticationHandler(
-						this, 
-						connectionInfo.authenticationTimeout)
-				);
+				ClientAuthenticationHandlerArguments arguments;
+				arguments.callback = this;
+				arguments.timeout = connectionInfo.authenticationTimeout;
+
+				addRequestHandler(createAuthenticationHandler(arguments));
 			}
 		}
 
 		void onAuthenticated(Net::Host::AuthenticationAcceptedMessage* const answer) override
 		{
-			Log::Information(L"Authenticated");
-
 			delete removeRequestHandler<ClientAuthenticationHandler>();
+
+			Log::Information(L"Authenticated",
+				answer->username, L"username",
+				answer->resource->unlockedRepresentations.size(), L"unlocked_repr",
+				answer->resource->unlockedWorlds.size(), L"unlocked_wrld");
 
 			classicPlayerResource = std::move(*answer->resource);
 			username = std::move(*answer->username);
 
-			addRequestHandler(createCommonHandler());
+			ClientClassicSessionHandlerArguments sessionHandlerArguments;
+			sessionHandlerArguments.callback = this;
 
-			selectionHandler = createSelectionHandler(this);
-			addRequestHandler(selectionHandler);
+			addRequestHandler(sessionHandler = createSessionHandler(sessionHandlerArguments));
+			addRequestHandler(selectionHandler = createSelectionHandler());
 		}
 
 		void onSimulationCreated(
@@ -195,22 +206,38 @@ namespace Game
 				worldContainer[world->content.id] = world;
 			}
 
-			simulatorHandler = createSimulationHandler(
-				this, 
-				info, 
-				worldContainer);
-
+			ClientClassicSimulationHandlerArguments arguments =
+			{
+				this, worldContainer, 
+				sessionHandler->getPlayers(),
+				username, userID, info
+			};
+			
+			simulatorHandler = createSimulationHandler(arguments);
 			if (!simulatorHandler->initializeSimulation())
 			{
+				Log::Error(L"Failed to initialize simulation, aborting",
+					userID, L"userID",
+					username, L"username",
+					info.worldID, L"worldID",
+					info.representationID, L"reprID");
+
 				delete simulatorHandler;
+				sendMessage(Net::Client::ClassicSimulatorMessageID::SimulationFailure);
+
 				return;
 			}
 
 			addRequestHandler(simulatorHandler);
-			simulationRunning = true;
 		}
 
-		void onThreatIdentified(
+		void onSimulationFailure() override
+		{
+			removeRequestHandler<ClientClassicSimulationHandler>();
+			// ...?
+		}
+
+		virtual void onThreatIdentified(
 			const sf::Uint32 identifier,
 			const std::wstring& note,
 			const Net::ThreatLevel level) override

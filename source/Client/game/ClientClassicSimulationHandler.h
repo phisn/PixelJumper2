@@ -5,6 +5,7 @@
 #include "GameCore/ClassicSimulation.h"
 #include "GameCore/net/ClassicSimulatorMessage.h"
 #include "NetCore/RequestHandler.h"
+#include "ResourceCore/pipes/MemoryPipe.h"
 
 #include <deque>
 
@@ -122,6 +123,24 @@ namespace Game
 
 	struct ClientClassicSimulationHandlerCallback
 	{
+		// onSimulationFailure does not notify host
+		// host has to be notified manually
+		virtual void onSimulationFailure() = 0;
+	};
+
+	struct ClientClassicSimulationHandlerArguments
+	{
+		ClientClassicSimulationHandlerCallback* callback;
+		
+		// worldcontainer and players are hold by other modules might
+		// adopt over time
+		WorldResourceContainer& worldContainer;
+		const std::vector<Resource::PlayerResource*>& players;
+
+		std::string& username;
+		Operator::UserID userID;
+
+		const SimulationBootInformation& info;
 	};
 
 	class ClientClassicSimulationHandler
@@ -130,23 +149,23 @@ namespace Game
 	{
 	public:
 		ClientClassicSimulationHandler(
-			ClientClassicSimulationHandlerCallback* const callback,
-			const SimulationBootInformation info,
-			const WorldResourceContainer& worldContainer,
-			Device::View* const view)
+			const ClientClassicSimulationHandlerArguments& arguments,
+			Device::View* const view,
+			const InputID inputID)
 			:
-			callback(callback),
-			info(info),
-			worldContainer(worldContainer),
+			callback(arguments.callback),
+			info(arguments.info),
+			worldContainer(arguments.worldContainer),
+			players(arguments.players),
 			player(
-				0,
+				inputID,
 				PlayerInformation{
-					0,
+					arguments.userID,
 					info.representationID,
-					""
+					arguments.username
 				},
 				view),
-			simulation(worldContainer)
+			simulation(arguments.worldContainer)
 		{
 			simulation.setPlayer(&player);
 		}
@@ -260,6 +279,17 @@ namespace Game
 				}
 
 				return true;
+			case Net::Host::ClassicSimulatorMessageID::Synchronize:
+				if (Net::Host::HostSynchronizeMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onSynchronize(message);
+				}
+
+				return true;
+			case Net::Host::ClassicSimulatorMessageID::PrepareSync:
+				synchronize();
+
+				return true;
 			}
 
 			return false;
@@ -268,6 +298,13 @@ namespace Game
 	protected:
 		virtual void onSimulationStarted() = 0;
 		virtual void onSimulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
+
+		void synchronize()
+		{
+			// remember last tick
+			// remember all frames from now on
+			// and apply them later
+		}
 
 	private:
 		ClientClassicSimulationHandlerCallback* const callback;
@@ -278,6 +315,7 @@ namespace Game
 		CachedControllablePlayer player;
 
 		std::vector<ArtificialPlayer*> artificialPlayers;
+		const std::vector<Resource::PlayerResource*>& players;
 
 		sf::Uint64 logicCounter = 0;
 
@@ -290,8 +328,16 @@ namespace Game
 		{
 			Log::Information(L"player joined", message.playerID, L"playerID");
 
+			std::string username = "user not found";
+			for (const Resource::PlayerResource* player : players)
+				if (player->content.playerID == message.playerID)
+				{
+					username = player->username;
+					break;
+				}
+
 			artificialPlayers.push_back(
-				new ArtificialPlayer(message.playerID, message.representationID, "")
+				new ArtificialPlayer(message.playerID, message.representationID, std::move(username))
 			);
 		}
 
@@ -335,13 +381,33 @@ namespace Game
 				remainingGameSpeedAdjustment, L"length");
 		}
 
+		void onSynchronize(const Net::Host::HostSynchronizeMessage& message)
+		{
+			Resource::MemoryReadPipe pipe;
+			pipe.adopt(message.content);
+
+			if (!simulation.readState(&pipe) ||
+				!player.readState(&pipe))
+			{
+				Log::Error(L"Failed to synchronize simulationhandler",
+					info.representationID, L"reprID",
+					info.worldID, L"worldID",
+					player.getInformation().playerId, L"playerID",
+					player.getInformation().name, L"username");
+
+				access->sendMessage(Net::Client::ClassicSimulatorMessageID::SimulationFailure);
+				callback->onSimulationFailure();
+			}
+		}
+
 		void processLogic()
 		{
 			const ClassicSimulation::WorldFailure result = simulation.processLogic();
 
 			if (result != ClassicSimulation::WorldFailure::Success)
 			{
-				// call parent virtual pure
+				access->sendMessage(Net::Client::ClassicSimulatorMessageID::SimulationFailure);
+				callback->onSimulationFailure();
 
 				Log::Error(L"Failed to process simulation",
 					(int)result, L"result");

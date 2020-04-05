@@ -1,0 +1,2 @@
+C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\NetCore.pdb
+C:\Users\phisn\source\repos\PixelJumper2\source\NetCore\x64\Debug\NetCore.pdb
