@@ -211,12 +211,12 @@ namespace Game
 	private:
 		void applyGravity(PlayerType* const player)
 		{
-			player->properties.movement += *properties.gravity;
+			player->properties.movement += *properties.gravity * Shared::ValueDefinition::gravity;
 		}
 
 		void applyResistance(PlayerType* const player)
 		{
-			player->properties.movement *= *properties.airResistance;
+			player->properties.movement *= *properties.airResistance * Shared::ValueDefinition::air_resistance;
 		}
 
 		void applyMovement(PlayerType* const player)

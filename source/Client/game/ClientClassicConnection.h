@@ -233,8 +233,13 @@ namespace Game
 
 		void onSimulationFailure() override
 		{
-			removeRequestHandler<ClientClassicSimulationHandler>();
+			delete removeRequestHandler<ClientClassicSimulationHandler>();
 			// ...?
+		}
+
+		void onSimulationClosed() override
+		{
+			delete removeRequestHandler<ClientClassicSimulationHandler>();
 		}
 
 		virtual void onThreatIdentified(

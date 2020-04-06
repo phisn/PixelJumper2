@@ -22,19 +22,39 @@ namespace Game
 
 		void onInternalUpdate() override
 		{
-			ControllablePlayer::onInternalUpdate();
+			if (injectedFrames.size() > 0)
+			{
+				// injected frames do not count to packedFrameStatus
+				handleInjectedFrame(injectedFrames.front());
+				injectedFrames.pop_front();
 
-			Game::FrameStatus& status = packedFrameStatus.frames.emplace_back();
+				LocalPlayer::onInternalUpdate();
+			}
+			else
+			{
+				ControllablePlayer::onInternalUpdate();
 
-			status.setKey(Game::InputSymbol::Trigger, interactController.getCurrentState());
-			status.setKey(Game::InputSymbol::Reset, respawnController.getCurrentState());
+				Game::FrameStatus& status = packedFrameStatus.frames.emplace_back();
 
-			status.setKey(Game::InputSymbol::Up, upController.getCurrentState());
-			status.setKey(Game::InputSymbol::Left, leftController.getCurrentState());
-			status.setKey(Game::InputSymbol::Down, downController.getCurrentState());
-			status.setKey(Game::InputSymbol::Right, rightController.getCurrentState());
+				status.setKey(Game::InputSymbol::Trigger, interactController.getCurrentState());
+				status.setKey(Game::InputSymbol::Reset, respawnController.getCurrentState());
+
+				status.setKey(Game::InputSymbol::Up, upController.getCurrentState());
+				status.setKey(Game::InputSymbol::Left, leftController.getCurrentState());
+				status.setKey(Game::InputSymbol::Down, downController.getCurrentState());
+				status.setKey(Game::InputSymbol::Right, rightController.getCurrentState());
+			}
 		}
 
-		Game::PackedFrameStatus packedFrameStatus;
+		void inject(FrameStatus frame)
+		{
+			injectedFrames.push_back(frame);
+		}
+
+		PackedFrameStatus packedFrameStatus;
+		std::deque<FrameStatus> injectedFrames;
+
+	private:
+		void handleInjectedFrame(FrameStatus frame);
 	};
 }

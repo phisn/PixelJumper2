@@ -44,6 +44,8 @@ namespace Game
 			ResourceNotFound
 		};
 
+		typedef std::function<WorldFailure()> Task;
+
 		ClassicSimulation(const WorldResourceContainer& worldResources)
 			:
 			worldResources(worldResources)
@@ -53,9 +55,10 @@ namespace Game
 		virtual WorldFailure processLogic()
 		{
 			world->processLogic();
+			++tick;
 
 			// prevent repetetive deletion of tasks
-			if (tasks.size() > 0)
+			if (!tasks.empty())
 			{
 				for (const Task& task : tasks)
 				{
@@ -79,7 +82,8 @@ namespace Game
 
 		bool writeState(Resource::WritePipe* const writePipe) override
 		{
-			if (!writePipe->writeValue(&world->getInformation()->worldId))
+			if (!writePipe->writeValue(&tick) ||
+				!writePipe->writeValue(&world->getInformation()->worldId))
 			{
 				return false;
 			}
@@ -91,7 +95,8 @@ namespace Game
 		{
 			// synchronize when world is different
 			Resource::WorldId worldID;
-			if (!readPipe->readValue(&worldID))
+			if (!readPipe->readValue(&tick) ||
+				!readPipe->readValue(&worldID))
 			{
 				return false;
 			}
@@ -152,6 +157,16 @@ namespace Game
 			return status;
 		}
 
+		const World* getWorld() const
+		{
+			return world;
+		}
+
+		sf::Uint32 getTick() const
+		{
+			return tick;
+		}
+
 	protected:
 		Game::PlayerBase* player = NULL;
 		World* world = NULL;
@@ -199,7 +214,11 @@ namespace Game
 		WorldContainer worlds;
 		LoadingWorldContainer loadingWorlds;
 
-		typedef std::function<WorldFailure()> Task;
+		// similar to tick in world but world
+		// independent to be used to synchronize
+		// simulator states
+		sf::Uint32 tick = 0;
+
 		// tasks from different execution points
 		// that have to be executed later
 		std::vector<Task> tasks;

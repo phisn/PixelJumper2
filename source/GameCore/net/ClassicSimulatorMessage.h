@@ -20,15 +20,7 @@ namespace Net::Client
 
 			// requests a synchronize after preparesync
 			// was called or some internal problem occurred
-			Synchronize,
-
-			// request a sync instead of 
-			// waiting for the next one
-			RequestSync,
-
-			// accept a server side forced
-			// sync
-			AcceptSync,
+			RequestSynchronize,
 
 			PushMovement,
 
@@ -69,6 +61,8 @@ namespace Net::Host
 		enum
 		{
 			_Begin = ClassicSelectionMessageID::_Offset - 1,
+
+			SimulationClosed,
 
 			// failed to initiated or load a world
 			SimulationFailed,
@@ -156,16 +150,18 @@ namespace Net::Host
 		:
 		public NetworkMessage
 	{
-		std::vector<char> content;
+		std::vector<char> state;
 
 		bool load(Resource::ReadPipe* const pipe) override
 		{
-			return pipe->readVector(&content);
+			return // pipe->readValue(&content) &&
+				pipe->readVector(&state);
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
 		{
-			return pipe->writeVector(&content);
+			return // pipe->writeValue(&pipe) &&
+				pipe->writeVector(&state);
 		}
 	};
 }

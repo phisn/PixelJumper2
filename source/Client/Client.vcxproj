@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="device\InputDevice.cpp" />
+    <ClCompile Include="game\CachedControllablePlayer.cpp" />
     <ClCompile Include="game\ClientAuthenticationHandler.cpp" />
     <ClCompile Include="game\ClientClassicSessionHandler.cpp" />
     <ClCompile Include="game\ClientClassicConnection.cpp" />

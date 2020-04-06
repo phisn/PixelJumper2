@@ -14,6 +14,7 @@ namespace Game
 	struct ClassicSimulatorHandlerCallback
 	{
 		virtual void onSimulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
+		virtual void onSimulationClosed() = 0;
 	};
 
 	// currently transitive reached worlds are not sent to the 
@@ -29,6 +30,8 @@ namespace Game
 		// time in server ticks
 		static constexpr sf::Uint64 SpeedAdjustmentTimeOffset = 500;
 		static constexpr sf::Uint64 MaxFrameDifference = 1000;
+		// has to be higher than networkingsockets timeout
+		static constexpr sf::Uint64 MinimalDifferenceVairant = 30'000;
 		static constexpr sf::Uint64 ToleratedFrameDifference = 50;
 
 		static constexpr float ToleratedSpeedDifference = 0.2f;
@@ -170,10 +173,7 @@ namespace Game
 					{
 						if (missingFrames != 0)
 						{
-							access->onThreatIdentified(
-								-1,
-								L"invalid client speed",
-								::Net::ThreatLevel::Uncommon);
+							differenceVariant -= missingFrames;
 
 							for (int i = 0; i < missingFrames; ++i)
 							{
@@ -187,15 +187,31 @@ namespace Game
 						}
 						else
 						{
-							access->onThreatIdentified(
-								-1,
-								L"invalid client speed",
-								::Net::ThreatLevel::Malicious);
 
+							differenceVariant += player.getFrameCount();
 							player.clearFrames();
 						}
 
-						access->sendMessage(Net::Host::ClassicSimulatorMessageID::PrepareSync);
+						if (differenceVariant > MaxFrameDifference ||
+							differenceVariant < MinimalDifferenceVairant)
+						{
+							access->onThreatIdentified(
+								-1,
+								L"too high differencevariant. speed hack detected",
+								::Net::ThreatLevel::Malicious);
+
+							access->sendMessage(Net::Host::ClassicSimulatorMessageID::SimulationClosed);
+							callback->onSimulationClosed();
+						}
+						else
+						{
+							access->onThreatIdentified(
+								-1,
+								L"high client speed indifference",
+								::Net::ThreatLevel::Uncommon);
+
+							access->sendMessage(Net::Host::ClassicSimulatorMessageID::PrepareSync);
+						}
 					}
 					else
 					{
@@ -276,9 +292,6 @@ namespace Game
 		{
 			switch (messageID)
 			{
-			case ::Net::Client::ClassicSimulatorMessageID::AcceptSync:
-
-				return true;
 			case ::Net::Client::ClassicSimulatorMessageID::PushMovement:
 			{
 				PackedFrameStatus packedFrameStatus;
@@ -293,10 +306,10 @@ namespace Game
 
 				return true;
 			}
-			case ::Net::Client::ClassicSimulatorMessageID::RequestSync:
+			case ::Net::Client::ClassicSimulatorMessageID::RequestSynchronize:
+				onRequestSynchronize();
 
-
-				return true;
+				break;
 			}
 
 			return false;
@@ -316,6 +329,10 @@ namespace Game
 
 		size_t processLogicCounter = 0;
 		sf::Uint64 missingFrames = 0;
+
+		// used to determine if overflow of frames
+		// is caused by bad connection or speedhack
+		sf::Int64 differenceVariant = 0;
 
 		bool adjustedGameSpeed = false;
 		sf::Int64 remainingAdjustedGameSpeed;
@@ -402,12 +419,11 @@ namespace Game
 				&message);
 		}
 
-		void onRequestSync()
+		void onRequestSynchronize()
 		{
 			Resource::MemoryWritePipe pipe;
 			
-			if (!simulation.writeState(&pipe) ||
-				!player.writeState(&pipe))
+			if (!simulation.writeState(&pipe))
 			{
 				Log::Error(L"Failed to writestates in synchronize",
 					bootInfo.representationID, L"reprID",
@@ -420,7 +436,7 @@ namespace Game
 			}
 
 			Net::Host::HostSynchronizeMessage message;
-			pipe.assign(message.content);
+			pipe.assign(message.state);
 
 			access->sendMessage(
 				Net::Host::ClassicSimulatorMessageID::Synchronize,

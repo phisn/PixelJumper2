@@ -88,8 +88,8 @@ namespace Game
 		Property<sf::Vector2f> spawn;
 		Property<sf::Vector2f> position, movement;
 
-		DefinedProperty<float> mass{ Shared::ValueDefinition::mass };
-		DefinedProperty<float> inputForce{ Shared::ValueDefinition::input_force };
+		Property<float> mass;
+		Property<float> inputForce;
 		Property<float> inputReduce;
 
 		TileDataStorage tileDataStorage;

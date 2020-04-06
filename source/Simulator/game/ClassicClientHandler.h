@@ -248,7 +248,18 @@ namespace Game
 
 		void onSimulationFailed(const ClassicSimulation::WorldFailure reason) override
 		{
-			//status = Status::Closing;
+			delete removeRequestHandler<ClassicSimulationHandler>();
+
+			// status = Status::Closing;
+
+			// logging and error message sending is already
+			// done by simulationhandler
+		}
+
+
+		void onSimulationClosed() override
+		{
+			delete removeRequestHandler<ClassicSimulationHandler>();
 
 			// logging and error message sending is already
 			// done by simulationhandler

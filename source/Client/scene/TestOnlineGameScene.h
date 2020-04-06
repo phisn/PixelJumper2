@@ -87,6 +87,8 @@ namespace
 			Framework::Core::PopTemporaryScene();
 		}
 
+		using ClientClassicSimulationHandler::synchronize;
+
 	private:
 		void onSimulationStarted() override
 		{
@@ -127,6 +129,11 @@ namespace Scene
 
 		void onEvent(const sf::Event event) override
 		{
+			if (event.type == sf::Event::KeyPressed &&
+				event.key.control && event.key.code == sf::Keyboard::Key::G)
+			{
+				handler->synchronize();
+			}
 		}
 
 		void onLogic(const sf::Time time) override

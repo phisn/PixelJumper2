@@ -138,7 +138,7 @@ namespace Game
 		virtual void onInternalUpdate() override
 		{
 			handleInput();
-			PlayerBase::onInternalUpdate();
+			LocalPlayer::onInternalUpdate();
 		}
 
 		KeyController<InputMode::Passive> respawnController{ &input, Game::InputSymbol::Reset, respawn };

@@ -227,7 +227,7 @@ namespace Game
 				return;
 			}
 
-			properties.movement += jumpForce / *properties.mass;
+			properties.movement += jumpForce / (*properties.mass * Shared::ValueDefinition::mass);
 		}
 
 		sf::Vector2f adjustForceJumpAssist(const sf::Vector2f tileForce) const
@@ -289,9 +289,9 @@ namespace Game
 				movement.x = -movement.x;
 			}
 			*/
-			float movementValue = properties.inputForce
+			float movementValue = (properties.inputForce * Shared::ValueDefinition::input_force)
 				* getForceAddition()
-				/ *properties.mass
+				/ (*properties.mass * Shared::ValueDefinition::mass)
 				* (inverted ? -1.f : 1.f);
 
 

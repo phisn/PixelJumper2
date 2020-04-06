@@ -40,6 +40,10 @@ namespace Net
 	class RequestHandler
 	{
 	public:
+		virtual ~RequestHandler()
+		{
+		}
+
 		virtual void initialize(ConnectionAccess* const access)
 		{
 			this->access = access;

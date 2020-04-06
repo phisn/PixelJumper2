@@ -35,8 +35,8 @@ namespace Game
 
 		ReadOnlyProperty<Property<sf::Uint16>, WorldProperties> playerCount;
 
-		DefinedProperty<sf::Vector2f> gravity{ Shared::ValueDefinition::gravity };
-		DefinedProperty<float> airResistance{ Shared::ValueDefinition::air_resistance };
+		Property<sf::Vector2f> gravity;
+		Property<float> airResistance;
 
 		ReadOnlyProperty<Property<sf::Uint32>, WorldProperties> tickCount;
 

@@ -123,6 +123,8 @@ namespace Game
 
 	struct ClientClassicSimulationHandlerCallback
 	{
+		virtual void onSimulationClosed() = 0;
+
 		// onSimulationFailure does not notify host
 		// host has to be notified manually
 		virtual void onSimulationFailure() = 0;
@@ -170,6 +172,10 @@ namespace Game
 			simulation.setPlayer(&player);
 		}
 
+		virtual ~ClientClassicSimulationHandler()
+		{
+		}
+
 		virtual bool initializeSimulation()
 		{
 			const ClassicSimulation::WorldFailure result = simulation.runWorld(info.worldID);
@@ -198,7 +204,10 @@ namespace Game
 				{
 					logicCounter -= adjustedTimeStep;
 
-					processLogic();
+					if (!processLogic())
+					{
+						break;
+					}
 
 					if (--remainingGameSpeedAdjustment == 0)
 					{
@@ -212,7 +221,8 @@ namespace Game
 				while (logicCounter > LogicTimeStep)
 				{
 					logicCounter -= LogicTimeStep;
-					processLogic();
+					if (!processLogic())
+						break;				
 				}
 			}
 		}
@@ -229,14 +239,7 @@ namespace Game
 
 		void update() override
 		{
-			Net::Client::PushMovementMessage message;
-			message.packetFrameStatus = &player.packedFrameStatus;
-			
-			access->sendMessage(
-				Net::Client::ClassicSimulatorMessageID::PushMovement,
-				&message);
-
-			player.packedFrameStatus.frames.clear();
+			sendPlayerMovement();
 		}
 
 		bool onMessage(
@@ -245,6 +248,13 @@ namespace Game
 		{
 			switch (messageID)
 			{
+			case Net::Host::ClassicSimulatorMessageID::SimulationClosed:
+			case Net::Host::ClassicSimulatorMessageID::SimulationFailed:
+				Log::Information(L"closed");
+
+				callback->onSimulationClosed();
+
+				return true;
 			case Net::Host::ClassicSimulatorMessageID::PushPlayer:
 				if (Net::Host::PushPlayerMessage message; loadMessage(messageID, &message, pipe))
 				{
@@ -301,10 +311,33 @@ namespace Game
 
 		void synchronize()
 		{
-			// remember last tick
-			// remember all frames from now on
-			// and apply them later
+			// need to send playermovement first to prevent any desynchroization
+			// issues caused by buffered movement
+			sendPlayerMovement();
+
+			if (access->sendMessage(Net::Client::ClassicSimulatorMessageID::RequestSynchronize))
+			{
+				synchronizing = true;
+				synchronizeBeginTick = simulation.getTick();
+			}
 		}
+
+		void sendPlayerMovement()
+		{
+			Net::Client::PushMovementMessage message;
+			message.packetFrameStatus = &player.packedFrameStatus;
+
+			access->sendMessage(
+				Net::Client::ClassicSimulatorMessageID::PushMovement,
+				&message);
+
+			player.packedFrameStatus.frames.clear();
+		}
+
+	private:
+		bool synchronizing;
+		std::deque<FrameStatus> synchronizingFrames;
+		sf::Uint32 synchronizeBeginTick;
 
 	private:
 		ClientClassicSimulationHandlerCallback* const callback;
@@ -352,7 +385,7 @@ namespace Game
 				{
 					return artificialPlayer->getInformation().playerId == message.playerID;
 				});
-
+			
 			if (iterator != artificialPlayers.end())
 				artificialPlayers.erase(iterator);
 		}
@@ -383,11 +416,26 @@ namespace Game
 
 		void onSynchronize(const Net::Host::HostSynchronizeMessage& message)
 		{
-			Resource::MemoryReadPipe pipe;
-			pipe.adopt(message.content);
+			if (!synchronizing)
+			{
+				Log::Error(L"synchronize tried without preparation",
+					message.state.size(), L"statesize",
+					info.worldID, L"worldID",
+					info.representationID, L"reprID",
+					player.getInformation().playerId, L"userID",
+					player.getInformation().name, L"username");
 
-			if (!simulation.readState(&pipe) ||
-				!player.readState(&pipe))
+				// simulation failure?
+
+				return;
+			}
+
+			synchronizing = false;
+
+			Resource::MemoryReadPipe pipe;
+			pipe.adopt(message.state);
+
+			if (!simulation.readState(&pipe))
 			{
 				Log::Error(L"Failed to synchronize simulationhandler",
 					info.representationID, L"reprID",
@@ -397,10 +445,65 @@ namespace Game
 
 				access->sendMessage(Net::Client::ClassicSimulatorMessageID::SimulationFailure);
 				callback->onSimulationFailure();
+
+				return;
 			}
+
+			if (simulation.getTick() < synchronizeBeginTick)
+			{
+				Log::Warning(L"Got invalid tick for synchronization",
+					simulation.getTick(), L"new_tick",
+					synchronizeBeginTick, L"prepared_tick",
+					info.representationID, L"reprID",
+					info.worldID, L"worldID",
+					player.getInformation().playerId, L"playerID",
+					player.getInformation().name, L"username");
+
+				synchronizingFrames.clear();
+
+				return;
+			}
+
+			if (simulation.getTick() - synchronizeBeginTick != 0)
+			{
+				Log::Information(L"true, this can be not zero [ccsh]",
+					simulation.getTick(), L"new_tick",
+					synchronizeBeginTick, L"beg_tick",
+					synchronizingFrames.size(), L"buffered");
+			}
+
+			Log::Information(L"before", player.injectedFrames.size(), L"injected");
+
+			// skipping all frames that the simulator received
+			for (int i = simulation.getTick() - synchronizeBeginTick; i < synchronizingFrames.size(); ++i)
+			{
+				player.inject(synchronizingFrames[i]);
+				
+				ClassicSimulation::WorldFailure result = simulation.processLogic();
+				if (result != ClassicSimulation::WorldFailure::Success)
+				{
+					access->sendMessage(Net::Client::ClassicSimulatorMessageID::SimulationFailure);
+					callback->onSimulationFailure();
+
+					Log::Error(L"Failed to process simulation",
+						(int)result, L"result");
+					
+					break;
+				}
+			}
+
+			Log::Information(L"after", player.injectedFrames.size(), L"injected",
+				simulation.getTick(), L"new_tick",
+				synchronizeBeginTick, L"prepared_tick",
+				info.representationID, L"reprID",
+				info.worldID, L"worldID",
+				player.getInformation().playerId, L"playerID",
+				player.getInformation().name, L"username");
+
+			synchronizingFrames.clear();
 		}
 
-		void processLogic()
+		bool processLogic()
 		{
 			const ClassicSimulation::WorldFailure result = simulation.processLogic();
 
@@ -411,6 +514,13 @@ namespace Game
 
 				Log::Error(L"Failed to process simulation",
 					(int)result, L"result");
+
+				return false;
+			}
+			else
+			{
+				if (synchronizing)
+					synchronizingFrames.push_back(player.packedFrameStatus.frames.back());
 			}
 
 			for (ArtificialPlayer* const artificialPlayer : artificialPlayers)
@@ -418,6 +528,8 @@ namespace Game
 				artificialPlayer->processLogic();
 				artificialPlayer->process(sf::microseconds(LogicTimeStep));
 			}
+
+			return true;
 		}
 	};
 }

@@ -9,6 +9,7 @@ namespace Game
 
 	// used to apply factor to value like input force
 
+	/*
 	template <typename T>
 	struct DefinedProperty
 	{
@@ -37,6 +38,11 @@ namespace Game
 			LazyProperty::setValue(value * valueFactor);
 		}
 
+		void setValueRaw(float value)
+		{
+			LazyProperty::setValue(value);
+		}
+
 	private:
 		const float valueFactor;
 	};
@@ -58,14 +64,20 @@ namespace Game
 			setValue(sf::Vector2f(1.f, 1.f));
 		}
 
-		void setValue(const sf::Vector2f value) override
+		void setValue(sf::Vector2f value) override
 		{
 			LazyProperty::setValue(value * valueFactor);
+		}
+
+		void setValueRaw(sf::Vector2f value)
+		{
+			LazyProperty::setValue(value);
 		}
 
 	private:
 		const float valueFactor;
 	};
+	*/
 
 	template <typename T, typename Parent>
 	using ReadOnlyProperty = Util::ReadOnlyPropertyContainer<T, Parent>;

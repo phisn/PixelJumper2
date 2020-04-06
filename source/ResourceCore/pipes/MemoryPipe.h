@@ -2,6 +2,8 @@
 
 #include "PipeBase.h"
 
+#include "Logger/Logger.h"
+
 #include <SFML/Network/Packet.hpp>
 
 namespace Resource
@@ -57,7 +59,7 @@ namespace Resource
 			buffer.reserve(size);
 		}
 
-		void assign(std::vector<char> target)
+		void assign(std::vector<char>& target)
 		{
 			target = std::move(buffer);
 			position = 0;
@@ -142,6 +144,13 @@ namespace Resource
 
 		void adopt(const std::vector<char>& buffer)
 		{
+			if (buffer.size() == 0)
+			{
+				Log::Error(L"got empty buffer in adopt memorypipe");
+				length = 0;
+				return;
+			}
+
 			this->buffer = &buffer[0];
 			length = buffer.size();
 		}

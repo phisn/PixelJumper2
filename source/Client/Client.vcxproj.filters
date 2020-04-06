@@ -54,6 +54,7 @@
     <ClCompile Include="game\ClientClassicSessionHandler.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\CachedControllablePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\TestGameScene.h">

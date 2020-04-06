@@ -119,7 +119,7 @@ namespace Util
 
 		operator const T() const
 		{
-			return value;
+			return getValue();
 		}
 
 		const T getValue() const
