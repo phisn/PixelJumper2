@@ -1,0 +1,2 @@
+C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\imgui-sfml.pdb
+C:\Users\phisn\source\repos\PixelJumper2\source\imgui-sfml\x64\Debug\imgui-sfml.pdb

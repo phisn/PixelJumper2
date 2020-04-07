@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{abf51c37-753f-4e82-90fa-5ba97d42cdbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\scene">
+      <UniqueIdentifier>{4eeb8faa-e530-455c-bb24-f25e96dbc065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\game">
+      <UniqueIdentifier>{bce7b2e8-4b8f-448a-99af-11add01f161f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\device">
+      <UniqueIdentifier>{442e8371-f0a4-4701-80cf-48b1d2823a2a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\TestGameScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ControllablePlayer.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="device\InputDevice.cpp">
+      <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\OperatorAuthScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\SettingsScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\RootScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientAuthenticationHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientClassicConnection.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientClassicSelectionHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientClassicSimulationHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\TestOnlineGameScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ClientClassicSessionHandler.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\CachedControllablePlayer.cpp" />
+    <ClCompile Include="scene\EditorScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="scene\TestGameScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ControllablePlayer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="device\InputDevice.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\OperatorAuthScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\SettingsScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\RootScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="game\CachedControllablePlayer.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ClientAuthenticationHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ClientClassicConnection.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ClientClassicSelectionHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ClientClassicSimulationHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\TestOnlineGameScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="game\ClientClassicSessionHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\EditorScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="settings.png">
+      <Filter>source</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client1.rc" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,3 @@
+C:\Users\phisn\source\repos\PixelJumper2\source\Logger\build\Debug_x64\Logger.pdb
+C:\Users\phisn\source\repos\PixelJumper2\source\Logger\x64\Debug\Logger.pdb
+C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\Logger.pdb

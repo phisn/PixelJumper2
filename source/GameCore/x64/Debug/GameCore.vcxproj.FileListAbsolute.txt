@@ -1,0 +1,2 @@
+C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\GameCore.pdb
+C:\Users\phisn\source\repos\PixelJumper2\source\GameCore\x64\Debug\GameCore.pdb

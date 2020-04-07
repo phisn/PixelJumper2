@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{6df45ca6-e033-4f8a-b2b0-3acbc05474fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\request">
+      <UniqueIdentifier>{4e31324d-5cc5-4ca7-8d6e-83a8009eb175}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OperatorClient.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="request\ClassicHostRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+    <ClInclude Include="request\AuthenticationRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+    <ClInclude Include="request\RequestInterface.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+    <ClInclude Include="request\CommonAuthenticationRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+    <ClInclude Include="request\FindClassicHostRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+    <ClInclude Include="request\RegisterClassicHostRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+    <ClInclude Include="request\CommonRegisterClassicHostRequest.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+    <ClInclude Include="request\CommonRequestInterface.h">
+      <Filter>source\request</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="OperatorClient.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

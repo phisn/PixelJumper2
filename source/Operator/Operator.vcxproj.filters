@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{18f47171-4607-4254-8da6-902cfac24e4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\device">
+      <UniqueIdentifier>{710f5df5-9356-4c47-a583-ce7471aecd99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\database">
+      <UniqueIdentifier>{87036c12-5b9a-4bbc-9d9e-b1e31eacb7ef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ActiveUserContainer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="AuthenticationHandler.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassicHostRequestHandler.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonRequestHandler.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Operator.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatorClientHandler.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="device\CoreDevice.cpp">
+      <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="database\DatabaseInterface.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="database\EmptyKeyStatement.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="database\KeyTable.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="database\UserTable.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="database\UserTypeByID.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="database\OperatorDatabase.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ActiveUserContainer.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="AuthenticationHandler.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicHostRequestHandler.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonRequestHandler.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="Operator.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="OperatorClientHandler.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="device\CoreDevice.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="database\DatabaseInterface.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="database\EmptyKeyStatement.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="database\KeyTable.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="database\UserTable.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="database\UserTypeByID.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="database\OperatorDatabase.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Operator.rc" />
+  </ItemGroup>
+</Project>

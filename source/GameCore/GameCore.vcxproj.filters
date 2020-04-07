@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{002edf6e-b8a4-401e-a410-37d901020e12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\trait">
+      <UniqueIdentifier>{39d86529-3fb0-455e-93e0-7deef122ba9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\component">
+      <UniqueIdentifier>{a0091783-0c4f-446b-9325-08b1b6f20f06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\net">
+      <UniqueIdentifier>{5a2ce8ae-e8fe-4ee3-8843-a1236ef96d89}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ClassicSimulation.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionEngine.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentFactory.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePlayer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameProperty.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameWorld.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalPlayer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerProperties.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRepresentation.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldProperties.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="net\SimulatorContext.cpp">
+      <Filter>source\net</Filter>
+    </ClCompile>
+    <ClCompile Include="net\VirtualPlayer.cpp">
+      <Filter>source\net</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ClassicSimulation.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEngine.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentFactory.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="DependentTileData.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityView.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="EnvironmentView.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameElementBase.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEvent.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePlayer.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameProperty.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTileBase.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWorld.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalPlayer.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInformation.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerProperties.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRepresentation.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldInformation.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldProperties.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="component\DynamicWorldTransitionComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="component\EmptyCollisionComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="component\SolidCollisionComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="component\TileComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\CollidableTrait.h">
+      <Filter>source\trait</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\DrawableTrait.h">
+      <Filter>source\trait</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\DynamicTrait.h">
+      <Filter>source\trait</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\DynamicWorldEntry.h">
+      <Filter>source\trait</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\DynamicWorldExit.h">
+      <Filter>source\trait</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\ExitableTrait.h">
+      <Filter>source\trait</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\InitializableTrait.h">
+      <Filter>source\trait</Filter>
+    </ClInclude>
+    <ClInclude Include="trait\StaticVisibleTrait.h">
+      <Filter>source\trait</Filter>
+    </ClInclude>
+    <ClInclude Include="net\ClassicSelectionMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\ClassicSimulatorMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\FrameStatus.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\NetPlayerMovement.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\SimulatorAuthenticationMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\SimulatorContext.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\VirtualPlayer.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSymbol.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="component\StaticVisibleComponent.h">
+      <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="net\ClassicSessionMessage.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+    <ClInclude Include="net\SimulatorSettings.h">
+      <Filter>source\net</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

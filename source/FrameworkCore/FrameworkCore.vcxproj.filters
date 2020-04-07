@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{2c91b4b4-b4e5-4e1a-909a-63e472f5d688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\imgui">
+      <UniqueIdentifier>{14ce2057-6ad5-4867-9c6f-9f050f18abc9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FrameworkCore.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenDevice.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewChain.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\ImGuiModalWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\ImGuiUtil.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\ImGuiWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\QuestionModalWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\LoadingModalWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\InformationModalWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FrameworkCore.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenDevice.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewChain.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\ImGuiModalWindow.cpp">
+      <Filter>source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\ImGuiWindow.cpp">
+      <Filter>source\imgui</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
