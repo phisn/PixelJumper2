@@ -1,8 +1,8 @@
 #pragma once
 
 #include "FrameworkCore/FrameworkCore.h"
-#include "FrameworkCore/ImGuiUtil.h"
-#include "FrameworkCore/ImGuiWindowComponent.h"
+#include "FrameworkCore/imgui/ImGuiUtil.h"
+#include "FrameworkCore/imgui/ImGuiWindow.h"
 
 namespace Scene
 {
@@ -14,7 +14,7 @@ namespace Scene
 	public:
 		SettingsWindow()
 			:
-			ImGuiWindowComponent(WindowFlagsStatic)
+			ImGuiWindowComponent(Framework::WindowFlagsStatic)
 		{
 			title = "login_window";
 		}

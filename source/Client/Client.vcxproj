@@ -20,6 +20,7 @@
     <ClCompile Include="game\ClientClassicSimulationHandler.cpp" />
     <ClCompile Include="game\ControllablePlayer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene\EditorScene.cpp" />
     <ClCompile Include="scene\OperatorAuthScene.cpp" />
     <ClCompile Include="scene\RootScene.cpp" />
     <ClCompile Include="scene\SettingsScene.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="game\ClientClassicSimulationHandler.h" />
     <ClInclude Include="game\ControllablePlayer.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="scene\EditorScene.h" />
     <ClInclude Include="scene\OperatorAuthScene.h" />
     <ClInclude Include="scene\RootScene.h" />
     <ClInclude Include="scene\SettingsScene.h" />

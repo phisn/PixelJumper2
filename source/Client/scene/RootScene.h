@@ -40,7 +40,7 @@ namespace Scene
 			ImGui::EndMainMenuBar();
 			
 			Framework::ImGuiSetRelativeNextWindowPos(ImVec2{ 0.5f, 0.5f });
-			ImGui::Begin("Selection", NULL, Framework::ImGuiWindowComponent::WindowFlagsStatic);
+			ImGui::Begin("Selection", NULL, Framework::WindowFlagsStatic);
 
 			if (ImGui::Button("Run", ImVec2{ 200, 0 }))
 				Framework::Core::PushScene<TestClassicClientScene>();

@@ -3,8 +3,11 @@
 #include "SettingsScene.h"
 
 #include "FrameworkCore/FrameworkCore.h"
-#include "FrameworkCore/ImGuiUtil.h"
-#include "FrameworkCore/ImGuiWindowComponent.h"
+#include "FrameworkCore/imgui/ImGuiWindow.h"
+#include "FrameworkCore/imgui/InformationModalWindow.h"
+#include "FrameworkCore/imgui/LoadingModalWindow.h"
+#include "FrameworkCore/imgui/QuestionModalWindow.h"
+
 #include "OperatorClient/OperatorClient.h"
 #include "OperatorClient/request/AuthenticationRequest.h"
 
@@ -63,7 +66,7 @@ namespace Scene
 	public:
 		LoginWindow()
 			:
-			ImGuiWindowComponent(WindowFlagsStatic)
+			ImGuiWindowComponent(Framework::WindowFlagsStatic)
 		{
 			title = "login_window";
 			Framework::ImGuiApplyColorStyleLight();
@@ -85,169 +88,6 @@ namespace Scene
 		{
 			ImGuiWindowComponent::end();
 		}
-	};
-
-	class QuestionWindow
-	{
-	public:
-		typedef std::function<void(bool)> Callback;
-
-		void process()
-		{
-			if (active)
-			{
-				ImGui::OpenPopup(name);
-				Framework::ImGuiSetRelativeNextWindowPos(ImVec2(0.5f, 0.5f));
-			}
-
-			if (ImGui::BeginPopupModal(name, NULL, Framework::ImGuiWindowComponent::WindowFlagsStatic))
-			{
-				ImGui::Text(question.c_str());
-				ImGui::Spacing();
-				ImGui::Separator();
-				ImGui::Spacing();
-
-				if (ImGui::Button("Yes"))
-				{
-					ImGui::CloseCurrentPopup();
-					active = false;
-					callback(true);
-				}
-				ImGui::SameLine();
-
-				if (ImGui::Button("No"))
-				{
-					ImGui::CloseCurrentPopup();
-					active = false;
-					callback(false);
-				}
-
-				ImGui::EndPopup();
-			}
-		}
-		
-		void open(const Callback callback, const std::string question)
-		{
-			this->callback = callback;
-			this->question = question;
-
-			active = true;
-		}
-
-		bool isActive() const
-		{
-			return active;
-		}
-
-	private:
-		const char* name = "###question_window";
-		bool active;
-
-		Callback callback;
-		std::string question;
-	};
-	
-	class LoadingWindow
-	{
-	public:
-		void process()
-		{
-			if (active)
-			{
-				ImGui::OpenPopup(name);
-			}
-
-			ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, sf::Color::Color(0, 0, 0, 200));
-
-			ImGuiIO& io = ImGui::GetIO();
-			ImGui::SetNextWindowPos(
-				ImVec2(io.DisplaySize.x * 0.99f, io.DisplaySize.y * 0.99f),
-				0,
-				ImVec2{ 1.f, 1.f });
-			if (ImGui::BeginPopupModal(name, NULL, Framework::ImGuiWindowComponent::WindowFlagsOverlay))
-			{
-				const ImU32 col = ImGui::GetColorU32(ImGuiCol_ButtonHovered);
-				const ImU32 bg = ImGui::GetColorU32(ImGuiCol_Button);
-
-				Framework::LoadingSpinner("##spinner", 30, sf::Color::Color(230, 230, 230), sf::Color::Color(150, 150, 150), 8, 4.f);
-
-				ImGui::SetWindowSize(
-					(sf::Vector2f) ImGui::GetWindowContentRegionMin() + sf::Vector2f{ 20, 20 }
-				);
-
-				if (!active)
-					ImGui::CloseCurrentPopup();
-
-				ImGui::EndPopup();
-			}
-
-			ImGui::PopStyleColor();
-		}
-
-		void open()
-		{
-			active = true;
-		}
-
-		void close()
-		{
-			active = false;
-		}
-
-		bool isActive() const
-		{
-			return active;
-		}
-
-	private:
-		const char* name = "loading_window";
-		bool active = false;
-	};
-
-	class CenteredInformationWindow
-	{
-	public:
-		void process()
-		{
-			if (active)
-			{
-				ImGui::OpenPopup(name);
-				Framework::ImGuiSetRelativeNextWindowPos(ImVec2(0.5f, 0.5f));
-			}
-
-			if (ImGui::BeginPopupModal(name, NULL, Framework::ImGuiWindowComponent::WindowFlagsStatic))
-			{
-				ImGui::Text(text.c_str());
-				ImGui::Spacing();
-				ImGui::Separator();
-				ImGui::Spacing();
-
-				if (ImGui::Button("Close"))
-				{
-					ImGui::CloseCurrentPopup();
-					active = false;
-				}
-
-				ImGui::EndPopup();
-			}
-		}
-
-		void open(const std::string text)
-		{
-			this->text = text;
-			active = true;
-		}
-
-		bool isActive() const
-		{
-			return active;
-		}
-
-	private:
-		const char* name = "centered_information_window";
-
-		std::string text;
-		bool active = false;
 	};
 
 	class OperatorAuthScene
@@ -350,7 +190,7 @@ namespace Scene
 			questionWindow.process();
 
 			if (ImGui::BeginPopupModal("register_popup", NULL,
-					Framework::ImGuiWindowComponent::WindowFlagsStatic))
+					Framework::WindowFlagsStatic))
 			{
 				ImGui::InputTextEx(
 					"###repeat_password", "Repeat password", 
@@ -439,10 +279,11 @@ namespace Scene
 		}
 
 	private:
-		LoadingWindow loadingWindow;
-		CenteredInformationWindow informationWindow;
+		Framework::LoadingModalWindow loadingWindow;
+		Framework::InformationModalWindow informationWindow;
+		Framework::QuestionModalWindow questionWindow;
+
 		LoginWindow window;
-		QuestionWindow questionWindow;
 		RootWindow rootWindow;
 
 		char username[username_limit];

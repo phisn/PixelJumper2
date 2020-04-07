@@ -46,11 +46,14 @@ namespace Net
 				typeid(T)
 			) != requestHandlers.end();
 		}
+		
+		template <typename T>
+		void deleteRequestHandler()
+		{
+			delete removeRequestHandler<T>();
+		}
 
-		// change to delete internally with
-		// default parameter "todelete" as true
-
-		/*template <typename T>
+		template <typename T>
 		T* removeRequestHandler()
 		{
 			for (int i = 0; i < requestHandlerTypes.size(); ++i)
@@ -65,7 +68,7 @@ namespace Net
 				}
 
 			return NULL;
-		}*/
+		}
 
 		bool callHandlersOnMessage(
 			const Net::MessageID messageID,

@@ -18,10 +18,22 @@
     <ClInclude Include="ViewChain.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiWindowComponent.h">
+    <ClInclude Include="imgui\ImGuiModalWindow.h">
       <Filter>source\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiUtil.h">
+    <ClInclude Include="imgui\ImGuiUtil.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\ImGuiWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\QuestionModalWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\LoadingModalWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\InformationModalWindow.h">
       <Filter>source\imgui</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +47,10 @@
     <ClCompile Include="ViewChain.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuiWindowComponent.cpp">
+    <ClCompile Include="imgui\ImGuiModalWindow.cpp">
+      <Filter>source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\ImGuiWindow.cpp">
       <Filter>source\imgui</Filter>
     </ClCompile>
   </ItemGroup>

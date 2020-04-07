@@ -82,14 +82,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp" />
-    <ClCompile Include="ImGuiWindowComponent.cpp" />
+    <ClCompile Include="imgui\ImGuiModalWindow.cpp" />
+    <ClCompile Include="imgui\ImGuiWindow.cpp" />
     <ClCompile Include="ScreenDevice.cpp" />
     <ClCompile Include="ViewChain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameworkCore.h" />
-    <ClInclude Include="ImGuiUtil.h" />
-    <ClInclude Include="ImGuiWindowComponent.h" />
+    <ClInclude Include="imgui\ImGuiModalWindow.h" />
+    <ClInclude Include="imgui\ImGuiUtil.h" />
+    <ClInclude Include="imgui\ImGuiWindow.h" />
+    <ClInclude Include="imgui\InformationModalWindow.h" />
+    <ClInclude Include="imgui\LoadingModalWindow.h" />
+    <ClInclude Include="imgui\QuestionModalWindow.h" />
     <ClInclude Include="ScreenDevice.h" />
     <ClInclude Include="ViewChain.h" />
   </ItemGroup>

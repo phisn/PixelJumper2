@@ -55,6 +55,9 @@
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="game\CachedControllablePlayer.cpp" />
+    <ClCompile Include="scene\EditorScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\TestGameScene.h">
@@ -96,6 +99,9 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="game\ClientClassicSessionHandler.h">
       <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\EditorScene.h">
+      <Filter>source\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
