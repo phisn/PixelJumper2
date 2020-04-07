@@ -9,8 +9,5 @@
     <ClCompile Include="main.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\imgui\imgui\imgui_demo.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
