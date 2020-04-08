@@ -109,21 +109,18 @@ namespace Framework
 		scenes.back()->onDraw(target);
 	}
 
-	bool Core::PushScene(Scene* const scene)
+	void Core::PushScene(Scene* const scene)
 	{
-		if (!IsValidCommand(Load) || !scene->onCreate())
+		if (IsValidCommand(Load))
 		{
-			return false;
-		}
+			currentCommand = Load;
+			if (scenes.size() > 0)
+			{
+				scenes.back()->onHide();
+			}
 
-		currentCommand = Load;
-		if (scenes.size() > 0)
-		{
-			scenes.back()->onHide();
+			scenes.push_back(scene);
 		}
-
-		scenes.push_back(scene);
-		return true;
 	}
 
 	void Core::PopScene()
@@ -134,15 +131,13 @@ namespace Framework
 		}
 	}
 
-	bool Core::PushTemporaryScene(
+	void Core::PushTemporaryScene(
 		Scene* const scene,
 		const bool haltMainScene)
 	{
-		if (scenes.empty() ||
-			!IsValidCommand(LoadTemporary) ||
-			!scene->onCreate())
+		if (scenes.empty() || !IsValidCommand(LoadTemporary))
 		{
-			return false;
+			return;
 		}
 
 		currentCommand = LoadTemporary;
@@ -153,7 +148,6 @@ namespace Framework
 		}
 
 		temporaryScenes.push_back(scene);
-		return true;
 	}
 
 	void Core::PopTemporaryScene()
@@ -182,57 +176,60 @@ namespace Framework
 
 	void ProcessFrameworkCommand()
 	{
-		FrameworkCommand temp = currentCommand;
-		currentCommand = Empty;
-
-		switch (temp)
+		while (currentCommand != Empty)
 		{
-		case LoadTemporary:
-			temporaryScenes.back()->initialize();
+			FrameworkCommand temp = currentCommand;
+			currentCommand = Empty;
 
-			break;
-		case UnloadTemporary:
-			delete temporaryScenes.back();
-			temporaryScenes.pop_back();
-
-			if (temporaryScenes.empty() && haltmain)
+			switch (temp)
 			{
+			case LoadTemporary:
+				temporaryScenes.back()->initialize();
+
+				break;
+			case UnloadTemporary:
+				delete temporaryScenes.back();
+				temporaryScenes.pop_back();
+
+				if (temporaryScenes.empty() && haltmain)
+				{
+					haltmain = false;
+					scenes.back()->onShow();
+				}
+
+				break;
+			case Fallback:
+				ClearTemporaryScenes();
+
+				if (haltmain)
+				{
+					haltmain = false;
+					temporaryScenes.back()->onShow();
+				}
+
+				break;
+			case Load:
+				scenes.back()->initialize();
+
+				break;
+			case Unload:
+				ClearTemporaryScenes();
 				haltmain = false;
-				scenes.back()->onShow();
+
+				delete scenes.back();
+				scenes.pop_back();
+
+				if (scenes.empty())
+				{
+					running = false;
+				}
+				else
+				{
+					scenes.back()->onShow();
+				}
+
+				break;
 			}
-
-			break;
-		case Fallback:
-			ClearTemporaryScenes();
-
-			if (haltmain)
-			{
-				haltmain = false;
-				temporaryScenes.back()->onShow();
-			}
-
-			break;
-		case Load:
-			scenes.back()->initialize();
-
-			break;
-		case Unload:
-			ClearTemporaryScenes();
-			haltmain = false;
-
-			delete scenes.back();
-			scenes.pop_back();
-
-			if (scenes.empty())
-			{
-				running = false;
-			}
-			else
-			{
-				scenes.back()->onShow();
-			}
-
-			break;
 		}
 	}
 }

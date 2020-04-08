@@ -42,15 +42,9 @@ namespace Scene
 		public Framework::Scene
 	{
 	public:
-		bool onCreate() override
-		{
-			darkmode = ImGui::GetStyle().Colors[ImGuiCol_Text].x == 1.f;
-			
-			return true;
-		}
-
 		void initialize() override
 		{
+			darkmode = ImGui::GetStyle().Colors[ImGuiCol_Text].x == 1.f;
 		}
 
 		void onEvent(const sf::Event event) override

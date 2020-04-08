@@ -13,6 +13,9 @@
     <Filter Include="source\device">
       <UniqueIdentifier>{442e8371-f0a4-4701-80cf-48b1d2823a2a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\classic">
+      <UniqueIdentifier>{423f5301-0a58-497a-b85e-6cd8319e5411}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -55,8 +58,8 @@
       <Filter>source\game</Filter>
     </ClCompile>
     <ClCompile Include="game\CachedControllablePlayer.cpp" />
-    <ClCompile Include="scene\EditorScene.cpp">
-      <Filter>source\scene</Filter>
+    <ClCompile Include="classic\ClassicBootScene.cpp">
+      <Filter>source\classic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,8 +103,8 @@
     <ClInclude Include="game\ClientClassicSessionHandler.h">
       <Filter>source\game</Filter>
     </ClInclude>
-    <ClInclude Include="scene\EditorScene.h">
-      <Filter>source\scene</Filter>
+    <ClInclude Include="classic\ClassicBootScene.h">
+      <Filter>source\classic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

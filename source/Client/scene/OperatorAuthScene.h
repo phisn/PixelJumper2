@@ -96,11 +96,6 @@ namespace Scene
 		public ::Operator::ClientAuthenticationRequest
 	{
 	public:
-		bool onCreate() override
-		{
-			return true;
-		}
-
 		void initialize() override
 		{
 		}

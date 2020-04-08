@@ -109,8 +109,8 @@ namespace Framework
 		}
 
 	private:
-		bool active;
-		bool opened;
+		bool active = false;
+		bool opened = false;
 	};
 
 	class IndependentModalWindow

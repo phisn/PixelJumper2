@@ -16,16 +16,18 @@ namespace Framework
 			title = "information_window";
 		}
 
-		void open(std::string text)
+		void open(std::string text, std::string button = "Close")
 		{
 			assert(!isActive());
 
+			this->button = button;
 			this->text = text;
+
 			ModalWindow::open();
 		}
 
 	private:
-		std::string text;
+		std::string text, button;
 
 		void onContent() override
 		{
@@ -34,7 +36,7 @@ namespace Framework
 			ImGui::Separator();
 			ImGui::Spacing();
 
-			if (ImGui::Button("Close"))
+			if (ImGui::Button(button.c_str()))
 			{
 				closeWindow();
 			}

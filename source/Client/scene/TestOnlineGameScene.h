@@ -119,14 +119,6 @@ namespace Scene
 		{
 		}
 
-		bool onCreate() override
-		{
-			Log::Error(L"scene created");
-
-
-			return true;
-		}
-
 		void onEvent(const sf::Event event) override
 		{
 			if (event.type == sf::Event::KeyPressed &&
@@ -165,6 +157,7 @@ namespace Scene
 		{
 		}
 
+		/*
 		bool onCreate() override
 		{
 			Resource::World* const world = new Resource::World;
@@ -191,7 +184,7 @@ namespace Scene
 			}
 
 			return true;
-		}
+		}*/
 
 		void onEvent(const sf::Event event) override
 		{

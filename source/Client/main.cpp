@@ -91,12 +91,7 @@ int main(int argc, char** argv)
 	ImGui::SFML::UpdateFontTexture();
 
 	Log::Information(L"initialize successfull");
-
-	if (!Framework::Core::PushScene<Scene::RootScene>())
-	{
-		Log::Error(L"push main scene failed");
-		return 6;
-	}
+	Framework::Core::PushScene<Scene::RootScene>();
 
 	sf::Clock clock;
 	sf::Event event;

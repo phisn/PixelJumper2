@@ -95,6 +95,8 @@
     <ClInclude Include="imgui\InformationModalWindow.h" />
     <ClInclude Include="imgui\LoadingModalWindow.h" />
     <ClInclude Include="imgui\QuestionModalWindow.h" />
+    <ClInclude Include="scene\InformationScene.h" />
+    <ClInclude Include="scene\QuestionScene.h" />
     <ClInclude Include="ScreenDevice.h" />
     <ClInclude Include="ViewChain.h" />
   </ItemGroup>

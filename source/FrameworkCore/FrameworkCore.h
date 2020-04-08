@@ -7,10 +7,6 @@ namespace Framework
 	struct Scene
 	{
 		virtual ~Scene() { }
-
-		// oncreate can fail but can not call frameworkcore
-		// initialize cant fail but can call frameworkcore
-		virtual bool onCreate() = 0;
 		virtual void initialize() { };
 
 		virtual void onEvent(const sf::Event event) = 0;
@@ -33,41 +29,27 @@ namespace Framework
 		void ProcessLogic(const sf::Time time);
 		void ProcessDraw(sf::RenderTarget* const target);
 
-		bool PushScene(Scene* const scene);
+		void PushScene(Scene* const scene);
 		void PopScene();
 
-		bool PushTemporaryScene(
+		void PushTemporaryScene(
 			Scene* const scene,
 			const bool haltMainScene = false);
 		void PopTemporaryScene();
 		void FallbackTemporaryScene();
 
 		template <typename T, class... Args>
-		inline bool PushScene(Args... args)
+		inline void PushScene(Args... args)
 		{
-			T* const value = new T(std::forward(args)...);
-
-			if (!PushScene(value))
-			{
-				delete value;
-				return false;
-			}
-
-			return true;
+			T* const value = new T(std::forward<Args>(args)...);
+			PushScene(value);
 		}
 
 		template <typename T, class... Args>
-		inline bool PushTemporaryScene(Args... args)
+		inline void PushTemporaryScene(Args... args)
 		{
-			T* const value = new T(std::forward(args)...);
-
-			if (!PushTemporaryScene(value))
-			{
-				delete value;
-				return false;
-			}
-
-			return true;
+			T* const value = new T(std::forward<Args>(args)...);
+			PushTemporaryScene(value);
 		}
 	}
 }

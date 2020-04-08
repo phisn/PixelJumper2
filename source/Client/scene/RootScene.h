@@ -1,5 +1,6 @@
 #pragma once
 
+#include "classic/ClassicBootScene.h"
 #include "OperatorAuthScene.h"
 #include "TestGameScene.h"
 #include "TestOnlineGameScene.h"
@@ -11,17 +12,9 @@ namespace Scene
 		public Framework::Scene
 	{
 	public:
-		bool onCreate() override
-		{
-			return true;
-		}
-
 		void initialize() override
 		{
-			if (!Framework::Core::PushScene<OperatorAuthScene>())
-			{
-				Framework::Core::PopScene();
-			}
+			Framework::Core::PushScene<OperatorAuthScene>();
 		}
 
 		void onEvent(const sf::Event event) override
@@ -43,7 +36,7 @@ namespace Scene
 			ImGui::Begin("Selection", NULL, Framework::WindowFlagsStatic);
 
 			if (ImGui::Button("Run", ImVec2{ 200, 0 }))
-				Framework::Core::PushScene<TestClassicClientScene>();
+				Framework::Core::PushScene<ClassicBootScene>();
 
 			if (ImGui::Button("Close", ImVec2{ 200, 0 }))
 				Framework::Core::PopScene();

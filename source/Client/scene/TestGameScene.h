@@ -32,6 +32,7 @@ namespace Scene
 		{
 		}
 
+		/*
 		bool onCreate() override
 		{
 			Resource::World* const world = new Resource::World;
@@ -107,7 +108,7 @@ namespace Scene
 			}
 
 			return true;
-		}
+		}*/
 
 		void initialize() override
 		{
