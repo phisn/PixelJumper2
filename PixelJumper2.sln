@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{9D541D98-BF6
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Simulator", "source\Simulator\Simulator.vcxproj", "{E009CEA3-2307-40D6-87EA-DCEC59A39B94}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EditorCore", "source\EditorCore\EditorCore.vcxproj", "{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		source\Common\Common.vcxitems*{3f11cb66-9d73-4186-a27a-4e25ef362a18}*SharedItemsImports = 9
@@ -170,6 +172,14 @@ Global
 		{E009CEA3-2307-40D6-87EA-DCEC59A39B94}.Release|x64.ActiveCfg = Release|x64
 		{E009CEA3-2307-40D6-87EA-DCEC59A39B94}.Release|x64.Build.0 = Release|x64
 		{E009CEA3-2307-40D6-87EA-DCEC59A39B94}.Release|x86.ActiveCfg = Release|x64
+		{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}.Debug|x64.ActiveCfg = Debug|x64
+		{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}.Debug|x64.Build.0 = Debug|x64
+		{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}.Debug|x86.ActiveCfg = Debug|x64
+		{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}.Release|Any CPU.ActiveCfg = Release|x64
+		{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}.Release|x64.ActiveCfg = Release|x64
+		{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}.Release|x64.Build.0 = Release|x64
+		{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -185,6 +195,7 @@ Global
 		{52DA07A5-220A-4D77-A4EB-B7A9FF800D9C} = {9D541D98-BF6E-418F-B27F-837325147FEA}
 		{A1F59AB9-4CEC-41B4-B63C-885086BD4DEA} = {9D541D98-BF6E-418F-B27F-837325147FEA}
 		{9FF64964-33BE-443C-8F95-B3A44651EC9A} = {9D541D98-BF6E-418F-B27F-837325147FEA}
+		{A53D892B-93C0-4A5E-ABAA-4B97DD86D334} = {9D541D98-BF6E-418F-B27F-837325147FEA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A289C1-7542-4D71-9DF1-A4BCEF27F935}

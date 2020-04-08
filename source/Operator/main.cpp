@@ -21,7 +21,7 @@
 
 int main()
 {
-	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Warning);
+	Log::Output::Add(Log::Output::FILE_OUT, Log::Level::Information);
 
 	if (Device::Core::Initialize())
 	{
