@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ActiveUserContainer.h"
 #include "database/DatabaseInterface.h"
 
 #include "Common/Common.h"
@@ -225,6 +226,11 @@ namespace Operator::Net
 			Database::ConditionResult result = DatabaseInterface::FindUserID(
 				&userID,
 				request.token);
+
+			if (GetUserMode(userID) != Usermode::Offline)
+			{
+
+			}
 
 			switch (result)
 			{

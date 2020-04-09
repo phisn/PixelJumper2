@@ -9,7 +9,7 @@ namespace Operator
 {
 	struct UserAuthentication
 	{
-		Operator::UserID userID;
+		UserID userID;
 
 		char hash[OPERATOR_HASH_SIZE];
 		char salt[OPERATOR_SALT_SIZE];

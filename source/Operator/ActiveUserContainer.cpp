@@ -1,26 +1,36 @@
 #include "ActiveUserContainer.h"
 
+#include <cassert>
 #include <unordered_map>
 
-namespace Operator::Net::UserContainer
+namespace Operator::Net
 {
-	namespace
+	std::unordered_map<UserID, UsermodeContainer*> users;
+
+	Usermode GetUserMode(UserID userID)
 	{
-		std::unordered_map<UserID, ActiveUserMode> users;
+		decltype(users)::const_iterator user = users.find(userID);
+		
+		return user == users.cend()
+			? Usermode::Offline
+			: user->second->usermode;
 	}
 
-	void SetUserMode(const UserID userID, const ActiveUserMode mode)
+	UsermodeContainer::UsermodeContainer(UserID userID)
+		:
+		userID(userID)
 	{
-		users[userID] = mode;
+		assert(users.find(userID) == users.end());
+		users[userID] = this;
 	}
 
-	ActiveUserMode GetUserMode(const UserID userID)
+	UsermodeContainer::~UsermodeContainer()
 	{
-		return users[userID];
+		users.erase(userID);
 	}
 }
 
-namespace Operator::Net::ClassicHostContainer
+namespace Operator::Net::_ClassicHostContainer
 {
 	namespace
 	{

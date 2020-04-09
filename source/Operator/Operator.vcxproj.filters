@@ -54,6 +54,9 @@
     <ClCompile Include="database\OperatorDatabase.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
+    <ClCompile Include="ActiveHostContainer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -95,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="database\OperatorDatabase.h">
       <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="ActiveHostContainer.h">
+      <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

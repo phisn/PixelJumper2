@@ -87,6 +87,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActiveHostContainer.cpp" />
     <ClCompile Include="ActiveUserContainer.cpp" />
     <ClCompile Include="AuthenticationHandler.cpp" />
     <ClCompile Include="ClassicHostRequestHandler.cpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="OperatorClientHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ActiveHostContainer.h" />
     <ClInclude Include="ActiveUserContainer.h" />
     <ClInclude Include="AuthenticationHandler.h" />
     <ClInclude Include="ClassicHostRequestHandler.h" />
