@@ -61,6 +61,9 @@
     <ClCompile Include="classic\ClassicBootScene.cpp">
       <Filter>source\classic</Filter>
     </ClCompile>
+    <ClCompile Include="classic\ClassicConnectionScene.cpp">
+      <Filter>source\classic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\TestGameScene.h">
@@ -104,6 +107,9 @@
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="classic\ClassicBootScene.h">
+      <Filter>source\classic</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\ClassicConnectionScene.h">
       <Filter>source\classic</Filter>
     </ClInclude>
   </ItemGroup>

@@ -32,11 +32,11 @@ namespace Framework
 		void PushScene(Scene* const scene);
 		void PopScene();
 
-		void PushTemporaryScene(
+		void PushChildScene(
 			Scene* const scene,
-			const bool haltMainScene = false);
-		void PopTemporaryScene();
-		void FallbackTemporaryScene();
+			const bool haltParentScene = false);
+		void PopChildScene();
+		void FallbackChildScene();
 
 		template <typename T, class... Args>
 		inline void PushScene(Args... args)
@@ -46,10 +46,10 @@ namespace Framework
 		}
 
 		template <typename T, class... Args>
-		inline void PushTemporaryScene(Args... args)
+		inline void PushChildScene(Args... args)
 		{
 			T* const value = new T(std::forward<Args>(args)...);
-			PushTemporaryScene(value);
+			PushChildScene(value);
 		}
 	}
 }

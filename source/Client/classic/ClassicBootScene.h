@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ClassicConnectionScene.h"
+
 #include "FrameworkCore/FrameworkCore.h"
 #include "FrameworkCore/imgui/LoadingModalWindow.h"
 #include "FrameworkCore/scene/InformationScene.h"
@@ -25,22 +27,7 @@ namespace Scene
 	public:
 		void initialize() override
 		{
-			Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
-				Net::Client::OperatorCommonMessageID::HostFindClassic,
-				NULL,
-				this);
-
-			if (result != Operator::Client::PushRequestFailure::Success)
-			{
-				Log::Error(L"classic boot failed",
-					(int) result, L"reason");
-
-				Framework::Core::PushTemporaryScene<::Scene::InformationScene>(
-					"Failed to find host (reason: " 
-					+ std::to_string((int) result)
-					+ ")");
-			}
-
+			findClassicHost();
 			window.open();
 		}
 
@@ -60,11 +47,54 @@ namespace Scene
 		{
 		}
 
+		void onShow() override
+		{
+			// if classic connection scene pops child scene
+			// restart connection
+			findClassicHost();
+		}
+
 	private:
 		Framework::LoadingModalWindow window;
 
+		void findClassicHost()
+		{
+			Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
+				Net::Client::OperatorCommonMessageID::HostFindClassic,
+				NULL,
+				this);
+
+			if (result != Operator::Client::PushRequestFailure::Success)
+			{
+				Log::Error(L"classic boot failed",
+					(int)result, L"reason");
+
+				Framework::Core::PushChildScene<::Scene::InformationScene>(
+					"Failed to find host (reason: "
+					+ std::to_string((int)result)
+					+ ")");
+			}
+		}
+
 		void onClassicHostFound(Net::Host::HostFindClassicMessage& message) override
 		{
+			ClassicConnectionScene* scene = new ClassicConnectionScene;
+
+			Game::ClassicConnectionInformation info;
+			info.address = message.address;
+			info.key = message.key;
+
+			if (scene->initialize(info))
+			{
+				Framework::Core::PushChildScene(scene);
+			}
+			else
+			{
+				delete scene;
+
+				Framework::Core::PushChildScene<::Scene::InformationScene>(
+					"Failed to open connection to classic host");
+			}
 		}
 
 		void onClassicHostFindRejected(Net::Host::HostFindClassicRejectedMessage& message) override
@@ -75,12 +105,12 @@ namespace Scene
 			switch (message.type)
 			{
 			case Net::Host::HostFindClassicRejectedMessage::InvalidUserMode:
-				Framework::Core::PushTemporaryScene<::Scene::InformationScene>(
+				Framework::Core::PushChildScene<::Scene::InformationScene>(
 					"Failed to find classic host, invalid user mode");
 
 				break;
 			case Net::Host::HostFindClassicRejectedMessage::NoHostAvailable:
-				Framework::Core::PushTemporaryScene<::Scene::InformationScene>(
+				Framework::Core::PushChildScene<::Scene::InformationScene>(
 					"Currently no classic host available");
 
 				break;
@@ -93,7 +123,7 @@ namespace Scene
 			Log::Error(L"Findhost request failed",
 				(int) reason, L"reason");
 
-			Framework::Core::PushTemporaryScene<::Scene::InformationScene>(
+			Framework::Core::PushChildScene<::Scene::InformationScene>(
 				"Failed to find host (reason: "
 				+ std::to_string((int) reason)
 				+ ")");

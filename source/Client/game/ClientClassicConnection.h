@@ -41,7 +41,7 @@ namespace Game
 	class ClientClassicConnection
 		:
 		public Net::RequestContainer,
-		public Net::ClientBase,
+		private Net::ClientBase,
 		public ClassicHandlerCallbacks
 	{
 	public:

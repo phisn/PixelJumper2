@@ -84,7 +84,7 @@ namespace
 		~TestClientSimulationHandler()
 		{
 			Log::Error(L"destructor");
-			Framework::Core::PopTemporaryScene();
+			Framework::Core::PopChildScene();
 		}
 
 		using ClientClassicSimulationHandler::synchronize;
@@ -261,7 +261,7 @@ namespace Scene
 				&viewChain.getView(0),
 				0);
 
-			Framework::Core::PushTemporaryScene(
+			Framework::Core::PushChildScene(
 				new TestClassicClientSimulationSubScene(handler, &viewChain.getView(0)),
 				false);
 

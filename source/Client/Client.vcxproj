@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="classic\ClassicBootScene.cpp" />
+    <ClCompile Include="classic\ClassicConnectionScene.cpp" />
     <ClCompile Include="device\InputDevice.cpp" />
     <ClCompile Include="game\CachedControllablePlayer.cpp" />
     <ClCompile Include="game\ClientAuthenticationHandler.cpp" />
@@ -55,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classic\ClassicBootScene.h" />
+    <ClInclude Include="classic\ClassicConnectionScene.h" />
     <ClInclude Include="device\InputDevice.h" />
     <ClInclude Include="game\CachedControllablePlayer.h" />
     <ClInclude Include="game\ClientAuthenticationHandler.h" />

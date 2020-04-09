@@ -4,18 +4,28 @@
 
 namespace
 {
-	std::deque<Framework::Scene*> scenes;
-	std::deque<Framework::Scene*> temporaryScenes;
+	struct ChildContainer
+	{
+		Framework::Scene* scene;
+		bool haltParent;
+	};
+
+	struct SceneContainer
+	{
+		Framework::Scene* scene;
+		std::vector<ChildContainer> childs;
+	};
+
+	std::vector<SceneContainer> scenes;
 
 	bool running = false;
-	bool haltmain = false;
-
+	
 	enum FrameworkCommand
 	{
 		Empty,
 
-		LoadTemporary,
-		UnloadTemporary,
+		LoadChild,
+		UnloadChild,
 		Fallback,
 
 		Load,
@@ -31,7 +41,7 @@ namespace Framework
 		return running && currentCommand < command;
 	}
 
-	void ClearTemporaryScenes();
+	void ClearChildScenes();
 	void ProcessFrameworkCommand();
 
 	bool Core::Initialize()
@@ -61,13 +71,13 @@ namespace Framework
 			return;
 		}
 
-		if (temporaryScenes.size() > 0)
+		if (scenes.back().childs.size() > 0)
 		{
-			temporaryScenes.back()->onEvent(event);
+			scenes.back().childs.back().scene->onEvent(event);
 		}
 		else
 		{
-			scenes.back()->onEvent(event);
+			scenes.back().scene->onEvent(event);
 		}
 	}
 
@@ -80,15 +90,16 @@ namespace Framework
 			return;
 		}
 
-		if (temporaryScenes.size() > 0)
+		if (scenes.back().childs.size() > 0)
 		{
-			temporaryScenes.back()->onLogic(time);
-
-			if (haltmain)
+			ChildContainer& child = scenes.back().childs.back();
+			child.scene->onLogic(time);
+			
+			if (child.haltParent)
 				return;
 		}
 
-		scenes.back()->onLogic(time);
+		scenes.back().scene->onLogic(time);
 	}
 
 	void Core::ProcessDraw(sf::RenderTarget* const target)
@@ -98,15 +109,16 @@ namespace Framework
 			return;
 		}
 
-		if (temporaryScenes.size() > 0)
+		if (scenes.back().childs.size() > 0)
 		{
-			temporaryScenes.back()->onDraw(target);
+			ChildContainer& child = scenes.back().childs.back();
+			child.scene->onDraw(target);
 
-			if (haltmain)
+			if (child.haltParent)
 				return;
 		}
 
-		scenes.back()->onDraw(target);
+		scenes.back().scene->onDraw(target);
 	}
 
 	void Core::PushScene(Scene* const scene)
@@ -114,12 +126,23 @@ namespace Framework
 		if (IsValidCommand(Load))
 		{
 			currentCommand = Load;
+
 			if (scenes.size() > 0)
 			{
-				scenes.back()->onHide();
+				if (scenes.back().childs.size() > 0)
+				{
+					scenes.back().childs.back().scene->onHide();
+
+					if (!scenes.back().childs.back().haltParent)
+						scenes.back().scene->onHide();
+				}
+				else
+				{
+					scenes.back().scene->onHide();
+				}
 			}
 
-			scenes.push_back(scene);
+			scenes.emplace_back().scene = scene;
 		}
 	}
 
@@ -131,47 +154,62 @@ namespace Framework
 		}
 	}
 
-	void Core::PushTemporaryScene(
-		Scene* const scene,
-		const bool haltMainScene)
+	void Core::PushChildScene(
+		Scene* scene,
+		bool haltParent)
 	{
-		if (scenes.empty() || !IsValidCommand(LoadTemporary))
+		if (scenes.empty() || !IsValidCommand(LoadChild))
 		{
 			return;
 		}
 
-		currentCommand = LoadTemporary;
-		if (haltMainScene)
+		currentCommand = LoadChild;
+
+		if (haltParent && (scenes.back().childs.size() == 0 || !scenes.back().childs.back().haltParent))
 		{
-			haltmain = true;
-			scenes.back()->onHide();
+			scenes.back().scene->onHide();
+		}
+		
+		// if any of the current childs already halts parent scene
+		// then change haltParent to true
+		if (!haltParent && scenes.back().childs.size() > 0)
+		{
+			for (ChildContainer& child : scenes.back().childs)
+				if (child.haltParent)
+				{
+					haltParent = true;
+					break;
+				}
 		}
 
-		temporaryScenes.push_back(scene);
+		ChildContainer& child = scenes.back().childs.emplace_back();
+
+		child.haltParent = haltParent;
+		child.scene = scene;
 	}
 
-	void Core::PopTemporaryScene()
+	void Core::PopChildScene()
 	{
-		if (temporaryScenes.size() > 0 && IsValidCommand(UnloadTemporary))
+		if (scenes.back().childs.size() > 0 && IsValidCommand(UnloadChild))
 		{
-			currentCommand = UnloadTemporary;
+			currentCommand = UnloadChild;
 		}
 	}
 
-	void Core::FallbackTemporaryScene()
+	void Core::FallbackChildScene()
 	{
-		if (temporaryScenes.size() > 0 && IsValidCommand(Fallback))
+		if (scenes.back().childs.size() > 0 && IsValidCommand(Fallback))
 		{
 			currentCommand = Fallback;
 		}
 	}
 
-	void ClearTemporaryScenes()
+	void ClearChildScenes()
 	{
-		for (Scene* const scene : temporaryScenes)
-			delete scene;
+		for (ChildContainer& child : scenes.back().childs)
+			delete child.scene;
 
-		temporaryScenes.clear();
+		scenes.back().childs.clear();
 	}
 
 	void ProcessFrameworkCommand()
@@ -183,40 +221,45 @@ namespace Framework
 
 			switch (temp)
 			{
-			case LoadTemporary:
-				temporaryScenes.back()->initialize();
+			case LoadChild:
+				scenes.back().childs.back().scene->initialize();
 
 				break;
-			case UnloadTemporary:
-				delete temporaryScenes.back();
-				temporaryScenes.pop_back();
+			case UnloadChild:
+			{
+				bool wasHaltParent = scenes.back().childs.back().haltParent;
 
-				if (temporaryScenes.empty() && haltmain)
+				delete scenes.back().childs.back().scene;
+				scenes.back().childs.pop_back();
+
+				if ((scenes.back().childs.empty() || !scenes.back().childs.back().haltParent ) && wasHaltParent)
 				{
-					haltmain = false;
-					scenes.back()->onShow();
+					scenes.back().scene->onShow();
 				}
 
 				break;
+			}
 			case Fallback:
-				ClearTemporaryScenes();
+			{
+				bool wasHaltParent = scenes.back().childs.back().haltParent;
 
-				if (haltmain)
+				ClearChildScenes();
+
+				if (wasHaltParent)
 				{
-					haltmain = false;
-					temporaryScenes.back()->onShow();
+					scenes.back().scene->onShow();
 				}
 
 				break;
+			}
 			case Load:
-				scenes.back()->initialize();
+				scenes.back().scene->initialize();
 
 				break;
 			case Unload:
-				ClearTemporaryScenes();
-				haltmain = false;
+				ClearChildScenes();
 
-				delete scenes.back();
+				delete scenes.back().scene;
 				scenes.pop_back();
 
 				if (scenes.empty())
@@ -225,7 +268,7 @@ namespace Framework
 				}
 				else
 				{
-					scenes.back()->onShow();
+					scenes.back().scene->onShow();
 				}
 
 				break;
