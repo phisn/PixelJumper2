@@ -171,14 +171,11 @@ namespace Net::Host
 			// similiar like normal authentication
 			// but with token
 			AcceptToken,
-			RejectToken,
-
 			AcceptAuthentication,
 
-			// reject authentication does not specify
-			// reason to prevent information gathering
-			// of the database
-			RejectAuthentication,
+			// authentication failure for token and
+			// general authentication
+			AuthenticationFailure,
 
 			_Offset
 		};
@@ -198,6 +195,23 @@ namespace Net::Host
 	};
 
 	typedef ::Net::TrivialNetworkMessage<AcceptOperatorTokenMessageContent> AcceptOperatorTokenMessage;
+
+	enum class AuthenticationFailureReason
+	{
+		AlreadyOnline,
+		// alreadyhosting only called when trying to login
+		// with cred because this would cause the recreation of
+		// the authentication token
+		AlreadyHosting,
+		AuthenticationRejected
+	};
+
+	struct AuthenticationFailureMessageContent
+	{
+		AuthenticationFailureReason reason;
+	};
+
+	typedef TrivialNetworkMessage<AuthenticationFailureMessageContent> AuthenticationFailureMessage;
 
 	struct AcceptOperatorRegistrationMessageContent
 	{

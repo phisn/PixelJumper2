@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ActiveUserContainer.h"
+#include "ActiveHostContainer.h"
 
 #include "Common/Common.h"
 #include "NetCore/message/OperatorClassicSimulatorMessage.h"
@@ -21,10 +22,15 @@ namespace Operator::Net
 		public ::Net::RequestHandler
 	{
 	public:
-		ClassicHostRequestHandler(const UserID userID)
+		ClassicHostRequestHandler(
+			UserID userID,
+			SteamNetworkingIPAddr address)
 			:
-			userID(userID)
+			userID(userID),
+			hostContainer(userID)
 		{
+			hostContainer.host.address = address;
+			hostContainer.maxPlayers = 100;
 		}
 
 		void update() override
@@ -52,19 +58,10 @@ namespace Operator::Net
 
 	private:
 		const UserID userID;
+		ClassicHostContainer hostContainer;
 
 		void onRequestClientData(const ::Net::Client::ClassicRequestClientDataMessage& request)
 		{
-			if (UserContainer::GetUserMode(request.userID) != ActiveUserMode::Waiting)
-			{
-				::Net::Host::RequestClientDataFailedMessage message;
-				message.type = message.InvalidUserMode;
-
-				access->sendMessage(
-					::Net::Host::OperatorClassicHostID::RequestClientDataFailed,
-					&message);
-			}
-			
 			::Net::Host::ClassicRequestClientDataMessage message;
 
 			message.username = "username";

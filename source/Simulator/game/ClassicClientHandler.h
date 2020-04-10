@@ -12,15 +12,20 @@
 
 namespace Game
 {
-	class ClassicClientHandler
+	struct ClassicHandlerCallbacks
 		:
-		public ::Net::ClientHandler,
-		public ::Net::RequestContainer,
-		public SimulatorContextCallback,
-
 		public AuthenticationHandlerCallback,
 		public ClassicSelectionHandlerCallback,
 		public ClassicSimulatorHandlerCallback
+	{
+	};
+
+	class ClassicClientHandler
+		:
+		public ClassicHandlerCallbacks,
+		public ::Net::ClientHandler,
+		public ::Net::RequestContainer,
+		public SimulatorContextCallback
 	{
 	public:
 		struct Settings
@@ -173,15 +178,16 @@ namespace Game
 		// request handlers
 	private:
 		void onAuthenticated(
-			const Operator::UserID userID,
-			::Net::Host::ClassicRequestClientDataMessage* const answer) override
+			Operator::UserID userID,
+			std::string& username,
+			Resource::ClassicPlayerResource& classicResource) override
 		{
 			Log::Information(L"Client authenticated",
 				userID, L"userID");
 
 			this->userID = userID;
-			classicResource = std::move(answer->resource);
-			username = answer->username;
+			classicResource = std::move(classicResource);
+			this->username = std::move(username);
 
 			delete removeRequestHandler<AuthenticationHandler>();
 			addRequestHandler(new HostClassicSessionHandler);
@@ -196,7 +202,7 @@ namespace Game
 			{
 				Resource::PlayerResource* const resource = new Resource::PlayerResource();
 				resource->content.playerID = userID;
-				resource->username = username;
+				resource->username = this->username;
 				context.registerPlayer(resource, this);
 
 				selectionHandler = new ClassicSelectionHandler(

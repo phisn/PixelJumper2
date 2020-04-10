@@ -94,14 +94,12 @@ namespace Operator::Net
 			switch (result)
 			{
 			case Database::ConditionResult::NotFound:
-				access->sendMessage(
-					::Net::Host::OperatorAuthenticationMessageID::RejectAuthentication,
-					NULL);
+				sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason::AuthenticationRejected);
 
 				access->onThreatIdentified(
 					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
 					L"wrong username",
-					::Net::ThreatLevel::Suspicious);
+					::Net::ThreatLevel::Uncommon);
 
 				return;
 			case Database::ConditionResult::Error:
@@ -121,9 +119,18 @@ namespace Operator::Net
 
 			if (memcmp(messageHash, user.hash, OPERATOR_HASH_SIZE) != 0)
 			{
-				access->sendMessage(
-					::Net::Host::OperatorAuthenticationMessageID::RejectAuthentication,
-					NULL);
+				sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason::AuthenticationRejected);
+				return;
+			}
+
+			switch (GetUserMode(user.userID))
+			{
+			case Usermode::Hosting:
+				sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason::AlreadyHosting);
+				
+				return;
+			case Usermode::Online:
+				sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason::AlreadyOnline);
 
 				return;
 			}
@@ -131,8 +138,8 @@ namespace Operator::Net
 			::Net::Host::AcceptOperatorAuthenticationMessage message;
 
 			if (!DatabaseInterface::CreatePlayerToken(
-				message.authenticationToken,
-				user.userID))
+					message.authenticationToken,
+					user.userID))
 			{
 				access->sendMessage(
 					::Net::CommonMessageID::InternalError,
@@ -227,25 +234,29 @@ namespace Operator::Net
 				&userID,
 				request.token);
 
-			if (GetUserMode(userID) != Usermode::Offline)
+			if (GetUserMode(userID) == Usermode::Online)
 			{
-
+				sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason::AlreadyOnline);
+				return;
 			}
 
 			switch (result)
 			{
 			case Database::ConditionResult::NotFound:
-				access->sendMessage(
-					::Net::Host::OperatorAuthenticationMessageID::RejectToken,
-					NULL);
+				sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason::AuthenticationRejected);
 
-				break;
+				access->onThreatIdentified(
+					::Net::Client::OperatorAuthenticationMessageID::Token,
+					L"invaldi token",
+					::Net::ThreatLevel::Uncommon);
+
+				return;
 			case Database::ConditionResult::Error:
 				access->sendMessage(
 					::Net::CommonMessageID::InternalError,
 					NULL);
 
-				break;
+				return;
 			}
 
 			::Net::Host::AcceptOperatorTokenMessage message;
@@ -256,6 +267,16 @@ namespace Operator::Net
 				&message);
 
 			callback->onAuthenticated(userID);
+		}
+
+		void sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason reason)
+		{
+			::Net::Host::AuthenticationFailureMessage message;
+			message.reason = ::Net::Host::AuthenticationFailureReason::AuthenticationRejected;
+
+			access->sendMessage(
+				::Net::Host::OperatorAuthenticationMessageID::AuthenticationFailure,
+				&message);
 		}
 	};
 }

@@ -70,8 +70,13 @@ namespace Net::Host
 		enum class Reason
 		{
 			InvalidConnectionKey,
-			UserIDUsed,
-			OperatorRequestFailed
+			UserRegisteredSomewhere,
+			// we have some major problem with the operator
+			// could be crashed or shutdown
+			OperatorRequestFailed,
+			// received authentication message
+			// more than one time
+			MultipleAuthentication
 
 		} reason;
 	};

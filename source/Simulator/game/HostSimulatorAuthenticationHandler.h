@@ -12,15 +12,16 @@ namespace Game
 	struct AuthenticationHandlerCallback
 	{
 		virtual void onAuthenticated(
-			const Operator::UserID userID,
-			::Net::Host::ClassicRequestClientDataMessage* const answer) = 0;
+			Operator::UserID userID,
+			std::string& username,
+			Resource::ClassicPlayerResource& classicResource) = 0;
 		virtual void onAuthenticationDenied() = 0;
 	};
 
 	class AuthenticationHandler
 		:
 		public ::Net::RequestHandler,
-		public Operator::ClassicHostClientDataRequest
+		public Operator::ClassicHostRegisterClientRequest
 	{
 	public:
 		AuthenticationHandler(
@@ -53,7 +54,6 @@ namespace Game
 			case ::Net::Client::AuthenticationMessageID::Authenticate:
 				if (::Net::Client::AuthenticationMessage message; loadMessage(messageID, &message, pipe))
 				{
-
 					onAuthenticate(message);
 				}
 
@@ -69,9 +69,27 @@ namespace Game
 		sf::Uint32 timeout;
 		Operator::UserID userID;
 
+		// prevent repetetive sending of authentication messages
+		bool awaitingOperatorAnswer = false;
+
 		void onAuthenticate(const ::Net::Client::AuthenticationMessage& request)
 		{
-			Log::Information(L"authenticate");
+			if (awaitingOperatorAnswer)
+			{
+				sendAuthenticationRejectedMessage(
+					::Net::Host::AuthenticationRejectedMessageContent::Reason::MultipleAuthentication
+				);
+
+				Log::Error(L"received authentication message multiple times",
+					userID, L"userID");
+
+				access->onThreatIdentified(
+					::Net::Client::AuthenticationMessageID::Authenticate,
+					L"client tried to authenticate multiple times",
+					Net::ThreatLevel::Suspicious);
+
+				callback->onAuthenticationDenied();
+			}
 
 			Operator::ConnectionKeySource keySource;
 
@@ -82,17 +100,18 @@ namespace Game
 
 			if (request.key.validate(keySource))
 			{
-				::Net::Client::ClassicRequestClientDataMessage* message = new ::Net::Client::ClassicRequestClientDataMessage;
+				awaitingOperatorAnswer = true;
+
+				::Net::Client::OperatorClassicHost::RegisterClientMessage* message = new ::Net::Client::OperatorClassicHost::RegisterClientMessage;
 				message->userID = userID = request.userID;
 
 				Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
-					::Net::Client::OperatorClassicHostID::ClientData,
+					::Net::Client::OperatorClassicHostID::RegisterClient,
 					message,
-					(Operator::ClassicHostClientDataRequest*) this);
+					(Operator::ClassicHostRegisterClientRequest*) this);
 
 				if (result != Operator::Client::PushRequestFailure::Success)
 				{
-					Log::Information(L"authenticate3");
 					sendAuthenticationRejectedMessage(
 						::Net::Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
 					);
@@ -103,16 +122,25 @@ namespace Game
 
 					callback->onAuthenticationDenied();
 				}
-
-				Log::Information(L"authenticate4");
+				else
+				{
+					Log::Information(L"authentication succeeded, awaiting operator confirmation",
+						userID, L"userID");
+				}
 			}
 			else
 			{
-				Log::Information(L"authentication failed");
+				Log::Information(L"authentication failed",
+					userID, L"userID");
 
 				sendAuthenticationRejectedMessage(
-					::Net::Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
+					::Net::Host::AuthenticationRejectedMessageContent::Reason::InvalidConnectionKey
 				);
+
+				access->onThreatIdentified(
+					::Net::Client::AuthenticationMessageID::Authenticate,
+					L"got invalid authentication key",
+					Net::ThreatLevel::Suspicious);
 
 				callback->onAuthenticationDenied();
 			}
@@ -128,22 +156,25 @@ namespace Game
 				&message);
 		}
 
-		void onClassicClientData(::Net::Host::ClassicRequestClientDataMessage& answer) override
+		void onClientRegistered(Net::Host::OperatorClassicHost::ClientRegisteredMessage& answer) override
 		{
 			Log::Information(L"received client data for",
-				answer.username, L"username",
+				answer.message.username, L"username",
 				userID, L"userID");
 
 			::Net::Host::AuthenticationAcceptedMessage message;
 
-			message.resource = &answer.resource;
-			message.username = &answer.username;
+			message.resource = &answer.message.resource;
+			message.username = &answer.message.username;
 
 			if (access->sendMessage(
 					::Net::Host::AuthenticationMessageID::AuthenticationAccepted,
 					&message))
 			{
-				callback->onAuthenticated(userID, &answer);
+				callback->onAuthenticated(
+					userID, 
+					answer.message.username,
+					answer.message.resource);
 			}
 			else
 			{
@@ -151,14 +182,29 @@ namespace Game
 			}
 		}
 
-		void onRequestClassicClientDataFailed(::Net::Host::HostFindClassicRejectedMessage& message) override
+		void onClientRegisterFailed(Net::Host::OperatorClassicHost::ClientRegistrationFailedMessage& message) override
 		{
 			Log::Error(L"Failed to retrive client data",
-				(int) message.type, L"type");
+				(int) message.reason, L"type");
 			
-			sendAuthenticationRejectedMessage(
-				::Net::Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
-			);
+			switch (message.reason)
+			{
+			case Net::Host::OperatorClassicHost::ClientRegistrationFailedReason::UserRegisteredSomewhere:
+				sendAuthenticationRejectedMessage(
+					::Net::Host::AuthenticationRejectedMessageContent::Reason::UserRegisteredSomewhere
+				);
+
+				break;
+			default:
+				Log::Error(L"missing reason case in hostsimulatorauthenticationhandler in onclientregisterfailed",
+					message.reason, L"reason");
+
+				sendAuthenticationRejectedMessage(
+					::Net::Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed
+				);
+
+				break;
+			}
 
 			callback->onAuthenticationDenied();
 		}
@@ -170,7 +216,7 @@ namespace Game
 			);
 
 			Log::Error(L"Getclientdata request failed",
-				(int)reason, L"reason");
+				(int) reason, L"reason");
 			callback->onAuthenticationDenied();
 		}
 	};

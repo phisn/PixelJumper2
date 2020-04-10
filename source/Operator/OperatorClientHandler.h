@@ -115,13 +115,6 @@ namespace Operator::Net
 			{
 				status = Status::Hosting;
 
-				addRequestHandler<ClassicHostRequestHandler>(
-					new ClassicHostRequestHandler(
-						userID)
-				);
-
-				ClassicHostConfig config;
-
 				SteamNetConnectionInfo_t connectionInfo;
 				if (!networkInterface->GetConnectionInfo(
 						connection,
@@ -129,14 +122,19 @@ namespace Operator::Net
 				{
 					Log::Error(L"Failed to retrive connection info");
 					status = Status::Closing;
+
+					return;
 				}
 
-				config.host.address = connectionInfo.m_addrRemote;
-				config.host.address.m_port = message.port;
-				config.host.userID = userID;
-				config.maxPlayers = message.maxPlayers;
+				SteamNetworkingIPAddr address;
+				address = connectionInfo.m_addrRemote;
+				address.m_port = message.port;
 
-				ClassicHostContainer::CreateHost(config);
+				addRequestHandler<ClassicHostRequestHandler>(
+					new ClassicHostRequestHandler(
+						userID,
+						address)
+				);
 			}
 		}
 

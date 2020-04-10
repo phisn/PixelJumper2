@@ -35,30 +35,8 @@ namespace Operator
 			MaxUserCount
 		};
 
-		RegisterUserFailure registerUser(UserID userID)
-		{
-			if (users.size() >= maxPlayers)
-			{
-				return RegisterUserFailure::MaxUserCount;
-			}
-
-			if (FindClassicHostFromUser(userID) != NULL)
-			{
-				return RegisterUserFailure::UserAlreadyHosted;
-			}
-
-			users.push_back(userID);
-		}
-
-		void unregisterUser(UserID userID)
-		{
-			decltype(users)::iterator iterator = std::find(
-				users.begin(),
-				users.end(), userID);
-
-			if (iterator != users.end())
-				users.erase(iterator);
-		}
+		RegisterUserFailure registerUser(UserID userID);
+		void unregisterUser(UserID userID);
 
 		float getCapacityUsageDifference() const
 		{

@@ -98,7 +98,6 @@ namespace Net::Host
 	{
 		enum
 		{
-			InvalidUserMode,
 			NoHostAvailable
 			
 		} type;

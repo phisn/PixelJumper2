@@ -42,6 +42,31 @@ namespace Operator
 		classicHosts.erase(host.userID);
 	}
 
+	ClassicHostContainer::RegisterUserFailure ClassicHostContainer::registerUser(UserID userID)
+	{
+		if (users.size() >= maxPlayers)
+		{
+			return RegisterUserFailure::MaxUserCount;
+		}
+
+		if (FindClassicHostFromUser(userID) != NULL)
+		{
+			return RegisterUserFailure::UserAlreadyHosted;
+		}
+
+		users.push_back(userID);
+	}
+
+	void ClassicHostContainer::unregisterUser(UserID userID)
+	{
+		decltype(users)::iterator iterator = std::find(
+			users.begin(),
+			users.end(), userID);
+
+		if (iterator != users.end())
+			users.erase(iterator);
+	}
+
 	const ClassicHostContainer* FindClassicHost(UserID userID)
 	{
 		decltype(classicHosts)::iterator host = classicHosts.find(userID);
@@ -81,7 +106,7 @@ namespace Operator
 	const ClassicHostContainer* FindClassicHostFromUser(UserID userID)
 	{
 		for (decltype(classicHosts)::value_type& host : classicHosts)
-			for (UserID iterator_userID : host.second->users)
+			for (UserID iterator_userID : host.second->getUsers())
 				if (iterator_userID == userID)
 				{
 					return host.second;

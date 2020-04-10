@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ActiveHostContainer.h"
 #include "ActiveUserContainer.h"
 #include "AuthenticationHandler.h"
 
@@ -22,7 +23,8 @@ namespace Operator::Net
 			const UserID userID)
 			:
 			callback(callback),
-			userID(userID)
+			userID(userID),
+			usermodeContainer(userID)
 		{
 		}
 
@@ -64,6 +66,8 @@ namespace Operator::Net
 	private:
 		CommonRequestHandlerCallback* const callback;
 		const UserID userID;
+
+		UsermodeContainer usermodeContainer;
 
 		/*
 			1. client requests to connect with host userID
@@ -147,19 +151,7 @@ namespace Operator::Net
 
 		void onHostFindClassic()
 		{
-			if (UserContainer::GetUserMode(userID) != ActiveUserMode::Waiting)
-			{
-				::Net::Host::HostFindClassicRejectedMessage message;
-				message.type = ::Net::Host::HostFindClassicRejectedMessageContent::InvalidUserMode;
-
-				access->sendMessage(
-					::Net::Host::OperatorCommonMessageID::HostFindClassicRejected,
-					&message);
-
-				return;
-			}
-
-			const ClassicHost* host = ClassicHostContainer::FindHost();
+			const ClassicHostContainer* host = FindOptimalClassicHost();
 
 			if (host == NULL)
 			{
@@ -174,41 +166,40 @@ namespace Operator::Net
 			}
 
 			ConnectionKeySource keySource;
-
 			const Database::ConditionResult result = DatabaseInterface::GetPlayerToken(
 				keySource.token,
-				host->getConfig().host.userID);
+				host->host.userID);
 
 			switch (result)
 			{
 			case Database::ConditionResult::Error:
 				Log::Error(L"GetPlayerToken failed in findclassic host",
-					host->getConfig().host.userID, L"hostID",
+					host->host.userID, L"hostID",
 					userID, L"userID");
 
 				access->sendMessage(
 					::Net::CommonMessageID::InternalError,
 					NULL);
 
-				break;
+				return;
 			case Database::ConditionResult::NotFound:
 				Log::Error(L"Failed to retrive host token in find classic host",
-					host->getConfig().host.userID, L"hostID",
+					host->host.userID, L"hostID",
 					userID, L"userID");
 
 				access->sendMessage(
 					::Net::CommonMessageID::InternalError,
 					NULL);
 
-				break;
+				return;
 			}
 
 			keySource.userID = userID;
 
 			::Net::Host::HostFindClassicMessage message;
 
-			message.userID = host->getConfig().host.userID;
-			message.address = host->getConfig().host.address;
+			message.userID = host->host.userID;
+			message.address = host->host.address;
 			message.key.make(keySource);
 
 			access->sendMessage(

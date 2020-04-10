@@ -14,6 +14,8 @@ namespace Net::Client
 		{
 			_Begin = OperatorCommonMessageID::_Offset - 1,
 
+			RegisterClient,
+			UnregisterClient,
 			ClientData,
 
 			UnlockRepresentation,
@@ -23,12 +25,29 @@ namespace Net::Client
 		};
 	};
 
-	struct RequestClientDataMessageContent
+	namespace OperatorClassicHost
 	{
-		Operator::UserID userID;
-	};
+		struct RegisterClientMessageContent
+		{
+			Operator::UserID userID;
+		};
 
-	typedef ::Net::TrivialNetworkMessage<RequestClientDataMessageContent> ClassicRequestClientDataMessage;
+		typedef TrivialNetworkMessage<RegisterClientMessageContent> RegisterClientMessage;
+
+		struct UnregisterClientMessageContent
+		{
+			Operator::UserID userID;
+		};
+
+		typedef TrivialNetworkMessage<UnregisterClientMessageContent> UnregisterClientMessage;
+
+		struct RequestClientDataMessageContent
+		{
+			Operator::UserID userID;
+		};
+
+		typedef ::Net::TrivialNetworkMessage<RequestClientDataMessageContent> RequestClientDataMessage;
+	}
 }
 
 namespace Net::Host
@@ -39,42 +58,77 @@ namespace Net::Host
 		{
 			_Begin = OperatorCommonMessageID::_Offset - 1,
 
-			ClientData,
-			RequestClientDataFailed,
+			ClientRegistered,
+			ClientRegistrationFailed,
+
+			ClientDataReceived,
+			ClientDataRequestFailed,
 
 			_Offset
 		};
 	};
 
-	struct ClassicRequestClientDataMessage
-		:
-		public ::Net::NetworkMessage
+	namespace OperatorClassicHost
 	{
-		Resource::ClassicPlayerResource resource;
-		std::string username;
-
-		bool load(Resource::ReadPipe* const pipe) override
+		struct ClientDataMessage
+			:
+			public ::Net::NetworkMessage
 		{
-			return resource.make(pipe)
-				&& pipe->readString(&username);
-		}
+			Resource::ClassicPlayerResource resource;
+			std::string username;
 
-		bool save(Resource::WritePipe* const pipe) override
+			bool load(Resource::ReadPipe* const pipe) override
+			{
+				return resource.make(pipe)
+					&& pipe->readString(&username);
+			}
+
+			bool save(Resource::WritePipe* const pipe) override
+			{
+				return resource.save(pipe)
+					&& pipe->writeString(&username);
+			}
+		};
+
+		struct ClientDataRequestFailedMessageContent
 		{
-			return resource.save(pipe)
-				&& pipe->writeString(&username);
-		}
-	};
+			enum
+			{
+				InvalidUserMode,
+				InvalidUserID
 
-	struct RequestClientDataFailedMessageContent
-	{
-		enum
+			} type;
+		};
+
+		typedef ::Net::TrivialNetworkMessage<ClientDataRequestFailedMessageContent> ClientDataRequestFailedMessage;
+
+		struct ClientRegisteredMessage
+			:
+			public ::Net::NetworkMessage
 		{
-			InvalidUserMode,
-			InvalidUserID
+			ClientDataMessage message;
 
-		} type;
-	};
+			bool load(Resource::ReadPipe* const pipe) override
+			{
+				return message.load(pipe);
+			}
 
-	typedef ::Net::TrivialNetworkMessage<RequestClientDataFailedMessageContent> RequestClientDataFailedMessage;
+			bool save(Resource::WritePipe* const pipe) override
+			{
+				return message.save(pipe);
+			}
+		};
+
+		enum class ClientRegistrationFailedReason
+		{
+			UserRegisteredSomewhere
+		};
+
+		struct ClientRegistrationFailedMessageContent
+		{
+			ClientRegistrationFailedReason reason;
+		};
+
+		typedef TrivialNetworkMessage<ClientRegistrationFailedMessageContent> ClientRegistrationFailedMessage;
+	}
 }
