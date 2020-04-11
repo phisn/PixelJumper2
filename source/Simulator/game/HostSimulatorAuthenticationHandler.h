@@ -11,9 +11,9 @@ namespace Game
 {
 	struct AuthenticationHandlerCallback
 	{
+		// reference prefered because of the responsibility
 		virtual void onAuthenticated(
-			Operator::UserID userID,
-			std::string& username,
+			Resource::PlayerResource& resource,
 			Resource::ClassicPlayerResource& classicResource) = 0;
 		virtual void onAuthenticationDenied() = 0;
 	};
@@ -159,22 +159,21 @@ namespace Game
 		void onClientRegistered(Net::Host::OperatorClassicHost::ClientRegisteredMessage& answer) override
 		{
 			Log::Information(L"received client data for",
-				answer.message.username, L"username",
+				answer.resource.username, L"username",
 				userID, L"userID");
 
 			::Net::Host::AuthenticationAcceptedMessage message;
 
-			message.resource = &answer.message.resource;
-			message.username = &answer.message.username;
+			message.classicResource = &answer.classicResource;
+			message.resource = &answer.resource;
 
 			if (access->sendMessage(
 					::Net::Host::AuthenticationMessageID::AuthenticationAccepted,
 					&message))
 			{
 				callback->onAuthenticated(
-					userID, 
-					answer.message.username,
-					answer.message.resource);
+					answer.resource,
+					answer.classicResource);
 			}
 			else
 			{

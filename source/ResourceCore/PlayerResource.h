@@ -7,7 +7,9 @@
 
 namespace Resource
 {
+	// deprecated
 	typedef Operator::UserID PlayerID;
+
 	typedef sf::Uint32 RepresentationID;
 	typedef sf::Uint32 WorldId;
 
@@ -18,7 +20,7 @@ namespace Resource
 	public:
 		struct Content
 		{
-			PlayerID playerID;
+			Operator::UserID userID;
 
 		} content;
 

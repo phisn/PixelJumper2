@@ -1,5 +1,6 @@
 #include "CoreDevice.h"
 #include "game/HostClassicSimulator.h"
+#include "OperatorClientDevice.h"
 
 #include "Common/EncryptionModule.h"
 #include "OperatorClient/OperatorClient.h"
@@ -10,16 +11,18 @@
 namespace
 {
 	Game::HostClassicSimulator* simulator;
+	bool running = true;
 }
 
 namespace Device::Core
 {
-	bool AuthenticateOperator();
 	bool LoadSimulatorResources();
 	bool RegisterAsClassicHost();
 
 	bool Initialize()
 	{
+		running = true;
+
 		if (!Net::Core::Initialize())
 		{
 			return false;
@@ -30,7 +33,7 @@ namespace Device::Core
 		ipAddress.ParseString("109.230.236.76:9928");
 		Operator::Client::Initialize(ipAddress);
 
-		if (!AuthenticateOperator())
+		if (!OperatorClient::Initialize())
 		{
 			return false;
 		}
@@ -68,7 +71,7 @@ namespace Device::Core
 	void Run()
 	{
 		sf::Clock clock;
-		while (true)
+		while (running)
 		{
 			const sf::Time time = clock.restart();
 
@@ -81,30 +84,9 @@ namespace Device::Core
 		}
 	}
 
-	bool AuthenticateOperator()
+	void Shutdown()
 	{
-		Net::Client::OperatorAuthenticationMessage* message =
-			new Net::Client::OperatorAuthenticationMessage;
-		Module::Encryption::HashCommon(
-			(unsigned char*) message->content.hash,
-			(const unsigned char*) "admin", 5);
-		message->username = "admin";
-
-		Operator::CommonAuthenticationRequest request;
-		
-		const Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
-			Net::Client::OperatorAuthenticationMessageID::Authenticate,
-			message,
-			&request);
-
-		if (result != Operator::Client::PushRequestFailure::Success)
-		{
-			Log::Error(L"push request failed", (int)result, L"reason");
-
-			return false;
-		}
-
-		return Operator::AwaitSyncRequest(&request);
+		running = false;
 	}
 
 	bool LoadSimulatorResources()

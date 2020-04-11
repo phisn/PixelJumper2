@@ -77,19 +77,26 @@ namespace Game
 			context(context),
 			container(container)
 		{
+			// initialize value for destructor
+			resource.content.userID = NULL;
+
 			addRequestHandler<AuthenticationHandler>(
 				new AuthenticationHandler(
-					this, 
+					this,
 					settings.authenticationTimeout)
-			);
+				);
 		}
 
 		~ClassicClientHandler()
 		{
 			Operator::Client::PopRequest((Operator::ClassicHostClientDataRequest*) this);
 
-			if (userID)
-				context.unregisterPlayer(userID);
+			if (isAuthenticated())
+			{
+				context.unregisterPlayer(resource.content.userID);
+
+				Operator::Client::PushRequest(Net::Client::OperatorClassicHostID::UnregisterClient);
+			}
 
 			if (selectionHandler)
 			{
@@ -116,6 +123,16 @@ namespace Game
 			simulationHandler->processLogic();
 		}
 
+		void restoreOperatorState()
+		{
+			if (isAuthenticated())
+			{
+				///////////////////////////////////////////////////
+				// need to send operator register client request //
+				///////////////////////////////////////////////////
+			}
+		}
+
 		Status getStatus() const
 		{
 			return status;
@@ -136,8 +153,7 @@ namespace Game
 
 		Status status = Status::Authenticating;
 
-		Operator::UserID userID = NULL;
-		std::string username;
+		Resource::PlayerResource resource;
 		Resource::ClassicPlayerResource classicResource;
 
 		// initiated after clientdata received after
@@ -178,16 +194,14 @@ namespace Game
 		// request handlers
 	private:
 		void onAuthenticated(
-			Operator::UserID userID,
-			std::string& username,
+			Resource::PlayerResource& resource,
 			Resource::ClassicPlayerResource& classicResource) override
 		{
 			Log::Information(L"Client authenticated",
-				userID, L"userID");
+				resource.content.userID, L"userID");
 
-			this->userID = userID;
-			classicResource = std::move(classicResource);
-			this->username = std::move(username);
+			this->classicResource = std::move(classicResource);
+			this->resource = std::move(resource);
 
 			delete removeRequestHandler<AuthenticationHandler>();
 			addRequestHandler(new HostClassicSessionHandler);
@@ -197,13 +211,10 @@ namespace Game
 			message.content.settings = simulatorSettings;
 
 			if (sendMessage(
-					::Net::Host::ClassicSessionMessageID::InitializeSession,
-					&message))
+				::Net::Host::ClassicSessionMessageID::InitializeSession,
+				&message))
 			{
-				Resource::PlayerResource* const resource = new Resource::PlayerResource();
-				resource->content.playerID = userID;
-				resource->username = this->username;
-				context.registerPlayer(resource, this);
+				context.registerPlayer(&resource, this);
 
 				selectionHandler = new ClassicSelectionHandler(
 					this,
@@ -223,9 +234,8 @@ namespace Game
 		void onSimulationCreated(const SimulationBootInformation& bootInfo) override
 		{
 			Game::PlayerInformation userInfo;
+			userInfo.Create(&resource);
 			userInfo.representationID = bootInfo.representationID;
-			userInfo.playerId = userID;
-			userInfo.name = username;
 
 			simulationHandler = new ClassicSimulationHandler(
 				this,
@@ -282,11 +292,11 @@ namespace Game
 
 			Log::Error(L"Request failed",
 				messageID, L"messageID",
-				(int) reason, L"reason");
+				(int)reason, L"reason");
 		}
 
 		void onMessageSendFailed(
-			const ::Net::MessageID messageID, 
+			const ::Net::MessageID messageID,
 			const ::Net::SendFailure reason) override
 		{
 			// unable to let the user know what happened because
@@ -308,7 +318,7 @@ namespace Game
 		{
 			Log::Warning(L"Threat identified (" + std::wstring(note) + L")",
 				identifier, L"messageID",
-				(int) level, L"level");
+				(int)level, L"level");
 		}
 	};
 }

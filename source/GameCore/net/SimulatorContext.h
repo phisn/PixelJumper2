@@ -63,9 +63,6 @@ namespace Game
 		}
 	};
 
-	// TODO: need to add the possiblity to get players by world
-	// to allow the simulation to show other players ghost in the
-	// same world
 	class SimulatorContext
 	{
 	public:
@@ -100,7 +97,7 @@ namespace Game
 			decltype(players)::iterator iterator = players.begin();
 
 			while (iterator != players.end())
-				if ((*iterator)->content.playerID == userID)
+				if ((*iterator)->content.userID == userID)
 				{
 					players.erase(iterator);
 

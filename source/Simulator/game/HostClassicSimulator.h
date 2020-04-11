@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ClassicClientHandler.h"
+#include "device/CoreDevice.h"
 
 #include "NetCore/NetCore.h"
 #include "GameCore/GameWorld.h"
@@ -32,7 +33,8 @@ namespace Game
 	class HostClassicSimulator
 		:
 		public ::Net::ServerInterface,
-		public GameState
+		public GameState,
+		public Operator::RegisterClassicHostRequest
 	{
 	public:
 		struct HostSettings
@@ -49,17 +51,41 @@ namespace Game
 			settings(settings),
 			simulatorSettings(simulatorSettings)
 		{
+			Operator::Client::ClosedConnectionNotifier.addListener(
+				[](int reason)
+				{
+
+				});
+
+			Operator::Client::LostConnectionNotifier.addListener(
+				[](int reason)
+				{
+
+				});
+
+			Operator::Client::OpenConnectionNotifier.addListener(
+				[this](bool authenticated)
+				{
+					if (authenticated)
+					{
+						initializeOperatorConnection();
+					}
+					else
+					{
+						Device::Core::Shutdown();
+					}
+				});
 		}
 
 		bool initialize()
 		{
+			Log::SectionHost section{ L"starting server" };
+
 			if (!ServerInterface::initialize(settings.port))
 			{
 				Log::Error(L"Failed to initialize server");
 				return false;
 			}
-
-			Log::Information(L"Server started");
 
 			return true;
 		}
@@ -176,68 +202,51 @@ namespace Game
 			if (iterator != connections.end())
 				connections.erase(iterator);
 		}
-	};
 
-	/*class LocalClassicTestSimulator
-		:
-		public Operator
-	{
-	public:
-		typedef std::map<Resource::WorldId, Resource::World*> WorldResources;
-
-		LocalClassicTestSimulator(
-			LocalConnection* const connection,
-			const WorldResources& worlds)
-			:
-			connection(connection),
-			worlds(worlds)
+		void initializeOperatorConnection()
 		{
-			simulation = new VisualClassicSimulation(worlds);
-		}
+			Net::Client::RegisterClassicHostMessage* message =
+				new Net::Client::RegisterClassicHostMessage;
 
-		bool initialize() override
-		{
-			return simulation->initialize()
-				&& simulation->pushWorld((worlds.begin())->second->content.id);
-		}
+			message->maxPlayers = 100;
+			message->port = 9927;
 
-		void draw(sf::RenderTarget* const target)
-		{
-			connection->enableView(target);
-			simulation->draw(target);
-			connection->getLocalPlayer()->onDraw(target);
-		}
+			Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
+				Net::Client::OperatorCommonMessageID::RegisterClassicHost,
+				message, this);
 
-		void onLogic(const sf::Time time) override
-		{
-			logicCounter += time.asMicroseconds();
-
-			while (logicCounter > LogicTimeStep)
+			if (result != Operator::Client::PushRequestFailure::Success)
 			{
-				simulation->processLogic();
+				Log::Error(L"failed to push registerclassichost request",
+					(int) result, L"reason");
 
-				logicCounter -= LogicTimeStep;
+				Device::Core::Shutdown();
 			}
-
-			connection->getLocalPlayer()->onLogic(time);
 		}
 
-		bool writeState(Resource::WritePipe* const writePipe) override
+		void onRegisteredClassicHost() override
 		{
-			return true;
+			Log::Information(L"simulator successfully registered");
+
+			// might be restored session after operator restart
+			// restore all clienthandler states
+			for (ClassicClientHandler* client : connections)
+			{
+				client->restoreOperatorState();
+			}
 		}
 
-		bool readState(Resource::ReadPipe* const readPipe) override
+		void onRegisterClassicHostRejected() override
 		{
-			return true;
+			Log::Error(L"register classic host request rejected, insufficent priviliges");
+			Device::Core::Shutdown();
 		}
 
-	private:
-		sf::Uint64 logicCounter = 0;
-		WorldResources worlds;
-
-		VisualClassicSimulation* simulation;
-		LocalConnection* const connection;
+		void onRequestFailure(const RequestInterface::Reason reason) override
+		{
+			Log::Error(L"register classic host request failed",
+				(int) reason, L"reason");
+			Device::Core::Shutdown();
+		}
 	};
-	*/
 }

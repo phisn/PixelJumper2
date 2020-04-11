@@ -10,7 +10,9 @@ namespace Game
 		public ::Net::RequestHandler
 	{
 	public:
-
+		HostClassicSessionHandler()
+		{
+		}
 
 		void update() override
 		{

@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="device\CoreDevice.cpp" />
+    <ClCompile Include="device\OperatorClientDevice.cpp" />
     <ClCompile Include="game\ClassicClientHandler.cpp" />
     <ClCompile Include="game\HostClassicSessionHandler.cpp" />
     <ClCompile Include="game\HostClassicSelectionHandler.cpp" />
@@ -95,12 +96,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="device\CoreDevice.h" />
+    <ClInclude Include="device\OperatorClientDevice.h" />
     <ClInclude Include="game\ClassicClientHandler.h" />
     <ClInclude Include="game\HostClassicSessionHandler.h" />
     <ClInclude Include="game\HostClassicSelectionHandler.h" />
     <ClInclude Include="game\HostClassicSimulationHandler.h" />
     <ClInclude Include="game\HostClassicSimulator.h" />
     <ClInclude Include="game\HostSimulatorAuthenticationHandler.h" />
+    <ClInclude Include="game\ManagedUnregisterClientRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameCore\GameCore.vcxproj">

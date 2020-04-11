@@ -49,19 +49,19 @@ namespace Net::Host
 		public NetworkMessage
 	{
 	public:
-		Resource::ClassicPlayerResource* resource;
-		std::string* username;
+		Resource::ClassicPlayerResource* classicResource;
+		Resource::PlayerResource* resource;
 
 		bool load(Resource::ReadPipe* const pipe) override
 		{
-			return resource->make(pipe)
-				&& pipe->readString(username);
+			return classicResource->make(pipe)
+				&& resource->make(pipe);
 		}
 
 		bool save(Resource::WritePipe* const pipe) override
 		{
-			return resource->save(pipe)
-				&& pipe->writeString(username);
+			return classicResource->save(pipe)
+				&& resource->save(pipe);
 		}
 	};
 

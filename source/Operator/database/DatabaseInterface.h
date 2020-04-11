@@ -2,8 +2,9 @@
 
 #include "OperatorDatabase.h"
 
-#include "ResourceCore/PlayerResource.h"
 #include "Common/OperatorDefinitions.h"
+#include "ResourceCore/ClassicPlayerResource.h"
+#include "ResourceCore/PlayerResource.h"
 
 namespace Operator
 {
@@ -38,6 +39,13 @@ namespace Operator::DatabaseInterface
 	Database::ConditionResult FindUserID(
 		Operator::UserID* const userID,
 		const char token[OPERATOR_HASH_SIZE]);
+
+	Database::ConditionResult RetrivePlayerResource(
+		Resource::PlayerResource* resource,
+		UserID userID);
+	Database::ConditionResult RetriveClassicPlayerResource(
+		Resource::ClassicPlayerResource* resource,
+		UserID userID);
 
 	enum class CreatePlayerResult
 	{

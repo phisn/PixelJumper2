@@ -136,6 +136,18 @@ namespace Operator
 		return result;
 	}
 
+	Database::ConditionResult DatabaseInterface::RetrivePlayerResource(
+		Resource::PlayerResource* resource, 
+		UserID userID)
+	{
+	}
+
+	Database::ConditionResult DatabaseInterface::RetriveClassicPlayerResource(
+		Resource::ClassicPlayerResource* resource, 
+		UserID userID)
+	{
+	}
+
 	DatabaseInterface::CreatePlayerResult Operator::DatabaseInterface::CreateNewPlayer(
 		Operator::UserID* const resultPlayerID,
 		char token[OPERATOR_HASH_SIZE],

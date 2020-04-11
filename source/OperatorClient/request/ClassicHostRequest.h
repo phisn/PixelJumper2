@@ -52,7 +52,7 @@ namespace Operator
 		{
 			switch (messageID)
 			{
-			case Net::Host::OperatorClassicHostID::ClientDataReceived:
+			case Net::Host::OperatorClassicHostID::ClientDataReply:
 				if (Net::Host::OperatorClassicHost::ClientRegisteredMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onClientRegistered(message);

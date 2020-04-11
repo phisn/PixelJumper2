@@ -3,6 +3,7 @@
 #include "request/RequestInterface.h"
 
 #include "Common/Common.h"
+#include "Common/Notifier.h"
 #include "Common/RandomModule.h"
 #include "NetCore/Client.h"
 #include "NetCore/message/OperatorAuthenticationMessage.h"
@@ -11,6 +12,13 @@
 
 #include <cassert>
 #include <unordered_map>
+
+/*
+
+	todo:
+	-	add method to force execution of request
+
+*/
 
 namespace Operator
 {
@@ -43,7 +51,7 @@ namespace Operator
 			RequestInterface* request;
 		};
 
-		Client(const SteamNetworkingIPAddr address)
+		Client(SteamNetworkingIPAddr address)
 			:
 			address(address)
 		{
@@ -70,8 +78,8 @@ namespace Operator
 		};
 
 		static void Initialize(
-			const SteamNetworkingIPAddr address,
-			const sf::Time interval = sf::milliseconds(100))
+			SteamNetworkingIPAddr address,
+			sf::Time interval = sf::milliseconds(100))
 		{
 			processInterval = interval;
 
@@ -87,7 +95,7 @@ namespace Operator
 				delete client;
 		}
 
-		static void Process(const sf::Time time)
+		static void Process(sf::Time time)
 		{
 			processCounter += time;
 			
@@ -270,6 +278,11 @@ namespace Operator
 			return client->userID;
 		}
 
+		// argument: is authenticated
+		static Util::Notifier<Client, bool> OpenConnectionNotifier;
+		static Util::Notifier<Client, int> LostConnectionNotifier;
+		static Util::Notifier<Client, int> ClosedConnectionNotifier;
+
 		bool disconnect(
 			const int reason = 0,
 			const char* const message = "disconnect",
@@ -432,14 +445,24 @@ namespace Operator
 
 					authenticationStatus = Authenticated;
 					resendAllRequests();
+					OpenConnectionNotifier.notify(true);
 				}
 
 				break;
-			case ::Net::Host::OperatorAuthenticationMessageID::RejectToken:
-				Log::Error(L"token for reauthentication rejected. probably expired");
+			case ::Net::Host::OperatorAuthenticationMessageID::AuthenticationFailure:
+				if (::Net::Host::AuthenticationFailureMessage message; loadMessage(messageID, &message, pipe))
+				{
+					Log::Error(L"token for reauthentication rejected. probably expired",
+						(int) message.reason, L"reason");
+				}
+				else
+				{
+					Log::Error(L"token for reauthentication rejected. probably expired, unable to retrive reason");
+				}
 
 				removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
 				authenticationStatus = Unauthenticated;
+				OpenConnectionNotifier.notify(false);
 
 				break;
 			case ::Net::Host::OperatorAuthenticationMessageID::Timeout:
@@ -447,6 +470,7 @@ namespace Operator
 
 				removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
 				authenticationStatus = Unauthenticated;
+				OpenConnectionNotifier.notify(false);
 
 				break;
 			default:
@@ -527,6 +551,9 @@ namespace Operator
 						&message))
 				{
 					authenticationStatus = Authenticating;
+
+					// omit repeated notify
+					return;
 				}
 				else
 				{
@@ -535,14 +562,13 @@ namespace Operator
 
 					removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
 				}
-
-				//////////////////////////////////
-				// authentication restore missing
 			}
 			else
 			{
 				resendAllRequests();
 			}
+
+			OpenConnectionNotifier.notify(false);
 		}
 
 		void accessOnRequestFailed(
@@ -589,6 +615,8 @@ namespace Operator
 
 			status = Unconnected;
 			authenticationStatus = Unauthenticated;
+
+			LostConnectionNotifier.notify(reason);
 		}
 
 		void onConnectionClosed(const int reason) override
@@ -607,6 +635,7 @@ namespace Operator
 					// the requests. reconnect is pointless
 				
 					removeAllRequests(RequestInterface::Reason::ConnectionClosed);
+					ClosedConnectionNotifier.notify(reason);
 
 					break;
 				case ::Net::OperatorCloseReason::IdleConnection:
@@ -631,6 +660,10 @@ namespace Operator
 
 					break;
 				}
+			else
+			{
+				ClosedConnectionNotifier.notify(reason);
+			}
 
 		}
 

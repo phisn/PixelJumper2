@@ -36,6 +36,9 @@
     <ClCompile Include="game\HostClassicSessionHandler.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
+    <ClCompile Include="device\OperatorClientDevice.cpp">
+      <Filter>source\device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="device\CoreDevice.h">
@@ -57,6 +60,12 @@
       <Filter>source\game</Filter>
     </ClInclude>
     <ClInclude Include="game\HostClassicSessionHandler.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="device\OperatorClientDevice.h">
+      <Filter>source\device</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ManagedUnregisterClientRequest.h">
       <Filter>source\game</Filter>
     </ClInclude>
   </ItemGroup>

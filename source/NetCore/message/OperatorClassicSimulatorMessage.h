@@ -61,7 +61,9 @@ namespace Net::Host
 			ClientRegistered,
 			ClientRegistrationFailed,
 
-			ClientDataReceived,
+			ClientUnregistered,
+
+			ClientDataReply,
 			ClientDataRequestFailed,
 
 			_Offset
@@ -74,54 +76,43 @@ namespace Net::Host
 			:
 			public ::Net::NetworkMessage
 		{
-			Resource::ClassicPlayerResource resource;
-			std::string username;
+			Resource::ClassicPlayerResource classicResource;
+			Resource::PlayerResource resource;
 
 			bool load(Resource::ReadPipe* const pipe) override
 			{
 				return resource.make(pipe)
-					&& pipe->readString(&username);
+					&& classicResource.make(pipe);
 			}
 
 			bool save(Resource::WritePipe* const pipe) override
 			{
 				return resource.save(pipe)
-					&& pipe->writeString(&username);
+					&& classicResource.save(pipe);
 			}
+		};
+
+		enum class ClientDataRequestFailedReason
+		{
+			InvalidUserID,
+			DatabaseRetriveFailed
 		};
 
 		struct ClientDataRequestFailedMessageContent
 		{
-			enum
-			{
-				InvalidUserMode,
-				InvalidUserID
-
-			} type;
+			ClientDataRequestFailedReason reason;
 		};
 
 		typedef ::Net::TrivialNetworkMessage<ClientDataRequestFailedMessageContent> ClientDataRequestFailedMessage;
 
-		struct ClientRegisteredMessage
-			:
-			public ::Net::NetworkMessage
-		{
-			ClientDataMessage message;
-
-			bool load(Resource::ReadPipe* const pipe) override
-			{
-				return message.load(pipe);
-			}
-
-			bool save(Resource::WritePipe* const pipe) override
-			{
-				return message.save(pipe);
-			}
-		};
+		typedef ClientDataMessage ClientRegisteredMessage;
 
 		enum class ClientRegistrationFailedReason
 		{
-			UserRegisteredSomewhere
+			MaxPlayerCountReached,
+			UserRegisteredSomewhere,
+			UserNotFound,
+			DatabaseRetriveFailed
 		};
 
 		struct ClientRegistrationFailedMessageContent

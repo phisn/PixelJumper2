@@ -14,7 +14,7 @@ namespace Game
 		{
 			PlayerInformation information;
 
-			information.playerId = resource->content.playerID;
+			information.playerId = resource->content.userID;
 			information.name = resource->username;
 
 			return information;
