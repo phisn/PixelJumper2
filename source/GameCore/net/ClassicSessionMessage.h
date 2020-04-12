@@ -10,6 +10,7 @@ namespace Net::Client
 		enum
 		{
 			_Begin = AuthenticationMessageID::_Offset - 1,
+			InitiateClassicUser,
 			_Offset
 		};
 	};
@@ -23,18 +24,34 @@ namespace Net::Host
 		{
 			_Begin = AuthenticationMessageID::_Offset - 1,
 
-			InitializeSession,
+			InitializeSessionMessage,
 
-			AddPlayer,
-			RemovePlayer,
+			// used when something failed at server side
+			// that makes continuation of this session impssible
+			InterruptSession,
+
+			AddPlayerMessage,
+			RemovePlayerMessage,
 
 			_Offset
 		};
 	};
 
-	namespace ClassicSessionMessage
+	namespace ClassicSession
 	{
-		struct AddPlayer
+		enum class InterruptSessionReason
+		{
+			RestoreOperatorStateFailed
+		};
+
+		struct InterruptSessionMessageContent
+		{
+			InterruptSessionReason reason;
+		};
+
+		typedef TrivialNetworkMessage<InterruptSessionMessageContent> InterruptSessionMessage;
+
+		struct AddPlayerMessage
 			:
 			public NetworkMessage
 		{
@@ -51,14 +68,14 @@ namespace Net::Host
 			}
 		};
 
-		struct RemovePlayerContent
+		struct RemovePlayerMessageContent
 		{
 			Operator::UserID userID;
 		};
 
-		typedef TrivialNetworkMessage<RemovePlayerContent> RemovePlayer;
+		typedef TrivialNetworkMessage<RemovePlayerMessageContent> RemovePlayerMessage;
 
-		struct InitializeSession
+		struct InitializeSessionMessage
 			:
 			public NetworkMessage
 		{

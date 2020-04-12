@@ -23,10 +23,10 @@ namespace Database
 				close();
 		}
 
-		bool open(const std::wstring file)
+		bool open(const std::string file)
 		{
 			this->file = file;
-			lastSQLiteFailure = sqlite3_open16((const void*) file.c_str(), &database);
+			lastSQLiteFailure = sqlite3_open(file.c_str(), &database);
 
 			if (lastSQLiteFailure)
 			{
@@ -54,7 +54,7 @@ namespace Database
 				return false;
 			}
 
-			file = L"";
+			file = "";
 			return lastSQLiteFailure == 0;
 		}
 
@@ -120,8 +120,33 @@ namespace Database
 			Log::Information(L"Rollback transaction");
 			return true;
 		}
+
+		bool attach(std::string filename, std::string alias)
+		{
+			std::string statement = "ATTACH DATABASE '+" + filename + "' AS " + alias;
+			lastSQLiteFailure = sqlite3_exec(
+				database,
+				statement.c_str(),
+				NULL,
+				NULL,
+				NULL);
+
+			if (lastSQLiteFailure)
+			{
+				Log::Error(L"Failed to attach database " + getCurrentSQLiteFailureMessage(),
+					lastSQLiteFailure, L"result");
+
+				return false;
+			}
+
+			Log::Information(L"Database attached",
+				filename, L"file",
+				alias, L"as");
+
+			return true;
+		}
 		
-		const std::wstring& getFileName() const
+		const std::string& getFileName() const
 		{
 			return file;
 		}
@@ -150,7 +175,7 @@ namespace Database
 		}
 
 		sqlite3* database = NULL;
-		std::wstring file;
+		std::string file;
 	};
 
 	class SQLiteStatement

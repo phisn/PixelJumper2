@@ -48,6 +48,9 @@
     <ClCompile Include="EntityResource.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="ClassicContextResource.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassicPlayerResource.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="component\TileComponent.h">
       <Filter>source\component</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicContextResource.h">
+      <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

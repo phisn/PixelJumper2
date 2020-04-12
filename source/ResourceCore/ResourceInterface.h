@@ -4,7 +4,55 @@
 #include "ResourceType.h"
 #include "StaticResource.h"
 
+#include "WorldResource.h"
+
 #include <filesystem>
+
+namespace Resource
+{
+	enum class ResourceType
+	{
+		World
+	};
+}
+
+namespace Resource::Interface
+{
+	/*
+		Think about changing resourcetype to
+		a resourcedefinition. so we can allow
+		temporary resource types and do not 
+		have to depent on some enum index
+	*/
+
+	bool SaveResource(
+		std::wstring filename,
+		ResourceBase* resource,
+		ResourceType type);
+	bool LoadResource(
+		std::wstring filename,
+		ResourceBase* resource,
+		ResourceType type);
+
+	// let the user decide manually weather he wants
+	// to cache a resource or not
+	bool CacheResource(
+		std::wstring filename,
+		ResourceType type);
+
+	bool LoadCacheResource(
+		std::wstring filename,
+		ResourceBase* resource,
+		ResourceType type)
+	{
+		return CacheResource(filename, type)
+			&& LoadResource(filename, resource, type);
+	}
+
+	std::filesystem::path GetResourcePath(
+		std::wstring filename,
+		ResourceType type);
+}
 
 namespace Resource
 {
@@ -17,7 +65,7 @@ namespace Resource
 			and automatic "garbage collection"
 	
 	*/
-	namespace Interface
+	namespace _Interface
 	{
 		bool Initialize();
 		void Uninitalize();

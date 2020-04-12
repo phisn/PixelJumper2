@@ -96,6 +96,9 @@
     <ClCompile Include="database\EmptyKeyStatement.cpp" />
     <ClCompile Include="database\KeyTable.cpp" />
     <ClCompile Include="database\OperatorDatabase.cpp" />
+    <ClCompile Include="database\ThreatTable.cpp" />
+    <ClCompile Include="database\UnlockedRepresentationsTable.cpp" />
+    <ClCompile Include="database\UnlockedWorldsTable.cpp" />
     <ClCompile Include="database\UserTable.cpp" />
     <ClCompile Include="database\UserTypeByID.cpp" />
     <ClCompile Include="device\CoreDevice.cpp" />
@@ -113,15 +116,14 @@
     <ClInclude Include="database\EmptyKeyStatement.h" />
     <ClInclude Include="database\KeyTable.h" />
     <ClInclude Include="database\OperatorDatabase.h" />
+    <ClInclude Include="database\ThreatTable.h" />
+    <ClInclude Include="database\UnlockedRepresentationsTable.h" />
+    <ClInclude Include="database\UnlockedWorldsTable.h" />
     <ClInclude Include="database\UserTable.h" />
     <ClInclude Include="database\UserTypeByID.h" />
     <ClInclude Include="device\CoreDevice.h" />
     <ClInclude Include="Operator.h" />
     <ClInclude Include="OperatorClientHandler.h" />
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Operator.rc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatabaseCore\DatabaseCore.vcxproj">

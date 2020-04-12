@@ -141,6 +141,7 @@ namespace Operator
 			SendingFailed
 		};
 
+		// message gurranteed to be deleted
 		static PushRequestFailure PushRequest(
 			const ::Net::MessageID messageID,
 			::Net::NetworkMessage* const message,
@@ -152,7 +153,10 @@ namespace Operator
 				memcmp(((::Net::Client::OperatorTokenMessage*) message)->token, client->token.token, OPERATOR_HASH_SIZE) == 0);
 
 			if (!client->tokenKnown && client->authenticationStatus == Authenticating)
+			{
+				if (message) delete message;
 				return PushRequestFailure::Authenticating;
+			}
 
 			if (messageID > ::Net::Client::OperatorAuthenticationMessageID::_Begin &&
 				messageID < ::Net::Client::OperatorAuthenticationMessageID::_Offset)
@@ -168,7 +172,10 @@ namespace Operator
 			else
 			{
 				if (!client->tokenKnown)
+				{
+					if (message) delete message;
 					return PushRequestFailure::Unauthenticated;
+				}
 			}
 
 			RequestWrapper& requestWrapper = client->requests.emplace_back();

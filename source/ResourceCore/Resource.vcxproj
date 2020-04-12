@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClassicContextResource.cpp" />
     <ClCompile Include="ClassicPlayerResource.cpp" />
     <ClCompile Include="ComponentResource.cpp" />
     <ClCompile Include="EntityResource.cpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="WorldResource.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClassicContextResource.h" />
     <ClInclude Include="ClassicPlayerResource.h" />
     <ClInclude Include="CommonResourceTypes.h" />
     <ClInclude Include="ComponentResource.h" />

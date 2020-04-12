@@ -9,6 +9,8 @@
 #include "NetCore/message/OperatorAuthenticationMessage.h"
 #include "NetCore/RequestHandler.h"
 
+#include "database/UnlockedWorldsTable.h"
+
 namespace Operator::Net
 {
 	struct AuthenticationHandlerCallback

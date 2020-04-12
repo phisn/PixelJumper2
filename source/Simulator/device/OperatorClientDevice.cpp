@@ -33,8 +33,8 @@ namespace Device::OperatorClient
 
 		memcpy(message->token, token, OPERATOR_HASH_SIZE);
 
-		Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
-			Net::Client::OperatorAuthenticationMessageID::Authenticate,
+		Operator::Client::PushRequestFailure result = Operator::Client::PushTokenRequest(
+			Net::Client::OperatorAuthenticationMessageID::Token,
 			message,
 			&request);
 

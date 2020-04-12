@@ -4,6 +4,7 @@
 #include "HostClassicSessionHandler.h"
 #include "HostClassicSelectionHandler.h"
 #include "HostClassicSimulationHandler.h"
+#include "ManagedUnregisterClientRequest.h"
 
 #include "GameCore/net/SimulatorContext.h"
 #include "GameCore/net/SimulatorSettings.h"
@@ -25,6 +26,7 @@ namespace Game
 		public ClassicHandlerCallbacks,
 		public ::Net::ClientHandler,
 		public ::Net::RequestContainer,
+		public Operator::ClassicHostRegisterClientRequest,
 		public SimulatorContextCallback
 	{
 	public:
@@ -95,7 +97,25 @@ namespace Game
 			{
 				context.unregisterPlayer(resource.content.userID);
 
-				Operator::Client::PushRequest(Net::Client::OperatorClassicHostID::UnregisterClient);
+				Net::Client::OperatorClassicHost::UnregisterClientMessage* message =
+					new Net::Client::OperatorClassicHost::UnregisterClientMessage;
+				message->userID = resource.content.userID;
+
+				Operator::ManagedUnregisterClientRequest* request =
+					new Operator::ManagedUnregisterClientRequest;
+
+				Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
+					Net::Client::OperatorClassicHostID::UnregisterClient,
+					message,
+					request);
+
+				if (result != Operator::Client::PushRequestFailure::Success)
+				{
+					Log::Error(L"failed to push unregisterclient request",
+						(int) result, L"reason");
+
+					delete request;
+				}
 			}
 
 			if (selectionHandler)
@@ -127,9 +147,29 @@ namespace Game
 		{
 			if (isAuthenticated())
 			{
-				///////////////////////////////////////////////////
-				// need to send operator register client request //
-				///////////////////////////////////////////////////
+				Net::Client::OperatorClassicHost::RegisterClientMessage* operator_message =
+					new Net::Client::OperatorClassicHost::RegisterClientMessage;
+				operator_message->userID = resource.content.userID;
+
+				Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
+					Net::Client::OperatorClassicHostID::RegisterClient,
+					operator_message,
+					this);
+
+				if (result != Operator::Client::PushRequestFailure::Success)
+				{
+					Log::Error(L"failed to send register client request in restore operator state",
+						(int) result, L"reason");
+
+					Net::Host::ClassicSession::InterruptSessionMessage message;
+					message.reason = Net::Host::ClassicSession::InterruptSessionReason::RestoreOperatorStateFailed;
+
+					sendMessage(
+						Net::Host::ClassicSessionMessageID::InterruptSession,
+						&message);
+
+					status = Status::Closing;
+				}
 			}
 		}
 
@@ -206,12 +246,12 @@ namespace Game
 			delete removeRequestHandler<AuthenticationHandler>();
 			addRequestHandler(new HostClassicSessionHandler);
 
-			::Net::Host::ClassicSessionMessage::InitializeSession message;
+			::Net::Host::ClassicSession::InitializeSessionMessage message;
 			message.players = context.getActivePlayers();
 			message.content.settings = simulatorSettings;
 
 			if (sendMessage(
-				::Net::Host::ClassicSessionMessageID::InitializeSession,
+				::Net::Host::ClassicSessionMessageID::InitializeSessionMessage,
 				&message))
 			{
 				context.registerPlayer(&resource, this);
@@ -281,6 +321,61 @@ namespace Game
 			// done by simulationhandler
 		}
 
+		// requests
+	private:
+		// Inherited via ClassicHostRegisterClientRequest
+		void ClassicHostRegisterClientRequest::onRequestFailure(const Reason reason) override
+		{
+			Log::Error(L"failed to restore operator state, registerclient requestfailed",
+				(int) reason, L"reason");
+
+			Net::Host::ClassicSession::InterruptSessionMessage message;
+			message.reason = Net::Host::ClassicSession::InterruptSessionReason::RestoreOperatorStateFailed;
+
+			sendMessage(
+				Net::Host::ClassicSessionMessageID::InterruptSession,
+				&message);
+			status = Status::Closing;
+		}
+
+		void onClientRegistered(Net::Host::OperatorClassicHost::ClientRegisteredMessage& message) override
+		{
+			// normally almost impossible to be invalid but you can never be sure
+			assert(resource.content.userID == message.resource.content.userID);
+			assert(resource.username == message.resource.username);
+			assert(message.classicResource.unlockedRepresentations.size() == classicResource.unlockedRepresentations.size());
+			assert(message.classicResource.unlockedWorlds.size() == classicResource.unlockedWorlds.size());
+
+			Log::Information(L"operator state successfully restored");
+		}
+	
+		// might never happen
+		void onClientRegisterFailed(Net::Host::OperatorClassicHost::ClientRegistrationFailedMessage& answer) override
+		{
+			switch (answer.reason)
+			{
+			case Net::Host::OperatorClassicHost::ClientRegistrationFailedReason::UserRegisteredSomewhere:
+				// user might try to abuse this situation
+				onThreatIdentified(
+					Net::Host::OperatorClassicHostID::ClientRegistrationFailed,
+					L"at restore operator state, clientregister failed with reason \"UserRegisteredSomewhere\"",
+					Net::ThreatLevel::Suspicious);
+
+				break;
+			}
+
+			Log::Error(L"at restore operator, clientregister failed",
+				(int) answer.reason, L"reason");
+
+			Net::Host::ClassicSession::InterruptSessionMessage message;
+			message.reason = Net::Host::ClassicSession::InterruptSessionReason::RestoreOperatorStateFailed;
+
+			sendMessage(
+				Net::Host::ClassicSessionMessageID::InterruptSession,
+				&message);
+			status = Status::Closing;
+		}
+
 		// general failure
 	private:
 		void accessOnRequestFailed(
@@ -320,5 +415,5 @@ namespace Game
 				identifier, L"messageID",
 				(int)level, L"level");
 		}
-	};
+};
 }

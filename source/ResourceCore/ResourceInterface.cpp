@@ -11,6 +11,38 @@
 
 #include <SFML/Main.hpp>
 
+namespace Resource
+{
+	bool Interface::SaveResource(
+		std::wstring filename, 
+		ResourceBase* resource, 
+		ResourceType type)
+	{
+		std::filesystem::path path = GetResourcePath(filename, type);
+		FileWritePipe pipe{ path };
+
+		if (!pipe.isValid())
+		{
+			Log::Error(L"failed to open file",
+				path.c_str(), L"path");
+		}
+	}
+
+	bool Interface::LoadResource(
+		std::wstring filename, 
+		ResourceBase* resource, 
+		ResourceType type)
+	{
+		return false;
+	}
+
+	bool Interface::CacheResource(
+		std::wstring filename,
+		ResourceType type)
+	{
+	}
+}
+
 namespace
 {
 	const wchar_t* RESOURCE_PATH = L"resource";
@@ -22,7 +54,7 @@ namespace
 	ResourceTypeMap resourceTypes;
 }
 
-namespace Resource
+namespace _Resource
 {
 	std::wstring MakeDefaultResourceTypeFileError(
 		const ResourceType type,

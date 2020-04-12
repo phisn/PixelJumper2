@@ -214,6 +214,15 @@ namespace Operator::Net
 			Log::Warning(L"Threat identified (" + note + L")",
 				identifier, L"identifier",
 				(int) level, L"level");
+
+			if (!DatabaseInterface::CreateThreat(
+					userID,
+					identifier,
+					note,
+					level))
+			{
+				Log::Error(L"failed to log threat");
+			}
 		}
 
 		void onMessageSendFailed(

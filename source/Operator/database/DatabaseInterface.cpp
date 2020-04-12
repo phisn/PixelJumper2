@@ -3,6 +3,7 @@
 #include "Common/RandomModule.h"
 
 #include "EmptyKeyStatement.h"
+#include "ThreatTable.h"
 #include "UserTable.h"
 #include "UserTypeByID.h"
 
@@ -397,5 +398,19 @@ namespace Operator
 		{
 			return false;
 		}
+	}
+
+	bool DatabaseInterface::CreateThreat(
+		Operator::UserID userID,
+		sf::Uint64 threatID,
+		std::wstring message,
+		::Net::ThreatLevel level)
+	{
+		ThreatTable table;
+		table.content.playerID = userID;
+		table.content.threatID = threatID;
+		table.content.message = message;
+		table.content.level = level;
+		return table.create();
 	}
 }

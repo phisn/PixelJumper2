@@ -4,6 +4,7 @@
 
 namespace Resource
 {
+
 	enum class ResourceType
 	{
 		_Begin,

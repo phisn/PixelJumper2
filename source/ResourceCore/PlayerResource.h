@@ -9,9 +9,10 @@ namespace Resource
 {
 	// deprecated
 	typedef Operator::UserID PlayerID;
+	typedef sf::Uint32 WorldId;
 
 	typedef sf::Uint32 RepresentationID;
-	typedef sf::Uint32 WorldId;
+	typedef WorldId WorldID;
 
 	class PlayerResource
 		:

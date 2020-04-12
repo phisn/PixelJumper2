@@ -11,10 +11,17 @@ namespace Operator
 		static OperatorDatabase* operatorDatabase;
 
 	public:
-		static bool Initialize(const std::wstring file)
+		static bool Initialize(
+			std::string file, 
+			std::string threatFile)
 		{
 			operatorDatabase = new OperatorDatabase();
-			const bool result = operatorDatabase->open(file);
+			bool result = operatorDatabase->open(file);
+
+			if (result)
+			{
+				result = operatorDatabase->attach(threatFile, "tdb");
+			}
 
 			if (!result)
 			{

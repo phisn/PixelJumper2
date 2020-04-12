@@ -41,16 +41,16 @@ namespace Game
 		{
 			switch (messageID)
 			{
-			case Net::Host::ClassicSessionMessageID::InitializeSession:
-				if (Net::Host::ClassicSessionMessage::InitializeSession message; loadMessage(messageID, &message, pipe))
+			case Net::Host::ClassicSessionMessageID::InitializeSessionMessage:
+				if (Net::Host::ClassicSession::InitializeSessionMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onInitializeSession(message);
 				}
 
 				return true;
-			case Net::Host::ClassicSessionMessageID::AddPlayer:
+			case Net::Host::ClassicSessionMessageID::AddPlayerMessage:
 			{
-				Net::Host::ClassicSessionMessage::AddPlayer message;
+				Net::Host::ClassicSession::AddPlayerMessage message;
 				// dynamic player because player will be stored
 				// in players
 				message.player = new Resource::PlayerResource;
@@ -62,8 +62,8 @@ namespace Game
 
 				return true;
 			}
-			case Net::Host::ClassicSessionMessageID::RemovePlayer:
-				if (Net::Host::ClassicSessionMessage::RemovePlayer message; loadMessage(messageID, &message, pipe))
+			case Net::Host::ClassicSessionMessageID::RemovePlayerMessage:
+				if (Net::Host::ClassicSession::RemovePlayerMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRemovePlayer(message);
 				}
@@ -90,7 +90,7 @@ namespace Game
 
 		std::vector<Resource::PlayerResource*> players;
 
-		void onInitializeSession(const Net::Host::ClassicSessionMessage::InitializeSession& message)
+		void onInitializeSession(const Net::Host::ClassicSession::InitializeSessionMessage& message)
 		{
 			simulatorSettings = message.content.settings;
 			players.reserve(simulatorSettings.maxClients);
@@ -99,12 +99,12 @@ namespace Game
 				players.push_back(player);
 		}
 
-		void onAddPlayer(const Net::Host::ClassicSessionMessage::AddPlayer& message)
+		void onAddPlayer(const Net::Host::ClassicSession::AddPlayerMessage& message)
 		{
 			players.push_back(message.player);
 		}
 
-		void onRemovePlayer(const Net::Host::ClassicSessionMessage::RemovePlayer& message)
+		void onRemovePlayer(const Net::Host::ClassicSession::RemovePlayerMessage& message)
 		{
 			decltype(players)::iterator player = std::find_if(
 				players.begin(),

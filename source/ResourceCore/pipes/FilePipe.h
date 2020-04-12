@@ -9,62 +9,14 @@
 
 namespace Resource
 {
-	struct FileDefinition
-	{
-		FileDefinition() = default;
-		FileDefinition(const std::filesystem::path path)
-			:
-			path(path)
-		{
-		}
-
-		std::filesystem::path path;
-		uintmax_t size;
-
-		bool resetSize()
-		{
-			try
-			{
-				size = std::filesystem::file_size(path);
-			}
-			catch (const std::filesystem::filesystem_error error)
-			{
-				Log::Error(_wcserror(error.code().value()));
-
-				return false;
-			}
-
-			return true;
-		}
-
-		bool doesExists() const
-		{
-			try
-			{
-				return std::filesystem::exists(path);
-			}
-			catch (const std::filesystem::filesystem_error error)
-			{
-				Log::Error(_wcserror(error.code().value()));
-
-				return false;
-			}
-		}
-	};
-
 	class FileWritePipe
 		:
 		public WritePipe
 	{
 	public:
-		FileWritePipe(
-			FileDefinition* const fileDefinition)
+		FileWritePipe(std::filesystem::path path)
 			:
-			definition(fileDefinition),
-			file(
-				fileDefinition->path,
-				std::ios::out | std::ios::binary
-			)
+			file(path, std::ios::out | std::ios::binary)
 		{
 		}
 
@@ -77,11 +29,12 @@ namespace Resource
 			const sf::Uint64 size) override
 		{
 			file.write(buffer, size);
+			this->size += size;
 		}
 
 		sf::Uint64 getSize() const override
 		{
-			return definition->size;
+			return size;
 		}
 
 		sf::Uint64 getPosition() override
@@ -100,7 +53,7 @@ namespace Resource
 		}
 
 	private:
-		FileDefinition* const definition;
+		sf::Uint64 size;
 		std::ofstream file;
 	};
 
@@ -109,11 +62,9 @@ namespace Resource
 		public ReadPipe
 	{
 	public:
-		FileReadPipe(
-			const FileDefinition* const fileDefinition)
+		FileReadPipe(std::filesystem::path path)
 			:
-			definition(fileDefinition),
-			file(fileDefinition->path, std::ios::in | std::ios::binary)
+			file(path, std::ios::in | std::ios::binary)
 		{
 		}
 
@@ -123,7 +74,7 @@ namespace Resource
 
 		sf::Uint64 getSize() const override
 		{
-			return definition->size;
+			return size;
 		}
 
 		sf::Uint64 getPosition() override
@@ -133,12 +84,12 @@ namespace Resource
 
 		sf::Int64 readContent(
 			char* buffer,
-			const sf::Uint64 size) override
+			sf::Uint64 size) override
 		{
-			const std::streampos position = file.tellg();
-			const sf::Uint64 realSize = size <= definition->size - position
-				? size
-				: definition->size - position;
+			std::streampos position = file.tellg();
+			sf::Uint64 realSize = size <= this->size - position
+				? this->size
+				: this->size - position;
 
 			file.read(buffer, realSize);
 
@@ -151,7 +102,7 @@ namespace Resource
 		}
 
 	private:
-		const FileDefinition* definition;
+		sf::Uint64 size;
 		std::ifstream file;
 	};
 }

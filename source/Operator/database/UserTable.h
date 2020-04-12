@@ -183,9 +183,9 @@ namespace Operator
 				content.username.clear();
 
 				const int usernameLength = sqlite3_column_bytes(statement, columnIndex);
-				content.username.reserve(usernameLength / 2);
+				content.username.reserve(usernameLength);
 				content.username.assign(
-					(const char*) sqlite3_column_blob(statement, columnIndex)
+					(const char*) sqlite3_column_text(statement, columnIndex)
 				);
 			}
 				break;

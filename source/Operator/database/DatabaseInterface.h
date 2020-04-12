@@ -3,6 +3,7 @@
 #include "OperatorDatabase.h"
 
 #include "Common/OperatorDefinitions.h"
+#include "NetCore/NetCore.h"
 #include "ResourceCore/ClassicPlayerResource.h"
 #include "ResourceCore/PlayerResource.h"
 
@@ -75,4 +76,10 @@ namespace Operator::DatabaseInterface
 		Operator::RegistrationKey* const key,
 		const Resource::PlayerID playerID = 0,
 		const std::string source = "");
+
+	bool CreateThreat(
+		Operator::UserID userID,
+		sf::Uint64 threatID,
+		std::wstring message,
+		::Net::ThreatLevel level);
 }

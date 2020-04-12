@@ -57,9 +57,17 @@
     <ClCompile Include="ActiveHostContainer.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="database\ThreatTable.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="database\UnlockedRepresentationsTable.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
+    <ClCompile Include="database\UnlockedWorldsTable.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="ActiveUserContainer.h">
       <Filter>source</Filter>
     </ClInclude>
@@ -102,8 +110,14 @@
     <ClInclude Include="ActiveHostContainer.h">
       <Filter>source</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Operator.rc" />
+    <ClInclude Include="database\ThreatTable.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="database\UnlockedRepresentationsTable.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="database\UnlockedWorldsTable.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

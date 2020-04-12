@@ -17,15 +17,15 @@ namespace Operator
 		{
 			switch (messageID)
 			{
-			case Net::Host::OperatorClassicHostID::ClientData:
-				if (Net::Host::ClassicRequestClientDataMessage message; request_loadMessage(messageID, &message, pipe))
+			case Net::Host::OperatorClassicHostID::ClientDataReply:
+				if (Net::Host::OperatorClassicHost::ClientDataMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onClassicClientData(message);
 				}
 
 				return true;
-			case Net::Host::OperatorClassicHostID::RequestClientDataFailed:
-				if (Net::Host::HostFindClassicRejectedMessage message; request_loadMessage(messageID, &message, pipe))
+			case Net::Host::OperatorClassicHostID::ClientDataRequestFailed:
+				if (Net::Host::OperatorClassicHost::ClientDataRequestFailedMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onRequestClassicClientDataFailed(message);
 				}
@@ -37,8 +37,8 @@ namespace Operator
 		}
 
 	protected:
-		virtual void onClassicClientData(Net::Host::ClassicRequestClientDataMessage& message) = 0;
-		virtual void onRequestClassicClientDataFailed(Net::Host::HostFindClassicRejectedMessage& message) = 0;
+		virtual void onClassicClientData(Net::Host::OperatorClassicHost::ClientDataMessage& message) = 0;
+		virtual void onRequestClassicClientDataFailed(Net::Host::OperatorClassicHost::ClientDataRequestFailedMessage& message) = 0;
 	};
 
 	class ClassicHostRegisterClientRequest
@@ -74,5 +74,27 @@ namespace Operator
 	protected:
 		virtual void onClientRegistered(Net::Host::OperatorClassicHost::ClientRegisteredMessage &message) = 0;
 		virtual void onClientRegisterFailed(Net::Host::OperatorClassicHost::ClientRegistrationFailedMessage& message) = 0;
+	};
+
+	class ClassicHostUnregisterClientRequest
+		:
+		public RequestInterface
+	{
+	public:
+		bool request_onMessage(
+			const ::Net::MessageID messageID,
+			Resource::ReadPipe* const pipe) override
+		{
+			switch (messageID)
+			{
+			case Net::Host::OperatorClassicHostID::ClientUnregistered:
+				onClientUnregistered();
+
+				return true;
+			}
+		}
+
+	protected:
+		virtual void onClientUnregistered() = 0;
 	};
 }
