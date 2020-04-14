@@ -59,9 +59,9 @@ namespace Resource
 			buffer.reserve(size);
 		}
 
-		void assign(std::vector<char>& target)
+		void swap(std::vector<char>& target)
 		{
-			target = std::move(buffer);
+			buffer.swap(target);
 			position = 0;
 		}
 
@@ -98,6 +98,11 @@ namespace Resource
 			buffer(buffer),
 			length(length)
 		{
+		}
+
+		MemoryReadPipe(const std::vector<char>& buffer)
+		{
+			adopt(buffer);
 		}
 		
 		void setMemory(

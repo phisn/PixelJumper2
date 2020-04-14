@@ -52,6 +52,8 @@ namespace Resource
 		template <typename T>
 		bool writeVector(const std::vector<T>* const _vector)
 		{
+			static_assert(std::is_trivial_v<T>, "tried to write vector with non trivial type")
+
 			sf::Uint32 count = _vector->size();
 			if (!writeValue(&count))
 			{
@@ -61,6 +63,24 @@ namespace Resource
 			return writeContentSafe(
 				(char*)_vector->data(),
 				count * sizeof(T));
+		}
+
+		template <typename T>
+		bool writeVectorResource(std::vector<T>* _vector)
+		{
+			sf::Uint32 count = _vector->size();
+			if (!writeValue(&count))
+			{
+				return false;
+			}
+
+			for (T& value : _vector)
+				if (!value.save(this))
+				{
+					return false;
+				}
+
+			return true;
 		}
 
 		template <typename T>
@@ -131,6 +151,8 @@ namespace Resource
 		template <typename T>
 		bool readVector(std::vector<T>* const vector)
 		{
+			static_assert(std::is_trivial_v<T>, "tried to read vector with non trivial type")
+
 			sf::Uint32 count;
 			if (!readValue(&count)) 
 			{
@@ -142,6 +164,26 @@ namespace Resource
 			return readContentForce(
 				(char*) vector->data(),
 				count * sizeof(T));
+		}
+
+		template <typename T>
+		bool readVectorResource(std::vector<T>* _vector)
+		{
+			sf::Uint32 count;
+			if (!readValue(&count))
+			{
+				return false;
+			}
+
+			_vector.resize(count);
+
+			for (T& value : _vector)
+				if (!value.make(this))
+				{
+					return false;
+				}
+
+			return true;
 		}
 		
 		template <typename T>

@@ -62,9 +62,6 @@
     <ClInclude Include="ResourceInterface.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceType.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="StaticResource.h">
       <Filter>source</Filter>
     </ClInclude>

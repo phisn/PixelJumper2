@@ -109,7 +109,6 @@
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="ResourceBase.h" />
     <ClInclude Include="ResourceInterface.h" />
-    <ClInclude Include="ResourceType.h" />
     <ClInclude Include="StaticResource.h" />
     <ClInclude Include="TrivialResource.h" />
     <ClInclude Include="WorldResource.h" />

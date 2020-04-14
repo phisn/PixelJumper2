@@ -12,9 +12,9 @@ namespace Resource
 {
 	struct ResourceTypeDefinition
 	{
-		std::string name;
-		std::string directory;
-		std::string extension;
+		std::wstring name;
+		std::wstring directory;
+		std::wstring extension;
 	};
 
 	const ResourceTypeDefinition WorldResourceDefinition;
