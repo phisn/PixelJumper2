@@ -13,20 +13,19 @@
 
 namespace Resource
 {
-	class BasePipe // never used as plmp
+	struct PipeBase
 	{
-	public:
-		virtual sf::Uint64 getSize() const = 0;
-		virtual sf::Uint64 getPosition() = 0;
-
-		// virtual void setPosition(const sf::Uint64) = 0;
-
+		// the truth is this shit is actually not needed
+		// but because the whole project works already around
+		// this, I wont change it anymore. remarks for future
+		// projects: rewrite this core and use isValid only
+		// in pipe implementations
 		virtual bool isValid() const = 0;
 	};
 
 	class WritePipe
 		:
-		public BasePipe
+		public PipeBase
 	{
 	public:
 		virtual ~WritePipe() = 0 { }
@@ -40,7 +39,7 @@ namespace Resource
 			const char* const buffer,
 			const sf::Uint64 size)
 		{
-			if ( !isValid() )
+			if (!isValid())
 			{
 				return false;
 			}
@@ -112,7 +111,7 @@ namespace Resource
 
 	class ReadPipe
 		:
-		public BasePipe
+		public PipeBase
 	{
 	public:
 		virtual ~ReadPipe() = 0 { }
@@ -126,7 +125,7 @@ namespace Resource
 			char* const buffer,
 			const sf::Uint64 size)
 		{
-			return readContent(buffer, size) == size && isValid();
+			return readContent(buffer, size) == size;
 		}
 
 		template <typename T>

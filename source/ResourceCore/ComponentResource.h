@@ -92,16 +92,6 @@ namespace Resource
 			return resource->save(pipe);
 		}
 
-		bool setup() override
-		{
-			return resource->setup();
-		}
-
-		bool validate() override
-		{
-			return resource->validate();
-		}
-
 		template <typename Component>
 		Component* getInstance() const
 		{

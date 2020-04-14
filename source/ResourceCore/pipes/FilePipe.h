@@ -16,7 +16,7 @@ namespace Resource
 	public:
 		FileWritePipe(std::filesystem::path path)
 			:
-			file(path, std::ios::out | std::ios::binary)
+			file(path, std::ios::out | std::ios::binary | std::ios::trunc)
 		{
 		}
 
@@ -32,12 +32,12 @@ namespace Resource
 			this->size += size;
 		}
 
-		sf::Uint64 getSize() const override
+		sf::Uint64 getSize() const
 		{
 			return size;
 		}
 
-		sf::Uint64 getPosition() override
+		sf::Uint64 getPosition()
 		{
 			return file.tellp();
 		}
@@ -50,6 +50,11 @@ namespace Resource
 		bool isValid() const
 		{
 			return file.good();
+		}
+
+		void close()
+		{
+			file.close();
 		}
 
 	private:
@@ -72,12 +77,12 @@ namespace Resource
 		{
 		}
 
-		sf::Uint64 getSize() const override
+		sf::Uint64 getSize() const
 		{
 			return size;
 		}
 
-		sf::Uint64 getPosition() override
+		sf::Uint64 getPosition()
 		{
 			return file.tellg();
 		}
@@ -96,9 +101,14 @@ namespace Resource
 			return realSize;
 		}
 
-		bool isValid() const
+		bool isValid() const override
 		{
 			return file.good();
+		}
+
+		void close()
+		{
+			file.close();
 		}
 
 	private:

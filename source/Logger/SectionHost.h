@@ -83,8 +83,7 @@ namespace Log
 		SectionHost* const parent;
 	};
 
-	inline SectionHost* SectionHost::Create(
-		const std::wstring name)
+	inline SectionHost* SectionHost::Create(std::wstring name)
 	{
 		if (root)
 		{

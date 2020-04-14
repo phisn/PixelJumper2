@@ -27,12 +27,12 @@ namespace Resource
 			position = 0;
 		}
 
-		sf::Uint64 getSize() const override
+		sf::Uint64 getSize() const
 		{
 			return buffer.size();
 		}
 
-		sf::Uint64 getPosition() override
+		sf::Uint64 getPosition() const
 		{
 			return position;
 		}
@@ -115,12 +115,12 @@ namespace Resource
 			position = 0;
 		}
 
-		sf::Uint64 getSize() const override
+		sf::Uint64 getSize() const
 		{
 			return length;
 		}
 
-		sf::Uint64 getPosition() override
+		sf::Uint64 getPosition() const
 		{
 			return position;
 		}

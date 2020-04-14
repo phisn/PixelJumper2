@@ -16,8 +16,5 @@ namespace Resource
 
 		virtual bool make(ReadPipe* const pipe) = 0; 
 		virtual bool save(WritePipe* const pipe) = 0;
-
-		virtual bool setup() = 0; // before save
-		virtual bool validate() = 0; // after make
 	};
 }

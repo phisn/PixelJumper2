@@ -1,45 +1,171 @@
 #include "ResourceInterface.h"
-
-#include "Logger/Logger.h"
-
 #include "pipes/FilePipe.h"
-#include "ResourceDefinition.h"
 
 #include <cassert>
 #include <map>
 #include <string>
 
-#include <SFML/Main.hpp>
-
 namespace Resource
 {
+	std::wstring GetResourceErrorMessage();
+
+	const ResourceTypeDefinition WorldResourceDefinition
+	{
+		"world resources",
+		"world",
+		"wrld"
+	};
+
+	std::map<std::filesystem::path, std::vector<char>> cachedResources;
+
 	bool Interface::SaveResource(
 		std::wstring filename, 
-		ResourceBase* resource, 
-		ResourceType type)
+		ResourceBase* resource,
+		const ResourceTypeDefinition& type)
 	{
 		std::filesystem::path path = GetResourcePath(filename, type);
+
+		Log::Section section(L"saving file",
+			path.c_str(), L"path",
+			type.name, L"type");
+
 		FileWritePipe pipe{ path };
 
 		if (!pipe.isValid())
 		{
-			Log::Error(L"failed to open file",
-				path.c_str(), L"path");
+			Log::Error(L"failed to open file for save",
+				GetResourceErrorMessage(), L"error");
+
+			return false;
 		}
+
+		if (!resource->save(&pipe))
+		{
+			Log::Error(L"failed to save resource",
+				pipe.isValid(), L"file_valid",
+				GetResourceErrorMessage(), L"error");
+
+			return false;
+		}
+
+		pipe.close();
+
+		if (!pipe.isValid())
+		{
+			Log::Error(L"failed to close resource after save",
+				GetResourceErrorMessage(), L"error");
+
+			return false;
+		}
+
+
+		//////////////////////////////////////////////////////////////
+		// update cache if cached
+
+		return true;
 	}
 
 	bool Interface::LoadResource(
 		std::wstring filename, 
-		ResourceBase* resource, 
-		ResourceType type)
+		ResourceBase* resource,
+		const ResourceTypeDefinition& type)
 	{
-		return false;
+		//////////////////////////////////////////////////////////////
+		// check for chached file
+
+		std::filesystem::path path = GetResourcePath(filename, type);
+
+		Log::Section section(L"loading file",
+			path.c_str(), L"path",
+			type.name, L"type");
+
+		if (!std::filesystem::exists(path))
+		{
+			Log::Error(L"failed to open file, does not exist");
+
+			return false;
+		}
+
+		FileReadPipe pipe{ path };
+
+		if (!pipe.isValid())
+		{
+			Log::Error(L"failed to open file",
+				GetResourceErrorMessage(), L"error");
+
+			return false;
+		}
+
+		if (!resource->make(&pipe))
+		{
+			Log::Error(L"failed to save resource",
+				pipe.isValid(), L"file_valid",
+				GetResourceErrorMessage(), L"error");
+
+			return false;
+		}
+
+		pipe.close();
+
+		// we ignore weather this works or not
+		// we just assume the resource is loaded correctly
+		// and everything else can be ignored
+		if (!pipe.isValid())
+		{
+			Log::Error(L"failed to close resource after load",
+				GetResourceErrorMessage(), L"error");
+		}
+
+		return true;
 	}
 
 	bool Interface::CacheResource(
 		std::wstring filename,
-		ResourceType type)
+		const ResourceTypeDefinition& type)
 	{
+		std::filesystem::path path = GetResourcePath(filename, type);
+
+		Log::Section section(L"caching file",
+			path.c_str(), L"path",
+			type.name, L"type");
+
+		if (cachedResources.find(path) != cachedResources.end())
+		{
+			Log::Information(L"resource already cached, skipping process");
+			return true;
+		}
+
+		if (!std::filesystem::exists(path))
+		{
+			Log::Error(L"failed to open file, does not exist");
+			return false;
+		}
+
+		FileReadPipe pipe{ path };
+
+		if (!pipe.isValid())
+		{
+			Log::Error(L"failed to open file for caching",
+				GetResourceErrorMessage(), L"error");
+
+			return false;
+		}
+
+		std::vector<char>& cachedResource = cachedResources[path];
+		cachedResource.reserve(pipe.getSize());
+
+		if (!pipe.readContentForce(&cachedResource[0], pipe.getSize()))
+		{
+			Log::Error(L"failed to read file for caching");
+			return false;
+		}
+
+		return true;
+	}
+
+	std::wstring GetResourceErrorMessage()
+	{
+		return std::wstring(_wcserror(errno));
 	}
 }
 

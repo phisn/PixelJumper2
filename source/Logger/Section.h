@@ -8,15 +8,14 @@ namespace Log
 	class Section // SectionHost wrapper for RAII
 	{
 	public:
-		Section(
-			const std::wstring name)
+		template <typename... Args>
+		Section(std::wstring name, Args... args)
 			:
-			Section( SectionHost::Create(name) )
+			Section(SectionHost::Create(Convert(name, args...)))
 		{
 		}
 
-		Section(
-			SectionHost* const host)
+		Section(SectionHost* const host)
 			:
 			host(host)
 		{

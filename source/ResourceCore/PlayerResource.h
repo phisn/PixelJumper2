@@ -38,16 +38,6 @@ namespace Resource
 			return pipe->writeValue(&content)
 				&& pipe->writeString(&username);
 		}
-
-		bool setup() override
-		{
-			return content.playerID != NULL;
-		}
-
-		bool validate() override
-		{
-			return content.playerID != NULL;
-		}
 	};
 
 	// playerresource as a whole in the current game state

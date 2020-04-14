@@ -140,18 +140,6 @@ namespace Resource
 			return true;
 		}
 
-		bool setup() override
-		{
-			return validate();
-		}
-
-		bool validate() override
-		{
-			return validateAuth()
-				&& validateInnerContent()
-				&& validateTiles();
-		}
-
 	private:
 		bool validateAuth();
 		bool validateInnerContent();

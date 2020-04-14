@@ -86,10 +86,8 @@
     <ClCompile Include="EntityResource.cpp" />
     <ClCompile Include="pipes\FilePipe.cpp" />
     <ClCompile Include="pipes\MemoryPipe.cpp" />
-    <ClCompile Include="pipes\PacketPipe.cpp" />
     <ClCompile Include="pipes\PipeBase.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
-    <ClCompile Include="ResourceDefinition.cpp" />
     <ClCompile Include="ResourceInterface.cpp" />
     <ClCompile Include="StaticResource.cpp" />
     <ClCompile Include="WorldResource.cpp" />
@@ -107,11 +105,9 @@
     <ClInclude Include="EntityResource.h" />
     <ClInclude Include="pipes\FilePipe.h" />
     <ClInclude Include="pipes\MemoryPipe.h" />
-    <ClInclude Include="pipes\PacketPipe.h" />
     <ClInclude Include="pipes\PipeBase.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="ResourceBase.h" />
-    <ClInclude Include="ResourceDefinition.h" />
     <ClInclude Include="ResourceInterface.h" />
     <ClInclude Include="ResourceType.h" />
     <ClInclude Include="StaticResource.h" />

@@ -20,15 +20,5 @@ namespace Resource
 		{
 			return pipe->writeVector(&componentIndex);
 		}
-
-		bool setup() override
-		{
-			return true;
-		}
-
-		bool validate() override
-		{
-			return true;
-		}
 	};
 }

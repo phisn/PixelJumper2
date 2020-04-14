@@ -26,17 +26,5 @@ namespace Resource
 			return pipe->writeVector(&unlockedRepresentations)
 				&& pipe->writeVector(&unlockedWorlds);
 		}
-
-		bool setup() override
-		{
-			return unlockedRepresentations.size() > 0
-				&& unlockedWorlds.size() > 0;
-		}
-
-		bool validate() override
-		{
-			return unlockedRepresentations.size() > 0
-				&& unlockedWorlds.size() > 0;
-		}
 	};
 }

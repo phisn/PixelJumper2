@@ -10,10 +10,14 @@
 
 namespace Resource
 {
-	enum class ResourceType
+	struct ResourceTypeDefinition
 	{
-		World
+		std::string name;
+		std::string directory;
+		std::string extension;
 	};
+
+	const ResourceTypeDefinition WorldResourceDefinition;
 }
 
 namespace Resource::Interface
@@ -27,23 +31,25 @@ namespace Resource::Interface
 
 	bool SaveResource(
 		std::wstring filename,
+		// not const because save can
+		// change internal values
 		ResourceBase* resource,
-		ResourceType type);
+		const ResourceTypeDefinition& type);
 	bool LoadResource(
 		std::wstring filename,
 		ResourceBase* resource,
-		ResourceType type);
+		const ResourceTypeDefinition& type);
 
 	// let the user decide manually weather he wants
 	// to cache a resource or not
 	bool CacheResource(
 		std::wstring filename,
-		ResourceType type);
+		const ResourceTypeDefinition& type);
 
 	bool LoadCacheResource(
 		std::wstring filename,
 		ResourceBase* resource,
-		ResourceType type)
+		const ResourceTypeDefinition& type)
 	{
 		return CacheResource(filename, type)
 			&& LoadResource(filename, resource, type);
@@ -51,7 +57,7 @@ namespace Resource::Interface
 
 	std::filesystem::path GetResourcePath(
 		std::wstring filename,
-		ResourceType type);
+		const ResourceTypeDefinition& type);
 }
 
 namespace Resource
