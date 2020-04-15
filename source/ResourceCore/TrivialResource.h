@@ -27,16 +27,6 @@ namespace Resource
 			return pipe->writeValue(&content);
 		}
 
-		virtual bool setup() override
-		{
-			return true;
-		}
-
-		virtual bool validate() override
-		{
-			return true;
-		}
-
 		virtual void adopt(const Content& content)
 		{
 			memcpy(&(this->content), &content, sizeof(Content));

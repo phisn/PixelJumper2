@@ -321,6 +321,14 @@ namespace Game
 			// done by simulationhandler
 		}
 
+		void onSimulationFinished(const ExitWorldEvent& event) override
+		{
+			Net::Client::OperatorClassicHost::RequestUnlockWorldMessage message;
+			message.worldID = event.worldID;
+
+
+		}
+
 		// requests
 	private:
 		// Inherited via ClassicHostRegisterClientRequest

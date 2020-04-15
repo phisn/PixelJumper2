@@ -4,15 +4,20 @@
 
 namespace Game
 {
+	struct ExitWorldEvent
+	{
+		Resource::WorldID worldID;
+	};
+
 	class ExitableTraitHandler
 	{
 	public:
-		GameEvent<ExitableTraitHandler> onExit;
+		GameEvent<ExitableTraitHandler, const ExitWorldEvent&> onExit;
 
 	protected:
-		void notifyExitEvent()
+		void notifyExitEvent(const ExitWorldEvent& event)
 		{
-			onExit.notify();
+			onExit.notify(event);
 		}
 	};
 

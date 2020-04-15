@@ -68,5 +68,8 @@
     <ClInclude Include="game\ManagedUnregisterClientRequest.h">
       <Filter>source\game</Filter>
     </ClInclude>
+    <ClInclude Include="game\ManagedWorldUnlockRequest.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,7 +21,6 @@ namespace Net::Client
 			// requests a synchronize after preparesync
 			// was called or some internal problem occurred
 			RequestSynchronize,
-
 			PushMovement,
 
 			_Offset
@@ -62,10 +61,9 @@ namespace Net::Host
 		{
 			_Begin = ClassicSelectionMessageID::_Offset - 1,
 
-			SimulationClosed,
-
 			// failed to initiated or load a world
 			SimulationFailed,
+			SimulationClosed,
 
 			// load other player movement
 			PushMovement,
@@ -98,12 +96,23 @@ namespace Net::Host
 		};
 	};
 
-	struct SimulationFailureMessageContent
+	namespace ClassicSimulation
 	{
-		Game::ClassicSimulation::WorldFailure reason;
-	};
+		enum class SimulationFailureReason
+		{
+			WorldFailure,
+			InvalidSpeed
 
-	typedef TrivialNetworkMessage<SimulationFailureMessageContent> SimulationFailureMessage;
+		};
+
+		struct SimulationFailureMessageContent
+		{
+			SimulationFailureReason reason;
+		};
+
+		typedef TrivialNetworkMessage<SimulationFailureMessageContent> SimulationFailureMessage;
+	}
+
 
 	class PlayerMovementMessage
 		:

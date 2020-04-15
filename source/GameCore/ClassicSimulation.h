@@ -52,7 +52,7 @@ namespace Game
 		{
 		}
 
-		virtual WorldFailure processLogic()
+		virtual WorldFailure processTick()
 		{
 			world->processLogic();
 			++tick;
@@ -150,8 +150,6 @@ namespace Game
 				});
 		}
 
-		GameEvent<ClassicSimulation, World*> onWorldLoad;
-
 		Status getStatus()
 		{
 			return status;
@@ -180,13 +178,12 @@ namespace Game
 
 			for (ExitableTraitHandler* const handler : world->getEnvironment()->getExitableTraitTrait())
 				handler->onExit.addListener(
-					[this]()
+					[this](const ExitWorldEvent& event)
 					{
 						tasks.push_back(
-							[this]() -> WorldFailure
+							[this, &event]() -> WorldFailure
 							{
-								// game is finished here and simulation
-								// should stop
+								onWorldExit(event);
 
 								return WorldFailure::Success;
 							});
@@ -197,7 +194,7 @@ namespace Game
 					[this](const DynamicWorldExitEvent& event)
 					{
 						tasks.push_back(
-							[this, event]()->WorldFailure
+							[this, &event]()->WorldFailure
 						{
 							return loadWorldDynamicTransition(event);
 						});
@@ -205,6 +202,11 @@ namespace Game
 
 			return true;
 		}
+
+		virtual void onWorldLoad(World* loadingWorld) = 0;
+		// after this is called the simulation is
+		// should be closed
+		virtual void onWorldExit(const ExitWorldEvent& event) = 0;
 
 	private:
 		const WorldResourceContainer& worldResources;
@@ -303,7 +305,7 @@ namespace Game
 				return WorldFailure::PreloadingFailed;
 
 			case PreloadingResult::Found:
-				onWorldLoad.notify(world);
+				onWorldLoad(world);
 
 				return WorldFailure::Success;
 			}
@@ -312,7 +314,7 @@ namespace Game
 				if (world->getInformation()->worldId == worldID)
 				{
 					this->world = world;
-					onWorldLoad.notify(world);
+					onWorldLoad(world);
 
 					return WorldFailure::Success;
 				}
@@ -321,7 +323,7 @@ namespace Game
 
 			if (result == WorldFailure::Success)
 			{
-				onWorldLoad.notify(world);
+				onWorldLoad(world);
 			}
 			
 			return result;

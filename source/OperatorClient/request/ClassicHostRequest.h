@@ -92,9 +92,35 @@ namespace Operator
 
 				return true;
 			}
+
+			return false;
 		}
 
 	protected:
 		virtual void onClientUnregistered() = 0;
+	};
+
+	class WorldUnlockRequest
+		:
+		public RequestInterface
+	{
+	public:
+		bool request_onMessage(
+			const ::Net::MessageID messageID,
+			Resource::ReadPipe* const pipe) override
+		{
+			switch (messageID)
+			{
+			case Net::Host::OperatorClassicHostID::UnlockedWorld:
+				onWorldUnlocked();
+
+				return true;
+			}
+
+			return false;
+		}
+
+	protected:
+		virtual void onWorldUnlocked() = 0;
 	};
 }

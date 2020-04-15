@@ -104,6 +104,7 @@
     <ClInclude Include="game\HostClassicSimulator.h" />
     <ClInclude Include="game\HostSimulatorAuthenticationHandler.h" />
     <ClInclude Include="game\ManagedUnregisterClientRequest.h" />
+    <ClInclude Include="game\ManagedWorldUnlockRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameCore\GameCore.vcxproj">

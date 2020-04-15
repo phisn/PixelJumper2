@@ -89,7 +89,6 @@
     <ClCompile Include="pipes\PipeBase.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="ResourceInterface.cpp" />
-    <ClCompile Include="StaticResource.cpp" />
     <ClCompile Include="WorldResource.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -109,7 +108,6 @@
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="ResourceBase.h" />
     <ClInclude Include="ResourceInterface.h" />
-    <ClInclude Include="StaticResource.h" />
     <ClInclude Include="TrivialResource.h" />
     <ClInclude Include="WorldResource.h" />
   </ItemGroup>

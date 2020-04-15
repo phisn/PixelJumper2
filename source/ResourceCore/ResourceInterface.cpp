@@ -1,4 +1,5 @@
 #include "ResourceInterface.h"
+#include "WorldResource.h"
 
 #include "pipes/FilePipe.h"
 #include "pipes/MemoryPipe.h"
@@ -9,7 +10,6 @@
 
 namespace Resource
 {
-
 	const ResourceTypeDefinition WorldResourceDefinition
 	{
 		L"world resources",

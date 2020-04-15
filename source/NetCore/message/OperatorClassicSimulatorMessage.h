@@ -47,6 +47,13 @@ namespace Net::Client
 		};
 
 		typedef ::Net::TrivialNetworkMessage<RequestClientDataMessageContent> RequestClientDataMessage;
+
+		struct RequestUnlockWorldMessageContent
+		{
+			Resource::WorldID worldID;
+		};
+
+		typedef TrivialNetworkMessage<RequestUnlockWorldMessageContent> RequestUnlockWorldMessage;
 	}
 }
 
@@ -57,6 +64,9 @@ namespace Net::Host
 		enum
 		{
 			_Begin = OperatorCommonMessageID::_Offset - 1,
+
+			UnlockedWorld,
+			UnlockedRepresentation,
 
 			ClientRegistered,
 			ClientRegistrationFailed,

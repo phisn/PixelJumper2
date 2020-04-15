@@ -15,6 +15,7 @@ namespace Game
 	{
 		virtual void onSimulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
 		virtual void onSimulationClosed() = 0;
+		virtual void onSimulationFinished(const ExitWorldEvent& event) = 0;
 	};
 
 	// currently transitive reached worlds are not sent to the 
@@ -25,7 +26,8 @@ namespace Game
 	class ClassicSimulationHandler
 		:
 		public ::Net::RequestHandler,
-		public SimulatorContextLocationCallback
+		public SimulatorContextLocationCallback,
+		public ClassicSimulation
 	{
 		// time in server ticks
 		static constexpr sf::Uint64 SpeedAdjustmentTimeOffset = 500;
@@ -44,13 +46,13 @@ namespace Game
 			const Game::PlayerInformation userInfo,
 			const SimulationBootInformation bootInfo)
 			:
+			ClassicSimulation(container),
 			callback(callback),
 			context(context),
-			simulation(container),
 			player(userInfo),
 			bootInfo(bootInfo)
 		{
-			simulation.setPlayer(&player);
+			setPlayer(&player);
 
 			locationPlayer = new LocationPlayer();
 			locationPlayer->callback = this;
@@ -58,22 +60,6 @@ namespace Game
 			locationPlayer->representationID = userInfo.representationID;
 
 			movementBuffer.content.playerID = userInfo.playerId;
-
-			simulation.onWorldLoad.addListener(
-				[this](Game::World* const world) -> void
-				{
-					if (location != NULL)
-					{
-						location->pushMovement(&movementBuffer);
-						location->removePlayer(locationPlayer->playerID);
-					}
-
-					location = this->context.putPlayer(
-						locationPlayer,
-						world->getInformation()->worldId);
-
-					movementBuffer.content.worldID = world->getInformation()->worldId;
-				});
 		}
 
 		~ClassicSimulationHandler()
@@ -86,16 +72,11 @@ namespace Game
 		// can fail to boot up
 		bool initializeSimulation()
 		{
-			const Game::ClassicSimulation::WorldFailure result = simulation.runWorld(this->bootInfo.worldID);
+			const Game::ClassicSimulation::WorldFailure result = runWorld(this->bootInfo.worldID);
 
 			if (result != Game::ClassicSimulation::WorldFailure::Success)
 			{
-				::Net::Host::SimulationFailureMessage message;
-				message.reason = result;
-
-				access->sendMessage(
-					::Net::Host::ClassicSimulatorMessageID::SimulationFailed,
-					&message);
+				sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason::WorldFailure);
 
 				Log::Error(L"Failed to initiate simulation",
 					(int) result, L"result",
@@ -200,7 +181,7 @@ namespace Game
 								L"too high differencevariant. speed hack detected",
 								::Net::ThreatLevel::Malicious);
 
-							access->sendMessage(Net::Host::ClassicSimulatorMessageID::SimulationClosed);
+							sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason::InvalidSpeed);
 							callback->onSimulationClosed();
 						}
 						else
@@ -321,7 +302,6 @@ namespace Game
 		const SimulationBootInformation bootInfo;
 
 		VirtualPlayer player;
-		ClassicSimulation simulation;
 
 		LocationPlayer* locationPlayer;
 		Location* location = NULL;
@@ -336,7 +316,6 @@ namespace Game
 
 		bool adjustedGameSpeed = false;
 		sf::Int64 remainingAdjustedGameSpeed;
-
 
 		virtual void onPushMovement(const ::Net::Client::PushMovementMessage& message)
 		{
@@ -362,7 +341,7 @@ namespace Game
 
 		bool processSimulationLogic()
 		{
-			const ClassicSimulation::WorldFailure result = simulation.processLogic();
+			const ClassicSimulation::WorldFailure result = processTick();
 
 			if (result != ClassicSimulation::WorldFailure::Success)
 			{
@@ -423,7 +402,7 @@ namespace Game
 		{
 			Resource::MemoryWritePipe pipe;
 			
-			if (!simulation.writeState(&pipe))
+			if (!writeState(&pipe))
 			{
 				Log::Error(L"Failed to writestates in synchronize",
 					bootInfo.representationID, L"reprID",
@@ -436,7 +415,7 @@ namespace Game
 			}
 
 			Net::Host::HostSynchronizeMessage message;
-			pipe.assign(message.state);
+			pipe.swap(message.state);
 
 			access->sendMessage(
 				Net::Host::ClassicSimulatorMessageID::Synchronize,
@@ -445,15 +424,43 @@ namespace Game
 
 		void processLogicFailed(const ClassicSimulation::WorldFailure result)
 		{
-			::Net::Host::SimulationFailureMessage message;
-			message.reason = result;
-
-			access->sendMessage(
-				::Net::Host::ClassicSimulatorMessageID::SimulationFailed,
-				&message);
+			sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason::WorldFailure);
 
 			Log::Error(L"Failed to process simulation",
 				(int) result, L"result");
+		}
+
+		void onWorldLoad(World* loadingWorld) override
+		{
+			if (location != NULL)
+			{
+				location->pushMovement(&movementBuffer);
+				location->removePlayer(locationPlayer->playerID);
+			}
+
+			location = this->context.putPlayer(
+				locationPlayer,
+				loadingWorld->getInformation()->worldId);
+
+			movementBuffer.content.worldID = loadingWorld->getInformation()->worldId;
+		}
+
+		void onWorldExit(const ExitWorldEvent& event) override
+		{
+			access->sendMessage(
+				Net::Host::ClassicSimulatorMessageID::SimulationClosed,
+				NULL);
+			callback->onSimulationFinished(event);
+		}
+
+		bool sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason reason)
+		{
+			Net::Host::ClassicSimulation::SimulationFailureMessage message;
+			message.reason = reason;
+
+			return access->sendMessage(
+				Net::Host::ClassicSimulatorMessageID::SimulationFailed,
+				&message);
 		}
 	};
 }
