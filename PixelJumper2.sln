@@ -37,6 +37,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Simulator", "source\Simulat
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EditorCore", "source\EditorCore\EditorCore.vcxproj", "{A53D892B-93C0-4A5E-ABAA-4B97DD86D334}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "independent", "independent", "{6B85AF96-F074-4B0C-9A3A-4CFC4FA0FE35}"
+	ProjectSection(SolutionItems) = preProject
+		thoughts.txt = thoughts.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		source\Common\Common.vcxitems*{3f11cb66-9d73-4186-a27a-4e25ef362a18}*SharedItemsImports = 9
