@@ -3,10 +3,11 @@
 #include "ClassicClientHandler.h"
 #include "device/CoreDevice.h"
 
-#include "NetCore/NetCore.h"
 #include "GameCore/GameWorld.h"
 #include "GameCore/net/SimulatorContext.h"
 #include "GameCore/net/SimulatorSettings.h"
+#include "NetCore/NetCore.h"
+#include "OperatorClient/request/RegisterClassicHostRequest.h"
 
 // #include <Client/source/game/UserConnection.h>
 
@@ -208,8 +209,8 @@ namespace Game
 			Net::Client::RegisterClassicHostMessage* message =
 				new Net::Client::RegisterClassicHostMessage;
 
-			message->maxPlayers = 100;
-			message->port = 9927;
+			message->content.maxPlayers = 100;
+			message->content.port = 9927;
 
 			Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
 				Net::Client::OperatorCommonMessageID::RegisterClassicHost,
@@ -242,7 +243,7 @@ namespace Game
 			Device::Core::Shutdown();
 		}
 
-		void onRequestFailure(const RequestInterface::Reason reason) override
+		void onRequestFailure(const Operator::RequestInterface::Reason reason) override
 		{
 			Log::Error(L"register classic host request failed",
 				(int) reason, L"reason");

@@ -96,14 +96,14 @@ namespace Game
 			memcpy(keySource.token.token,
 				Operator::Client::GetToken().token,
 				OPERATOR_HASH_SIZE);
-			keySource.userID = request.userID;
+			keySource.userID = request.content.userID;
 
-			if (request.key.validate(keySource))
+			if (request.content.key.validate(keySource))
 			{
 				awaitingOperatorAnswer = true;
 
 				::Net::Client::OperatorClassicHost::RegisterClientMessage* message = new ::Net::Client::OperatorClassicHost::RegisterClientMessage;
-				message->userID = userID = request.userID;
+				message->content.userID = userID = request.content.userID;
 
 				Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
 					::Net::Client::OperatorClassicHostID::RegisterClient,
@@ -149,7 +149,7 @@ namespace Game
 		void sendAuthenticationRejectedMessage(const ::Net::Host::AuthenticationRejectedMessageContent::Reason reason)
 		{
 			::Net::Host::AuthenticationRejectedMessage message;
-			message.reason = reason;
+			message.content.reason = reason;
 
 			access->sendMessage(
 				::Net::Host::AuthenticationMessageID::AuthenticationRejected,
@@ -184,9 +184,9 @@ namespace Game
 		void onClientRegisterFailed(Net::Host::OperatorClassicHost::ClientRegistrationFailedMessage& message) override
 		{
 			Log::Error(L"Failed to retrive client data",
-				(int) message.reason, L"type");
+				(int) message.content.reason, L"type");
 			
-			switch (message.reason)
+			switch (message.content.reason)
 			{
 			case Net::Host::OperatorClassicHost::ClientRegistrationFailedReason::UserRegisteredSomewhere:
 				sendAuthenticationRejectedMessage(
@@ -196,7 +196,7 @@ namespace Game
 				break;
 			default:
 				Log::Error(L"missing reason case in hostsimulatorauthenticationhandler in onclientregisterfailed",
-					message.reason, L"reason");
+					message.content.reason, L"reason");
 
 				sendAuthenticationRejectedMessage(
 					::Net::Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed

@@ -81,8 +81,8 @@ namespace Scene
 			ClassicConnectionScene* scene = new ClassicConnectionScene;
 
 			Game::ClassicConnectionInformation info;
-			info.address = message.address;
-			info.key = message.key;
+			info.address = message.content.address;
+			info.key = message.content.key;
 
 			if (scene->initialize(info))
 			{
@@ -100,16 +100,18 @@ namespace Scene
 		void onClassicHostFindRejected(Net::Host::HostFindClassicRejectedMessage& message) override
 		{
 			Log::Error(L"Findhost request rejected",
-				(int) message.type, L"reason");
+				(int) message.content.type, L"reason");
 
-			switch (message.type)
+			switch (message.content.type)
 			{
-			case Net::Host::HostFindClassicRejectedMessage::InvalidUserMode:
+				/*
+			case Net::Host::HostFindClassicRejectedMessageContent::InvalidUserMode:
 				Framework::Core::PushChildScene<::Scene::InformationScene>(
 					"Failed to find classic host, invalid user mode");
 
 				break;
-			case Net::Host::HostFindClassicRejectedMessage::NoHostAvailable:
+				*/
+			case Net::Host::HostFindClassicRejectedMessageContent::NoHostAvailable:
 				Framework::Core::PushChildScene<::Scene::InformationScene>(
 					"Currently no classic host available");
 

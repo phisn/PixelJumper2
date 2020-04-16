@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OperatorClient/request/ClassicHostRequest.h"
+#include "OperatorUnlockBuffer.h"
 
 namespace Operator
 {

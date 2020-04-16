@@ -68,7 +68,7 @@ namespace Game
 			case Net::Host::AuthenticationMessageID::AuthenticationRejected:
 				if (Net::Host::AuthenticationRejectedMessage message; loadMessage(messageID, &message, pipe))
 				{
-					onAuthenticationRejected(message.reason);
+					onAuthenticationRejected(message.content.reason);
 				}
 
 				return true;
@@ -82,7 +82,7 @@ namespace Game
 		}
 
 	protected:
-		virtual void onAuthenticationRejected(const Net::Host::AuthenticationRejectedMessage::Reason reason) = 0;
+		virtual void onAuthenticationRejected(const Net::Host::AuthenticationRejectedMessageContent::Reason reason) = 0;
 		virtual void onAuthenticationFailed(const ClientAuthenticationFailure reason) = 0;
 
 	private:

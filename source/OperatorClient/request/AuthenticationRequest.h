@@ -30,7 +30,7 @@ namespace Operator
 
 		virtual void onAuthenticationFailed(const Reason reason) = 0;
 		virtual void onRegistrationFailed(
-			const ::Net::Host::RejectOperatorRegistrationMessage::Reason reason) = 0;
+			const ::Net::Host::RejectOperatorRegistrationMessageContent::Reason reason) = 0;
 
 	private:
 		bool request_onMessage(
@@ -43,11 +43,11 @@ namespace Operator
 				if (::Net::Host::AcceptOperatorAuthenticationMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticated(
-						message.authenticationToken, 
-						message.userID);
+						message.content.authenticationToken,
+						message.content.userID);
 					Operator::Client::client->onAuthenticated(
-						message.authenticationToken,
-						message.userID);
+						message.content.authenticationToken,
+						message.content.userID);
 				}
 
 				return true;
@@ -55,21 +55,21 @@ namespace Operator
 				if (::Net::Host::AcceptOperatorRegistrationMessage message; request_loadMessage(messageID, &message, pipe))
 				{
 					onAuthenticated(
-						message.authenticationToken, 
-						message.userID);
+						message.content.authenticationToken,
+						message.content.userID);
 					Operator::Client::client->onAuthenticated(
-						message.authenticationToken,
-						message.userID);
+						message.content.authenticationToken,
+						message.content.userID);
 				}
 
 				return true;
 			case ::Net::Host::OperatorAuthenticationMessageID::AcceptToken:
 				if (::Net::Host::AcceptOperatorTokenMessage message; request_loadMessage(messageID, &message, pipe))
 				{
-					onAuthenticated(message.userID);
+					onAuthenticated(message.content.userID);
 					Operator::Client::client->onAuthenticated(
 						NULL,
-						message.userID);
+						message.content.userID);
 				}
 
 				return true;
@@ -83,7 +83,7 @@ namespace Operator
 
 				if (::Net::Host::RejectOperatorRegistrationMessage message; request_loadMessage(messageID, &message, pipe))
 				{
-					onRegistrationFailed(message.reason);
+					onRegistrationFailed(message.content.reason);
 				}
 
 				return true;

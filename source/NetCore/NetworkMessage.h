@@ -17,17 +17,27 @@ namespace Net
 	template <typename Content>
 	struct TrivialNetworkMessage
 		:
-		public NetworkMessage,
-		public Content
+		public NetworkMessage
 	{
-		bool load(Resource::ReadPipe* const pipe) override
+		Content content;
+
+		virtual ~TrivialNetworkMessage()
 		{
-			return pipe->readValue(this);
 		}
 
-		bool save(Resource::WritePipe* const pipe) override
+		virtual bool load(Resource::ReadPipe* const pipe) override
 		{
-			return pipe->writeValue(this);
+			return pipe->readValue(&content);
+		}
+
+		virtual bool save(Resource::WritePipe* const pipe) override
+		{
+			return pipe->writeValue(&content);
+		}
+
+		virtual void adopt(const Content& content)
+		{
+			memcpy(&(this->content), &content, sizeof(Content));
 		}
 	};
 

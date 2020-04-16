@@ -15,10 +15,13 @@ namespace Resource
 	};
 
 	extern const ResourceTypeDefinition WorldResourceDefinition;
+	extern const ResourceTypeDefinition SettingsResourceDefinition;
 }
 
 namespace Resource::Interface
 {
+	bool Initialize();
+
 	/*
 		Think about changing resourcetype to
 		a resourcedefinition. so we can allow

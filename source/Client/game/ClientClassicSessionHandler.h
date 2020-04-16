@@ -111,7 +111,7 @@ namespace Game
 				players.end(),
 				[&message](Resource::PlayerResource* player)
 				{
-					return player->content.playerID == message.userID;
+					return player->content.userID == message.content.userID;
 				});
 
 			if (player != players.end())
@@ -121,7 +121,7 @@ namespace Game
 			else
 			{
 				Log::Warning(L"got removeplayer in clientclassicsessionhandler invalid userID",
-					message.userID, L"userID");
+					message.content.userID, L"userID");
 			}
 		}
 	};

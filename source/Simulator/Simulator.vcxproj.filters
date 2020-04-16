@@ -7,8 +7,8 @@
     <Filter Include="source\device">
       <UniqueIdentifier>{188f1cfc-7e45-484a-9cd0-73623858cf1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\game">
-      <UniqueIdentifier>{1a073b28-b3ab-46f2-b069-ae018270ec15}</UniqueIdentifier>
+    <Filter Include="source\simulator">
+      <UniqueIdentifier>{284f490d-2651-4b73-8b81-93bfb5200500}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -18,58 +18,64 @@
     <ClCompile Include="device\CoreDevice.cpp">
       <Filter>source\device</Filter>
     </ClCompile>
-    <ClCompile Include="game\ClassicClientHandler.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\HostClassicSelectionHandler.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\HostClassicSimulationHandler.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\HostClassicSimulator.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\HostSimulatorAuthenticationHandler.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\HostClassicSessionHandler.cpp">
-      <Filter>source\game</Filter>
-    </ClCompile>
     <ClCompile Include="device\OperatorClientDevice.cpp">
       <Filter>source\device</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassicClientHandler.cpp">
+      <Filter>source\simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="HostClassicSelectionHandler.cpp">
+      <Filter>source\simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="HostClassicSessionHandler.cpp">
+      <Filter>source\simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="HostClassicSimulationHandler.cpp">
+      <Filter>source\simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="HostClassicSimulator.cpp">
+      <Filter>source\simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="HostSimulatorAuthenticationHandler.cpp">
+      <Filter>source\simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatorUnlockBuffer.cpp">
+      <Filter>source\simulator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="device\CoreDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="game\ClassicClientHandler.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\HostClassicSelectionHandler.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\HostClassicSimulationHandler.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\HostClassicSimulator.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\HostSimulatorAuthenticationHandler.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\HostClassicSessionHandler.h">
-      <Filter>source\game</Filter>
-    </ClInclude>
     <ClInclude Include="device\OperatorClientDevice.h">
       <Filter>source\device</Filter>
     </ClInclude>
-    <ClInclude Include="game\ManagedUnregisterClientRequest.h">
-      <Filter>source\game</Filter>
+    <ClInclude Include="ClassicClientHandler.h">
+      <Filter>source\simulator</Filter>
     </ClInclude>
-    <ClInclude Include="game\ManagedWorldUnlockRequest.h">
-      <Filter>source\game</Filter>
+    <ClInclude Include="HostClassicSelectionHandler.h">
+      <Filter>source\simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="HostClassicSessionHandler.h">
+      <Filter>source\simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="HostClassicSimulationHandler.h">
+      <Filter>source\simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="HostClassicSimulator.h">
+      <Filter>source\simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="HostSimulatorAuthenticationHandler.h">
+      <Filter>source\simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagedUnregisterClientRequest.h">
+      <Filter>source\simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="OperatorUnlockBuffer.h">
+      <Filter>source\simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagedUnlockRequest.h">
+      <Filter>source\simulator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

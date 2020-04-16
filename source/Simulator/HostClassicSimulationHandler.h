@@ -98,8 +98,8 @@ namespace Game
 				if (player->playerID != locationPlayer->playerID)
 				{
 					::Net::Host::PushPlayerMessage message;
-					message.playerID = player->playerID;
-					message.representationID = player->representationID;
+					message.content.playerID = player->playerID;
+					message.content.representationID = player->representationID;
 
 					access->sendMessage(
 						::Net::Host::ClassicSimulatorMessageID::PushPlayer,
@@ -199,23 +199,23 @@ namespace Game
 						adjustedGameSpeed = true;
 						::Net::Host::TemporarilySpeedAdjustmentMessage message;
 
-						message.speedAdjustment = 1.f + (missingFrames != 0 ? -1.f : +1.f) 
+						message.content.speedAdjustment = 1.f + (missingFrames != 0 ? -1.f : +1.f)
 							* ToleratedSpeedDifference;
-						message.speedAdjustmentLength = playerFrameDifference / ToleratedSpeedDifference;
+						message.content.speedAdjustmentLength = playerFrameDifference / ToleratedSpeedDifference;
 						// because of many other factors that will change framedifferences
 						// often the is only the half length. this way a periodic speed adjustment
 						// because of following too high speed adjustments is prevented
-						message.speedAdjustmentLength *= 0.5f;
+						message.content.speedAdjustmentLength *= 0.5f;
 
 						access->sendMessage(
 							::Net::Host::ClassicSimulatorMessageID::TemporarilySpeedAdjustment,
 							&message);
 
-						remainingAdjustedGameSpeed = message.speedAdjustmentLength + SpeedAdjustmentTimeOffset;
+						remainingAdjustedGameSpeed = message.content.speedAdjustmentLength + SpeedAdjustmentTimeOffset;
 
 						Log::Information(L"speed adjustment",
-							message.speedAdjustment, L"speed",
-							message.speedAdjustmentLength, L"length");
+							message.content.speedAdjustment, L"speed",
+							message.content.speedAdjustmentLength, L"length");
 					}
 				}
 			}
@@ -380,8 +380,8 @@ namespace Game
 		void onNetPlayerAdded(LocationPlayer* const locationPlayer) override
 		{
 			::Net::Host::PushPlayerMessage message;
-			message.playerID = locationPlayer->playerID;
-			message.representationID = locationPlayer->representationID;
+			message.content.playerID = locationPlayer->playerID;
+			message.content.representationID = locationPlayer->representationID;
 
 			access->sendMessage(
 				::Net::Host::ClassicSimulatorMessageID::PushPlayer,
@@ -391,7 +391,7 @@ namespace Game
 		void onNetPlayerRemoved(const Resource::PlayerID playerID) override
 		{
 			::Net::Host::PopPlayerMessage message;
-			message.playerID = playerID;
+			message.content.playerID = playerID;
 
 			access->sendMessage(
 				::Net::Host::ClassicSimulatorMessageID::PushPlayer,
@@ -456,7 +456,7 @@ namespace Game
 		bool sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason reason)
 		{
 			Net::Host::ClassicSimulation::SimulationFailureMessage message;
-			message.reason = reason;
+			message.content.reason = reason;
 
 			return access->sendMessage(
 				Net::Host::ClassicSimulatorMessageID::SimulationFailed,

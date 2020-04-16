@@ -156,8 +156,8 @@ namespace Game
 
 			Net::Client::AuthenticationMessage message;
 
-			message.key = connectionInfo.key;
-			message.userID = Operator::Client::GetUserID();
+			message.content.key = connectionInfo.key;
+			message.content.userID = Operator::Client::GetUserID();
 
 			if (sendMessage(
 					Net::Client::AuthenticationMessageID::Authenticate,

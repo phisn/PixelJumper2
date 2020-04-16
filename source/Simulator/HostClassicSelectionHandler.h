@@ -64,11 +64,11 @@ namespace Game
 			if (std::find(
 					classicResource.unlockedRepresentations.begin(),
 					classicResource.unlockedRepresentations.end(),
-				request.representationID)
+				request.content.representationID)
 				== classicResource.unlockedRepresentations.end())
 			{
 				::Net::Host::RejectSimulationRequestMessage message;
-				message.reason = message.InvalidRepresentationID;
+				message.content.reason = message.content.InvalidRepresentationID;
 
 				access->sendMessage(
 					::Net::Host::ClassicSelectionMessageID::RejectSimulationRequest,
@@ -88,11 +88,11 @@ namespace Game
 			if (std::find(
 					classicResource.unlockedWorlds.begin(),
 					classicResource.unlockedWorlds.end(),
-				request.world)
+				request.content.world)
 				== classicResource.unlockedWorlds.end())
 			{
 				::Net::Host::RejectSimulationRequestMessage message;
-				message.reason = message.InvalidWorldID;
+				message.content.reason = message.content.InvalidWorldID;
 
 				access->sendMessage(
 					::Net::Host::ClassicSelectionMessageID::RejectSimulationRequest,
@@ -109,7 +109,7 @@ namespace Game
 				return;
 			}
 
-			WorldResourceContainer::const_iterator world = container.find(request.world);
+			WorldResourceContainer::const_iterator world = container.find(request.content.world);
 
 			if (world == container.cend())
 			{
@@ -138,8 +138,8 @@ namespace Game
 				&message);
 
 			SimulationBootInformation info;
-			info.worldID = request.world;
-			info.representationID = request.representationID;
+			info.worldID = request.content.world;
+			info.representationID = request.content.representationID;
 
 			callback->onSimulationCreated(info);
 		}
@@ -148,7 +148,7 @@ namespace Game
 		void missingWorldResource()
 		{
 			::Net::Host::RejectSimulationRequestMessage message;
-			message.reason = message.InternalResourceMissing;
+			message.content.reason = message.content.InternalResourceMissing;
 
 			access->sendMessage(
 				::Net::Host::ClassicSelectionMessageID::RejectSimulationRequest,

@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-namespace Device
+namespace Resource
 {
 	struct ScreenResourceContent
 	{
@@ -25,27 +25,17 @@ namespace Device
 		sf::Uint8 framelimit;
 	};
 
-	struct ScreenResource
-		:
-		public Resource::TrivialResource<ScreenResourceContent>
-	{
-		bool setup() override
-		{
-			return content.limit <= content.None;
-		}
-		
-		bool validate() override
-		{
-			return content.limit <= content.None;
-		}
-	};
+	typedef TrivialResource<ScreenResourceContent> ScreenResource;
+}
 
+namespace Device
+{
 	namespace Screen
 	{
 		bool Initialize();
 		void Uninitialize();
 
-		ScreenResourceContent& ChangeScreenResource();
+		Resource::ScreenResourceContent& ChangeScreenResource();
 
 		void LoadScreenResource();
 		bool SaveScreenResource();
@@ -54,7 +44,7 @@ namespace Device
 		sf::RenderWindow* GetWindow();
 	}
 
-	extern const ScreenResourceContent DefaultScreenResource;
+	extern const Resource::ScreenResourceContent DefaultScreenResource;
 
 	// implemted in viewchain
 	class View

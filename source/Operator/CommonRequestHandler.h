@@ -87,7 +87,7 @@ namespace Operator::Net
 
 			Database::ConditionResult result = DatabaseInterface::GetPlayerToken(
 				keySource.token,
-				request.userID);
+				request.content.userID);
 
 			switch (result)
 			{
@@ -105,10 +105,10 @@ namespace Operator::Net
 				return;
 			}
 
-			keySource.userID = request.userID;
+			keySource.userID = request.content.userID;
 
 			::Net::Host::ConnectionKeyMessage message;
-			message.key.make(keySource);
+			message.content.key.make(keySource);
 			
 			access->sendMessage(
 				::Net::Host::OperatorCommonMessageID::ConnectionKey,
@@ -156,7 +156,7 @@ namespace Operator::Net
 			if (host == NULL)
 			{
 				::Net::Host::HostFindClassicRejectedMessage message;
-				message.type = ::Net::Host::HostFindClassicRejectedMessageContent::NoHostAvailable;
+				message.content.type = ::Net::Host::HostFindClassicRejectedMessageContent::NoHostAvailable;
 
 				access->sendMessage(
 					::Net::Host::OperatorCommonMessageID::HostFindClassicRejected,
@@ -198,9 +198,9 @@ namespace Operator::Net
 
 			::Net::Host::HostFindClassicMessage message;
 
-			message.userID = host->host.userID;
-			message.address = host->host.address;
-			message.key.make(keySource);
+			message.content.userID = host->host.userID;
+			message.content.address = host->host.address;
+			message.content.key.make(keySource);
 
 			access->sendMessage(
 				::Net::Host::OperatorCommonMessageID::HostFindClassic,

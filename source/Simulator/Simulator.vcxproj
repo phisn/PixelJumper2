@@ -84,27 +84,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClassicClientHandler.cpp" />
     <ClCompile Include="device\CoreDevice.cpp" />
     <ClCompile Include="device\OperatorClientDevice.cpp" />
-    <ClCompile Include="game\ClassicClientHandler.cpp" />
-    <ClCompile Include="game\HostClassicSessionHandler.cpp" />
-    <ClCompile Include="game\HostClassicSelectionHandler.cpp" />
-    <ClCompile Include="game\HostClassicSimulationHandler.cpp" />
-    <ClCompile Include="game\HostClassicSimulator.cpp" />
-    <ClCompile Include="game\HostSimulatorAuthenticationHandler.cpp" />
+    <ClCompile Include="HostClassicSelectionHandler.cpp" />
+    <ClCompile Include="HostClassicSessionHandler.cpp" />
+    <ClCompile Include="HostClassicSimulationHandler.cpp" />
+    <ClCompile Include="HostClassicSimulator.cpp" />
+    <ClCompile Include="HostSimulatorAuthenticationHandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OperatorUnlockBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClassicClientHandler.h" />
     <ClInclude Include="device\CoreDevice.h" />
     <ClInclude Include="device\OperatorClientDevice.h" />
-    <ClInclude Include="game\ClassicClientHandler.h" />
-    <ClInclude Include="game\HostClassicSessionHandler.h" />
-    <ClInclude Include="game\HostClassicSelectionHandler.h" />
-    <ClInclude Include="game\HostClassicSimulationHandler.h" />
-    <ClInclude Include="game\HostClassicSimulator.h" />
-    <ClInclude Include="game\HostSimulatorAuthenticationHandler.h" />
-    <ClInclude Include="game\ManagedUnregisterClientRequest.h" />
-    <ClInclude Include="game\ManagedWorldUnlockRequest.h" />
+    <ClInclude Include="HostClassicSelectionHandler.h" />
+    <ClInclude Include="HostClassicSessionHandler.h" />
+    <ClInclude Include="HostClassicSimulationHandler.h" />
+    <ClInclude Include="HostClassicSimulator.h" />
+    <ClInclude Include="HostSimulatorAuthenticationHandler.h" />
+    <ClInclude Include="ManagedUnregisterClientRequest.h" />
+    <ClInclude Include="ManagedUnlockRequest.h" />
+    <ClInclude Include="OperatorUnlockBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameCore\GameCore.vcxproj">

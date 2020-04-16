@@ -140,7 +140,7 @@ namespace Operator::Net
 			::Net::Host::AcceptOperatorAuthenticationMessage message;
 
 			if (!DatabaseInterface::CreatePlayerToken(
-					message.authenticationToken,
+					message.content.authenticationToken,
 					user.userID))
 			{
 				access->sendMessage(
@@ -150,7 +150,7 @@ namespace Operator::Net
 				return;
 			}
 
-			message.userID = user.userID;
+			message.content.userID = user.userID;
 
 			access->sendMessage(
 				::Net::Host::OperatorAuthenticationMessageID::AcceptAuthentication,
@@ -173,8 +173,8 @@ namespace Operator::Net
 
 			::Net::Host::AcceptOperatorRegistrationMessage message;
 			const DatabaseInterface::CreatePlayerResult result = DatabaseInterface::CreateNewPlayer(
-				&message.userID,
-				message.authenticationToken,
+				&message.content.userID,
+				message.content.authenticationToken,
 				salt,
 				hash,
 				request.username,
@@ -183,11 +183,11 @@ namespace Operator::Net
 			switch (result)
 			{
 			case DatabaseInterface::CreatePlayerResult::UsernameUsed:
-				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessage::UsernameUsed);
+				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessageContent::UsernameUsed);
 
 				return;
 			case DatabaseInterface::CreatePlayerResult::KeyUsed:
-				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessage::KeyUsed);
+				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessageContent::KeyUsed);
 
 				access->onThreatIdentified(
 					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
@@ -196,7 +196,7 @@ namespace Operator::Net
 
 				return;
 			case DatabaseInterface::CreatePlayerResult::KeyNotFound:
-				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessage::KeyInvalid);
+				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessageContent::KeyInvalid);
 
 				access->onThreatIdentified(
 					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
@@ -216,13 +216,13 @@ namespace Operator::Net
 				::Net::Host::OperatorAuthenticationMessageID::AcceptRegistration,
 				&message);
 
-			callback->onAuthenticated(message.userID);
+			callback->onAuthenticated(message.content.userID);
 		}
 
-		void RejectRegistration(const ::Net::Host::RejectOperatorRegistrationMessage::Reason reason)
+		void RejectRegistration(const ::Net::Host::RejectOperatorRegistrationMessageContent::Reason reason)
 		{
 			::Net::Host::RejectOperatorRegistrationMessage message;
-			message.reason = reason;
+			message.content.reason = reason;
 
 			access->sendMessage(
 				::Net::Host::OperatorAuthenticationMessageID::RejectRegistration,
@@ -234,7 +234,7 @@ namespace Operator::Net
 			UserID userID;
 			Database::ConditionResult result = DatabaseInterface::FindUserID(
 				&userID,
-				request.token);
+				request.content.token);
 
 			if (GetUserMode(userID) == Usermode::Online)
 			{
@@ -262,7 +262,7 @@ namespace Operator::Net
 			}
 
 			::Net::Host::AcceptOperatorTokenMessage message;
-			message.userID = userID;
+			message.content.userID = userID;
 
 			access->sendMessage(
 				::Net::Host::OperatorAuthenticationMessageID::AcceptToken,
@@ -274,7 +274,7 @@ namespace Operator::Net
 		void sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason reason)
 		{
 			::Net::Host::AuthenticationFailureMessage message;
-			message.reason = ::Net::Host::AuthenticationFailureReason::AuthenticationRejected;
+			message.content.reason = ::Net::Host::AuthenticationFailureReason::AuthenticationRejected;
 
 			access->sendMessage(
 				::Net::Host::OperatorAuthenticationMessageID::AuthenticationFailure,

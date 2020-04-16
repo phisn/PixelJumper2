@@ -8,6 +8,7 @@
 #include "Section.h"
 
 #include <codecvt>
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -92,6 +93,12 @@ template <>
 inline std::wstring convert_to_wstring<const char*>(const char* value)
 {
 	return carrtowstr(value);
+}
+
+template <>
+inline std::wstring convert_to_wstring<std::filesystem::path>(std::filesystem::path value)
+{
+	return value.wstring();
 }
 
 template <typename T>

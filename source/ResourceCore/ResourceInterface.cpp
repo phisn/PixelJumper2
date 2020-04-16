@@ -16,6 +16,13 @@ namespace Resource
 		L"world",
 		L"wrld"
 	};
+	
+	const ResourceTypeDefinition SettingsResourceDefinition
+	{
+		L"app settings",
+		L"settings",
+		L"stg"
+	};
 
 	std::wstring primaryDirectory = L"resource";
 	std::map<std::filesystem::path, std::vector<char>> cachedResources;
@@ -27,6 +34,18 @@ namespace Resource
 	bool LoadResourceFromPipe(
 		ResourceBase* resource,
 		ReadPipe* pipe);
+	bool EnforceDirectory(const std::filesystem::path& path);
+
+	bool Interface::Initialize()
+	{
+		if (!EnforceDirectory(primaryDirectory))
+		{
+			Log::Error(L"failed to enforce primary directory");
+			return false;
+		}
+
+		return true;
+	}
 
 	bool Interface::SaveResource(
 		std::wstring filename, 
@@ -244,6 +263,15 @@ namespace Resource
 		std::wstring filename,
 		const ResourceTypeDefinition& type)
 	{
+		if (type.directory.size() != 0 && !EnforceDirectory(primaryDirectory + L"\\" + type.directory))
+		{
+			Log::Error(L"Failed to enforce directory",
+				type.directory, L"type_directory",
+				type.name, L"type_name",
+				filename, L"filename",
+				primaryDirectory, L"primary");
+		}
+
 		// primaryDirectory\[type_directory\]filename[.type_extension]
 		return primaryDirectory + L"\\" 
 			+ (type.directory.size() == 0
@@ -283,6 +311,34 @@ namespace Resource
 			Log::Error(L"failed to make resource");
 
 			return false;
+		}
+
+		return true;
+	}
+
+	bool EnforceDirectory(const std::filesystem::path& path)
+	{
+		if (std::error_code error_code; !std::filesystem::exists(primaryDirectory, error_code))
+		{
+			Log::Section section{ L"creating missing directory", path, L"directory"};
+
+			if (error_code)
+			{
+				Log::Error(L"Failed to check if directory exists",
+					error_code.message(), L"message");
+
+				return false;
+			}
+			else
+			{
+				if (!std::filesystem::create_directory(primaryDirectory, error_code))
+				{
+					Log::Error(L"Failed to create directory",
+						error_code.message(), L"message");
+
+					return false;
+				}
+			}
 		}
 
 		return true;

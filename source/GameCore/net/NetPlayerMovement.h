@@ -34,15 +34,5 @@ namespace Game
 			return pipe->writeValue(&content)
 				&& pipe->writeVector(&positions);
 		}
-
-		bool setup() override
-		{
-			return true;
-		}
-
-		bool validate() override
-		{
-			return true;
-		}
 	};
 }

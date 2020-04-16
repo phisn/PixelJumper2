@@ -6,15 +6,15 @@
 namespace
 {
 	sf::RenderWindow* window;
-	Device::ScreenResourceContent screenResource;
+	Resource::ScreenResourceContent screenResource;
 }
 
-const Device::ScreenResourceContent Device::DefaultScreenResource =
+const Resource::ScreenResourceContent Device::DefaultScreenResource =
 {
 	// sf::VideoMode::getDesktopMode(),
 	sf::VideoMode{ 400, 400 },
 	sf::ContextSettings{ 4, 4, 8 }, true,
-	Device::ScreenResourceContent::VSync, 0
+	Resource::ScreenResourceContent::VSync, 0
 };
 
 namespace Device
@@ -25,10 +25,10 @@ namespace Device
 		// of sfml internals
 		window = new sf::RenderWindow();
 
-		if (ScreenResource resource; Resource::Interface::LoadResource(
+		if (Resource::ScreenResource resource; Resource::Interface::LoadResource(
+				L"screen",
 				&resource,
-				Resource::ResourceType::Settings,
-				L"screen"))
+				Resource::SettingsResourceDefinition))
 		{
 			screenResource = resource.content;
 		}
@@ -52,7 +52,7 @@ namespace Device
 		delete window;
 	}
 
-	ScreenResourceContent& Screen::ChangeScreenResource()
+	Resource::ScreenResourceContent& Screen::ChangeScreenResource()
 	{
 		return screenResource;
 	}
@@ -70,17 +70,17 @@ namespace Device
 
 		switch (screenResource.limit)
 		{
-		case ScreenResourceContent::Limit::Framelimit:
+		case Resource::ScreenResourceContent::Limit::Framelimit:
 			window->setFramerateLimit(screenResource.limit);
 			window->setVerticalSyncEnabled(false);
 
 			break;
-		case ScreenResourceContent::Limit::None:
+		case Resource::ScreenResourceContent::Limit::None:
 			window->setFramerateLimit(0);
 			window->setVerticalSyncEnabled(false);
 
 			break;
-		case ScreenResourceContent::Limit::VSync:
+		case Resource::ScreenResourceContent::Limit::VSync:
 			window->setFramerateLimit(0);
 			window->setVerticalSyncEnabled(true);
 
@@ -90,12 +90,12 @@ namespace Device
 
 	bool Screen::SaveScreenResource()
 	{
-		ScreenResource resource;
+		Resource::ScreenResource resource;
 		resource.adopt(screenResource);
 		return Resource::Interface::SaveResource(
+			L"screen",
 			&resource,
-			Resource::ResourceType::Settings,
-			L"screen");
+			Resource::SettingsResourceDefinition);
 	}
 
 	void Screen::ResetScreenResource()

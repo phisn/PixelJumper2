@@ -92,7 +92,6 @@
     <ClCompile Include="ClientHandler.cpp" />
     <ClCompile Include="RequestContainer.cpp" />
     <ClCompile Include="NetCore.cpp" />
-    <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
@@ -106,7 +105,6 @@
     <ClInclude Include="NetCore.h" />
     <ClInclude Include="NetworkMessage.h" />
     <ClInclude Include="RequestHandler.h" />
-    <ClInclude Include="Server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

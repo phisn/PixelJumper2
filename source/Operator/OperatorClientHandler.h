@@ -128,7 +128,7 @@ namespace Operator::Net
 
 				SteamNetworkingIPAddr address;
 				address = connectionInfo.m_addrRemote;
-				address.m_port = message.port;
+				address.m_port = message.content.port;
 
 				addRequestHandler<ClassicHostRequestHandler>(
 					new ClassicHostRequestHandler(

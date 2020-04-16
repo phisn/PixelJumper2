@@ -99,7 +99,7 @@ namespace Game
 
 				Net::Client::OperatorClassicHost::UnregisterClientMessage* message =
 					new Net::Client::OperatorClassicHost::UnregisterClientMessage;
-				message->userID = resource.content.userID;
+				message->content.userID = resource.content.userID;
 
 				Operator::ManagedUnregisterClientRequest* request =
 					new Operator::ManagedUnregisterClientRequest;
@@ -149,7 +149,7 @@ namespace Game
 			{
 				Net::Client::OperatorClassicHost::RegisterClientMessage* operator_message =
 					new Net::Client::OperatorClassicHost::RegisterClientMessage;
-				operator_message->userID = resource.content.userID;
+				operator_message->content.userID = resource.content.userID;
 
 				Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
 					Net::Client::OperatorClassicHostID::RegisterClient,
@@ -162,7 +162,7 @@ namespace Game
 						(int) result, L"reason");
 
 					Net::Host::ClassicSession::InterruptSessionMessage message;
-					message.reason = Net::Host::ClassicSession::InterruptSessionReason::RestoreOperatorStateFailed;
+					message.content.reason = Net::Host::ClassicSession::InterruptSessionReason::RestoreOperatorStateFailed;
 
 					sendMessage(
 						Net::Host::ClassicSessionMessageID::InterruptSession,
@@ -324,7 +324,7 @@ namespace Game
 		void onSimulationFinished(const ExitWorldEvent& event) override
 		{
 			Net::Client::OperatorClassicHost::RequestUnlockWorldMessage message;
-			message.worldID = event.worldID;
+			message.content.worldID = event.worldID;
 
 
 		}
@@ -338,7 +338,7 @@ namespace Game
 				(int) reason, L"reason");
 
 			Net::Host::ClassicSession::InterruptSessionMessage message;
-			message.reason = Net::Host::ClassicSession::InterruptSessionReason::RestoreOperatorStateFailed;
+			message.content.reason = Net::Host::ClassicSession::InterruptSessionReason::RestoreOperatorStateFailed;
 
 			sendMessage(
 				Net::Host::ClassicSessionMessageID::InterruptSession,
@@ -360,7 +360,7 @@ namespace Game
 		// might never happen
 		void onClientRegisterFailed(Net::Host::OperatorClassicHost::ClientRegistrationFailedMessage& answer) override
 		{
-			switch (answer.reason)
+			switch (answer.content.reason)
 			{
 			case Net::Host::OperatorClassicHost::ClientRegistrationFailedReason::UserRegisteredSomewhere:
 				// user might try to abuse this situation
@@ -373,10 +373,10 @@ namespace Game
 			}
 
 			Log::Error(L"at restore operator, clientregister failed",
-				(int) answer.reason, L"reason");
+				(int) answer.content.reason, L"reason");
 
 			Net::Host::ClassicSession::InterruptSessionMessage message;
-			message.reason = Net::Host::ClassicSession::InterruptSessionReason::RestoreOperatorStateFailed;
+			message.content.reason = Net::Host::ClassicSession::InterruptSessionReason::RestoreOperatorStateFailed;
 
 			sendMessage(
 				Net::Host::ClassicSessionMessageID::InterruptSession,

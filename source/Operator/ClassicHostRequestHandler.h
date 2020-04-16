@@ -77,7 +77,7 @@ namespace Operator::Net
 
 		void onRegisterClient(const ::Net::Client::OperatorClassicHost::RegisterClientMessage& request)
 		{
-			switch (hostContainer.registerUser(request.userID))
+			switch (hostContainer.registerUser(request.content.userID))
 			{
 			case ClassicHostContainer::RegisterUserFailure::MaxUserCount:
 			{
@@ -175,7 +175,7 @@ namespace Operator::Net
 		void sendRegisterClientFailure(::Net::Host::OperatorClassicHost::ClientRegistrationFailedReason reason)
 		{
 			::Net::Host::OperatorClassicHost::ClientRegistrationFailedMessage message;
-			message.reason = reason;
+			message.content.reason = reason;
 
 			access->sendMessage(
 				::Net::Host::OperatorClassicHostID::ClientRegistrationFailed,
@@ -184,7 +184,7 @@ namespace Operator::Net
 
 		void onUnregisterClient(const ::Net::Client::OperatorClassicHost::UnregisterClientMessage& message)
 		{
-			hostContainer.unregisterUser(message.userID);
+			hostContainer.unregisterUser(message.content.userID);
 			access->sendMessage(::Net::Host::OperatorClassicHostID::ClientUnregistered);
 		}
 
@@ -231,7 +231,7 @@ namespace Operator::Net
 		void sendRequestClientDataFailed(::Net::Host::OperatorClassicHost::ClientDataRequestFailedReason reason)
 		{
 			::Net::Host::OperatorClassicHost::ClientDataRequestFailedMessage message;
-			message.reason = reason;
+			message.content.reason = reason;
 
 			access->sendMessage(
 				::Net::Host::OperatorClassicHostID::ClientDataRequestFailed,

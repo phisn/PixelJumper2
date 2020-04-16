@@ -150,7 +150,7 @@ namespace Operator
 			// ensure pushrequest is never directly called as token authentication
 			// use pushtokenrequest instead
 			assert(messageID != ::Net::Client::OperatorAuthenticationMessageID::Token ||
-				memcmp(((::Net::Client::OperatorTokenMessage*) message)->token, client->token.token, OPERATOR_HASH_SIZE) == 0);
+				memcmp(((::Net::Client::OperatorTokenMessage*) message)->content.token, client->token.token, OPERATOR_HASH_SIZE) == 0);
 
 			if (!client->tokenKnown && client->authenticationStatus == Authenticating)
 			{
@@ -238,7 +238,7 @@ namespace Operator
 			RequestInterface* const request)
 		{
 			memcpy(client->token.token,
-				message->token,
+				message->content.token,
 				OPERATOR_HASH_SIZE);
 			return PushRequest(
 				messageID,
@@ -438,11 +438,11 @@ namespace Operator
 			case ::Net::Host::OperatorAuthenticationMessageID::AcceptToken:
 				if (::Net::Host::AcceptOperatorTokenMessage message; loadMessage(messageID, &message, pipe))
 				{
-					if (userID != message.userID)
+					if (userID != message.content.userID)
 					{
 						Log::Error(L"got invalid userid in reauthentication",
 							userID, L"expected",
-							message.userID, L"received");
+							message.content.userID, L"received");
 
 						authenticationStatus = Unauthenticated;
 						removeAllRequests(RequestInterface::Reason::AuthenticateFailed);
@@ -460,7 +460,7 @@ namespace Operator
 				if (::Net::Host::AuthenticationFailureMessage message; loadMessage(messageID, &message, pipe))
 				{
 					Log::Error(L"token for reauthentication rejected. probably expired",
-						(int) message.reason, L"reason");
+						(int) message.content.reason, L"reason");
 				}
 				else
 				{
@@ -549,7 +549,7 @@ namespace Operator
 			{
 				::Net::Client::OperatorTokenMessage message;
 
-				memcpy(message.token,
+				memcpy(message.content.token,
 					token.token,
 					OPERATOR_HASH_SIZE);
 

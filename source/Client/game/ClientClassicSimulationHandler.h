@@ -359,11 +359,11 @@ namespace Game
 
 		void onPushPlayer(const Net::Host::PushPlayerMessage& message)
 		{
-			Log::Information(L"player joined", message.playerID, L"playerID");
+			Log::Information(L"player joined", message.content.playerID, L"playerID");
 
 			std::string username = "user not found";
 			for (const Resource::PlayerResource* player : players)
-				if (player->content.playerID == message.playerID)
+				if (player->content.userID == message.content.playerID)
 				{
 					username = player->username;
 					break;
@@ -376,14 +376,14 @@ namespace Game
 
 		void onPopPlayer(const Net::Host::PopPlayerMessage& message)
 		{
-			Log::Information(L"player left", message.playerID, L"playerID");
+			Log::Information(L"player left", message.content.playerID, L"playerID");
 
 			decltype(artificialPlayers)::iterator iterator = std::find_if(
 				artificialPlayers.begin(),
 				artificialPlayers.end(),
 				[&message](ArtificialPlayer* const artificialPlayer)
 				{
-					return artificialPlayer->getInformation().playerId == message.playerID;
+					return artificialPlayer->getInformation().playerId == message.content.playerID;
 				});
 			
 			if (iterator != artificialPlayers.end())
@@ -405,9 +405,9 @@ namespace Game
 
 		void onTemporarilySpeedAdjustment(const Net::Host::TemporarilySpeedAdjustmentMessage& message)
 		{
-			currentGameSpeed = message.speedAdjustment;
+			currentGameSpeed = message.content.speedAdjustment;
 			gameSpeedAdjusted = true;
-			remainingGameSpeedAdjustment = message.speedAdjustmentLength;
+			remainingGameSpeedAdjustment = message.content.speedAdjustmentLength;
 
 			Log::Information(L"speed adjusted",
 				currentGameSpeed, L"speed",

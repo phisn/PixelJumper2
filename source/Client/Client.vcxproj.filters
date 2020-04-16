@@ -57,12 +57,14 @@
     <ClCompile Include="game\ClientClassicSessionHandler.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
-    <ClCompile Include="game\CachedControllablePlayer.cpp" />
     <ClCompile Include="classic\ClassicBootScene.cpp">
       <Filter>source\classic</Filter>
     </ClCompile>
     <ClCompile Include="classic\ClassicConnectionScene.cpp">
       <Filter>source\classic</Filter>
+    </ClCompile>
+    <ClCompile Include="game\CachedControllablePlayer.cpp">
+      <Filter>source\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

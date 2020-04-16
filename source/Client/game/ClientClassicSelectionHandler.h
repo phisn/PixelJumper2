@@ -60,8 +60,8 @@ namespace Game
 		{
 			Net::Client::PrepareSimulationMessage message;
 
-			message.representationID = info.representationID;
-			message.world = info.worldID;
+			message.content.representationID = info.representationID;
+			message.content.world = info.worldID;
 			currentBootInfo = info;
 
 			access->sendMessage(
@@ -69,7 +69,7 @@ namespace Game
 				&message);
 		}
 
-		virtual void onSimulationRequestFailed(const Net::Host::RejectSimulationRequestMessage::Reason reason) = 0;
+		virtual void onSimulationRequestFailed(const Net::Host::RejectSimulationRequestMessageContent::Reason reason) = 0;
 
 	private:
 		ClientClassicSelectionHandlerCallback* const callback;
@@ -82,7 +82,7 @@ namespace Game
 
 		void onRejectSimulationRequest(const Net::Host::RejectSimulationRequestMessage& message)
 		{
-			onSimulationRequestFailed(message.reason);
+			onSimulationRequestFailed(message.content.reason);
 		}
 	};
 }

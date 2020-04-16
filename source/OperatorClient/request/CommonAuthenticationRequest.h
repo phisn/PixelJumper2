@@ -20,7 +20,7 @@ namespace Operator
 		Util::Notifier<CommonAuthenticationRequest, UserID> notifyAuthenticated;
 		Util::Notifier<CommonAuthenticationRequest, const char[OPERATOR_HASH_SIZE], UserID> notifyAuthenticatedToken;
 		Util::Notifier<CommonAuthenticationRequest, Reason> notifyRejected;
-		Util::Notifier<CommonAuthenticationRequest, ::Net::Host::RejectOperatorRegistrationMessage::Reason> notifyRegisterationRejected;
+		Util::Notifier<CommonAuthenticationRequest, ::Net::Host::RejectOperatorRegistrationMessageContent::Reason> notifyRegisterationRejected;
 		Util::Notifier<CommonAuthenticationRequest, RequestInterface::Reason> notifyFailed;
 
 	private:
@@ -59,7 +59,7 @@ namespace Operator
 			notifyRejected.notify(reason);
 		}
 
-		void onRegistrationFailed(const ::Net::Host::RejectOperatorRegistrationMessage::Reason reason) override
+		void onRegistrationFailed(const ::Net::Host::RejectOperatorRegistrationMessageContent::Reason reason) override
 		{
 			Log::Warning(L"Common registration failed", (int)reason, L"reason");
 

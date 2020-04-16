@@ -52,7 +52,8 @@ namespace Resource
 		template <typename T>
 		bool writeVector(const std::vector<T>* const _vector)
 		{
-			static_assert(std::is_trivial_v<T>, "tried to write vector with non trivial type");
+			static_assert(std::is_trivially_move_constructible_v<T> &&
+				std::is_trivially_destructible_v<T>, "tried to write vector with non trivial type");
 
 			uint32_t count = _vector->size();
 			if (!writeValue(&count))
@@ -151,7 +152,8 @@ namespace Resource
 		template <typename T>
 		bool readVector(std::vector<T>* const vector)
 		{
-			static_assert(std::is_trivial_v<T>, "tried to read vector with non trivial type");
+			static_assert(std::is_trivially_move_constructible_v<T> &&
+				std::is_trivially_destructible_v<T>, "tried to read vector with non trivial type");
 
 			uint32_t count;
 			if (!readValue(&count)) 
