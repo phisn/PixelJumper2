@@ -27,9 +27,6 @@
     <ClCompile Include="main.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="Operator.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="OperatorClientHandler.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -66,6 +63,12 @@
     <ClCompile Include="database\UnlockedWorldsTable.cpp">
       <Filter>source\database</Filter>
     </ClCompile>
+    <ClCompile Include="OperatorCore.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="database\ClassicModeStatements.cpp">
+      <Filter>source\database</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActiveUserContainer.h">
@@ -78,9 +81,6 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="CommonRequestHandler.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="Operator.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="OperatorClientHandler.h">
@@ -117,6 +117,12 @@
       <Filter>source\database</Filter>
     </ClInclude>
     <ClInclude Include="database\UnlockedWorldsTable.h">
+      <Filter>source\database</Filter>
+    </ClInclude>
+    <ClInclude Include="OperatorCore.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="database\ClassicModeStatements.h">
       <Filter>source\database</Filter>
     </ClInclude>
   </ItemGroup>

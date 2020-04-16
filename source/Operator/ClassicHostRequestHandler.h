@@ -3,12 +3,14 @@
 #include "ActiveUserContainer.h"
 #include "ActiveHostContainer.h"
 #include "database/DatabaseInterface.h"
+#include "database/UnlockedRepresentationsTable.h"
+#include "database/UnlockedWorldsTable.h"
 
 #include "Common/Common.h"
 #include "NetCore/message/OperatorClassicSimulatorMessage.h"
 #include "NetCore/RequestHandler.h"
 
-namespace Operator::Net
+namespace Operator
 {
 	/*
 		no meed for classiccommonrequesthandler or
@@ -25,13 +27,14 @@ namespace Operator::Net
 	public:
 		ClassicHostRequestHandler(
 			UserID userID,
+			const ::Net::Client::RegisterClassicHostMessage& message,
 			SteamNetworkingIPAddr address)
 			:
 			userID(userID),
 			hostContainer(userID)
 		{
+			hostContainer.maxPlayers = message.content.maxPlayers;
 			hostContainer.host.address = address;
-			hostContainer.maxPlayers = 100;
 		}
 
 		void update() override
@@ -50,14 +53,14 @@ namespace Operator::Net
 					onRegisterClient(message);
 				}
 
-				break;
+				return true;
 			case ::Net::Client::OperatorClassicHostID::UnregisterClient:
 				if (::Net::Client::OperatorClassicHost::UnregisterClientMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onUnregisterClient(message);
 				}
 
-				break;
+				return true;
 			case ::Net::Client::OperatorClassicHostID::ClientData:
 				if (::Net::Client::OperatorClassicHost::RequestClientDataMessage message; loadMessage(messageID, &message, pipe))
 				{
@@ -66,6 +69,13 @@ namespace Operator::Net
 
 				return true;
 
+			case ::Net::Client::OperatorClassicHostID::UnlockWorld:
+				if (::Net::Client::OperatorClassicHost::UnlockWorldMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onUnlockWorld(message);
+				}
+
+				return true;
 			}
 
 			return false;
@@ -101,7 +111,7 @@ namespace Operator::Net
 			// than some hacks to make this unneccessary shorter than
 			// it has to be. since there wont be anything added, this
 			// is fine
-			Database::ConditionResult result = DatabaseInterface::RetrivePlayerResource(
+			Database::ConditionResult result = RetrivePlayerResource(
 				&message.resource,
 				userID);
 
@@ -132,36 +142,17 @@ namespace Operator::Net
 				hostContainer.unregisterUser(userID);
 			}
 
-			result = DatabaseInterface::RetriveClassicPlayerResource(
-				&message.classicResource,
-				userID);
-
-
-			if (result != Database::ConditionResult::Found)
+			if (!RetriveClassicPlayerResource(
+					&message.classicResource,
+					userID))
 			{
-				switch (result)
-				{
-				case Database::ConditionResult::Error:
-					Log::Error(L"failed to retrive classicplayerresource in registerclient, internal error",
-						userID, L"userID",
-						this->userID, L"our");
+				Log::Error(L"failed to retrive classicplayerresource in registerclient, internal error",
+					userID, L"userID",
+					this->userID, L"our");
 
-					sendRegisterClientFailure(
-						::Net::Host::OperatorClassicHost::ClientRegistrationFailedReason::DatabaseRetriveFailed);
-
-					break;
-				case Database::ConditionResult::NotFound:
-					Log::Error(L"failed to retrive classicplayerresource in registerclient, player not found",
-						userID, L"userID",
-						this->userID, L"our");
-
-					sendRegisterClientFailure(
-						::Net::Host::OperatorClassicHost::ClientRegistrationFailedReason::UserNotFound);
-
-					break;
-				}
-
-				hostContainer.unregisterUser(userID);
+				sendRegisterClientFailure(
+					::Net::Host::OperatorClassicHost::ClientRegistrationFailedReason::DatabaseRetriveFailed);
+				return;
 			}
 
 			if (!access->sendMessage(
@@ -191,7 +182,7 @@ namespace Operator::Net
 		void onRequestClientData(::Net::Client::OperatorClassicHost::RequestClientDataMessage& request)
 		{
 			::Net::Host::OperatorClassicHost::ClientDataMessage message;
-			Database::ConditionResult result = DatabaseInterface::RetrivePlayerResource(
+			Database::ConditionResult result = RetrivePlayerResource(
 				&message.resource,
 				userID);
 
@@ -220,12 +211,44 @@ namespace Operator::Net
 				}
 			}
 
-			message.classicResource.unlockedRepresentations = { 0 };
-			message.classicResource.unlockedWorlds = { 0xdd0bb0dd };
+			if (!RetriveClassicPlayerResource(
+					&message.classicResource,
+					userID))
+			{
+				Log::Error(L"failed to retrive classicplayerresource in requestclientdata, internal error",
+					userID, L"userID",
+					this->userID, L"our");
+
+				sendRequestClientDataFailed(
+					::Net::Host::OperatorClassicHost::ClientDataRequestFailedReason::DatabaseRetriveFailed);
+
+				return;
+			}
 
 			access->sendMessage(
 				::Net::Host::OperatorClassicHostID::ClientDataReply,
 				&message);
+		}
+
+		void onUnlockWorld(const ::Net::Client::OperatorClassicHost::UnlockWorldMessage& message)
+		{
+			if (UnlockWorld(userID, message.content.worldID))
+			{
+				access->sendMessage(
+					::Net::Host::OperatorClassicHostID::UnlockedWorld,
+					NULL);
+			}
+			else
+			{
+				Log::Error(L"failed to unlock world",
+					userID, L"userID",
+					hostContainer.host.userID, L"hostID",
+					message.content.worldID, L"worldID");
+
+				access->sendMessage(
+					::Net::Host::OperatorClassicHostID::UnlockWorldFailed,
+					NULL);
+			}
 		}
 
 		void sendRequestClientDataFailed(::Net::Host::OperatorClassicHost::ClientDataRequestFailedReason reason)

@@ -2,6 +2,7 @@
 
 #include "Logger/Logger.h"
 
+#include <functional>
 #include <sqlite3.h>
 
 namespace Database
@@ -214,4 +215,42 @@ namespace Database
 	private:
 		SQLiteDatabase* const parent;
 	};
+
+	template <typename Director, typename Statement>
+	int ExecuteStatement(
+		SQLiteDatabase* database, 
+		Director& director,
+		std::function<void()> callback)
+	{
+		Statement statement;
+		int result = director.execute(statement);
+
+		if (result != SQLITE_OK)
+		{
+			Log::Error(L"Failed to execute statement " + database->getCurrentSQLiteFailureMessage(),
+				result, L"result");
+
+			return result;
+		}
+
+		while (true)
+		{
+			result = director.next(statement);
+
+			if (result != SQLITE_ROW)
+			{
+				break;
+			}
+
+			callback();
+		}
+
+		if (result != SQLITE_DONE)
+		{
+			Log::Error(L"Failed to process statement " + database->getCurrentSQLiteFailureMessage(),
+				result, L"result");
+		}
+
+		return result;
+	}
 }

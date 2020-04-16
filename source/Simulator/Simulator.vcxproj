@@ -86,7 +86,7 @@
   <ItemGroup>
     <ClCompile Include="ClassicClientHandler.cpp" />
     <ClCompile Include="device\CoreDevice.cpp" />
-    <ClCompile Include="device\OperatorClientDevice.cpp" />
+    <ClCompile Include="device\AuthenticationDevice.cpp" />
     <ClCompile Include="HostClassicSelectionHandler.cpp" />
     <ClCompile Include="HostClassicSessionHandler.cpp" />
     <ClCompile Include="HostClassicSimulationHandler.cpp" />
@@ -98,7 +98,7 @@
   <ItemGroup>
     <ClInclude Include="ClassicClientHandler.h" />
     <ClInclude Include="device\CoreDevice.h" />
-    <ClInclude Include="device\OperatorClientDevice.h" />
+    <ClInclude Include="device\AuthenticationDevice.h" />
     <ClInclude Include="HostClassicSelectionHandler.h" />
     <ClInclude Include="HostClassicSessionHandler.h" />
     <ClInclude Include="HostClassicSimulationHandler.h" />

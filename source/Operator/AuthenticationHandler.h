@@ -2,6 +2,7 @@
 
 #include "ActiveUserContainer.h"
 #include "database/DatabaseInterface.h"
+#include "database/UserTable.h"
 
 #include "Common/Common.h"
 #include "Common/EncryptionModule.h"
@@ -11,7 +12,7 @@
 
 #include "database/UnlockedWorldsTable.h"
 
-namespace Operator::Net
+namespace Operator
 {
 	struct AuthenticationHandlerCallback
 	{
@@ -89,7 +90,7 @@ namespace Operator::Net
 		void onAuthenticate(const ::Net::Client::OperatorAuthenticationMessage& request)
 		{
 			UserAuthentication user;
-			const Database::ConditionResult result = DatabaseInterface::GetPlayerAuth(
+			const Database::ConditionResult result = GetPlayerAuth(
 				user,
 				request.username);
 
@@ -139,7 +140,7 @@ namespace Operator::Net
 
 			::Net::Host::AcceptOperatorAuthenticationMessage message;
 
-			if (!DatabaseInterface::CreatePlayerToken(
+			if (!CreatePlayerToken(
 					message.content.authenticationToken,
 					user.userID))
 			{
@@ -172,7 +173,7 @@ namespace Operator::Net
 				(unsigned char*)salt);
 
 			::Net::Host::AcceptOperatorRegistrationMessage message;
-			const DatabaseInterface::CreatePlayerResult result = DatabaseInterface::CreateNewPlayer(
+			const CreatePlayerResult result = CreateNewPlayer(
 				&message.content.userID,
 				message.content.authenticationToken,
 				salt,
@@ -182,11 +183,11 @@ namespace Operator::Net
 
 			switch (result)
 			{
-			case DatabaseInterface::CreatePlayerResult::UsernameUsed:
+			case CreatePlayerResult::UsernameUsed:
 				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessageContent::UsernameUsed);
 
 				return;
-			case DatabaseInterface::CreatePlayerResult::KeyUsed:
+			case CreatePlayerResult::KeyUsed:
 				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessageContent::KeyUsed);
 
 				access->onThreatIdentified(
@@ -195,7 +196,7 @@ namespace Operator::Net
 					::Net::ThreatLevel::Suspicious);
 
 				return;
-			case DatabaseInterface::CreatePlayerResult::KeyNotFound:
+			case CreatePlayerResult::KeyNotFound:
 				RejectRegistration(::Net::Host::RejectOperatorRegistrationMessageContent::KeyInvalid);
 
 				access->onThreatIdentified(
@@ -204,7 +205,7 @@ namespace Operator::Net
 					::Net::ThreatLevel::Uncommon);
 
 				return;
-			case DatabaseInterface::CreatePlayerResult::Error:
+			case CreatePlayerResult::Error:
 				access->sendMessage(
 					::Net::CommonMessageID::InternalError,
 					NULL);
@@ -232,7 +233,7 @@ namespace Operator::Net
 		void onTokenAuthentication(const ::Net::Client::OperatorTokenMessage& request)
 		{
 			UserID userID;
-			Database::ConditionResult result = DatabaseInterface::FindUserID(
+			Database::ConditionResult result = FindUserID(
 				&userID,
 				request.content.token);
 

@@ -1,6 +1,6 @@
 #include "CoreDevice.h"
-#include "game/HostClassicSimulator.h"
-#include "OperatorClientDevice.h"
+#include "simulator/HostClassicSimulator.h"
+#include "AuthenticationDevice.h"
 
 #include "Common/EncryptionModule.h"
 #include "OperatorClient/OperatorClient.h"
@@ -33,7 +33,7 @@ namespace Device::Core
 		ipAddress.ParseString("109.230.236.76:9928");
 		Operator::Client::Initialize(ipAddress);
 
-		if (!OperatorClient::Initialize())
+		if (!Authentication::Initialize())
 		{
 			return false;
 		}
@@ -46,11 +46,6 @@ namespace Device::Core
 		simulator = new Game::HostClassicSimulator();
 
 		if (!LoadSimulatorResources())
-		{
-			return false;
-		}
-
-		if (!RegisterAsClassicHost())
 		{
 			return false;
 		}
@@ -93,9 +88,9 @@ namespace Device::Core
 	{
 		Resource::World* const world = new Resource::World;
 		if (!Resource::Interface::LoadResource(
+				L"world",
 				world,
-				Resource::ResourceType::World,
-				L"world"))
+				Resource::WorldResourceDefinition))
 		{
 			Log::Error(L"Failed to load resource");
 
@@ -104,30 +99,5 @@ namespace Device::Core
 
 		simulator->pushResource(world);
 		return true;
-	}
-
-	bool RegisterAsClassicHost()
-	{
-		Net::Client::RegisterClassicHostMessage* message = 
-			new Net::Client::RegisterClassicHostMessage;
-
-		message->maxPlayers = 10;
-		message->port = 9927;
-
-		Operator::CommonRegisterClassicHostRequest request;
-
-		const Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
-			Net::Client::OperatorCommonMessageID::RegisterClassicHost,
-			message,
-			&request);
-
-		if (result != Operator::Client::PushRequestFailure::Success)
-		{
-			Log::Error(L"push request failed", (int)result, L"reason");
-
-			return false;
-		}
-
-		return Operator::AwaitSyncRequest(&request);
 	}
 }

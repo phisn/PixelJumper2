@@ -3,10 +3,11 @@
 #include "ActiveHostContainer.h"
 #include "ActiveUserContainer.h"
 #include "AuthenticationHandler.h"
+#include "database/UserTable.h"
 
 #include "NetCore/message/OperatorCommonMessage.h"
 
-namespace Operator::Net
+namespace Operator
 {
 	struct CommonRequestHandlerCallback
 	{
@@ -85,7 +86,7 @@ namespace Operator::Net
 		{
 			ConnectionKeySource keySource;
 
-			Database::ConditionResult result = DatabaseInterface::GetPlayerToken(
+			Database::ConditionResult result = GetPlayerToken(
 				keySource.token,
 				request.content.userID);
 
@@ -118,7 +119,7 @@ namespace Operator::Net
 		void onRegisterClassicHost(const ::Net::Client::RegisterClassicHostMessage& message)
 		{
 			UserType type;
-			const Database::ConditionResult result = DatabaseInterface::GetUserType(
+			const Database::ConditionResult result = GetUserType(
 				type,
 				userID);
 			
@@ -166,7 +167,7 @@ namespace Operator::Net
 			}
 
 			ConnectionKeySource keySource;
-			const Database::ConditionResult result = DatabaseInterface::GetPlayerToken(
+			const Database::ConditionResult result = GetPlayerToken(
 				keySource.token,
 				host->host.userID);
 

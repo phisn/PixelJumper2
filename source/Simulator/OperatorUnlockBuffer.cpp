@@ -92,11 +92,11 @@ namespace Simulator
 			{
 			case Resource::OperatorUnlockType::World:
 				messageID = Net::Client::OperatorClassicHostID::UnlockWorld;
-				request = new Operator::ManagedWorldUnlockRequest;
+				request = new Operator::ManagedWorldUnlockRequest{ iterator->content.unlockID };
 				
 				{
-					Net::Client::OperatorClassicHost::RequestUnlockWorldMessage* unlock_message =
-						new Net::Client::OperatorClassicHost::RequestUnlockWorldMessage;
+					Net::Client::OperatorClassicHost::UnlockWorldMessage* unlock_message =
+						new Net::Client::OperatorClassicHost::UnlockWorldMessage;
 
 					message = unlock_message;
 					unlock_message->content.worldID = iterator->content.worldID;
@@ -117,7 +117,39 @@ namespace Simulator
 				continue;
 			}
 
+			Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
+				messageID,
+				message,
+				request);
 
+			if (result != Operator::Client::PushRequestFailure::Success)
+			{
+				Log::Error(L"failed to push pending unlock request",
+					result, L"result",
+					iterator->content.unlockID, L"unlockID",
+					iterator->content.userID, L"userID",
+					iterator->content.type, L"type");
+
+				switch (result)
+				{
+				case Operator::Client::PushRequestFailure::Unauthenticated:
+				case Operator::Client::PushRequestFailure::Authenticating:
+				case Operator::Client::PushRequestFailure::ConnectingFailed:
+					
+					// unable to process other unlocks because they will fail
+					// the same way
+					return;
+				case Operator::Client::PushRequestFailure::SendingFailed:
+					iterator = unlockBuffer.unlocks.erase(iterator);
+
+					break;
+				default:
+					assert(false);
+
+					break;
+				}
+			}
+			else ++iterator;
 		}
 	}
 

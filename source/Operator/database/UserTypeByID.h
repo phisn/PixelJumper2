@@ -27,7 +27,7 @@ namespace Operator
 			ss << " FROM ";
 			ss << UserTable::getTableDefinition()->name;
 
-			ss << CreateTableJoin<UserTable, KeyTable>(
+			ss << Database::CreateTableJoin<UserTable, KeyTable>(
 				UserTable::Column::PlayerID,
 				KeyTable::Column::Player);
 

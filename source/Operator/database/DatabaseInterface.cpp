@@ -2,6 +2,7 @@
 
 #include "Common/RandomModule.h"
 
+#include "ClassicModeStatements.h"
 #include "EmptyKeyStatement.h"
 #include "ThreatTable.h"
 #include "UserTable.h"
@@ -9,50 +10,7 @@
 
 namespace Operator
 {
-	Database::ConditionResult DatabaseInterface::GetPlayerToken(
-		Operator::AuthenticationToken& token,
-		const Operator::UserID userID)
-	{
-		UserTable userTable;
-		const Database::ConditionResult result = userTable.extractCommon(
-			userID,
-			{
-				UserTable::Column::Token
-			});
-
-		if (result == Database::ConditionResult::Found)
-		{
-			memcpy(token.token, userTable.content.token, sizeof(token));
-		}
-
-		return result;
-	}
-
-	Database::ConditionResult DatabaseInterface::GetPlayerAuth(
-		UserAuthentication& authentication,
-		const std::string username)
-	{
-		UserTable userTable;
-		const Database::ConditionResult result = userTable.extractCommon(
-			username,
-			{
-				UserTable::Column::PlayerID,
-				UserTable::Column::Hash,
-				UserTable::Column::Salt
-			});
-
-		if (result == Database::ConditionResult::Found)
-		{
-			authentication.userID = userTable.primary.id;
-
-			memcpy(authentication.hash, userTable.content.hash, OPERATOR_HASH_SIZE);
-			memcpy(authentication.salt, userTable.content.salt, OPERATOR_SALT_SIZE);
-		}
-
-		return result;
-	}
-
-	Database::ConditionResult DatabaseInterface::GetUserType(
+	Database::ConditionResult GetUserType(
 		Operator::UserType& userType,
 		const Operator::UserID userID)
 	{
@@ -91,65 +49,53 @@ namespace Operator
 		return Database::ConditionResult::Found;
 	}
 
-	Database::ConditionResult DatabaseInterface::FindUserID(
-		Operator::UserID* const userID,
-		const std::string username)
-	{
-		UserTable playerTable;
-
-		const Database::ConditionResult result = playerTable.extractCommon(
-			username,
-			{
-				UserTable::Column::PlayerID
-			});
-
-		if (result == Database::ConditionResult::Found && userID)
-		{
-			*userID = playerTable.primary.id;
-		}
-
-		return result;
-	}
-
-	Database::ConditionResult DatabaseInterface::FindUserID(
-		Operator::UserID* const userID,
-		const char token[OPERATOR_HASH_SIZE])
-	{
-		UserTable playerTable;
-
-		memcpy(playerTable.content.token,
-			token,
-			OPERATOR_HASH_SIZE);
-
-		const Database::ConditionResult result = playerTable.extract(
-			{
-				UserTable::Column::PlayerID
-			},
-		{
-			UserTable::Column::Token
-		});
-
-		if (result == Database::ConditionResult::Found && userID)
-		{
-			*userID = playerTable.primary.id;
-		}
-
-		return result;
-	}
-
-	Database::ConditionResult DatabaseInterface::RetrivePlayerResource(
+	Database::ConditionResult RetrivePlayerResource(
 		Resource::PlayerResource* resource, 
 		UserID userID)
 	{
+		UserTable user;
+		user.primary.id = userID;
+
+		Database::ConditionResult result = user.extractCommon(userID,
+			{
+				UserTable::Column::Username
+			});
+
+		if (result != Database::ConditionResult::Found)
+		{
+			return result;
+		}
+
+		resource->username = std::move(user.content.username);
+		resource->content.userID = userID;
+
+		return result;
 	}
 
-	Database::ConditionResult DatabaseInterface::RetriveClassicPlayerResource(
+	bool RetriveClassicPlayerResource(
 		Resource::ClassicPlayerResource* resource, 
 		UserID userID)
 	{
+		if (int result = GetUnlockedWorlds(userID, resource->unlockedWorlds) != SQLITE_DONE)
+		{
+			Log::Error(L"failed to retrive classic player resoruce, world query failed",
+				result, L"result");
+
+			return false;
+		}
+
+		if (int result = GetUnlockedRepresentations(userID, resource->unlockedRepresentations) != SQLITE_DONE)
+		{
+			Log::Error(L"failed to retrive classic player resoruce, representation query failed",
+				result, L"result");
+
+			return false;
+		}
+
+		return true;
 	}
 
-	DatabaseInterface::CreatePlayerResult Operator::DatabaseInterface::CreateNewPlayer(
+	CreatePlayerResult Operator::CreateNewPlayer(
 		Operator::UserID* const resultPlayerID,
 		char token[OPERATOR_HASH_SIZE],
 		const char salt[OPERATOR_SALT_SIZE],
@@ -290,7 +236,7 @@ namespace Operator
 		}
 	}
 
-	bool DatabaseInterface::CreatePlayerToken(
+	bool CreatePlayerToken(
 		char token[OPERATOR_HASH_SIZE],
 		const Operator::UserID userID)
 	{
@@ -319,48 +265,7 @@ namespace Operator
 			== Database::ConditionResult::Found;
 	}
 
-	bool DatabaseInterface::GetEmptyKeys(std::vector<Operator::RegistrationKey>& keys)
-	{
-		EmptyKeysStatement emptyKeys;
-
-		OperatorDatabaseStatement statement;
-		int result = emptyKeys.execute(statement);
-
-		if (result != SQLITE_OK)
-		{
-			Log::Error(L"Failed to execute statement " + OperatorDatabase::GetErrorMessage(),
-				result, L"result");
-
-			return false;
-		}
-
-		while (true)
-		{
-			result = emptyKeys.next(statement);
-
-			if (result != SQLITE_ROW)
-			{
-				break;
-			}
-
-			keys.emplace_back();
-
-			memcpy(
-				keys.back().content,
-				emptyKeys.key.content,
-				OPERATOR_KEY_SIZE);
-		}
-
-		if (result != SQLITE_DONE)
-		{
-			Log::Error(L"Failed to process statement " + OperatorDatabase::GetErrorMessage(),
-				result, L"result");
-		}
-
-		return result == SQLITE_DONE;
-	}
-
-	bool DatabaseInterface::CreateNewKey(
+	bool CreateNewKey(
 		Operator::RegistrationKey* const key,
 		const Resource::PlayerID playerID,
 		const std::string source)
@@ -400,17 +305,19 @@ namespace Operator
 		}
 	}
 
-	bool DatabaseInterface::CreateThreat(
+	bool CreateThreat(
 		Operator::UserID userID,
 		sf::Uint64 threatID,
 		std::wstring message,
 		::Net::ThreatLevel level)
 	{
 		ThreatTable table;
+
 		table.content.playerID = userID;
 		table.content.threatID = threatID;
 		table.content.message = message;
 		table.content.level = level;
+
 		return table.create();
 	}
 }

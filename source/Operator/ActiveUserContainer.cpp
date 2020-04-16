@@ -3,7 +3,7 @@
 #include <cassert>
 #include <unordered_map>
 
-namespace Operator::Net
+namespace Operator
 {
 	std::unordered_map<UserID, UsermodeContainer*> users;
 

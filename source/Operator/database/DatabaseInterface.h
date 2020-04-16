@@ -7,44 +7,24 @@
 #include "ResourceCore/ClassicPlayerResource.h"
 #include "ResourceCore/PlayerResource.h"
 
+// databaseinterface does only contain
+// complex functions
+// simple creation or extraction is usally
+// implemented alongside the tabledefinitions
 namespace Operator
 {
-	struct UserAuthentication
-	{
-		UserID userID;
-
-		char hash[OPERATOR_HASH_SIZE];
-		char salt[OPERATOR_SALT_SIZE];
-	};
-}
-
-namespace Operator::DatabaseInterface
-{
-	// token should not be sent to a player and
-	// only used in hash. to send a player a token
-	// a new one has to be created
-	Database::ConditionResult GetPlayerToken(
-		Operator::AuthenticationToken& token,
-		const Operator::UserID userID);
-	Database::ConditionResult GetPlayerAuth(
-		UserAuthentication& authentication,
-		const std::string username);
-
 	Database::ConditionResult GetUserType(
 		Operator::UserType& userType,
 		const Operator::UserID userID);
 
-	Database::ConditionResult FindUserID(
-		Operator::UserID* const userID,
-		const std::string username);
-	Database::ConditionResult FindUserID(
-		Operator::UserID* const userID,
-		const char token[OPERATOR_HASH_SIZE]);
-
 	Database::ConditionResult RetrivePlayerResource(
 		Resource::PlayerResource* resource,
 		UserID userID);
-	Database::ConditionResult RetriveClassicPlayerResource(
+
+	// unable to distinguish between player does not
+	// exists or player does not have any entries
+	// query existance manually for that information
+	bool RetriveClassicPlayerResource(
 		Resource::ClassicPlayerResource* resource,
 		UserID userID);
 
@@ -71,7 +51,6 @@ namespace Operator::DatabaseInterface
 		char token[OPERATOR_HASH_SIZE],
 		const Operator::UserID user);
 
-	bool GetEmptyKeys(std::vector<Operator::RegistrationKey>& keys);
 	bool CreateNewKey(
 		Operator::RegistrationKey* const key,
 		const Resource::PlayerID playerID = 0,

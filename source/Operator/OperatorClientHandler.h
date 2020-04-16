@@ -6,7 +6,7 @@
 
 #include "NetCore/ClientHandler.h"
 
-namespace Operator::Net
+namespace Operator
 {
 	typedef sf::Uint32 Age;
 
@@ -133,6 +133,7 @@ namespace Operator::Net
 				addRequestHandler<ClassicHostRequestHandler>(
 					new ClassicHostRequestHandler(
 						userID,
+						message,
 						address)
 				);
 			}
@@ -215,7 +216,7 @@ namespace Operator::Net
 				identifier, L"identifier",
 				(int) level, L"level");
 
-			if (!DatabaseInterface::CreateThreat(
+			if (!CreateThreat(
 					userID,
 					identifier,
 					note,

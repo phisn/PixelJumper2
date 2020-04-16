@@ -12,23 +12,34 @@ namespace Operator
 		public WorldUnlockRequest
 	{
 	public:
+		ManagedWorldUnlockRequest(Resource::UnlockID unlockID)
+			:
+			unlockID(unlockID)
+		{
+		}
+
 		void onRequestFailure(const Reason reason) override
 		{
-			//Log::Error(L"unregister host request failed, might cause bugs",
-			//	reason, L"reason");
-
-			// deep problem
-			// need to save request somewhere
-			// better before request was even sent
-			// and just remove the entry from file
-			// when we get an answer
-			// the user should never experience an
-			// not unlocked world!
+			Log::Error(L"unlock request failed",
+				unlockID, L"unlockID",
+				(int) reason, L"reason");
 		}
 
 		void onWorldUnlocked() override
 		{
+			Log::Information(L"successfully unlocked",
+				unlockID, L"unlockID");
 
+			Simulator::UnlockBuffer::ReleaseUnlock(unlockID);
 		}
+
+		void onWorldUnlockFailed() override
+		{
+			// nothing we can do about it
+			Log::Error(L"failed to unlock world");
+		}
+
+	private:
+		Resource::UnlockID unlockID;
 	};
 }

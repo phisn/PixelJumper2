@@ -112,6 +112,7 @@ namespace Operator
 
 				break;
 			case Column::Message:
+			{
 				content.message.clear();
 
 				int messageLength = sqlite3_column_bytes(statement, columnIndex);
@@ -119,6 +120,7 @@ namespace Operator
 				content.message.assign((const wchar_t*) sqlite3_column_blob(statement, columnIndex));
 
 				break;
+			}
 			case Column::Level:
 				content.level = (Net::ThreatLevel) sqlite3_column_int64(statement, columnIndex);
 

@@ -3,6 +3,7 @@
 #include "DatabaseCore.h"
 
 #include <sstream>
+#include <string>
 #include <vector>
 
 namespace Database
@@ -88,4 +89,29 @@ namespace Database
 		SQLiteDatabase* const database;
 		const TableDefinition* definition;
 	};
+
+	template <typename Source, typename Target>
+	inline std::string CreateTableJoin(
+		const Database::TableBase::ColumnIndex sourceKey,
+		const Database::TableBase::ColumnIndex targetKey)
+	{
+		std::stringstream ss;
+
+		ss << " JOIN ";
+		ss << Target::getTableDefinition()->name;
+		ss << " ON ";
+
+		ss << Source::getTableDefinition()->name;
+		ss << ".";
+		ss << Source::getTableDefinition()->columns[sourceKey];
+
+		ss << "=";
+
+		ss << Target::getTableDefinition()->name;
+		ss << ".";
+		ss << Target::getTableDefinition()->columns[targetKey];
+		ss << " ";
+
+		return ss.str();
+	}
 }

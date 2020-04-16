@@ -2,6 +2,7 @@
 
 #include "ClassicClientHandler.h"
 #include "device/CoreDevice.h"
+#include "OperatorUnlockBuffer.h"
 
 #include "GameCore/GameWorld.h"
 #include "GameCore/net/SimulatorContext.h"
@@ -9,28 +10,20 @@
 #include "NetCore/NetCore.h"
 #include "OperatorClient/request/RegisterClassicHostRequest.h"
 
-// #include <Client/source/game/UserConnection.h>
-
 /*
-	classic process:
-		1. authentication with simulatorauthentication
-		2. getplayerdata request is sent to operator and
+	current classic process:
+		1. waiting for authentication via authenticationhandler
+		2. register client request is sent to operator and
 		   waiting for result
-		3. classicsimulation is pushed handles all common 
-		   simulator requests and allows the creation of a
-		   simulation
-		4. simulation is created
+		3. sessionhandler handles all common and simulator
+		   sepcific requests. also is the selectionhandler
+		   pushed, that allows the starting of simulations
+		4. selectionhandler is removed and a simulationhandler
+		   pushed
 */
 
 namespace Game
 {
-	// need something like a host structure
-	// while the host self has all connections
-	// the client wont be connected to all
-	// clients. he will have a list of all player
-	// informations? and their current position
-	// can optionally request more player data
-
 	class HostClassicSimulator
 		:
 		public ::Net::ServerInterface,
@@ -55,7 +48,6 @@ namespace Game
 			Operator::Client::ClosedConnectionNotifier.addListener(
 				[](int reason)
 				{
-
 				});
 
 			Operator::Client::LostConnectionNotifier.addListener(
@@ -81,6 +73,20 @@ namespace Game
 		bool initialize()
 		{
 			Log::SectionHost section{ L"starting server" };
+
+			if (Operator::Client::GetAuthenticationStatus() != Operator::Client::AuthenticationStatus::Authenticated)
+			{
+				Log::Error(L"invalid operator authenticationstatus",
+					(int) Operator::Client::GetAuthenticationStatus(), L"authentication_status",
+					(int) Operator::Client::GetStatus(), L"status");
+
+				return false;
+			}
+
+			if (!initializeOperatorConnection())
+			{
+				return false;
+			}
 
 			if (!ServerInterface::initialize(settings.port))
 			{
@@ -204,7 +210,7 @@ namespace Game
 				connections.erase(iterator);
 		}
 
-		void initializeOperatorConnection()
+		bool initializeOperatorConnection()
 		{
 			Net::Client::RegisterClassicHostMessage* message =
 				new Net::Client::RegisterClassicHostMessage;
@@ -222,7 +228,10 @@ namespace Game
 					(int) result, L"reason");
 
 				Device::Core::Shutdown();
+				return false;
 			}
+
+			return true;
 		}
 
 		void onRegisteredClassicHost() override
@@ -235,6 +244,8 @@ namespace Game
 			{
 				client->restoreOperatorState();
 			}
+
+			Simulator::UnlockBuffer::OnOperatorConnected();
 		}
 
 		void onRegisterClassicHostRejected() override

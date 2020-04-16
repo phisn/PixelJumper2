@@ -115,6 +115,10 @@ namespace Operator
 				onWorldUnlocked();
 
 				return true;
+			case Net::Host::OperatorClassicHostID::UnlockWorldFailed:
+				onWorldUnlockFailed();
+
+				return true;
 			}
 
 			return false;
@@ -122,5 +126,6 @@ namespace Operator
 
 	protected:
 		virtual void onWorldUnlocked() = 0;
+		virtual void onWorldUnlockFailed() = 0;
 	};
 }

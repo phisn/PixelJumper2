@@ -323,7 +323,7 @@ namespace Game
 
 		void onSimulationFinished(const ExitWorldEvent& event) override
 		{
-			Net::Client::OperatorClassicHost::RequestUnlockWorldMessage message;
+			Net::Client::OperatorClassicHost::UnlockWorldMessage message;
 			message.content.worldID = event.worldID;
 
 

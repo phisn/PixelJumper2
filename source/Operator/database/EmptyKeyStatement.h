@@ -1,11 +1,14 @@
 #pragma once
 
+#include "KeyTable.h"
+
 #include "DatabaseCore/StatementBase.h"
 #include "Logger/Logger.h"
-#include "KeyTable.h"
 
 namespace Operator
 {
+	int GetEmptyKeys(std::vector<Operator::RegistrationKey>& keys);
+
 	class EmptyKeysStatement
 		:
 		public Database::StatementBase

@@ -1,13 +1,13 @@
 #include "CoreDevice.h"
 
-#include "Operator/Operator.h"
+#include "Operator/OperatorCore.h"
 
 #include <chrono>
 #include <thread>
 
 namespace
 {
-	Operator::Net::Operator* server;
+	Operator::OperatorCore* server;
 }
 
 namespace Device::Core
@@ -32,7 +32,7 @@ namespace Device::Core
 			return false;
 		}
 
-		server = new Operator::Net::Operator(Operator::Net::Operator::Settings{ 100, 20 });
+		server = new Operator::OperatorCore(Operator::OperatorCore::Settings{ 100, 20 });
 		if (!server->initialize(9928))
 		{
 			Log::Error(L"Failed to initialize server");
@@ -61,7 +61,7 @@ namespace Device::Core
 		sf::Time interval = sf::milliseconds(100);
 		sf::Clock clock;
 
-		while (server->getStatus() != Operator::Net::Operator::Shutdown)
+		while (server->getStatus() != Operator::OperatorCore::Shutdown)
 		{
 			clock.restart();
 

@@ -92,6 +92,7 @@
     <ClCompile Include="AuthenticationHandler.cpp" />
     <ClCompile Include="ClassicHostRequestHandler.cpp" />
     <ClCompile Include="CommonRequestHandler.cpp" />
+    <ClCompile Include="database\ClassicModeStatements.cpp" />
     <ClCompile Include="database\DatabaseInterface.cpp" />
     <ClCompile Include="database\EmptyKeyStatement.cpp" />
     <ClCompile Include="database\KeyTable.cpp" />
@@ -103,7 +104,7 @@
     <ClCompile Include="database\UserTypeByID.cpp" />
     <ClCompile Include="device\CoreDevice.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Operator.cpp" />
+    <ClCompile Include="OperatorCore.cpp" />
     <ClCompile Include="OperatorClientHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +113,7 @@
     <ClInclude Include="AuthenticationHandler.h" />
     <ClInclude Include="ClassicHostRequestHandler.h" />
     <ClInclude Include="CommonRequestHandler.h" />
+    <ClInclude Include="database\ClassicModeStatements.h" />
     <ClInclude Include="database\DatabaseInterface.h" />
     <ClInclude Include="database\EmptyKeyStatement.h" />
     <ClInclude Include="database\KeyTable.h" />
@@ -122,7 +124,7 @@
     <ClInclude Include="database\UserTable.h" />
     <ClInclude Include="database\UserTypeByID.h" />
     <ClInclude Include="device\CoreDevice.h" />
-    <ClInclude Include="Operator.h" />
+    <ClInclude Include="OperatorCore.h" />
     <ClInclude Include="OperatorClientHandler.h" />
   </ItemGroup>
   <ItemGroup>

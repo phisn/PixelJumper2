@@ -8,6 +8,8 @@
 
 namespace Operator
 {
+	bool UnlockWorld(UserID userID, Resource::WorldID worldID);
+
 	class UnlockedWorldsTable
 		:
 		public Database::TableBase
@@ -15,13 +17,10 @@ namespace Operator
 		static const Database::TableDefinition definition;
 
 	public:
-		struct Column
+		enum Column
 		{
-			enum
-			{
-				PlayerID,
-				WorldID
-			};
+			PlayerID,
+			WorldID
 		};
 
 		UnlockedWorldsTable()

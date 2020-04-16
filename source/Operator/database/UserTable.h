@@ -1,15 +1,38 @@
 #pragma once
 
-#include "Common/Common.h"
-#include "DatabaseCore/TableBase.h"
-#include "Logger/Logger.h"
 #include "OperatorDatabase.h"
+
+#include "Common/Common.h"
+#include "Logger/Logger.h"
+#include "DatabaseCore/TableBase.h"
 #include "ResourceCore/PlayerResource.h"
 
 #include <SFML/Main.hpp>
 
 namespace Operator
 {
+	struct UserAuthentication
+	{
+		UserID userID;
+
+		char hash[OPERATOR_HASH_SIZE];
+		char salt[OPERATOR_SALT_SIZE];
+	};
+
+	Database::ConditionResult GetPlayerToken(
+		Operator::AuthenticationToken& token,
+		const Operator::UserID userID);
+	Database::ConditionResult GetPlayerAuth(
+		UserAuthentication& authentication,
+		std::string username);
+
+	Database::ConditionResult FindUserID(
+		Operator::UserID* const userID,
+		const std::string username);
+	Database::ConditionResult FindUserID(
+		Operator::UserID* const userID,
+		const char token[OPERATOR_HASH_SIZE]);
+
 	class UserTable
 		:
 		public Database::TableBase
@@ -17,16 +40,13 @@ namespace Operator
 		static const Database::TableDefinition definition;
 
 	public:
-		struct Column
+		enum Column
 		{
-			enum
-			{
-				PlayerID,
-				Username,
-				Hash,
-				Salt,
-				Token
-			};
+			PlayerID,
+			Username,
+			Hash,
+			Salt,
+			Token
 		};
 
 		UserTable()
@@ -218,29 +238,4 @@ namespace Operator
 			return true;
 		}
 	};
-
-	template <typename Source, typename Target>
-	std::string CreateTableJoin(
-		const Database::TableBase::ColumnIndex sourceKey,
-		const Database::TableBase::ColumnIndex targetKey)
-	{
-		std::stringstream ss;
-
-		ss << " JOIN ";
-		ss << Target::getTableDefinition()->name;
-		ss << " ON ";
-
-		ss << Source::getTableDefinition()->name;
-		ss << ".";
-		ss << Source::getTableDefinition()->columns[sourceKey];
-
-		ss << "=";
-
-		ss << Target::getTableDefinition()->name;
-		ss << ".";
-		ss << Target::getTableDefinition()->columns[targetKey];
-		ss << " ";
-
-		return ss.str();
-	}
 }

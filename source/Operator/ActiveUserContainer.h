@@ -6,7 +6,7 @@
 #include <optional>
 #include <vector>
 
-namespace Operator::Net
+namespace Operator
 {
 	enum class Usermode
 	{
@@ -14,7 +14,7 @@ namespace Operator::Net
 		Online, 
 		Hosting
 
-	} mode;
+	};
 
 	Usermode GetUserMode(UserID userID);
 

@@ -48,12 +48,12 @@ namespace Net::Client
 
 		typedef ::Net::TrivialNetworkMessage<RequestClientDataMessageContent> RequestClientDataMessage;
 
-		struct RequestUnlockWorldMessageContent
+		struct UnlockWorldMessageContent
 		{
 			Resource::WorldID worldID;
 		};
 
-		typedef TrivialNetworkMessage<RequestUnlockWorldMessageContent> RequestUnlockWorldMessage;
+		typedef TrivialNetworkMessage<UnlockWorldMessageContent> UnlockWorldMessage;
 	}
 }
 
@@ -67,6 +67,11 @@ namespace Net::Host
 
 			UnlockedWorld,
 			UnlockedRepresentation,
+
+			// both can only fail because of
+			// failed database write
+			UnlockRepresentationFailed,
+			UnlockWorldFailed,
 
 			ClientRegistered,
 			ClientRegistrationFailed,
