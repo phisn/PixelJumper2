@@ -24,7 +24,9 @@ namespace Game
 		{
 			switch (messageID)
 			{
-				// case Net::Client::ClassicSessionMessageID::
+			case Net::Client::ClassicSessionMessageID::InitiateClassicUser:
+
+				break;
 
 				// chat messages
 				// allow only one message per update

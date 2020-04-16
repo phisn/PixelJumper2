@@ -1,24 +1,3 @@
 #classic resource
-- classic resource should not be saved as it currently is
--> save it as an sperate database
--- would allow easy statistics (sql)
--> save it in a directory with classicplayer resource
-   files. optionally a database with classicplayers
--- would not allow for easy statistics
-- simulator has to somehow store unlocks if operator
-  is currently not accessible
--> store each unlock individually and run unlock request
-   later
--> store classicplayer request and either send only non matching
-   unlocks (bad) or send whole new classicplayer request (bad)
-- exitable tile event currently may remove flexibility
-  between simulations
--> remove event and let the simulation just extract this information
-   from the classiccontext file. classicsimulation can not accept
-   classic context files, because the client also uses the classicsimulation
-   but has no access to classiccontext files. therefore the simulator
-   simulationrequesethandler has to handle classic context. the parameter
-   for the simulationcallback in the handler will change from event to
-   a simple unlock or a custom (better) event.
 - client needs updates for new classicclient changes and now many request
   adjustments
