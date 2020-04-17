@@ -51,13 +51,15 @@ namespace Game
 			Operator::Client::ClosedConnectionNotifier.addListener(
 				[](int reason)
 				{
-#error todo?
+					Log::Warning(L"operator closed connection",
+						reason, L"reason");
 				});
 
 			Operator::Client::LostConnectionNotifier.addListener(
 				[](int reason)
 				{
-#error todo?
+					Log::Warning(L"lost connection to operator",
+						reason, L"reason");
 				});
 
 			Operator::Client::OpenConnectionNotifier.addListener(
@@ -74,6 +76,12 @@ namespace Game
 				});
 		}
 
+		~HostClassicSimulator()
+		{
+			for (Resource::WorldContainer::value_type& world : worldContainer)
+				delete world.second;
+		}
+
 		bool initialize()
 		{
 			Log::SectionHost section{ L"starting server" };
@@ -88,7 +96,44 @@ namespace Game
 				return false;
 			}
 
-#error load all worlds
+			for (Resource::ClassicWorldResource& world : classicContext.stagelessWorlds)
+			{
+				classicWorldContainer[world.content.worldID] = &world;
+			}
+
+			for (Resource::ClassicStageResource& stage : classicContext.stages)
+				for (Resource::ClassicWorldResource& world : stage.worlds)
+				{
+					classicWorldContainer[world.content.worldID] = &world;
+				}
+
+			if (worldContainer.size() > 0)
+			{
+				// delete worlds in the case they already exist
+				for (Resource::WorldContainer::value_type& world : worldContainer)
+					delete world.second;
+
+				worldContainer.clear();
+			}
+
+			for (Resource::ClassicWorldContainer::value_type& classicWorld : classicWorldContainer)
+			{
+				Log::Information(L"loading world",
+					classicWorld.first, L"worldID",
+					classicWorld.second->name, L"name");
+
+				Resource::World* world = new Resource::World;
+
+				if (!Resource::Interface::LoadResource(
+						classicWorld.second->name,
+						world,
+						Resource::WorldResourceDefinition))
+				{
+					Log::Error(L"failed to load world");
+
+					return false;
+				}
+			}
 
 			if (Operator::Client::GetAuthenticationStatus() != Operator::Client::AuthenticationStatus::Authenticated)
 			{

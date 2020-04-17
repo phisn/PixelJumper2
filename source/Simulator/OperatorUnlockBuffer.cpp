@@ -157,7 +157,7 @@ namespace Simulator
 			// there is nothing that we can do about it than just
 			// hope that it is send to the operator
 			Log::Error(L"unlock buffer failed to save",
-				unlockBuffer.unlocks.size());
+				unlockBuffer.unlocks.size(), L"unlockbuffer_size");
 		}
 	}
 

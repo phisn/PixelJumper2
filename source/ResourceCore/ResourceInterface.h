@@ -46,7 +46,7 @@ namespace Resource::Interface
 		std::wstring filename,
 		const ResourceTypeDefinition& type);
 
-	bool LoadCacheResource(
+	inline bool LoadCacheResource(
 		std::wstring filename,
 		ResourceBase* resource,
 		const ResourceTypeDefinition& type)

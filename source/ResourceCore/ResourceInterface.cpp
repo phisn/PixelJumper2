@@ -259,7 +259,7 @@ namespace Resource
 		return true;
 	}
 
-	std::filesystem::path GetResourcePath(
+	std::filesystem::path Interface::GetResourcePath(
 		std::wstring filename,
 		const ResourceTypeDefinition& type)
 	{
