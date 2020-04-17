@@ -8,6 +8,7 @@
 
 #include <SFML/Main.hpp>
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -147,6 +148,8 @@ namespace Resource
 
 		sf::Uint32 generateCheckSum();
 	};
+
+	typedef std::map<WorldId, World*> WorldContainer;
 }
 
 #pragma pack(pop)

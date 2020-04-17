@@ -67,7 +67,7 @@ namespace Game
 				delete selectionHandler;
 			}
 
-			for (const WorldResourceContainer::value_type& world : worldContainer)
+			for (const WorldContainer::value_type& world : worldContainer)
 			{
 				delete world.second;
 			}
@@ -111,7 +111,7 @@ namespace Game
 		virtual ClientClassicSimulationHandler* createSimulationHandler(const ClientClassicSimulationHandlerArguments& arguments) = 0;
 
 		// common needs to add here
-		WorldResourceContainer worldContainer;
+		WorldContainer worldContainer;
 
 	private:
 		ClassicConnectionInformation connectionInfo;
@@ -196,7 +196,7 @@ namespace Game
 		{
 			for (Resource::World* const world : message.initialWorlds)
 			{
-				WorldResourceContainer::const_iterator iterator = worldContainer.find(world->content.id);
+				WorldContainer::const_iterator iterator = worldContainer.find(world->content.id);
 
 				if (iterator != worldContainer.cend())
 				{

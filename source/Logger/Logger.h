@@ -68,7 +68,14 @@ inline std::string carrtohexstr(const unsigned char* arr, size_t length = 0)
 template <typename T>
 inline std::wstring convert_to_wstring(T value)
 {
-	return std::to_wstring(value);
+	if constexpr (std::is_enum_v<T>)
+	{
+		return std::to_wstring((long long) value);
+	}
+	else
+	{
+		return std::to_wstring(value);
+	}
 }
 
 template <>

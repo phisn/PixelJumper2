@@ -3,6 +3,10 @@
 #include "SimulatorAuthenticationMessage.h"
 #include "SimulatorSettings.h"
 
+#include "ResourceCore/WorldResource.h"
+
+#include <cassert>
+
 namespace Net::Client
 {
 	struct ClassicSessionMessageID
@@ -24,14 +28,17 @@ namespace Net::Host
 		{
 			_Begin = AuthenticationMessageID::_Offset - 1,
 
-			InitializeSessionMessage,
+			InitializeSession,
+
+			WorldUnlocked,
+			RepresentationUnlocked,
 
 			// used when something failed at server side
 			// that makes continuation of this session impssible
 			InterruptSession,
 
-			AddPlayerMessage,
-			RemovePlayerMessage,
+			AddPlayer,
+			RemovePlayer,
 
 			_Offset
 		};
@@ -59,11 +66,15 @@ namespace Net::Host
 
 			bool load(Resource::ReadPipe* const pipe) override
 			{
+				assert(player != NULL);
+
 				return player->make(pipe);
 			}
 
 			bool save(Resource::WritePipe* const pipe) override
 			{
+				assert(player != NULL);
+
 				return player->save(pipe);
 			}
 		};
@@ -122,6 +133,28 @@ namespace Net::Host
 					}
 
 				return true;
+			}
+		};
+
+		struct WorldUnlockedMessage
+			:
+			public NetworkMessage
+		{
+			// has to be provided upfront
+			Resource::World* world = NULL;
+
+			bool load(Resource::ReadPipe* const pipe) override
+			{
+				assert(world != NULL);
+
+				return world->make(pipe);
+			}
+
+			bool save(Resource::WritePipe* const pipe) override
+			{
+				assert(world != NULL);
+
+				return world->save(pipe);
 			}
 		};
 	}

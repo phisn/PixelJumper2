@@ -8,6 +8,8 @@
 
 namespace Operator
 {
+	bool UnlockRepresentation(UserID userID, Resource::RepresentationID representationID);
+
 	class UnlockedRepresentationsTable
 		:
 		public Database::TableBase

@@ -19,11 +19,18 @@ namespace Operator
 		// else onAuthenticatedToken is called
 		Util::Notifier<CommonAuthenticationRequest, UserID> notifyAuthenticated;
 		Util::Notifier<CommonAuthenticationRequest, const char[OPERATOR_HASH_SIZE], UserID> notifyAuthenticatedToken;
-		Util::Notifier<CommonAuthenticationRequest, Reason> notifyRejected;
+		Util::Notifier<CommonAuthenticationRequest> notifyTimeout;
+		Util::Notifier<CommonAuthenticationRequest, Net::Host::AuthenticationFailureReason> notifyRejected;
 		Util::Notifier<CommonAuthenticationRequest, ::Net::Host::RejectOperatorRegistrationMessageContent::Reason> notifyRegisterationRejected;
 		Util::Notifier<CommonAuthenticationRequest, RequestInterface::Reason> notifyFailed;
 
 	private:
+		void onAuthenticationTimeout() override
+		{
+			Log::Warning(L"CommonAuthenticationRequest timed out");
+			notifyTimeout.notify();
+		}
+
 		void onRequestFailure(const RequestInterface::Reason reason) override
 		{
 			Log::Warning(L"CommonAuthenticationRequest failed", (int) reason, L"reason");
@@ -51,7 +58,7 @@ namespace Operator
 			notifyAuthenticatedToken.notify(token, userID);
 		}
 
-		void onAuthenticationFailed(const Reason reason) override
+		void onAuthenticationFailed(Net::Host::AuthenticationFailureReason reason) override
 		{
 			Log::Warning(L"Common authentication failed", (int) reason, L"reason");
 

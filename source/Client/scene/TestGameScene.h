@@ -199,6 +199,6 @@ namespace Scene
 		Game::VisualClassicSimulation simulation;
 		Game::ControllablePlayer player;
 
-		Game::WorldResourceContainer resource_container;
+		Game::WorldContainer resource_container;
 	};
 }

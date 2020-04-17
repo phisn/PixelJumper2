@@ -2,6 +2,7 @@
 
 #include "GameCore/net/ClassicSessionMessage.h"
 #include "NetCore/RequestHandler.h"
+#include "ResourceCore/ClassicContextResource.h"
 
 namespace Game
 {
@@ -10,7 +11,11 @@ namespace Game
 		public ::Net::RequestHandler
 	{
 	public:
-		HostClassicSessionHandler()
+		HostClassicSessionHandler(
+			Resource::ClassicPlayerResource& player,
+			const Resource::ClassicContextResource& classicContext)
+			:
+			classicContext(classicContext)
 		{
 		}
 
@@ -25,6 +30,7 @@ namespace Game
 			switch (messageID)
 			{
 			case Net::Client::ClassicSessionMessageID::InitiateClassicUser:
+				// not needed anymore?
 
 				break;
 
@@ -41,5 +47,8 @@ namespace Game
 
 			return false;
 		}
+
+	private:
+		const Resource::ClassicContextResource& classicContext;
 	};
 }

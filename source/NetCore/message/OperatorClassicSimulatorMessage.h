@@ -50,10 +50,19 @@ namespace Net::Client
 
 		struct UnlockWorldMessageContent
 		{
+			Operator::UserID userID;
 			Resource::WorldID worldID;
 		};
 
 		typedef TrivialNetworkMessage<UnlockWorldMessageContent> UnlockWorldMessage;
+
+		struct UnlockWorldRepresentationContent
+		{
+			Operator::UserID userID;
+			Resource::RepresentationID representationID;
+		};
+
+		typedef TrivialNetworkMessage<UnlockWorldRepresentationContent> UnlockRepresentationMessage;
 	}
 }
 

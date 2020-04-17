@@ -1,5 +1,5 @@
 #include "device/CoreDevice.h"
-#include "device/OperatorClientDevice.h"
+#include "device/AuthenticationDevice.h"
 
 #include "Logger/Logger.h"
 
@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 			return 3;
 		}
 
-		Device::OperatorClient::AquireToken();
+		Device::Authentication::AquireToken();
 
 		return 2;
 	}

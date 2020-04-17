@@ -128,4 +128,33 @@ namespace Operator
 		virtual void onWorldUnlocked() = 0;
 		virtual void onWorldUnlockFailed() = 0;
 	};
+
+	class RepresentationUnlockRequest
+		:
+		public RequestInterface
+	{
+	public:
+		bool request_onMessage(
+			const ::Net::MessageID messageID,
+			Resource::ReadPipe* const pipe) override
+		{
+			switch (messageID)
+			{
+			case Net::Host::OperatorClassicHostID::UnlockedRepresentation:
+				onRepresentationUnlocked();
+
+				return true;
+			case Net::Host::OperatorClassicHostID::UnlockRepresentationFailed:
+				onRepresentationUnlockFailed();
+
+				return true;
+			}
+
+			return false;
+		}
+
+	protected:
+		virtual void onRepresentationUnlocked() = 0;
+		virtual void onRepresentationUnlockFailed() = 0;
+	};
 }

@@ -23,6 +23,7 @@ const Resource::ResourceTypeDefinition Resource::UnlockBufferResourceDefinition
 namespace Simulator
 {
 	void SaveUnlockBuffer();
+	Operator::Client::PushRequestFailure ProcessUnlock(const Resource::OperatorUnlockResource& unlock);
 
 	bool UnlockBuffer::Initialize()
 	{
@@ -38,7 +39,7 @@ namespace Simulator
 		return true;
 	}
 
-	Resource::UnlockID UnlockBuffer::UnlockWorld(
+	void UnlockBuffer::UnlockWorld(
 		Operator::UserID userID,
 		Resource::WorldID worldID)
 	{
@@ -52,7 +53,36 @@ namespace Simulator
 
 		SaveUnlockBuffer();
 
-		return unlockID;
+		Operator::Client::PushRequestFailure result = ProcessUnlock(unlockBuffer.unlocks.back());
+
+		if (result != Operator::Client::PushRequestFailure::Success)
+		{
+			Log::Error(L"failed to process unlock",
+				result, L"result");
+		}
+	}
+
+	void UnlockBuffer::UnlockRepresentation(
+		Operator::UserID userID,
+		Resource::RepresentationID representationID)
+	{
+		Resource::UnlockID unlockID = Module::Random::MakeRandom<Resource::UnlockID>();
+		Resource::OperatorUnlockResource& resource = unlockBuffer.unlocks.emplace_back();
+
+		resource.content.type = Resource::OperatorUnlockType::Representation;
+		resource.content.unlockID = unlockID;
+		resource.content.userID = userID;
+		resource.content.representationID = representationID;
+
+		SaveUnlockBuffer();
+
+		Operator::Client::PushRequestFailure result = ProcessUnlock(unlockBuffer.unlocks.back());
+
+		if (result != Operator::Client::PushRequestFailure::Success)
+		{
+			Log::Error(L"failed to process unlock",
+				result, L"result");
+		}
 	}
 
 	void UnlockBuffer::ReleaseUnlock(Resource::UnlockID unlockID)
@@ -84,43 +114,7 @@ namespace Simulator
 
 		while (iterator != unlockBuffer.unlocks.end())
 		{
-			Net::MessageID messageID;
-			Operator::RequestInterface* request = NULL;
-			Net::NetworkMessage* message;
-
-			switch (iterator->content.type)
-			{
-			case Resource::OperatorUnlockType::World:
-				messageID = Net::Client::OperatorClassicHostID::UnlockWorld;
-				request = new Operator::ManagedWorldUnlockRequest{ iterator->content.unlockID };
-				
-				{
-					Net::Client::OperatorClassicHost::UnlockWorldMessage* unlock_message =
-						new Net::Client::OperatorClassicHost::UnlockWorldMessage;
-
-					message = unlock_message;
-					unlock_message->content.worldID = iterator->content.worldID;
-				}
-
-				break;
-			default:
-				Log::Warning(L"got invalid type in unlockbuffer");
-
-				break;
-			}
-
-			// request can not be null when the
-			// request was correctly loaded
-			if (request == NULL)
-			{
-				iterator = unlockBuffer.unlocks.erase(iterator);
-				continue;
-			}
-
-			Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
-				messageID,
-				message,
-				request);
+			Operator::Client::PushRequestFailure result = ProcessUnlock(*iterator);
 
 			if (result != Operator::Client::PushRequestFailure::Success)
 			{
@@ -165,5 +159,58 @@ namespace Simulator
 			Log::Error(L"unlock buffer failed to save",
 				unlockBuffer.unlocks.size());
 		}
+	}
+
+	Operator::Client::PushRequestFailure ProcessUnlock(const Resource::OperatorUnlockResource& unlock)
+	{
+		Net::MessageID messageID;
+		Operator::RequestInterface* request = NULL;
+		Net::NetworkMessage* message;
+
+		switch (unlock.content.type)
+		{
+		case Resource::OperatorUnlockType::World:
+			messageID = Net::Client::OperatorClassicHostID::UnlockWorld;
+			request = new Operator::ManagedWorldUnlockRequest{ unlock.content.unlockID };
+
+			{
+				Net::Client::OperatorClassicHost::UnlockWorldMessage* unlock_message =
+					new Net::Client::OperatorClassicHost::UnlockWorldMessage;
+
+				message = unlock_message;
+				unlock_message->content.worldID = unlock.content.worldID;
+			}
+
+			break;
+		case Resource::OperatorUnlockType::Representation:
+			messageID = Net::Client::OperatorClassicHostID::UnlockRepresentation;
+			request = new Operator::ManagedRepresentationUnlockRequest{ unlock.content.unlockID };
+
+			{
+				Net::Client::OperatorClassicHost::UnlockRepresentationMessage* unlock_message =
+					new Net::Client::OperatorClassicHost::UnlockRepresentationMessage;
+
+				message = unlock_message;
+				unlock_message->content.representationID = unlock.content.representationID;
+			}
+
+			break;
+		default:
+			Log::Error(L"got invalid type in unlockbuffer");
+			return Operator::Client::PushRequestFailure::SendingFailed;
+		}
+
+		Operator::Client::PushRequestFailure result = Operator::Client::PushRequest(
+			messageID,
+			message,
+			request);
+
+		if (result == Operator::Client::PushRequestFailure::Authenticating ||
+			result == Operator::Client::PushRequestFailure::Unauthenticated)
+		{
+			delete request;
+		}
+
+		return result;
 	}
 }

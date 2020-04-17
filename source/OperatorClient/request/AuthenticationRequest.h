@@ -28,11 +28,11 @@ namespace Operator
 			const char token[OPERATOR_HASH_SIZE],
 			const UserID userID) = 0;
 
-		virtual void onAuthenticationFailed(const Reason reason) = 0;
+		virtual void onAuthenticationFailed(Net::Host::AuthenticationFailureReason reason) = 0;
+		virtual void onAuthenticationTimeout() = 0;
 		virtual void onRegistrationFailed(
-			const ::Net::Host::RejectOperatorRegistrationMessageContent::Reason reason) = 0;
+			Net::Host::RejectOperatorRegistrationMessageContent::Reason reason) = 0;
 
-	private:
 		bool request_onMessage(
 			const ::Net::MessageID messageID,
 			Resource::ReadPipe* const pipe) override
@@ -73,11 +73,6 @@ namespace Operator
 				}
 
 				return true;
-			case ::Net::Host::OperatorAuthenticationMessageID::RejectAuthentication:
-				Operator::Client::client->onAuthenticationFailed();
-				onAuthenticationFailed(Reason::Rejected);
-
-				return true;
 			case ::Net::Host::OperatorAuthenticationMessageID::RejectRegistration:
 				Operator::Client::client->onAuthenticationFailed();
 
@@ -87,14 +82,18 @@ namespace Operator
 				}
 
 				return true;
-			case ::Net::Host::OperatorAuthenticationMessageID::RejectToken:
+			case Net::Host::OperatorAuthenticationMessageID::AuthenticationFailure:
 				Operator::Client::client->onAuthenticationFailed();
-				onAuthenticationFailed(Reason::Rejected);
+
+				if (::Net::Host::AuthenticationFailureMessage message; request_loadMessage(messageID, &message, pipe))
+				{
+					onAuthenticationFailed(message.content.reason);
+				}
 
 				return true;
 			case ::Net::Host::OperatorAuthenticationMessageID::Timeout:
 				Operator::Client::client->onAuthenticationFailed();
-				onAuthenticationFailed(Reason::Timeout);
+				onAuthenticationTimeout();
 
 				return true;
 			}

@@ -47,32 +47,40 @@ namespace Operator
 		{
 			switch (messageID)
 			{
-			case ::Net::Client::OperatorClassicHostID::RegisterClient:
-				if (::Net::Client::OperatorClassicHost::RegisterClientMessage message; loadMessage(messageID, &message, pipe))
+			case Net::Client::OperatorClassicHostID::RegisterClient:
+				if (Net::Client::OperatorClassicHost::RegisterClientMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRegisterClient(message);
 				}
 
 				return true;
-			case ::Net::Client::OperatorClassicHostID::UnregisterClient:
-				if (::Net::Client::OperatorClassicHost::UnregisterClientMessage message; loadMessage(messageID, &message, pipe))
+			case Net::Client::OperatorClassicHostID::UnregisterClient:
+				if (Net::Client::OperatorClassicHost::UnregisterClientMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onUnregisterClient(message);
 				}
 
 				return true;
-			case ::Net::Client::OperatorClassicHostID::ClientData:
-				if (::Net::Client::OperatorClassicHost::RequestClientDataMessage message; loadMessage(messageID, &message, pipe))
+			case Net::Client::OperatorClassicHostID::ClientData:
+				if (Net::Client::OperatorClassicHost::RequestClientDataMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRequestClientData(message);
 				}
 
 				return true;
 
-			case ::Net::Client::OperatorClassicHostID::UnlockWorld:
-				if (::Net::Client::OperatorClassicHost::UnlockWorldMessage message; loadMessage(messageID, &message, pipe))
+			case Net::Client::OperatorClassicHostID::UnlockWorld:
+				if (Net::Client::OperatorClassicHost::UnlockWorldMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onUnlockWorld(message);
+				}
+
+				return true;
+
+			case Net::Client::OperatorClassicHostID::UnlockRepresentation:
+				if (Net::Client::OperatorClassicHost::UnlockRepresentationMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onUnlockRepresentation(message);
 				}
 
 				return true;
@@ -232,7 +240,7 @@ namespace Operator
 
 		void onUnlockWorld(const ::Net::Client::OperatorClassicHost::UnlockWorldMessage& message)
 		{
-			if (UnlockWorld(userID, message.content.worldID))
+			if (UnlockWorld(message.content.userID, message.content.worldID))
 			{
 				access->sendMessage(
 					::Net::Host::OperatorClassicHostID::UnlockedWorld,
@@ -241,12 +249,33 @@ namespace Operator
 			else
 			{
 				Log::Error(L"failed to unlock world",
-					userID, L"userID",
+					message.content.userID, L"userID",
 					hostContainer.host.userID, L"hostID",
 					message.content.worldID, L"worldID");
 
 				access->sendMessage(
 					::Net::Host::OperatorClassicHostID::UnlockWorldFailed,
+					NULL);
+			}
+		}
+
+		void onUnlockRepresentation(const Net::Client::OperatorClassicHost::UnlockRepresentationMessage& message)
+		{
+			if (UnlockRepresentation(message.content.userID, message.content.representationID))
+			{
+				access->sendMessage(
+					::Net::Host::OperatorClassicHostID::UnlockedRepresentation,
+					NULL);
+			}
+			else
+			{
+				Log::Error(L"failed to unlock representation",
+					message.content.userID, L"userID",
+					hostContainer.host.userID, L"hostID",
+					message.content.representationID, L"representationID");
+
+				access->sendMessage(
+					::Net::Host::OperatorClassicHostID::UnlockedRepresentation,
 					NULL);
 			}
 		}

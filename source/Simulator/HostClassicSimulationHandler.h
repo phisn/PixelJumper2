@@ -15,7 +15,7 @@ namespace Game
 	{
 		virtual void onSimulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
 		virtual void onSimulationClosed() = 0;
-		virtual void onSimulationFinished(const ExitWorldEvent& event) = 0;
+		virtual void onSimulationFinished(Resource::WorldID worldID) = 0;
 	};
 
 	// currently transitive reached worlds are not sent to the 
@@ -42,7 +42,7 @@ namespace Game
 		ClassicSimulationHandler(
 			ClassicSimulatorHandlerCallback* const callback,
 			SimulatorContext& context,
-			const WorldResourceContainer& container,
+			const Resource::WorldContainer& container,
 			const Game::PlayerInformation userInfo,
 			const SimulationBootInformation bootInfo)
 			:
@@ -445,12 +445,12 @@ namespace Game
 			movementBuffer.content.worldID = loadingWorld->getInformation()->worldId;
 		}
 
-		void onWorldExit(const ExitWorldEvent& event) override
+		void onWorldExit() override
 		{
 			access->sendMessage(
 				Net::Host::ClassicSimulatorMessageID::SimulationClosed,
 				NULL);
-			callback->onSimulationFinished(event);
+			callback->onSimulationFinished(world->getInformation()->worldId);
 		}
 
 		bool sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason reason)

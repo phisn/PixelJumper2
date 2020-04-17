@@ -5,11 +5,13 @@
 #include "HostClassicSelectionHandler.h"
 #include "HostClassicSimulationHandler.h"
 #include "ManagedUnregisterClientRequest.h"
+#include "OperatorUnlockBuffer.h"
 
 #include "GameCore/net/SimulatorContext.h"
 #include "GameCore/net/SimulatorSettings.h"
 #include "NetCore/ClientHandler.h"
 #include "OperatorClient/request/ClassicHostRequest.h"
+#include "ResourceCore/ClassicContextResource.h"
 
 namespace Game
 {
@@ -69,15 +71,23 @@ namespace Game
 		ClassicClientHandler(
 			HSteamNetConnection connection,
 			Settings settings,
+			
 			SimulatorContext& context,
 			SimulatorSettings simulatorSettings,
-			const WorldResourceContainer& container)
+
+			const Resource::ClassicContextResource& classicContext,
+			const Resource::ClassicWorldContainer& classicWorldContainer,
+			const Resource::WorldContainer& worldContainer)
 			:
 			ClientHandler(connection),
 			settings(settings),
-			simulatorSettings(simulatorSettings),
+
 			context(context),
-			container(container)
+			simulatorSettings(simulatorSettings),
+
+			classicContext(classicContext),
+			classicWorldContainer(classicWorldContainer),
+			worldContainer(worldContainer)
 		{
 			// initialize value for destructor
 			resource.content.userID = NULL;
@@ -187,7 +197,10 @@ namespace Game
 	private:
 		const Settings settings;
 		const SimulatorSettings simulatorSettings;
-		const WorldResourceContainer& container;
+
+		const Resource::ClassicContextResource& classicContext;
+		const Resource::ClassicWorldContainer& classicWorldContainer;
+		const Resource::WorldContainer& worldContainer;
 
 		SimulatorContext& context;
 
@@ -208,15 +221,22 @@ namespace Game
 
 		void playerRegistered(Resource::PlayerResource* const player) override
 		{
-			// send message to player that a new player
-			// was registered
-			// need to add a common request handler to
-			// both client and host
+			Net::Host::ClassicSession::AddPlayerMessage message;
+			message.player = player;
+			
+			sendMessage(
+				Net::Host::ClassicSessionMessageID::AddPlayer,
+				&message);
 		}
 
 		void playerUnregistered(const Operator::UserID userID) override
 		{
-			// send message to player that a player unregistered
+			Net::Host::ClassicSession::RemovePlayerMessage message;
+			message.content.userID = userID;
+
+			sendMessage(
+				Net::Host::ClassicSessionMessageID::RemovePlayer,
+				&message);
 		}
 
 		void onMessage(
@@ -243,23 +263,51 @@ namespace Game
 			this->classicResource = std::move(classicResource);
 			this->resource = std::move(resource);
 
+			// unlock missing worlds
+			for (Resource::WorldID worldID : classicContext.initialUnlockedWorlds)
+				if (std::find(
+						this->classicResource.unlockedWorlds.begin(),
+						this->classicResource.unlockedWorlds.end(),
+						worldID) 
+					== this->classicResource.unlockedWorlds.end())
+				{
+					Simulator::UnlockBuffer::UnlockWorld(this->resource.content.userID, worldID);
+					this->classicResource.unlockedWorlds.push_back(worldID);
+				}
+
+			// unlock missing representations
+			for (Resource::RepresentationID representationID : classicContext.initialUnlockedRepresentations)
+				if (std::find(
+						this->classicResource.unlockedRepresentations.begin(),
+						this->classicResource.unlockedRepresentations.end(),
+						representationID)
+					== this->classicResource.unlockedRepresentations.end())
+				{
+					Simulator::UnlockBuffer::UnlockRepresentation(this->resource.content.userID, representationID);
+					this->classicResource.unlockedRepresentations.push_back(representationID);
+				}
+
 			delete removeRequestHandler<AuthenticationHandler>();
-			addRequestHandler(new HostClassicSessionHandler);
+			addRequestHandler(new HostClassicSessionHandler
+				{ 
+					classicResource,
+					classicContext 
+				});
 
 			::Net::Host::ClassicSession::InitializeSessionMessage message;
 			message.players = context.getActivePlayers();
 			message.content.settings = simulatorSettings;
 
 			if (sendMessage(
-				::Net::Host::ClassicSessionMessageID::InitializeSessionMessage,
-				&message))
+					::Net::Host::ClassicSessionMessageID::InitializeSession,
+					&message))
 			{
 				context.registerPlayer(&resource, this);
 
 				selectionHandler = new ClassicSelectionHandler(
 					this,
 					classicResource,
-					container);
+					worldContainer);
 
 				addRequestHandler(selectionHandler);
 				status = Status::Waiting;
@@ -280,7 +328,7 @@ namespace Game
 			simulationHandler = new ClassicSimulationHandler(
 				this,
 				context,
-				container,
+				worldContainer,
 				userInfo,
 				bootInfo);
 
@@ -321,12 +369,52 @@ namespace Game
 			// done by simulationhandler
 		}
 
-		void onSimulationFinished(const ExitWorldEvent& event) override
+		void onSimulationFinished(Resource::WorldID worldID) override
 		{
-			Net::Client::OperatorClassicHost::UnlockWorldMessage message;
-			message.content.worldID = event.worldID;
+			Resource::ClassicWorldContainer::const_iterator world = classicWorldContainer.find(worldID);
+			
+			if (world == classicWorldContainer.end())
+			{
+				Log::Error(L"finished invalid world",
+					resource.content.userID, L"userID",
+					resource.username, L"username",
+					worldID, L"worldID",
+					classicWorldContainer.size(), L"worldcontainer_size");
 
+				return;
+			}
 
+			Resource::WorldID unlockedWorld = world->second->content.worldID;
+
+			Log::Information(L"unlocking", 
+				resource.content.userID, L"userID",
+				worldID, L"finished",
+				unlockedWorld, L"unlocking");
+			Simulator::UnlockBuffer::UnlockWorld(
+				resource.content.userID,
+				unlockedWorld);
+
+			sendWorldUnlocked(unlockedWorld);
+		}
+
+	private:
+		void sendWorldUnlocked(Resource::WorldID worldID)
+		{
+			Resource::WorldContainer::const_iterator world = worldContainer.find(worldID);
+
+			if (world != worldContainer.cend())
+			{
+				Log::Error(L"failed to unlock world, resource not found",
+					worldID, L"worldID",
+					resource.content.userID, L"userID");
+			}
+
+			Net::Host::ClassicSession::WorldUnlockedMessage message;
+			message.world = world->second;
+
+			sendMessage(
+				Net::Host::ClassicSessionMessageID::WorldUnlocked,
+				&message);
 		}
 
 		// requests

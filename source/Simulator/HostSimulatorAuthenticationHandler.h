@@ -196,7 +196,7 @@ namespace Game
 				break;
 			default:
 				Log::Error(L"missing reason case in hostsimulatorauthenticationhandler in onclientregisterfailed",
-					message.content.reason, L"reason");
+					(int) message.content.reason, L"reason");
 
 				sendAuthenticationRejectedMessage(
 					::Net::Host::AuthenticationRejectedMessageContent::Reason::OperatorRequestFailed

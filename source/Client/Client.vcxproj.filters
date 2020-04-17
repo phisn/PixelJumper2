@@ -66,6 +66,9 @@
     <ClCompile Include="game\CachedControllablePlayer.cpp">
       <Filter>source\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\GenerateWorldImage.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene\TestGameScene.h">
@@ -113,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="classic\ClassicConnectionScene.h">
       <Filter>source\classic</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GenerateWorldImage.h">
+      <Filter>source\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

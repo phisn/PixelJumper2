@@ -136,7 +136,7 @@ namespace Game
 		
 		// worldcontainer and players are hold by other modules might
 		// adopt over time
-		WorldResourceContainer& worldContainer;
+		WorldContainer& worldContainer;
 		const std::vector<Resource::PlayerResource*>& players;
 
 		std::string& username;
@@ -342,7 +342,7 @@ namespace Game
 	private:
 		ClientClassicSimulationHandlerCallback* const callback;
 		const SimulationBootInformation info;
-		const WorldResourceContainer& worldContainer;
+		const WorldContainer& worldContainer;
 
 		VisualClassicSimulation simulation;
 		CachedControllablePlayer player;

@@ -49,16 +49,20 @@ namespace Resource
 		}
 	};
 
-	const Resource::ResourceTypeDefinition UnlockBufferResourceDefinition;
+	extern const Resource::ResourceTypeDefinition UnlockBufferResourceDefinition;
 }
 
 namespace Simulator::UnlockBuffer
 {
 	bool Initialize();
 
-	Resource::UnlockID UnlockWorld(
+	void UnlockWorld(
 		Operator::UserID userID, 
 		Resource::WorldID worldID);
+	void UnlockRepresentation(
+		Operator::UserID userID,
+		Resource::RepresentationID representationID);
+
 	void ReleaseUnlock(Resource::UnlockID unlockID);
 
 	// used to ensure all unlocks are unlocked as

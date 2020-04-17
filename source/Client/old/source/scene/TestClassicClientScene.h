@@ -268,7 +268,7 @@ namespace Scene
 		Game::Net::ClientClassicSimulationHandler* createSimulationHandler(
 			ClientClassicSimulationHandlerCallback* const callback,
 			const Game::SimulationBootInformation info,
-			const Game::WorldResourceContainer& worldContainer) override
+			const Game::WorldContainer& worldContainer) override
 		{
 			Log::Error(L"creating simulation handler");
 

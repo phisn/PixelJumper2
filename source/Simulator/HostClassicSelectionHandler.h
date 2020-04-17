@@ -20,7 +20,7 @@ namespace Game
 		ClassicSelectionHandler(
 			ClassicSelectionHandlerCallback* const callback,
 			const Resource::ClassicPlayerResource& classicResource,
-			const WorldResourceContainer& container)
+			const Resource::WorldContainer& container)
 			:
 			callback(callback),
 			classicResource(classicResource),
@@ -57,7 +57,7 @@ namespace Game
 	private:
 		ClassicSelectionHandlerCallback* const callback;
 		const Resource::ClassicPlayerResource& classicResource;
-		const WorldResourceContainer& container;
+		const Resource::WorldContainer& container;
 
 		void onPrepareSimulation(const ::Net::Client::PrepareSimulationMessage& request)
 		{
@@ -109,7 +109,7 @@ namespace Game
 				return;
 			}
 
-			WorldResourceContainer::const_iterator world = container.find(request.content.world);
+			Resource::WorldContainer::const_iterator world = container.find(request.content.world);
 
 			if (world == container.cend())
 			{

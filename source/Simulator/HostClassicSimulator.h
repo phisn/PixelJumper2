@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include "ClassicClientHandler.h"
 #include "device/CoreDevice.h"
@@ -9,6 +9,7 @@
 #include "GameCore/net/SimulatorSettings.h"
 #include "NetCore/NetCore.h"
 #include "OperatorClient/request/RegisterClassicHostRequest.h"
+#include "ResourceCore/ClassicContextResource.h"
 
 /*
 	current classic process:
@@ -21,6 +22,8 @@
 		4. selectionhandler is removed and a simulationhandler
 		   pushed
 */
+
+#define CLASSIC_CONTEXT_FILENAME L"classiccontext"
 
 namespace Game
 {
@@ -48,12 +51,13 @@ namespace Game
 			Operator::Client::ClosedConnectionNotifier.addListener(
 				[](int reason)
 				{
+#error todo?
 				});
 
 			Operator::Client::LostConnectionNotifier.addListener(
 				[](int reason)
 				{
-
+#error todo?
 				});
 
 			Operator::Client::OpenConnectionNotifier.addListener(
@@ -73,6 +77,18 @@ namespace Game
 		bool initialize()
 		{
 			Log::SectionHost section{ L"starting server" };
+
+			if (!Resource::Interface::LoadResource(
+					CLASSIC_CONTEXT_FILENAME,
+					&classicContext,
+					Resource::ClassicContextResourceDefinition))
+			{
+				Log::Error(L"failed to load classiccontext resource");
+
+				return false;
+			}
+
+#error load all worlds
 
 			if (Operator::Client::GetAuthenticationStatus() != Operator::Client::AuthenticationStatus::Authenticated)
 			{
@@ -140,7 +156,7 @@ namespace Game
 
 		void pushResource(Resource::World* const world)
 		{
-			resources[world->content.id] = world;
+			worldContainer[world->content.id] = world;
 		}
 
 		const HostSettings settings;
@@ -157,7 +173,9 @@ namespace Game
 		std::vector<ClassicClientHandler*> connections;
 
 		SimulatorContext context;
-		WorldResourceContainer resources;
+		Resource::ClassicContextResource classicContext;
+		Resource::ClassicWorldContainer classicWorldContainer;
+		Resource::WorldContainer worldContainer;
 
 		bool askClientConnect(SteamNetConnectionStatusChangedCallback_t* const event) override
 		{
@@ -176,7 +194,9 @@ namespace Game
 				clientSettings,
 				context,
 				simulatorSettings,
-				resources));
+				classicContext,
+				classicWorldContainer,
+				worldContainer));
 		}
 
 		void onClientDisconnected(const HSteamNetConnection connection) override

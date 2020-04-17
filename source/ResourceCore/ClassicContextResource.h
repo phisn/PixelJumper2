@@ -1,11 +1,15 @@
 #pragma once
 
-#include <vector>
-
+#include "ResourceInterface.h"
 #include "WorldResource.h"
+
+#include <map>
+#include <vector>
 
 namespace Resource
 {
+	extern const Resource::ResourceTypeDefinition ClassicContextResourceDefinition;
+
 	// does not conain actual world
 	class ClassicWorldResource
 		:
@@ -115,12 +119,16 @@ namespace Resource
 		public ResourceBase
 	{
 	public:
+		std::vector<Resource::WorldID> initialUnlockedWorlds;
+		std::vector<Resource::RepresentationID> initialUnlockedRepresentations;
+
 		std::vector<ClassicStageResource> stages;
 		std::vector<ClassicWorldResource> stagelessWorlds;
 
 		bool make(ReadPipe* const pipe) override
 		{
-			if (!pipe->readVectorResource(&stages) ||
+			if (!pipe->readVector(&initialUnlockedWorlds) ||
+				!pipe->readVectorResource(&stages) ||
 				!pipe->readVectorResource(&stagelessWorlds))
 			{
 				return false;
@@ -131,7 +139,8 @@ namespace Resource
 
 		bool save(WritePipe* const pipe) override
 		{
-			if (!pipe->writeVectorResource(&stages) ||
+			if (!pipe->writeVector(&initialUnlockedWorlds) ||
+				!pipe->writeVectorResource(&stages) ||
 				!pipe->writeVectorResource(&stagelessWorlds))
 			{
 				return false;
@@ -140,4 +149,6 @@ namespace Resource
 			return true;
 		}
 	};
+
+	typedef std::map<WorldID, ClassicWorldResource*> ClassicWorldContainer;
 }

@@ -8,8 +8,6 @@
 
 namespace Game
 {
-	typedef std::map<Resource::WorldId, Resource::World*> WorldResourceContainer;
-
 	struct SimulationBootInformation
 	{
 		Resource::WorldId worldID;
@@ -23,7 +21,7 @@ namespace Game
 	public:
 		typedef std::future<World*> LoadingWorld;
 		typedef std::vector<LoadingWorld> LoadingWorldContainer;
-		typedef std::vector<World*> WorldContainer;
+		typedef std::vector<World*> InternalWorldContainer;
 
 		enum Status
 		{
@@ -46,7 +44,7 @@ namespace Game
 
 		typedef std::function<WorldFailure()> Task;
 
-		ClassicSimulation(const WorldResourceContainer& worldResources)
+		ClassicSimulation(const Resource::WorldContainer& worldResources)
 			:
 			worldResources(worldResources)
 		{
@@ -178,13 +176,12 @@ namespace Game
 
 			for (ExitableTraitHandler* const handler : world->getEnvironment()->getExitableTraitTrait())
 				handler->onExit.addListener(
-					[this](const ExitWorldEvent& event)
+					[this]()
 					{
 						tasks.push_back(
-							[this, &event]() -> WorldFailure
+							[this]() -> WorldFailure
 							{
-								onWorldExit(event);
-
+								onWorldExit();
 								return WorldFailure::Success;
 							});
 					});
@@ -206,14 +203,14 @@ namespace Game
 		virtual void onWorldLoad(World* loadingWorld) = 0;
 		// after this is called the simulation is
 		// should be closed
-		virtual void onWorldExit(const ExitWorldEvent& event) = 0;
+		virtual void onWorldExit() = 0;
 
 	private:
-		const WorldResourceContainer& worldResources;
+		const Resource::WorldContainer& worldResources;
 		Status status = Waiting;
 		WorldFailure failure = WorldFailure::Success;
 
-		WorldContainer worlds;
+		InternalWorldContainer worlds;
 		LoadingWorldContainer loadingWorlds;
 
 		// similar to tick in world but world
@@ -270,7 +267,7 @@ namespace Game
 		// false if some resource was not found
 		bool preloadNextWorld(const Resource::WorldId worldID)
 		{
-			WorldResourceContainer::const_iterator resource = worldResources.find(worldID);
+			Resource::WorldContainer::const_iterator resource = worldResources.find(worldID);
 
 			if (resource == worldResources.end())
 			{
@@ -390,7 +387,7 @@ namespace Game
 
 		WorldFailure createWorld(const Resource::WorldId worldID)
 		{
-			WorldResourceContainer::const_iterator iterator = worldResources.find(worldID);
+			Resource::WorldContainer::const_iterator iterator = worldResources.find(worldID);
 
 			if (iterator == worldResources.end())
 			{
