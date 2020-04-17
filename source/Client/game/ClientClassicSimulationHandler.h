@@ -248,28 +248,28 @@ namespace Game
 		{
 			switch (messageID)
 			{
-			case Net::Host::ClassicSimulatorMessageID::SimulationClosed:
-			case Net::Host::ClassicSimulatorMessageID::SimulationFailed:
+			case Net::Host::ClassicSimulationMessageID::SimulationClosed:
+			case Net::Host::ClassicSimulationMessageID::SimulationFailed:
 				Log::Information(L"closed");
 
 				callback->onSimulationClosed();
 
 				return true;
-			case Net::Host::ClassicSimulatorMessageID::PushPlayer:
+			case Net::Host::ClassicSimulationMessageID::PushPlayer:
 				if (Net::Host::PushPlayerMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onPushPlayer(message);
 				}
 
 				return true;
-			case Net::Host::ClassicSimulatorMessageID::PopPlayer:
+			case Net::Host::ClassicSimulationMessageID::PopPlayer:
 				if (Net::Host::PopPlayerMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onPopPlayer(message);
 				}
 
 				return true;
-			case Net::Host::ClassicSimulatorMessageID::PushMovement:
+			case Net::Host::ClassicSimulationMessageID::PushMovement:
 			{
 				NetPlayerMovement movement;
 				Net::Host::PlayerMovementMessage message;
@@ -282,21 +282,21 @@ namespace Game
 
 				return true;
 			}
-			case Net::Host::ClassicSimulatorMessageID::TemporarilySpeedAdjustment:
+			case Net::Host::ClassicSimulationMessageID::TemporarilySpeedAdjustment:
 				if (Net::Host::TemporarilySpeedAdjustmentMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onTemporarilySpeedAdjustment(message);
 				}
 
 				return true;
-			case Net::Host::ClassicSimulatorMessageID::Synchronize:
+			case Net::Host::ClassicSimulationMessageID::Synchronize:
 				if (Net::Host::HostSynchronizeMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onSynchronize(message);
 				}
 
 				return true;
-			case Net::Host::ClassicSimulatorMessageID::PrepareSync:
+			case Net::Host::ClassicSimulationMessageID::PrepareSync:
 				synchronize();
 
 				return true;
@@ -315,7 +315,7 @@ namespace Game
 			// issues caused by buffered movement
 			sendPlayerMovement();
 
-			if (access->sendMessage(Net::Client::ClassicSimulatorMessageID::RequestSynchronize))
+			if (access->sendMessage(Net::Client::ClassicSimulationMessageID::RequestSynchronize))
 			{
 				synchronizing = true;
 				synchronizeBeginTick = simulation.getTick();
@@ -328,7 +328,7 @@ namespace Game
 			message.packetFrameStatus = &player.packedFrameStatus;
 
 			access->sendMessage(
-				Net::Client::ClassicSimulatorMessageID::PushMovement,
+				Net::Client::ClassicSimulationMessageID::PushMovement,
 				&message);
 
 			player.packedFrameStatus.frames.clear();
@@ -443,7 +443,7 @@ namespace Game
 					player.getInformation().playerId, L"playerID",
 					player.getInformation().name, L"username");
 
-				access->sendMessage(Net::Client::ClassicSimulatorMessageID::SimulationFailure);
+				access->sendMessage(Net::Client::ClassicSimulationMessageID::SimulationFailure);
 				callback->onSimulationFailure();
 
 				return;
@@ -482,7 +482,7 @@ namespace Game
 				ClassicSimulation::WorldFailure result = simulation.processLogic();
 				if (result != ClassicSimulation::WorldFailure::Success)
 				{
-					access->sendMessage(Net::Client::ClassicSimulatorMessageID::SimulationFailure);
+					access->sendMessage(Net::Client::ClassicSimulationMessageID::SimulationFailure);
 					callback->onSimulationFailure();
 
 					Log::Error(L"Failed to process simulation",
@@ -509,7 +509,7 @@ namespace Game
 
 			if (result != ClassicSimulation::WorldFailure::Success)
 			{
-				access->sendMessage(Net::Client::ClassicSimulatorMessageID::SimulationFailure);
+				access->sendMessage(Net::Client::ClassicSimulationMessageID::SimulationFailure);
 				callback->onSimulationFailure();
 
 				Log::Error(L"Failed to process simulation",

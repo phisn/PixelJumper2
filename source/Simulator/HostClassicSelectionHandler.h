@@ -113,7 +113,7 @@ namespace Game
 
 			if (world == container.cend())
 			{
-				missingWorldResource();
+				missingWorldResource(request.content.world);
 				return;
 			}
 
@@ -126,7 +126,7 @@ namespace Game
 
 				if (world == container.cend())
 				{
-					missingWorldResource();
+					missingWorldResource(worldID);
 					return;
 				}
 
@@ -145,8 +145,11 @@ namespace Game
 		}
 
 		// here only called by simulation request message
-		void missingWorldResource()
+		void missingWorldResource(Resource::WorldID worldID)
 		{
+			Log::Error(L"missing world resource in selection handler",
+				worldID, L"worldID");
+
 			::Net::Host::RejectSimulationRequestMessage message;
 			message.content.reason = message.content.InternalResourceMissing;
 

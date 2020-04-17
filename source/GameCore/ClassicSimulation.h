@@ -27,6 +27,7 @@ namespace Game
 		{
 			Waiting,
 			Running,
+			Finished,
 			Error
 		};
 
@@ -65,7 +66,7 @@ namespace Game
 					if (result != WorldFailure::Success)
 					{
 						Log::Error(L"Simulation task failed",
-							(int) result, L"reason");
+							(int)result, L"reason");
 
 						status = Error;
 						return result;
@@ -135,7 +136,14 @@ namespace Game
 				return WorldFailure::PlayerEmpty;
 			}
 
-			return loadWorld(worldID);
+			WorldFailure result = loadWorld(worldID);
+
+			if (result != WorldFailure::Success)
+			{
+				status = Running;
+			}
+
+			return result;
 		}
 
 		std::future<WorldFailure> prepareWorld(const Resource::WorldId worldID)
@@ -164,8 +172,10 @@ namespace Game
 		}
 
 	protected:
-		Game::PlayerBase* player = NULL;
+		const Resource::WorldContainer& worldResources;
+
 		World* world = NULL;
+		Game::PlayerBase* player = NULL;
 
 		virtual bool onInitializeWorld(World* const world)
 		{
@@ -181,6 +191,7 @@ namespace Game
 						tasks.push_back(
 							[this]() -> WorldFailure
 							{
+								status = Status::Finished;
 								onWorldExit();
 								return WorldFailure::Success;
 							});
@@ -206,7 +217,6 @@ namespace Game
 		virtual void onWorldExit() = 0;
 
 	private:
-		const Resource::WorldContainer& worldResources;
 		Status status = Waiting;
 		WorldFailure failure = WorldFailure::Success;
 
@@ -249,8 +259,8 @@ namespace Game
 		{
 			for (const Resource::WorldId worldID : world->getTargets())
 				if (std::find_if(
-						worlds.begin(),
-						worlds.end(),
+					worlds.begin(),
+					worlds.end(),
 					[worldID](World* const world)
 					{
 						return world->getInformation()->worldId == worldID;
@@ -261,7 +271,7 @@ namespace Game
 						return false;
 				}
 
-			return true;
+					return true;
 		}
 
 		// false if some resource was not found
@@ -322,7 +332,7 @@ namespace Game
 			{
 				onWorldLoad(world);
 			}
-			
+
 			return result;
 		}
 
@@ -374,9 +384,9 @@ namespace Game
 				entryEvent.offsetSource = event.offset;
 
 				if (!world->addPlayerDynamicTransition(
-						player,
-						event.targetEntry,
-						entryEvent))
+					player,
+					event.targetEntry,
+					entryEvent))
 				{
 					result = WorldFailure::DynamicEntryNotFound;
 				}
@@ -424,7 +434,7 @@ namespace Game
 	private:
 		bool onInitializeWorld(World* const world) override
 		{
-			return ClassicSimulation::onInitializeWorld(world) 
+			return ClassicSimulation::onInitializeWorld(world)
 				&& world->initializeGraphics();
 		}
 	};

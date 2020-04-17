@@ -223,7 +223,7 @@ namespace Game
 					info.representationID, L"reprID");
 
 				delete simulatorHandler;
-				sendMessage(Net::Client::ClassicSimulatorMessageID::SimulationFailure);
+				sendMessage(Net::Client::ClassicSimulationMessageID::SimulationFailure);
 
 				return;
 			}

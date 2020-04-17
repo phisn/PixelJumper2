@@ -215,6 +215,29 @@ namespace Resource
 		return true;
 	}
 
+	std::vector<char> Interface::LoadResourceRaw(std::wstring filename, const ResourceTypeDefinition& type)
+	{
+		std::filesystem::path path = Interface::GetResourcePath(filename, type);
+
+		decltype(cachedResources)::const_iterator iterator = cachedResources.find(path);
+		if (iterator == cachedResources.cend())
+		{
+			if (!CacheResource(filename, type))
+				return { };
+
+			iterator = cachedResources.find(path);
+			if (iterator == cachedResources.cend())
+			{
+				Log::Error(L"cached resource after caching not found",
+					filename, L"filename",
+					type.name, L"type_name");
+				return { };
+			}
+		}
+
+		return iterator->second;
+	}
+
 	bool Interface::CacheResource(
 		std::wstring filename,
 		const ResourceTypeDefinition& type)

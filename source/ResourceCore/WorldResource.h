@@ -16,8 +16,7 @@
 
 namespace Resource
 {
-	// moved to playerresource
-	// typedef sf::Uint32 WorldId;
+	typedef sf::Uint32 WorldChecksum;
 
 	class World
 		:
@@ -40,7 +39,7 @@ namespace Resource
 
 		struct Content
 		{
-			sf::Uint32 checksum;
+			WorldChecksum checksum;
 
 			WorldId id;
 			PlayerID author;

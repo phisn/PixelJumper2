@@ -40,6 +40,10 @@ namespace Resource::Interface
 		ResourceBase* resource,
 		const ResourceTypeDefinition& type);
 
+	std::vector<char> LoadResourceRaw(
+		std::wstring filename,
+		const ResourceTypeDefinition& type);
+
 	// let the user decide manually weather he wants
 	// to cache a resource or not
 	bool CacheResource(

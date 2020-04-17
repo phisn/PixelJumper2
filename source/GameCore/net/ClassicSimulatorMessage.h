@@ -8,7 +8,7 @@
 
 namespace Net::Client
 {
-	struct ClassicSimulatorMessageID
+	struct ClassicSimulationMessageID
 	{
 		enum
 		{
@@ -23,9 +23,36 @@ namespace Net::Client
 			RequestSynchronize,
 			PushMovement,
 
+			// unlike requestworldresource ensureworldresource
+			// does only request a resource when the checksum is
+			// different
+			// both share the same pushworldresource answer
+			// because Ensureworldresource do actually need an
+			// answer we just do not answer when needed
+			EnsureWorldResource,
+			RequestWorldResource,
+
 			_Offset
 		};
 	};
+
+	namespace ClassicSimulation
+	{
+		struct EnsureWorldResourceMessageContent
+		{
+			Resource::WorldID worldID;
+			Resource::WorldChecksum checksum;
+		};
+
+		typedef TrivialNetworkMessage<EnsureWorldResourceMessageContent> EnsureWorldResourceMessage;
+
+		struct RequestWorldResourceMessageContent
+		{
+			Resource::WorldID worldID;
+		};
+
+		typedef TrivialNetworkMessage<RequestWorldResourceMessageContent> RequestWorldResourceMessage;
+	}
 
 	class PushMovementMessage
 		:
@@ -44,7 +71,7 @@ namespace Net::Client
 			return packetFrameStatus->writeState(pipe);
 		}
 	};
-
+	
 	struct AcceptSyncMessageContent
 	{
 		sf::Uint64 tickCount;
@@ -55,7 +82,7 @@ namespace Net::Client
 
 namespace Net::Host
 {
-	struct ClassicSimulatorMessageID
+	struct ClassicSimulationMessageID
 	{
 		enum
 		{
@@ -77,13 +104,15 @@ namespace Net::Host
 
 			// used to sync with player speed
 			TemporarilySpeedAdjustment,
-
+ 
+			/*
 			// measure tick delay between client
 			// and server
 			Ping,
+			*/
 
 			// upload world resource to client
-			PushResource,
+			PushWorldResource,
 
 			// instructs the user synchronize
 			// he can theoretically ignore it but shouldnt
@@ -101,8 +130,8 @@ namespace Net::Host
 		enum class SimulationFailureReason
 		{
 			WorldFailure,
-			InvalidSpeed
-
+			InvalidSpeed,
+			InvalidStatus
 		};
 
 		struct SimulationFailureMessageContent
@@ -111,6 +140,25 @@ namespace Net::Host
 		};
 
 		typedef TrivialNetworkMessage<SimulationFailureMessageContent> SimulationFailureMessage;
+
+		struct PushWorldResourceMessage
+			:
+			public NetworkMessage
+		{
+			Resource::World* world = NULL;
+
+			bool load(Resource::ReadPipe* const pipe) override
+			{
+				assert(world != NULL);
+				return world->make(pipe);
+			}
+
+			bool save(Resource::WritePipe* const pipe) override
+			{
+				assert(world != NULL);
+				return world->save(pipe);
+			}
+		};
 	}
 
 
