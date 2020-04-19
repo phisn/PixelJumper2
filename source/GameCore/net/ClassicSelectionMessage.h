@@ -3,6 +3,7 @@
 #include "FrameStatus.h"
 #include "ClassicSessionMessage.h"
 
+#include "GameCore/SimulationBootInformation.h"
 #include "ResourceCore/ClassicPlayerResource.h"
 
 namespace Net::Client

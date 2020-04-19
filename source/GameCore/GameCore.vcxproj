@@ -130,6 +130,7 @@
     <ClInclude Include="PlayerInformation.h" />
     <ClInclude Include="PlayerProperties.h" />
     <ClInclude Include="PlayerRepresentation.h" />
+    <ClInclude Include="SimulationBootInformation.h" />
     <ClInclude Include="trait\CollidableTrait.h" />
     <ClInclude Include="trait\DrawableTrait.h" />
     <ClInclude Include="trait\DynamicTrait.h" />

@@ -197,5 +197,8 @@
     <ClInclude Include="net\SimulatorSettings.h">
       <Filter>source\net</Filter>
     </ClInclude>
+    <ClInclude Include="SimulationBootInformation.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

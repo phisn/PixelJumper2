@@ -4,16 +4,360 @@
 #include "trait/ExitableTrait.h"
 
 #include <future>
+#include <mutex>
 #include <vector>
 
 namespace Game
 {
-	struct SimulationBootInformation
+	class _ClassicSimulation
+		:
+		public GameState
 	{
-		Resource::WorldId worldID;
-		Resource::RepresentationID representationID;
+		typedef std::function<void()> Task;
+
+	public:
+		enum class Status
+		{
+			Waiting,
+			Running
+		};
+
+		_ClassicSimulation(const Resource::WorldContainer& worldContainer)
+			:
+			worldContainer(worldContainer)
+		{
+		}
+
+		virtual void processTick()
+		{
+			world->processLogic();
+
+			if (tasks.size())
+			{
+				for (Task& task : tasks)
+					task();
+
+				tasks.clear();
+			}
+		}
+
+		bool writeState(Resource::WritePipe* const writePipe) override
+		{
+			if (!writePipe->writeValue(&world->getInformation()->worldId))
+			{
+				return false;
+			}
+
+			return world->writeState(writePipe);
+		}
+
+		bool readState(Resource::ReadPipe* const readPipe) override
+		{
+			// synchronize when world is different
+			Resource::WorldId worldID;
+			if (!readPipe->readValue(&worldID))
+			{
+				return false;
+			}
+
+			// when worldid differes load real worldid
+			// if loading fails return false
+			if (world->getInformation()->worldId != worldID)
+			{
+				Log::Information(L"world differs from received state, loading new one",
+					world->getInformation()->worldId, L"new_worldID",
+					worldID, L"worldID");
+
+				unloadWorld();
+
+				if (!loadWorld(worldID))
+				{
+					return false;
+				}
+
+				world->addPlayer(player);
+			}
+
+			return world->readState(readPipe);
+		}
+
+
+		// has to be called before a world is pushed
+		void changePlayer(Game::PlayerBase* const player)
+		{
+			// when world is not null then player
+			// can not be null
+			if (world != NULL)
+			{
+				world->removePlayer(this->player);
+
+				// think about to set on correct position to
+				// allow changes of player while playing?
+				world->addPlayer(player);
+			}
+
+			this->player = player;
+		}
+
+		bool runWorld(Resource::WorldId worldID)
+		{
+			Log::Section section{ L"starting classic simulation",
+				worldID, L"worldID" };
+
+			if (status != Status::Waiting)
+			{
+				Log::Error(L"tried to run simulation in an invalid state",
+					worldID, L"worldID");
+			}
+
+			if (player == NULL)
+			{
+				Log::Error(L"tried to run classic simulation without player");
+
+				return false;
+			}
+
+			Log::Information(L"checked", 
+				player->getInformation().playerId, L"userID",
+				player->getInformation().representationID, L"representationID");
+
+			if (!loadWorld(worldID))
+			{
+				Log::Error(L"failed to load world");
+
+				return false;
+			}
+
+			// preloadNextWorlds();
+			world->addPlayer(player);
+
+			return true;
+		}
+
+		const World* getWorld() const
+		{
+			return world;
+		}
+
+	protected:
+		const Resource::WorldContainer& worldContainer;
+
+		World* world = NULL;
+		Game::PlayerBase* player = NULL;
+
+		virtual bool onInitializeWorld(World* const world)
+		{
+			if (!world->initialize())
+			{
+				return false;
+			}
+
+			for (ExitableTraitHandler* const handler : world->getEnvironment()->getExitableTraitTrait())
+				handler->onExit.addListener(
+					[this]()
+					{
+						tasks.push_back(
+							[this]()
+							{
+								onWorldExit();
+							});
+					});
+
+			for (DynamicWorldExitHandler* const dynamicExit : world->getEnvironment()->getDynamicWorldExit())
+				dynamicExit->onExit.addListener(
+					[this](const DynamicWorldExitEvent& event)
+					{
+						tasks.push_back(
+							[this, &event]()->WorldFailure
+						{
+							return loadWorldDynamicTransition(event);
+						});
+					});
+
+			return true;
+		}
+
+		virtual bool loadWorld(const Resource::WorldId worldID)
+		{
+			for (std::future<bool>& loadingWorld : loadingWorlds)
+				if (!loadingWorld.get())
+				{
+					return false;
+				}
+
+			unloadWorld();
+
+			decltype(loadedWorlds)::iterator toLoad = loadedWorlds.find(worldID);
+			if (toLoad == loadedWorlds.end())
+			{
+				Resource::WorldContainer::const_iterator iterator = worldContainer.find(worldID);
+
+				if (iterator == worldContainer.end())
+				{
+					Log::Error(L"failed to create world, missing resource",
+						worldID, L"worldID",
+						worldContainer.size(), L"container_size");
+				}
+
+				World* const toLoad_world = new World(iterator->second);
+				if (!onInitializeWorld(toLoad_world))
+				{
+					delete toLoad_world;
+					Log::Error(L"failed to create world, initialize failed",
+						worldID, L"worldID");
+
+					return true;
+				}
+
+				world = toLoad_world;
+			}
+			else
+			{
+				world = toLoad->second;
+			}
+
+			loadedWorlds[worldID] = world;
+
+			for (Resource::WorldID worldID : world->getTargets())
+				if (worldContainer.find(worldID) == worldContainer.end())
+				{
+					onTargetResourceMissing(worldID);
+				}
+				else
+				{
+					preloadWorld(worldID);
+				}
+
+			return true;
+		}
+
+		virtual void unloadWorld()
+		{
+			if (world)
+				world->removePlayer(player);
+		}
+
+		// missing resource for a target world
+		// currently not a problem but might get
+		// one in future
+		// [is actually a problem for simulator
+		// because he usally has all resources]
+		virtual void onTargetResourceMissing(Resource::WorldID worldID) = 0;
+		
+		// after this is called the simulation is
+		// should be closed
+		virtual void onWorldExit() = 0;
+
+	private:
+		Status status = Status::Waiting;
+
+		std::vector<Task> tasks;
+		std::map<Resource::WorldID, World*> loadedWorlds;
+		std::vector<std::future<bool>> loadingWorlds;
+
+		bool preloadWorld(const Resource::WorldId worldID)
+		{
+			if (loadedWorlds.find(worldID) == loadedWorlds.end())
+			{
+				return true;
+			}
+
+			Resource::WorldContainer::const_iterator world_resource = worldContainer.find(worldID);
+
+			if (world_resource == worldContainer.end())
+			{
+				Log::Error(L"missing resource in preloading world",
+					worldID, L"worldID");
+
+				return false;
+			}
+
+			loadingWorlds.push_back(std::async(
+				std::launch::async,
+				[this](Resource::World* const resource) -> bool
+				{
+					World* const world = new World(resource);
+
+					if (!this->onInitializeWorld(world))
+					{
+						Log::Error(L"failed to initialize async world",
+							resource->content.id, L"worldID");
+
+						delete world;
+						return false;
+					}
+
+					loadedWorlds[resource->content.id] = world;
+
+					return true;
+				},
+				world_resource->second));
+
+			return true;
+		}
+
+		WorldFailure loadWorldDynamicTransition(const DynamicWorldExitEvent& event)
+		{
+			unloadWorld();
+			WorldFailure result = enforceWorld(event.targetWorld);
+
+			if (result == WorldFailure::Success)
+			{
+				DynamicWorldEntryEvent entryEvent;
+				entryEvent.offsetSource = event.offset;
+
+				if (!world->addPlayerDynamicTransition(
+					player,
+					event.targetEntry,
+					entryEvent))
+				{
+					result = WorldFailure::DynamicEntryNotFound;
+				}
+			}
+
+			return result;
+		}
 	};
 
+	class ClassicClientSimulation
+		:
+		public _ClassicSimulation
+	{
+	public:
+
+	protected:
+		virtual void requestResource(Resource::WorldID worldID) = 0;
+
+	private:
+		bool loadWorld(Resource::WorldID worldID) override
+		{
+			if (_ClassicSimulation::loadWorld(worldID))
+			{
+			}
+		}
+
+
+	};
+
+	class VisualClassicSimulation
+		:
+		public ClassicSimulation
+	{
+	public:
+		using ClassicSimulation::ClassicSimulation;
+
+		void draw(sf::RenderTarget* const target)
+		{
+			world->getEnvironment()->draw(target);
+		}
+
+	private:
+		bool onInitializeWorld(World* const world) override
+		{
+			return ClassicSimulation::onInitializeWorld(world)
+				&& world->initializeGraphics();
+		}
+	};
 	class ClassicSimulation
 		:
 		public GameState
@@ -144,16 +488,6 @@ namespace Game
 			}
 
 			return result;
-		}
-
-		std::future<WorldFailure> prepareWorld(const Resource::WorldId worldID)
-		{
-			return std::async(
-				std::launch::async,
-				[worldID]() -> WorldFailure
-				{
-
-				});
 		}
 
 		Status getStatus()
