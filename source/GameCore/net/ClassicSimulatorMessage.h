@@ -21,14 +21,12 @@ namespace Net::Client
 			// requests a synchronize after preparesync
 			// was called or some internal problem occurred
 			RequestSynchronize,
+
+			// can be pushed at the begin of a world to
+			// await loading
+			PushDelay,
 			PushMovement,
 
-			// unlike requestworldresource ensureworldresource
-			// does only request a resource when the checksum is
-			// different
-			// both share the same pushworldresource answer
-			// because Ensureworldresource do actually need an
-			// answer we just do not answer when needed
 			EnsureWorldResource,
 			RequestWorldResource,
 
@@ -38,6 +36,13 @@ namespace Net::Client
 
 	namespace ClassicSimulation
 	{
+		struct PushDelayMessageContent
+		{
+			sf::Uint32 count;
+		};
+
+		typedef TrivialNetworkMessage<PushDelayMessageContent> PushDelayMessage;
+
 		struct EnsureWorldResourceMessageContent
 		{
 			Resource::WorldID worldID;

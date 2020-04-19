@@ -136,7 +136,7 @@ namespace Game
 		
 		// worldcontainer and players are hold by other modules might
 		// adopt over time
-		WorldContainer& worldContainer;
+		Resource::WorldContainer& worldContainer;
 		const std::vector<Resource::PlayerResource*>& players;
 
 		std::string& username;
@@ -147,7 +147,8 @@ namespace Game
 
 	class ClientClassicSimulationHandler
 		:
-		public ::Net::RequestHandler
+		public ::Net::RequestHandler,
+		public ClassicSimulation
 	{
 	public:
 		ClientClassicSimulationHandler(
@@ -155,6 +156,7 @@ namespace Game
 			Device::View* const view,
 			const InputID inputID)
 			:
+			ClassicSimulation(arguments.worldContainer),
 			callback(arguments.callback),
 			info(arguments.info),
 			worldContainer(arguments.worldContainer),
@@ -166,10 +168,9 @@ namespace Game
 					info.representationID,
 					arguments.username
 				},
-				view),
-			simulation(arguments.worldContainer)
+				view)
 		{
-			simulation.setPlayer(&player);
+			ClassicSimulation::player = &player;
 		}
 
 		virtual ~ClientClassicSimulationHandler()
@@ -178,16 +179,14 @@ namespace Game
 
 		virtual bool initializeSimulation()
 		{
-			const ClassicSimulation::WorldFailure result = simulation.runWorld(info.worldID);
-
-			if (result == ClassicSimulation::WorldFailure::Success)
+			if (runWorld(info.worldID))
 			{
 				onSimulationStarted();
 				return true;
 			}
 			else
 			{
-				onSimulationFailed(result);
+				onSimulationFailed();
 				return false;
 			}
 		}
@@ -227,19 +226,9 @@ namespace Game
 			}
 		}
 
-		virtual void onDraw(sf::RenderTarget* const target)
-		{
-			simulation.draw(target);
-
-			for (ArtificialPlayer* const artificialPlayer : artificialPlayers)
-				artificialPlayer->draw(target);
-
-			player.onDraw(target);
-		}
-
 		void update() override
 		{
-			sendPlayerMovement();
+			sendBufferedFrames();
 		}
 
 		bool onMessage(
@@ -250,8 +239,7 @@ namespace Game
 			{
 			case Net::Host::ClassicSimulationMessageID::SimulationClosed:
 			case Net::Host::ClassicSimulationMessageID::SimulationFailed:
-				Log::Information(L"closed");
-
+				Log::Information(L"simulation at simulator failed, closing");
 				callback->onSimulationClosed();
 
 				return true;
@@ -300,6 +288,23 @@ namespace Game
 				synchronize();
 
 				return true;
+			case Net::Host::ClassicSimulationMessageID::PushWorldResource:
+				// do currently accept all world resource
+				// might filter in the future
+
+				Net::Host::ClassicSimulation::PushWorldResourceMessage message;
+				message.world = new Resource::World;
+
+				if (loadMessage(messageID, &message, pipe))
+				{
+					onPushWorldResource(message);
+				}
+				else
+				{
+					delete message.world;
+				}
+
+				break;
 			}
 
 			return false;
@@ -307,56 +312,76 @@ namespace Game
 
 	protected:
 		virtual void onSimulationStarted() = 0;
-		virtual void onSimulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
+		virtual void onSimulationFailed() = 0;
 
 		void synchronize()
 		{
 			// need to send playermovement first to prevent any desynchroization
 			// issues caused by buffered movement
-			sendPlayerMovement();
+			sendBufferedFrames();
 
 			if (access->sendMessage(Net::Client::ClassicSimulationMessageID::RequestSynchronize))
 			{
 				synchronizing = true;
-				synchronizeBeginTick = simulation.getTick();
+				synchronizeBeginTick = getTick();
 			}
 		}
 
-		void sendPlayerMovement()
+		void sendBufferedFrames()
 		{
-			Net::Client::PushMovementMessage message;
-			message.packetFrameStatus = &player.packedFrameStatus;
+			if (interrupted)
+			{
+				Net::Client::ClassicSimulation::PushDelayMessage message;
+				message.content.count = interruptedFrameCounter;
 
-			access->sendMessage(
-				Net::Client::ClassicSimulationMessageID::PushMovement,
-				&message);
+				access->sendMessage(
+					Net::Client::ClassicSimulationMessageID::PushDelay,
+					&message);
 
-			player.packedFrameStatus.frames.clear();
+				interruptedFrameCounter = 0;
+			}
+			else
+			{
+				Net::Client::PushMovementMessage message;
+				message.packetFrameStatus = &player.packedFrameStatus;
+
+				access->sendMessage(
+					Net::Client::ClassicSimulationMessageID::PushMovement,
+					&message);
+
+				player.packedFrameStatus.frames.clear();
+			}
 		}
 
+		// const information
+	private:
+		ClientClassicSimulationHandlerCallback* const callback;
+		const SimulationBootInformation info;
+		Resource::WorldContainer& worldContainer;
+		const std::vector<Resource::PlayerResource*>& players;
+
+		// synchronization
 	private:
 		bool synchronizing;
 		std::deque<FrameStatus> synchronizingFrames;
 		sf::Uint32 synchronizeBeginTick;
 
+		// game speed adjustment
 	private:
-		ClientClassicSimulationHandlerCallback* const callback;
-		const SimulationBootInformation info;
-		const WorldContainer& worldContainer;
-
-		VisualClassicSimulation simulation;
-		CachedControllablePlayer player;
-
-		std::vector<ArtificialPlayer*> artificialPlayers;
-		const std::vector<Resource::PlayerResource*>& players;
-
-		sf::Uint64 logicCounter = 0;
-
 		// used to remove tick indifference with server
 		bool gameSpeedAdjusted = false;
 		float currentGameSpeed;
 		sf::Uint64 remainingGameSpeedAdjustment;
 
+		// common simulation specific
+	private:
+		CachedControllablePlayer player;
+		std::vector<ArtificialPlayer*> artificialPlayers;
+
+		sf::Uint64 logicCounter = 0;
+
+		// message handlers
+	private:
 		void onPushPlayer(const Net::Host::PushPlayerMessage& message)
 		{
 			Log::Information(L"player joined", message.content.playerID, L"playerID");
@@ -370,7 +395,10 @@ namespace Game
 				}
 
 			artificialPlayers.push_back(
-				new ArtificialPlayer(message.playerID, message.representationID, std::move(username))
+				new ArtificialPlayer(
+					message.content.playerID,
+					message.content.representationID,
+					std::move(username))
 			);
 		}
 
@@ -385,7 +413,7 @@ namespace Game
 				{
 					return artificialPlayer->getInformation().playerId == message.content.playerID;
 				});
-			
+
 			if (iterator != artificialPlayers.end())
 				artificialPlayers.erase(iterator);
 		}
@@ -435,7 +463,7 @@ namespace Game
 			Resource::MemoryReadPipe pipe;
 			pipe.adopt(message.state);
 
-			if (!simulation.readState(&pipe))
+			if (!readState(&pipe))
 			{
 				Log::Error(L"Failed to synchronize simulationhandler",
 					info.representationID, L"reprID",
@@ -449,10 +477,10 @@ namespace Game
 				return;
 			}
 
-			if (simulation.getTick() < synchronizeBeginTick)
+			if (getTick() < synchronizeBeginTick)
 			{
 				Log::Warning(L"Got invalid tick for synchronization",
-					simulation.getTick(), L"new_tick",
+					getTick(), L"new_tick",
 					synchronizeBeginTick, L"prepared_tick",
 					info.representationID, L"reprID",
 					info.worldID, L"worldID",
@@ -464,10 +492,10 @@ namespace Game
 				return;
 			}
 
-			if (simulation.getTick() - synchronizeBeginTick != 0)
+			if (getTick() - synchronizeBeginTick != 0)
 			{
 				Log::Information(L"true, this can be not zero [ccsh]",
-					simulation.getTick(), L"new_tick",
+					getTick(), L"new_tick",
 					synchronizeBeginTick, L"beg_tick",
 					synchronizingFrames.size(), L"buffered");
 			}
@@ -475,11 +503,14 @@ namespace Game
 			Log::Information(L"before", player.injectedFrames.size(), L"injected");
 
 			// skipping all frames that the simulator received
-			for (int i = simulation.getTick() - synchronizeBeginTick; i < synchronizingFrames.size(); ++i)
+			for (int i = getTick() - synchronizeBeginTick; i < synchronizingFrames.size(); ++i)
 			{
 				player.inject(synchronizingFrames[i]);
-				
-				ClassicSimulation::WorldFailure result = simulation.processLogic();
+
+				processTick();
+
+
+				/*
 				if (result != ClassicSimulation::WorldFailure::Success)
 				{
 					access->sendMessage(Net::Client::ClassicSimulationMessageID::SimulationFailure);
@@ -487,13 +518,14 @@ namespace Game
 
 					Log::Error(L"Failed to process simulation",
 						(int)result, L"result");
-					
+
 					break;
 				}
+				*/
 			}
 
 			Log::Information(L"after", player.injectedFrames.size(), L"injected",
-				simulation.getTick(), L"new_tick",
+				getTick(), L"new_tick",
 				synchronizeBeginTick, L"prepared_tick",
 				info.representationID, L"reprID",
 				info.worldID, L"worldID",
@@ -503,22 +535,78 @@ namespace Game
 			synchronizingFrames.clear();
 		}
 
-		bool processLogic()
+		void onPushWorldResource(const Net::Host::ClassicSimulation::PushWorldResourceMessage& message)
 		{
-			const ClassicSimulation::WorldFailure result = simulation.processLogic();
+			Resource::WorldContainer::const_iterator iterator = worldContainer.find(message.world->content.id);
 
-			if (result != ClassicSimulation::WorldFailure::Success)
+			if (iterator != worldContainer.end())
 			{
-				access->sendMessage(Net::Client::ClassicSimulationMessageID::SimulationFailure);
-				callback->onSimulationFailure();
+				if (getLoadedWorlds().find(iterator->first) != getLoadedWorlds().end())
+				{
+					Log::Error(L"got a new resource from pushresource of a already loaded world",
+						iterator->first, L"worldID",
+						getLoadedWorlds().size(), L"loadedWorlds",
+						world->getInformation()->worldId, L"current_worldID");
 
-				Log::Error(L"Failed to process simulation",
-					(int)result, L"result");
+					delete message.world;
+					return;
+				}
 
-				return false;
+				delete iterator->second;
+			}
+
+			worldContainer[message.world->content.id] = message.world;
+
+			decltype(missingTargetResources)::iterator mtr = std::find(
+				missingTargetResources.begin(),
+				missingTargetResources.end(), message.world->content.id);
+
+			if (mtr != missingTargetResources.end())
+			{
+				if (!preloadWorld(message.world->content.id))
+				{
+					Log::Error(L"failed to preload world waiting and pushed resource",
+						message.world->content.id, L"worldID");
+				}
+
+				if (interrupted && worldExitEvent.targetWorld == message.world->content.id)
+				{
+					sendBufferedFrames();
+					interrupted = false;
+
+					// does not matter weather we call ours or our childs because
+					// the resource is gurranteed to be there as message world
+					ClassicSimulation::loadWorldDynamicTransition(worldExitEvent);
+				}
 			}
 			else
 			{
+				// will likely never happen
+				if (interrupted && worldExitEvent.targetWorld == message.world->content.id)
+				{
+					Log::Error(L"got wanted world resource while interruption but missing entry in missingtargetresources",
+						message.world->content.id, L"worldID",
+						missingTargetResources.size(), L"missing_size",
+						getLoadedWorlds().size(), L"loaded_worlds");
+				}
+			}
+		}
+
+		// classic simulation
+	private:
+		bool processLogic()
+		{
+			if (interrupted)
+			{
+				++interruptedFrameCounter;
+
+				access->sendMessage(
+					);
+			}
+			else
+			{
+				processTick();
+
 				if (synchronizing)
 					synchronizingFrames.push_back(player.packedFrameStatus.frames.back());
 			}
@@ -530,6 +618,62 @@ namespace Game
 			}
 
 			return true;
+		}
+
+		void onWorldExit() override
+		{
+			Log::Information(L"reached world exit");
+			// wait for simulator confirmation
+			// and display some nice animationtew
+		}
+
+		void onDynamicTransitionFailure() override
+		{
+			Log::Error(L"got dynamic transition failure");
+
+			access->sendMessage(
+				Net::Client::ClassicSimulationMessageID::SimulationFailure,
+				NULL);
+			callback->onSimulationFailure();
+		}
+
+		// handling missing world resource
+		// at dynmaic transition -> interrupt
+	private:
+		DynamicWorldExitEvent worldExitEvent;
+		bool interrupted = false;
+		int interruptedFrameCounter;
+
+		void loadWorldDynamicTransition(const DynamicWorldExitEvent& event) override
+		{
+			if (worldContainer.find(event.targetWorld) == worldContainer.end())
+			{
+				sendBufferedFrames();
+
+				worldExitEvent = event;
+				interrupted = true;
+				interruptedFrameCounter = 0;
+			}
+			else
+			{
+				ClassicSimulation::loadWorldDynamicTransition(event);
+			}
+		}
+
+		// handling missing target resource
+	private:
+		std::vector<Resource::WorldID> missingTargetResources;
+
+		void onTargetResourceMissing(Resource::WorldID worldID) override
+		{
+			missingTargetResources.push_back(worldID);
+
+			Net::Client::ClassicSimulation::RequestWorldResourceMessage message;
+			message.content.worldID = worldID;
+
+			access->sendMessage(
+				Net::Client::ClassicSimulationMessageID::RequestWorldResource,
+				&message);
 		}
 	};
 }

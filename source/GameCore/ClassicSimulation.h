@@ -9,7 +9,25 @@
 
 namespace Game
 {
-	class _ClassicSimulation
+	/*
+	allow the client to use pushdelay BUT
+	only as the first moves for a world.
+	normally to possiblity of pushdelay would
+	allow speed hacks as a slow view. but
+	this does need to allow the player to
+	use pushdelay whenever he wants. we only
+	allow the player to use pushdelay at the
+	begin of a world. because all frames are
+	normally perfectly aligned we know as a
+	simulation that a client is in a new world
+	when we receive pushdelay and can react
+	acordingly whenever this pushdelay is not
+	appropiate
+	*/
+
+	typedef sf::Uint32 Tick;
+
+	class ClassicSimulation
 		:
 		public GameState
 	{
@@ -22,15 +40,16 @@ namespace Game
 			Running
 		};
 
-		_ClassicSimulation(const Resource::WorldContainer& worldContainer)
+		ClassicSimulation(const Resource::WorldContainer& worldContainer)
 			:
 			worldContainer(worldContainer)
 		{
 		}
 
-		virtual void processTick()
+		void processTick()
 		{
 			world->processLogic();
+			++tick;
 
 			if (tasks.size())
 			{
@@ -117,7 +136,7 @@ namespace Game
 				return false;
 			}
 
-			Log::Information(L"checked", 
+			Log::Information(L"checked",
 				player->getInformation().playerId, L"userID",
 				player->getInformation().representationID, L"representationID");
 
@@ -139,43 +158,16 @@ namespace Game
 			return world;
 		}
 
+		Tick getTick() const
+		{
+			return tick;
+		}
+
 	protected:
 		const Resource::WorldContainer& worldContainer;
 
 		World* world = NULL;
 		Game::PlayerBase* player = NULL;
-
-		virtual bool onInitializeWorld(World* const world)
-		{
-			if (!world->initialize())
-			{
-				return false;
-			}
-
-			for (ExitableTraitHandler* const handler : world->getEnvironment()->getExitableTraitTrait())
-				handler->onExit.addListener(
-					[this]()
-					{
-						tasks.push_back(
-							[this]()
-							{
-								onWorldExit();
-							});
-					});
-
-			for (DynamicWorldExitHandler* const dynamicExit : world->getEnvironment()->getDynamicWorldExit())
-				dynamicExit->onExit.addListener(
-					[this](const DynamicWorldExitEvent& event)
-					{
-						tasks.push_back(
-							[this, &event]()->WorldFailure
-						{
-							return loadWorldDynamicTransition(event);
-						});
-					});
-
-			return true;
-		}
 
 		virtual bool loadWorld(const Resource::WorldId worldID)
 		{
@@ -197,6 +189,8 @@ namespace Game
 					Log::Error(L"failed to create world, missing resource",
 						worldID, L"worldID",
 						worldContainer.size(), L"container_size");
+
+					return false;
 				}
 
 				World* const toLoad_world = new World(iterator->second);
@@ -237,23 +231,38 @@ namespace Game
 				world->removePlayer(player);
 		}
 
-		// missing resource for a target world
-		// currently not a problem but might get
-		// one in future
-		// [is actually a problem for simulator
-		// because he usally has all resources]
-		virtual void onTargetResourceMissing(Resource::WorldID worldID) = 0;
-		
-		// after this is called the simulation is
-		// should be closed
-		virtual void onWorldExit() = 0;
+		virtual bool onInitializeWorld(World* const world)
+		{
+			if (!world->initialize())
+			{
+				return false;
+			}
 
-	private:
-		Status status = Status::Waiting;
+			for (ExitableTraitHandler* const handler : world->getEnvironment()->getExitableTraitTrait())
+				handler->onExit.addListener(
+					[this]()
+					{
+						tasks.push_back(
+							[this]()
+							{
+								onWorldExit();
+							});
+					});
 
-		std::vector<Task> tasks;
-		std::map<Resource::WorldID, World*> loadedWorlds;
-		std::vector<std::future<bool>> loadingWorlds;
+			for (DynamicWorldExitHandler* const dynamicExit : world->getEnvironment()->getDynamicWorldExit())
+				dynamicExit->onExit.addListener(
+					[this](const DynamicWorldExitEvent& event)
+					{
+						tasks.push_back(
+							[this, &event]()
+						{
+							loadWorldDynamicTransition(event);
+						});
+					});
+
+			return true;
+		}
+
 
 		bool preloadWorld(const Resource::WorldId worldID)
 		{
@@ -296,12 +305,11 @@ namespace Game
 			return true;
 		}
 
-		WorldFailure loadWorldDynamicTransition(const DynamicWorldExitEvent& event)
+		virtual void loadWorldDynamicTransition(const DynamicWorldExitEvent& event)
 		{
 			unloadWorld();
-			WorldFailure result = enforceWorld(event.targetWorld);
 
-			if (result == WorldFailure::Success)
+			if (loadWorld(event.targetWorld))
 			{
 				DynamicWorldEntryEvent entryEvent;
 				entryEvent.offsetSource = event.offset;
@@ -311,32 +319,48 @@ namespace Game
 					event.targetEntry,
 					entryEvent))
 				{
-					result = WorldFailure::DynamicEntryNotFound;
+					Log::Error(L"failed to add player while dynamic transition",
+						player->getInformation().playerId, L"playerID",
+						world->getInformation()->worldId, L"worldID");
+
+					onDynamicTransitionFailure();
 				}
 			}
-
-			return result;
-		}
-	};
-
-	class ClassicClientSimulation
-		:
-		public _ClassicSimulation
-	{
-	public:
-
-	protected:
-		virtual void requestResource(Resource::WorldID worldID) = 0;
-
-	private:
-		bool loadWorld(Resource::WorldID worldID) override
-		{
-			if (_ClassicSimulation::loadWorld(worldID))
+			else
 			{
+				Log::Error(L"failed to load world for dynamic transition",
+					player->getInformation().playerId, L"playerID",
+					world->getInformation()->worldId, L"worldID");
+
+				onDynamicTransitionFailure();
 			}
 		}
 
+		const std::map<Resource::WorldID, World*>& getLoadedWorlds() const
+		{
+			return loadedWorlds;
+		}
 
+		// missing resource for a target world
+		// currently not a problem but might get
+		// one in future
+		// [is actually a problem for simulator
+		// because he usally has all resources]
+		virtual void onTargetResourceMissing(Resource::WorldID worldID) = 0;
+
+		// after this is called the simulation is
+		// should be closed
+		virtual void onWorldExit() = 0;
+
+		virtual void onDynamicTransitionFailure() = 0;
+
+	private:
+		Status status = Status::Waiting;
+		Tick tick;
+
+		std::vector<Task> tasks;
+		std::map<Resource::WorldID, World*> loadedWorlds;
+		std::vector<std::future<bool>> loadingWorlds;
 	};
 
 	class VisualClassicSimulation
@@ -358,6 +382,38 @@ namespace Game
 				&& world->initializeGraphics();
 		}
 	};
+
+	class ClassicClientSimulation
+		:
+		public ClassicSimulation
+	{
+	public:
+
+	protected:
+
+
+	private:
+		DynamicWorldExitEvent worldExitEvent;
+		bool interrupted = false;
+
+		void loadWorldDynamicTransition(const DynamicWorldExitEvent& event)
+		{
+			if (worldContainer.find(event.targetWorld) == worldContainer.end())
+			{
+				interrupted = true;
+				worldExitEvent = event;
+			}
+			else
+			{
+				_ClassicSimulation::loadWorldDynamicTransition(event);
+			}
+		}
+	};
+
+	/*
+
+
+
 	class ClassicSimulation
 		:
 		public GameState
