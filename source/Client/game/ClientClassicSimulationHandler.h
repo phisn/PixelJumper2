@@ -55,7 +55,7 @@ namespace Game
 					procesLogicCounter = 1;
 
 					sf::Vector2f positiveDifference = target - source;
-					
+
 					if (positiveDifference.x < 0) positiveDifference.x *= -1.f;
 					if (positiveDifference.y < 0) positiveDifference.y *= -1.f;
 
@@ -76,7 +76,7 @@ namespace Game
 			{
 				++procesLogicCounter;
 			}
-			
+
 			if (smoothEnabled)
 			{
 				sf::Vector2f current = source;
@@ -133,7 +133,7 @@ namespace Game
 	struct ClientClassicSimulationHandlerArguments
 	{
 		ClientClassicSimulationHandlerCallback* callback;
-		
+
 		// worldcontainer and players are hold by other modules might
 		// adopt over time
 		Resource::WorldContainer& worldContainer;
@@ -221,7 +221,7 @@ namespace Game
 				{
 					logicCounter -= LogicTimeStep;
 					if (!processLogic())
-						break;				
+						break;
 				}
 			}
 		}
@@ -237,9 +237,11 @@ namespace Game
 		{
 			switch (messageID)
 			{
-			case Net::Host::ClassicSimulationMessageID::SimulationClosed:
 			case Net::Host::ClassicSimulationMessageID::SimulationFailed:
-				Log::Information(L"simulation at simulator failed, closing");
+				Log::Warning(L"simulation at simulator failed, closing");
+
+				// fall
+			case Net::Host::ClassicSimulationMessageID::SimulationClosed:
 				callback->onSimulationClosed();
 
 				return true;
@@ -304,7 +306,7 @@ namespace Game
 					delete message.world;
 				}
 
-				break;
+				return true;
 			}
 
 			return false;
@@ -599,9 +601,6 @@ namespace Game
 			if (interrupted)
 			{
 				++interruptedFrameCounter;
-
-				access->sendMessage(
-					);
 			}
 			else
 			{
@@ -625,6 +624,7 @@ namespace Game
 			Log::Information(L"reached world exit");
 			// wait for simulator confirmation
 			// and display some nice animationtew
+
 		}
 
 		void onDynamicTransitionFailure() override
@@ -653,6 +653,8 @@ namespace Game
 				worldExitEvent = event;
 				interrupted = true;
 				interruptedFrameCounter = 0;
+#error add timeout for await resource around 10 sec?
+
 			}
 			else
 			{
@@ -666,6 +668,7 @@ namespace Game
 
 		void onTargetResourceMissing(Resource::WorldID worldID) override
 		{
+			sendBufferedFrames();
 			missingTargetResources.push_back(worldID);
 
 			Net::Client::ClassicSimulation::RequestWorldResourceMessage message;

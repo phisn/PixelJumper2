@@ -13,7 +13,7 @@ namespace Game
 {
 	struct ClassicSimulatorHandlerCallback
 	{
-		virtual void onSimulationFailed(const ClassicSimulation::WorldFailure reason) = 0;
+		virtual void onSimulationFailed() = 0;
 		virtual void onSimulationClosed() = 0;
 		virtual void onSimulationFinished(Resource::WorldID worldID) = 0;
 	};
@@ -52,7 +52,7 @@ namespace Game
 			player(userInfo),
 			bootInfo(bootInfo)
 		{
-			setPlayer(&player);
+			ClassicSimulation::player = &player;
 
 			locationPlayer = new LocationPlayer();
 			locationPlayer->callback = this;
@@ -72,14 +72,11 @@ namespace Game
 		// can fail to boot up
 		bool initializeSimulation()
 		{
-			const Game::ClassicSimulation::WorldFailure result = runWorld(this->bootInfo.worldID);
-
-			if (result != Game::ClassicSimulation::WorldFailure::Success)
+			if (!runWorld(this->bootInfo.worldID))
 			{
 				sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason::WorldFailure);
 
 				Log::Error(L"Failed to initiate simulation",
-					(int) result, L"result",
 					bootInfo.worldID, L"worldID",
 					player.getInformation().playerId, L"playerID",
 					bootInfo.representationID, L"reprID");
@@ -109,18 +106,32 @@ namespace Game
 
 		void processLogic()
 		{
-			if (player.hasUpdate())
+			if (forcedEmptyFrames > 0)
 			{
-				processSimulationLogic();
+				--forcedEmptyFrames;
 			}
 			else
 			{
-				++missingFrames;
+				if (player.hasUpdate())
+				{
+					processSimulationLogic();
+				}
+				else
+				{
+					++missingFrames;
+				}
 			}
 		}
 
 		void update() override
 		{
+#error problem with variation to detect speedhack
+#error because currently the variation of slow speed changing
+#error is not counted a reverse to small delay will cause the
+#error simulator to look like speedhack
+#error either we start to monitor all speedchanges or we let the
+#error user do as many time jumps as they want and enter some
+#error critical mode later
 
 			/*
 				player client can potentially be faster than the server
@@ -220,6 +231,7 @@ namespace Game
 				}
 			}
 
+#ifdef _DEBUG
 			static int i = 0;
 			static int min1 = 0, min2 = 0, max1 = 0, max2 = 0, avg1 = 0, avg2 = 0;
 
@@ -265,6 +277,7 @@ namespace Game
 				std::swap(min1, max1);
 				std::swap(min2, max2);
 			}
+#endif
 		}
 
 		bool onMessage(
@@ -305,6 +318,13 @@ namespace Game
 				}
 
 				return true;
+			case Net::Client::ClassicSimulationMessageID::PushDelay:
+				if (Net::Client::ClassicSimulation::PushDelayMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onPushDelay(message);
+				}
+
+				return true;
 			}
 
 			return false;
@@ -322,7 +342,8 @@ namespace Game
 		NetPlayerMovement movementBuffer;
 
 		size_t processLogicCounter = 0;
-		sf::Uint64 missingFrames = 0;
+		int missingFrames = 0;
+		int forcedEmptyFrames = 0;
 
 		// used to determine if overflow of frames
 		// is caused by bad connection or speedhack
@@ -343,11 +364,7 @@ namespace Game
 			while (missingFrames > 0 && player.hasUpdate())
 			{
 				if (!processSimulationLogic())
-				{
-					// skiping other entries because simulation
-					// is going to be closed anyway
 					break;
-				}
 
 				--missingFrames;
 			}
@@ -355,19 +372,18 @@ namespace Game
 
 		bool processSimulationLogic()
 		{
-			if (getStatus() != ClassicSimulation::Status::Running)
+			/*
+			if (() != ClassicSimulation::Status::Running)
 			{
 				sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason::InvalidStatus);
 				callback->onSimulationClosed();
 
 				return false;
 			}
+			*/
 
-			const ClassicSimulation::WorldFailure result = processTick();
-
-			if (result != ClassicSimulation::WorldFailure::Success)
+			if (!processTick())
 			{
-				processLogicFailed(result);
 				return false;
 			}
 
@@ -388,7 +404,6 @@ namespace Game
 			return true;
 		}
 
-		/*
 		void onEnsureWorldResource(const Net::Client::ClassicSimulation::EnsureWorldResourceMessage& request)
 		{
 			if (!checkWorldAvailability(request.content.worldID))
@@ -396,13 +411,19 @@ namespace Game
 				Log::Error(L"user tried to request unavailable worldID [ensure]",
 					request.content.worldID, L"worldID",
 					player.getInformation().playerId, L"userID");
+				access->onThreatIdentified(
+					Net::Client::ClassicSimulationMessageID::RequestWorldResource,
+					L"invalid resource ensure",
+					Net::ThreatLevel::Suspicious);
+
+				access->sendMessage(Net::Host::ClassicSimulationMessageID::PrepareSync);
 
 				return;
 			}
 
-			Resource::WorldContainer::const_iterator world = worldResources.find(request.content.worldID);
+			Resource::WorldContainer::const_iterator world = worldContainer.find(request.content.worldID);
 
-			if (world == worldResources.cend())
+			if (world == worldContainer.cend())
 			{
 				// is usaslly impossible
 				Log::Error(L"failed to retrive world resource in sendpushworldresource",
@@ -430,19 +451,24 @@ namespace Game
 				Log::Error(L"user tried to request unavailable worldID",
 					message.content.worldID, L"worldID",
 					player.getInformation().playerId, L"userID");
+				access->onThreatIdentified(
+					Net::Client::ClassicSimulationMessageID::RequestWorldResource,
+					L"invalid resource request",
+					Net::ThreatLevel::Suspicious);
+
+				access->sendMessage(Net::Host::ClassicSimulationMessageID::PrepareSync);
 
 				return;
 			}
 
 			sendPushWorldResource(message.content.worldID);
 		}
-		*/
 
 		void sendPushWorldResource(Resource::WorldID worldID)
 		{
-			Resource::WorldContainer::const_iterator world = worldResources.find(worldID);
+			Resource::WorldContainer::const_iterator world = worldContainer.find(worldID);
 
-			if (world == worldResources.cend())
+			if (world == worldContainer.cend())
 			{
 				// is usaslly impossible
 				Log::Error(L"failed to retrive world resource in sendpushworldresource",
@@ -525,14 +551,6 @@ namespace Game
 				&message);
 		}
 
-		void processLogicFailed(const ClassicSimulation::WorldFailure result)
-		{
-			sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason::WorldFailure);
-
-			Log::Error(L"Failed to process simulation",
-				(int) result, L"result");
-		}
-
 		bool sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason reason)
 		{
 			Net::Host::ClassicSimulation::SimulationFailureMessage message;
@@ -543,19 +561,20 @@ namespace Game
 				&message);
 		}
 
+		/*
 		bool onInitializeWorld(World* const world) override
 		{
 			if (ClassicSimulationHandler::onInitializeWorld(world))
 			{
-				Resource::WorldContainer::const_iterator iterator = worldResources.find(world->getInformation()->worldId);
+				Resource::WorldContainer::const_iterator iterator = worldContainer.find(world->getInformation()->worldId);
 
-				if (iterator != worldResources.end())
+				if (iterator != worldContainer.end())
 				{
 					// usally impossible to reach
 					Log::Error(L"got invalid resourceid in initializeworld",
 						world->getInformation()->worldId, L"worldID");
 
-					return;
+					return false;
 				}
 
 				Net::Host::ClassicSimulation::PushWorldResourceMessage message;
@@ -564,22 +583,80 @@ namespace Game
 				access->sendMessage(
 					Net::Host::ClassicSimulationMessageID::PushWorldResource,
 					&message);
+
+				return true;
+			}
+
+			return false;
+		}
+		*/
+
+		void onPushDelay(const Net::Client::ClassicSimulation::PushDelayMessage& message)
+		{
+			if (world->getProperties().tickCount.getValue() > 0)
+			{
+				Log::Error(L"got pushdelay in invalid time",
+					message.content.count, L"count",
+					world->getInformation()->worldId, L"worldID",
+					player.getInformation().playerId, L"userID");
+				access->onThreatIdentified(
+					Net::Client::ClassicSimulationMessageID::PushDelay,
+					L"invalid time pushdelay",
+					Net::ThreatLevel::Suspicious);
+
+				sendSimulationFailed(
+					Net::Host::ClassicSimulation::SimulationFailureReason::InvalidPushDelay);
+				callback->onSimulationFailed();
+
+				return;
+			}
+
+			if (missingFrames == 0)
+			{
+				if (player.getFrameCount() != 0)
+				{
+					forcedEmptyFrames += player.getFrameCount();
+
+					while (player.hasUpdate())
+						processSimulationLogic();
+				}
+
+				forcedEmptyFrames += message.content.count;
+			}
+			else
+			{
+				if (missingFrames < message.content.count)
+				{
+					missingFrames = 0;
+					forcedEmptyFrames += message.content.count - missingFrames;
+				}
+				else
+				{
+					missingFrames -= message.content.count;
+				}
 			}
 		}
 
-		void onWorldLoad(World* loadingWorld) override
+		bool loadWorld(Resource::WorldID worldID) override
 		{
-			if (location != NULL)
+			if (ClassicSimulation::loadWorld(worldID))
 			{
-				location->pushMovement(&movementBuffer);
-				location->removePlayer(locationPlayer->playerID);
+				if (location != NULL)
+				{
+					location->pushMovement(&movementBuffer);
+					location->removePlayer(locationPlayer->playerID);
+				}
+
+				location = this->context.putPlayer(
+					locationPlayer,
+					world->getInformation()->worldId);
+
+				movementBuffer.content.worldID = world->getInformation()->worldId;
+
+				return true;
 			}
 
-			location = this->context.putPlayer(
-				locationPlayer,
-				loadingWorld->getInformation()->worldId);
-
-			movementBuffer.content.worldID = loadingWorld->getInformation()->worldId;
+			return false;
 		}
 
 		void onWorldExit() override
@@ -588,6 +665,31 @@ namespace Game
 				Net::Host::ClassicSimulationMessageID::SimulationClosed,
 				NULL);
 			callback->onSimulationFinished(world->getInformation()->worldId);
+		}
+
+		void onTargetResourceMissing(Resource::WorldID worldID) override
+		{
+			Log::Error(L"classic simulator got missing target resource in simulation",
+				worldID, L"missing_worldID",
+				world->getInformation()->worldId, L"worldID",
+				bootInfo.worldID, L"source_worldID",
+				player.getInformation().playerId, L"playerID",
+				player.getInformation().name, L"username");
+
+			sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason::MissingResource);
+			callback->onSimulationFailed();
+		}
+
+		void onDynamicTransitionFailure() override
+		{
+			Log::Error(L"classic simulator got transition failure in simulation",
+				world->getInformation()->worldId, L"worldID",
+				bootInfo.worldID, L"source_worldID",
+				player.getInformation().playerId, L"playerID",
+				player.getInformation().name, L"username");
+
+			sendSimulationFailed(Net::Host::ClassicSimulation::SimulationFailureReason::TransitionFailure);
+			callback->onSimulationFailed();
 		}
 	};
 }

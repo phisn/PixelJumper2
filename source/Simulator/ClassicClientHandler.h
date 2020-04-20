@@ -350,7 +350,7 @@ namespace Game
 			status = Status::Running;
 		}
 
-		void onSimulationFailed(const ClassicSimulation::WorldFailure reason) override
+		void onSimulationFailed() override
 		{
 			delete removeRequestHandler<ClassicSimulationHandler>();
 

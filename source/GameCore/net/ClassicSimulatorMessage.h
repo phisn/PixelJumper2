@@ -135,8 +135,11 @@ namespace Net::Host
 		enum class SimulationFailureReason
 		{
 			WorldFailure,
+			InvalidPushDelay,
 			InvalidSpeed,
-			InvalidStatus
+			InvalidStatus,
+			TransitionFailure,
+			MissingResource
 		};
 
 		struct SimulationFailureMessageContent

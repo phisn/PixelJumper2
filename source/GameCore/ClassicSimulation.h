@@ -31,7 +31,7 @@ namespace Game
 		:
 		public GameState
 	{
-		typedef std::function<void()> Task;
+		typedef std::function<bool()> Task;
 
 	public:
 		enum class Status
@@ -46,7 +46,7 @@ namespace Game
 		{
 		}
 
-		void processTick()
+		bool processTick()
 		{
 			world->processLogic();
 			++tick;
@@ -54,7 +54,11 @@ namespace Game
 			if (tasks.size())
 			{
 				for (Task& task : tasks)
-					task();
+					if (!task())
+					{
+						tasks.clear();
+						return false;
+					}
 
 				tasks.clear();
 			}
@@ -243,9 +247,10 @@ namespace Game
 					[this]()
 					{
 						tasks.push_back(
-							[this]()
+							[this]() -> bool
 							{
 								onWorldExit();
+								return true;
 							});
 					});
 
@@ -254,9 +259,9 @@ namespace Game
 					[this](const DynamicWorldExitEvent& event)
 					{
 						tasks.push_back(
-							[this, &event]()
+							[this, &event]() -> bool
 						{
-							loadWorldDynamicTransition(event);
+							return loadWorldDynamicTransition(event);
 						});
 					});
 
@@ -305,7 +310,7 @@ namespace Game
 			return true;
 		}
 
-		virtual void loadWorldDynamicTransition(const DynamicWorldExitEvent& event)
+		virtual bool loadWorldDynamicTransition(const DynamicWorldExitEvent& event)
 		{
 			unloadWorld();
 
@@ -324,6 +329,7 @@ namespace Game
 						world->getInformation()->worldId, L"worldID");
 
 					onDynamicTransitionFailure();
+					return false;
 				}
 			}
 			else
@@ -333,6 +339,7 @@ namespace Game
 					world->getInformation()->worldId, L"worldID");
 
 				onDynamicTransitionFailure();
+				return false;
 			}
 		}
 
@@ -341,16 +348,16 @@ namespace Game
 			return loadedWorlds;
 		}
 
+		// after this is called the simulation is
+		// should be closed
+		virtual void onWorldExit() = 0;
+
 		// missing resource for a target world
 		// currently not a problem but might get
 		// one in future
 		// [is actually a problem for simulator
 		// because he usally has all resources]
 		virtual void onTargetResourceMissing(Resource::WorldID worldID) = 0;
-
-		// after this is called the simulation is
-		// should be closed
-		virtual void onWorldExit() = 0;
 
 		virtual void onDynamicTransitionFailure() = 0;
 
@@ -380,33 +387,6 @@ namespace Game
 		{
 			return ClassicSimulation::onInitializeWorld(world)
 				&& world->initializeGraphics();
-		}
-	};
-
-	class ClassicClientSimulation
-		:
-		public ClassicSimulation
-	{
-	public:
-
-	protected:
-
-
-	private:
-		DynamicWorldExitEvent worldExitEvent;
-		bool interrupted = false;
-
-		void loadWorldDynamicTransition(const DynamicWorldExitEvent& event)
-		{
-			if (worldContainer.find(event.targetWorld) == worldContainer.end())
-			{
-				interrupted = true;
-				worldExitEvent = event;
-			}
-			else
-			{
-				_ClassicSimulation::loadWorldDynamicTransition(event);
-			}
 		}
 	};
 
