@@ -22,9 +22,9 @@ namespace Device
 	bool Input::Initialize()
 	{
 		if (InputResource resource; Resource::Interface::LoadResource(
+				L"input",
 				&resource,
-				Resource::ResourceType::Settings,
-				L"input"))
+				Resource::SettingsResourceDefinition))
 		{
 			inputResource = resource.content;
 		}
@@ -60,9 +60,9 @@ namespace Device
 		InputResource resource;
 		resource.adopt(inputResource);
 		return Resource::Interface::SaveResource(
+			L"input",
 			&resource,
-			Resource::ResourceType::Settings,
-			L"input");
+			Resource::SettingsResourceDefinition);
 	}
 
 	void Input::ResetInputResource()

@@ -67,7 +67,7 @@ namespace Game
 				delete selectionHandler;
 			}
 
-			for (const WorldContainer::value_type& world : worldContainer)
+			for (const Resource::WorldContainer::value_type& world : worldContainer)
 			{
 				delete world.second;
 			}
@@ -99,11 +99,7 @@ namespace Game
 		const Settings settings;
 
 		Resource::ClassicPlayerResource classicPlayerResource;
-
-		///////////////////////////////////////////////////////////
-		std::string username;
-		Operator::UserID userID;
-		///////////////////////////////////////////////////////////
+		Resource::PlayerResource playerResource;
 
 		virtual ClientAuthenticationHandler* createAuthenticationHandler(const ClientAuthenticationHandlerArguments& arguments) = 0;
 		virtual ClientClassicSelectionHandler* createSelectionHandler() = 0;
@@ -111,7 +107,7 @@ namespace Game
 		virtual ClientClassicSimulationHandler* createSimulationHandler(const ClientClassicSimulationHandlerArguments& arguments) = 0;
 
 		// common needs to add here
-		WorldContainer worldContainer;
+		Resource::WorldContainer worldContainer;
 
 	private:
 		ClassicConnectionInformation connectionInfo;
@@ -176,12 +172,13 @@ namespace Game
 			delete removeRequestHandler<ClientAuthenticationHandler>();
 
 			Log::Information(L"Authenticated",
-				answer->username, L"username",
-				answer->resource->unlockedRepresentations.size(), L"unlocked_repr",
-				answer->resource->unlockedWorlds.size(), L"unlocked_wrld");
+				answer->resource->content.userID, L"userID",
+				answer->resource->username, L"username",
+				answer->classicResource->unlockedRepresentations.size(), L"unlocked_repr",
+				answer->classicResource->unlockedWorlds.size(), L"unlocked_wrld");
 
-			classicPlayerResource = std::move(*answer->resource);
-			username = std::move(*answer->username);
+			classicPlayerResource = std::move(*answer->classicResource);
+			playerResource = std::move(*answer->resource);
 
 			ClientClassicSessionHandlerArguments sessionHandlerArguments;
 			sessionHandlerArguments.callback = this;
@@ -196,7 +193,7 @@ namespace Game
 		{
 			for (Resource::World* const world : message.initialWorlds)
 			{
-				WorldContainer::const_iterator iterator = worldContainer.find(world->content.id);
+				Resource::WorldContainer::const_iterator iterator = worldContainer.find(world->content.id);
 
 				if (iterator != worldContainer.cend())
 				{
@@ -208,17 +205,19 @@ namespace Game
 
 			ClientClassicSimulationHandlerArguments arguments =
 			{
-				this, worldContainer, 
+				this, 
+				worldContainer, 
 				sessionHandler->getPlayers(),
-				username, userID, info
+				playerResource,
+				info
 			};
 			
 			simulatorHandler = createSimulationHandler(arguments);
 			if (!simulatorHandler->initializeSimulation())
 			{
 				Log::Error(L"Failed to initialize simulation, aborting",
-					userID, L"userID",
-					username, L"username",
+					playerResource.content.userID, L"userID",
+					playerResource.username, L"username",
 					info.worldID, L"worldID",
 					info.representationID, L"reprID");
 

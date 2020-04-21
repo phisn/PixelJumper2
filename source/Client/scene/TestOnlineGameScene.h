@@ -8,6 +8,7 @@
 #include "OperatorClient/request/FindClassicHostRequest.h"
 #include "ResourceCore/ResourceInterface.h"
 
+/*
 namespace
 {
 	class TestClientAuthenticationHandler
@@ -184,7 +185,7 @@ namespace Scene
 			}
 
 			return true;
-		}*/
+		}
 
 		void onEvent(const sf::Event event) override
 		{
@@ -299,3 +300,4 @@ namespace Scene
 		}
 	};
 }
+*/

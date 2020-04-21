@@ -17,20 +17,7 @@ namespace Device
 		GameInputResourceContent gameInputs[4];
 	};
 
-	struct InputResource
-		:
-		public Resource::TrivialResource<InputResourceContent>
-	{
-		bool setup() override
-		{
-			return true;
-		}
-
-		bool validate() override
-		{
-			return true;
-		}
-	};
+	typedef Resource::TrivialResource<InputResourceContent> InputResource;
 
 	class GameInput
 	{

@@ -139,9 +139,7 @@ namespace Game
 		Resource::WorldContainer& worldContainer;
 		const std::vector<Resource::PlayerResource*>& players;
 
-		std::string& username;
-		Operator::UserID userID;
-
+		const Resource::PlayerResource& playerResource;
 		const SimulationBootInformation& info;
 	};
 
@@ -164,9 +162,9 @@ namespace Game
 			player(
 				inputID,
 				PlayerInformation{
-					arguments.userID,
+					arguments.playerResource.content.userID,
 					info.representationID,
-					arguments.username
+					arguments.playerResource.username
 				},
 				view)
 		{
@@ -578,7 +576,19 @@ namespace Game
 
 					// does not matter weather we call ours or our childs because
 					// the resource is gurranteed to be there as message world
-					ClassicSimulation::loadWorldDynamicTransition(worldExitEvent);
+					if (!ClassicSimulation::loadWorldDynamicTransition(worldExitEvent))
+					{
+						Log::Error(L"world transition after interrupt failed",
+							player.getInformation().playerId, L"userID",
+							player.getInformation().name, L"name",
+							worldExitEvent.targetWorld, L"worldID",
+							worldExitEvent.offset.x, L"offset_x",
+							worldExitEvent.offset.y, L"offset_y",
+							worldExitEvent.targetEntry, L"entryID");
+
+						access->sendMessage(Net::Client::ClassicSimulationMessageID::SimulationFailure);
+						callback->onSimulationFailure();
+					}
 				}
 			}
 			else
@@ -601,6 +611,19 @@ namespace Game
 			if (interrupted)
 			{
 				++interruptedFrameCounter;
+
+				if (--interruptedTimeout <= 0)
+				{
+					Log::Error(L"got interrupt timeout",
+						worldExitEvent.targetEntry, L"entryID",
+						worldExitEvent.targetWorld, L"target_worldID",
+						world->getInformation()->worldId, L"active_worldID");
+
+					access->sendMessage(Net::Client::ClassicSimulationMessageID::SimulationFailure);
+					callback->onSimulationFailure();
+
+					return false;
+				}
 			}
 			else
 			{
@@ -642,9 +665,10 @@ namespace Game
 	private:
 		DynamicWorldExitEvent worldExitEvent;
 		bool interrupted = false;
+		int interruptedTimeout;
 		int interruptedFrameCounter;
 
-		void loadWorldDynamicTransition(const DynamicWorldExitEvent& event) override
+		bool loadWorldDynamicTransition(const DynamicWorldExitEvent& event) override
 		{
 			if (worldContainer.find(event.targetWorld) == worldContainer.end())
 			{
@@ -653,12 +677,15 @@ namespace Game
 				worldExitEvent = event;
 				interrupted = true;
 				interruptedFrameCounter = 0;
-#error add timeout for await resource around 10 sec?
 
+				// hardcoded (8s)
+				interruptedTimeout = 8'000;
+
+				return true;
 			}
 			else
 			{
-				ClassicSimulation::loadWorldDynamicTransition(event);
+				return ClassicSimulation::loadWorldDynamicTransition(event);
 			}
 		}
 

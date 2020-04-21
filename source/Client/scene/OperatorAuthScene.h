@@ -332,42 +332,52 @@ namespace Scene
 			}
 		}
 
-		void onAuthenticationFailed(const Reason reason) override
+		void onAuthenticationFailed(Net::Host::AuthenticationFailureReason reason) override
 		{
 			loadingWindow.close();
 
 			switch (reason)
 			{
-			case Reason::Rejected:
-				informationWindow.open("Authentication rejected");
+			case Net::Host::AuthenticationFailureReason::AlreadyHosting:
+				informationWindow.open("Account already hosting");
 
 				break;
-			case Reason::Timeout:
+			case Net::Host::AuthenticationFailureReason::AlreadyOnline:
+				informationWindow.open("Account already playing somewhere");
 
-				informationWindow.open("Authentication external timeout");
+				break;
+			case Net::Host::AuthenticationFailureReason::AuthenticationRejected:
+				informationWindow.open("Failed to authenticate");
+
+				break;
 			}
-
 		}
 
-		void onRegistrationFailed(const ::Net::Host::RejectOperatorRegistrationMessage::Reason reason) override
+		void onAuthenticationTimeout() override
+		{
+			loadingWindow.close();
+			informationWindow.open("Failed to authenticate");
+		}
+
+		void onRegistrationFailed(const ::Net::Host::RejectOperatorRegistrationMessageContent::Reason reason) override
 		{
 			loadingWindow.close();
 
 			switch (reason)
 			{
-			case Net::Host::RejectOperatorRegistrationMessage::Reason::InternalError:
+			case Net::Host::RejectOperatorRegistrationMessageContent::Reason::InternalError:
 				informationWindow.open("Registration failed, internal error");
 
 				break;
-			case Net::Host::RejectOperatorRegistrationMessage::Reason::KeyInvalid:
+			case Net::Host::RejectOperatorRegistrationMessageContent::Reason::KeyInvalid:
 				informationWindow.open("Registration failed, invalid key");
 
 				break;
-			case Net::Host::RejectOperatorRegistrationMessage::Reason::KeyUsed:
+			case Net::Host::RejectOperatorRegistrationMessageContent::Reason::KeyUsed:
 				informationWindow.open("Registration failed, key already used");
 
 				break;
-			case Net::Host::RejectOperatorRegistrationMessage::Reason::UsernameUsed:
+			case Net::Host::RejectOperatorRegistrationMessageContent::Reason::UsernameUsed:
 				informationWindow.open("Registration failed, username already used");
 
 				break;

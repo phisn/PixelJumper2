@@ -14,6 +14,7 @@
 
 #include <imgui/imgui.h>
 
+/*
 namespace Scene
 {
 	class TestGameScene
@@ -108,7 +109,7 @@ namespace Scene
 			}
 
 			return true;
-		}*/
+		}
 
 		void initialize() override
 		{
@@ -142,8 +143,8 @@ namespace Scene
 				{
 					if (ImGui::BeginMenu("File"))
 					{
-						if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
-						if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+						if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff  }
+						if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff  }
 						if (ImGui::MenuItem("Close", "Ctrl+W")) { my_tool_active = false; }
 						ImGui::EndMenu();
 					}
@@ -199,6 +200,7 @@ namespace Scene
 		Game::VisualClassicSimulation simulation;
 		Game::ControllablePlayer player;
 
-		Game::WorldContainer resource_container;
+		Resource::WorldContainer resource_container;
 	};
 }
+*/

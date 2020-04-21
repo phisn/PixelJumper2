@@ -41,14 +41,14 @@ namespace Game
 		{
 			switch (messageID)
 			{
-			case Net::Host::ClassicSessionMessageID::InitializeSessionMessage:
+			case Net::Host::ClassicSessionMessageID::InitializeSession:
 				if (Net::Host::ClassicSession::InitializeSessionMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onInitializeSession(message);
 				}
 
 				return true;
-			case Net::Host::ClassicSessionMessageID::AddPlayerMessage:
+			case Net::Host::ClassicSessionMessageID::AddPlayer:
 			{
 				Net::Host::ClassicSession::AddPlayerMessage message;
 				// dynamic player because player will be stored
@@ -62,10 +62,43 @@ namespace Game
 
 				return true;
 			}
-			case Net::Host::ClassicSessionMessageID::RemovePlayerMessage:
+			case Net::Host::ClassicSessionMessageID::RemovePlayer:
 				if (Net::Host::ClassicSession::RemovePlayerMessage message; loadMessage(messageID, &message, pipe))
 				{
 					onRemovePlayer(message);
+				}
+
+				return true;
+			case Net::Host::ClassicSessionMessageID::InterruptSession:
+				if (Net::Host::ClassicSession::InterruptSessionMessage message; loadMessage(messageID, &message, pipe))
+				{
+					Log::Information(L"session from simulator was interrupted",
+						(int)message.content.reason, L"reason");
+
+					onSessionInterrupted(message.content.reason);
+				}
+
+				return true;
+			case Net::Host::ClassicSessionMessageID::WorldUnlocked:
+			{
+				Net::Host::ClassicSession::WorldUnlockedMessage message;
+				message.world = new Resource::World;
+
+				if (loadMessage(messageID, &message, pipe))
+				{
+					onWorldUnlocked(message.world);
+				}
+				else
+				{
+					delete message.world;
+				}
+
+				return true;
+			}
+			case Net::Host::ClassicSessionMessageID::RepresentationUnlocked:
+				if (Net::Host::ClassicSession::RepresentationUnlockedMessage message; loadMessage(messageID, &message, pipe))
+				{
+					onRepresentationUnlocked(message.content.representationID);
 				}
 
 				return true;
@@ -83,6 +116,11 @@ namespace Game
 		{
 			return simulatorSettings;
 		}
+
+	protected:
+		virtual void onSessionInterrupted(Net::Host::ClassicSession::InterruptSessionReason reason) = 0;
+		virtual void onWorldUnlocked(Resource::World* world) = 0;
+		virtual void onRepresentationUnlocked(Resource::RepresentationID representationID) = 0;
 
 	private:
 		ClientClassicSessionHandlerCallback* const callback;

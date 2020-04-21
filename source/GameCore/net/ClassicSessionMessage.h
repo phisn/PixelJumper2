@@ -157,5 +157,12 @@ namespace Net::Host
 				return world->save(pipe);
 			}
 		};
+
+		struct RepresentationUnlockedMessageContent
+		{
+			Resource::RepresentationID representationID;
+		};
+
+		typedef TrivialNetworkMessage<RepresentationUnlockedMessageContent> RepresentationUnlockedMessage;
 	}
 }

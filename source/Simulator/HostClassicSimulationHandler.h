@@ -33,7 +33,7 @@ namespace Game
 		static constexpr sf::Uint64 SpeedAdjustmentTimeOffset = 500;
 		static constexpr sf::Uint64 MaxFrameDifference = 1000;
 		// has to be higher than networkingsockets timeout
-		static constexpr sf::Uint64 MinimalDifferenceVairant = 30'000;
+		static constexpr sf::Uint64 MaxDifferenceVariant = 30'000;
 		static constexpr sf::Uint64 ToleratedFrameDifference = 50;
 
 		static constexpr float ToleratedSpeedDifference = 0.2f;
@@ -125,14 +125,6 @@ namespace Game
 
 		void update() override
 		{
-#error problem with variation to detect speedhack
-#error because currently the variation of slow speed changing
-#error is not counted a reverse to small delay will cause the
-#error simulator to look like speedhack
-#error either we start to monitor all speedchanges or we let the
-#error user do as many time jumps as they want and enter some
-#error critical mode later
-
 			/*
 				player client can potentially be faster than the server
 				or have too many frames sent at the beginning
@@ -184,9 +176,13 @@ namespace Game
 							player.clearFrames();
 						}
 
-						if (differenceVariant > MaxFrameDifference ||
-							differenceVariant < MinimalDifferenceVairant)
+						if (fabsf(differenceVariant) > MaxDifferenceVariant)
 						{
+							Log::Information(L"got too high differencevariant",
+								player.getInformation().playerId, L"userID",
+								player.getInformation().name, L"username",
+								differenceVariant, L"differenceVariant");
+
 							access->onThreatIdentified(
 								-1,
 								L"too high differencevariant. speed hack detected",
@@ -599,6 +595,7 @@ namespace Game
 					message.content.count, L"count",
 					world->getInformation()->worldId, L"worldID",
 					player.getInformation().playerId, L"userID");
+
 				access->onThreatIdentified(
 					Net::Client::ClassicSimulationMessageID::PushDelay,
 					L"invalid time pushdelay",

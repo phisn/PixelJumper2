@@ -50,13 +50,13 @@ namespace Game
 			{
 			case Net::Host::AuthenticationMessageID::AuthenticationAccepted:
 			{
-				Resource::ClassicPlayerResource playerResource;
-				std::string username;
+				Resource::ClassicPlayerResource classicResource;
+				Resource::PlayerResource playerResource;
 
 				Net::Host::AuthenticationAcceptedMessage message;
 
 				message.resource = &playerResource;
-				message.username = &username;
+				message.classicResource = &classicResource;
 
 				if (loadMessage(messageID, &message, pipe))
 				{
