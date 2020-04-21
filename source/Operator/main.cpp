@@ -6,22 +6,10 @@
 
 #include <iostream>
 
-// important
-// a player is not different to a server
-// both can host a game or join a game
-// a server differs from a player that it does not
-// contain graphics code
-// both have to login and authenticate
-
-// important
-// all players are accepted and hold as long as 
-// possible. the player with the longest idel time
-// is being disconnected when a max of connections
-// is reached
-
 int main()
 {
 	Log::Output::Add(Log::Output::FILE_OUT, Log::Level::Information);
+	Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Information);
 
 	if (Device::Core::Initialize())
 	{

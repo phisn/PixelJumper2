@@ -18,7 +18,7 @@ namespace Device::Core
 
 		Module::Random::Initialize();
 
-		if (!Operator::OperatorDatabase::Initialize("pj2.db", "threats"))
+		if (!Operator::OperatorDatabase::Initialize("pj2.db", "threats.db"))
 		{
 			Log::Error(L"Failed to initialize database");
 
