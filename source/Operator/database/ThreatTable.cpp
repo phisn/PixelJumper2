@@ -3,7 +3,7 @@
 // "tdb." prefix because of attached database
 const Database::TableDefinition Operator::ThreatTable::definition
 {
-	"db.threats",
+	"tdb.threats",
 	"pid",
 	"id",
 	"message",
