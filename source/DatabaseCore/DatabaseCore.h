@@ -124,7 +124,7 @@ namespace Database
 
 		bool attach(std::string filename, std::string alias)
 		{
-			std::string statement = "ATTACH DATABASE '+" + filename + "' AS " + alias;
+			std::string statement = "ATTACH DATABASE '" + filename + "' AS " + alias;
 			lastSQLiteFailure = sqlite3_exec(
 				database,
 				statement.c_str(),
