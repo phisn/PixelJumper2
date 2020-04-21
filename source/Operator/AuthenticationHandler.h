@@ -122,6 +122,11 @@ namespace Operator
 
 			if (memcmp(messageHash, user.hash, OPERATOR_HASH_SIZE) != 0)
 			{
+				access->onThreatIdentified(
+					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
+					L"wrong password",
+					::Net::ThreatLevel::Uncommon);
+
 				sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason::AuthenticationRejected);
 				return;
 			}
@@ -239,6 +244,11 @@ namespace Operator
 
 			if (GetUserMode(userID) == Usermode::Online)
 			{
+				access->onThreatIdentified(
+					::Net::Client::OperatorAuthenticationMessageID::Authenticate,
+					L"token already online",
+					::Net::ThreatLevel::Uncommon);
+
 				sendAuthenticationFailure(::Net::Host::AuthenticationFailureReason::AlreadyOnline);
 				return;
 			}
@@ -250,7 +260,7 @@ namespace Operator
 
 				access->onThreatIdentified(
 					::Net::Client::OperatorAuthenticationMessageID::Token,
-					L"invaldi token",
+					L"invalid token",
 					::Net::ThreatLevel::Uncommon);
 
 				return;
