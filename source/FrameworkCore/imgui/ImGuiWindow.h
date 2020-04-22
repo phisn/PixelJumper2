@@ -25,6 +25,8 @@ namespace Framework
 
 		virtual bool begin()
 		{
+			assert(title.size() != 0);
+
 			return ImGui::Begin(
 				title.c_str(),
 				useActive ? &active : NULL,

@@ -146,6 +146,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EditorCore\EditorCore.vcxproj">
+      <Project>{a53d892b-93c0-4a5e-abaa-4b97dd86d334}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\imgui-sfml\imgui-sfml.vcxproj">
       <Project>{a1f59ab9-4cec-41b4-b63c-885086bd4dea}</Project>
     </ProjectReference>

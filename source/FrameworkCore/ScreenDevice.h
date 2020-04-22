@@ -69,12 +69,23 @@ namespace Device
 			) + view.getSize() * 0.5f);
 		}
 
+		void setPosition(sf::Vector2f position)
+		{
+			view.setCenter(sf::Vector2f(
+				position.x,
+				position.y
+			) + sf::Vector2f{ view.getSize().x, view.getSize().y } * 0.5f);
+		}
+
 		void setRotation(const float angle)
 		{
 			view.setRotation(angle);
 		}
 
-		virtual void setSize(const float width, const float height) = 0;
+		virtual void setSize(const float width, const float height)
+		{
+			view.setSize(width, height);
+		}
 		
 		void setSize(const sf::Vector2f& size)
 		{
@@ -88,12 +99,28 @@ namespace Device
 
 		const sf::Vector2f& getPosition() const
 		{
-			return view.getCenter() - view.getSize() / 2.f;
+			return view.getCenter() - sf::Vector2f{ view.getSize().x, view.getSize().y } / 2.f;
 		}
 
 		const sf::Vector2f& getSize() const
 		{
 			return view.getSize();
+		}
+
+		sf::FloatRect getRect() const
+		{
+			return
+			{
+				getCenter().x - getSize().x / 2.f,
+				getCenter().y - getSize().y / 2.f,
+				view.getSize().x,
+				view.getSize().y
+			};
+		}
+
+		const sf::Vector2f& getCenter() const
+		{
+			return view.getCenter();
 		}
 
 		const sf::FloatRect& getViewport() const

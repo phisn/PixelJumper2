@@ -45,6 +45,12 @@
     <ClInclude Include="scene\InformationScene.h">
       <Filter>source\scene</Filter>
     </ClInclude>
+    <ClInclude Include="imgui\ImGuiRenderWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossShape.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp">
@@ -60,6 +66,9 @@
       <Filter>source\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\ImGuiWindow.cpp">
+      <Filter>source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\ImGuiRenderWindow.cpp">
       <Filter>source\imgui</Filter>
     </ClCompile>
   </ItemGroup>

@@ -83,13 +83,16 @@
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp" />
     <ClCompile Include="imgui\ImGuiModalWindow.cpp" />
+    <ClCompile Include="imgui\ImGuiRenderWindow.cpp" />
     <ClCompile Include="imgui\ImGuiWindow.cpp" />
     <ClCompile Include="ScreenDevice.cpp" />
     <ClCompile Include="ViewChain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CrossShape.h" />
     <ClInclude Include="FrameworkCore.h" />
     <ClInclude Include="imgui\ImGuiModalWindow.h" />
+    <ClInclude Include="imgui\ImGuiRenderWindow.h" />
     <ClInclude Include="imgui\ImGuiUtil.h" />
     <ClInclude Include="imgui\ImGuiWindow.h" />
     <ClInclude Include="imgui\InformationModalWindow.h" />
