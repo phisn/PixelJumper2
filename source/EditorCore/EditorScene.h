@@ -57,16 +57,22 @@ namespace Scene
 		{
 		}
 
+		void initialize() override
+		{
+			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
+		}
+
 		void onEvent(const sf::Event event) override
 		{
+			classicContextWindow.onEvent(event);
 		}
 		
 		void onLogic(const sf::Time time) override
 		{
 			rootWindow.process();
-
 			classicContextWindow.process();
-			/*
+
+			/* 
 			ImGui::Begin("test2");
 			ImGui::Button("b2");
 			ImGui::End();

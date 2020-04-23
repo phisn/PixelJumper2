@@ -128,6 +128,16 @@ namespace Device
 			return view.getViewport();
 		}
 
+		const sf::View& getView() const
+		{
+			return view;
+		}
+
+		void zoom(float factor)
+		{
+			view.zoom(factor);
+		}
+
 	protected:
 		sf::View view;
 	};

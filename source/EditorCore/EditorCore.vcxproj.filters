@@ -12,12 +12,18 @@
     <ClCompile Include="EditorScene.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="ClassicWorldWindow.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
     <ClCompile Include="ClassicContextWindow.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicWorldWindow.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="ClassicContextWindow.h">

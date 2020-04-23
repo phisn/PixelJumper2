@@ -92,6 +92,18 @@
     <ProjectReference Include="..\imgui\imgui.vcxproj">
       <Project>{9ff64964-33be-443c-8f95-b3a44651ec9a}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\SFML\src\SFML\Graphics\sfml-graphics.vcxproj">
+      <Project>{c818c2db-f30f-3eb3-887c-502a4ad4631c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SFML\src\SFML\Main\sfml-main.vcxproj">
+      <Project>{fba59678-2c7a-382d-b051-0aeab1e818f6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SFML\src\SFML\System\sfml-system.vcxproj">
+      <Project>{61146f51-6b93-3436-a318-3fe0c2d40f49}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SFML\src\SFML\Window\sfml-window.vcxproj">
+      <Project>{e901dba9-32ab-31b3-8863-b1d480ce8701}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

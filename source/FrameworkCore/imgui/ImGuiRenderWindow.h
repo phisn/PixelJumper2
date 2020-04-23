@@ -16,6 +16,7 @@ namespace Framework
 
 		void process()
 		{
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 			if (begin())
 			{
 				if (renderTextureFailure)
@@ -27,24 +28,30 @@ namespace Framework
 				}
 				else
 				{
-					sf::Vector2u size = ImGui::GetWindowSize();
+					renderPosition = windowPosition + (sf::Vector2f) ImGui::GetCursorPos();
+					renderSize = (sf::Vector2f) ImGui::GetContentRegionMax() - (sf::Vector2f) ImGui::GetCursorPos();
 
-					if (size != renderTexture.getSize())
+					if (sf::Vector2u(renderSize) != renderTexture.getSize())
 					{
-						if (!renderTexture.create(size.x, size.y))
+						Log::Information(L"recreate");
+						if (!renderTexture.create(renderSize.x, renderSize.y))
 						{
 							renderTextureFailure = true;
 						}
 					}
 
 					onDraw(&renderTexture);
+					renderTexture.display();
+					_process();
+
 					ImGui::Image(
 						renderTexture.getTexture(),
-						(ImVec2)size,
+						renderSize,
 						tintColor, borderColor);
 				}
 			}
 
+			ImGui::PopStyleVar();
 			end();
 		}
 
@@ -52,6 +59,8 @@ namespace Framework
 		{
 			return renderTextureFailure;
 		}
+
+		virtual void _process() = 0;
 
 	protected:
 		sf::Color tintColor = sf::Color::White;
@@ -62,8 +71,41 @@ namespace Framework
 		using ImGuiWindowComponent::begin;
 		using ImGuiWindowComponent::end;
 
+		sf::Vector2f renderSize;
+		sf::Vector2f renderPosition;
+
+		sf::RenderTexture renderTexture;
+
+		sf::Event convertWindowEvent(sf::Event event)
+		{
+			switch (event.type)
+			{
+			case sf::Event::EventType::MouseButtonPressed:
+				event.mouseButton.x -= renderPosition.x;
+				event.mouseButton.y -= renderPosition.y;
+
+				break;
+			case sf::Event::EventType::MouseButtonReleased:
+				event.mouseButton.x -= renderPosition.x;
+				event.mouseButton.y -= renderPosition.y;
+
+				break;
+			case sf::Event::EventType::MouseMoved:
+				event.mouseMove.x -= renderPosition.x;
+				event.mouseMove.y -= renderPosition.y;
+
+				break;
+			case sf::Event::EventType::MouseWheelScrolled:
+				event.mouseWheel.x -= renderPosition.x;
+				event.mouseWheel.y -= renderPosition.y;
+
+				break;
+			}
+
+			return event;
+		}
+
 	private:
 		bool renderTextureFailure = false;
-		sf::RenderTexture renderTexture;
 	};
 }

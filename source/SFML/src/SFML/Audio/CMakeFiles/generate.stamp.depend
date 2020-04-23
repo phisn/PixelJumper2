@@ -1,0 +1,7 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.16/Modules/FindOpenAL.cmake
+C:/Program Files/CMake/share/cmake-3.16/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.16/Modules/FindPackageMessage.cmake
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/cmake/Modules/FindFLAC.cmake
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/cmake/Modules/FindVORBIS.cmake
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Audio/CMakeLists.txt

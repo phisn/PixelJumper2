@@ -1,0 +1,10 @@
+^C:\USERS\PHISN\SOURCE\REPOS\PIXELJUMPER2\SOURCE\SFML\SRC\SFML\GRAPHICS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/phisn/source/repos/PixelJumper2/source/SFML -BC:/Users/phisn/source/repos/PixelJumper2/source/SFML --check-stamp-file C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Graphics/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

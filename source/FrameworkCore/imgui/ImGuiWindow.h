@@ -2,9 +2,10 @@
 
 #include "ImGuiUtil.h"
 
-#include <string>
+#include "Logger/Logger.h"
 
-#include <Logger/Logger.h>
+#include <SFML/Graphics.hpp>
+#include <string>
 
 namespace Framework
 {
@@ -27,10 +28,18 @@ namespace Framework
 		{
 			assert(title.size() != 0);
 
-			return ImGui::Begin(
+			bool result = ImGui::Begin(
 				title.c_str(),
 				useActive ? &active : NULL,
 				windowFlags);
+
+			if (result)
+			{
+				windowSize = ImGui::GetWindowSize();
+				windowPosition = ImGui::GetWindowPos();
+			}
+
+			return result;
 		}
 
 		virtual void end()
@@ -47,6 +56,9 @@ namespace Framework
 		bool useActive = false;
 		std::string title;
 		ImGuiWindowFlags windowFlags;
+
+		sf::Vector2f windowSize;
+		sf::Vector2f windowPosition;
 
 	private:
 		bool active = true;

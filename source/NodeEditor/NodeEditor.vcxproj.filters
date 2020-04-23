@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{a2dec77f-719f-444a-959c-cc6ceac83e20}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="crude_json.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_canvas.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_node_editor.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_node_editor_api.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="crude_json.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_bezier_math.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_canvas.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_extra_math.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_node_editor.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_node_editor_internal.h">
+      <Filter>source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="imgui_bezier_math.inl">
+      <Filter>source</Filter>
+    </None>
+    <None Include="imgui_extra_math.inl">
+      <Filter>source</Filter>
+    </None>
+    <None Include="imgui_node_editor_internal.inl">
+      <Filter>source</Filter>
+    </None>
+  </ItemGroup>
+</Project>

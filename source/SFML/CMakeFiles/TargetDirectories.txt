@@ -1,0 +1,16 @@
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/CMakeFiles/INSTALL.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/CMakeFiles/ALL_BUILD.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/CMakeFiles/ZERO_CHECK.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/CMakeFiles/INSTALL.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/System/CMakeFiles/sfml-system.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/System/CMakeFiles/INSTALL.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Main/CMakeFiles/sfml-main.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Main/CMakeFiles/INSTALL.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Window/CMakeFiles/sfml-window.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Window/CMakeFiles/INSTALL.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Network/CMakeFiles/sfml-network.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Network/CMakeFiles/INSTALL.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Graphics/CMakeFiles/INSTALL.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Audio/CMakeFiles/sfml-audio.dir
+C:/Users/phisn/source/repos/PixelJumper2/source/SFML/src/SFML/Audio/CMakeFiles/INSTALL.dir
