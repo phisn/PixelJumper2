@@ -19,36 +19,7 @@ namespace Framework
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 			if (begin())
 			{
-				if (renderTextureFailure)
-				{
-					ImGui::Text("Failed to create rendertexture");
-
-					if (ImGui::Button("Retry"))
-						renderTextureFailure = false;
-				}
-				else
-				{
-					renderPosition = windowPosition + (sf::Vector2f) ImGui::GetCursorPos();
-					renderSize = (sf::Vector2f) ImGui::GetContentRegionMax() - (sf::Vector2f) ImGui::GetCursorPos();
-
-					if (sf::Vector2u(renderSize) != renderTexture.getSize())
-					{
-						Log::Information(L"recreate");
-						if (!renderTexture.create(renderSize.x, renderSize.y))
-						{
-							renderTextureFailure = true;
-						}
-					}
-
-					onDraw(&renderTexture);
-					renderTexture.display();
-					_process();
-
-					ImGui::Image(
-						renderTexture.getTexture(),
-						renderSize,
-						tintColor, borderColor);
-				}
+				processContent();
 			}
 
 			ImGui::PopStyleVar();
@@ -59,8 +30,6 @@ namespace Framework
 		{
 			return renderTextureFailure;
 		}
-
-		virtual void _process() = 0;
 
 	protected:
 		sf::Color tintColor = sf::Color::White;
@@ -76,7 +45,7 @@ namespace Framework
 
 		sf::RenderTexture renderTexture;
 
-		sf::Event convertWindowEvent(sf::Event event)
+		void convertWindowEvent(sf::Event& event)
 		{
 			switch (event.type)
 			{
@@ -96,13 +65,53 @@ namespace Framework
 
 				break;
 			case sf::Event::EventType::MouseWheelScrolled:
-				event.mouseWheel.x -= renderPosition.x;
-				event.mouseWheel.y -= renderPosition.y;
+				event.mouseWheelScroll.x -= renderPosition.x;
+				event.mouseWheelScroll.y -= renderPosition.y;
 
 				break;
 			}
+		}
 
-			return event;
+		bool affectsWindow(int x, int y)
+		{
+			return windowFocused && sf::FloatRect{
+				0,
+				0,
+				renderSize.x,
+				renderSize.y }.contains(x, y);
+		}
+
+		virtual void processContent()
+		{
+			if (renderTextureFailure)
+			{
+				ImGui::Text("Failed to create rendertexture");
+
+				if (ImGui::Button("Retry"))
+					renderTextureFailure = false;
+			}
+			else
+			{
+				renderPosition = windowPosition + (sf::Vector2f) ImGui::GetCursorPos();
+				renderSize = (sf::Vector2f) ImGui::GetContentRegionMax() - (sf::Vector2f) ImGui::GetCursorPos();
+
+				if (sf::Vector2u(renderSize) != renderTexture.getSize())
+				{
+					Log::Information(L"recreate");
+					if (!renderTexture.create(renderSize.x, renderSize.y))
+					{
+						renderTextureFailure = true;
+					}
+				}
+
+				onDraw(&renderTexture);
+				renderTexture.display();
+
+				ImGui::Image(
+					renderTexture,
+					tintColor, borderColor);
+
+			}
 		}
 
 	private:

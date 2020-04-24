@@ -35,6 +35,7 @@ namespace Framework
 
 			if (result)
 			{
+				windowFocused = ImGui::IsWindowFocused();
 				windowSize = ImGui::GetWindowSize();
 				windowPosition = ImGui::GetWindowPos();
 			}
@@ -56,6 +57,8 @@ namespace Framework
 		bool useActive = false;
 		std::string title;
 		ImGuiWindowFlags windowFlags;
+
+		bool windowFocused;
 
 		sf::Vector2f windowSize;
 		sf::Vector2f windowPosition;

@@ -3,6 +3,7 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Joystick.hpp>
@@ -68,6 +69,10 @@ namespace ImGui
     IMGUI_SFML_API void Image(const sf::Texture& texture, const sf::Vector2f& size, const sf::FloatRect& textureRect,
         const sf::Color& tintColor = sf::Color::White,
         const sf::Color& borderColor = sf::Color::Transparent);
+
+    void Image(const sf::RenderTexture& texture, const sf::Color& tintColor, const sf::Color& borderColor);
+    void Image(const sf::RenderTexture & texture, const sf::Vector2f & size, const sf::FloatRect & textureRect,
+        const sf::Color & tintColor, const sf::Color & borderColor);
 
     IMGUI_SFML_API void Image(const sf::Sprite& sprite,
         const sf::Color& tintColor = sf::Color::White,

@@ -19,58 +19,55 @@ namespace Framework
 
 		virtual void onEvent(sf::Event event)
 		{
-			event = convertWindowEvent(event);
+			convertWindowEvent(event);
 
 			switch (event.type)
 			{
 			case sf::Event::EventType::MouseButtonPressed:
-				if (sf::FloatRect{
-						0,
-						0,
-						renderSize.x,
-						renderSize.y
-					}.contains(event.mouseButton.x, event.mouseButton.y))
+				if (affectsWindow(event.mouseButton.x, event.mouseButton.y))
 				{
 					switch (event.mouseButton.button)
 					{
-					case sf::Mouse::Button::Left:
+					case sf::Mouse::Button::Right:
 						mousePressed = true;
+						mouseMoved = false;
 
 						mouseBegin = sf::Vector2i{ event.mouseButton.x, event.mouseButton.y };
 						mouseGridBegin = primaryView.getCenter();
 
 						break;
 					case sf::Mouse::Button::Middle:
-//						primaryView.setCenter(renderTexture.mapPixelToCoords({
-	//						event.mouseButton.x, event.mouseButton.y }, primaryView));
-
 						primaryView.setCenter({ 0, 0 });
-
 						gridNeedUpdate = true;
+
 						break;
 					}
 				}
 
 				break;
 			case sf::Event::EventType::MouseButtonReleased:
-				if (mousePressed && event.mouseButton.button == sf::Mouse::Button::Left)
+				if (mousePressed && event.mouseButton.button == sf::Mouse::Button::Right)
 				{
-					mousePressed = false;
+					if (!mouseMoved
+						&& event.mouseButton.x == mouseBegin.x
+						&& event.mouseButton.y == mouseBegin.y)
+					{
+						onMovementClick(event.mouseButton.x, event.mouseButton.y);
+					}
 
+					mousePressed = false;
 					primaryView.setCenter(mouseGridBegin + makeMouseGridOffset(
 						event.mouseButton.x,
 						event.mouseButton.y));
-
 					gridNeedUpdate = true;
 				}
 
 				break;
 			case sf::Event::EventType::MouseMoved:
-				mm_x = event.mouseMove.x;
-				mm_y = event.mouseMove.y;
-
 				if (mousePressed)
 				{
+					mouseMoved = true;
+
 					primaryView.setCenter(mouseGridBegin + makeMouseGridOffset(
 						event.mouseMove.x,
 						event.mouseMove.y));
@@ -80,26 +77,40 @@ namespace Framework
 
 				break;
 			case sf::Event::EventType::MouseWheelScrolled:
-				if (sf::FloatRect{
-						0,
-						0,
-						windowSize.x,
-						windowSize.y
-					}.contains(event.mouseWheelScroll.x, event.mouseWheelScroll.y))
+				if (affectsWindow(event.mouseWheelScroll.x, event.mouseWheelScroll.y))
 				{
-					sf::Vector2f newCenter = renderTexture.mapPixelToCoords({
-						event.mouseWheelScroll.x, event.mouseWheelScroll.y });
-					primaryView.zoom(exp2f(event.mouseWheelScroll.delta));
-					primaryView.setCenter(newCenter);
+					if (event.mouseWheelScroll.delta > 0)
+					{
+						if (std::min(primaryView.getSize().x / renderTexture.getSize().x, primaryView.getSize().y / renderTexture.getSize().y) < minViewSize)
+							break;
+					}
+					else
+					{
+						if (std::max(primaryView.getSize().x / renderTexture.getSize().x, primaryView.getSize().y / renderTexture.getSize().y) > maxViewSize)
+							break;
+					}
+
+					sf::Vector2f mousePtr = renderTexture.mapPixelToCoords({
+						event.mouseWheelScroll.x, event.mouseWheelScroll.y }, primaryView);
+
+					primaryView.zoom(powf(0.9f, event.mouseWheelScroll.delta));
+
+					sf::Vector2f zoomedMousePtr = renderTexture.mapPixelToCoords({
+						event.mouseWheelScroll.x, event.mouseWheelScroll.y }, primaryView);
+
+					primaryView.move(mousePtr - zoomedMousePtr);
+
+					gridNeedUpdate = true;
 				}
 
 				break;
 			}
 		}
 
-		int mm_x, mm_y;
-
 	protected:
+		float zoomSpeed = 0.9f;
+		float maxViewSize = 10.f;
+		float minViewSize = 0.4f;
 		float GridSize = 50.f;
 
 		sf::Color BackgroundColor = { 40, 40, 40 };
@@ -108,12 +119,55 @@ namespace Framework
 
 		sf::View primaryView;
 
+		virtual void onDraw(sf::RenderTarget* target) override
+		{
+			target->setView(primaryView);
+			if (oldTargetSize != target->getSize())
+			{
+				// prevent grid moving while resizing
+				mousePressed = false;
+
+				if (oldTargetSize != sf::Vector2u{ 0, 0 })
+				{
+					sf::Vector2f center = primaryView.getCenter();
+					primaryView.setSize(
+						primaryView.getSize().x * (float)target->getSize().x / (float)oldTargetSize.x,
+						primaryView.getSize().y * (float)target->getSize().y / (float)oldTargetSize.y);
+					primaryView.setCenter(center);
+				}
+				else
+				{
+					primaryView.setSize(sf::Vector2f(target->getSize()));
+				}
+
+				oldTargetSize = target->getSize();
+				gridNeedUpdate = true;
+			}
+			
+			target->clear(BackgroundColor);
+
+			if (gridNeedUpdate || calculateGridVertexCount() != grid.getVertexCount())
+			{
+				updateGrid();
+
+				gridNeedUpdate = false;
+			}
+
+			target->draw(grid);
+		}
+
+		virtual void onMovementClick(int x, int y)
+		{
+		}
+
 	private:
 		sf::RenderTexture background;
 
 		// grid movement
 	private:
 		bool mousePressed = false;
+		bool mouseMoved;
+
 		sf::Vector2i mouseBegin;
 		sf::Vector2f mouseGridBegin;
 
@@ -137,64 +191,6 @@ namespace Framework
 		sf::VertexArray grid;
 		bool gridNeedUpdate = true;
 
-		virtual void onDraw(sf::RenderTarget* target) override
-		{
-			ImGui::Begin("pos");
-			target->setView(primaryView);
-			ImGui::Text("pos: x(%d) y(%d)", mm_x, mm_y);
-
-			sf::Vector2f p1 = target->mapPixelToCoords({ mm_x, mm_y }, primaryView);
-			ImGui::Text("p1: x(%.4f) y(%.4f)", p1.x, p1.y);
-			/*
-			sf::Vector2f p3 = target->mapPixelToCoords({ (int)p2.x, (int)p2.y }, primaryView);
-			ImGui::Text("p3: x(%.4f) y(%.4f)", p3.x, p3.y);*/
-			ImGui::Text("center: x(%.4f) y(%.4f)", primaryView.getCenter().x, primaryView.getCenter().y);
-			ImGui::Text("size: x(%.4f) y(%.4f)", primaryView.getSize().x, primaryView.getSize().y);
-			ImGui::Text("renderpos: x(%.4f) y(%.4f)", renderPosition.x, renderPosition.y);
-			ImGui::Text("rendersize: x(%.4f) y(%.4f)", renderSize.x, renderSize.y);
-			ImGui::Text("pos: x(%.4f) y(%.4f)", windowPosition.x, windowPosition.y);
-			ImGui::Text("size: x(%.4f) y(%.4f)", windowSize.x, windowSize.y);
-
-			ImGui::End();
-
-			if (oldTargetSize != target->getSize())
-			{
-				if (oldTargetSize != sf::Vector2u{ 0, 0 })
-				{
-					sf::Vector2f center = primaryView.getCenter();
-					primaryView.setSize(
-						primaryView.getSize().x * (float) target->getSize().x / (float) oldTargetSize.x,
-						primaryView.getSize().y * (float) target->getSize().y / (float) oldTargetSize.y);
-					primaryView.setCenter(center);
-				}
-				else
-				{
-					primaryView.setSize(sf::Vector2f(target->getSize()));
-				}
-
-				oldTargetSize = target->getSize();
-				gridNeedUpdate = true;
-			}
-
-			target->clear(BackgroundColor);
-
-			if (gridNeedUpdate || calculateGridVertexCount() != grid.getVertexCount())
-			{
-				updateGrid();
-
-				gridNeedUpdate = false;
-			}
-
-			target->draw(grid);
-		}
-
-		void _process() override
-		{
-			sf::Vector2f p2 = Device::Screen::GetWindow()->mapPixelToCoords({ mm_x, mm_y }, primaryView);
-			ImGui::Text("p2: x(%.4f) y(%.4f)", p2.x, p2.y);
-
-		}
-
 		void updateGrid()
 		{
 			grid.resize(calculateGridVertexCount());
@@ -208,7 +204,7 @@ namespace Framework
 				primaryView.getSize().y
 			};
 
-			for (float pure_x = 0; pure_x < primaryView.getSize().x; pure_x += GridSize)
+			for (float pure_x = -GridSize; pure_x < primaryView.getSize().x + GridSize; pure_x += GridSize)
 			{
 				float x = pure_x + viewRect.left + GridSize / 2.f - fmodf(viewRect.left, GridSize);
 
@@ -221,7 +217,7 @@ namespace Framework
 				vertex->color = BackgroundGridColor;
 			}
 
-			for (float pure_y = 0; pure_y < primaryView.getSize().y; pure_y += GridSize)
+			for (float pure_y = -GridSize; pure_y < primaryView.getSize().y + GridSize; pure_y += GridSize)
 			{
 				float y = pure_y + viewRect.top + GridSize / 2.f - fmodf(viewRect.top, GridSize);
 
@@ -255,7 +251,7 @@ namespace Framework
 
 		int calculateGridVertexCount()
 		{
-			return 4 + std::ceil(primaryView.getSize().x / GridSize) * 2 + std::ceil(primaryView.getSize().y / GridSize) * 2;
+			return 4 + 8 + std::ceil(primaryView.getSize().x / GridSize) * 2 + std::ceil(primaryView.getSize().y / GridSize) * 2;
 		}
 	};
 }

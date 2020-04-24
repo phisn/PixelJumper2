@@ -604,6 +604,20 @@ void Image(const sf::Sprite& sprite, const sf::Vector2f& size,
           borderColor);
 }
 
+void Image(const sf::RenderTexture& texture, const sf::Vector2f& size, const sf::FloatRect& textureRect,
+    const sf::Color& tintColor, const sf::Color& borderColor)
+{
+    sf::Vector2f textureSize = static_cast<sf::Vector2f>(texture.getSize());
+    ImVec2 uv0(textureRect.left / textureSize.x, (textureRect.top + textureRect.height) / textureSize.y);
+    ImVec2 uv1((textureRect.left + textureRect.width) / textureSize.x, textureRect.top / textureSize.y);
+    ImGui::Image(convertGLTextureHandleToImTextureID(texture.getTexture().getNativeHandle()), size, uv0, uv1, tintColor, borderColor);
+}
+
+void Image(const sf::RenderTexture& texture, const sf::Color& tintColor, const sf::Color& borderColor)
+{
+    Image(texture, sf::Vector2f(texture.getSize()), sf::FloatRect{ 0.f, 0.f, (float) texture.getSize().x, (float) texture.getSize().y }, tintColor, borderColor);
+}
+
 /////////////// Image Button Overloads
 
 bool ImageButton(const sf::Texture& texture, const int framePadding,

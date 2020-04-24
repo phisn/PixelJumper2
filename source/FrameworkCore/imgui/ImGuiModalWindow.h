@@ -6,16 +6,16 @@
 
 namespace Framework
 {
-	class ModalWindow
+	class PurePopupWindow
 	{
 	public:
-		ModalWindow()
+		PurePopupWindow()
 			:
 			windowFlags(WindowFlagsDefault)
 		{
 		}
 
-		ModalWindow(ImGuiWindowFlags windowFlags)
+		PurePopupWindow(ImGuiWindowFlags windowFlags)
 			:
 			windowFlags(windowFlags)
 		{
@@ -41,13 +41,7 @@ namespace Framework
 				opened = true;
 			}
 
-			preWindow();
-
-			bool result = ImGui::BeginPopupModal(
-				title.c_str(),
-				useActive ? &active : NULL,
-				windowFlags);
-
+			bool result = makeWindow();
 			if (!result)
 			{
 				postWindow();
@@ -97,28 +91,59 @@ namespace Framework
 		// internal use only
 	protected:
 		std::string title;
-		bool useActive;
 		ImGuiWindowFlags windowFlags;
 
-		virtual void preWindow()
-		{
-		}
-
+		virtual bool makeWindow() = 0;
 		virtual void postWindow()
 		{
 		}
 
-	private:
 		bool active = false;
 		bool opened = false;
 	};
 
-	class IndependentModalWindow
+	class PopupWindow
 		:
-		public ModalWindow
+		public PurePopupWindow
 	{
 	public:
-		using ModalWindow::ModalWindow;
+		using PurePopupWindow::PurePopupWindow;
+
+	protected:
+		bool makeWindow() override
+		{
+			return ImGui::BeginPopup(
+				title.c_str(),
+				windowFlags);
+		}
+	};
+
+	class ModalWindow
+		:
+		public PurePopupWindow
+	{
+	public:
+		using PurePopupWindow::PurePopupWindow;
+		
+	protected:
+		bool useActive;
+
+		bool makeWindow() override
+		{
+			return ImGui::BeginPopupModal(
+				title.c_str(),
+				useActive ? &active : NULL,
+				windowFlags);
+		}
+	};
+
+	template <typename PopupWindow>
+	class IndependentPopupWindow
+		:
+		public PopupWindow
+	{
+	public:
+		using PopupWindow::PopupWindow;
 
 		bool process()
 		{

@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
@@ -40,9 +41,9 @@ int main()
 	}
 
 	return 0;
-}
+}*/
 
-/*
+
 #include "EditorCore/EditorScene.h"
 #include "FrameworkCore/ScreenDevice.h"
 
@@ -104,4 +105,4 @@ int main()
 	ImGui::SFML::Shutdown();
 
 	return 0;
-}*/
+}

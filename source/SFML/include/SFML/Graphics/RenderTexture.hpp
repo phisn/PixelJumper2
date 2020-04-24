@@ -234,32 +234,6 @@ public:
     ////////////////////////////////////////////////////////////
     const Texture& getTexture() const;
 
-#pragma region sfml_custom
-    using RenderTarget::mapCoordsToPixel;
-    using RenderTarget::mapPixelToCoords;
-    /*
-    Vector2f mapPixelToCoords(const Vector2i& point, const View& view) const override
-    {
-        sf::Vector2f result = RenderTarget::mapPixelToCoords(point, view);
-
-        return
-        {
-            result.x,
-            result.y - view.getCenter().y * 2
-        };
-    }
-
-    Vector2i mapCoordsToPixel(const Vector2f& point, const View& view) const override
-    {
-        return RenderTarget::mapCoordsToPixel(
-            {
-                point.x,
-                view.getCenter().y * 2 - point.y
-            });
-    }
-    */
-#pragma endregion
-
 private:
 
     ////////////////////////////////////////////////////////////

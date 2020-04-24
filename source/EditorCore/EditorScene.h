@@ -25,6 +25,7 @@ namespace Editor
 			ImGui::SetNextWindowPos(ImVec2(0, 0));
 			ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 			if (begin())
 			{
 				ImGui::DockSpace(
@@ -38,6 +39,7 @@ namespace Editor
 			}
 
 			end();
+			ImGui::PopStyleVar();
 		}
 		
 	private:
