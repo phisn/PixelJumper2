@@ -17,7 +17,7 @@ namespace Framework
 			grid.setPrimitiveType(sf::PrimitiveType::Lines);
 		}
 
-		virtual void onEvent(sf::Event event)
+		virtual void onEvent(sf::Event& event)
 		{
 			convertWindowEvent(event);
 
@@ -52,7 +52,7 @@ namespace Framework
 						&& event.mouseButton.x == mouseBegin.x
 						&& event.mouseButton.y == mouseBegin.y)
 					{
-						onMovementClick(event.mouseButton.x, event.mouseButton.y);
+						onMovementClick(this->pixelToCoords(event.mouseButton.x, event.mouseButton.y));
 					}
 
 					mousePressed = false;
@@ -156,8 +156,13 @@ namespace Framework
 			target->draw(grid);
 		}
 
-		virtual void onMovementClick(int x, int y)
+		virtual void onMovementClick(sf::Vector2f point)
 		{
+		}
+
+		sf::Vector2f pixelToCoords(int x, int y) const
+		{
+			return renderTexture.mapPixelToCoords({ x, y }, primaryView);
 		}
 
 	private:

@@ -62,27 +62,31 @@ namespace Scene
 		void initialize() override
 		{
 			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
+
+			Editor::ClassicWorld* world = new Editor::ClassicWorld;
+			world->name = "test world";
+			context.worlds.push_back(world);
+
+			Editor::ClassicContextWindowDataset dataset;
+			dataset.classicContext = &context;
+			Editor::ClassicContextWindow* window = new Editor::ClassicContextWindow(dataset);
+
+
+			windows.push_back(window);
 		}
 
 		void onEvent(const sf::Event event) override
 		{
-			classicContextWindow.onEvent(event);
+			for (Editor::EditorWindow* window : windows)
+				window->onEvent(event);
 		}
 		
 		void onLogic(const sf::Time time) override
 		{
 			rootWindow.process();
-			classicContextWindow.process();
 
-			/* 
-			ImGui::Begin("test2");
-			ImGui::Button("b2");
-			ImGui::End();
-
-			ImGui::Begin("test3");
-			ImGui::Button("b3");
-			ImGui::End();
-			*/
+			for (Editor::EditorWindow* window : windows)
+				window->onProcess();
 		}
 
 		void onDraw(sf::RenderTarget* const target) override
@@ -90,7 +94,9 @@ namespace Scene
 		}
 
 	private:
+		Editor::ClassicContext context;
 		Editor::RootWindow rootWindow;
-		Editor::ClassicContextWindow classicContextWindow;
+
+		std::vector<Editor::EditorWindow*> windows;
 	};
 }

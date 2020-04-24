@@ -1,4 +1,5 @@
 #include "FrameworkCore.h"
+#include "ResourceCore/ResourceInterface.h"
 
 #include <deque>
 
@@ -32,6 +33,8 @@ namespace
 		Unload
 
 	} currentCommand;
+
+	sf::Font defaultFont;
 }
 
 namespace Framework
@@ -47,7 +50,14 @@ namespace Framework
 	bool Core::Initialize()
 	{
 		running = true;
-		return running;
+
+		Resource::ResourceTypeDefinition type;
+
+		type.name = L"font";
+		type.directory = L"static";
+		type.extension = L"ttf";
+
+		return defaultFont.loadFromFile(Resource::Interface::GetResourcePath(L"font", type).string());
 	}
 
 	void Core::Uninitialize()
@@ -274,5 +284,10 @@ namespace Framework
 				break;
 			}
 		}
+	}
+
+	const sf::Font& GetFont()
+	{
+		return defaultFont;
 	}
 }

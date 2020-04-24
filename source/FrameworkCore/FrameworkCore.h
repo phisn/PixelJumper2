@@ -52,4 +52,6 @@ namespace Framework
 			PushChildScene(value);
 		}
 	}
+
+	const sf::Font& GetFont();
 }

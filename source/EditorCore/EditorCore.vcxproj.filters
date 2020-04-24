@@ -18,6 +18,12 @@
     <ClCompile Include="ClassicContextWindow.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="EditorDataset.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorWindow.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
@@ -27,6 +33,12 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="ClassicContextWindow.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorDataset.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorWindow.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

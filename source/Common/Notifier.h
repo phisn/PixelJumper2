@@ -42,7 +42,7 @@ namespace Util
 		}
 
 	private:
-		void notify(ListenerParameter... parameter)
+		virtual void notify(ListenerParameter... parameter)
 		{
 			for (const ListenerPair& listener : listeners)
 				listener.first(parameter...);
@@ -50,4 +50,20 @@ namespace Util
 
 		std::vector<ListenerPair> listeners;
 	};
+
+	/*
+	template <typename Parent, typename... ListenerParameter>
+	class LazyNotifier
+		:
+		public Notifer<Parent, ListenerParameters...>
+	{
+	public:
+		void process()
+		{
+		}
+
+	private:
+		bool 
+	};
+	*/
 }

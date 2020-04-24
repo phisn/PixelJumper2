@@ -107,13 +107,17 @@
   <ItemGroup>
     <ClCompile Include="ClassicContextWindow.cpp" />
     <ClCompile Include="ClassicWorldWindow.cpp" />
+    <ClCompile Include="EditorDataset.cpp" />
     <ClCompile Include="EditorScene.cpp" />
+    <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassicContextWindow.h" />
     <ClInclude Include="ClassicWorldWindow.h" />
+    <ClInclude Include="EditorDataset.h" />
     <ClInclude Include="EditorScene.h" />
+    <ClInclude Include="EditorWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

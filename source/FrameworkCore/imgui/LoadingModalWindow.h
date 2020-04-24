@@ -36,7 +36,7 @@ namespace Framework
 			);
 		}
 
-		void preWindow() override
+		bool makeWindow() override
 		{
 			ImGuiIO& io = ImGui::GetIO();
 			ImGui::SetNextWindowPos(
@@ -45,6 +45,7 @@ namespace Framework
 				ImVec2{ 1.f, 1.f });
 
 			ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, dimColor);
+			return IndependentModalWindow::makeWindow();
 		}
 
 		void postWindow() override

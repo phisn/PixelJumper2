@@ -35,32 +35,36 @@ namespace Framework
 	protected:
 		virtual bool begin()
 		{
+			bool wasActive = active;
+
 			if (active && !opened)
 			{
 				ImGui::OpenPopup(title.c_str());
-				opened = true;
 			}
 
-			bool result = makeWindow();
-			if (!result)
+			opened = makeWindow();
+
+			if (!opened)
 			{
 				postWindow();
 			}
 
-			if (!active && opened)
+			if (active != opened)
 			{
-				opened = false;
-
-				if (result)
+				if (opened)
 				{
 					ImGui::CloseCurrentPopup();
 					ImGui::EndPopup();
-				}
 
-				return false;
+					opened = false;
+				}
+				else
+				{
+					active = false;
+				}
 			}
 
-			return result;
+			return opened;
 		}
 
 		virtual void end()
@@ -138,7 +142,7 @@ namespace Framework
 	};
 
 	template <typename PopupWindow>
-	class IndependentPopupWindow
+	class IndependentPurePopupWindow
 		:
 		public PopupWindow
 	{
@@ -161,4 +165,7 @@ namespace Framework
 	protected:
 		virtual void onContent() = 0;
 	};
+
+	typedef IndependentPurePopupWindow<PopupWindow> IndependentPopupWindow;
+	typedef IndependentPurePopupWindow<ModalWindow> IndependentModalWindow;
 }

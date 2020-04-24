@@ -59,9 +59,10 @@ namespace Framework
 			}
 		}
 		
-		void preWindow() override
+		bool makeWindow() override
 		{
 			Framework::ImGuiSetRelativeNextWindowPos(ImVec2(0.5f, 0.5f));
+			return IndependentModalWindow::makeWindow();
 		}
 	};
 }
