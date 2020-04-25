@@ -57,6 +57,7 @@ namespace Framework
 
 					mousePressed = false;
 					primaryView.setCenter(mouseGridBegin + makeMouseGridOffset(
+						mouseBegin,
 						event.mouseButton.x,
 						event.mouseButton.y));
 					gridNeedUpdate = true;
@@ -69,6 +70,7 @@ namespace Framework
 					mouseMoved = true;
 
 					primaryView.setCenter(mouseGridBegin + makeMouseGridOffset(
+						mouseBegin,
 						event.mouseMove.x,
 						event.mouseMove.y));
 
@@ -165,6 +167,20 @@ namespace Framework
 			return renderTexture.mapPixelToCoords({ x, y }, primaryView);
 		}
 
+		sf::Vector2f makeMouseGridOffset(sf::Vector2i begin, int mouse_x, int mouse_y) const
+		{
+			sf::Vector2f mouseGridPosition = renderTexture.mapPixelToCoords(
+				sf::Vector2i(
+					mouse_x,
+					mouse_y
+				), primaryView);
+
+			sf::Vector2f mouseBeginPosition = renderTexture.mapPixelToCoords(
+				begin, primaryView);
+
+			return mouseBeginPosition - mouseGridPosition;
+		}
+
 	private:
 		sf::RenderTexture background;
 
@@ -175,20 +191,6 @@ namespace Framework
 
 		sf::Vector2i mouseBegin;
 		sf::Vector2f mouseGridBegin;
-
-		sf::Vector2f makeMouseGridOffset(int mouse_x, int mouse_y)
-		{
-			sf::Vector2f mouseGridPosition = renderTexture.mapPixelToCoords(
-				sf::Vector2i(
-					mouse_x,
-					mouse_y
-				), primaryView);
-
-			sf::Vector2f mouseBeginPosition = renderTexture.mapPixelToCoords(
-				mouseBegin, primaryView);
-
-			return mouseBeginPosition - mouseGridPosition;
-		}
 
 		// grid representation
 	private:
