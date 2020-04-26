@@ -1,13 +1,3 @@
-#classic resource
-- gamecore classicsiumulation is broken
--> currently all nearby worlds are loaded immedialty after entering a world
-   but the client often does not know their resources until requested. 
-# clients do not longer request resources from the server
-  the server does always send the client a new resource
--> the classicsimulation should be able to delay world initialization when
-   the parent needs to
--> the client enters a new world, the loading of other worlds is delayed first.
-   the server sends new resources, the client loads all resoruces
-# idea -> load every resource, that the server sends (might allow bad thinks?)
-- client needs updates for new classicclient changes and now many request
-  adjustments
+- nodes do only represent data from datasets and do not change data directly
+- popups are not dependent on nodes but dependent on data. they change data. these changes
+  are indirectly (though the window as a taskcontext buffer) made on the nodes
