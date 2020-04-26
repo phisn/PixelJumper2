@@ -4,6 +4,9 @@
     <Filter Include="source">
       <UniqueIdentifier>{328456e6-200b-46cb-b9c2-2c19db4ab7eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\classiccontext">
+      <UniqueIdentifier>{8753f425-59a7-476b-ab51-d2b74c3da79b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -15,14 +18,17 @@
     <ClCompile Include="ClassicWorldWindow.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="ClassicContextWindow.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="EditorDataset.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="EditorWindow.cpp">
       <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassicContextWorldNode.cpp">
+      <Filter>source\classiccontext</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassicContextWindow.cpp">
+      <Filter>source\classiccontext</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -32,14 +38,20 @@
     <ClInclude Include="ClassicWorldWindow.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextWindow.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="EditorDataset.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="EditorWindow.h">
       <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicContextWorldNode.h">
+      <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicContextWindow.h">
+      <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicContextNode.h">
+      <Filter>source\classiccontext</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -106,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClassicContextWindow.cpp" />
+    <ClCompile Include="ClassicContextWorldNode.cpp" />
     <ClCompile Include="ClassicWorldWindow.cpp" />
     <ClCompile Include="EditorDataset.cpp" />
     <ClCompile Include="EditorScene.cpp" />
@@ -113,7 +114,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClassicContextNode.h" />
     <ClInclude Include="ClassicContextWindow.h" />
+    <ClInclude Include="ClassicContextWorldNode.h" />
     <ClInclude Include="ClassicWorldWindow.h" />
     <ClInclude Include="EditorDataset.h" />
     <ClInclude Include="EditorScene.h" />

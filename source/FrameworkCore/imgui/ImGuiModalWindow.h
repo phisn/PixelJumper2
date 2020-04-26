@@ -114,7 +114,7 @@ namespace Framework
 		using PurePopupWindow::PurePopupWindow;
 
 	protected:
-		bool makeWindow() override
+		virtual bool makeWindow() override
 		{
 			return ImGui::BeginPopup(
 				title.c_str(),
@@ -132,7 +132,7 @@ namespace Framework
 	protected:
 		bool useActive;
 
-		bool makeWindow() override
+		virtual bool makeWindow() override
 		{
 			return ImGui::BeginPopupModal(
 				title.c_str(),

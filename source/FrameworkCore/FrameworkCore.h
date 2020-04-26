@@ -54,4 +54,15 @@ namespace Framework
 	}
 
 	const sf::Font& GetFont();
+
+	inline sf::FloatRect MakeViewRect(const sf::View& view)
+	{
+		return
+		{
+			view.getCenter().x - view.getSize().x / 2.f,
+			view.getCenter().y - view.getSize().y / 2.f,
+			view.getSize().x,
+			view.getSize().y
+		};
+	}
 }
