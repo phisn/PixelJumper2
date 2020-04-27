@@ -54,6 +54,9 @@
     <ClInclude Include="imgui\ImGuiGridWindow.h">
       <Filter>source\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="ArrowShape.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp">

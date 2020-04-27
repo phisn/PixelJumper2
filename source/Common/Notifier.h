@@ -1,25 +1,82 @@
 #pragma once
 
+#include "RandomModule.h"
+
 #include <functional>
 #include <vector>
 
 namespace Util
 {
+	typedef uint64_t NotifierListenerID;
+
+	template <typename NotifierT>
+	class NotifyListenerContainer
+	{
+	public:
+		typedef typename NotifierT::Listener Listener;
+
+		NotifyListenerContainer(NotifierT& notifier)
+			:
+			notifier(notifier),
+			id(NULL)
+		{
+		}
+
+		NotifyListenerContainer(NotifierT& notifier, Listener listener)
+			:
+			notifier(notifier)
+		{
+			id = notifier.addListener(listener);
+		}
+
+		~NotifyListenerContainer()
+		{
+			notifier.popListener(id);
+		}
+
+		void setListener(Listener listener)
+		{
+			if (id)
+				notifier.popListener(listener);
+
+			id = notifier.addListener(listener);
+		}
+
+	private:
+		NotifierT& notifier;
+		NotifierListenerID id;
+	};
+
 	template <typename Parent, typename... ListenerParameter>
 	class Notifier
 	{
 		friend Parent;
 
 	public:
-		typedef std::function<void(ListenerParameter...)> Listener;
-		typedef std::pair<Listener, size_t> ListenerPair;
+		typedef NotifyListenerContainer<
+			Notifier<Parent, ListenerParameter...>
+		> ListenerContainer;
 
-		void addListener(Listener listener, const size_t identifier = 0)
+		typedef std::function<void(ListenerParameter...)> Listener;
+		typedef std::pair<Listener, NotifierListenerID> ListenerPair;
+
+		NotifierListenerID addListener(Listener listener)
+		{
+			NotifierListenerID identifier = Module::Random::MakeRandom<NotifierListenerID>();
+
+			if (!identifier)
+				++identifier;
+
+			addListener(listener, identifier);
+			return identifier;
+		}
+
+		void addListener(Listener listener, NotifierListenerID identifier)
 		{
 			listeners.push_back(std::make_pair(listener, identifier));
 		}
 
-		void popListener(const size_t identifier)
+		void popListener(NotifierListenerID identifier)
 		{
 			decltype(listeners)::const_iterator iterator = listeners.cbegin();
 
@@ -63,7 +120,7 @@ namespace Util
 		}
 
 	private:
-		bool 
+		bool
 	};
 	*/
 }

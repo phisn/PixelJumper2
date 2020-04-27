@@ -8,11 +8,13 @@
 #include "FrameworkCore/FrameworkCore.h"
 #include "FrameworkCore/imgui/ImGuiGridWindow.h"
 #include "FrameworkCore/imgui/ImGuiModalWindow.h"
+#include "FrameworkCore/thor/Arrow.hpp"
 
 #include "imgui/imgui_stdlib.h"
 
 namespace Editor
 {
+	/*
 	// popup when no node was selected?
 	// needs to aquire classic context
 	class ClassicContextPopup
@@ -31,10 +33,10 @@ namespace Editor
 			ImGui::Button("hello world");
 		}
 	};
-
+	*/
 	struct ClassicContextWindowDataset
 	{
-		ClassicContext* classicContext;
+		ClassicContextDataset* classicContext;
 	};
 
 	// context is a grid that contains nodes
@@ -44,7 +46,8 @@ namespace Editor
 	class ClassicContextWindow
 		:
 		public Framework::ImGuiGridWindow,
-		public EditorWindow
+		public EditorWindow,
+		public ClassicContextWindowAccess
 	{
 		const sf::Color MouseMarkerColor = sf::Color::Color(60, 100, 180, 150);
 		const sf::Color MouseMarkerBorderColor = sf::Color::Color(50, 90, 180);
@@ -67,6 +70,10 @@ namespace Editor
 
 			nodes.push_back(node);
 			worlds.push_back(node);
+
+			mouseConnectArrow.setColor(sf::Color::White);
+			mouseConnectArrow.setDirection(120.f, 70.f);
+			mouseConnectArrow.setPosition(-20, -20);
 		}
 
 		~ClassicContextWindow()
@@ -88,44 +95,52 @@ namespace Editor
 			switch (event.type)
 			{
 			case sf::Event::EventType::MouseMoved:
-				if (mousePressed)
-				{
+				if (!mouseMoved)
 					mouseMoved = true;
 
-					if (mouseMarking)
-					{
-						mouseMarkingRect.setSize(
-							pixelToCoords(event.mouseMove.x, event.mouseMove.y) - mouseMarkingRect.getPosition()
-						);
-
-						for (ClassicContextNode* node : nodeSelected)
-						{
-							node->setStyle(Editor::ClassicContextNodeStyle::Classic);
-						}
-
-						nodeSelected.clear();
-
-						for (ClassicContextNode* node : nodes)
-							if (doesRectContainRect(mouseMarkingRect.getGlobalBounds(), node->getGlobalBounds()))
-							{
-								nodeSelected.push_back(node);
-								node->setStyle(Editor::ClassicContextNodeStyle::Selected);
-							}
-					}
-					else
-					{
-						assert(nodeSelected.size() == mouseNodeBegin.size());
-
-						for (int i = 0; i < nodeSelected.size(); ++i)
-							nodeSelected[i]->setPosition(mouseNodeBegin[i] - makeMouseGridOffset(
-								mouseBegin,
-								event.mouseMove.x,
-								event.mouseMove.y));
-					}
-				}
-				else
+				switch (mouseMode)
 				{
+				case MouseMode::Connect:
+
+
+					break;
+				case MouseMode::Drag:
+					assert(nodeSelected.size() == mouseNodeBegin.size());
+
+					for (int i = 0; i < nodeSelected.size(); ++i)
+						nodeSelected[i]->setPosition(mouseNodeBegin[i] - makeMouseGridOffset(
+							mouseBegin,
+							event.mouseMove.x,
+							event.mouseMove.y));
+					
+					break;
+				case MouseMode::Mark:
+					mouseMarkingRect.setSize(
+						pixelToCoords(event.mouseMove.x, event.mouseMove.y) - mouseMarkingRect.getPosition()
+					);
+
+					for (ClassicContextNode* node : nodeSelected)
+					{
+						node->setStyle(Editor::ClassicContextNodeStyle::Classic);
+					}
+
+					nodeSelected.clear();
+
+					for (ClassicContextNode* node : nodes)
+						if (doesRectContainRect(mouseMarkingRect.getGlobalBounds(), node->getGlobalBounds()))
+						{
+							nodeSelected.push_back(node);
+							node->setStyle(Editor::ClassicContextNodeStyle::Selected);
+						}
+					
+					break;
+				case MouseMode::None:
 					handleMouseHover(event.mouseMove.x, event.mouseMove.y);
+
+					break;
+				default:
+					assert(false);
+					break;
 				}
 
 				break;
@@ -136,14 +151,13 @@ namespace Editor
 					{
 					case sf::Mouse::Button::Left:
 						mouseBegin = { event.mouseButton.x, event.mouseButton.y };
-						mousePressed = true;
+						mouseMoved = false;
 
 						if (ClassicContextNode* node = findNodeByPoint(event.mouseButton.x, event.mouseButton.y); node)
 						{
 							node->setStyle(ClassicContextNodeStyle::Selected);
 
-							mouseMoved = false;
-							mouseMarking = false;
+							mouseMode = MouseMode::Drag;
 
 							if (mouseNodeBegin.size() > 0)
 								mouseNodeBegin.clear();
@@ -178,7 +192,8 @@ namespace Editor
 								event.mouseButton.x,
 								event.mouseButton.y));
 							mouseMarkingRect.setSize({ 0, 0 });
-							mouseMarking = true;
+
+							mouseMode = MouseMode::Mark;
 						}
 
 						break;
@@ -189,8 +204,7 @@ namespace Editor
 			case sf::Event::EventType::MouseButtonReleased:
 				if (event.mouseButton.button == sf::Mouse::Button::Left)
 				{
-					mousePressed = false;
-					mouseMarking = false;
+					mouseMode = MouseMode::None;
 
 					handleMouseHover(event.mouseButton.x, event.mouseButton.y);
 				}
@@ -199,7 +213,12 @@ namespace Editor
 			}
 		}
 
-		// drag, click and mark
+		void beginLink(ClassicWorldDataset* dataset) override
+		{
+			Log::Information(L"begin link", dataset->name, L"name");
+		}
+
+		// mouse specific
 	private:
 		ClassicContextNode* nodeHovered = NULL;
 
@@ -209,12 +228,20 @@ namespace Editor
 		sf::Clock doubleClickClock;
 		sf::RectangleShape mouseMarkingRect;
 
+		thor::Arrow mouseConnectArrow;
+
+		enum class MouseMode
+		{
+			None,
+			Drag,
+			Mark,
+			Connect
+		};
+
 		bool mouseMoved = true;
-		bool mouseMarking = false;
+		MouseMode mouseMode = MouseMode::None;
 
 		sf::Vector2i mouseBegin;
-
-		bool mousePressed = false;
 
 		void handleMouseHover(int x, int y)
 		{
@@ -242,17 +269,6 @@ namespace Editor
 			}
 		}
 
-		bool isNodeSelected(ClassicContextNode* node) const
-		{
-			for (ClassicContextNode* node_iter : nodeSelected)
-				if (node_iter == node)
-				{
-					return true;
-				}
-
-			return false;
-		}
-
 	private:
 		ClassicContextWindowDataset dataset;
 
@@ -266,11 +282,12 @@ namespace Editor
 			for (ClassicContextNode* node : nodes)
 				if (node->contains(point))
 				{
-					popupWindow = node->createPopupWindow();
+					popupWindow = node->createPopupWindow(this);
 					return;
 				}
 
 			// create common popup window
+#pragma message todo
 		}
 
 		void onDraw(sf::RenderTarget* target) override
@@ -280,10 +297,12 @@ namespace Editor
 			for (ClassicContextWorldNode* world : worlds)
 				world->draw(target);
 
-			if (mouseMarking)
+			if (mouseMode == MouseMode::Mark)
 			{
 				target->draw(mouseMarkingRect);
 			}
+
+			target->draw(mouseConnectArrow);
 		}
 
 		void processContent() override
@@ -296,6 +315,12 @@ namespace Editor
 			}
 		}
 
+		void constructConnectArrow()
+		{
+		}
+
+		// utility
+	private:
 		ClassicContextNode* findNodeByPoint(int x, int y) const
 		{
 			sf::Vector2f coord = pixelToCoords(x, y);
@@ -314,6 +339,17 @@ namespace Editor
 				&& (rect1.top < rect2.top + rect2.height)
 				&& (rect2.left < rect1.left + rect1.width)
 				&& (rect2.top < rect1.top + rect1.height);
+		}
+
+		bool isNodeSelected(ClassicContextNode* node) const
+		{
+			for (ClassicContextNode* node_iter : nodeSelected)
+				if (node_iter == node)
+				{
+					return true;
+				}
+
+			return false;
 		}
 	};
 }

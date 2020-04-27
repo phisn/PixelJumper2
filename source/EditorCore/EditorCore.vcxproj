@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassicContextNode.h" />
+    <ClInclude Include="ClassicContextPopup.h" />
     <ClInclude Include="ClassicContextWindow.h" />
     <ClInclude Include="ClassicContextWorldNode.h" />
     <ClInclude Include="ClassicWorldWindow.h" />

@@ -9,6 +9,56 @@
 
 namespace Editor
 {
+	class ClassicContextWorldNodePopup
+		:
+		public ClassicContextPopup
+	{
+		const int MaxNameSize = 16;
+		const float MaxPopupWidth = 100;
+
+	public:
+		ClassicContextWorldNodePopup(
+			ClassicContextWindowAccess* access,
+			ClassicWorldDataset* dataset)
+			:
+			ClassicContextPopup(access),
+			dataset(dataset),
+			inputText(dataset->name)
+		{
+			inputText.resize(MaxNameSize);
+			open();
+		}
+
+	private:
+		ClassicWorldDataset* dataset;
+
+		bool makeWindow() override
+		{
+			return Framework::IndependentPopupWindow::makeWindow();
+		}
+
+		void onContent() override
+		{
+			LazyDatasetChange datasetChange{ dataset };
+
+			if (ImGui::InputTextEx("###classicContextPopup_Name", "Name", &inputText[0], inputText.length() + 1, ImVec2{ MaxPopupWidth, 0 }, 0))
+			{
+				// autotrim after first \0
+				dataset->name = inputText.c_str();
+				datasetChange.notify();
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::Button("Connect to", ImVec2{ MaxPopupWidth, 0 }))
+			{
+				access->beginLink(dataset);
+			}
+		}
+
+		std::string inputText;
+	};
+
 	class ClassicContextWorldNode
 		:
 		public ClassicContextNode
@@ -33,60 +83,21 @@ namespace Editor
 			Style { FontColor, sf::Color::Color(80, 80, 80), sf::Color::Color(210, 210, 210), 3.f }
 		};
 
-		class ClassicContextWorldNodePopup
-			:
-			public Framework::IndependentPopupWindow
-		{
-			const int MaxNameSize = 16;
-			const float MaxPopupWidth = 100;
-
-		public:
-			ClassicContextWorldNodePopup(ClassicContextWorldNode* node)
-				:
-				node(node),
-				inputText(node->world->name)
-			{
-				inputText.resize(MaxNameSize);
-				open();
-			}
-
-		private:
-			ClassicContextWorldNode* node;
-
-			bool makeWindow() override
-			{
-				return Framework::IndependentPopupWindow::makeWindow();
-			}
-
-			void onContent() override
-			{
-				if (ImGui::InputTextEx("###classicContextPopup_Name", "Name", &inputText[0], inputText.length() + 1, ImVec2{ MaxPopupWidth, 0 }, 0))
-				{
-					node->setName(inputText.c_str());
-				}
-
-				ImGui::Separator();
-
-				if (ImGui::Button("Connect to", ImVec2{ MaxPopupWidth, 0 }))
-				{
-				}
-			}
-
-			std::string inputText;
-		};
-
 	public:
-		ClassicContextWorldNode(ClassicWorld* world)
+		ClassicContextWorldNode(ClassicWorldDataset* world)
 			:
-			world(world)
+			world(world),
+			worldListener(*world, [this]()
+				{
+					reconstructNodeContent();
+				})
 		{
 			name.setFont(Framework::GetFont());
 			name.setCharacterSize(30);
-			name.setString(world->name);
 
 			setStyle(ClassicContextNodeStyle::Classic);
 
-			reconstructNode();
+			reconstructNodeContent();
 		}
 
 		void draw(sf::RenderTarget* target)
@@ -95,17 +106,10 @@ namespace Editor
 			target->draw(name);
 		}
 
-		void setName(std::string name)
+		Framework::IndependentPopupWindow* createPopupWindow(
+			ClassicContextWindowAccess* access) override
 		{
-			world->name = name;
-			this->name.setString(world->name);
-
-			reconstructNode();
-		}
-
-		Framework::IndependentPopupWindow* createPopupWindow() override
-		{
-			return new ClassicContextWorldNodePopup{ this };
+			return new ClassicContextWorldNodePopup{ access, world };
 		}
 
 		void setStyle(ClassicContextNodeStyle styleType) override
@@ -140,12 +144,19 @@ namespace Editor
 		}
 
 	private:
-		ClassicWorld* world;
+		ClassicWorldDataset* world;
+		ClassicWorldDataset::ListenerContainer worldListener;
 
 		sf::RectangleShape rect;
 		sf::Text name;
 
-		void reconstructNode()
+		void reconstructNodeContent()
+		{
+			name.setString(world->name);
+			reconstructNodeSize();
+		}
+
+		void reconstructNodeSize()
 		{
 			sf::Vector2f size =
 			{

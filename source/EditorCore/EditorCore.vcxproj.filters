@@ -53,5 +53,8 @@
     <ClInclude Include="ClassicContextNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
+    <ClInclude Include="ClassicContextPopup.h">
+      <Filter>source\classiccontext</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

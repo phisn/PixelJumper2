@@ -1,3 +1,3 @@
 - nodes do only represent data from datasets and do not change data directly
 - popups are not dependent on nodes but dependent on data. they change data. these changes
-  are indirectly (though the window as a taskcontext buffer) made on the nodes
+  are indirectly (though the window as a taskcontext buffer)  made on the nodes

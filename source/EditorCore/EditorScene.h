@@ -63,7 +63,7 @@ namespace Scene
 		{
 			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 
-			Editor::ClassicWorld* world = new Editor::ClassicWorld;
+			Editor::ClassicWorldDataset* world = new Editor::ClassicWorldDataset;
 			world->name = "test world";
 			context.worlds.push_back(world);
 
@@ -94,7 +94,7 @@ namespace Scene
 		}
 
 	private:
-		Editor::ClassicContext context;
+		Editor::ClassicContextDataset context;
 		Editor::RootWindow rootWindow;
 
 		std::vector<Editor::EditorWindow*> windows;
