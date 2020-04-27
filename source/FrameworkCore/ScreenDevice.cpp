@@ -31,6 +31,8 @@ namespace Device
 				Resource::SettingsResourceDefinition))
 		{
 			screenResource = resource.content;
+
+			Log::Information(L"", screenResource.settings.antialiasingLevel, L"aa");
 		}
 		else
 		{

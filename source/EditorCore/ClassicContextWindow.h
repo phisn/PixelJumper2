@@ -6,9 +6,9 @@
 #include "EditorWindow.h"
 
 #include "FrameworkCore/FrameworkCore.h"
+#include "FrameworkCore/ArrowShape.h"
 #include "FrameworkCore/imgui/ImGuiGridWindow.h"
 #include "FrameworkCore/imgui/ImGuiModalWindow.h"
-#include "FrameworkCore/thor/Arrow.hpp"
 
 #include "imgui/imgui_stdlib.h"
 
@@ -58,7 +58,8 @@ namespace Editor
 	public:
 		ClassicContextWindow(const ClassicContextWindowDataset& dataset)
 			:
-			dataset(dataset)
+			dataset(dataset),
+			mouseConnectArrow(50.f, 70.f, 0.5f)
 		{
 			title = "ClassicContext";
 
@@ -72,8 +73,8 @@ namespace Editor
 			worlds.push_back(node);
 
 			mouseConnectArrow.setColor(sf::Color::White);
-			mouseConnectArrow.setDirection(120.f, 70.f);
-			mouseConnectArrow.setPosition(-20, -20);
+			mouseConnectArrow.setSource(-20, -20);
+			mouseConnectArrow.setDestination(120.f, 70.f);
 		}
 
 		~ClassicContextWindow()
@@ -228,7 +229,7 @@ namespace Editor
 		sf::Clock doubleClickClock;
 		sf::RectangleShape mouseMarkingRect;
 
-		thor::Arrow mouseConnectArrow;
+		Framework::ArrowShape mouseConnectArrow;
 
 		enum class MouseMode
 		{
