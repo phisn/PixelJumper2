@@ -105,6 +105,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClassicContextArrowNode.cpp" />
     <ClCompile Include="ClassicContextWindow.cpp" />
     <ClCompile Include="ClassicContextWorldNode.cpp" />
     <ClCompile Include="ClassicWorldWindow.cpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClassicContextArrowNode.h" />
     <ClInclude Include="ClassicContextNode.h" />
     <ClInclude Include="ClassicContextPopup.h" />
     <ClInclude Include="ClassicContextWindow.h" />

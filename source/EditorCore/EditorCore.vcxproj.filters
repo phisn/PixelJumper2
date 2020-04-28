@@ -30,6 +30,9 @@
     <ClCompile Include="ClassicContextWindow.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
+    <ClCompile Include="ClassicContextArrowNode.cpp">
+      <Filter>source\classiccontext</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
@@ -54,6 +57,9 @@
       <Filter>source\classiccontext</Filter>
     </ClInclude>
     <ClInclude Include="ClassicContextPopup.h">
+      <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicContextArrowNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
   </ItemGroup>

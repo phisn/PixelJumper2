@@ -58,8 +58,7 @@ namespace Editor
 	public:
 		ClassicContextWindow(const ClassicContextWindowDataset& dataset)
 			:
-			dataset(dataset),
-			mouseConnectArrow(50.f, 70.f, 0.5f)
+			dataset(dataset)
 		{
 			title = "ClassicContext";
 
@@ -98,6 +97,8 @@ namespace Editor
 			case sf::Event::EventType::MouseMoved:
 				if (!mouseMoved)
 					mouseMoved = true;
+
+				mouseConnectArrow.setDestination(pixelToCoords(event.mouseMove.x, event.mouseMove.y));
 
 				switch (mouseMode)
 				{
@@ -314,6 +315,26 @@ namespace Editor
 			{
 				popupWindow = NULL;
 			}
+
+			ImGui::Begin("arrow");
+			static float width = 0.f, headLength = 0.f, ratioHead = 0.f;
+
+			if (ImGui::SliderFloat("width", &width, 0.f, 400.f))
+			{
+				mouseConnectArrow.setWidth(width);
+			}
+
+			if (ImGui::SliderFloat("headLength", &headLength, 0.f, 400.f))
+			{
+				mouseConnectArrow.setHeadLength(headLength);
+			}
+
+			if (ImGui::SliderFloat("ratioHead", &ratioHead, 0.f, 1.f))
+			{
+				mouseConnectArrow.setRatioHead(ratioHead);
+			}
+
+			ImGui::End();
 		}
 
 		void constructConnectArrow()
