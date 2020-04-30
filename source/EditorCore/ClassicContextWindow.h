@@ -6,6 +6,7 @@
 #include "EditorWindow.h"
 
 #include "FrameworkCore/FrameworkCore.h"
+#include "FrameworkCore/BezierArrow.h"
 #include "FrameworkCore/ArrowShape.h"
 #include "FrameworkCore/imgui/ImGuiGridWindow.h"
 #include "FrameworkCore/imgui/ImGuiModalWindow.h"
@@ -231,6 +232,7 @@ namespace Editor
 		sf::RectangleShape mouseMarkingRect;
 
 		Framework::ArrowShape mouseConnectArrow;
+		Framework::BezierArrow bezierArrow;
 
 		enum class MouseMode
 		{
@@ -305,6 +307,7 @@ namespace Editor
 			}
 
 			target->draw(mouseConnectArrow);
+			target->draw(bezierArrow);
 		}
 
 		void processContent() override
@@ -317,21 +320,26 @@ namespace Editor
 			}
 
 			ImGui::Begin("arrow");
-			static float width = 0.f, headLength = 0.f, ratioHead = 0.f;
+			static sf::Vector2f source, target;
 
-			if (ImGui::SliderFloat("width", &width, 0.f, 400.f))
+			if (ImGui::SliderFloat("sourcex", &source.x, 0.f, 400.f))
 			{
-				mouseConnectArrow.setWidth(width);
+				bezierArrow.setSource(source);
 			}
 
-			if (ImGui::SliderFloat("headLength", &headLength, 0.f, 400.f))
+			if (ImGui::SliderFloat("sourcey", &source.y, 0.f, 400.f))
 			{
-				mouseConnectArrow.setHeadLength(headLength);
+				bezierArrow.setSource(source);
 			}
 
-			if (ImGui::SliderFloat("ratioHead", &ratioHead, 0.f, 1.f))
+			if (ImGui::SliderFloat("targetx", &target.x, 0.f, 400.f))
 			{
-				mouseConnectArrow.setRatioHead(ratioHead);
+				bezierArrow.setTarget(target);
+			}
+
+			if (ImGui::SliderFloat("targety", &target.y, 0.f, 400.f))
+			{
+				bezierArrow.setTarget(target);
 			}
 
 			ImGui::End();

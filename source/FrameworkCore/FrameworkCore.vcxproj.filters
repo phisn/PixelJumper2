@@ -57,6 +57,9 @@
     <ClInclude Include="ArrowShape.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="BezierArrow.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp">

@@ -41,5 +41,8 @@ namespace Editor
 
 	private:
 		Framework::ArrowShape shape;
+
+		ClassicContextWorldNode* destination;
+		ClassicContextWorldNode* source;
 	};
 }

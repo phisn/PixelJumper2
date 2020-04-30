@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrowShape.h" />
+    <ClInclude Include="BezierArrow.h" />
     <ClInclude Include="CrossShape.h" />
     <ClInclude Include="FrameworkCore.h" />
     <ClInclude Include="imgui\ImGuiGridWindow.h" />

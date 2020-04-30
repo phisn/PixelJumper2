@@ -12,7 +12,18 @@ namespace Framework
 		public ImGuiWindowComponent
 	{
 	public:
-		using ImGuiWindowComponent::ImGuiWindowComponent;
+		ImGuiRenderWindow()
+			:
+			ImGuiRenderWindow(WindowFlagsDefault)
+		{
+		}
+
+		ImGuiRenderWindow(ImGuiWindowFlags flags)
+			:
+			ImGuiWindowComponent(flags)
+		{
+			renderTexture.setSmooth(true);
+		}
 
 		void process()
 		{
