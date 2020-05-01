@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FrameworkCore/FrameworkCore.h"
+
 #include <SFML/Graphics.hpp>
 
 namespace Framework

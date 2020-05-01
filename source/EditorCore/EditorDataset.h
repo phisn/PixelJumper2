@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Common/Notifier.h"
+#include "Common/Property.h"
+#include "ResourceCore/WorldResource.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -11,7 +13,13 @@ namespace Editor
 		public Util::Notifier<Dataset>
 	{
 	public:
-		Dataset(Dataset* parent = NULL)
+		Dataset()
+			:
+			Dataset(NULL)
+		{
+		}
+
+		Dataset(Dataset* parent)
 			:
 			parent(parent)
 		{
@@ -73,9 +81,26 @@ namespace Editor
 		:
 		public Dataset
 	{
-		std::string name;
+		ClassicWorldDataset()
+			:
+			Dataset()
+		{
+			auto changeListener = [this]()
+			{
+				notify();
+			};
 
-		std::vector<WorldTileDataset> tiles;
+			worldID.addListener(changeListener);
+			name.addListener(changeListener);
+			transitive.addListener(changeListener);
+			tiles.addListener(changeListener);
+		}
+
+		Util::Property<Resource::WorldID> worldID;
+		Util::Property<std::string> name;
+
+		Util::Property<std::vector<ClassicWorldDataset*>> transitive;
+		Util::Property<std::vector<WorldTileDataset>> tiles;
 	};
 	
 	struct ClassicStageDataset

@@ -30,7 +30,7 @@
     <ClCompile Include="ClassicContextWindow.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
-    <ClCompile Include="ClassicContextArrowNode.cpp">
+    <ClCompile Include="ClassicContextConnectionNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClInclude Include="ClassicContextPopup.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextArrowNode.h">
+    <ClInclude Include="ClassicContextConnectionNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
   </ItemGroup>

@@ -71,10 +71,6 @@ namespace Editor
 
 			nodes.push_back(node);
 			worlds.push_back(node);
-
-			mouseConnectArrow.setColor(sf::Color::White);
-			mouseConnectArrow.setSource(-20, -20);
-			mouseConnectArrow.setDestination(120.f, 70.f);
 		}
 
 		~ClassicContextWindow()
@@ -99,7 +95,7 @@ namespace Editor
 				if (!mouseMoved)
 					mouseMoved = true;
 
-				mouseConnectArrow.setDestination(pixelToCoords(event.mouseMove.x, event.mouseMove.y));
+				    bezierArrow.setTarget(pixelToCoords(event.mouseMove.x, event.mouseMove.y));
 
 				switch (mouseMode)
 				{
@@ -231,7 +227,6 @@ namespace Editor
 		sf::Clock doubleClickClock;
 		sf::RectangleShape mouseMarkingRect;
 
-		Framework::ArrowShape mouseConnectArrow;
 		Framework::BezierArrow bezierArrow;
 
 		enum class MouseMode
@@ -306,7 +301,6 @@ namespace Editor
 				target->draw(mouseMarkingRect);
 			}
 
-			target->draw(mouseConnectArrow);
 			target->draw(bezierArrow);
 		}
 
@@ -320,26 +314,33 @@ namespace Editor
 			}
 
 			ImGui::Begin("arrow");
-			static sf::Vector2f source, target;
-
-			if (ImGui::SliderFloat("sourcex", &source.x, 0.f, 400.f))
+			
+			static bool side0 = true;
+			if (ImGui::Checkbox("vertical0", &side0))
 			{
-				bezierArrow.setSource(source);
+				bezierArrow.setSourceSide(side0 ? Framework::BezierArrow::Side::Vertical : Framework::BezierArrow::Side::Horizontal);
 			}
 
-			if (ImGui::SliderFloat("sourcey", &source.y, 0.f, 400.f))
+			static bool side1 = true;
+			if (ImGui::Checkbox("vertical1", &side1))
 			{
-				bezierArrow.setSource(source);
+				bezierArrow.setTargetSide(side1 ? Framework::BezierArrow::Side::Vertical : Framework::BezierArrow::Side::Horizontal);
 			}
 
-			if (ImGui::SliderFloat("targetx", &target.x, 0.f, 400.f))
+			static int radio = 0;
+			if (ImGui::RadioButton("default", &radio, 0))
 			{
-				bezierArrow.setTarget(target);
+				bezierArrow.setMode(Framework::BezierArrow::Mode::Default);
 			}
 
-			if (ImGui::SliderFloat("targety", &target.y, 0.f, 400.f))
+			if (ImGui::RadioButton("reversed", &radio, 1))
 			{
-				bezierArrow.setTarget(target);
+				bezierArrow.setMode(Framework::BezierArrow::Mode::Reversed);
+			}
+
+			if (ImGui::RadioButton("doubled", &radio, 2))
+			{
+				bezierArrow.setMode(Framework::BezierArrow::Mode::Doubled);
 			}
 
 			ImGui::End();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ClassicContextNode.h"
+#include "ClassicContextConnectionNode.h"
 #include "EditorDataset.h"
 
 #include "FrameworkCore/FrameworkCore.h"
@@ -150,6 +151,28 @@ namespace Editor
 		sf::RectangleShape rect;
 		sf::Text name;
 
+		struct Connection
+		{
+			bool out = false;
+
+			ClassicContextWorldNode* worldNode;
+			ClassicContextConnectionNode* node;
+		};
+
+		typedef std::pair<ClassicContextWorldNode*, ClassicContextConnectionNode*> ConnectionPair;
+		std::vector<ConnectionPair> connections;
+
+		void reconstructConnections()
+		{
+			for (ClassicWorldDataset* transitive : this->world->transitive)
+			{
+				bool found;
+
+				//for (ConnectionPair& pair : connections)
+				//	if ()
+			}
+		}
+
 		void reconstructNodeContent()
 		{
 			name.setString(world->name);
@@ -171,6 +194,7 @@ namespace Editor
 		void reconstructNodePosition()
 		{
 			name.setPosition(sf::Vector2f(sf::Vector2i(rect.getPosition() + Padding)));
+			reconstructConnections();
 		}
 	};
 }

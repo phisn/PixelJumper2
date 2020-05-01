@@ -25,8 +25,32 @@ namespace Framework
 
 		BezierArrow()
 			:
-			vertex{ sf::PrimitiveType::TriangleStrip }
+			vertex{ sf::PrimitiveType::LineStrip }
 		{
+		}
+
+		void setHeadWidthRatio(float headWidthRatio)
+		{
+			this->headWidthRatio = headWidthRatio;
+			needsUpdate = true;
+		}
+
+		void setHeadLengthRatio(float headLengthRatio)
+		{
+			this->headLengthRatio = headLengthRatio;
+			needsUpdate = true;
+		}
+
+		void setWidth(float width)
+		{
+			this->width = width;
+			needsUpdate = true;
+		}
+
+		void setDensity(float density)
+		{
+			this->density = density;
+			needsUpdate = true;
 		}
 
 		void setSource(sf::Vector2f source)
@@ -41,6 +65,40 @@ namespace Framework
 			needsUpdate = true;
 		}
 
+		void setMode(Mode mode)
+		{
+			this->mode = mode;
+			needsUpdate = true;
+		}
+
+		void setSourceSide(Side side)
+		{
+			this->sourceSide = side;
+			needsUpdate = true;
+		}
+
+		void setTargetSide(Side side)
+		{
+			this->targetSide = side;
+			needsUpdate = true;
+		}
+
+		void setColor(sf::Color color)
+		{
+			this->bodyColor = color;
+			needsUpdate = true;
+		}
+
+		sf::Vector2f getSource() const
+		{
+			return source;
+		}
+
+		sf::Vector2f getTarget() const
+		{
+			return target;
+		}
+
 	private:
 		mutable sf::VertexArray vertex;
 
@@ -48,12 +106,12 @@ namespace Framework
 		float headLengthRatio = 1.0f;
 
 		float width = 8.f;
-		float density = 1.f;
+		float density = 0.1f;
 
 		sf::Vector2f source = { 0, 0 };
 		sf::Vector2f target = { 200, 200 };
 
-		Side sourceSide = Side::Horizontal;
+		Side sourceSide = Side::Vertical;
 		Side targetSide = Side::Horizontal;
 
 		Mode mode = Mode::Default;
@@ -116,9 +174,8 @@ namespace Framework
 			if (mode != Mode::Default)
 			{
 				bezierSource = source + (sourceSide == Side::Vertical
-					? sf::Vector2f{ 0, headLength }
-					: sf::Vector2f{ headLength, 0 }) *
-					(source.y > target.y ? -1.f : 1.f);
+					? sf::Vector2f{ 0, headLength } * (source.y > target.y ? -1.f : 1.f)
+					: sf::Vector2f{ headLength, 0 } * (source.x > target.x ? -1.f : 1.f));
 			}
 			else
 			{
@@ -129,9 +186,8 @@ namespace Framework
 			if (mode != Mode::Reversed)
 			{
 				bezierTarget = target + (targetSide == Side::Vertical
-					? sf::Vector2f{ 0, headLength }
-					: sf::Vector2f{ headLength, 0 }) *
-					(target.y > source.y ? -1.f : 1.f);
+					? sf::Vector2f{ 0, headLength } * (source.y < target.y ? -1.f : 1.f)
+					: sf::Vector2f{ headLength, 0 } * (source.x < target.x ? -1.f : 1.f));
 			}
 			else
 			{
@@ -143,24 +199,29 @@ namespace Framework
 			sf::Vector2f bezierDirection = bezierTarget - bezierSource;
 			float bezierDirectionLength = sqrtf(bezierDirection.x * bezierDirection.x + bezierDirection.y * bezierDirection.y);
 
-			float bezierPointsCount = std::ceil(bezierDirectionLength * density);
+			// using distance based point selection to prevent
+			// too high or too low frequency
+			float bezierPointMinDistance = 1 / (density);
+			float bezierPointsCount = std::ceil(bezierDirectionLength * density) * 4;
 
 			std::vector<sf::Vector2f> bezierPoints;
 			bezierPoints.reserve(bezierPointsCount);
 
 			if (sourceSide == targetSide)
 			{
+				const float strength = 0.7;
+
 				sf::Vector2f p0, p1;
 
 				if (sourceSide == Side::Vertical)
 				{
-					p0 = { bezierSource.x, bezierTarget.y };
-					p1 = { bezierTarget.x, bezierSource.y };
+					p0 = { bezierSource.x, bezierTarget.y * strength + bezierSource.y * (1 - strength) };
+					p1 = { bezierTarget.x, bezierSource.y * strength + bezierTarget.y * (1 - strength) };
 				}
 				else
 				{
-					p0 = { bezierTarget.x, bezierSource.y };
-					p1 = { bezierSource.x, bezierTarget.y };
+					p0 = { bezierTarget.x * strength + bezierSource.x * (1 - strength), bezierSource.y };
+					p1 = { bezierSource.x * strength + bezierTarget.x * (1 - strength), bezierTarget.y };
 				}
 
 				float step = 1.f / (bezierPointsCount - 1);
@@ -175,14 +236,23 @@ namespace Framework
 						p1 * (3 * inv_t * t * t) +
 						bezierTarget * (t * t * t);
 
+					if (bezierPoints.size() > 0)
+					{
+						sf::Vector2f bezierPointDifference = bezierPoint - bezierPoints.back();
+
+						if (sqrtf(bezierPointDifference.x * bezierPointDifference.x +
+								  bezierPointDifference.y * bezierPointDifference.y) < bezierPointMinDistance)
+							continue;
+					}
+						
 					bezierPoints.push_back(bezierPoint);
 				}
 			}
 			else
 			{
 				sf::Vector2f p0 = sourceSide == Side::Vertical
-					? sf::Vector2f{ bezierTarget.y, bezierSource.x }
-					: sf::Vector2f{ bezierSource.y, bezierTarget.x };
+					? sf::Vector2f{ bezierSource.x, bezierTarget.y }
+					: sf::Vector2f{ bezierTarget.x, bezierSource.y };
 
 				float step = 1.f / (bezierPointsCount - 1);
 				for (int i = 0; i < bezierPointsCount; ++i)
@@ -194,6 +264,15 @@ namespace Framework
 						bezierSource * (inv_t * inv_t) +
 						p0 * (2 * inv_t * t) + 
 						bezierTarget * (t * t);
+
+					if (bezierPoints.size() > 0)
+					{
+						sf::Vector2f bezierPointDifference = bezierPoint - bezierPoints.back();
+
+						if (sqrtf(bezierPointDifference.x * bezierPointDifference.x +
+								  bezierPointDifference.y * bezierPointDifference.y) < bezierPointMinDistance)
+							continue;
+					}
 
 					bezierPoints.push_back(bezierPoint);
 				}
@@ -231,7 +310,7 @@ namespace Framework
 			// skip first and last bezier point
 			int bezier_index = 1;
 
-			while (bezier_index < bezierPointsCount - 1)
+			while (bezier_index < bezierPoints.size() - 1)
 			{
 				// bezierPoints[bezier_index + 1] + bezierPoints[bezier_index - 1]
 				
@@ -255,18 +334,8 @@ namespace Framework
 				float p0_scale = (outer_length + bezierWidth / 2.f) / outer_length;
 				float p1_scale = (outer_length - bezierWidth / 2.f) / outer_length;
 
-				sf::Vector2f vertex0, vertex1;
-
-				if ((int) (outer_direction.y * 10000) <= 0)
-				{
-					vertex0 = outer_direction_position + outer_direction * p1_scale;
-					vertex1 = outer_direction_position + outer_direction * p0_scale;
-				}
-				else
-				{
-					vertex0 = outer_direction_position + outer_direction * p0_scale;
-					vertex1 = outer_direction_position + outer_direction * p1_scale;
-				}
+				sf::Vector2f vertex0 = outer_direction_position + outer_direction * p0_scale;
+				sf::Vector2f vertex1 = outer_direction_position + outer_direction * p1_scale;
 
 				if (!std::isnan(vertex0.x + vertex0.y + vertex1.x + vertex1.y))
 				{
@@ -303,7 +372,7 @@ namespace Framework
 			{
 				vertex.append(sf::Vertex{ target, bodyColor });
 
-				if (sourceSide == Side::Vertical)
+				if (targetSide == Side::Vertical)
 				{
 					if (source.y > target.y)
 					{

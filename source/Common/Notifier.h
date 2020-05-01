@@ -97,6 +97,11 @@ namespace Util
 		{
 			listeners.clear();
 		}
+		
+		ListenerContainer makeListenerContainer()
+		{
+			return ListenerContainer{ *this };
+		}
 
 	private:
 		virtual void notify(ListenerParameter... parameter)
