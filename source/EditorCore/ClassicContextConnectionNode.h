@@ -38,6 +38,10 @@ namespace Editor
 			return shape.getPosition();
 		}
 
+		void setEndpointPosition(sf::Vector2f position)
+		{
+		}
+
 	private:
 		Framework::ArrowShape shape;
 	};

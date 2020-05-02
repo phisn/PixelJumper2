@@ -10,6 +10,9 @@ namespace Editor
 {
 	struct ClassicContextWindowAccess
 	{
+		virtual void createLink(
+			ClassicWorldDataset* source, 
+			ClassicWorldDataset* target) = 0;
 		virtual void beginLink(ClassicWorldDataset* dataset) = 0;
 	};
 

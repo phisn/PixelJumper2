@@ -85,11 +85,15 @@ namespace Editor
 		};
 
 	public:
-		ClassicContextWorldNode(ClassicWorldDataset* world)
+		ClassicContextWorldNode(
+			ClassicContextWindowAccess* access,
+			ClassicWorldDataset* world)
 			:
+			access(access),
 			world(world),
-			worldListener(*world, [this]()
+			worldDatasetListener(*world, [this]()
 				{
+					reconstructConnections();
 					reconstructNodeContent();
 				})
 		{
@@ -107,8 +111,7 @@ namespace Editor
 			target->draw(name);
 		}
 
-		Framework::IndependentPopupWindow* createPopupWindow(
-			ClassicContextWindowAccess* access) override
+		Framework::IndependentPopupWindow* createPopupWindow() override
 		{
 			return new ClassicContextWorldNodePopup{ access, world };
 		}
@@ -134,6 +137,11 @@ namespace Editor
 			return rect.getPosition();
 		}
 
+		sf::Vector2f getSize() const
+		{
+			return rect.getSize();
+		}
+
 		sf::FloatRect getGlobalBounds() override
 		{
 			return rect.getGlobalBounds();
@@ -145,8 +153,10 @@ namespace Editor
 		}
 
 	private:
+		ClassicContextWindowAccess* access;
 		ClassicWorldDataset* world;
-		ClassicWorldDataset::ListenerContainer worldListener;
+
+		ClassicWorldDataset::ListenerContainer worldDatasetListener;
 
 		sf::RectangleShape rect;
 		sf::Text name;
@@ -159,19 +169,7 @@ namespace Editor
 			ClassicContextConnectionNode* node;
 		};
 
-		typedef std::pair<ClassicContextWorldNode*, ClassicContextConnectionNode*> ConnectionPair;
-		std::vector<ConnectionPair> connections;
-
-		void reconstructConnections()
-		{
-			for (ClassicWorldDataset* transitive : this->world->transitive)
-			{
-				bool found;
-
-				//for (ConnectionPair& pair : connections)
-				//	if ()
-			}
-		}
+		std::vector<Connection> connections;
 
 		void reconstructNodeContent()
 		{
@@ -194,7 +192,135 @@ namespace Editor
 		void reconstructNodePosition()
 		{
 			name.setPosition(sf::Vector2f(sf::Vector2i(rect.getPosition() + Padding)));
-			reconstructConnections();
+
+			// reconstruct positions only for this node and
+			// notify other nodes directly because a calling chain
+			// is not needed when just our positions changes
+			reconstructConnectionsPosition();
+
+			for (Connection& connection : connections)
+				connection.worldNode->reconstructConnectionsPosition();
+		}
+
+		void reconstructConnectionsPosition()
+		{
+			typedef std::pair<float, Connection&> ConnectionOffsetPair;
+
+			enum Side
+			{
+				Top,
+				Left,
+				Bottom,
+				Right
+			};
+
+			std::vector<ConnectionOffsetPair> connections_per_side[4];
+
+			for (int i = 0; i < 4; ++i)
+				connections_per_side[i].reserve(connections.size());
+
+			for (Connection& connection : connections)
+			{
+				sf::Vector2f offset = connection.worldNode->rect.getPosition() + rect.getPosition();
+
+				sf::FloatRect src_gb = getGlobalBounds();
+				sf::FloatRect tgt_gb = connection.worldNode->getGlobalBounds();
+
+				if (src_gb.top > tgt_gb.top)
+				{
+					sf::Vector2f top_offset = offset - sf::Vector2f{ src_gb.left / 2.f, 0 };
+					connections_per_side[Top].emplace_back(
+						sqrtf(top_offset.x * top_offset.x + top_offset.y * top_offset.y),
+						connection);
+				}
+				else
+				{
+					sf::Vector2f bottom_offset = offset - sf::Vector2f{ src_gb.left / 2.f, src_gb.top };
+					connections_per_side[Bottom].emplace_back(
+						sqrtf(bottom_offset.x * bottom_offset.x + bottom_offset.y * bottom_offset.y),
+						connection);
+				}
+
+				if (src_gb.left > tgt_gb.left)
+				{
+					sf::Vector2f left_offset = offset - sf::Vector2f{ 0, rect.getSize().x / 2.f };
+					connections_per_side[Left].emplace_back(
+						sqrtf(left_offset.x * left_offset.x + left_offset.y * left_offset.y),
+						connection);
+				}
+				else
+				{
+					sf::Vector2f right_offset = offset - sf::Vector2f{ rect.getSize().x, rect.getSize().x / 2.f };
+					connections_per_side[Right].emplace_back(
+						sqrtf(right_offset.x * right_offset.x + right_offset.y * right_offset.y),
+						connection);
+				}
+			}
+
+			for (int i = 0; i < 4; ++i)
+				std::sort(
+					connections_per_side[i].begin(),
+					connections_per_side[i].end(),
+					[](ConnectionOffsetPair& p0, ConnectionOffsetPair& p1)
+					{
+						return p0.first > p1.first;
+					});
+
+			std::vector<ClassicContextConnectionNode*> doneNodes;
+			doneNodes.reserve(connections.size());
+
+			int index_counter[4] = { };
+
+			while (doneNodes.size() != connections.size())
+			{
+				for (int side = 0; side < 4; ++side)
+					if (index_counter[side] < connections_per_side[side].size() - 1)
+					{
+						Connection& connection = connections_per_side[side][index_counter[side]++].second;
+
+						if (std::find(doneNodes.begin(), doneNodes.end(), connection.node)
+							== doneNodes.end())
+						{
+							doneNodes.push_back(connection.node);
+
+//							connection.node->
+
+							if (doneNodes.size() == connections.size())
+							{
+								break;
+							}
+						}
+					}
+			}
+		}
+
+		void reconstructConnections()
+		{
+			for (ClassicWorldDataset* transitive : this->world->transitive)
+			{
+				enforceConnection(transitive);
+			}
+		}
+
+		void enforceConnection(ClassicWorldDataset* world)
+		{
+			for (Connection& connection : connections)
+				if (connection.worldNode->world == world)
+				{
+					if (!connection.out)
+					{
+						// need to add double ended output
+						// call node for add
+						assert(true);
+					}
+
+					return;
+				}
+
+			// window handles node creation
+			// if target wants to connect too he
+			// can do it later on event
+			access->createLink(this->world, world);
 		}
 	};
 }

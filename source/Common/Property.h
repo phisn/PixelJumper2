@@ -92,6 +92,7 @@ namespace Util
 		VectorProperty,
 		ContainerMapProperty,
 		ContainerVectorProperty,
+		StringProperty,
 		ArithmeticProperty,
 		PointerProperty
 	};
@@ -130,6 +131,12 @@ namespace Util
 	struct DeterminePropertyType<std::vector<T>, void>
 	{
 		static const BasicPropertyType type = BasicPropertyType::ContainerVectorProperty;
+	};
+
+	template <typename T>
+	struct DeterminePropertyType<std::basic_string<T>, void>
+	{
+		static const BasicPropertyType type = BasicPropertyType::StringProperty;
 	};
 
 	template <typename T, 
@@ -456,6 +463,8 @@ namespace Util
 		using vector::vector;
 
 		Property()
+			:
+			vector()
 		{
 		}
 

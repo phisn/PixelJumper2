@@ -25,8 +25,7 @@ namespace Editor
 		{
 		}
 
-		virtual Framework::IndependentPopupWindow* createPopupWindow(
-			ClassicContextWindowAccess* access) = 0;
+		virtual Framework::IndependentPopupWindow* createPopupWindow() = 0;
 
 		virtual void setPosition(sf::Vector2f position) = 0;
 		virtual void setStyle(ClassicContextNodeStyle style) = 0;

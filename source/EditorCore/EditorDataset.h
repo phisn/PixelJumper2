@@ -13,30 +13,7 @@ namespace Editor
 		public Util::Notifier<Dataset>
 	{
 	public:
-		Dataset()
-			:
-			Dataset(NULL)
-		{
-		}
-
-		Dataset(Dataset* parent)
-			:
-			parent(parent)
-		{
-		}
-
-		void notify()
-		{
-			Notifier::notify();
-
-			if (parent)
-			{
-				parent->notify();
-			}
-		}
-
-	private:
-		Dataset* parent;
+		using Notifier::notify;
 	};
 
 	class LazyDatasetChange
@@ -77,6 +54,13 @@ namespace Editor
 		sf::Vector2i size;
 	};
 
+	struct WorldTileListDataset
+		:
+		public Dataset
+	{
+		std::vector<WorldTileDataset> tiles;
+	};
+
 	struct ClassicWorldDataset
 		:
 		public Dataset
@@ -85,22 +69,13 @@ namespace Editor
 			:
 			Dataset()
 		{
-			auto changeListener = [this]()
-			{
-				notify();
-			};
-
-			worldID.addListener(changeListener);
-			name.addListener(changeListener);
-			transitive.addListener(changeListener);
-			tiles.addListener(changeListener);
 		}
 
-		Util::Property<Resource::WorldID> worldID;
-		Util::Property<std::string> name;
+		Resource::WorldID worldID;
+		std::string name;
 
-		Util::Property<std::vector<ClassicWorldDataset*>> transitive;
-		Util::Property<std::vector<WorldTileDataset>> tiles;
+		std::vector<ClassicWorldDataset*> transitive;
+		WorldTileListDataset listDataset;
 	};
 	
 	struct ClassicStageDataset

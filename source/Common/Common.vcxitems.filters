@@ -33,9 +33,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Notifier.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\phisn\source\repos\PixelJumper2\source\Common\Property.h">
-      <Filter>source</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Property.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)EncryptionModule.cpp">
@@ -50,8 +48,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Notifier.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\phisn\source\repos\PixelJumper2\source\Common\Property.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Property.cpp" />
   </ItemGroup>
 </Project>
