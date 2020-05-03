@@ -33,7 +33,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Notifier.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Property.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Property.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)EncryptionModule.cpp">
@@ -48,6 +50,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Notifier.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Property.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Property.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

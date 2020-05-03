@@ -4,7 +4,7 @@
 
 namespace Util
 {
-	template <typename _DT, typename _Property = Property<_DT>>
+	/*template <typename _DT, typename _Property = Property<_DT>>
 	class DependentProperty
 		:
 		public _Property
@@ -45,7 +45,7 @@ namespace Util
 		void addDependence(::Util::Property<S>* const dependence)
 		{
 			dependencies.push_back(std::make_pair(
-				dependence->addIndependentListener([this]()
+				dependence->addListener([this]()
 					{
 						setValue(definition());
 					}),
@@ -65,7 +65,7 @@ namespace Util
 		typedef std::vector<Dependence> DependenceContainer;
 	
 		DependenceContainer dependencies;
-	};
+	};*/
 
 	template <typename T, BasicPropertyType = DeterminePropertyType<T>::type>
 	class AutomaticProperty
@@ -153,7 +153,7 @@ namespace Util
 		{
 			if (!needsUpdate)
 			{
-				oldValue = std::move(this->value);
+				notify();
 				needsUpdate = true;
 			}
 
@@ -164,8 +164,7 @@ namespace Util
 		{
 			if (force || needsUpdate)
 			{
-				valueChanged(std::move(oldValue));
-
+				notify();
 				needsUpdate = false;
 				return true;
 			}
@@ -221,7 +220,6 @@ namespace Util
 		using Base::operator*;
 
 		using Base::addListener;
-		using Base::addIndependentListener;
 
 		using Base::getValue;
 	};

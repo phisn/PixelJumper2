@@ -8,8 +8,10 @@
 
 namespace Editor
 {
+	struct ClassicContextConnectionNode;
 	struct ClassicContextWindowAccess
 	{
+		virtual void removeLink(ClassicContextConnectionNode* node) = 0;
 		virtual void createLink(
 			ClassicWorldDataset* source, 
 			ClassicWorldDataset* target) = 0;

@@ -104,7 +104,7 @@ namespace Util
 		}
 
 	private:
-		virtual void notify(ListenerParameter... parameter)
+		virtual void notify(ListenerParameter... parameter) const
 		{
 			for (const ListenerPair& listener : listeners)
 				listener.first(parameter...);

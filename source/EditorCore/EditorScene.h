@@ -63,9 +63,17 @@ namespace Scene
 		{
 			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 
-			Editor::ClassicWorldDataset* world = new Editor::ClassicWorldDataset;
-			world->name = "test world";
-			context.worlds.push_back(world);
+			Editor::ClassicWorldDataset* world0 = new Editor::ClassicWorldDataset;
+			world0->name = "test world";
+			context.worlds.push_back(world0);
+
+			Editor::ClassicWorldDataset* world1 = new Editor::ClassicWorldDataset;
+			world1->name = "test world 2";
+			context.worlds.push_back(world1);
+
+			Editor::ClassicWorldDataset* world2 = new Editor::ClassicWorldDataset;
+			world2->name = "test world 3";
+			context.worlds.push_back(world2);
 
 			Editor::ClassicContextWindowDataset dataset;
 			dataset.classicContext = &context;

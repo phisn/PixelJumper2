@@ -89,6 +89,11 @@ namespace Framework
 			needsUpdate = true;
 		}
 
+		Mode getMode() const
+		{
+			return mode;
+		}
+
 		sf::Vector2f getSource() const
 		{
 			return source;

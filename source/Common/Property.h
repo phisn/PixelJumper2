@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Notifier.h"
+
 #include <functional>
 #include <vector>
 
@@ -25,6 +27,10 @@ namespace Util
 		PropertyBase(const PropertyBase&) = delete;
 
 	public:
+		PropertyBase()
+		{
+		}
+
 		typedef Util::Notifier<PropertyBase> NotifierT;
 
 		using NotifierT::notify;
@@ -77,7 +83,7 @@ namespace Util
 			if (value != this->value)
 			{
 				this->value = T(value);
-				this->valueChanged();
+				notify();
 			}
 		}
 
@@ -193,10 +199,10 @@ namespace Util
 
 		Property& operator+=(const _T z)
 		{
-			if (z != 0)
+			if (z != sf::Vector2<E>{ 0, 0 })
 			{
 				value += z;
-				notify(z);
+				notify();
 			}
 
 			return *this;
@@ -204,7 +210,7 @@ namespace Util
 
 		Property& operator-=(const _T z)
 		{
-			if (z != 0)
+			if (z != sf::Vector2<E>{ 0, 0 })
 			{
 				value -= z;
 				notify();
@@ -453,7 +459,7 @@ namespace Util
 		Value value;
 	};
 
-	template <typename T>
+	/*template <typename T>
 	class Property<std::vector<T>, BasicPropertyType::ContainerVectorProperty>
 		:
 		public PropertyBase,
@@ -501,7 +507,7 @@ namespace Util
 			notify();
 			return temp;
 		}
-	};
+	};*/
 }
 
 // need special for auto casting between

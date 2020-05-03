@@ -47,9 +47,6 @@
     <ClInclude Include="EditorWindow.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextWorldNode.h">
-      <Filter>source\classiccontext</Filter>
-    </ClInclude>
     <ClInclude Include="ClassicContextWindow.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
@@ -60,6 +57,9 @@
       <Filter>source\classiccontext</Filter>
     </ClInclude>
     <ClInclude Include="ClassicContextConnectionNode.h">
+      <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicContextWorldNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
   </ItemGroup>

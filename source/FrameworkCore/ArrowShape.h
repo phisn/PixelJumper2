@@ -65,16 +65,19 @@ namespace Framework
 
 				if (mode == ArrowShapeMode::Doubled)
 				{
+					this->mode = mode;
+
 					vertex.resize(10);
 					setColor(color);
 				}
 				else if (this->mode == ArrowShapeMode::Doubled)
 				{
+					this->mode = mode;
+
 					vertex.resize(8);
 					setColor(color);
 				}
 
-				this->mode = mode;
 				needsUpdate = true;
 			}
 		}
@@ -203,8 +206,9 @@ namespace Framework
 		{
 			if (needsUpdate)
 				construct();
-
-			target.draw(vertex, states);
+			
+			if (source != destination)
+				target.draw(vertex, states);
 		}
 
 		void construct() const

@@ -54,6 +54,7 @@ namespace Editor
 			if (ImGui::Button("Connect to", ImVec2{ MaxPopupWidth, 0 }))
 			{
 				access->beginLink(dataset);
+				closeWindow();
 			}
 		}
 
@@ -105,6 +106,17 @@ namespace Editor
 			reconstructNodeContent();
 		}
 
+		void addConnection(
+			ClassicContextWorldNode* worldNode,
+			ClassicContextConnectionNode* node)
+		{
+			Connection& connection = connections.emplace_back();
+
+			// use dataset to indirectly change out
+			connection.node = node;
+			connection.worldNode = worldNode;
+		}
+
 		void draw(sf::RenderTarget* target)
 		{
 			target->draw(rect);
@@ -150,6 +162,11 @@ namespace Editor
 		bool contains(sf::Vector2f point) const override
 		{
 			return rect.getGlobalBounds().contains(point);
+		}
+
+		ClassicWorldDataset* getWorld()
+		{
+			return world;
 		}
 
 	private:
@@ -214,49 +231,58 @@ namespace Editor
 				Right
 			};
 
+			sf::FloatRect src_gb = getGlobalBounds();
+			sf::Vector2f offset_side[4] = 
+			{
+				sf::Vector2f{ src_gb.left / 2.f, 0 },
+				sf::Vector2f{ 0, src_gb.top / 2.f },
+				sf::Vector2f{ src_gb.left / 2.f, src_gb.top },
+				sf::Vector2f{ src_gb.left, src_gb.top / 2.f }
+			};
+
 			std::vector<ConnectionOffsetPair> connections_per_side[4];
 
 			for (int i = 0; i < 4; ++i)
 				connections_per_side[i].reserve(connections.size());
 
+			// sort connections to possible sides
 			for (Connection& connection : connections)
 			{
 				sf::Vector2f offset = connection.worldNode->rect.getPosition() + rect.getPosition();
-
-				sf::FloatRect src_gb = getGlobalBounds();
 				sf::FloatRect tgt_gb = connection.worldNode->getGlobalBounds();
 
-				if (src_gb.top > tgt_gb.top)
+				if (src_gb.top > tgt_gb.top + tgt_gb.height)
 				{
-					sf::Vector2f top_offset = offset - sf::Vector2f{ src_gb.left / 2.f, 0 };
+					sf::Vector2f top_offset = offset - offset_side[Top];
 					connections_per_side[Top].emplace_back(
 						sqrtf(top_offset.x * top_offset.x + top_offset.y * top_offset.y),
 						connection);
 				}
-				else
+				else if (src_gb.top + src_gb.height < tgt_gb.top)
 				{
-					sf::Vector2f bottom_offset = offset - sf::Vector2f{ src_gb.left / 2.f, src_gb.top };
+					sf::Vector2f bottom_offset = offset - offset_side[Bottom];
 					connections_per_side[Bottom].emplace_back(
 						sqrtf(bottom_offset.x * bottom_offset.x + bottom_offset.y * bottom_offset.y),
 						connection);
 				}
 
-				if (src_gb.left > tgt_gb.left)
+				if (src_gb.left > tgt_gb.left + tgt_gb.width)
 				{
-					sf::Vector2f left_offset = offset - sf::Vector2f{ 0, rect.getSize().x / 2.f };
+					sf::Vector2f left_offset = offset - offset_side[Left];
 					connections_per_side[Left].emplace_back(
 						sqrtf(left_offset.x * left_offset.x + left_offset.y * left_offset.y),
 						connection);
 				}
-				else
+				else if (src_gb.left + src_gb.width < tgt_gb.left)
 				{
-					sf::Vector2f right_offset = offset - sf::Vector2f{ rect.getSize().x, rect.getSize().x / 2.f };
+					sf::Vector2f right_offset = offset - offset_side[Right];
 					connections_per_side[Right].emplace_back(
 						sqrtf(right_offset.x * right_offset.x + right_offset.y * right_offset.y),
 						connection);
 				}
 			}
 
+			// sort for all sides nodes by distance
 			for (int i = 0; i < 4; ++i)
 				std::sort(
 					connections_per_side[i].begin(),
@@ -266,31 +292,109 @@ namespace Editor
 						return p0.first > p1.first;
 					});
 
-			std::vector<ClassicContextConnectionNode*> doneNodes;
-			doneNodes.reserve(connections.size());
-
 			int index_counter[4] = { };
 
-			while (doneNodes.size() != connections.size())
+			// filter double connections
+			while (true)
 			{
+				int connections_sum = 0;
 				for (int side = 0; side < 4; ++side)
-					if (index_counter[side] < connections_per_side[side].size() - 1)
+					connections_sum += connections_per_side[side].size();
+
+				if (connections_sum == connections.size())
+					break;
+
+				assert(connections_sum > connections.size());
+
+				for (int side = 0; side < 4; ++side)
+					if (index_counter[side] < connections_per_side[side].size())
 					{
 						Connection& connection = connections_per_side[side][index_counter[side]++].second;
 
-						if (std::find(doneNodes.begin(), doneNodes.end(), connection.node)
-							== doneNodes.end())
-						{
-							doneNodes.push_back(connection.node);
-
-//							connection.node->
-
-							if (doneNodes.size() == connections.size())
+						// connection can only exist one time per side
+						for (int side_r = 0; side_r < 4; ++side_r)
+							if (side_r != side)
 							{
-								break;
+								auto rem = std::find_if(
+									connections_per_side[side_r].begin(),
+									connections_per_side[side_r].end(),
+									[&connection](ConnectionOffsetPair& pair)
+									{
+										return pair.second.node == connection.node;
+									});
+
+								if (rem != connections_per_side[side_r].end())
+									connections_per_side[side_r].erase(rem);
 							}
-						}
 					}
+			}
+
+			// sort all nodes by position
+			for (int side = 0; side < 4; ++side)
+				std::sort(
+					connections_per_side[side].begin(),
+					connections_per_side[side].end(),
+					[side](ConnectionOffsetPair& p0, ConnectionOffsetPair& p1)
+					{
+						return side == Top || side == Bottom
+							? p0.second.node->getPosition().x < p1.second.node->getPosition().x
+							: p0.second.node->getPosition().y < p1.second.node->getPosition().y;
+					});
+
+			for (int i = 0; i < connections_per_side[Top].size(); ++i)
+			{
+				ConnectionOffsetPair& pair = connections_per_side[Top][i];
+
+				pair.second.node->setEndpointPosition(
+					world,
+					Editor::ConnectionSide::Top,
+					sf::Vector2f
+					{
+						src_gb.left + (i + 1) * src_gb.width / (connections_per_side[Top].size() + 1),
+						src_gb.top
+					});
+			}
+
+			for (int i = 0; i < connections_per_side[Left].size(); ++i)
+			{
+				ConnectionOffsetPair& pair = connections_per_side[Left][i];
+
+				pair.second.node->setEndpointPosition(
+					world,
+					Editor::ConnectionSide::Left,
+					sf::Vector2f
+					{
+						src_gb.left,
+						src_gb.top + (i + 1) * src_gb.height / (connections_per_side[Left].size() + 1)
+					});
+			}
+
+			for (int i = 0; i < connections_per_side[Bottom].size(); ++i)
+			{
+				ConnectionOffsetPair& pair = connections_per_side[Bottom][i];
+
+				pair.second.node->setEndpointPosition(
+					world,
+					Editor::ConnectionSide::Bottom,
+					sf::Vector2f
+					{
+						src_gb.left + (i + 1) * src_gb.width / (connections_per_side[Bottom].size() + 1),
+						src_gb.top + src_gb.height
+					});
+			}
+
+			for (int i = 0; i < connections_per_side[Right].size(); ++i)
+			{
+				ConnectionOffsetPair& pair = connections_per_side[Right][i];
+
+				pair.second.node->setEndpointPosition(
+					world,
+					Editor::ConnectionSide::Right,
+					sf::Vector2f
+					{
+						src_gb.left + src_gb.width,
+						src_gb.top + (i + 1) * src_gb.height / (connections_per_side[Right].size() + 1)
+					});
 			}
 		}
 
@@ -309,9 +413,8 @@ namespace Editor
 				{
 					if (!connection.out)
 					{
-						// need to add double ended output
-						// call node for add
-						assert(true);
+						connection.out = true;
+						connection.node->setEndpointOut(world, true);
 					}
 
 					return;
