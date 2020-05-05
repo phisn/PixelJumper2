@@ -1,2 +1,4 @@
 C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\FrameworkCore.pdb
 C:\Users\phisn\source\repos\PixelJumper2\source\FrameworkCore\x64\Debug\FrameworkCore.pdb
+C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\FrameworkCore.lib.lastcodeanalysissucceeded
+C:\Users\phisn\source\repos\PixelJumper2\source\FrameworkCore\x64\Debug\NativeCodeAnalysis.read.1.tlog

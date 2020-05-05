@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\extlibs\headers\glad\include\glad\</FILEPATH>
+      <FILENAME>wgl.h</FILENAME>
+      <LINE>504</LINE>
+      <COLUMN>19</COLUMN>
+    </SFA>
+    <DEFECTCODE>6011</DEFECTCODE>
+    <DESCRIPTION>Dereferencing NULL pointer 'sf_glad_wglGetExtensionsStringEXT'. </DESCRIPTION>
+    <FUNCTION>sf_glad_wgl_has_extension</FUNCTION>
+    <DECORATED>?sf_glad_wgl_has_extension@@YAHPEAUHDC__@@PEBD@Z</DECORATED>
+    <FUNCLINE>495</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>4</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\extlibs\headers\glad\include\glad\</FILEPATH>
+        <FILENAME>wgl.h</FILENAME>
+        <LINE>496</LINE>
+        <COLUMN>16</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\extlibs\headers\glad\include\glad\</FILEPATH>
+        <FILENAME>wgl.h</FILENAME>
+        <LINE>497</LINE>
+        <COLUMN>16</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\extlibs\headers\glad\include\glad\</FILEPATH>
+        <FILENAME>wgl.h</FILENAME>
+        <LINE>498</LINE>
+        <COLUMN>16</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\extlibs\headers\glad\include\glad\</FILEPATH>
+        <FILENAME>wgl.h</FILENAME>
+        <LINE>500</LINE>
+        <COLUMN>41</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>'sf_glad_wglGetExtensionsStringEXT' may be NULL (Skip this branch)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\extlibs\headers\glad\include\glad\</FILEPATH>
+        <FILENAME>wgl.h</FILENAME>
+        <LINE>503</LINE>
+        <COLUMN>41</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Enter this branch, (assume '&lt;branch condition&gt;')</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\extlibs\headers\glad\include\glad\</FILEPATH>
+        <FILENAME>wgl.h</FILENAME>
+        <LINE>504</LINE>
+        <COLUMN>19</COLUMN>
+        <KEYEVENT>
+          <ID>3</ID>
+          <KIND>usage</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'sf_glad_wglGetExtensionsStringEXT' is dereferenced, but may still be NULL</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>

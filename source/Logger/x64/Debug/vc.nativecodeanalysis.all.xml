@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\Logger\</FILEPATH>
+      <FILENAME>SectionHost.h</FILENAME>
+      <LINE>81</LINE>
+      <COLUMN>2</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Log::SectionHost::LoggingContext::currentOutput' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Log::SectionHost::LoggingContext::{ctor}</FUNCTION>
+    <DECORATED>??0LoggingContext@SectionHost@Log@@QEAA@XZ</DECORATED>
+    <FUNCLINE>81</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Log::SectionHost::LoggingContext::currentOutput</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>

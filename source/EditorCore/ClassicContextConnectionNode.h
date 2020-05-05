@@ -1,37 +1,25 @@
 #pragma once
 
-#include "FrameworkCore/BezierArrow.h"
 #include "ClassicContextNode.h"
+#include "ClassicContextConnection.h"
+
+#include "FrameworkCore/BezierArrow.h"
 
 namespace Editor
 {
-	enum class ConnectionSide
-	{
-		Top,
-		Left,
-		Bottom,
-		Right
-	};
-
-	struct ClassicContextConnectionElement
-	{
-		virtual void notifyBoundsChanged() = 0;
-		virtual sf::FloatRect getGlobalBounds() const = 0;
-	};
-
 	class ClassicContextConnectionNode
 		:
-		public ClassicContextNode
+		public ClassicContextNode,
+		public ClassicContextConnection
 	{
 	public:
 		ClassicContextConnectionNode(
 			ClassicContextWindowAccess* access,
-			ClassicWorldDataset* source,
-			ClassicWorldDataset* target)
+			ClassicContextConnectionElement* source,
+			ClassicContextConnectionElement* target)
 			:
+			ClassicContextConnection(source, target),
 			access(access),
-			sourceWorld(source),
-			targetWorld(target),
 			sourceOut(true),
 			targetOut(false)
 		{
@@ -73,11 +61,11 @@ namespace Editor
 		}
 
 		void setEndpointPosition(
-			ClassicWorldDataset* world,
+			ClassicContextConnectionElement* world,
 			ConnectionSide side,
 			sf::Vector2f position)
 		{
-			if (world == sourceWorld)
+			if (world == sourceElement)
 			{
 				arrow.setSource(position);
 				arrow.setSourceSide(side == ConnectionSide::Top || side == ConnectionSide::Bottom
@@ -86,7 +74,7 @@ namespace Editor
 			}
 			else
 			{
-				assert(world == targetWorld);
+				assert(world == targetElement);
 
 				arrow.setTarget(position);
 				arrow.setTargetSide(side == ConnectionSide::Top || side == ConnectionSide::Bottom
@@ -96,12 +84,12 @@ namespace Editor
 		}
 
 		void setEndpointOut(
-			ClassicWorldDataset* world,
+			ClassicContextConnectionElement* world,
 			bool out)
 		{
-			assert(world == sourceWorld || world == targetWorld);
+			assert(world == sourceElement || world == targetElement);
 
-			bool& current = world == sourceWorld
+			bool& current = world == sourceElement
 				? sourceOut
 				: targetOut;
 
@@ -131,14 +119,14 @@ namespace Editor
 			}
 		}
 
-		ClassicWorldDataset* getSourceWorld()
+		ClassicContextConnectionElement* getSourceElement()
 		{
-			return sourceWorld;
+			return sourceElement;
 		}
 
-		ClassicWorldDataset* getTargetWorld()
+		ClassicContextConnectionElement* getTargetElement()
 		{
-			return targetWorld;
+			return targetElement;
 		}
 
 		Framework::BezierArrow::Mode getMode()
@@ -149,10 +137,7 @@ namespace Editor
 	private:
 		ClassicContextWindowAccess* access;
 
-		ClassicWorldDataset* sourceWorld;
 		bool sourceOut = false;
-
-		ClassicWorldDataset* targetWorld;
 		bool targetOut = false;
 
 		Framework::BezierArrow arrow;

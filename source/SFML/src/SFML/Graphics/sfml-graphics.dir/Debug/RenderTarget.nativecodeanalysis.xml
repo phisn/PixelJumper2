@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\include\SFML\Graphics\</FILEPATH>
+      <FILENAME>RenderTarget.hpp</FILENAME>
+      <LINE>469</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'sf::RenderTarget::StatesCache::enable' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>sf::RenderTarget::StatesCache::{ctor}</FUNCTION>
+    <DECORATED>??0StatesCache@RenderTarget@sf@@QEAA@XZ</DECORATED>
+    <FUNCLINE>469</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>sf::RenderTarget::StatesCache::enable</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\include\SFML\Graphics\</FILEPATH>
+      <FILENAME>RenderTarget.hpp</FILENAME>
+      <LINE>469</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'sf::RenderTarget::StatesCache::viewChanged' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>sf::RenderTarget::StatesCache::{ctor}</FUNCTION>
+    <DECORATED>??0StatesCache@RenderTarget@sf@@QEAA@XZ</DECORATED>
+    <FUNCLINE>469</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>sf::RenderTarget::StatesCache::viewChanged</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\include\SFML\Graphics\</FILEPATH>
+      <FILENAME>RenderTarget.hpp</FILENAME>
+      <LINE>469</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'sf::RenderTarget::StatesCache::glStatesSet' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>sf::RenderTarget::StatesCache::{ctor}</FUNCTION>
+    <DECORATED>??0StatesCache@RenderTarget@sf@@QEAA@XZ</DECORATED>
+    <FUNCLINE>469</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>sf::RenderTarget::StatesCache::glStatesSet</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\include\SFML\Graphics\</FILEPATH>
+      <FILENAME>RenderTarget.hpp</FILENAME>
+      <LINE>469</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'sf::RenderTarget::StatesCache::lastTextureId' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>sf::RenderTarget::StatesCache::{ctor}</FUNCTION>
+    <DECORATED>??0StatesCache@RenderTarget@sf@@QEAA@XZ</DECORATED>
+    <FUNCLINE>469</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>sf::RenderTarget::StatesCache::lastTextureId</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\include\SFML\Graphics\</FILEPATH>
+      <FILENAME>RenderTarget.hpp</FILENAME>
+      <LINE>469</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'sf::RenderTarget::StatesCache::texCoordsArrayEnabled' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>sf::RenderTarget::StatesCache::{ctor}</FUNCTION>
+    <DECORATED>??0StatesCache@RenderTarget@sf@@QEAA@XZ</DECORATED>
+    <FUNCLINE>469</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>sf::RenderTarget::StatesCache::texCoordsArrayEnabled</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\include\SFML\Graphics\</FILEPATH>
+      <FILENAME>RenderTarget.hpp</FILENAME>
+      <LINE>469</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'sf::RenderTarget::StatesCache::useVertexCache' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>sf::RenderTarget::StatesCache::{ctor}</FUNCTION>
+    <DECORATED>??0StatesCache@RenderTarget@sf@@QEAA@XZ</DECORATED>
+    <FUNCLINE>469</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>sf::RenderTarget::StatesCache::useVertexCache</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

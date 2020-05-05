@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\System\Win32\</FILEPATH>
+      <FILENAME>ClockImpl.cpp</FILENAME>
+      <LINE>46</LINE>
+      <COLUMN>34</COLUMN>
+    </SFA>
+    <DEFECTCODE>28159</DEFECTCODE>
+    <DESCRIPTION>Consider using 'IsWindows*' instead of 'GetVersion'. Reason: Deprecated. Use VerifyVersionInfo* or IsWindows* macros from VersionHelpers.</DESCRIPTION>
+    <FUNCTION>`anonymous-namespace'::isWindowsXpOrOlder</FUNCTION>
+    <DECORATED>?isWindowsXpOrOlder@?A0x7a46b436@@YA_NXZ</DECORATED>
+    <FUNCLINE>43</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

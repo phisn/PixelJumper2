@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\FrameworkCore\</FILEPATH>
+      <FILENAME>FrameworkCore.cpp</FILENAME>
+      <LINE>18</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable '`anonymous-namespace'::SceneContainer::scene' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>`anonymous-namespace'::SceneContainer::{ctor}</FUNCTION>
+    <DECORATED>??0SceneContainer@?A0xf4d9e056@@QEAA@XZ</DECORATED>
+    <FUNCLINE>18</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>`anonymous-namespace'::SceneContainer::scene</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ClassicContextWorldNode.h"
+#include "ClassicContextConnectionNode.h"
 
 #include "EditorDataset.h"
 #include "EditorWindow.h"
@@ -257,6 +258,19 @@ namespace Editor
 
 		// mouse specific
 	private:
+		struct ArrowConnectionElement
+			:
+			public ClassicContextConnectionElement
+		{
+			void notifyBoundsChanged() override
+			{
+			}
+
+			sf::FloatRect getGlobalBounds() const override
+			{
+			}
+		};
+
 		ClassicContextNode* nodeHovered = NULL;
 
 		std::vector<sf::Vector2f> mouseNodeBegin;
@@ -380,9 +394,9 @@ namespace Editor
 			ClassicContextWorldNode* sourceNode = findWorldNodeByDataset(source);
 			ClassicContextWorldNode* targetNode = findWorldNodeByDataset(target);
 
-			if (findConnectionNodeByWorld(sourceNode, targetNode) == NULL)
+			if (sourceNode->findTransitiveToWorld(targetNode) == NULL)
 			{
-				ClassicContextConnectionNode* node = new ClassicContextConnectionNode{ this, source, target };
+				ClassicContextConnectionNode* node = new ClassicContextConnectionNode{ this, sourceNode, targetNode };
 
 				sourceNode->addTransitiveConnection(targetNode, node);
 				targetNode->addTransitiveConnection(sourceNode, node);
@@ -400,22 +414,6 @@ namespace Editor
 		{
 			for (ClassicContextWorldNode* node : worlds)
 				if (node->getWorld() == dataset)
-				{
-					return node;
-				}
-
-			return NULL;
-		}
-
-		ClassicContextConnectionNode* findConnectionNodeByWorld(
-			ClassicContextWorldNode* world0,
-			ClassicContextWorldNode* world1) const
-		{
-			for (ClassicContextConnectionNode* node : connections)
-				if (node->getSourceWorld() == world0->getWorld() &&
-					node->getTargetWorld() == world1->getWorld() ||
-					node->getSourceWorld() == world1->getWorld() &&
-					node->getTargetWorld() == world0->getWorld())
 				{
 					return node;
 				}

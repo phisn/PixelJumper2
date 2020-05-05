@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Window\</FILEPATH>
+      <FILENAME>WindowImpl.cpp</FILENAME>
+      <LINE>95</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'sf::priv::WindowImpl::m_previousAxes' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>sf::priv::WindowImpl::{ctor}</FUNCTION>
+    <DECORATED>??0WindowImpl@priv@sf@@IEAA@XZ</DECORATED>
+    <FUNCLINE>95</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>sf::priv::WindowImpl::m_previousAxes</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

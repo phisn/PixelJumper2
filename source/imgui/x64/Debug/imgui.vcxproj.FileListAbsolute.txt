@@ -1,2 +1,4 @@
 C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\imgui.pdb
 C:\Users\phisn\source\repos\PixelJumper2\source\imgui\x64\Debug\imgui.pdb
+C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\imgui.lib.lastcodeanalysissucceeded
+C:\Users\phisn\source\repos\PixelJumper2\source\imgui\x64\Debug\NativeCodeAnalysis.read.1.tlog

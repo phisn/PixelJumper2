@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Graphics\</FILEPATH>
+      <FILENAME>Texture.cpp</FILENAME>
+      <LINE>284</LINE>
+      <COLUMN>59</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::Texture::loadFromImage</FUNCTION>
+    <DECORATED>?loadFromImage@Texture@sf@@QEAA_NAEBVImage@2@AEBV?$Rect@H@2@@Z</DECORATED>
+    <FUNCLINE>242</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Graphics\</FILEPATH>
+      <FILENAME>Texture.cpp</FILENAME>
+      <LINE>289</LINE>
+      <COLUMN>28</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::Texture::loadFromImage</FUNCTION>
+    <DECORATED>?loadFromImage@Texture@sf@@QEAA_NAEBVImage@2@AEBV?$Rect@H@2@@Z</DECORATED>
+    <FUNCLINE>242</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Graphics\</FILEPATH>
+      <FILENAME>Texture.cpp</FILENAME>
+      <LINE>329</LINE>
+      <COLUMN>50</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::Texture::copyToImage</FUNCTION>
+    <DECORATED>?copyToImage@Texture@sf@@QEBA?AVImage@2@XZ</DECORATED>
+    <FUNCLINE>317</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Graphics\</FILEPATH>
+      <FILENAME>Texture.cpp</FILENAME>
+      <LINE>329</LINE>
+      <COLUMN>39</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::Texture::copyToImage</FUNCTION>
+    <DECORATED>?copyToImage@Texture@sf@@QEBA?AVImage@2@XZ</DECORATED>
+    <FUNCLINE>317</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Graphics\</FILEPATH>
+      <FILENAME>Texture.cpp</FILENAME>
+      <LINE>363</LINE>
+      <COLUMN>69</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::Texture::copyToImage</FUNCTION>
+    <DECORATED>?copyToImage@Texture@sf@@QEBA?AVImage@2@XZ</DECORATED>
+    <FUNCLINE>317</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Graphics\</FILEPATH>
+      <FILENAME>Texture.cpp</FILENAME>
+      <LINE>363</LINE>
+      <COLUMN>52</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::Texture::copyToImage</FUNCTION>
+    <DECORATED>?copyToImage@Texture@sf@@QEBA?AVImage@2@XZ</DECORATED>
+    <FUNCLINE>317</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Graphics\</FILEPATH>
+      <FILENAME>Texture.cpp</FILENAME>
+      <LINE>376</LINE>
+      <COLUMN>28</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::Texture::copyToImage</FUNCTION>
+    <DECORATED>?copyToImage@Texture@sf@@QEBA?AVImage@2@XZ</DECORATED>
+    <FUNCLINE>317</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

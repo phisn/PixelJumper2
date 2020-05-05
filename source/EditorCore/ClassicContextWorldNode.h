@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ClassicContextNode.h"
-#include "ClassicContextConnectionNode.h"
+#include "ClassicContextConnection.h"
 #include "EditorDataset.h"
 
 #include "FrameworkCore/FrameworkCore.h"
@@ -88,7 +88,7 @@ namespace Editor
 
 		struct Connection
 		{
-			ClassicContextConnectionNode* node;
+			ClassicContextConnection* node;
 			ClassicContextConnectionElement* element;
 
 			bool out = false;
@@ -119,7 +119,7 @@ namespace Editor
 
 		void addTransitiveConnection(
 			ClassicContextWorldNode* worldNode,
-			ClassicContextConnectionNode* node)
+			ClassicContextConnection* node)
 		{
 			Connection& connection = connections.emplace_back();
 			transitiveConnections.push_back(std::make_pair(worldNode, &connection));
@@ -174,6 +174,17 @@ namespace Editor
 		bool contains(sf::Vector2f point) const override
 		{
 			return rect.getGlobalBounds().contains(point);
+		}
+
+		ClassicContextConnection* findTransitiveToWorld(ClassicContextWorldNode* world0)
+		{
+			for (WorldNodeConnectionPair& pair : transitiveConnections)
+				if (pair.first == world0)
+				{
+					return pair.second->node;
+				}
+
+			return NULL;
 		}
 
 		ClassicWorldDataset* getWorld()
@@ -266,22 +277,48 @@ namespace Editor
 				Side vertical_side = Invalid;
 				Side horizont_side = Invalid;
 
+				// source and target points depend on specific side to get
+				// precise values. these points do represent the corrosponding
+				// corners of 
+//				sf::Vector2f src_p = src_gb.getPosition() + src_gb.getSize() / 2.f;
+//				sf::Vector2f tgt_p = tgt_gb.getPosition() + tgt_gb.getSize() / 2.f;
+
+				/*
+				
+				
+				+--------+
+				|        |
+				+--------+
+				          \
+				            +-----+
+							|     |
+							+-----+
+				
+				
+				*/
+
+				sf::Vector2f offset_cmpt_fct;
+
 				if (src_gb.top > tgt_gb.top + tgt_gb.height)
 				{
 					vertical_side = Top;
+					offset_cmpt_fct.y = 0;
 				}
 				else if (src_gb.top + src_gb.height < tgt_gb.top)
 				{
 					vertical_side = Bottom;
+					offset_cmpt_fct.y = 0;
 				}
 
 				if (src_gb.left > tgt_gb.left + tgt_gb.width)
 				{
 					horizont_side = Left;
+					offset_cmpt_fct.x = 0;
 				}
 				else if (src_gb.left + src_gb.width < tgt_gb.left)
 				{
 					horizont_side = Right;
+					offset_cmpt_fct.x = 0;
 				}
 
 				if (vertical_side == Invalid)
@@ -303,32 +340,35 @@ namespace Editor
 					continue;
 				}
 
-				sf::Vector2f src_p = src_gb.getPosition() + src_gb.getSize() / 2.f;
-				sf::Vector2f tgt_p = tgt_gb.getPosition() + tgt_gb.getSize() / 2.f;
+				sf::Vector2f src_center = src_gb.getPosition() + src_gb.getSize() / 2.f;
+				sf::Vector2f tgt_center = tgt_gb.getPosition() + tgt_gb.getSize() / 2.f;
 
-				float side0 = (tgt_p.y - src_p.y) - (tgt_p.x - src_p.x);
-				float side1 = (tgt_p.y - src_p.y) + (tgt_p.x - src_p.x);
-
-				float value0 = get_distance_to_line(
-					src_p,
-					tgt_p,
-					{ 1,  1 });
-				float value1 = get_distance_to_line(
-					src_p,
-					tgt_p,
-					{ 1, -1 });
-
-				float value_primary, side_primary;
-				if (value0 < value1)
+				sf::Vector2f src_cnn_pos =
 				{
-					value_primary = value0;
-					side_primary = side0;
-				}
-				else
+					src_center.x + offset_cmpt_fct.x * src_gb.width,
+					src_center.y + offset_cmpt_fct.y * src_gb.height
+				};
+
+				sf::Vector2f tgt_cnn_pos =
 				{
-					value_primary = value1;
-					side_primary = -side1;
-				}
+					tgt_center.x - offset_cmpt_fct.x * tgt_gb.width,
+					tgt_center.y - offset_cmpt_fct.y * tgt_gb.height
+				};
+
+				bool is_neg_line = (vertical_side == Top) == (horizont_side == Left);
+
+				float side = is_neg_line 
+					?   (tgt_cnn_pos.y - src_cnn_pos.y) - (tgt_cnn_pos.x - src_cnn_pos.x)
+					: -((tgt_cnn_pos.y - src_cnn_pos.y) + (tgt_cnn_pos.x - src_cnn_pos.x));
+
+				sf::Vector2f line = is_neg_line
+					? sf::Vector2f{ 1, -1 }
+					: sf::Vector2f{ 1,  1 };
+
+				float value = get_distance_to_line(
+					src_cnn_pos,
+					tgt_cnn_pos,
+					line);
 
 				ConnectionContainer& connection_vertical = process_connections[vertical_side].emplace_back();
 				ConnectionContainer& connection_horizont = process_connections[horizont_side].emplace_back();
@@ -336,12 +376,12 @@ namespace Editor
 				connection_vertical.connection = &connection;
 				connection_horizont.connection = &connection;
 
-				connection_vertical.value = value_primary *
-					((vertical_side == Top) == (side_primary < 0) == (value0 < value1)
+				connection_vertical.value = value *
+					((vertical_side == Top) == (side < 0) == is_neg_line
 						? -1
 						:  1);
-				connection_horizont.value = value_primary *
-					((horizont_side == Left) == (side_primary > 0)
+				connection_horizont.value = value *
+					((horizont_side == Left) == (side > 0)
 						? -1
 						:  1);
 			}
@@ -426,7 +466,7 @@ namespace Editor
 					if (side == Top || side == Bottom)
 					{
 						final_connections[side][i]->node->setEndpointPosition(
-							world,
+							this,
 							Editor::ConnectionSide::Top,
 							sf::Vector2f
 							{
@@ -437,7 +477,7 @@ namespace Editor
 					else
 					{
 						final_connections[side][i]->node->setEndpointPosition(
-							world,
+							this,
 							Editor::ConnectionSide::Left,
 							sf::Vector2f
 							{
@@ -473,7 +513,7 @@ namespace Editor
 					if (!connectionPair.second->out)
 					{
 						connectionPair.second->out = true;
-						connectionPair.second->node->setEndpointOut(world, true);
+						connectionPair.second->node->setEndpointOut(this, true);
 					}
 
 					return;

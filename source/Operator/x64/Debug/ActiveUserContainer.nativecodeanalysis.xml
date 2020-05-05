@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\Operator\</FILEPATH>
+      <FILENAME>ActiveUserContainer.cpp</FILENAME>
+      <LINE>19</LINE>
+      <COLUMN>20</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Operator::UsermodeContainer::usermode' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Operator::UsermodeContainer::{ctor}</FUNCTION>
+    <DECORATED>??0UsermodeContainer@Operator@@QEAA@_K@Z</DECORATED>
+    <FUNCLINE>19</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Operator::UsermodeContainer::usermode</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

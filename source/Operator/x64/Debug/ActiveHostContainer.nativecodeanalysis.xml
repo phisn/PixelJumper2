@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\Operator\</FILEPATH>
+      <FILENAME>ActiveHostContainer.cpp</FILENAME>
+      <LINE>11</LINE>
+      <COLUMN>16</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Operator::HostContainer::address' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Operator::HostContainer::{ctor}</FUNCTION>
+    <DECORATED>??0HostContainer@Operator@@QEAA@_K@Z</DECORATED>
+    <FUNCLINE>11</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Operator::HostContainer::address</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\Operator\</FILEPATH>
+      <FILENAME>ActiveHostContainer.cpp</FILENAME>
+      <LINE>33</LINE>
+      <COLUMN>23</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Operator::ClassicHostContainer::maxPlayers' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Operator::ClassicHostContainer::{ctor}</FUNCTION>
+    <DECORATED>??0ClassicHostContainer@Operator@@QEAA@_K@Z</DECORATED>
+    <FUNCLINE>33</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Operator::ClassicHostContainer::maxPlayers</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\NetCore\</FILEPATH>
+      <FILENAME>RequestHandler.h</FILENAME>
+      <LINE>85</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Net::RequestHandler::access' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Net::RequestHandler::{ctor}</FUNCTION>
+    <DECORATED>??0RequestHandler@Net@@QEAA@XZ</DECORATED>
+    <FUNCLINE>85</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Net::RequestHandler::access</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\ResourceCore\</FILEPATH>
+      <FILENAME>PlayerResource.h</FILENAME>
+      <LINE>41</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Resource::PlayerResource::content' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Resource::PlayerResource::{ctor}</FUNCTION>
+    <DECORATED>??0PlayerResource@Resource@@QEAA@XZ</DECORATED>
+    <FUNCLINE>41</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Resource::PlayerResource::content</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\GameCore\net\</FILEPATH>
+      <FILENAME>SimulatorAuthenticationMessage.h</FILENAME>
+      <LINE>66</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Net::Host::AuthenticationAcceptedMessage::resource' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Net::Host::AuthenticationAcceptedMessage::{ctor}</FUNCTION>
+    <DECORATED>??0AuthenticationAcceptedMessage@Host@Net@@QEAA@XZ</DECORATED>
+    <FUNCLINE>66</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Net::Host::AuthenticationAcceptedMessage::resource</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\GameCore\net\</FILEPATH>
+      <FILENAME>SimulatorAuthenticationMessage.h</FILENAME>
+      <LINE>66</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Net::Host::AuthenticationAcceptedMessage::classicResource' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Net::Host::AuthenticationAcceptedMessage::{ctor}</FUNCTION>
+    <DECORATED>??0AuthenticationAcceptedMessage@Host@Net@@QEAA@XZ</DECORATED>
+    <FUNCLINE>66</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Net::Host::AuthenticationAcceptedMessage::classicResource</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\NetCore\</FILEPATH>
+      <FILENAME>NetworkMessage.h</FILENAME>
+      <LINE>42</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Net::TrivialNetworkMessage&lt;Net::Host::AuthenticationRejectedMessageContent&gt;::content' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Net::TrivialNetworkMessage&lt;Net::Host::AuthenticationRejectedMessageContent&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$TrivialNetworkMessage@UAuthenticationRejectedMessageContent@Host@Net@@@Net@@QEAA@XZ</DECORATED>
+    <FUNCLINE>42</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Net::TrivialNetworkMessage&lt;Net::Host::AuthenticationRejectedMessageContent&gt;::content</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

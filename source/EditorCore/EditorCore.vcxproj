@@ -115,6 +115,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClassicContextConnection.h" />
     <ClInclude Include="ClassicContextConnectionNode.h" />
     <ClInclude Include="ClassicContextNode.h" />
     <ClInclude Include="ClassicContextPopup.h" />

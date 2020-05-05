@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\System\</FILEPATH>
+      <FILENAME>Time.cpp</FILENAME>
+      <LINE>75</LINE>
+      <COLUMN>42</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::seconds</FUNCTION>
+    <DECORATED>?seconds@sf@@YA?AVTime@1@M@Z</DECORATED>
+    <FUNCLINE>73</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\System\Win32\</FILEPATH>
+      <FILENAME>ClockImpl.cpp</FILENAME>
+      <LINE>46</LINE>
+      <COLUMN>34</COLUMN>
+    </SFA>
+    <DEFECTCODE>28159</DEFECTCODE>
+    <DESCRIPTION>Consider using 'IsWindows*' instead of 'GetVersion'. Reason: Deprecated. Use VerifyVersionInfo* or IsWindows* macros from VersionHelpers.</DESCRIPTION>
+    <FUNCTION>`anonymous-namespace'::isWindowsXpOrOlder</FUNCTION>
+    <DECORATED>?isWindowsXpOrOlder@?A0x7a46b436@@YA_NXZ</DECORATED>
+    <FUNCLINE>43</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\System\Win32\</FILEPATH>
+      <FILENAME>ThreadImpl.cpp</FILENAME>
+      <LINE>72</LINE>
+      <COLUMN>23</COLUMN>
+    </SFA>
+    <DEFECTCODE>6258</DEFECTCODE>
+    <DESCRIPTION>Using TerminateThread does not allow proper thread clean up.</DESCRIPTION>
+    <FUNCTION>sf::priv::ThreadImpl::terminate</FUNCTION>
+    <DECORATED>?terminate@ThreadImpl@priv@sf@@QEAAXXZ</DECORATED>
+    <FUNCLINE>69</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>

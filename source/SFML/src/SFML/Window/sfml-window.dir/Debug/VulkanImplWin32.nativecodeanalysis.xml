@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Window\Win32\</FILEPATH>
+      <FILENAME>VulkanImplWin32.cpp</FILENAME>
+      <LINE>43</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable '`anonymous-namespace'::VulkanLibraryWrapper::vkGetInstanceProcAddr' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>`anonymous-namespace'::VulkanLibraryWrapper::{ctor}</FUNCTION>
+    <DECORATED>??0VulkanLibraryWrapper@?A0x042901ec@@QEAA@XZ</DECORATED>
+    <FUNCLINE>43</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>`anonymous-namespace'::VulkanLibraryWrapper::vkGetInstanceProcAddr</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Window\Win32\</FILEPATH>
+      <FILENAME>VulkanImplWin32.cpp</FILENAME>
+      <LINE>43</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable '`anonymous-namespace'::VulkanLibraryWrapper::vkEnumerateInstanceLayerProperties' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>`anonymous-namespace'::VulkanLibraryWrapper::{ctor}</FUNCTION>
+    <DECORATED>??0VulkanLibraryWrapper@?A0x042901ec@@QEAA@XZ</DECORATED>
+    <FUNCLINE>43</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>`anonymous-namespace'::VulkanLibraryWrapper::vkEnumerateInstanceLayerProperties</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Window\Win32\</FILEPATH>
+      <FILENAME>VulkanImplWin32.cpp</FILENAME>
+      <LINE>43</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable '`anonymous-namespace'::VulkanLibraryWrapper::vkEnumerateInstanceExtensionProperties' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>`anonymous-namespace'::VulkanLibraryWrapper::{ctor}</FUNCTION>
+    <DECORATED>??0VulkanLibraryWrapper@?A0x042901ec@@QEAA@XZ</DECORATED>
+    <FUNCLINE>43</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>`anonymous-namespace'::VulkanLibraryWrapper::vkEnumerateInstanceExtensionProperties</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

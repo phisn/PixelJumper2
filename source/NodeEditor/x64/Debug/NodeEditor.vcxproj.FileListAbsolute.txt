@@ -1,2 +1,4 @@
 C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\NodeEditor.pdb
 C:\Users\phisn\source\repos\PixelJumper2\source\NodeEditor\x64\Debug\NodeEditor.pdb
+C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\NodeEditor.lib.lastcodeanalysissucceeded
+C:\Users\phisn\source\repos\PixelJumper2\source\NodeEditor\x64\Debug\NativeCodeAnalysis.read.1.tlog

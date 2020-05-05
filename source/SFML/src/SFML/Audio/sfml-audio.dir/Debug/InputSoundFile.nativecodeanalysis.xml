@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Audio\</FILEPATH>
+      <FILENAME>InputSoundFile.cpp</FILENAME>
+      <LINE>241</LINE>
+      <COLUMN>67</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::InputSoundFile::seek</FUNCTION>
+    <DECORATED>?seek@InputSoundFile@sf@@QEAAXVTime@2@@Z</DECORATED>
+    <FUNCLINE>239</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Audio\</FILEPATH>
+      <FILENAME>InputSoundFile.cpp</FILENAME>
+      <LINE>241</LINE>
+      <COLUMN>52</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '*' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '*' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>sf::InputSoundFile::seek</FUNCTION>
+    <DECORATED>?seek@InputSoundFile@sf@@QEAAXVTime@2@@Z</DECORATED>
+    <FUNCLINE>239</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

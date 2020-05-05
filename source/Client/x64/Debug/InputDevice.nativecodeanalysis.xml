@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\ResourceCore\</FILEPATH>
+      <FILENAME>TrivialResource.h</FILENAME>
+      <LINE>34</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Resource::TrivialResource&lt;Device::InputResourceContent&gt;::content' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Resource::TrivialResource&lt;Device::InputResourceContent&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$TrivialResource@UInputResourceContent@Device@@@Resource@@QEAA@XZ</DECORATED>
+    <FUNCLINE>34</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Resource::TrivialResource&lt;Device::InputResourceContent&gt;::content</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

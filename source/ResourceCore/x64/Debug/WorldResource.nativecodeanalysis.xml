@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\ResourceCore\</FILEPATH>
+      <FILENAME>ComponentResource.h</FILENAME>
+      <LINE>22</LINE>
+      <COLUMN>2</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>This kind of function may not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>Resource::ComponentResource::{ctor}</FUNCTION>
+    <DECORATED>??0ComponentResource@Resource@@QEAA@$$QEAV01@@Z</DECORATED>
+    <FUNCLINE>22</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\ResourceCore\</FILEPATH>
+      <FILENAME>ComponentResource.h</FILENAME>
+      <LINE>32</LINE>
+      <COLUMN>21</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>This kind of function may not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>Resource::ComponentResource::=</FUNCTION>
+    <DECORATED>??4ComponentResource@Resource@@QEAAAEAV01@$$QEAV01@@Z</DECORATED>
+    <FUNCLINE>32</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\ResourceCore\</FILEPATH>
+      <FILENAME>ComponentResource.h</FILENAME>
+      <LINE>56</LINE>
+      <COLUMN>2</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Resource::ComponentResource::componentID' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Resource::ComponentResource::{ctor}</FUNCTION>
+    <DECORATED>??0ComponentResource@Resource@@QEAA@XZ</DECORATED>
+    <FUNCLINE>56</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Resource::ComponentResource::componentID</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\phisn\source\repos\PixelJumper2\source\ResourceCore\</FILEPATH>
+      <FILENAME>ComponentResource.h</FILENAME>
+      <LINE>56</LINE>
+      <COLUMN>2</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Resource::ComponentResource::instance' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Resource::ComponentResource::{ctor}</FUNCTION>
+    <DECORATED>??0ComponentResource@Resource@@QEAA@XZ</DECORATED>
+    <FUNCLINE>56</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Resource::ComponentResource::instance</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
