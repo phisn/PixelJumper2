@@ -34,7 +34,7 @@ namespace Editor
 
 		// approx. max space this node can use to disable
 		// drawing of unneeded nodes
-		virtual sf::FloatRect getGlobalBounds() = 0;
+		virtual sf::FloatRect getGlobalBounds() const = 0;
 		virtual sf::Vector2f getPosition() const = 0;
 	};
 }

@@ -13,6 +13,12 @@ namespace Editor
 		Right
 	};
 
+	struct ClassicContextConnectionElement
+	{
+		virtual void notifyBoundsChanged() = 0;
+		virtual sf::FloatRect getGlobalBounds() const = 0;
+	};
+
 	class ClassicContextConnectionNode
 		:
 		public ClassicContextNode
@@ -56,7 +62,7 @@ namespace Editor
 			// return shape.contains(point);
 		}
 
-		sf::FloatRect getGlobalBounds() override
+		sf::FloatRect getGlobalBounds() const override
 		{
 			return { 0, 0, 0, 0 };
 		}

@@ -171,7 +171,7 @@ namespace Editor
 						case MouseMode::Connect:
 							if (ClassicContextWorldNode* node = findWorldNodeByPoint(event.mouseButton.x, event.mouseButton.y); node)
 							{
-								createLink(connectWorldSource->getWorld(), node->getWorld());
+								createConnection(connectWorldSource->getWorld(), node->getWorld());
 							}
 
 							mouseMode = MouseMode::None;
@@ -368,7 +368,7 @@ namespace Editor
 
 		}
 		
-		void createLink(
+		void createConnection(
 			ClassicWorldDataset* source,
 			ClassicWorldDataset* target) override
 		{
@@ -384,8 +384,8 @@ namespace Editor
 			{
 				ClassicContextConnectionNode* node = new ClassicContextConnectionNode{ this, source, target };
 
-				sourceNode->addConnection(targetNode, node);
-				targetNode->addConnection(sourceNode, node);
+				sourceNode->addTransitiveConnection(targetNode, node);
+				targetNode->addTransitiveConnection(sourceNode, node);
 
 				connections.push_back(node);
 			}

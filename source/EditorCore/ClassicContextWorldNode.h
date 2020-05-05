@@ -63,7 +63,8 @@ namespace Editor
 
 	class ClassicContextWorldNode
 		:
-		public ClassicContextNode
+		public ClassicContextNode,
+		public ClassicContextConnectionElement
 	{
 		const sf::Vector2f Padding = { 10, 10 };
 		const sf::Vector2f MinSize = { 50, 50 };
@@ -84,6 +85,16 @@ namespace Editor
 			Style { FontColor, sf::Color::Color(120, 120, 120), sf::Color::Color(190, 190, 190), 3.f },
 			Style { FontColor, sf::Color::Color(80, 80, 80), sf::Color::Color(210, 210, 210), 3.f }
 		};
+
+		struct Connection
+		{
+			ClassicContextConnectionNode* node;
+			ClassicContextConnectionElement* element;
+
+			bool out = false;
+		};
+
+		typedef std::pair<ClassicContextWorldNode*, Connection*> WorldNodeConnectionPair;
 
 	public:
 		ClassicContextWorldNode(
@@ -106,20 +117,16 @@ namespace Editor
 			reconstructNodeContent();
 		}
 
-		void addConnection(
+		void addTransitiveConnection(
 			ClassicContextWorldNode* worldNode,
 			ClassicContextConnectionNode* node)
 		{
 			Connection& connection = connections.emplace_back();
+			transitiveConnections.push_back(std::make_pair(worldNode, &connection));
 
 			// use dataset to indirectly change out
 			connection.node = node;
-			connection.worldNode = worldNode;
-
-			Log::Information(L"created new one", worldNode, L"world", node, L"node");
-
-			for (int i = 0; i < connections.size(); ++i)
-				Log::Information(L"list", i, L"i", connections[i].worldNode, L"world", connections[i].node, L"node");
+			connection.element = worldNode;
 		}
 
 		void draw(sf::RenderTarget* target)
@@ -159,7 +166,7 @@ namespace Editor
 			return rect.getSize();
 		}
 
-		sf::FloatRect getGlobalBounds() override
+		sf::FloatRect getGlobalBounds() const override
 		{
 			return rect.getGlobalBounds();
 		}
@@ -174,24 +181,25 @@ namespace Editor
 			return world;
 		}
 
+		void notifyBoundsChanged() override
+		{
+			reconstructConnectionsPosition();
+		}
+
 	private:
 		ClassicContextWindowAccess* access;
 		ClassicWorldDataset* world;
+
+		// needs to be list to not invalidate pointer
+		std::list<Connection> connections;
+		std::vector<WorldNodeConnectionPair> transitiveConnections;
 
 		ClassicWorldDataset::ListenerContainer worldDatasetListener;
 
 		sf::RectangleShape rect;
 		sf::Text name;
 
-		struct Connection
-		{
-			bool out = false;
-
-			ClassicContextWorldNode* worldNode;
-			ClassicContextConnectionNode* node;
-		};
-
-		std::vector<Connection> connections;
+		bool ignoreDoubleConnection = false;
 
 		void reconstructNodeContent()
 		{
@@ -221,7 +229,7 @@ namespace Editor
 			reconstructConnectionsPosition();
 
 			for (Connection& connection : connections)
-				connection.worldNode->reconstructConnectionsPosition();
+				connection.element->notifyBoundsChanged();
 		}
 
 		void reconstructConnectionsPosition()
@@ -253,7 +261,7 @@ namespace Editor
 			sf::FloatRect src_gb = getGlobalBounds();
 			for (Connection& connection : connections)
 			{
-				sf::FloatRect tgt_gb = connection.worldNode->getGlobalBounds();
+				sf::FloatRect tgt_gb = connection.element->getGlobalBounds();
 
 				Side vertical_side = Invalid;
 				Side horizont_side = Invalid;
@@ -366,9 +374,13 @@ namespace Editor
 
 					for (int side = min_value + 1; side < 4; ++side)
 						if (process_connections[side].size() > 0 && (
-							final_connections[side].size() < final_connections[min_value].size() ||
-							final_connections[side].size() == final_connections[min_value].size() &&
-							process_connections[side].back().value < process_connections[min_value].back().value))
+							ignoreDoubleConnection &&
+							final_connections[min_value].size() <= 1 &&
+							final_connections[side].size() <= 1
+							?	process_connections[side].back().value < process_connections[min_value].back().value
+							:	final_connections[side].size() < final_connections[min_value].size() ||
+								final_connections[side].size() == final_connections[min_value].size() &&
+	 							process_connections[side].back().value < process_connections[min_value].back().value))
 						{
 							min_value = (Side)side;
 						}
@@ -401,9 +413,12 @@ namespace Editor
 					final_connections[side].end(),
 					[side](Connection* p0, Connection* p1)
 					{
+						sf::FloatRect p0_gb = p0->element->getGlobalBounds();
+						sf::FloatRect p1_gb = p1->element->getGlobalBounds();
+
 						return (side == Top || side == Bottom)
-							? p0->worldNode->getPosition().x < p1->worldNode->getPosition().x
-							: p0->worldNode->getPosition().y < p1->worldNode->getPosition().y;
+							? p0_gb.left < p1_gb.left
+							: p0_gb.top < p1_gb.top;
 					});
 
 			for (int side = 0; side < 4; ++side)
@@ -452,13 +467,13 @@ namespace Editor
 
 		void enforceConnection(ClassicWorldDataset* world)
 		{
-			for (Connection& connection : connections)
-				if (connection.worldNode->world == world)
+			for (WorldNodeConnectionPair& connectionPair : this->transitiveConnections)
+				if (connectionPair.first->world == world)
 				{
-					if (!connection.out)
+					if (!connectionPair.second->out)
 					{
-						connection.out = true;
-						connection.node->setEndpointOut(world, true);
+						connectionPair.second->out = true;
+						connectionPair.second->node->setEndpointOut(world, true);
 					}
 
 					return;
@@ -467,7 +482,7 @@ namespace Editor
 			// window handles node creation
 			// if target wants to connect too he
 			// can do it later on event
-			access->createLink(this->world, world);
+			access->createConnection(this->world, world);
 		}
 	};
 }

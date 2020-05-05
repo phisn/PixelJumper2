@@ -12,7 +12,7 @@ namespace Editor
 	struct ClassicContextWindowAccess
 	{
 		virtual void removeLink(ClassicContextConnectionNode* node) = 0;
-		virtual void createLink(
+		virtual void createConnection(
 			ClassicWorldDataset* source, 
 			ClassicWorldDataset* target) = 0;
 		virtual void beginLink(ClassicWorldDataset* dataset) = 0;
