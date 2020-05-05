@@ -144,10 +144,10 @@ namespace Editor
 		ClassicContextWindowAccess* access;
 
 		ClassicWorldDataset* sourceWorld;
-		bool sourceOut;
+		bool sourceOut = false;
 
 		ClassicWorldDataset* targetWorld;
-		bool targetOut;
+		bool targetOut = false;
 
 		Framework::BezierArrow arrow;
 	};

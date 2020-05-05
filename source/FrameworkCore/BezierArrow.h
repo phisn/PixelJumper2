@@ -25,7 +25,7 @@ namespace Framework
 
 		BezierArrow()
 			:
-			vertex{ sf::PrimitiveType::LineStrip }
+			vertex{ sf::PrimitiveType::TriangleStrip }
 		{
 		}
 
@@ -111,7 +111,7 @@ namespace Framework
 		float headLengthRatio = 1.0f;
 
 		float width = 8.f;
-		float density = 0.1f;
+		float density = 200.f;
 
 		sf::Vector2f source = { 0, 0 };
 		sf::Vector2f target = { 200, 200 };
@@ -206,8 +206,8 @@ namespace Framework
 
 			// using distance based point selection to prevent
 			// too high or too low frequency
-			float bezierPointMinDistance = 1 / (density);
-			float bezierPointsCount = std::ceil(bezierDirectionLength * density) * 4;
+			float bezierPointMinDistance = bezierDirectionLength / (density * 2);
+			float bezierPointsCount = density;
 
 			std::vector<sf::Vector2f> bezierPoints;
 			bezierPoints.reserve(bezierPointsCount);
