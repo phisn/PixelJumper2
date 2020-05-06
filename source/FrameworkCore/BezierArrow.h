@@ -8,36 +8,58 @@
 
 namespace Framework
 {
-	class BezierArrow
+	class BezierCurve
 		:
 		public sf::Drawable
 	{
 	public:
-		enum class Side
-		{
-			Vertical, Horizontal
-		};
-
-		enum class Mode
-		{
-			Default, Reversed, Doubled
-		};
-
-		BezierArrow()
+		BezierCurve()
 			:
-			vertex{ sf::PrimitiveType::TriangleStrip }
+			BezierCurve(5.f, 200)
 		{
 		}
 
-		void setHeadWidthRatio(float headWidthRatio)
+		BezierCurve(float width, int pointCount)
+			:
+			vertex(sf::PrimitiveType::TriangleStrip),
+			width(width),
+			pointCount(pointCount)
 		{
-			this->headWidthRatio = headWidthRatio;
+		}
+
+		void setSource(sf::Vector2f point)
+		{
+			source = point;
 			needsUpdate = true;
 		}
 
-		void setHeadLengthRatio(float headLengthRatio)
+		void setTarget(sf::Vector2f point)
 		{
-			this->headLengthRatio = headLengthRatio;
+			target = point;
+			needsUpdate = true;
+		}
+
+		void setP0(sf::Vector2f point)
+		{
+			p0 = point;
+			needsUpdate = true;
+		}
+
+		void setP1(sf::Vector2f point)
+		{
+			p1 = point;
+			needsUpdate = true;
+		}
+
+		void setColor(sf::Color color)
+		{
+			this->color = color;
+			needsUpdate = true;
+		}
+
+		void setPointCount(int pointCount)
+		{
+			this->pointCount = pointCount;
 			needsUpdate = true;
 		}
 
@@ -47,45 +69,258 @@ namespace Framework
 			needsUpdate = true;
 		}
 
-		void setDensity(float density)
+		sf::Vector2f getSource() const
 		{
-			this->density = density;
-			needsUpdate = true;
+			return source;
 		}
 
-		void setSource(sf::Vector2f source)
+		sf::Vector2f getTarget() const
 		{
-			this->source = source;
-			needsUpdate = true;
+			return target;
 		}
 
-		void setTarget(sf::Vector2f target)
+		sf::Vector2f getP0() const
 		{
-			this->target = target;
-			needsUpdate = true;
+			return p0;
+		}
+
+		sf::Vector2f getP1() const
+		{
+			return p1;
+		}
+
+		float getWidth() const
+		{
+			return width;
+		}
+
+	protected:
+		mutable bool needsUpdate = true;
+		mutable sf::VertexArray vertex;
+
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+		{
+			if (needsUpdate)
+			{
+				needsUpdate = false;
+				construct();
+			}
+
+			target.draw(vertex, states);
+		}
+
+	private:
+		sf::Color color = sf::Color::White;
+		
+		int pointCount;
+		float width;
+
+		sf::Vector2f source;
+		sf::Vector2f target;
+
+		sf::Vector2f p0, p1;
+
+		void construct() const
+		{
+			assert(pointCount > 0);
+			assert(width > 0);
+
+			vertex.clear();
+
+			sf::Vector2f direction = target - source;
+			float directionLength = sqrtf(direction.x * direction.x + direction.y * direction.y);
+
+			std::vector<sf::Vector2f> bezier;
+			bezier.reserve(pointCount);
+
+			float minDistance = directionLength / (pointCount * 2);
+			float step = 1.f / (pointCount - 1);
+
+			for (int i = 0; i < pointCount; ++i)
+			{
+				float t = i * step;
+				float inv_t = 1 - t;
+
+				sf::Vector2f bezierPoint =
+					source * (inv_t * inv_t * inv_t) +
+					p0 * (3 * inv_t * inv_t * t) +
+					p1 * (3 * inv_t * t * t) +
+					target * (t * t * t);
+
+				if (bezier.size() > 0)
+				{
+					sf::Vector2f bezierPointDifference = bezierPoint - bezier.back();
+
+					if (sqrtf(bezierPointDifference.x * bezierPointDifference.x +
+						bezierPointDifference.y * bezierPointDifference.y) < minDistance)
+						continue;
+				}
+
+				bezier.push_back(bezierPoint);
+			}
+
+			sf::Vector2f sourceDirection = p0 - source;
+			sf::Vector2f targetDirection = p1 - target;
+
+			float sourceAngle = atan2(sourceDirection.y, sourceDirection.x);
+			float targetAngle = atan2(targetDirection.y, targetDirection.x);
+
+			sf::Vector2f sourceP0 = sf::Vector2f{ -sin(sourceAngle), cos(sourceAngle) } * width / 2.f;
+			sf::Vector2f sourceP1 = -sourceP0;
+
+			sf::Vector2f targetP0 = sf::Vector2f{ -sin(targetAngle), cos(targetAngle) } * width / 2.f;
+			sf::Vector2f targetP1 = -targetP0;
+
+			pushVertex(source + sourceP0);
+			pushVertex(source + sourceP1);
+			vertex.append(vertex[vertex.getVertexCount() - 1]);
+
+			for (int bezierIndex = 1; bezierIndex < bezier.size() - 1; ++bezierIndex)
+			{
+				sf::Vector2f p0_to_pn = bezier[bezierIndex] - bezier[bezierIndex - 1];
+				sf::Vector2f p0_to_p1 = bezier[bezierIndex + 1] - bezier[bezierIndex - 1];
+
+				float squared_p0_to_p1 = p0_to_p1.x * p0_to_p1.x + p0_to_p1.y * p0_to_p1.y;
+				float p0pn_dot_p0p1 = p0_to_pn.x * p0_to_p1.x + p0_to_pn.y * p0_to_p1.y;
+
+				float distance = p0pn_dot_p0p1 / squared_p0_to_p1;
+
+				sf::Vector2f outer_direction_position =
+				{
+					bezier[bezierIndex - 1].x + p0_to_p1.x * distance,
+					bezier[bezierIndex - 1].y + p0_to_p1.y * distance
+				};
+
+				sf::Vector2f outer_direction = bezier[bezierIndex] - outer_direction_position;
+				float outer_length = sqrtf(outer_direction.x * outer_direction.x + outer_direction.y * outer_direction.y);
+
+				float p0_scale = (outer_length + width / 2.f) / outer_length;
+				float p1_scale = (outer_length - width / 2.f) / outer_length;
+
+				sf::Vector2f vertex0 = outer_direction_position + outer_direction * p0_scale;
+				sf::Vector2f vertex1 = outer_direction_position + outer_direction * p1_scale;
+
+				if (!std::isnan(vertex0.x + vertex0.y + vertex1.x + vertex1.y))
+					pushVertexConstruct(vertex0, vertex1);
+			}
+
+			pushVertexConstruct(target + targetP0, target + targetP1);
+		}
+
+		void pushVertex(sf::Vector2f point) const
+		{
+			vertex.append(sf::Vertex{ point, color });
+		}
+
+		void pushVertexConstruct(sf::Vector2f p0, sf::Vector2f p1) const
+		{
+			vertex.append(sf::Vertex(p0, color));
+			vertex.append(sf::Vertex(vertex[vertex.getVertexCount() - 4].position, color));
+			vertex.append(sf::Vertex(p1, color));
+			vertex.append(sf::Vertex(vertex[vertex.getVertexCount() - 4].position, color));
+			vertex.append(sf::Vertex(p0, color));
+		}
+	};
+
+	class BezierArrow
+		:
+		public sf::Drawable
+	{
+	public:
+		enum Mode
+		{
+			Disabled,
+			Default,
+			Reversed,
+			Doubled
+		};
+
+		BezierArrow()
+			:
+			BezierArrow(Doubled, 5.f, 200)
+		{
+		}
+
+		BezierArrow(Mode mode, float width, int pointCount)
+			:
+			curve(width, pointCount),
+			vertex(sf::PrimitiveType::Triangles),
+			mode(mode)
+		{
+			sf::Vector2f source = { 0, 0 };
+			sf::Vector2f target = { 240, -260 };
+
+			sf::Vector2f p0 = { 0, -200 }, p1 = { 140, -200 };
+
+			setSource(source);
+			setTarget(target);
+			setP0(p0);
+			setP1(p1);
 		}
 
 		void setMode(Mode mode)
 		{
 			this->mode = mode;
+
+			setSource(source);
+			setTarget(target);
+		}
+
+		void setSource(sf::Vector2f point)
+		{
+			source = point;
+			curve.setSource(point + (mode == Reversed || mode == Doubled
+				? makeHeadOffset(point, getP0())
+				: sf::Vector2f{ }));
 			needsUpdate = true;
 		}
 
-		void setSourceSide(Side side)
+		void setTarget(sf::Vector2f point)
 		{
-			this->sourceSide = side;
+			target = point;
+			curve.setTarget(point + (mode == Default || mode == Doubled
+				? makeHeadOffset(point, getP1())
+				: sf::Vector2f{ }));
 			needsUpdate = true;
 		}
 
-		void setTargetSide(Side side)
+		void setP0(sf::Vector2f point)
 		{
-			this->targetSide = side;
+			curve.setP0(point);
+			setSource(source);
+		}
+
+		void setP1(sf::Vector2f point)
+		{
+			curve.setP1(point);
+			setTarget(target);
+		}
+
+		void setBodyColor(sf::Color color)
+		{
+			curve.setColor(color);
+		}
+
+		void setPointCount(int pointCount)
+		{
+			curve.setPointCount(pointCount);
+		}
+
+		void setWidth(float width)
+		{
+			curve.setWidth(width);
 			needsUpdate = true;
 		}
 
-		void setColor(sf::Color color)
+		void setSourceHeadColor(sf::Color color)
 		{
-			this->bodyColor = color;
+			sourceColor = color;
+			needsUpdate = true;
+		}
+
+		void setTargetHeadColor(sf::Color color)
+		{
+			targetColor = color;
 			needsUpdate = true;
 		}
 
@@ -104,305 +339,242 @@ namespace Framework
 			return target;
 		}
 
-	private:
+		sf::Vector2f getP0() const
+		{
+			return curve.getP0();
+		}
+
+		sf::Vector2f getP1() const
+		{
+			return curve.getP1();
+		}
+
+		float getWidth() const
+		{
+			return curve.getWidth();
+		}
+
+	protected:
 		mutable sf::VertexArray vertex;
-
-		float headWidthRatio = 0.7f;
-		float headLengthRatio = 1.0f;
-
-		float width = 8.f;
-		float density = 200.f;
-
-		sf::Vector2f source = { 0, 0 };
-		sf::Vector2f target = { 200, 200 };
-
-		Side sourceSide = Side::Vertical;
-		Side targetSide = Side::Horizontal;
-
-		Mode mode = Mode::Default;
-		
-		sf::Color bodyColor = sf::Color::White;
-
 		mutable bool needsUpdate = true;
 
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 		{
 			if (needsUpdate)
 			{
-				needsUpdate = false;
 				construct();
+				needsUpdate = false;
 			}
 
+			target.draw(curve, states);
 			target.draw(vertex, states);
 		}
+
+	private:
+		sf::Color sourceColor = sf::Color::White;
+		sf::Color targetColor = sf::Color::White;
+
+		sf::Vector2f source;
+		sf::Vector2f target;
+
+		Mode mode;
+
+		float headWidthRatio = 0.7f;
+		float headLengthRatio = 1.0f;
+
+		BezierCurve curve;
 
 		void construct() const
 		{
 			vertex.clear();
 
-			float headWidth = width;
-			float headLength = width * headLengthRatio;
+			if (mode == Disabled)
+				return;
 
-			if (mode != Mode::Default)
+			float headWidth = 2 * headWidthRatio * getWidth() / (1 - headWidthRatio);
+
+			if (mode == Reversed || mode == Doubled)
 			{
-				vertex.append(sf::Vertex{ source, bodyColor });
+				sf::Vector2f sourceDirection = curve.getSource() - source;
+				float sourceAngle = atan2(sourceDirection.y, sourceDirection.x);
 
-				if (sourceSide == Side::Vertical)
-				{
-					if (source.y < target.y)
-					{
-						vertex.append(sf::Vertex{ source + sf::Vector2f{  headWidth / 2.f, headLength }, bodyColor });
-						vertex.append(sf::Vertex{ source + sf::Vector2f{ -headWidth / 2.f, headLength }, bodyColor });
-					}
-					else
-					{
-						vertex.append(sf::Vertex{ source + sf::Vector2f{  headWidth / 2.f, -headLength }, bodyColor });
-						vertex.append(sf::Vertex{ source + sf::Vector2f{ -headWidth / 2.f, -headLength }, bodyColor });
-					}
-				}
-				else
-				{
-					if (source.x < target.x)
-					{
-						vertex.append(sf::Vertex{ source + sf::Vector2f{  headLength,  headWidth / 2.f }, bodyColor });
-						vertex.append(sf::Vertex{ source + sf::Vector2f{  headLength, -headWidth / 2.f }, bodyColor });
-					}
-					else
-					{
-						vertex.append(sf::Vertex{ source + sf::Vector2f{  -headLength,  headWidth / 2.f }, bodyColor });
-						vertex.append(sf::Vertex{ source + sf::Vector2f{  -headLength, -headWidth / 2.f }, bodyColor });
-					}
-				}
+				sf::Vector2f sourceP0 = sf::Vector2f{ -sin(sourceAngle), cos(sourceAngle) } * headWidth / 2.f;
+				sf::Vector2f sourceP1 = -sourceP0;
+
+				appendTriangle(
+					source,
+					curve.getSource() + sourceP0,
+					curve.getSource() + sourceP1,
+					sourceColor);
 			}
 
-			sf::Vector2f bezierSource;
-			if (mode != Mode::Default)
+			if (mode == Default || mode == Doubled)
 			{
-				bezierSource = source + (sourceSide == Side::Vertical
-					? sf::Vector2f{ 0, headLength } * (source.y > target.y ? -1.f : 1.f)
-					: sf::Vector2f{ headLength, 0 } * (source.x > target.x ? -1.f : 1.f));
+				sf::Vector2f targetDirection = curve.getTarget() - target;
+				float targetAngle = atan2(targetDirection.y, targetDirection.x);
+
+				sf::Vector2f targetP0 = sf::Vector2f{ -sin(targetAngle), cos(targetAngle) } * headWidth / 2.f;
+				sf::Vector2f targetP1 = -targetP0;
+
+				appendTriangle(
+					target,
+					curve.getTarget() + targetP0,
+					curve.getTarget() + targetP1,
+					targetColor);
 			}
-			else
-			{
-				bezierSource = source;
-			}
+		}
 
-			sf::Vector2f bezierTarget;
-			if (mode != Mode::Reversed)
-			{
-				bezierTarget = target + (targetSide == Side::Vertical
-					? sf::Vector2f{ 0, headLength } * (source.y < target.y ? -1.f : 1.f)
-					: sf::Vector2f{ headLength, 0 } * (source.x < target.x ? -1.f : 1.f));
-			}
-			else
-			{
-				bezierTarget = target;
-			}
+		void appendTriangle(
+			sf::Vector2f p0, 
+			sf::Vector2f p1, 
+			sf::Vector2f p2,
+			sf::Color color) const
+		{
+			vertex.resize(vertex.getVertexCount() + 3);
 
-			float bezierWidth = (1 - headWidthRatio) * width;
+			vertex[vertex.getVertexCount() - 3].position = p0;
+			vertex[vertex.getVertexCount() - 3].color = color;
+			vertex[vertex.getVertexCount() - 2].position = p1;
+			vertex[vertex.getVertexCount() - 2].color = color;
+			vertex[vertex.getVertexCount() - 1].position = p2;
+			vertex[vertex.getVertexCount() - 1].color = color;
+		}
 
-			sf::Vector2f bezierDirection = bezierTarget - bezierSource;
-			float bezierDirectionLength = sqrtf(bezierDirection.x * bezierDirection.x + bezierDirection.y * bezierDirection.y);
+		sf::Vector2f makeHeadOffset(sf::Vector2f p0, sf::Vector2f p1) const
+		{
+			sf::Vector2f direction = p1 - p0;
+			float headLength = headLengthRatio * getWidth() / (1 - headWidthRatio);
+			float directionToOffsetScale = headLength / sqrt(direction.x * direction.x + direction.y * direction.y);
+			return direction * directionToOffsetScale;
+		}
+	};
 
-			// using distance based point selection to prevent
-			// too high or too low frequency
-			float bezierPointMinDistance = bezierDirectionLength / (density * 2);
-			float bezierPointsCount = density;
+	class StrictBezierArrow
+		:
+		public sf::Drawable
+	{
+	public:
+		typedef BezierArrow::Mode Mode;
 
-			std::vector<sf::Vector2f> bezierPoints;
-			bezierPoints.reserve(bezierPointsCount);
+		enum class Side
+		{
+			Vertical, Horizontal
+		};
+
+		StrictBezierArrow()
+		{
+		}
+
+		void setWidth(float width)
+		{
+			arrow.setWidth(width);
+		}
+
+		void setSource(sf::Vector2f source)
+		{
+			arrow.setSource(source);
+			updateCurvePositions();
+		}
+
+		void setTarget(sf::Vector2f target)
+		{
+			arrow.setTarget(target);
+			updateCurvePositions();
+		}
+
+		void setMode(Mode mode)
+		{
+			arrow.setMode(mode);
+		}
+
+		void setSourceSide(Side side)
+		{
+			sourceSide = side;
+			updateCurvePositions();
+		}
+
+		void setTargetSide(Side side)
+		{
+			targetSide = side;
+			updateCurvePositions();
+		}
+
+		void setBodyColor(sf::Color color)
+		{
+			arrow.setBodyColor(color);
+		}
+
+		Mode getMode() const
+		{
+			return arrow.getMode();
+		}
+
+		sf::Vector2f getSource() const
+		{
+			return arrow.getSource();
+		}
+
+		sf::Vector2f getTarget() const
+		{
+			return arrow.getTarget();
+		}
+
+	protected:
+		mutable bool needsUpdate = true;
+
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+		{
+			target.draw(arrow, states);
+		}
+
+	private:
+		BezierArrow arrow;
+
+		Side sourceSide;
+		Side targetSide;
+
+		void updateCurvePositions()
+		{
+			sf::Vector2f source = arrow.getSource();
+			sf::Vector2f target = arrow.getTarget();
 
 			if (sourceSide == targetSide)
 			{
-				const float strength = 0.7;
-
+				float strength = 0.7;
 				sf::Vector2f p0, p1;
 
 				if (sourceSide == Side::Vertical)
 				{
-					p0 = { bezierSource.x, bezierTarget.y * strength + bezierSource.y * (1 - strength) };
-					p1 = { bezierTarget.x, bezierSource.y * strength + bezierTarget.y * (1 - strength) };
+					p0 = { source.x, target.y * strength + source.y * (1 - strength) };
+					p1 = { target.x, source.y * strength + target.y * (1 - strength) };
 				}
 				else
 				{
-					p0 = { bezierTarget.x * strength + bezierSource.x * (1 - strength), bezierSource.y };
-					p1 = { bezierSource.x * strength + bezierTarget.x * (1 - strength), bezierTarget.y };
+					p0 = { target.x * strength + source.x * (1 - strength), source.y };
+					p1 = { source.x * strength + target.x * (1 - strength), target.y };
 				}
 
-				float step = 1.f / (bezierPointsCount - 1);
-				for (int i = 0; i < bezierPointsCount; ++i)
-				{
-					float t = i * step;
-					float inv_t = 1 - t;
-
-					sf::Vector2f bezierPoint =
-						bezierSource * (inv_t * inv_t * inv_t) +
-						p0 * (3 * inv_t * inv_t * t) +
-						p1 * (3 * inv_t * t * t) +
-						bezierTarget * (t * t * t);
-
-					if (bezierPoints.size() > 0)
-					{
-						sf::Vector2f bezierPointDifference = bezierPoint - bezierPoints.back();
-
-						if (sqrtf(bezierPointDifference.x * bezierPointDifference.x +
-								  bezierPointDifference.y * bezierPointDifference.y) < bezierPointMinDistance)
-							continue;
-					}
-						
-					bezierPoints.push_back(bezierPoint);
-				}
+				arrow.setP0(p0);
+				arrow.setP1(p1);
 			}
 			else
 			{
-				sf::Vector2f p0 = sourceSide == Side::Vertical
-					? sf::Vector2f{ bezierSource.x, bezierTarget.y }
-					: sf::Vector2f{ bezierTarget.x, bezierSource.y };
+				float strength = 0.7;
+				sf::Vector2f p0, p1;
 
-				float step = 1.f / (bezierPointsCount - 1);
-				for (int i = 0; i < bezierPointsCount; ++i)
+				if (sourceSide == Side::Vertical)
 				{
-					float t = i * step;
-					float inv_t = 1 - t;
-
-					sf::Vector2f bezierPoint =
-						bezierSource * (inv_t * inv_t) +
-						p0 * (2 * inv_t * t) + 
-						bezierTarget * (t * t);
-
-					if (bezierPoints.size() > 0)
-					{
-						sf::Vector2f bezierPointDifference = bezierPoint - bezierPoints.back();
-
-						if (sqrtf(bezierPointDifference.x * bezierPointDifference.x +
-								  bezierPointDifference.y * bezierPointDifference.y) < bezierPointMinDistance)
-							continue;
-					}
-
-					bezierPoints.push_back(bezierPoint);
-				}
-			}
-
-			if (sourceSide == Side::Vertical)
-			{
-				if (bezierSource.y > bezierTarget.y)
-				{
-					vertex.append(sf::Vertex(bezierSource + sf::Vector2f{ bezierWidth / 2.f, 0 }, bodyColor));
-					vertex.append(sf::Vertex(bezierSource + sf::Vector2f{ -bezierWidth / 2.f, 0 }, bodyColor));
+					p0 = { source.x, target.y * strength + source.y * (1 - strength) };
+					p1 = { source.x * strength + target.x * (1 - strength), target.y };
 				}
 				else
 				{
-					vertex.append(sf::Vertex(bezierSource + sf::Vector2f{ -bezierWidth / 2.f, 0 }, bodyColor));
-					vertex.append(sf::Vertex(bezierSource + sf::Vector2f{ bezierWidth / 2.f, 0 }, bodyColor));
-				}
-			}
-			else
-			{
-				if (bezierSource.x > bezierTarget.x)
-				{
-					vertex.append(sf::Vertex(bezierSource + sf::Vector2f{ 0,  bezierWidth / 2.f }, bodyColor));
-					vertex.append(sf::Vertex(bezierSource + sf::Vector2f{ 0, -bezierWidth / 2.f }, bodyColor));
-				}
-				else
-				{
-					vertex.append(sf::Vertex(bezierSource + sf::Vector2f{ 0, -bezierWidth / 2.f }, bodyColor));
-					vertex.append(sf::Vertex(bezierSource + sf::Vector2f{ 0,  bezierWidth / 2.f }, bodyColor));
-				}
-			}
-
-			vertex.append(vertex[vertex.getVertexCount() - 1]);
-			
-			// skip first and last bezier point
-			int bezier_index = 1;
-
-			while (bezier_index < bezierPoints.size() - 1)
-			{
-				// bezierPoints[bezier_index + 1] + bezierPoints[bezier_index - 1]
-				
-				sf::Vector2f p0_to_pn = bezierPoints[bezier_index] - bezierPoints[bezier_index - 1];
-				sf::Vector2f p0_to_p1 = bezierPoints[bezier_index + 1] - bezierPoints[bezier_index - 1];
-
-				float squared_p0_to_p1 = p0_to_p1.x * p0_to_p1.x + p0_to_p1.y * p0_to_p1.y;
-				float p0pn_dot_p0p1 = p0_to_pn.x * p0_to_p1.x + p0_to_pn.y * p0_to_p1.y;
-
-				float distance = p0pn_dot_p0p1 / squared_p0_to_p1;
-
-				sf::Vector2f outer_direction_position = 
-				{ 
-					bezierPoints[bezier_index - 1].x + p0_to_p1.x * distance,
-					bezierPoints[bezier_index - 1].y + p0_to_p1.y * distance
-				};
-
-				sf::Vector2f outer_direction = bezierPoints[bezier_index] - outer_direction_position;
-				float outer_length = sqrtf(outer_direction.x * outer_direction.x + outer_direction.y * outer_direction.y);
-
-				float p0_scale = (outer_length + bezierWidth / 2.f) / outer_length;
-				float p1_scale = (outer_length - bezierWidth / 2.f) / outer_length;
-
-				sf::Vector2f vertex0 = outer_direction_position + outer_direction * p0_scale;
-				sf::Vector2f vertex1 = outer_direction_position + outer_direction * p1_scale;
-
-				if (!std::isnan(vertex0.x + vertex0.y + vertex1.x + vertex1.y))
-				{
-					vertex.append(sf::Vertex(vertex0, bodyColor));
-					vertex.append(sf::Vertex(vertex[vertex.getVertexCount() - 4].position, bodyColor));
-					vertex.append(sf::Vertex(vertex1, bodyColor));
-					vertex.append(sf::Vertex(vertex[vertex.getVertexCount() - 4].position, bodyColor));
-					vertex.append(sf::Vertex(vertex0, bodyColor));
+					p0 = { target.x * strength + source.x * (1 - strength), source.y };
+					p1 = { target.x, source.y * strength + target.y * (1 - strength) };
 				}
 
-				++bezier_index;
-			}
-
-			sf::Vector2f vertex_end0, vertex_end1;
-
-			if (targetSide == Side::Vertical)
-			{
-				vertex_end0 = bezierTarget + sf::Vector2f{ bezierWidth / 2.f, 0 };
-				vertex_end1 = bezierTarget + sf::Vector2f{ -bezierWidth / 2.f, 0 };
-			}
-			else
-			{
-				vertex_end0 = bezierTarget + sf::Vector2f{ 0,  bezierWidth / 2.f };
-				vertex_end1 = bezierTarget + sf::Vector2f{ 0, -bezierWidth / 2.f };
-			}
-
-			vertex.append(sf::Vertex(vertex_end0, bodyColor));
-			vertex.append(sf::Vertex(vertex[vertex.getVertexCount() - 4].position, bodyColor));
-			vertex.append(sf::Vertex(vertex_end1, bodyColor));
-			vertex.append(sf::Vertex(vertex[vertex.getVertexCount() - 4].position, bodyColor));
-			vertex.append(sf::Vertex(vertex_end0, bodyColor));
-
-			if (mode != Mode::Reversed)
-			{
-				vertex.append(sf::Vertex{ target, bodyColor });
-
-				if (targetSide == Side::Vertical)
-				{
-					if (source.y > target.y)
-					{
-						vertex.append(sf::Vertex{ target + sf::Vector2f{  headWidth / 2.f, headLength }, bodyColor });
-						vertex.append(sf::Vertex{ target + sf::Vector2f{ -headWidth / 2.f, headLength }, bodyColor });
-					}
-					else
-					{
-						vertex.append(sf::Vertex{ target + sf::Vector2f{  headWidth / 2.f, -headLength }, bodyColor });
-						vertex.append(sf::Vertex{ target + sf::Vector2f{ -headWidth / 2.f, -headLength }, bodyColor });
-					}
-				}
-				else
-				{
-					if (source.x > target.x)
-					{
-						vertex.append(sf::Vertex{ target + sf::Vector2f{  headLength,  headWidth / 2.f }, bodyColor });
-						vertex.append(sf::Vertex{ target + sf::Vector2f{  headLength, -headWidth / 2.f }, bodyColor });
-					}
-					else
-					{
-						vertex.append(sf::Vertex{ target + sf::Vector2f{  -headLength,  headWidth / 2.f }, bodyColor });
-						vertex.append(sf::Vertex{ target + sf::Vector2f{  -headLength, -headWidth / 2.f }, bodyColor });
-					}
-				}
+				arrow.setP0(p0);
+				arrow.setP1(p1);
 			}
 		}
 	};

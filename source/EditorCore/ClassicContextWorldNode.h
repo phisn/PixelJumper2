@@ -129,6 +129,32 @@ namespace Editor
 			connection.element = worldNode;
 		}
 
+		void addTemporaryConnection(
+			ClassicContextConnectionElement* element,
+			ClassicContextConnection* node)
+		{
+			Connection& connection = connections.emplace_back();
+
+			connection.node = node;
+			connection.element = element;
+		}
+
+		// trusting caller that node is actually
+		// a temoporary connection
+		void removeTemporaryConnection(ClassicContextConnection* node)
+		{
+			decltype(connections)::iterator removal = std::find_if(
+				connections.begin(),
+				connections.end(),
+				[node](Connection& connection)
+				{
+					return connection.node == node;
+				});
+
+			if (removal != connections.end())
+				connections.erase(removal);
+		}
+
 		void draw(sf::RenderTarget* target)
 		{
 			target->draw(rect);
@@ -457,8 +483,8 @@ namespace Editor
 						sf::FloatRect p1_gb = p1->element->getGlobalBounds();
 
 						return (side == Top || side == Bottom)
-							? p0_gb.left < p1_gb.left
-							: p0_gb.top < p1_gb.top;
+							? p0_gb.left + p0_gb.width / 2.f < p1_gb.left + p1_gb.width / 2.f
+							: p0_gb.top + p0_gb.height / 2.f < p1_gb.top + p1_gb.height / 2.f;
 					});
 
 			for (int side = 0; side < 4; ++side)

@@ -23,7 +23,7 @@ namespace Editor
 			sourceOut(true),
 			targetOut(false)
 		{
-			arrow.setMode(Framework::BezierArrow::Mode::Default);
+			arrow.setMode(Framework::StrictBezierArrow::Mode::Default);
 		}
 
 		void draw(sf::RenderTarget* target)
@@ -69,8 +69,8 @@ namespace Editor
 			{
 				arrow.setSource(position);
 				arrow.setSourceSide(side == ConnectionSide::Top || side == ConnectionSide::Bottom
-					? Framework::BezierArrow::Side::Vertical
-					: Framework::BezierArrow::Side::Horizontal);
+					? Framework::StrictBezierArrow::Side::Vertical
+					: Framework::StrictBezierArrow::Side::Horizontal);
 			}
 			else
 			{
@@ -78,8 +78,8 @@ namespace Editor
 
 				arrow.setTarget(position);
 				arrow.setTargetSide(side == ConnectionSide::Top || side == ConnectionSide::Bottom
-					? Framework::BezierArrow::Side::Vertical
-					: Framework::BezierArrow::Side::Horizontal);
+					? Framework::StrictBezierArrow::Side::Vertical
+					: Framework::StrictBezierArrow::Side::Horizontal);
 			}
 		}
 
@@ -99,19 +99,19 @@ namespace Editor
 
 				if (sourceOut && !targetOut)
 				{
-					arrow.setMode(Framework::BezierArrow::Mode::Default);
+					arrow.setMode(Framework::StrictBezierArrow::Mode::Default);
 					return;
 				}
 
 				if (targetOut && !sourceOut)
 				{
-					arrow.setMode(Framework::BezierArrow::Mode::Reversed);
+					arrow.setMode(Framework::StrictBezierArrow::Mode::Reversed);
 					return;
 				}
 
 				if (sourceOut && targetOut)
 				{
-					arrow.setMode(Framework::BezierArrow::Mode::Doubled);
+					arrow.setMode(Framework::StrictBezierArrow::Mode::Doubled);
 					return;
 				}
 
@@ -129,7 +129,7 @@ namespace Editor
 			return targetElement;
 		}
 
-		Framework::BezierArrow::Mode getMode()
+		Framework::StrictBezierArrow::Mode getMode()
 		{
 			return arrow.getMode();
 		}
@@ -140,6 +140,6 @@ namespace Editor
 		bool sourceOut = false;
 		bool targetOut = false;
 
-		Framework::BezierArrow arrow;
+		Framework::StrictBezierArrow arrow;
 	};
 }

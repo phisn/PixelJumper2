@@ -57,4 +57,45 @@ namespace Editor
 		ClassicContextConnectionElement* sourceElement;
 		ClassicContextConnectionElement* targetElement;
 	};
+
+	class ClassicContextDummyConnectionElement
+		:
+		public ClassicContextConnectionElement
+	{
+	public:
+		ClassicContextDummyConnectionElement(ClassicContextConnection* connection)
+			:
+			connection(connection)
+		{
+		}
+
+		void notifyBoundsChanged() override
+		{
+		}
+
+		sf::FloatRect getGlobalBounds() const override
+		{
+			return sf::FloatRect{ position.x, position.y, 0, 0 };
+		}
+
+		void setPosition(sf::Vector2f position, ConnectionSide side)
+		{
+			this->position = position;
+			connection->setEndpointPosition(this, side, position);
+
+			if (element)
+				element->notifyBoundsChanged();
+		}
+
+		void setElement(ClassicContextConnectionElement* element)
+		{
+			this->element = element;
+		}
+
+	private:
+		sf::Vector2f position;
+
+		ClassicContextConnectionElement* element;
+		ClassicContextConnection* connection;
+	};
 }

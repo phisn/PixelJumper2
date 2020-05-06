@@ -36,6 +36,107 @@ namespace Editor
 		}
 	};
 	*/
+
+	class ClassicContextMouseConnection
+		:
+		public ClassicContextConnection
+	{
+	public:
+		ClassicContextMouseConnection()
+			:
+			dummy(this)
+		{
+			arrow.setMode(arrow.Default);
+		}
+
+		void draw(sf::RenderTarget* target)
+		{
+			target->draw(arrow);
+		}
+
+		void setTarget(sf::Vector2f target)
+		{
+			dummy.setPosition(target, Editor::ConnectionSide::Top);
+		}
+
+		void setElement(ClassicContextConnectionElement* element)
+		{
+			dummy.setElement(element);
+			this->element = element;
+		}
+
+		ClassicContextConnectionElement* getDummy()
+		{
+			return &dummy;
+		}
+
+	private:
+		void setEndpointPosition(
+			ClassicContextConnectionElement* element,
+			ConnectionSide side,
+			sf::Vector2f position) override
+		{
+			if (element == &dummy)
+			{
+				arrow.setTarget(position);
+			}
+			else
+			{
+				elementSide = side;
+				arrow.setSource(position);
+			}
+
+			updateBezierPoints();
+		}
+
+		void setEndpointOut(
+			ClassicContextConnectionElement* world,
+			bool out) override
+		{
+		}
+
+		void updateBezierPoints()
+		{
+			sf::Vector2f p0;
+
+			sf::Vector2f source = arrow.getSource();
+			sf::Vector2f target = arrow.getTarget();
+
+			switch (elementSide)
+			{
+			case ConnectionSide::Top:
+				p0 = sf::Vector2f{ 0, target.y - source.y };
+
+				break;
+			case ConnectionSide::Left:
+				p0 = sf::Vector2f{ target.x - source.x, 0 };
+
+				break;
+			case ConnectionSide::Bottom:
+				p0 = sf::Vector2f{ 0, source.y - target.y };
+
+				break;
+			case ConnectionSide::Right:
+				p0 = sf::Vector2f{ target.x - source.x, 0 };
+
+				break;
+			}
+
+			sf::FloatRect src_gb = element->getGlobalBounds();
+			sf::Vector2f p1 = src_gb.getPosition() + src_gb.getSize() / 2.f - target;
+
+			arrow.setP0(source + p0 * 0.5f);
+			arrow.setP1(target + p1 * 0.5f);
+		}
+
+		Framework::BezierArrow arrow;
+		
+		ClassicContextDummyConnectionElement dummy;
+		ClassicContextConnectionElement* element;
+
+		ConnectionSide elementSide;
+	};
+
 	struct ClassicContextWindowDataset
 	{
 		ClassicContextDataset* classicContext;
@@ -82,8 +183,6 @@ namespace Editor
 
 			nodes.push_back(node2);
 			worlds.push_back(node2);
-
-			connectArrow.setMode(Framework::ArrowShapeMode::Default);
 		}
 
 		~ClassicContextWindow()
@@ -111,7 +210,7 @@ namespace Editor
 				switch (mouseMode)
 				{
 				case MouseMode::Connect:
-					connectArrow.setDestination(pixelToCoords(
+					mouseConnection.setTarget(pixelToCoords(
 						event.mouseMove.x,
 						event.mouseMove.y));
 
@@ -176,9 +275,9 @@ namespace Editor
 							}
 
 							mouseMode = MouseMode::None;
+							connectWorldSource->removeTemporaryConnection(&mouseConnection);
 
 							break;
-
 						default:
 							if (ClassicContextNode* node = findNodeByPoint(event.mouseButton.x, event.mouseButton.y); node)
 							{
@@ -250,27 +349,20 @@ namespace Editor
 
 			assert(connectWorldSource != NULL);
 
-			connectArrow.setSource(
-				connectWorldSource->getPosition() + connectWorldSource->getSize() / 2.f
-			);
-			connectArrow.setDestination(connectArrow.getSource());
+			sf::Vector2f mouseCursor = pixelToCoords(
+				ImGui::GetIO().MousePos.x, 
+				ImGui::GetIO().MousePos.y);
+
+			mouseConnection.setElement(connectWorldSource);
+			mouseConnection.setTarget(mouseCursor);
+
+			connectWorldSource->addTemporaryConnection(
+				mouseConnection.getDummy(),
+				&mouseConnection);
 		}
 
 		// mouse specific
 	private:
-		struct ArrowConnectionElement
-			:
-			public ClassicContextConnectionElement
-		{
-			void notifyBoundsChanged() override
-			{
-			}
-
-			sf::FloatRect getGlobalBounds() const override
-			{
-			}
-		};
-
 		ClassicContextNode* nodeHovered = NULL;
 
 		std::vector<sf::Vector2f> mouseNodeBegin;
@@ -280,7 +372,7 @@ namespace Editor
 		sf::RectangleShape mouseMarkingRect;
 
 		ClassicContextWorldNode* connectWorldSource;
-		Framework::ArrowShape connectArrow;
+		ClassicContextMouseConnection mouseConnection;
 
 		enum class MouseMode
 		{
@@ -361,7 +453,7 @@ namespace Editor
 
 				break;
 			case MouseMode::Connect:
-				target->draw(connectArrow);
+				mouseConnection.draw(target);
 
 				break;
 			}
