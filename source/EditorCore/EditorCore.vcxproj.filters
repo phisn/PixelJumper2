@@ -33,6 +33,12 @@
     <ClCompile Include="ClassicContextConnectionNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
+    <ClCompile Include="ClassicContextWindowPopup.cpp">
+      <Filter>source\classiccontext</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassicContextTask.cpp">
+      <Filter>source\classiccontext</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
@@ -63,6 +69,12 @@
       <Filter>source\classiccontext</Filter>
     </ClInclude>
     <ClInclude Include="ClassicContextConnection.h">
+      <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicContextWindowPopup.h">
+      <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicContextTask.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
   </ItemGroup>

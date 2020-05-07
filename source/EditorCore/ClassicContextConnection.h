@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace Editor
+namespace Editor::ClassicContext
 {
 	enum class ConnectionSide
 	{
@@ -12,22 +12,22 @@ namespace Editor
 		Right
 	};
 
-	struct ClassicContextConnectionElement
+	struct ConnectionElement
 	{
 		virtual void notifyBoundsChanged() = 0;
 		virtual sf::FloatRect getGlobalBounds() const = 0;
 	};
 
-	class ClassicContextConnection
+	class Connection
 	{
 	public:
-		ClassicContextConnection()
+		Connection()
 		{
 		}
 
-		ClassicContextConnection(
-			ClassicContextConnectionElement* sourceElement,
-			ClassicContextConnectionElement* targetElement)
+		Connection(
+			ConnectionElement* sourceElement,
+			ConnectionElement* targetElement)
 			:
 			sourceElement(sourceElement),
 			targetElement(targetElement)
@@ -35,35 +35,35 @@ namespace Editor
 		}
 
 		virtual void setEndpointPosition(
-			ClassicContextConnectionElement* world,
+			ConnectionElement* world,
 			ConnectionSide side,
 			sf::Vector2f position) = 0;
 
 		virtual void setEndpointOut(
-			ClassicContextConnectionElement* world,
+			ConnectionElement* world,
 			bool out) = 0;
 
-		ClassicContextConnectionElement* getSourceElement()
+		ConnectionElement* getSourceElement()
 		{
 			return sourceElement;
 		}
 
-		ClassicContextConnectionElement* getTargetElement()
+		ConnectionElement* getTargetElement()
 		{
 			return targetElement;
 		}
 
 	protected:
-		ClassicContextConnectionElement* sourceElement;
-		ClassicContextConnectionElement* targetElement;
+		ConnectionElement* sourceElement;
+		ConnectionElement* targetElement;
 	};
 
-	class ClassicContextDummyConnectionElement
+	class DummyConnectionElement
 		:
-		public ClassicContextConnectionElement
+		public ConnectionElement
 	{
 	public:
-		ClassicContextDummyConnectionElement(ClassicContextConnection* connection)
+		DummyConnectionElement(Connection* connection)
 			:
 			connection(connection)
 		{
@@ -84,10 +84,12 @@ namespace Editor
 			connection->setEndpointPosition(this, side, position);
 
 			if (element)
+			{
 				element->notifyBoundsChanged();
+			}
 		}
 
-		void setElement(ClassicContextConnectionElement* element)
+		void setElement(ConnectionElement* element)
 		{
 			this->element = element;
 		}
@@ -95,7 +97,7 @@ namespace Editor
 	private:
 		sf::Vector2f position;
 
-		ClassicContextConnectionElement* element;
-		ClassicContextConnection* connection;
+		ConnectionElement* element;
+		Connection* connection;
 	};
 }

@@ -75,9 +75,9 @@ namespace Scene
 			world2->name = "test world 3";
 			context.worlds.push_back(world2);
 
-			Editor::ClassicContextWindowDataset dataset;
+			Editor::ClassicContext::WindowDataset dataset;
 			dataset.classicContext = &context;
-			Editor::ClassicContextWindow* window = new Editor::ClassicContextWindow(dataset);
+			Editor::ClassicContext::ClassicContextWindow* window = new Editor::ClassicContext::ClassicContextWindow(dataset);
 
 
 			windows.push_back(window);

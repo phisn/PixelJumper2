@@ -27,7 +27,7 @@ namespace Editor
 
 		void onEvent(sf::Event event)
 		{
-			event = convertWindowEvent(event);
+			convertWindowEvent(event);
 
 			switch (event.type)
 			{

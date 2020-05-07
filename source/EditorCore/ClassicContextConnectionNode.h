@@ -5,20 +5,20 @@
 
 #include "FrameworkCore/BezierArrow.h"
 
-namespace Editor
+namespace Editor::ClassicContext
 {
-	class ClassicContextConnectionNode
+	class ConnectionNode
 		:
-		public ClassicContextNode,
-		public ClassicContextConnection
+		public Node,
+		public Connection
 	{
 	public:
-		ClassicContextConnectionNode(
-			ClassicContextWindowAccess* access,
-			ClassicContextConnectionElement* source,
-			ClassicContextConnectionElement* target)
+		ConnectionNode(
+			WindowAccess* access,
+			ConnectionElement* source,
+			ConnectionElement* target)
 			:
-			ClassicContextConnection(source, target),
+			Connection(source, target),
 			access(access),
 			sourceOut(true),
 			targetOut(false)
@@ -40,7 +40,7 @@ namespace Editor
 		{
 		}
 
-		void setStyle(ClassicContextNodeStyle style) override
+		void setStyle(NodeStyle style) override
 		{
 		}
 
@@ -61,7 +61,7 @@ namespace Editor
 		}
 
 		void setEndpointPosition(
-			ClassicContextConnectionElement* world,
+			ConnectionElement* world,
 			ConnectionSide side,
 			sf::Vector2f position)
 		{
@@ -84,7 +84,7 @@ namespace Editor
 		}
 
 		void setEndpointOut(
-			ClassicContextConnectionElement* world,
+			ConnectionElement* world,
 			bool out)
 		{
 			assert(world == sourceElement || world == targetElement);
@@ -119,12 +119,12 @@ namespace Editor
 			}
 		}
 
-		ClassicContextConnectionElement* getSourceElement()
+		ConnectionElement* getSourceElement()
 		{
 			return sourceElement;
 		}
 
-		ClassicContextConnectionElement* getTargetElement()
+		ConnectionElement* getTargetElement()
 		{
 			return targetElement;
 		}
@@ -134,8 +134,23 @@ namespace Editor
 			return arrow.getMode();
 		}
 
+		bool getElementOutput(ConnectionElement* element) const
+		{
+			if (element == sourceElement)
+			{
+				return sourceOut;
+			}
+
+			if (element == targetElement)
+			{
+				return targetOut;
+			}
+
+			return false;
+		}
+
 	private:
-		ClassicContextWindowAccess* access;
+		WindowAccess* access;
 
 		bool sourceOut = false;
 		bool targetOut = false;

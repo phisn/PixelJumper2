@@ -6,30 +6,30 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace Editor
+namespace Editor::ClassicContext
 {
-	struct ClassicContextConnectionNode;
-	struct ClassicContextWindowAccess
+	struct ConnectionNode;
+	struct WindowAccess
 	{
-		virtual void removeLink(ClassicContextConnectionNode* node) = 0;
+		virtual void removeLink(ConnectionNode* node) = 0;
 		virtual void createConnection(
 			ClassicWorldDataset* source, 
 			ClassicWorldDataset* target) = 0;
 		virtual void beginLink(ClassicWorldDataset* dataset) = 0;
 	};
 
-	class ClassicContextPopup
+	class Popup
 		:
 		public Framework::IndependentPopupWindow
 	{
 	public:
-		ClassicContextPopup(ClassicContextWindowAccess* access)
+		Popup(WindowAccess* access)
 			:
 			access(access)
 		{
 		}
 
 	protected:
-		ClassicContextWindowAccess* access;
+		WindowAccess* access;
 	};
 }
