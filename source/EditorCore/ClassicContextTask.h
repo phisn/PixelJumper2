@@ -17,11 +17,19 @@ namespace Editor::ClassicContext
 		}
 	};
 
+	class RemoveTransitiveNodeTask
+	{
+	public:
+		RemoveTransitiveNodeTask()
+		{
+		}
+	};
+
 	// stop storing nodes inside tasks for undo redo
 	// use something like momento. make the node have a state
 	// like resourcebase (pipe) to easily store the state
 	// and late store it in file. stored momento + dataset = node
-	class RemoveTransitiveNodeTask
+	class _RemoveTransitiveNodeTask
 		:
 		public Task
 	{
@@ -70,6 +78,8 @@ namespace Editor::ClassicContext
 	private:
 		void execute()
 		{
+
+
 			world0->removeTransitiveConnection(node);
 			world1->removeTransitiveConnection(node);
 

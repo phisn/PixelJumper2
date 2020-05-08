@@ -35,17 +35,6 @@ namespace Editor::ClassicContext
 
 		void onContent() override
 		{
-			LazyDatasetChange datasetChange{ dataset };
-
-			if (ImGui::InputTextEx("###classicContextPopup_Name", "Name", &inputText[0], inputText.length() + 1, ImVec2{ MaxPopupWidth, 0 }, 0))
-			{
-				// autotrim after first \0
-				dataset->name = inputText.c_str();
-				datasetChange.notify();
-			}
-
-			ImGui::Separator();
-
 			if (ImGui::Button("Connect to", ImVec2{ MaxPopupWidth, 0 }))
 			{
 				access->beginLink(dataset);
