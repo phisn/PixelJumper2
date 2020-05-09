@@ -4,7 +4,9 @@
 #include "Common/Property.h"
 #include "ResourceCore/WorldResource.h"
 
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
+
+#include <deque>
 
 namespace Editor
 {
@@ -20,37 +22,47 @@ namespace Editor
 		public AbstractTask
 	{
 	public:
-		virtual bool execute(Dataset* dataset) = 0
+		bool execute(Dataset* dataset)
 		{
 			this->dataset = dataset;
+			return execute();
 		}
 
 	protected:
+		virtual bool execute()
+		{
+			redo();
+		}
+
 		Dataset* dataset;
 	};
 
-	class _AbstractDataset
-		:
-		public Util::Notifier<_AbstractDataset>
+	enum class DatasetEvent
 	{
-		_AbstractDataset(_AbstractDataset&) = delete;
-		_AbstractDataset& operator=(_AbstractDataset&) = delete;
+		Changed,
+		Removed
+	};
+
+	class AbstractDataset
+		:
+		public Util::Notifier<AbstractDataset, DatasetEvent>
+	{
+		AbstractDataset(AbstractDataset&) = delete;
+		AbstractDataset& operator=(AbstractDataset&) = delete;
 
 	public:
 		using Notifier::Notifier;
+		using Notifier::notify;
 
 		virtual void undo() = 0;
 		virtual void redo() = 0;
-
-	protected:
-		using Notifier::notify;
 	};
 
-	class _Dataset
+	class Dataset
 		:
-		public _AbstractDataset
+		public AbstractDataset
 	{
-		friend class _DatasetChild;
+		friend class DatasetChild;
 
 	public:
 		void undo() override
@@ -89,12 +101,12 @@ namespace Editor
 		std::deque<AbstractTask*> redoTasks;
 	};
 
-	class _DatasetChild
+	class DatasetChild
 		:
-		public _AbstractDataset
+		public AbstractDataset
 	{
 	public:
-		_DatasetChild(_Dataset* root)
+		DatasetChild(Dataset* root)
 			:
 			root(root)
 		{
@@ -117,13 +129,12 @@ namespace Editor
 		}
 
 	protected:
-		_Dataset* root;
+		Dataset* root;
 	};
 
-	template <
-		typename DatasetType,
-		typename DatasetContent>
-		class _CommonDataset
+	template <typename DatasetContent,
+		typename DatasetType = Dataset>
+		class CommonDataset
 		:
 		public DatasetType
 	{
@@ -135,7 +146,7 @@ namespace Editor
 			if (task->execute(&dataset))
 			{
 				pushTask(task);
-				notify();
+				notify(DatasetEvent::Changed);
 
 				return true;
 			}
@@ -153,46 +164,12 @@ namespace Editor
 			return &dataset;
 		}
 
+		const DatasetContent& operator*() const
+		{
+			return dataset;
+		}
+
 	protected:
 		DatasetContent dataset;
 	};
-
-	struct WorldTileDataset
-		:
-		public Dataset
-	{
-		sf::Vector2i position;
-		sf::Vector2i size;
-	};
-
-	struct WorldTileListDataset
-		:
-		public Dataset
-	{
-		std::vector<WorldTileDataset> tiles;
-	};
-
-	struct ClassicWorldDatasetContent
-	{
-		Resource::WorldID worldID;
-		std::string name;
-
-		std::vector<ClassicWorldDataset*> transitive;
-		WorldTileListDataset listDataset;
-	};
-
-	typedef _CommonDataset<_DatasetChild, ClassicWorldDatasetContent> ClassicWorldDataset;
-
-	struct ClassicStageDataset
-		:
-		public _Dataset
-	{
-	};
-
-	struct ClassicContextDatasetContent
-	{
-		std::vector<ClassicWorldDataset*> worlds;
-	};
-
-	typedef _CommonDataset<_Dataset, ClassicWorldDatasetContent> ClassicContextDataset;
 }

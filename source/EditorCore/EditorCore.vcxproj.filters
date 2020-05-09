@@ -48,6 +48,15 @@
     <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
+    <ClCompile Include="dataset\TransitiveDataset.cpp">
+      <Filter>source\dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="dataset\WorldTileContainerDataset.cpp">
+      <Filter>source\dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="dataset\WorldTileDataset.cpp">
+      <Filter>source\dataset</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
@@ -91,6 +100,15 @@
     </ClInclude>
     <ClInclude Include="classiccontext\ClassicContextWorldNode.h">
       <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="dataset\TransitiveDataset.h">
+      <Filter>source\dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="dataset\WorldTileContainerDataset.h">
+      <Filter>source\dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="dataset\WorldTileDataset.h">
+      <Filter>source\dataset</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -114,6 +114,9 @@
     <ClCompile Include="dataset\ClassicContextDataset.cpp" />
     <ClCompile Include="dataset\ClassicWorldDataset.cpp" />
     <ClCompile Include="dataset\EditorDataset.cpp" />
+    <ClCompile Include="dataset\TransitiveDataset.cpp" />
+    <ClCompile Include="dataset\WorldTileContainerDataset.cpp" />
+    <ClCompile Include="dataset\WorldTileDataset.cpp" />
     <ClCompile Include="EditorScene.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="main.cpp" />
@@ -131,6 +134,9 @@
     <ClInclude Include="dataset\ClassicContextDataset.h" />
     <ClInclude Include="dataset\ClassicWorldDataset.h" />
     <ClInclude Include="dataset\EditorDataset.h" />
+    <ClInclude Include="dataset\TransitiveDataset.h" />
+    <ClInclude Include="dataset\WorldTileContainerDataset.h" />
+    <ClInclude Include="dataset\WorldTileDataset.h" />
     <ClInclude Include="EditorScene.h" />
     <ClInclude Include="EditorWindow.h" />
   </ItemGroup>
