@@ -7,6 +7,13 @@
 
 namespace Editor
 {
+	// need to build a pipe tomorrow
+	// something like all childs friend their parent
+	// and all have a private write and read state
+	// method which contents are specified by dataset type
+	// root dataset accepts a context resource and is public
+	// maybe make the world dataset read write also public
+
 	struct ClassicStageDataset
 		:
 		public Dataset
