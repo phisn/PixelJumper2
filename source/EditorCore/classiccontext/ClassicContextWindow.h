@@ -3,8 +3,8 @@
 #include "ClassicContextWorldNode.h"
 #include "ClassicContextConnectionNode.h"
 
-#include "EditorDataset.h"
-#include "EditorWindow.h"
+#include "EditorCore/dataset/EditorDataset.h"
+#include "EditorCore/EditorWindow.h"
 
 #include "FrameworkCore/FrameworkCore.h"
 #include "FrameworkCore/BezierArrow.h"

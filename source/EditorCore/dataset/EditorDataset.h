@@ -15,33 +15,44 @@ namespace Editor
 	};
 
 	template <typename Dataset>
-	struct Task
+	class Task
 		:
 		public AbstractTask
 	{
-		virtual void execute(Dataset* dataset) = 0;
+	public:
+		virtual bool execute(Dataset* dataset) = 0
+		{
+			this->dataset = dataset;
+		}
+
+	protected:
+		Dataset* dataset;
 	};
 
 	class _AbstractDataset
+		:
+		public Util::Notifier<_AbstractDataset>
 	{
+		_AbstractDataset(_AbstractDataset&) = delete;
+		_AbstractDataset& operator=(_AbstractDataset&) = delete;
+
 	public:
+		using Notifier::Notifier;
+
 		virtual void undo() = 0;
 		virtual void redo() = 0;
+
+	protected:
+		using Notifier::notify;
 	};
 
 	class _Dataset
 		:
 		public _AbstractDataset
 	{
+		friend class _DatasetChild;
+
 	public:
-		void pushTask(AbstractTask* task)
-		{
-			undoTasks.push_back(task);
-
-			if (undoTasks.size() > taskLimit)
-				undoTasks.pop_front();
-		}
-
 		void undo() override
 		{
 			if (undoTasks.size() > 0)
@@ -64,6 +75,14 @@ namespace Editor
 
 	protected:
 		int taskLimit = 50;
+
+		void pushTask(AbstractTask* task)
+		{
+			undoTasks.push_back(task);
+
+			if (undoTasks.size() > taskLimit)
+				undoTasks.pop_front();
+		}
 
 	private:
 		std::deque<AbstractTask*> undoTasks;
@@ -92,45 +111,50 @@ namespace Editor
 		}
 
 	private:
+		void pushTask(AbstractTask* task)
+		{
+			root->pushTask(task);
+		}
+
+	protected:
 		_Dataset* root;
 	};
 
-	class Dataset
+	template <
+		typename DatasetType,
+		typename DatasetContent>
+		class _CommonDataset
 		:
-		public Util::Notifier<Dataset>
+		public DatasetType
 	{
 	public:
-		using Notifier::notify;
-	};
+		using DatasetType::DatasetType;
 
-	class LazyDatasetChange
-	{
-	public:
-		LazyDatasetChange(Dataset* dataset)
-			:
-			dataset(dataset)
+		bool execute(Task<DatasetContent>* task)
 		{
+			if (task->execute(&dataset))
+			{
+				pushTask(task);
+				notify();
+
+				return true;
+			}
+
+			return false;
 		}
 
-		~LazyDatasetChange()
+		const DatasetContent* operator->() const
 		{
-			if (dataChanged)
-				dataset->notify();
+			return &dataset;
 		}
 
-		void notify()
+		const DatasetContent* getDataset() const
 		{
-			dataChanged = true;
+			return &dataset;
 		}
 
-		bool hasDataChanged() const
-		{
-			return dataChanged;
-		}
-
-	private:
-		bool dataChanged = false;
-		Dataset* dataset;
+	protected:
+		DatasetContent dataset;
 	};
 
 	struct WorldTileDataset
@@ -148,7 +172,7 @@ namespace Editor
 		std::vector<WorldTileDataset> tiles;
 	};
 
-	struct ClassicWorldDataset
+	struct ClassicWorldDatasetContent
 	{
 		Resource::WorldID worldID;
 		std::string name;
@@ -157,36 +181,18 @@ namespace Editor
 		WorldTileListDataset listDataset;
 	};
 
-	class ClassicWorldDatasetContainer
-		:
-		public _DatasetChild
-	{
-	public:
-		const ClassicWorldDataset* operator->() const
-		{
-			return &dataset;
-		}
+	typedef _CommonDataset<_DatasetChild, ClassicWorldDatasetContent> ClassicWorldDataset;
 
-		const ClassicWorldDataset* getDataset() const
-		{
-			return &dataset;
-		}
-
-	private:
-		ClassicWorldDataset dataset;
-	};
-	
 	struct ClassicStageDataset
 		:
 		public _Dataset
 	{
 	};
 
-	struct ClassicContextDataset
-		:
-		public _Dataset
+	struct ClassicContextDatasetContent
 	{
-	public:
 		std::vector<ClassicWorldDataset*> worlds;
 	};
+
+	typedef _CommonDataset<_Dataset, ClassicWorldDatasetContent> ClassicContextDataset;
 }

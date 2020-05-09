@@ -3,7 +3,7 @@
 #include "ClassicContextConnection.h"
 #include "ClassicContextNode.h"
 #include "ClassicContextWindowPopup.h"
-#include "EditorDataset.h"
+#include "EditorCore/dataset/EditorDataset.h"
 
 #include "FrameworkCore/FrameworkCore.h"
 

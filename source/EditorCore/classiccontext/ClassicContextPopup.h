@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EditorDataset.h"
+#include "EditorCore/dataset/EditorDataset.h"
 
 #include "FrameworkCore/imgui/ImGuiModalWindow.h"
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ClassicContextPopup.h"
-#include "EditorDataset.h"
+#include "EditorCore/dataset/EditorDataset.h"
 
 namespace Editor::ClassicContext
 {

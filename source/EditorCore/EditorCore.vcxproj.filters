@@ -7,6 +7,9 @@
     <Filter Include="source\classiccontext">
       <UniqueIdentifier>{8753f425-59a7-476b-ab51-d2b74c3da79b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\dataset">
+      <UniqueIdentifier>{1d5e6b5a-cd80-4772-90df-db0370f7d527}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -18,25 +21,31 @@
     <ClCompile Include="ClassicWorldWindow.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="EditorDataset.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="EditorWindow.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="ClassicContextWorldNode.cpp">
+    <ClCompile Include="dataset\EditorDataset.cpp">
+      <Filter>source\dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="dataset\ClassicContextDataset.cpp">
+      <Filter>source\dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="dataset\ClassicWorldDataset.cpp">
+      <Filter>source\dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="classiccontext\ClassicContextConnectionNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
-    <ClCompile Include="ClassicContextWindow.cpp">
+    <ClCompile Include="classiccontext\ClassicContextTask.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
-    <ClCompile Include="ClassicContextConnectionNode.cpp">
+    <ClCompile Include="classiccontext\ClassicContextWindow.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
-    <ClCompile Include="ClassicContextWindowPopup.cpp">
+    <ClCompile Include="classiccontext\ClassicContextWindowPopup.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
-    <ClCompile Include="ClassicContextTask.cpp">
+    <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,34 +56,40 @@
     <ClInclude Include="ClassicWorldWindow.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="EditorDataset.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="EditorWindow.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextWindow.h">
+    <ClInclude Include="dataset\EditorDataset.h">
+      <Filter>source\dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="dataset\ClassicContextDataset.h">
+      <Filter>source\dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="dataset\ClassicWorldDataset.h">
+      <Filter>source\dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="classiccontext\ClassicContextConnection.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextNode.h">
+    <ClInclude Include="classiccontext\ClassicContextConnectionNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextPopup.h">
+    <ClInclude Include="classiccontext\ClassicContextNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextConnectionNode.h">
+    <ClInclude Include="classiccontext\ClassicContextPopup.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextWorldNode.h">
+    <ClInclude Include="classiccontext\ClassicContextTask.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextConnection.h">
+    <ClInclude Include="classiccontext\ClassicContextWindow.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextWindowPopup.h">
+    <ClInclude Include="classiccontext\ClassicContextWindowPopup.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="ClassicContextTask.h">
+    <ClInclude Include="classiccontext\ClassicContextWorldNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
   </ItemGroup>
