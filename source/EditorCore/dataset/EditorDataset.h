@@ -10,6 +10,8 @@
 
 namespace Editor
 {
+	typedef uint64_t DatasetID;
+
 	struct AbstractTask
 	{
 		virtual void undo() = 0;
@@ -47,6 +49,8 @@ namespace Editor
 		:
 		public Util::Notifier<AbstractDataset, DatasetEvent>
 	{
+		friend class DatasetManagement;
+
 		AbstractDataset(AbstractDataset&) = delete;
 		AbstractDataset& operator=(AbstractDataset&) = delete;
 
@@ -56,6 +60,22 @@ namespace Editor
 
 		virtual void undo() = 0;
 		virtual void redo() = 0;
+
+		DatasetID getDatasetID() const
+		{
+			return datasetID;
+		}
+
+	protected:
+		virtual void saveDynamic(Resource::ReadPipe* pipe) = 0;
+		virtual void saveStatic(Resource::ReadPipe* pipe) = 0;
+
+		virtual void loadDynamic(Resource::WritePipe* pipe) = 0;
+		virtual void loadStatic(Resource::WritePipe* pipe) = 0;
+
+	private:
+		// managed by datasetmanagment
+		DatasetID datasetID;
 	};
 
 	class Dataset
@@ -172,4 +192,14 @@ namespace Editor
 	protected:
 		DatasetContent dataset;
 	};
+
+
+
+
+
+
+
+
+
+
 }

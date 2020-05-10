@@ -26,6 +26,20 @@ namespace Editor
 		{
 		}
 
+		bool make(Resource::ReadPipe* const pipe) override
+		{
+			return pipe->readValue(&dataset.worldID)
+				&& pipe->readString(&dataset.name)
+				&& dataset.tiles->make(pipe);
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return pipe->writeValue(&dataset.worldID)
+				&& pipe->writeString(&dataset.name)
+				&& dataset.tiles->save(pipe);
+		}
+
 		ClassicContextDataset* getParent() const
 		{
 			return parent;

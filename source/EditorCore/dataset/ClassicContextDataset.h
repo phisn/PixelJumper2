@@ -31,38 +31,52 @@ namespace Editor
 
 	class ClassicContextDataset
 		:
-		public CommonDataset<ClassicWorldDatasetContent>
+		public CommonDataset<ClassicContextDatasetContent>
 	{
 	public:
+		bool make(Resource::ReadPipe* const pipe) override
+		{
+			return pipe->readString(&dataset.contextName)
+				&& pipe->readString(&dataset.contextDescription)
+				&& pipe->readVectorResource(&dataset.transtives)
+				&& pipe->readVectorResource(&dataset.worlds);
+		}
+		
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			return pipe->writeString(&dataset.contextName)
+				&& pipe->writeString(&dataset.contextDescription)
+				&& pipe->writeVectorResource(&dataset.transtives)
+				&& pipe->writeVectorResource(&dataset.worlds);
+		}
 	};
 
 	namespace ClassicContextTask
 	{
-		class CreateTransitive
+		class ChangeTransitiveBase
 			:
 			public Task<ClassicContextDatasetContent>
 		{
 		public:
-			CreateTransitive(ClassicContextDataset* parent, std::string name = "")
-			{
-				transitive = new TransitiveDataset{ parent };
-			}
-
-			CreateTransitive(TransitiveDataset* transitive)
+			ChangeTransitiveBase(TransitiveDataset* transitive)
 				:
 				transitive(transitive)
 			{
+				assert(transitive != NULL);
 			}
 
-			~CreateTransitive()
+			~ChangeTransitiveBase()
 			{
-				delete dataset;
+				if (removed)
+					delete dataset;
 			}
 
-			void undo() override
+		protected:
+			bool removed;
+
+			void remove()
 			{
 				removed = true;
-
 				decltype(dataset->transtives)::iterator removal = std::find(
 					dataset->transtives.begin(),
 					dataset->transtives.end(), transitive);
@@ -80,15 +94,66 @@ namespace Editor
 				}
 			}
 
-			void redo() override
+			void create()
 			{
 				removed = false;
 				dataset->transtives.push_back(transitive);
 			}
 
 		private:
-			bool removed = true;
 			TransitiveDataset* transitive;
+		};
+
+		class CreateTransitive
+			:
+			public ChangeTransitiveBase
+		{
+		public:
+			CreateTransitive(ClassicContextDataset* parent)
+				:
+				CreateTransitive(new TransitiveDataset{ parent })
+			{
+			}
+
+			CreateTransitive(TransitiveDataset* transitive)
+				:
+				ChangeTransitiveBase(transitive)
+			{
+				removed = true;
+			}
+
+			void undo() override
+			{
+				remove();
+			}
+
+			void redo() override
+			{
+				create();
+			}
+		};
+
+		class CreateTransitive
+			:
+			public ChangeTransitiveBase
+		{
+		public:
+			CreateTransitive(TransitiveDataset* transitive)
+				:
+				ChangeTransitiveBase(transitive)
+			{
+				removed = false;
+			}
+
+			void undo() override
+			{
+				create();
+			}
+
+			void redo() override
+			{
+				remove();
+			}
 		};
 	}
 }

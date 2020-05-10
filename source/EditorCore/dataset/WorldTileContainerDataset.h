@@ -22,6 +22,14 @@ namespace Editor
 		{
 		}
 
+		bool make(Resource::ReadPipe* const pipe) override
+		{
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+		}
+
 		ClassicWorldDataset* getParent() const
 		{
 			return parent;

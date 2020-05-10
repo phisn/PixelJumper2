@@ -28,6 +28,14 @@ namespace Editor
 		{
 		}
 
+		bool make(Resource::ReadPipe* const pipe) override
+		{
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+		}
+
 		ClassicContextDataset* getParent() const
 		{
 			return parent;

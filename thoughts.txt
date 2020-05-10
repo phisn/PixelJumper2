@@ -15,3 +15,18 @@
 -> windows are listed from 0 to N and shown as Window #i
 -> maybe the manager should have a list of definitions that individually
    manages all windows of a category
+
+- new model uses   
+0. a manager, that stores a map of all datasets
+   with a datasetid
+1. doubled initialization
+-> first only static content
+-> second refernces to other datasets.
+   these have to be extracted with datasetids
+2. responsibility is shared. a dataset can request responsibility
+   for a dataset
+   datasets without responsability can potentially be deleted or error?
+3. datasets can reference optional datasets
+   these can be set to non existing at any time
+   when a other dataset releases the responsability and
+   no other dataset has one anymore

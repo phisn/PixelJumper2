@@ -57,6 +57,9 @@
     <ClCompile Include="dataset\WorldTileDataset.cpp">
       <Filter>source\dataset</Filter>
     </ClCompile>
+    <ClCompile Include="dataset\DatasetManagment.cpp">
+      <Filter>source\dataset</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
@@ -108,6 +111,9 @@
       <Filter>source\dataset</Filter>
     </ClInclude>
     <ClInclude Include="dataset\WorldTileDataset.h">
+      <Filter>source\dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="dataset\DatasetManagment.h">
       <Filter>source\dataset</Filter>
     </ClInclude>
   </ItemGroup>
