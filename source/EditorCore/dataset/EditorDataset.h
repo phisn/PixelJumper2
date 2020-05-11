@@ -45,11 +45,20 @@ namespace Editor
 		Removed
 	};
 
+	enum class DatasetType
+	{
+		Context,
+		World,
+		Transitive,
+		WorldTileContainer,
+		WorldTile,
+	};
+
 	class AbstractDataset
 		:
 		public Util::Notifier<AbstractDataset, DatasetEvent>
 	{
-		friend class DatasetManagement;
+		friend class DatasetManagment;
 
 		AbstractDataset(AbstractDataset&) = delete;
 		AbstractDataset& operator=(AbstractDataset&) = delete;
@@ -61,17 +70,19 @@ namespace Editor
 		virtual void undo() = 0;
 		virtual void redo() = 0;
 
+		virtual DatasetType getType() const = 0;
+
 		DatasetID getDatasetID() const
 		{
 			return datasetID;
 		}
 
 	protected:
-		virtual void saveDynamic(Resource::ReadPipe* pipe) = 0;
-		virtual void saveStatic(Resource::ReadPipe* pipe) = 0;
+		virtual bool saveDynamic(Resource::WritePipe* pipe) = 0;
+		virtual bool saveStatic(Resource::WritePipe* pipe) = 0;
 
-		virtual void loadDynamic(Resource::WritePipe* pipe) = 0;
-		virtual void loadStatic(Resource::WritePipe* pipe) = 0;
+		virtual bool loadDynamic(Resource::SavePipe* pipe) = 0;
+		virtual bool loadStatic(Resource::SavePipe* pipe) = 0;
 
 	private:
 		// managed by datasetmanagment
@@ -192,14 +203,4 @@ namespace Editor
 	protected:
 		DatasetContent dataset;
 	};
-
-
-
-
-
-
-
-
-
-
 }
