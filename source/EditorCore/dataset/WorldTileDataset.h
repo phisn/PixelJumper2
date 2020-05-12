@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EditorDataset.h"
+#include "DatasetManagment.h"
 
 namespace Editor
 {
@@ -23,11 +23,19 @@ namespace Editor
 		{
 		}
 
-		bool make(Resource::ReadPipe* const pipe) override
+		bool loadDynamic(Resource::ReadPipe* const pipe) override
 		{
 		}
 
-		bool save(Resource::WritePipe* const pipe) override
+		bool saveDynamic(Resource::WritePipe* const pipe) override
+		{
+		}
+
+		bool loadStatic(Resource::ReadPipe* const pipe) override
+		{
+		}
+
+		bool saveStatic(Resource::WritePipe* const pipe) override
 		{
 		}
 

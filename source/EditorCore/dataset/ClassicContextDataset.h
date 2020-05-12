@@ -25,8 +25,8 @@ namespace Editor
 		std::string contextName;
 		std::string contextDescription;
 
-		std::vector<TransitiveDataset*> transtives;
-		std::vector<ClassicWorldDataset*> worlds;
+		std::vector<DatasetReference<TransitiveDataset>> transtives;
+		std::vector<DatasetReference<ClassicWorldDataset>> worlds;
 	};
 
 	class ClassicContextDataset
@@ -34,7 +34,7 @@ namespace Editor
 		public CommonDataset<ClassicContextDatasetContent>
 	{
 	public:
-		bool make(Resource::ReadPipe* const pipe) override
+		/*bool make(Resource::ReadPipe* const pipe) override
 		{
 			return pipe->readString(&dataset.contextName)
 				&& pipe->readString(&dataset.contextDescription)
@@ -48,6 +48,23 @@ namespace Editor
 				&& pipe->writeString(&dataset.contextDescription)
 				&& pipe->writeVectorResource(&dataset.transtives)
 				&& pipe->writeVectorResource(&dataset.worlds);
+		}*/
+
+
+		bool loadDynamic(Resource::ReadPipe* const pipe) override
+		{
+		}
+
+		bool saveDynamic(Resource::WritePipe* const pipe) override
+		{
+		}
+
+		bool loadStatic(Resource::ReadPipe* const pipe) override
+		{
+		}
+
+		bool saveStatic(Resource::WritePipe* const pipe) override
+		{
 		}
 	};
 
@@ -60,7 +77,7 @@ namespace Editor
 		public:
 			ChangeTransitiveBase(TransitiveDataset* transitive)
 				:
-				transitive(transitive)
+				datasetID(transitive->getDatasetID())
 			{
 				assert(transitive != NULL);
 			}
@@ -68,7 +85,9 @@ namespace Editor
 			~ChangeTransitiveBase()
 			{
 				if (removed)
-					delete dataset;
+				{
+					DatasetManagment::Instance()->release(datasetID);
+				}
 			}
 
 		protected:
@@ -76,32 +95,39 @@ namespace Editor
 
 			void remove()
 			{
-				removed = true;
-				decltype(dataset->transtives)::iterator removal = std::find(
+				decltype(dataset->transtives)::iterator removal = std::find_if(
 					dataset->transtives.begin(),
-					dataset->transtives.end(), transitive);
+					dataset->transtives.end(), 
+					[this](DatasetReference<TransitiveDataset>& transitive)
+					{
+						return transitive.getDataset()->getDatasetID() == datasetID;
+					});
 
 				if (removal != dataset->transtives.end())
 				{
-					(**removal).notify(DatasetEvent::Removed);
+					removed = true;
+
+					DatasetManagment::Instance()->obtain<TransitiveDataset>(datasetID);
+					(***removal).notify(DatasetEvent::Removed);
 					dataset->transtives.erase(removal);
 				}
 				else
 				{
 					Log::Error(L"missing transitive for removal in addtransitive task undo",
 						dataset->transtives.size(), L"count",
-						transitive, L"transitive");
+						datasetID, L"datasetID");
 				}
 			}
 
 			void create()
 			{
+				dataset->transtives.emplace_back(datasetID);
+				DatasetManagment::Instance()->release(datasetID);
 				removed = false;
-				dataset->transtives.push_back(transitive);
 			}
 
 		private:
-			TransitiveDataset* transitive;
+			DatasetID datasetID;
 		};
 
 		class CreateTransitive
@@ -109,15 +135,9 @@ namespace Editor
 			public ChangeTransitiveBase
 		{
 		public:
-			CreateTransitive(ClassicContextDataset* parent)
-				:
-				CreateTransitive(new TransitiveDataset{ parent })
-			{
-			}
-
 			CreateTransitive(TransitiveDataset* transitive)
 				:
-				ChangeTransitiveBase(transitive)
+				ChangeTransitiveBase(DatasetManagment::Instance()->create(transitive))
 			{
 				removed = true;
 			}
@@ -133,12 +153,12 @@ namespace Editor
 			}
 		};
 
-		class CreateTransitive
+		class RemoveTransitive
 			:
 			public ChangeTransitiveBase
 		{
 		public:
-			CreateTransitive(TransitiveDataset* transitive)
+			RemoveTransitive(TransitiveDataset* transitive)
 				:
 				ChangeTransitiveBase(transitive)
 			{

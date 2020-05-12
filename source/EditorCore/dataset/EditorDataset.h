@@ -14,6 +14,10 @@ namespace Editor
 
 	struct AbstractTask
 	{
+		virtual ~AbstractTask()
+		{
+		}
+
 		virtual void undo() = 0;
 		virtual void redo() = 0;
 	};
@@ -67,6 +71,10 @@ namespace Editor
 		using Notifier::Notifier;
 		using Notifier::notify;
 
+		virtual ~AbstractDataset()
+		{
+		}
+
 		virtual void undo() = 0;
 		virtual void redo() = 0;
 
@@ -81,8 +89,8 @@ namespace Editor
 		virtual bool saveDynamic(Resource::WritePipe* pipe) = 0;
 		virtual bool saveStatic(Resource::WritePipe* pipe) = 0;
 
-		virtual bool loadDynamic(Resource::SavePipe* pipe) = 0;
-		virtual bool loadStatic(Resource::SavePipe* pipe) = 0;
+		virtual bool loadDynamic(Resource::ReadPipe* pipe) = 0;
+		virtual bool loadStatic(Resource::ReadPipe* pipe) = 0;
 
 	private:
 		// managed by datasetmanagment
@@ -163,14 +171,25 @@ namespace Editor
 		Dataset* root;
 	};
 
-	template <typename DatasetContent,
-		typename DatasetType = Dataset>
-		class CommonDataset
+	template <typename DatasetContent, typename DatasetType = Dataset>
+	class CommonDataset
 		:
 		public DatasetType
 	{
 	public:
-		using DatasetType::DatasetType;
+		template <typename Args...>
+		CommonDataset(Args&&... args)
+			:
+			DatasetType(),
+			dataset(std::forward<Args>(args)...)
+		{
+		}
+
+		CommonDataset()
+			:
+			DatasetType()
+		{
+		}
 
 		bool execute(Task<DatasetContent>* task)
 		{

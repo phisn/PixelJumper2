@@ -9,6 +9,22 @@ namespace Editor
 
 	struct ClassicWorldDatasetContent
 	{
+		ClassicWorldDatasetContent(AbstractDataset* dataset)
+			:
+			parent(dataset)
+		{
+		}
+
+		ClassicWorldDatasetContent(
+			AbstractDataset* dataset,
+			AbstractDataset* parent)
+			:
+			parent(dataset, parent)
+		{
+		}
+
+		DatasetOptional<ClassicContextDataset> parent;
+
 		Resource::WorldID worldID;
 		std::string name;
 
@@ -20,13 +36,19 @@ namespace Editor
 		public CommonDataset<ClassicWorldDatasetContent>
 	{
 	public:
-		ClassicWorldDataset(ClassicContextDataset* parent)
+		ClassicWorldDataset(AbstractDataset* parent)
 			:
-			parent(parent)
+			CommonDataset(this, parent)
 		{
 		}
 
-		bool make(Resource::ReadPipe* const pipe) override
+		ClassicWorldDataset()
+			:
+			CommonDataset(this)
+		{
+		}
+
+		/*bool make(Resource::ReadPipe* const pipe) override
 		{
 			return pipe->readValue(&dataset.worldID)
 				&& pipe->readString(&dataset.name)
@@ -38,15 +60,23 @@ namespace Editor
 			return pipe->writeValue(&dataset.worldID)
 				&& pipe->writeString(&dataset.name)
 				&& dataset.tiles->save(pipe);
-		}
+		}*/
 
-		ClassicContextDataset* getParent() const
+		bool loadDynamic(Resource::ReadPipe* const pipe) override
 		{
-			return parent;
 		}
 
-	private:
-		ClassicContextDataset* parent;
+		bool saveDynamic(Resource::WritePipe* const pipe) override
+		{
+		}
+
+		bool loadStatic(Resource::ReadPipe* const pipe) override
+		{
+		}
+
+		bool saveStatic(Resource::WritePipe* const pipe) override
+		{
+		}
 	};
 
 	namespace ClassicWorldTask

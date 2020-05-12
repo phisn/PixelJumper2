@@ -7,20 +7,26 @@
 
 namespace Editor
 {
-	struct DatasetEntry
-	{
-		void* dataset;
-		AbstractDataset* abstractDataset;
-		int count;
-	};
-
 	class DatasetManagment
 		:
 		public Resource::ResourceBase
 	{
 		static DatasetManagment* instance;
 
+		struct DatasetEntry
+			:
+			public Util::Notifier<DatasetEntry>
+		{
+			using Notifier::notify;
+
+			void* dataset;
+			AbstractDataset* abstractDataset;
+			int count;
+		};
+
 	public:
+		typedef Util::Notifier<DatasetEntry> Notifier;
+
 		static DatasetManagment* Instance()
 		{
 			assert(instance != NULL);
@@ -38,34 +44,49 @@ namespace Editor
 			instance = NULL;
 		}
 
-		DatasetEntry& aquire(DatasetID datasetID)
+		template <typename DatasetType>
+		DatasetType* obtain(DatasetID datasetID)
 		{
-			return datasets[datasetID];
+			decltype(datasets)::iterator datasetEntry = datasets.find(datasetID);
+			assert(datasetEntry != datasets.end());
+			++datasetEntry->second.count;
+			return (DatasetType*) datasetEntry->second.dataset;
 		}
 
-		DatasetEntry& create(DatasetType type)
+		void release(DatasetID datasetID)
 		{
-			return create(type, Module::Random::MakeRandom<DatasetID>());
+			decltype(datasets)::iterator datasetEntry = datasets.find(datasetID);
+			assert(datasetEntry != datasets.end());
+			
+			if (--datasetEntry->second.count == 0)
+			{
+				datasetEntry->second.abstractDataset->notify(DatasetEvent::Removed);
+				delete datasetEntry->second.abstractDataset;
+				datasets.erase(datasetEntry);
+			}
+			else assert(datasetEntry->second.count > 0);
 		}
 
-		template <typename DatasetT>
-		DatasetEntry& create()
+		Notifier& getDatasetNotifier(DatasetID datasetID)
 		{
-			return create<DatasetT>(new DatasetT);
+			decltype(datasets)::iterator datasetEntry = datasets.find(datasetID);
+			assert(datasetEntry != datasets.end());
+			return datasetEntry->second;
 		}
 
-		template <typename DatasetT>
-		DatasetEntry& create(DatasetT* dataset)
+		template <typename DatasetType, typename... Arguments>
+		DatasetType* create(Arguments... arguments)
 		{
-			DatasetEntry& entry = datasets[Module::Random::MakeRandom<DatasetID>()];
-
-			entry.abstractDataset = dataset;
-			entry.count = 0;
-			entry.dataset = (void*) dataset;
-
-			return entry;
+			return create<DatasetType>(new DatasetType(arguments...));
 		}
 
+		template <typename DatasetType>
+		DatasetType* create(DatasetType* dataset)
+		{
+			return create<DatasetType>(dataset, generateDatasetID());
+		}
+
+	public:
 		bool make(Resource::ReadPipe* const pipe) override
 		{
 			uint32_t datasetCount;
@@ -86,7 +107,7 @@ namespace Editor
 					return false;
 				}
 
-				DatasetEntry entry = create(type, id);
+				DatasetEntry entry = emplace(type, id);
 
 				if (!entry.abstractDataset->loadStatic(pipe))
 				{
@@ -135,64 +156,119 @@ namespace Editor
 		std::map<DatasetID, DatasetEntry> datasets;
 		typedef decltype(datasets)::value_type DatasetPair;
 
-		DatasetEntry& create(DatasetType type, DatasetID id)
+		DatasetID generateDatasetID() const
+		{
+			DatasetID datasetID = Module::Random::MakeRandom<DatasetID>();
+			DatasetID firstID = datasetID;
+
+			while (datasets.find(datasetID) != datasets.end())
+			{
+				++datasetID;
+				assert(datasetID != firstID);
+			}
+		}
+
+		DatasetEntry& emplace(DatasetType type, DatasetID id)
 		{
 			DatasetEntry e;
 			return e;
 		}
+
+		template <typename DatasetT>
+		DatasetEntry& emplace(DatasetT* dataset, DatasetID id)
+		{
+			DatasetEntry& entry = datasets[id];
+
+			entry.abstractDataset = dataset;
+			entry.count = 0;
+			entry.dataset = (void*)dataset;
+
+			return entry;
+		}
 	};
 
-	template <typename DatasetT>
+	template <typename DatasetType>
 	class DatasetReference
 	{
 	public:
 		DatasetReference(DatasetID id)
 			:
-			DatasetReference(DatasetManagment::Instance()->aquire(id))
+			dataset(DatasetManagment::Instance()->obtain<DatasetType>(id))
 		{
-		}
-
-		DatasetReference(DatasetEntry& entry)
-			:
-			entry(entry)
-		{
-			this->entry = entry;
 		}
 
 		~DatasetReference()
 		{
-			--entry.count;
+			DatasetManagment::Instance()->release(dataset->getDatasetID());
 		}
 
-		DatasetReference& operator=(DatasetEntry& entry)
+		DatasetReference& operator=(DatasetID id)
 		{
-			this->entry = entry;
+			DatasetManagment::Instance()->release(dataset->getDatasetID());
+			dataset = DatasetManagment::Instance()->obtain<DatasetType>(id);
+
+			return *this;
+		}
+
+		DatasetType* operator->() const
+		{
+			assert(dataset != NULL);
+			return dataset;
+		}
+
+		DatasetType* operator*() const
+		{
+			return dataset;
+		}
+
+		DatasetType* getDataset() const
+		{
+			return dataset;
 		}
 
 	private:
-		DatasetEntry& entry;
+		DatasetType* dataset;
 	};
 
-	template <typename DatasetT>
-	class DatasetViewer
+	template <typename DatasetType>
+	class DatasetOptional
 		:
-		public Util::Notifier<DatasetViewer<DatasetT>>
+		public Util::Notifier<DatasetOptional<DatasetType>>
 	{
 		friend class DatasetManagment;
 
 	public:
 		using Notifier::notify;
 
-		DatasetViewer(AbstractDataset* parent)
+		DatasetOptional(AbstractDataset* parent)
 			:
 			parent(parent)
 		{
 		}
 
-		DatasetT* operator->() const
+		DatasetOptional(
+			AbstractDataset* parent, 
+			AbstractDataset* dataset)
+			:
+			parent(parent)
+		{
+			setDataset(dataset);
+		}
+
+		DatasetType* operator->() const
 		{
 			assert(dataset != NULL);
 			return dataset;
+		}
+
+		void setDataset(AbstractDataset* dataset)
+		{
+			listenerContainer.emplace(
+				DatasetManagment::Instance()->getDatasetNotifier(dataset->getDatasetID()),
+				[this]()
+				{
+					parent->notify(DatasetEvent::Changed);
+				});
 		}
 
 		bool has() const
@@ -200,13 +276,15 @@ namespace Editor
 			return dataset != NULL;
 		}
 
-		DatasetT* getDataset() const
+		DatasetType* getDataset() const
 		{
 			return dataset;
 		}
 
 	private:
-		DatasetT* dataset = NULL;
+		DatasetType* dataset = NULL;
 		AbstractDataset* parent;
+
+		std::optional<Util::NotifyListenerContainer<DatasetManagment::Notifier>> listenerContainer;
 	};
 }
