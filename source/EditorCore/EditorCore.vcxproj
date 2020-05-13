@@ -106,7 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="classiccontext\ClassicContextConnectionNode.cpp" />
-    <ClCompile Include="classiccontext\ClassicContextTask.cpp" />
     <ClCompile Include="classiccontext\ClassicContextWindow.cpp" />
     <ClCompile Include="classiccontext\ClassicContextWindowPopup.cpp" />
     <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp" />
@@ -127,7 +126,6 @@
     <ClInclude Include="classiccontext\ClassicContextConnectionNode.h" />
     <ClInclude Include="classiccontext\ClassicContextNode.h" />
     <ClInclude Include="classiccontext\ClassicContextPopup.h" />
-    <ClInclude Include="classiccontext\ClassicContextTask.h" />
     <ClInclude Include="classiccontext\ClassicContextWindow.h" />
     <ClInclude Include="classiccontext\ClassicContextWindowPopup.h" />
     <ClInclude Include="classiccontext\ClassicContextWorldNode.h" />

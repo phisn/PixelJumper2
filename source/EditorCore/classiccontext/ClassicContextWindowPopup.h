@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ClassicContextPopup.h"
-#include "EditorCore/dataset/EditorDataset.h"
+#include "EditorCore/dataset/ClassicContextDataset.h"
 
 namespace Editor::ClassicContext
 {
@@ -19,7 +19,7 @@ namespace Editor::ClassicContext
 			:
 			Popup(access),
 			dataset(dataset),
-			inputText(dataset->name)
+			inputText(dataset->getDataset().name)
 		{
 			inputText.resize(MaxNameSize);
 			open();

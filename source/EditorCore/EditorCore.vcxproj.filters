@@ -36,9 +36,6 @@
     <ClCompile Include="classiccontext\ClassicContextConnectionNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
-    <ClCompile Include="classiccontext\ClassicContextTask.cpp">
-      <Filter>source\classiccontext</Filter>
-    </ClCompile>
     <ClCompile Include="classiccontext\ClassicContextWindow.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
@@ -90,9 +87,6 @@
       <Filter>source\classiccontext</Filter>
     </ClInclude>
     <ClInclude Include="classiccontext\ClassicContextPopup.h">
-      <Filter>source\classiccontext</Filter>
-    </ClInclude>
-    <ClInclude Include="classiccontext\ClassicContextTask.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
     <ClInclude Include="classiccontext\ClassicContextWindow.h">

@@ -3,7 +3,7 @@
 #include "ClassicContextConnection.h"
 #include "ClassicContextNode.h"
 #include "ClassicContextWindowPopup.h"
-#include "EditorCore/dataset/EditorDataset.h"
+#include "EditorCore/dataset/ClassicContextDataset.h"
 
 #include "FrameworkCore/FrameworkCore.h"
 
@@ -136,6 +136,22 @@ namespace Editor::ClassicContext
 		{
 			target->draw(rect);
 			target->draw(name);
+		}
+
+		bool make(Resource::ReadPipe* const pipe) override
+		{
+			return pipe->readValue(&rect.getPosition());
+		}
+
+		bool save(Resource::WritePipe* const pipe) override
+		{
+			if (sf::Vector2f position; pipe->writeValue(&position))
+			{
+				setPosition(position);
+				return true;
+			}
+
+			return false;
 		}
 
 		Framework::IndependentPopupWindow* createPopupWindow() override

@@ -9,17 +9,9 @@ namespace Editor
 
 	struct ClassicWorldDatasetContent
 	{
-		ClassicWorldDatasetContent(AbstractDataset* dataset)
+		ClassicWorldDatasetContent(AbstractDataset* parent)
 			:
-			parent(dataset)
-		{
-		}
-
-		ClassicWorldDatasetContent(
-			AbstractDataset* dataset,
-			AbstractDataset* parent)
-			:
-			parent(dataset, parent)
+			parent(parent)
 		{
 		}
 
@@ -36,16 +28,17 @@ namespace Editor
 		public CommonDataset<ClassicWorldDatasetContent>
 	{
 	public:
-		ClassicWorldDataset(AbstractDataset* parent)
-			:
-			CommonDataset(this, parent)
-		{
-		}
-
 		ClassicWorldDataset()
 			:
 			CommonDataset(this)
 		{
+		}
+
+		ClassicWorldDataset(AbstractDataset* parent)
+			:
+			CommonDataset(this)
+		{
+			dataset.parent.setDataset(parent);
 		}
 
 		/*bool make(Resource::ReadPipe* const pipe) override

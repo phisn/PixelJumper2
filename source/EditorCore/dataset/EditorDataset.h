@@ -209,9 +209,9 @@ namespace Editor
 			return &dataset;
 		}
 
-		const DatasetContent* getDataset() const
+		const DatasetContent& getDataset() const
 		{
-			return &dataset;
+			return dataset;
 		}
 
 		const DatasetContent& operator*() const

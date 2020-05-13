@@ -8,6 +8,13 @@ namespace Editor
 
 	struct WorldTileContainerDatasetContent
 	{
+		WorldTileContainerDatasetContent(AbstractDataset* parent)
+			:
+			parent(parent)
+		{
+		}
+
+		DatasetOptional<ClassicWorldDataset> parent;
 		std::vector<WorldTileDataset> tiles;
 	};
 
@@ -16,10 +23,17 @@ namespace Editor
 		public CommonDataset<WorldTileContainerDatasetContent>
 	{
 	public:
+		WorldTileContainerDataset()
+			:
+			CommonDataset(this)
+		{
+		}
+		
 		WorldTileContainerDataset(ClassicWorldDataset* parent)
 			:
-			parent(parent)
+			CommonDataset(this)
 		{
+			dataset.parent.setDataset(parent);
 		}
 
 		bool loadDynamic(Resource::ReadPipe* const pipe) override
@@ -37,14 +51,6 @@ namespace Editor
 		bool saveStatic(Resource::WritePipe* const pipe) override
 		{
 		}
-
-		ClassicWorldDataset* getParent() const
-		{
-			return parent;
-		}
-
-	private:
-		ClassicWorldDataset* parent;
 	};
 
 	namespace WorldTileContainerTask

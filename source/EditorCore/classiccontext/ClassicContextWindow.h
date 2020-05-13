@@ -3,7 +3,7 @@
 #include "ClassicContextWorldNode.h"
 #include "ClassicContextConnectionNode.h"
 
-#include "EditorCore/dataset/EditorDataset.h"
+#include "EditorCore/dataset/ClassicContextDataset.h"
 #include "EditorCore/EditorWindow.h"
 
 #include "FrameworkCore/FrameworkCore.h"
@@ -130,7 +130,7 @@ namespace Editor::ClassicContext
 		}
 
 		Framework::BezierArrow arrow;
-		
+
 		DummyConnectionElement dummy;
 		ConnectionElement* element;
 
@@ -168,18 +168,18 @@ namespace Editor::ClassicContext
 			mouseMarkingRect.setOutlineThickness(MouseMarkerBorderThickness);
 			mouseMarkingRect.setFillColor(MouseMarkerColor);
 			mouseMarkingRect.setOutlineColor(MouseMarkerBorderColor);
-
-			WorldNode* node0 = new WorldNode{ this, dataset.classicContext->worlds[0] };
+			
+			WorldNode* node0 = new WorldNode{ this, dataset.classicContext->getDataset().worlds[0].getDataset() };
 
 			nodes.push_back(node0);
 			worlds.push_back(node0);
 
-			WorldNode* node1 = new WorldNode{ this, dataset.classicContext->worlds[1] };
+			WorldNode* node1 = new WorldNode{ this, dataset.classicContext->getDataset().worlds[1].getDataset() };
 
 			nodes.push_back(node1);
 			worlds.push_back(node1);
 
-			WorldNode* node2 = new WorldNode{ this, dataset.classicContext->worlds[2] };
+			WorldNode* node2 = new WorldNode{ this, dataset.classicContext->getDataset().worlds[2].getDataset() };
 
 			nodes.push_back(node2);
 			worlds.push_back(node2);
@@ -202,7 +202,7 @@ namespace Editor::ClassicContext
 			if (windowFocused)
 			{
 				ImGuiGridWindow::onEvent(event);
-				
+
 				switch (event.type)
 				{
 				case sf::Event::KeyPressed:
@@ -371,7 +371,7 @@ namespace Editor::ClassicContext
 			assert(connectWorldSource != NULL);
 
 			sf::Vector2f mouseCursor = pixelToCoords(
-				ImGui::GetIO().MousePos.x, 
+				ImGui::GetIO().MousePos.x,
 				ImGui::GetIO().MousePos.y);
 
 			connectWorldSource->addTemporaryConnection(
@@ -494,7 +494,7 @@ namespace Editor::ClassicContext
 		{
 
 		}
-		
+
 		void createConnection(
 			ClassicWorldDataset* source,
 			ClassicWorldDataset* target) override

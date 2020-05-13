@@ -10,11 +10,21 @@ namespace Editor
 
 	struct TransitiveDatasetContent
 	{
+		TransitiveDatasetContent(AbstractDataset* parent)
+			:
+			parent(parent),
+			source(parent),
+			target(parent)
+		{
+		}
+
+		DatasetOptional<ClassicContextDataset> parent;
+
 		std::string entryName;
 		Resource::WorldEntryID entryID;
 
-		ClassicWorldDataset* source;
-		ClassicWorldDataset* target;
+		DatasetOptional<ClassicWorldDataset> source;
+		DatasetOptional<ClassicWorldDataset> target;
 	};
 
 	class TransitiveDataset
@@ -22,10 +32,17 @@ namespace Editor
 		public CommonDataset<TransitiveDatasetContent>
 	{
 	public:
+		TransitiveDataset()
+			:
+			CommonDataset(this)
+		{
+		}
+		
 		TransitiveDataset(ClassicContextDataset* parent)
 			:
-			parent(parent)
+			CommonDataset(this)
 		{
+			dataset.parent.setDataset(parent);
 		}
 
 		bool loadDynamic(Resource::ReadPipe* const pipe) override
@@ -43,14 +60,6 @@ namespace Editor
 		bool saveStatic(Resource::WritePipe* const pipe) override
 		{
 		}
-
-		ClassicContextDataset* getParent() const
-		{
-			return parent;
-		}
-
-	private:
-		ClassicContextDataset* parent;
 	};
 
 	namespace TransitiveTask

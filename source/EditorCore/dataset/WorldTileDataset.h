@@ -8,6 +8,8 @@ namespace Editor
 
 	struct WorldTileDatasetContent
 	{
+		DatasetOptional<WorldTileContainerDataset> parent;
+
 		sf::Vector2i position;
 		sf::Vector2i size;
 	};
@@ -17,10 +19,17 @@ namespace Editor
 		public CommonDataset<WorldTileDatasetContent>
 	{
 	public:
+		WorldTileDataset()
+			:
+			CommonDataset(this)
+		{
+		}
+		
 		WorldTileDataset(WorldTileContainerDataset* parent)
 			:
-			parent(parent)
+			CommonDataset(this)
 		{
+			dataset.parent.setDataset(parent);
 		}
 
 		bool loadDynamic(Resource::ReadPipe* const pipe) override
@@ -38,14 +47,6 @@ namespace Editor
 		bool saveStatic(Resource::WritePipe* const pipe) override
 		{
 		}
-
-		WorldTileContainerDataset* getParent() const
-		{
-			return parent;
-		}
-
-	private:
-		WorldTileContainerDataset* parent;
 	};
 
 	namespace WorldTileTask
