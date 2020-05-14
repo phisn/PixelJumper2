@@ -53,7 +53,7 @@ namespace Editor::ClassicContext
 			:
 			access(access),
 			world(world),
-			worldDatasetListener(*world, [this]()
+			worldDatasetListener(*world, [this](DatasetEvent event)
 				{
 					reconstructConnections();
 					reconstructNodeContent();
@@ -233,7 +233,7 @@ namespace Editor::ClassicContext
 
 		void reconstructNodeContent()
 		{
-			name.setString(world->name);
+			name.setString(world->getDataset().name);
 			reconstructNodeSize();
 		}
 
@@ -538,10 +538,12 @@ namespace Editor::ClassicContext
 
 		void reconstructConnections()
 		{
-			for (ClassicWorldDataset* transitive : this->world->transitive)
-			{
-				enforceConnection(transitive);
-			}
+			if (world->getDataset().parent)
+				for (ClassicWorldDataset* transitive : world->getDataset().)
+				{
+					enforceConnection(transitive);
+				}
+
 		}
 
 		void enforceConnection(ClassicWorldDataset* world)

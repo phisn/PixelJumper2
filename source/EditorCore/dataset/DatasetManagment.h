@@ -5,6 +5,13 @@
 #include <cassert>
 #include <optional>
 
+// centralize dataset task container in datasetmanagment
+
+// idea:
+// everytime a dataset is created, it needs to get a datasetcontainer
+// the root datasetcontainer is given by a window. else the container
+// is inherited
+
 namespace Editor
 {
 	class DatasetManagment
@@ -259,6 +266,11 @@ namespace Editor
 		{
 			assert(dataset != NULL);
 			return dataset;
+		}
+
+		operator bool() const
+		{
+			return has();
 		}
 
 		void setDataset(AbstractDataset* dataset)

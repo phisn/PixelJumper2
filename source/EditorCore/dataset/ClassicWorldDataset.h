@@ -6,6 +6,7 @@
 namespace Editor
 {
 	class ClassicContextDataset;
+	class TransitiveDataset;
 
 	struct ClassicWorldDatasetContent
 	{
@@ -27,6 +28,8 @@ namespace Editor
 		:
 		public CommonDataset<ClassicWorldDatasetContent>
 	{
+		friend class ClassicContext;
+
 	public:
 		ClassicWorldDataset()
 			:
@@ -70,6 +73,20 @@ namespace Editor
 		bool saveStatic(Resource::WritePipe* const pipe) override
 		{
 		}
+
+		const std::vector<TransitiveDataset*>& getTransitiveOutputs() const
+		{
+			return transitiveOutputs;
+		}
+
+		const std::vector<TransitiveDataset*>& getTransitiveInputs() const
+		{
+			return transitiveInputs;
+		}
+
+	private:
+		std::vector<TransitiveDataset*> transitiveOutputs;
+		std::vector<TransitiveDataset*> transitiveInputs;
 	};
 
 	namespace ClassicWorldTask

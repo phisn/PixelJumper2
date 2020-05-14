@@ -77,7 +77,7 @@ namespace Editor
 		public:
 			ChangeTransitiveBase(TransitiveDataset* transitive)
 				:
-				datasetID(transitive->getDatasetID())
+				transitive(transitive)
 			{
 				assert(transitive != NULL);
 			}
@@ -86,7 +86,7 @@ namespace Editor
 			{
 				if (removed)
 				{
-					DatasetManagment::Instance()->release(datasetID);
+					DatasetManagment::Instance()->release(transitive->getDatasetID());
 				}
 			}
 
@@ -100,34 +100,36 @@ namespace Editor
 					dataset->transtives.end(), 
 					[this](DatasetReference<TransitiveDataset>& transitive)
 					{
-						return transitive.getDataset()->getDatasetID() == datasetID;
+						return transitive.getDataset()->getDatasetID() == this->transitive->getDatasetID();
 					});
 
 				if (removal != dataset->transtives.end())
 				{
+					assert(transitive->getDataset().source && transitive->getDataset().target);
 					removed = true;
 
-					DatasetManagment::Instance()->obtain<TransitiveDataset>(datasetID);
+					DatasetManagment::Instance()->obtain<TransitiveDataset>(transitive->getDatasetID());
 					(***removal).notify(DatasetEvent::Removed);
+
 					dataset->transtives.erase(removal);
 				}
 				else
 				{
 					Log::Error(L"missing transitive for removal in addtransitive task undo",
 						dataset->transtives.size(), L"count",
-						datasetID, L"datasetID");
+						transitive->getDatasetID(), L"datasetID");
 				}
 			}
 
 			void create()
 			{
-				dataset->transtives.emplace_back(datasetID);
-				DatasetManagment::Instance()->release(datasetID);
+				dataset->transtives.emplace_back(transitive->getDatasetID());
+				DatasetManagment::Instance()->release(transitive->getDatasetID());
 				removed = false;
 			}
 
 		private:
-			DatasetID datasetID;
+			TransitiveDataset* transitive;
 		};
 
 		class CreateTransitive
