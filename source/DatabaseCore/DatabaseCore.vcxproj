@@ -80,11 +80,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DatabaseCore.cpp" />
+    <ClCompile Include="_DatabaseCore.cpp" />
     <ClCompile Include="StatementBase.cpp" />
     <ClCompile Include="TableBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatabaseCore.h" />
+    <ClInclude Include="_DatabaseCore.h" />
     <ClInclude Include="StatementBase.h" />
     <ClInclude Include="TableBase.h" />
   </ItemGroup>

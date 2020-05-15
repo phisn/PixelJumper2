@@ -97,9 +97,6 @@
     <ProjectReference Include="..\Logger\Logger.vcxproj">
       <Project>{2132b508-f7f2-4cfb-9b81-bbac679ae5a9}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\NodeEditor\NodeEditor.vcxproj">
-      <Project>{2a69481d-2df4-4041-afd6-0d0edd16246d}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\ResourceCore\Resource.vcxproj">
       <Project>{52da07a5-220a-4d77-a4eb-b7a9ff800d9c}</Project>
     </ProjectReference>

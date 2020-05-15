@@ -34,13 +34,19 @@ namespace Editor
 	public:
 		TransitiveDataset()
 			:
-			CommonDataset(this)
+			CommonDataset(this),
+			oldSource(NULL),
+			oldTarget(NULL)
+		{
+		}
+
+		~TransitiveDataset()
 		{
 		}
 		
 		TransitiveDataset(ClassicContextDataset* parent)
 			:
-			CommonDataset(this)
+			TransitiveDataset()
 		{
 			dataset.parent.setDataset(parent);
 		}
@@ -60,6 +66,10 @@ namespace Editor
 		bool saveStatic(Resource::WritePipe* const pipe) override
 		{
 		}
+
+	private:
+		ClassicWorldDataset* oldSource;
+		ClassicWorldDataset* oldTarget;
 	};
 
 	namespace TransitiveTask

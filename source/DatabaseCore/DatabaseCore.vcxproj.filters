@@ -6,24 +6,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DatabaseCore.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="StatementBase.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="TableBase.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="_DatabaseCore.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseCore.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DatabaseCore.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="StatementBase.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="TableBase.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="_DatabaseCore.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="DatabaseCore.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
