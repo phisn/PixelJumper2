@@ -1,35 +1,21 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "EditorDatabase.h"
 
-#include <deque>
+#include <SFML/Graphics.hpp>
 
 namespace Editor
 {
-	class Task
+	struct DatabaseEvent
 	{
-	public:
-		virtual void undo() = 0;
-		virtual void redo() = 0;
+		DatabaseTable table;
+		uint64_t id;
 	};
 
-	class EditorWindow
+	struct EditorWindow
 	{
-	public:
-		EditorWindow()
-		{
-		}
-
 		virtual void onProcess() = 0;
+		virtual void onDatabaseEvent(DatabaseEvent event) = 0;
 		virtual void onEvent(sf::Event event) = 0;
-
-	protected:
-		int taskLimit = 100;
-
-		
-		
-	private:
-		std::deque<Task*> undoTasks;
-		std::vector<Task*> redoTasks;
 	};
 }

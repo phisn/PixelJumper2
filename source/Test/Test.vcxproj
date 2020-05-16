@@ -69,6 +69,7 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="..\..\properties\CommonProperties.props" />
     <Import Project="..\..\properties\ClientLibraries.props" />
+    <Import Project="..\..\properties\OperatorLibraries.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,17 +147,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EditorCore\EditorCore.vcxproj">
-      <Project>{a53d892b-93c0-4a5e-abaa-4b97dd86d334}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\imgui-sfml\imgui-sfml.vcxproj">
-      <Project>{a1f59ab9-4cec-41b4-b63c-885086bd4dea}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\imgui\imgui.vcxproj">
-      <Project>{9ff64964-33be-443c-8f95-b3a44651ec9a}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\OperatorClient\OperatorClient.vcxproj">
-      <Project>{bf820acf-12dd-4c75-836c-84551731caa6}</Project>
+    <ProjectReference Include="..\Logger\Logger.vcxproj">
+      <Project>{2132b508-f7f2-4cfb-9b81-bbac679ae5a9}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

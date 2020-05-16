@@ -82,6 +82,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseCore\DatabaseCore.vcxproj">
+      <Project>{50f55989-dc3d-4134-9782-3174d0644ae9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\FrameworkCore\FrameworkCore.vcxproj">
       <Project>{b1736540-20ad-4bac-b9ed-26bd4052e2cf}</Project>
     </ProjectReference>
@@ -107,13 +110,9 @@
     <ClCompile Include="classiccontext\ClassicContextWindowPopup.cpp" />
     <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp" />
     <ClCompile Include="ClassicWorldWindow.cpp" />
-    <ClCompile Include="dataset\ClassicContextDataset.cpp" />
-    <ClCompile Include="dataset\ClassicWorldDataset.cpp" />
     <ClCompile Include="dataset\DatasetManagment.cpp" />
     <ClCompile Include="dataset\EditorDataset.cpp" />
-    <ClCompile Include="dataset\TransitiveDataset.cpp" />
-    <ClCompile Include="dataset\WorldTileContainerDataset.cpp" />
-    <ClCompile Include="dataset\WorldTileDataset.cpp" />
+    <ClCompile Include="EditorDatabase.cpp" />
     <ClCompile Include="EditorScene.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="main.cpp" />
@@ -127,13 +126,9 @@
     <ClInclude Include="classiccontext\ClassicContextWindowPopup.h" />
     <ClInclude Include="classiccontext\ClassicContextWorldNode.h" />
     <ClInclude Include="ClassicWorldWindow.h" />
-    <ClInclude Include="dataset\ClassicContextDataset.h" />
-    <ClInclude Include="dataset\ClassicWorldDataset.h" />
     <ClInclude Include="dataset\DatasetManagment.h" />
     <ClInclude Include="dataset\EditorDataset.h" />
-    <ClInclude Include="dataset\TransitiveDataset.h" />
-    <ClInclude Include="dataset\WorldTileContainerDataset.h" />
-    <ClInclude Include="dataset\WorldTileDataset.h" />
+    <ClInclude Include="EditorDatabase.h" />
     <ClInclude Include="EditorScene.h" />
     <ClInclude Include="EditorWindow.h" />
   </ItemGroup>

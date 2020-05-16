@@ -27,12 +27,6 @@
     <ClCompile Include="dataset\EditorDataset.cpp">
       <Filter>source\dataset</Filter>
     </ClCompile>
-    <ClCompile Include="dataset\ClassicContextDataset.cpp">
-      <Filter>source\dataset</Filter>
-    </ClCompile>
-    <ClCompile Include="dataset\ClassicWorldDataset.cpp">
-      <Filter>source\dataset</Filter>
-    </ClCompile>
     <ClCompile Include="classiccontext\ClassicContextConnectionNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
@@ -45,17 +39,11 @@
     <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
-    <ClCompile Include="dataset\TransitiveDataset.cpp">
-      <Filter>source\dataset</Filter>
-    </ClCompile>
-    <ClCompile Include="dataset\WorldTileContainerDataset.cpp">
-      <Filter>source\dataset</Filter>
-    </ClCompile>
-    <ClCompile Include="dataset\WorldTileDataset.cpp">
-      <Filter>source\dataset</Filter>
-    </ClCompile>
     <ClCompile Include="dataset\DatasetManagment.cpp">
       <Filter>source\dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorDatabase.cpp">
+      <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,12 +57,6 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="dataset\EditorDataset.h">
-      <Filter>source\dataset</Filter>
-    </ClInclude>
-    <ClInclude Include="dataset\ClassicContextDataset.h">
-      <Filter>source\dataset</Filter>
-    </ClInclude>
-    <ClInclude Include="dataset\ClassicWorldDataset.h">
       <Filter>source\dataset</Filter>
     </ClInclude>
     <ClInclude Include="classiccontext\ClassicContextConnection.h">
@@ -98,17 +80,11 @@
     <ClInclude Include="classiccontext\ClassicContextWorldNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="dataset\TransitiveDataset.h">
-      <Filter>source\dataset</Filter>
-    </ClInclude>
-    <ClInclude Include="dataset\WorldTileContainerDataset.h">
-      <Filter>source\dataset</Filter>
-    </ClInclude>
-    <ClInclude Include="dataset\WorldTileDataset.h">
-      <Filter>source\dataset</Filter>
-    </ClInclude>
     <ClInclude Include="dataset\DatasetManagment.h">
       <Filter>source\dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorDatabase.h">
+      <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

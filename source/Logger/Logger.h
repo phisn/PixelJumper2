@@ -81,25 +81,25 @@ inline std::wstring convert_to_wstring(T value)
 template <>
 inline std::wstring convert_to_wstring<std::wstring>(const std::wstring value)
 {
-	return value;
+	return L'\'' + value + L'\'';
 }
 
 template <>
 inline std::wstring convert_to_wstring<const wchar_t*>(const wchar_t* value)
 {
-	return std::wstring(value);
+	return L'\'' + std::wstring(value) + L'\'';
 }
 
 template <>
 inline std::wstring convert_to_wstring<std::string>(const std::string value)
 {
-	return carrtowstr(value.c_str());
+	return L'\'' + carrtowstr(value.c_str()) + L'\'';
 }
 
 template <>
 inline std::wstring convert_to_wstring<const char*>(const char* value)
 {
-	return carrtowstr(value);
+	return L'\'' + carrtowstr(value) + L'\'';
 }
 
 template <>

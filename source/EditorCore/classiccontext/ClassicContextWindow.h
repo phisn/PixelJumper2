@@ -3,7 +3,6 @@
 #include "ClassicContextWorldNode.h"
 #include "ClassicContextConnectionNode.h"
 
-#include "EditorCore/dataset/ClassicContextDataset.h"
 #include "EditorCore/EditorWindow.h"
 
 #include "FrameworkCore/FrameworkCore.h"
@@ -137,11 +136,6 @@ namespace Editor::ClassicContext
 		ConnectionSide elementSide;
 	};
 
-	struct WindowDataset
-	{
-		ClassicContextDataset* classicContext;
-	};
-
 	// context is a grid that contains nodes
 	// these nodes are stored as types
 	// nodes should be stored as abstract node to
@@ -159,7 +153,7 @@ namespace Editor::ClassicContext
 		const sf::Time DoubleClickTime = sf::milliseconds(500);
 
 	public:
-		ClassicContextWindow(const WindowDataset& dataset)
+		ClassicContextWindow()
 			:
 			dataset(dataset)
 		{
@@ -195,6 +189,11 @@ namespace Editor::ClassicContext
 		void onProcess() override
 		{
 			process();
+		}
+
+		void onDatabaseEvent(DatabaseEvent event) override
+		{
+
 		}
 
 		void onEvent(sf::Event event) override

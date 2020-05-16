@@ -5,133 +5,436 @@
 #include <sqlite3.h>
 
 #include <cassert>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
 
 namespace Database
 {
-	typedef long long			SQLiteInt;
-	typedef double				SQLiteReal;
-	typedef std::string			SQLiteString;
-	typedef std::vector<char>	SQLiteBlob;
+	typedef int64_t						SQLiteInt;    // integral
+	typedef double						SQLiteReal;   // floating point
+	typedef std::string					SQLiteString; // char*
+	typedef std::vector<unsigned char>	SQLiteBlob;   // unsigned char*
 
 	class SQLiteDatabase
 	{
 	public:
+		bool open(std::string filename)
+		{
+			Log::Section section(L"opening database", filename, L"filename");
+
+			return ensureStatusCode(
+				sqlite3_open(filename.c_str(), &database),
+				L"failed to open database");
+		}
+
+		operator bool() const
+		{
+			return database != NULL;
+		}
+
+		inline void logStatusCodeError(int statusCode, std::wstring info)
+		{
+			Log::Error(info,
+				getLastErrorMessage(), L"message",
+				statusCode, L"code");
+		}
+
+		std::wstring getLastErrorMessage() const
+		{
+			return carrtowstr(sqlite3_errmsg(database));
+		}
+
 		sqlite3* raw()
 		{
-			return NULL;
+			return database;
+		}
+
+	private:
+		sqlite3* database;
+
+		bool ensureStatusCode(int statusCode, std::wstring info)
+		{
+			if (statusCode != SQLITE_OK)
+			{
+				logStatusCodeError(statusCode, info);
+
+				if (database)
+				{
+					if (statusCode = sqlite3_close(database); statusCode != SQLITE_OK)
+						logStatusCodeError(statusCode, L"failed to close database");
+
+					database = NULL;
+				}
+
+				return false;
+			}
+
+			return true;
 		}
 	};
 
-	template <typename Arg, typename... Args>
-	struct StatementVariadicInsert
+	/*class Transaction
+	{
+	public:
+		Transaction(SQLiteDatabase* database)
+			:
+			database(database)
+		{
+		}
+
+	private:
+		SQLiteDatabase* database;
+	};*/
+
+	template <typename T, typename Lazy = void>
+	struct StatementColumn
+	{
+	};
+
+	template <typename T, typename Lazy>
+	struct StatementColumn<std::optional<T>, Lazy>
 	{
 		template <typename TupleType, int Column = 0>
-		static inline void Make(TupleType& tuple, sqlite3_stmt* statement)
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			StatementVariadicInsert<Arg>::Make<TupleType, Column>(tuple, statement);
-			StatementVariadicInsert<Args...>::Make<TupleType, Column + 1>(tuple, statement);
+			if (sqlite3_column_type(statement, Column) == SQLITE_NULL)
+			{
+				std::get<Column>(tuple).reset();
+			}
+			else
+			{
+				StatementColumn<T>::ExtractAs<TupleType, Column>(*std::get<Column>(tuple), statement);
+			}
+		}
+
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			if (std::get<Column>(tuple))
+			{
+				StatementColumn<T>::BindAs(*std::get<Column>(tuple), Column, statement);
+			}
+			else
+			{
+				return sqlite3_bind_null(statement, Column + 1);
+			}
+		}
+	};
+
+	// should not exist for Extract
+	template <typename Lazy>
+	struct StatementColumn<std::nullopt_t, Lazy>
+	{
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			return sqlite3_bind_null(statement, Column + 1);
 		}
 	};
 
 	template <typename T>
-	struct StatementVariadicInsert<std::optional<T>>
+	struct StatementColumn<T, std::enable_if_t<std::is_integral_v<T>>>
 	{
 		template <typename TupleType, int Column = 0>
-		static inline void Make(TupleType& tuple, sqlite3_stmt* statement)
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			if (sqlite3_column_type(statement, Column) == SQLITE_NULL)
-			{
-				StatementVariadicInsert<T>::MakeNull<TupleType, Column>(tuple);
-			}
-			else
-			{
-				StatementVariadicInsert<T>::Make<TupleType, Column>(tuple, statement);
-			}
+			ExtractAs<Column>((SQLiteInt&) std::get<Column>(tuple), statement);
 		}
-	};
 
-	template <>
-	struct StatementVariadicInsert<SQLiteInt>
-	{
-		template <typename TupleType, int Column = 0>
-		static inline void Make(TupleType& tuple, sqlite3_stmt* statement)
+		template <int Column = 0>
+		static inline void ExtractAs(SQLiteInt& value, sqlite3_stmt* statement)
 		{
 			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
-			std::get<Column>(tuple) = sqlite3_column_int64(statement, Column);
+			value = sqlite3_column_int64(statement, Column);
 		}
 
 		template <typename TupleType, int Column = 0>
-		static inline void MakeNull(TupleType& tuple)
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			std::get<Column>(tuple) = 0;
+			return BindAs((SQLiteInt) std::get<Column>(tuple), Column, statement);
+		}
+
+		static inline int BindAs(SQLiteInt value, int Column, sqlite3_stmt* statement)
+		{
+			return sqlite3_bind_int64(statement, Column + 1, value);
 		}
 	};
 
-	template <>
-	struct StatementVariadicInsert<SQLiteReal>
+	template <typename T>
+	struct StatementColumn<T, std::enable_if_t<std::is_floating_point_v<T>>>
 	{
 		template <typename TupleType, int Column = 0>
-		static inline void Make(TupleType& tuple, sqlite3_stmt* statement)
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			ExtractAs<Column>((SQLiteReal&) std::get<Column>(tuple), statement);
+		}
+
+		template <int Column = 0>
+		static inline void ExtractAs(SQLiteReal& value, sqlite3_stmt* statement)
 		{
 			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
-			std::get<Column>(tuple) = sqlite3_column_double(statement, Column);
+			value = sqlite3_column_double(statement, Column);
 		}
 
 		template <typename TupleType, int Column = 0>
-		static inline void MakeNull(TupleType& tuple)
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			std::get<Column>(tuple) = 0.0;
+			return BindAs((SQLiteReal) std::get<Column>(tuple), Column, statement);
+		}
+
+		static inline int BindAs(SQLiteReal value, int Column, sqlite3_stmt* statement)
+		{
+			return sqlite3_bind_double(statement, Column + 1, value);
 		}
 	};
 
-	template <>
-	struct StatementVariadicInsert<SQLiteString>
+	template <typename Lazy>
+	struct StatementColumn<SQLiteString, Lazy>
 	{
 		template <typename TupleType, int Column = 0>
-		static inline void Make(TupleType& tuple, sqlite3_stmt* statement)
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			ExtractAs<Column>(std::get<Column>(tuple), statement);
+		}
+
+		template <int Column = 0>
+		static inline void ExtractAs(SQLiteString& value, sqlite3_stmt* statement)
 		{
 			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
-			std::get<0>(tuple) = std::string((const char*) sqlite3_column_text(statement, Column));
+			value.assign((const SQLiteString::value_type*) sqlite3_column_text(statement, Column));
 		}
 
 		template <typename TupleType, int Column = 0>
-		static inline void MakeNull(TupleType& tuple)
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			std::get<Column>(tuple).clear();
+			return BindAs(std::get<Column>(tuple), Column, statement);
+		}
+
+		static inline int BindAs(SQLiteString& value, int Column, sqlite3_stmt* statement)
+		{
+			return sqlite3_bind_text(
+				statement, Column + 1, value.c_str(),
+				value.size() * sizeof(SQLiteString::value_type), 
+				SQLITE_TRANSIENT);
 		}
 	};
 
-	template <>
-	struct StatementVariadicInsert<SQLiteBlob>
+	template <typename Lazy>
+	struct StatementColumn<const SQLiteString::value_type*, Lazy>
 	{
 		template <typename TupleType, int Column = 0>
-		static inline void Make(TupleType& tuple, sqlite3_stmt* statement)
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			return BindAs(std::get<Column>(tuple), Column, statement);
+		}
+
+		static inline int BindAs(const SQLiteString::value_type* value, int Column, sqlite3_stmt* statement)
+		{
+			return sqlite3_bind_text(
+				statement, 
+				Column + 1, value,
+				-1,
+				SQLITE_TRANSIENT);
+		}
+	};
+
+	// do not care whether the string is big enough
+	// or not. user has to be prepared when char* is
+	// used
+	template <typename Lazy>
+	struct StatementColumn<SQLiteString::value_type*, Lazy>
+	{
+		template <typename TupleType, int Column = 0>
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			ExtractAs<Column>(std::get<Column>(tuple), statement);
+		}
+
+		template <int Column = 0>
+		static inline void ExtractAs(SQLiteString::value_type* value, sqlite3_stmt* statement)
+		{
+			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
+			memcpy(value, (const void*) sqlite3_column_text(statement, Column), sqlite3_column_bytes(statement, Column));
+		}
+	};
+
+	template <typename Lazy>
+	struct StatementColumn<SQLiteBlob, Lazy>
+	{
+		template <typename TupleType, int Column = 0>
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			ExtractAs<Column>(std::get<Column>(tuple), statement);
+		}
+
+		template <int Column = 0>
+		static inline void ExtractAs(SQLiteBlob& value, sqlite3_stmt* statement)
 		{
 			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
 			const char* data = (const char*) sqlite3_column_blob(statement, Column);
-			std::get<Column>(tuple).assign(data, data + sqlite3_column_bytes(statement, column));
+			value.assign(data, data + sqlite3_column_bytes(statement, column));
 		}
 
 		template <typename TupleType, int Column = 0>
-		static inline void MakeNull(TupleType& tuple)
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			std::get<Column>(tuple).clear();
+			return BindAs(std::get<Column>(tuple), Column, statement);
+		}
+
+		static inline int BindAs(SQLiteBlob& value, int Column, sqlite3_stmt* statement)
+		{
+			return sqlite3_bind_blob(
+				statement, Column + 1, 
+				(const void*) &value[0],
+				value.size(),
+				SQLITE_TRANSIENT);
+		}
+	};
+
+	template <typename Lazy>
+	struct StatementColumn<const unsigned char*, Lazy>
+	{
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			return BindAs(std::get<Column>(tuple), Column, statement);
+		}
+
+		static inline int BindAs(const unsigned char* value, int Column, sqlite3_stmt* statement)
+		{
+			return sqlite3_bind_blob(
+				statement,
+				Column + 1, (const void*) value,
+				strlen((const char*) value),
+				SQLITE_TRANSIENT);
+		}
+	};
+
+	// do not care whether the string is big enough
+	// or not. user has to be prepared when unsigned char* is
+	// used
+	template <typename Lazy>
+	struct StatementColumn<unsigned char*, Lazy>
+	{
+		template <typename TupleType, int Column = 0>
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			ExtractAs<Column>(std::get<Column>(tuple), statement);
+		}
+
+		template <int Column = 0>
+		static inline void ExtractAs(unsigned char* value, sqlite3_stmt* statement)
+		{
+			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
+			memcpy(value, sqlite3_column_blob(statement, Column), sqlite3_column_bytes(statement, Column));
+		}
+	};
+	
+	template <typename Character>
+	struct StatementColumn<std::basic_string<Character>, 
+		std::enable_if_t<!std::is_same_v<Character, SQLiteString>>>
+	{
+		typedef std::basic_string<Character> String;
+
+		template <typename TupleType, int Column = 0>
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			ExtractAs<Column>(std::get<Column>(tuple), statement);
+		}
+
+		template <int Column = 0>
+		static inline void ExtractAs(String& value, sqlite3_stmt* statement)
+		{
+			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
+			value.assign((const String::value_type*) sqlite3_column_blob(statement, Column));
+		}
+
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			return BindAs(std::get<Column>(tuple), Column, statement);
+		}
+
+		static inline int BindAs(String& value, int Column, sqlite3_stmt* statement)
+		{
+			return sqlite3_bind_blob(
+				statement, Column + 1, 
+				(const void*) value.c_str(),
+				value.size() * sizeof(String::value_type),
+				SQLITE_TRANSIENT);
+		}
+	};
+
+	template <typename Lazy>
+	struct StatementColumn<const wchar_t*, Lazy>
+	{
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			return BindAs(std::get<Column>(tuple), Column, statement);
+		}
+
+		static inline int BindAs(const wchar_t* value, int Column, sqlite3_stmt* statement)
+		{
+			return sqlite3_bind_blob(
+				statement,
+				Column + 1, (const void*) value,
+				wcslen(value) * sizeof(wchar_t),
+				SQLITE_TRANSIENT);
+		}
+	};
+
+	template <typename Arg, typename... Args>
+	struct StatementVariadicColumn
+	{
+		template <typename TupleType, int Column = 0>
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			StatementVariadicColumn<Arg>::Extract<TupleType, Column>(tuple, statement);
+			StatementVariadicColumn<Args...>::Extract<TupleType, Column + 1>(tuple, statement);
+		}
+
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			int result = StatementVariadicColumn<Arg>::Bind<TupleType, Column>(tuple, statement);
+
+			if (result != SQLITE_OK)
+			{
+				return result;
+			}
+
+			return StatementVariadicColumn<Args...>::Bind<TupleType, Column + 1>(tuple, statement);
+		}
+	};
+
+	template <typename Arg>
+	struct StatementVariadicColumn<Arg>
+	{
+		template <typename TupleType, int Column = 0>
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			StatementColumn<Arg>::Extract<TupleType, Column>(tuple, statement);
+		}
+
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			return StatementColumn<Arg>::Bind<TupleType, Column>(tuple, statement);
 		}
 	};
 
 	template <typename TupleType>
-	struct StatementTupleInsert
+	struct StatementTupleColumn
 	{
-		static_assert(false, "tuple type expected in StatementTupleInsert");
 	};
 
 	template <typename... TupleArgs>
-	struct StatementTupleInsert<std::tuple<TupleArgs...>>
+	struct StatementTupleColumn<std::tuple<TupleArgs...>>
 		:
-		public StatementVariadicInsert<TupleArgs...>
+		public StatementVariadicColumn<TupleArgs...>
 	{
 	};
 
@@ -139,7 +442,7 @@ namespace Database
 	class StatementIterator
 	{
 	public:
-		typedef StatementType::TupleType TupleType;
+		typedef typename StatementType::TupleType TupleType;
 
 		typedef TupleType value_type;
 		typedef std::ptrdiff_t difference_type;
@@ -179,7 +482,11 @@ namespace Database
 
 		StatementIterator& operator++()
 		{
-			statement->next();
+			if (!isEnd && !statement->next())
+			{
+				isEnd = true;
+			}
+
 			return *this;
 		}
 
@@ -188,25 +495,51 @@ namespace Database
 		StatementType* statement;
 	};
 
-	template <typename Tuple>
+	template <typename Tuple = std::tuple<>>
 	class Statement
 	{
-		// friend StatementIterator<Statement<Tuple>>;
-		//
-
 	public:
 		typedef StatementIterator<Statement<Tuple>> Iterator;
 		typedef Tuple TupleType;
 
+		template <typename... Args>
+		Statement(SQLiteDatabase* database, std::string query, Args... bindArgs)
+			:
+			Statement(database, query, std::make_tuple(bindArgs...))
+		{
+		}
+
+		template <typename... Args>
+		Statement(SQLiteDatabase* database, std::string query, std::tuple<Args...> bindTuple)
+			:
+			Statement(database, query)
+		{
+			bind(bindTuple);
+		}
+
+		template <typename... Args>
 		Statement(SQLiteDatabase* database, std::string query)
 			:
 			database(database)
 		{
+			Log::Information(L"creating statement", 
+				database, L"database", 
+				query, L"query");
 			ensureStatusCode(sqlite3_prepare_v2(
 				database->raw(),
 				query.c_str(),
 				-1, &statement, NULL), L"failed to prepare statement");
-			// next();
+		}
+
+		~Statement()
+		{
+			if (statement)
+			{
+				int result = sqlite3_finalize(statement);
+
+				if (result != SQLITE_OK)
+					database->logStatusCodeError(result, L"failed to finalize statement");
+			}
 		}
 
 		operator bool() const
@@ -216,6 +549,11 @@ namespace Database
 
 		Iterator begin()
 		{
+			if (statement && !initiated)
+			{
+				next();
+			}
+
 			return Iterator{ this, false };
 		}
 
@@ -224,12 +562,40 @@ namespace Database
 			return Iterator{ this, true };
 		}
 
+		// used for queries that do not
+		// expect a result
+		bool execute()
+		{
+			assert(!finished);
+
+			if (statement == NULL || initiated)
+				return false;
+
+			if (int result = sqlite3_step(statement); result != SQLITE_DONE)
+			{
+				assert(result != SQLITE_ROW);
+				ensureStatusCode(result, L"failed to step in execute");
+
+				return false;
+			}
+
+			return true;
+		}
+
 		bool next()
 		{
+			assert(!finished);
+
+			if (statement == NULL)
+				return false;
+
+			if (!initiated)
+				initiated = true;
+
 			switch (int result = sqlite3_step(statement); result)
 			{
 			case SQLITE_ROW:
-				StatementTupleInsert<TupleType>::Make(value, statement);
+				StatementTupleColumn<Tuple>::Extract(value, statement);
 
 				return true;
 			case SQLITE_DONE:
@@ -237,7 +603,7 @@ namespace Database
 
 				return false;
 			default:
-				ensureStatusCode(result, L"failed to step");
+				ensureStatusCode(result, L"failed to step in next");
 
 				return false;
 			}
@@ -245,12 +611,31 @@ namespace Database
 
 		bool hasNext() const
 		{
-			return !finished;
+			return !finished && statement != NULL;
 		}
 
-		const TupleType& getValue() const
+		template <typename T>
+		bool bind(int index, T& value)
 		{
-			return value;
+			return statement == NULL
+				? false
+				: ensureStatusCode(StatementColumn<T>::BindAs(value, index, statement),
+					L"failed to bind column");
+		}
+
+		template <typename... Args>
+		bool bind(Args... args)
+		{
+			return bind(std::make_tuple<Args...>(args...));
+		}
+
+		template <typename... Args>
+		bool bind(std::tuple<Args...> tuple)
+		{
+			return statement == NULL
+				? false
+				: ensureStatusCode(StatementTupleColumn<std::tuple<Args...>>::Bind(tuple, statement),
+					L"failed to bind column");
 		}
 
 		bool reset()
@@ -267,6 +652,11 @@ namespace Database
 				: ensureStatusCode(sqlite3_clear_bindings(statement), L"failed to clear bindings");
 		}
 
+		const TupleType& getValue() const
+		{
+			return value;
+		}
+
 		sqlite3_stmt* raw() const
 		{
 			return statement;
@@ -274,6 +664,8 @@ namespace Database
 
 	private:
 		TupleType value;
+
+		bool initiated = false;
 		bool finished = false;
 
 		SQLiteDatabase* database;
@@ -283,33 +675,46 @@ namespace Database
 		{
 			if (statusCode != SQLITE_OK)
 			{
-				// sqlite3_errmsg();
-				Log::Error(info, statusCode, L"code");
+				database->logStatusCodeError(statusCode, info);
 
-				if (statusCode = sqlite3_finalize(statement); statusCode != SQLITE_OK)
-					Log::Error(L"failed to finalize statement", statusCode, L"code");
+				if (statement)
+				{
+					if (statusCode = sqlite3_finalize(statement); statusCode != SQLITE_OK)
+						database->logStatusCodeError(statusCode, L"failed to finalize statement");
 
-				statement = NULL;
+					statement = NULL;
+				}
 
 				return false;
 			}
 
 			return true;
 		}
-
-		inline void printStatusCodeError(int statusCode, std::wstring info)
-		{
-			Log::Error(info, statusCode, L"code");
-		}
 	};
 
-	void _()
+	inline bool QuickExecute(
+		SQLiteDatabase* database, 
+		std::string query)
 	{
-		typedef std::tuple<int, int> ExtractTuple;
-		Statement<ExtractTuple> tuple;
+		Log::Information(L"quick execute",
+			database, L"database",
+			query, L"query");
 
-		typedef std::iterator_traits<ExtractTuple*> Test;
-		Test t;
-		Test::pointer p;
+		int result = sqlite3_exec(database->raw(), query.c_str(), 
+			NULL, NULL, NULL);
+
+		if (result != SQLITE_OK)
+		{
+			database->logStatusCodeError(result, L"failed to quick execute query");
+
+			return false;
+		}
+
+		return true;
 	}
 }
+
+using Database::SQLiteInt;
+using Database::SQLiteReal;
+using Database::SQLiteString;
+using Database::SQLiteBlob;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ClassicContextPopup.h"
+#include "EditorDatabase.h"
 
 #include "FrameworkCore/imgui/ImGuiModalWindow.h"
 #include "ResourceCore/ResourceBase.h"

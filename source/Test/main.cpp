@@ -42,7 +42,7 @@ int main()
 
 	return 0;
 }*/
-
+/*
 #include "EditorCore/EditorScene.h"
 #include "FrameworkCore/ScreenDevice.h"
 
@@ -276,3 +276,38 @@ int main(int ac, char** av)
     return 0;
 }
 */
+
+#include "DatabaseCore/DatabaseCore.h"
+
+#include <iostream>
+
+int main()
+{
+    Log::Output::Add(Log::Output::CONSOLE_OUT, Log::Level::Information);
+    Database::SQLiteDatabase database;
+
+    if (database.open("pj2.db"))
+    {
+        typedef std::tuple<Database::SQLiteBlob, std::optional<Database::SQLiteInt>, Database::SQLiteString, Database::SQLiteInt> KeyTuple;
+
+        if (Database::Statement<KeyTuple>(&database, "INSERT INTO keys VALUES (?, ?, ?, ?)",
+                L"AAABBBCCCDDDEEE",
+                std::nullopt,
+                "source", 0).execute())
+        {
+            std::cout << "success" << std::endl;
+        }
+
+        /*typedef std::tuple<Database::SQLiteString, Database::SQLiteInt> User;
+        std::optional<int> o;
+
+        for (const User& user : Database::Statement<User>{ &database, "SELECT username, id FROM users ORDER BY UPPER(username)" })
+        {
+            std::cout.width(8);
+            std::cout << std::get<0>(user) << " - ID: " << std::get<1>(user) << std::endl;
+        }*/
+        
+    }
+
+    return 0;
+}

@@ -1,12 +1,35 @@
 #pragma once
 
+#include "EditorDatabase.h"
+
+#include "ResourceCore/WorldResource.h"
+
+namespace Editor
+{
+	struct ContextDataset
+	{
+		ContextDataset(ContextTuple tuple)
+			:
+			worldID(std::get<ContextColumn::ID>(tuple)),
+			name(std::get<ContextColumn::Name>(tuple)),
+			description(std::get<ContextColumn::Description>(tuple))
+		{
+		}
+
+		Resource::WorldID worldID;
+		std::string name;
+		std::string description;
+	};
+
+}
+
 #include "Common/Notifier.h"
 #include "Common/Property.h"
-#include "ResourceCore/WorldResource.h"
 
 #include "SFML/Graphics.hpp"
 
 #include <deque>
+
 
 namespace Editor
 {
@@ -177,7 +200,7 @@ namespace Editor
 		public DatasetType
 	{
 	public:
-		template <typename Args...>
+		template <typename... Args>
 		CommonDataset(Args&&... args)
 			:
 			DatasetType(),
