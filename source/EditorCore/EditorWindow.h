@@ -14,6 +14,10 @@ namespace Editor
 
 	struct EditorWindow
 	{
+		~EditorWindow()
+		{
+		}
+
 		virtual void onProcess() = 0;
 		virtual void onDatabaseEvent(DatabaseEvent event) = 0;
 		virtual void onEvent(sf::Event event) = 0;

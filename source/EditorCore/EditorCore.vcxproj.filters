@@ -45,6 +45,7 @@
     <ClCompile Include="EditorDatabase.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
@@ -86,5 +87,6 @@
     <ClInclude Include="EditorDatabase.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
 </Project>

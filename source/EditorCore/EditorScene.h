@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ClassicContextWindow.h"
+#include "classiccontext/ClassicContextWindow.h"
 
 #include "FrameworkCore/FrameworkCore.h"
 #include "FrameworkCore/imgui/ImGuiUtil.h"
@@ -63,17 +63,6 @@ namespace Scene
 		{
 			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 
-			Editor::ClassicWorldDataset* world0 = new Editor::ClassicWorldDataset;
-			world0->name = "test world";
-			context.worlds.push_back(world0);
-
-			Editor::ClassicWorldDataset* world1 = new Editor::ClassicWorldDataset;
-			world1->name = "test world 2";
-			context.worlds.push_back(world1);
-
-			Editor::ClassicWorldDataset* world2 = new Editor::ClassicWorldDataset;
-			world2->name = "test world 3";
-			context.worlds.push_back(world2);
 
 			Editor::ClassicContext::WindowDataset dataset;
 			dataset.classicContext = &context;
@@ -102,9 +91,7 @@ namespace Scene
 		}
 
 	private:
-		Editor::ClassicContextDataset context;
 		Editor::RootWindow rootWindow;
-
 		std::vector<Editor::EditorWindow*> windows;
 	};
 }

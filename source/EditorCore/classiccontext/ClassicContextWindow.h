@@ -162,21 +162,25 @@ namespace Editor::ClassicContext
 			mouseMarkingRect.setOutlineThickness(MouseMarkerBorderThickness);
 			mouseMarkingRect.setFillColor(MouseMarkerColor);
 			mouseMarkingRect.setOutlineColor(MouseMarkerBorderColor);
-			
-			WorldNode* node0 = new WorldNode{ this, dataset.classicContext->getDataset().worlds[0].getDataset() };
 
-			nodes.push_back(node0);
-			worlds.push_back(node0);
+			typedef std::tuple<SQLiteInt> NodeWorldTuple;
+			Database::Statement<NodeWorldTuple> findWorlds(EditorDatabase::Instance(),
+				"SELECT id FROM world WHERE contextid = ?", );
 
-			WorldNode* node1 = new WorldNode{ this, dataset.classicContext->getDataset().worlds[1].getDataset() };
+			for (const NodeWorldTuple& tuple : findWorlds)
+			{
 
-			nodes.push_back(node1);
-			worlds.push_back(node1);
+				
+			}
 
-			WorldNode* node2 = new WorldNode{ this, dataset.classicContext->getDataset().worlds[2].getDataset() };
+			/* find connections
 
-			nodes.push_back(node2);
-			worlds.push_back(node2);
+				SELECT input.id, input.outputid, output.id, output.inputid
+				FROM world 
+					JOIN transitive input ON world.id = input.inputid 
+					JOIN transitive output ON world.id = output.inputid 
+				WHERE world.id = ?
+			*/
 		}
 
 		~ClassicContextWindow()

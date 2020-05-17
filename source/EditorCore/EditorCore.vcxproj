@@ -116,6 +116,7 @@
     <ClCompile Include="EditorScene.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classiccontext\ClassicContextConnection.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="EditorDatabase.h" />
     <ClInclude Include="EditorScene.h" />
     <ClInclude Include="EditorWindow.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
