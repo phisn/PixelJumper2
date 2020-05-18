@@ -2,27 +2,61 @@
 
 #include "EditorDatabase.h"
 
-#include "ResourceCore/WorldResource.h"
+#include "ResourceCore/ClassicContextResource.h"
+#include "ResourceCore/component/DynamicTransitionComponent.h"
 
 namespace Editor
 {
+	struct Task
+	{
+		virtual ~Task()
+		{
+		}
+
+		virtual void undo() = 0;
+		virtual void redo() = 0;
+	};
+
 	struct ContextDataset
 	{
 		ContextDataset(ContextTuple tuple)
 			:
-			worldID(std::get<ContextColumn::ID>(tuple)),
+			contextID(std::get<ContextColumn::ID>(tuple)),
 			name(std::get<ContextColumn::Name>(tuple)),
 			description(std::get<ContextColumn::Description>(tuple))
 		{
 		}
 
-		Resource::WorldID worldID;
+		Resource::ContextID contextID;
 		std::string name;
 		std::string description;
 	};
 
-}
+	struct ContextEvent
+	{
+		Resource::ContextID contextID;
+	};
 
+	struct WorldEvent
+	{
+		Resource::WorldID worldID;
+		Resource::ContextID contextID;
+	};
+
+	struct TransitiveEvent
+	{
+		Resource::WorldEntryID entryID;
+		Resource::WorldID outputWorldID;
+		Resource::WorldID inputWorldID;
+		Resource::ContextID contextID;
+	};
+
+	struct TileEvent
+	{
+		Resource::WorldID worldID;
+	};
+}
+/*
 #include "Common/Notifier.h"
 #include "Common/Property.h"
 
@@ -246,3 +280,4 @@ namespace Editor
 		DatasetContent dataset;
 	};
 }
+*/

@@ -110,9 +110,8 @@
     <ClCompile Include="classiccontext\ClassicContextWindowPopup.cpp" />
     <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp" />
     <ClCompile Include="ClassicWorldWindow.cpp" />
-    <ClCompile Include="dataset\DatasetManagment.cpp" />
-    <ClCompile Include="dataset\EditorDataset.cpp" />
     <ClCompile Include="EditorDatabase.cpp" />
+    <ClCompile Include="EditorDataset.cpp" />
     <ClCompile Include="EditorScene.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="main.cpp" />
@@ -127,9 +126,8 @@
     <ClInclude Include="classiccontext\ClassicContextWindowPopup.h" />
     <ClInclude Include="classiccontext\ClassicContextWorldNode.h" />
     <ClInclude Include="ClassicWorldWindow.h" />
-    <ClInclude Include="dataset\DatasetManagment.h" />
-    <ClInclude Include="dataset\EditorDataset.h" />
     <ClInclude Include="EditorDatabase.h" />
+    <ClInclude Include="EditorDataset.h" />
     <ClInclude Include="EditorScene.h" />
     <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="WindowManager.h" />

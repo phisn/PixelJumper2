@@ -1,19 +1,39 @@
 #pragma once
 
 #include "EditorDatabase.h"
+#include "EditorDataset.h"
 
 #include <SFML/Graphics.hpp>
 
 namespace Editor
 {
-	struct DatabaseEvent
+	enum class DatabaseEventType
 	{
-		DatabaseTable table;
-		uint64_t id;
+		Create,
+		Change,
+		Remove
 	};
 
-	struct EditorWindow
+	struct DatabaseEvent
 	{
+		DatabaseEventType type;
+		DatabaseTable table;
+
+		union
+		{
+			ContextEvent context;
+			WorldEvent world;
+			TransitiveEvent transitive;
+			TileEvent tile;
+
+		} data;
+	};
+
+	class EditorWindow
+	{
+		friend class WindowManager;
+
+	public:
 		~EditorWindow()
 		{
 		}
@@ -21,5 +41,8 @@ namespace Editor
 		virtual void onProcess() = 0;
 		virtual void onDatabaseEvent(DatabaseEvent event) = 0;
 		virtual void onEvent(sf::Event event) = 0;
+
+	protected:
+		virtual void changeWindowIndex(int index) = 0;
 	};
 }

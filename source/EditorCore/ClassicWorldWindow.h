@@ -17,6 +17,7 @@ namespace Editor
 	public:
 		ClassicWorldWindow()
 		{
+			setTitle("World Window #n");
 			title = "ClassicContext";
 			grid.setPrimitiveType(sf::PrimitiveType::Lines);
 			primaryView.setSize({ 100, 100 });

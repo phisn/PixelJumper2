@@ -7,9 +7,6 @@
     <Filter Include="source\classiccontext">
       <UniqueIdentifier>{8753f425-59a7-476b-ab51-d2b74c3da79b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\dataset">
-      <UniqueIdentifier>{1d5e6b5a-cd80-4772-90df-db0370f7d527}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,9 +21,6 @@
     <ClCompile Include="EditorWindow.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="dataset\EditorDataset.cpp">
-      <Filter>source\dataset</Filter>
-    </ClCompile>
     <ClCompile Include="classiccontext\ClassicContextConnectionNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
@@ -39,13 +33,15 @@
     <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
-    <ClCompile Include="dataset\DatasetManagment.cpp">
-      <Filter>source\dataset</Filter>
-    </ClCompile>
     <ClCompile Include="EditorDatabase.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="WindowManager.cpp" />
+    <ClCompile Include="WindowManager.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorDataset.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
@@ -56,9 +52,6 @@
     </ClInclude>
     <ClInclude Include="EditorWindow.h">
       <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="dataset\EditorDataset.h">
-      <Filter>source\dataset</Filter>
     </ClInclude>
     <ClInclude Include="classiccontext\ClassicContextConnection.h">
       <Filter>source\classiccontext</Filter>
@@ -81,12 +74,14 @@
     <ClInclude Include="classiccontext\ClassicContextWorldNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="dataset\DatasetManagment.h">
-      <Filter>source\dataset</Filter>
-    </ClInclude>
     <ClInclude Include="EditorDatabase.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="WindowManager.h" />
+    <ClInclude Include="WindowManager.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorDataset.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

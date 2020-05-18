@@ -1,28 +1,30 @@
 BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "transitive" (
+	"id"	INTEGER,
+	"name"	INTEGER,
+	"outputid"	INTEGER,
+	"inputid"	INTEGER,
+	"contextid"	INTEGER,
+	FOREIGN KEY("outputid") REFERENCES "world"("id"),
+	FOREIGN KEY("inputid") REFERENCES "world"("id"),
+	FOREIGN KEY("contextid") REFERENCES "context"("id")
+);
 CREATE TABLE IF NOT EXISTS "world" (
-	"worldID"	INTEGER,
+	"id"	INTEGER,
 	"name"	TEXT,
-	"parent"	INTEGER,
-	PRIMARY KEY("worldID"),
-	FOREIGN KEY("parent") REFERENCES "context"("id")
+	"contextid"	INTEGER,
+	FOREIGN KEY("contextid") REFERENCES "context"("id"),
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "tile" (
+	"id"	INTEGER,
+	"worldid"	INTEGER,
+	FOREIGN KEY("worldid") REFERENCES "world"("id")
 );
 CREATE TABLE IF NOT EXISTS "context" (
 	"id"	INTEGER,
 	"name"	TEXT,
 	"description"	TEXT,
 	PRIMARY KEY("id")
-);
-CREATE TABLE IF NOT EXISTS "tile" (
-	"tileID"	INTEGER,
-	"worldID"	INTEGER,
-	FOREIGN KEY("worldID") REFERENCES "world"("worldID")
-);
-CREATE TABLE IF NOT EXISTS "transitive" (
-	"entryID"	INTEGER,
-	"name"	INTEGER,
-	"outputID"	INTEGER,
-	"inputID"	INTEGER,
-	FOREIGN KEY("outputID") REFERENCES "world"("worldID"),
-	FOREIGN KEY("inputID") REFERENCES "world"("worldID")
 );
 COMMIT;

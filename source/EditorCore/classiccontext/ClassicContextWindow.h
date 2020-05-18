@@ -11,6 +11,8 @@
 #include "FrameworkCore/imgui/ImGuiGridWindow.h"
 #include "FrameworkCore/imgui/ImGuiModalWindow.h"
 
+#include "ResourceCore/ClassicContextResource.h"
+
 #include "imgui/imgui_stdlib.h"
 
 namespace Editor::ClassicContext
@@ -153,24 +155,24 @@ namespace Editor::ClassicContext
 		const sf::Time DoubleClickTime = sf::milliseconds(500);
 
 	public:
-		ClassicContextWindow()
+		ClassicContextWindow(Resource::ContextID contextID)
 			:
-			dataset(dataset)
+			contextID(contextID)
 		{
-			title = "ClassicContext";
+			setTitle("Context Window #n");
 
 			mouseMarkingRect.setOutlineThickness(MouseMarkerBorderThickness);
 			mouseMarkingRect.setFillColor(MouseMarkerColor);
 			mouseMarkingRect.setOutlineColor(MouseMarkerBorderColor);
 
 			typedef std::tuple<SQLiteInt> NodeWorldTuple;
-			Database::Statement<NodeWorldTuple> findWorlds(EditorDatabase::Instance(),
-				"SELECT id FROM world WHERE contextid = ?", );
+			Database::Statement<NodeWorldTuple> findWorlds(
+				EditorDatabase::Instance(),
+				"SELECT id FROM world WHERE contextid = ?", contextID);
 
 			for (const NodeWorldTuple& tuple : findWorlds)
 			{
 
-				
 			}
 
 			/* find connections
@@ -197,7 +199,43 @@ namespace Editor::ClassicContext
 
 		void onDatabaseEvent(DatabaseEvent event) override
 		{
+			switch (event.type)
+			{
+			case DatabaseEventType::Create:
+				switch (event.table)
+				{
+				case DatabaseTable::Transitive:
+				case DatabaseTable::World:
+				}
 
+				break;
+			case DatabaseEventType::Change:
+				switch (event.table)
+				{
+				case DatabaseTable::Transitive:
+				case DatabaseTable::World:
+				}
+
+				break;
+			case DatabaseEventType::Remove:
+				switch (event.table)
+				{
+				case DatabaseTable::Transitive:
+				case DatabaseTable::World:
+				}
+
+				break;
+			}
+
+			switch (event.table)
+			{
+			case DatabaseTable::Context:
+
+
+				break;
+			case DatabaseTable::World:
+				break;
+			}
 		}
 
 		void onEvent(sf::Event event) override
@@ -366,80 +404,13 @@ namespace Editor::ClassicContext
 			}
 		}
 
-		void beginLink(ClassicWorldDataset* dataset) override
+		void changeWindowIndex(int index) override
 		{
-			mouseMode = MouseMode::Connect;
-			connectWorldSource = findWorldNodeByDataset(dataset);
-
-			assert(connectWorldSource != NULL);
-
-			sf::Vector2f mouseCursor = pixelToCoords(
-				ImGui::GetIO().MousePos.x,
-				ImGui::GetIO().MousePos.y);
-
-			connectWorldSource->addTemporaryConnection(
-				mouseConnection.getDummy(),
-				&mouseConnection);
-
-			mouseConnection.setElement(connectWorldSource);
-			mouseConnection.setTarget(mouseCursor);
-		}
-
-		// mouse specific
-	private:
-		Node* nodeHovered = NULL;
-
-		std::vector<sf::Vector2f> mouseNodeBegin;
-		std::vector<Node*> nodeSelected;
-
-		sf::Clock doubleClickClock;
-		sf::RectangleShape mouseMarkingRect;
-
-		WorldNode* connectWorldSource;
-		MouseConnection mouseConnection;
-
-		enum class MouseMode
-		{
-			None,
-			Drag,
-			Mark,
-			Connect
-		};
-
-		bool mouseMoved = true;
-		MouseMode mouseMode = MouseMode::None;
-
-		sf::Vector2i mouseBegin;
-
-		void handleMouseHover(int x, int y)
-		{
-			if (affectsWindow(x, y))
-			{
-				Node* new_hover = findNodeByPoint(x, y);
-				if (new_hover != nodeHovered && nodeHovered)
-				{
-					if (isNodeSelected(nodeHovered))
-					{
-						nodeHovered->setStyle(NodeStyle::Selected);
-					}
-					else
-					{
-						nodeHovered->setStyle(NodeStyle::Classic);
-					}
-				}
-
-				if (new_hover)
-				{
-					new_hover->setStyle(NodeStyle::Hover);
-				}
-
-				nodeHovered = new_hover;
-			}
+			setTitle("Classic Context " + std::to_string(index));
 		}
 
 	private:
-		WindowDataset dataset;
-
+		Resource::ContextID contextID;
 		Framework::IndependentPopupWindow* popupWindow = NULL;
 
 		std::list<Node*> nodes;
@@ -493,7 +464,7 @@ namespace Editor::ClassicContext
 			}
 		}
 
-		void removeLink(ConnectionNode* node) override
+		/*void removeLink(ConnectionNode* node) override
 		{
 
 		}
@@ -522,7 +493,60 @@ namespace Editor::ClassicContext
 
 			source->transitive.push_back(target);
 			source->notify();
+		}*/
+
+			// mouse specific
+	private:
+		Node* nodeHovered = NULL;
+
+		std::vector<sf::Vector2f> mouseNodeBegin;
+		std::vector<Node*> nodeSelected;
+
+		sf::Clock doubleClickClock;
+		sf::RectangleShape mouseMarkingRect;
+
+		WorldNode* connectWorldSource;
+		MouseConnection mouseConnection;
+
+		enum class MouseMode
+		{
+			None,
+			Drag,
+			Mark,
+			Connect
+		};
+
+		bool mouseMoved = true;
+		MouseMode mouseMode = MouseMode::None;
+
+		sf::Vector2i mouseBegin;
+
+		void handleMouseHover(int x, int y)
+		{
+			if (affectsWindow(x, y))
+			{
+				Node* new_hover = findNodeByPoint(x, y);
+				if (new_hover != nodeHovered && nodeHovered)
+				{
+					if (isNodeSelected(nodeHovered))
+					{
+						nodeHovered->setStyle(NodeStyle::Selected);
+					}
+					else
+					{
+						nodeHovered->setStyle(NodeStyle::Classic);
+					}
+				}
+
+				if (new_hover)
+				{
+					new_hover->setStyle(NodeStyle::Hover);
+				}
+
+				nodeHovered = new_hover;
+			}
 		}
+
 
 		// utility
 	private:

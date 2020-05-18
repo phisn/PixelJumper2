@@ -17,7 +17,7 @@ namespace Editor
 			:
 			ImGuiWindowComponent(Framework::WindowFlagsOverlay)
 		{
-			title = "editor_root_window";
+			setTitle("");
 		}
 
 		void process()

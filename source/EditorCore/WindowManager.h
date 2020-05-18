@@ -59,10 +59,6 @@ namespace Editor
 			removeWindow((void*) window, typeid(T));
 		}
 
-		void removeWindow(void* raw)
-		{
-		}
-
 		void removeWindow(void* raw, std::type_index index)
 		{
 			WindowEntry& entry = windows[index];
@@ -74,10 +70,18 @@ namespace Editor
 						windowsQuick.end(), entry.window[i]);
 
 					assert(iterator != windowsQuick.end());
+					delete *iterator;
 					windowsQuick.erase(iterator);
 
 					entry.raw.erase(entry.raw.begin() + i);
 					entry.window.erase(entry.window.begin() + i);
+
+					for (int j = i; j < entry.raw.size(); ++j)
+					{
+						entry.window[j]->changeWindowIndex(j);
+					}
+
+					return;
 				}
 
 			assert(false);

@@ -16,7 +16,7 @@ namespace Scene
 			:
 			ImGuiWindowComponent(Framework::WindowFlagsStatic)
 		{
-			title = "login_window";
+			setTitle("login_window")
 		}
 
 		bool begin() override

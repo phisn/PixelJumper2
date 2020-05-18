@@ -49,7 +49,7 @@ namespace Editor::ClassicContext
 	public:
 		WorldNode(
 			WindowAccess* access,
-			ClassicWorldDataset* world)
+			Resource::WorldID worldID)
 			:
 			access(access),
 			world(world),
