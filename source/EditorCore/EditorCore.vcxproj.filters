@@ -42,6 +42,9 @@
     <ClCompile Include="EditorDataset.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="EditorFailureScene.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
@@ -81,6 +84,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="EditorDataset.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorFailureScene.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

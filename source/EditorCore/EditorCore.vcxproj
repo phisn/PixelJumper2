@@ -112,6 +112,7 @@
     <ClCompile Include="ClassicWorldWindow.cpp" />
     <ClCompile Include="EditorDatabase.cpp" />
     <ClCompile Include="EditorDataset.cpp" />
+    <ClCompile Include="EditorFailureScene.cpp" />
     <ClCompile Include="EditorScene.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="main.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="ClassicWorldWindow.h" />
     <ClInclude Include="EditorDatabase.h" />
     <ClInclude Include="EditorDataset.h" />
+    <ClInclude Include="EditorFailureScene.h" />
     <ClInclude Include="EditorScene.h" />
     <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="WindowManager.h" />

@@ -3,7 +3,6 @@
 #include "ClassicContextConnection.h"
 #include "ClassicContextNode.h"
 #include "ClassicContextWindowPopup.h"
-#include "EditorCore/dataset/ClassicContextDataset.h"
 
 #include "FrameworkCore/FrameworkCore.h"
 
@@ -51,17 +50,10 @@ namespace Editor::ClassicContext
 			WindowAccess* access,
 			Resource::WorldID worldID)
 			:
-			access(access),
-			world(world),
-			worldDatasetListener(*world, [this](DatasetEvent event)
-				{
-					reconstructConnections();
-					reconstructNodeContent();
-				})
+			access(access)
 		{
 			name.setFont(Framework::GetFont());
 			name.setCharacterSize(30);
-
 			setStyle(NodeStyle::Classic);
 
 			reconstructNodeContent();
@@ -156,7 +148,6 @@ namespace Editor::ClassicContext
 
 		Framework::IndependentPopupWindow* createPopupWindow() override
 		{
-			return new WorldPopup{ access, world };
 		}
 
 		void setStyle(NodeStyle styleType) override
@@ -195,6 +186,7 @@ namespace Editor::ClassicContext
 			return rect.getGlobalBounds().contains(point);
 		}
 
+		/*
 		Connection* findTransitiveToWorld(WorldNode* world0)
 		{
 			for (WorldNodeConnectionPair& pair : transitiveConnections)
@@ -205,11 +197,7 @@ namespace Editor::ClassicContext
 
 			return NULL;
 		}
-
-		ClassicWorldDataset* getWorld()
-		{
-			return world;
-		}
+		*/
 
 		void notifyBoundsChanged() override
 		{
@@ -218,13 +206,10 @@ namespace Editor::ClassicContext
 
 	private:
 		WindowAccess* access;
-		ClassicWorldDataset* world;
 
 		// needs to be list to not invalidate pointer
 		std::list<ConnectionContainer> connections;
 		std::vector<WorldNodeConnectionPair> transitiveConnections;
-
-		ClassicWorldDataset::ListenerContainer worldDatasetListener;
 
 		sf::RectangleShape rect;
 		sf::Text name;
@@ -233,7 +218,7 @@ namespace Editor::ClassicContext
 
 		void reconstructNodeContent()
 		{
-			name.setString(world->getDataset().name);
+			// name.setString(world->getDataset().name);
 			reconstructNodeSize();
 		}
 

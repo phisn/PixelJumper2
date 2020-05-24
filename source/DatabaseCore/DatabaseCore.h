@@ -34,13 +34,6 @@ namespace Database
 			return database != NULL;
 		}
 
-		inline void logStatusCodeError(int statusCode, std::wstring info)
-		{
-			Log::Error(info,
-				getLastErrorMessage(), L"message",
-				statusCode, L"code");
-		}
-
 		std::wstring getLastErrorMessage() const
 		{
 			return carrtowstr(sqlite3_errmsg(database));
@@ -72,6 +65,13 @@ namespace Database
 			}
 
 			return true;
+		}
+
+		inline void logStatusCodeError(int statusCode, std::wstring info)
+		{
+			Log::Error(info,
+				getLastErrorMessage(), L"message",
+				statusCode, L"code");
 		}
 	};
 
@@ -140,7 +140,7 @@ namespace Database
 		template <typename TupleType, int Column = 0>
 		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			ExtractAs<Column>((SQLiteInt&) std::get<Column>(tuple), statement);
+			ExtractAs<Column>((SQLiteInt&)std::get<Column>(tuple), statement);
 		}
 
 		template <int Column = 0>
@@ -153,7 +153,7 @@ namespace Database
 		template <typename TupleType, int Column = 0>
 		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			return BindAs((SQLiteInt) std::get<Column>(tuple), Column, statement);
+			return BindAs((SQLiteInt)std::get<Column>(tuple), Column, statement);
 		}
 
 		static inline int BindAs(SQLiteInt value, int Column, sqlite3_stmt* statement)
@@ -168,7 +168,7 @@ namespace Database
 		template <typename TupleType, int Column = 0>
 		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			ExtractAs<Column>((SQLiteReal&) std::get<Column>(tuple), statement);
+			ExtractAs<Column>((SQLiteReal&)std::get<Column>(tuple), statement);
 		}
 
 		template <int Column = 0>
@@ -181,7 +181,7 @@ namespace Database
 		template <typename TupleType, int Column = 0>
 		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			return BindAs((SQLiteReal) std::get<Column>(tuple), Column, statement);
+			return BindAs((SQLiteReal)std::get<Column>(tuple), Column, statement);
 		}
 
 		static inline int BindAs(SQLiteReal value, int Column, sqlite3_stmt* statement)
@@ -216,7 +216,7 @@ namespace Database
 		{
 			return sqlite3_bind_text(
 				statement, Column + 1, value.c_str(),
-				value.size() * sizeof(SQLiteString::value_type), 
+				value.size() * sizeof(SQLiteString::value_type),
 				SQLITE_TRANSIENT);
 		}
 	};
@@ -233,7 +233,7 @@ namespace Database
 		static inline int BindAs(const SQLiteString::value_type* value, int Column, sqlite3_stmt* statement)
 		{
 			return sqlite3_bind_text(
-				statement, 
+				statement,
 				Column + 1, value,
 				-1,
 				SQLITE_TRANSIENT);
@@ -256,7 +256,7 @@ namespace Database
 		static inline void ExtractAs(SQLiteString::value_type* value, sqlite3_stmt* statement)
 		{
 			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
-			memcpy(value, (const void*) sqlite3_column_text(statement, Column), sqlite3_column_bytes(statement, Column));
+			memcpy(value, (const void*)sqlite3_column_text(statement, Column), sqlite3_column_bytes(statement, Column));
 		}
 	};
 
@@ -273,7 +273,7 @@ namespace Database
 		static inline void ExtractAs(SQLiteBlob& value, sqlite3_stmt* statement)
 		{
 			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
-			const char* data = (const char*) sqlite3_column_blob(statement, Column);
+			const char* data = (const char*)sqlite3_column_blob(statement, Column);
 			value.assign(data, data + sqlite3_column_bytes(statement, column));
 		}
 
@@ -286,8 +286,8 @@ namespace Database
 		static inline int BindAs(SQLiteBlob& value, int Column, sqlite3_stmt* statement)
 		{
 			return sqlite3_bind_blob(
-				statement, Column + 1, 
-				(const void*) &value[0],
+				statement, Column + 1,
+				(const void*)&value[0],
 				value.size(),
 				SQLITE_TRANSIENT);
 		}
@@ -306,8 +306,8 @@ namespace Database
 		{
 			return sqlite3_bind_blob(
 				statement,
-				Column + 1, (const void*) value,
-				strlen((const char*) value),
+				Column + 1, (const void*)value,
+				strlen((const char*)value),
 				SQLITE_TRANSIENT);
 		}
 	};
@@ -331,9 +331,9 @@ namespace Database
 			memcpy(value, sqlite3_column_blob(statement, Column), sqlite3_column_bytes(statement, Column));
 		}
 	};
-	
+
 	template <typename Character>
-	struct StatementColumn<std::basic_string<Character>, 
+	struct StatementColumn<std::basic_string<Character>,
 		std::enable_if_t<!std::is_same_v<Character, SQLiteString>>>
 	{
 		typedef std::basic_string<Character> String;
@@ -360,8 +360,8 @@ namespace Database
 		static inline int BindAs(String& value, int Column, sqlite3_stmt* statement)
 		{
 			return sqlite3_bind_blob(
-				statement, Column + 1, 
-				(const void*) value.c_str(),
+				statement, Column + 1,
+				(const void*)value.c_str(),
 				value.size() * sizeof(String::value_type),
 				SQLITE_TRANSIENT);
 		}
@@ -380,7 +380,7 @@ namespace Database
 		{
 			return sqlite3_bind_blob(
 				statement,
-				Column + 1, (const void*) value,
+				Column + 1, (const void*)value,
 				wcslen(value) * sizeof(wchar_t),
 				SQLITE_TRANSIENT);
 		}
@@ -522,8 +522,8 @@ namespace Database
 			:
 			database(database)
 		{
-			Log::Information(L"creating statement", 
-				database, L"database", 
+			Log::Information(L"creating statement",
+				database, L"database",
 				query, L"query");
 			ensureStatusCode(sqlite3_prepare_v2(
 				database->raw(),
@@ -652,6 +652,13 @@ namespace Database
 				: ensureStatusCode(sqlite3_clear_bindings(statement), L"failed to clear bindings");
 		}
 
+		bool finish()
+		{
+			return statement != NULL
+				&& finished
+				&& ensureStatusCode(sqlite3_finalize(statement));
+		}
+
 		const TupleType& getValue() const
 		{
 			return value;
@@ -693,14 +700,14 @@ namespace Database
 	};
 
 	inline bool QuickExecute(
-		SQLiteDatabase* database, 
+		SQLiteDatabase* database,
 		std::string query)
 	{
 		Log::Information(L"quick execute",
 			database, L"database",
 			query, L"query");
 
-		int result = sqlite3_exec(database->raw(), query.c_str(), 
+		int result = sqlite3_exec(database->raw(), query.c_str(),
 			NULL, NULL, NULL);
 
 		if (result != SQLITE_OK)

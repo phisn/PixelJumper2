@@ -91,6 +91,8 @@ namespace Editor
 				&& Database::Statement(this, Definition).execute();
 		}
 
+		// add some error handler
+
 	private:
 		constexpr static char Filename[] = "editor.db";
 
