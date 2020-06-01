@@ -1,2 +1,0 @@
-C:\Users\phisn\source\repos\PixelJumper2\source\SFML\lib\Debug\sfml-window-s-d.lib.lastcodeanalysissucceeded
-C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Window\sfml-window.dir\Debug\NativeCodeAnalysis.read.1.tlog

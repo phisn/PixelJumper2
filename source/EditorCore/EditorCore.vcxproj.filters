@@ -7,6 +7,9 @@
     <Filter Include="source\classiccontext">
       <UniqueIdentifier>{8753f425-59a7-476b-ab51-d2b74c3da79b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\tasks">
+      <UniqueIdentifier>{45ebe988-6290-4477-afc6-bcc322e29547}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +48,12 @@
     <ClCompile Include="EditorFailureScene.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="classiccontext\TransitiveContextNode.cpp">
+      <Filter>source\classiccontext</Filter>
+    </ClCompile>
+    <ClCompile Include="classiccontext\ClassicContextManager.cpp">
+      <Filter>source\classiccontext</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditorScene.h">
@@ -74,9 +83,6 @@
     <ClInclude Include="classiccontext\ClassicContextWindowPopup.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="classiccontext\ClassicContextWorldNode.h">
-      <Filter>source\classiccontext</Filter>
-    </ClInclude>
     <ClInclude Include="EditorDatabase.h">
       <Filter>source</Filter>
     </ClInclude>
@@ -88,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="EditorFailureScene.h">
       <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="classiccontext\ClassicContextWorldNode.h">
+      <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="classiccontext\TransitiveContextNode.h">
+      <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="classiccontext\ClassicContextManager.h">
+      <Filter>source\classiccontext</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,2 +1,0 @@
-C:\Users\phisn\source\repos\PixelJumper2\source\SFML\lib\Debug\sfml-audio-s-d.lib.lastcodeanalysissucceeded
-C:\Users\phisn\source\repos\PixelJumper2\source\SFML\src\SFML\Audio\sfml-audio.dir\Debug\NativeCodeAnalysis.read.1.tlog
