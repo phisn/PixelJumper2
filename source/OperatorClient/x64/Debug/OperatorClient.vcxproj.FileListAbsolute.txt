@@ -1,4 +1,0 @@
-C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\OperatorClient.pdb
-C:\Users\phisn\source\repos\PixelJumper2\source\OperatorClient\x64\Debug\OperatorClient.pdb
-C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\OperatorClient.lib.lastcodeanalysissucceeded
-C:\Users\phisn\source\repos\PixelJumper2\source\OperatorClient\x64\Debug\NativeCodeAnalysis.read.1.tlog

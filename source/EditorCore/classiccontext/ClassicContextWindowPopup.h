@@ -1,10 +1,10 @@
 #pragma once
 
 #include "ClassicContextPopup.h"
-#include "EditorCore/dataset/ClassicContextDataset.h"
 
 namespace Editor::ClassicContext
 {
+	class WorldNode;
 	class WorldPopup
 		:
 		public Popup
@@ -13,20 +13,16 @@ namespace Editor::ClassicContext
 		const float MaxPopupWidth = 100;
 
 	public:
-		WorldPopup(
-			WindowAccess* access,
-			ClassicWorldDataset* dataset)
+		WorldPopup(WindowAccess* access, WorldNode* worldNode)
 			:
 			Popup(access),
-			dataset(dataset),
-			inputText(dataset->getDataset().name)
+			worldNode(worldNode)
 		{
-			inputText.resize(MaxNameSize);
 			open();
 		}
 
 	private:
-		ClassicWorldDataset* dataset;
+		WorldNode* worldNode;
 
 		bool makeWindow() override
 		{
@@ -37,11 +33,9 @@ namespace Editor::ClassicContext
 		{
 			if (ImGui::Button("Connect to", ImVec2{ MaxPopupWidth, 0 }))
 			{
-				access->beginLink(dataset);
+				access->beginLink(worldNode);
 				closeWindow();
 			}
 		}
-
-		std::string inputText;
 	};
 }

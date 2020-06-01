@@ -15,13 +15,13 @@ namespace Editor
 		public Framework::Scene
 	{
 	public:
-		EditorFailureScene()
+		EditorFailureScene(std::string reason)
 			:
-			EditorFailureScene(EditorRepairData{ })
+			EditorFailureScene(reason, EditorRepairData{ })
 		{
 		}
 
-		EditorFailureScene(EditorRepairData repair)
+		EditorFailureScene(std::string reason, EditorRepairData repair)
 			:
 			repair(repair)
 		{
@@ -33,7 +33,7 @@ namespace Editor
 
 		void onLogic(const sf::Time time) override
 		{
-			ImGui::Begin("Internal Editor Error");
+			ImGui::Begin("Internal Editor Failure");
 			ImGui::Text("Reason: %s", reason.c_str());
 
 			ImGui::Spacing();

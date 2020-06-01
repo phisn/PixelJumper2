@@ -1,20 +1,8 @@
 #pragma once
 
-#include "ClassicContextWorldNode.h"
-#include "ClassicContextConnectionNode.h"
+#include "ClassicContextManager.h"
 
-#include "EditorCore/EditorWindow.h"
-
-#include "FrameworkCore/FrameworkCore.h"
-#include "FrameworkCore/BezierArrow.h"
-#include "FrameworkCore/ArrowShape.h"
 #include "FrameworkCore/imgui/ImGuiGridWindow.h"
-#include "FrameworkCore/imgui/ImGuiModalWindow.h"
-#include "FrameworkCore/scene/InformationScene.h"
-
-#include "ResourceCore/ClassicContextResource.h"
-
-#include "imgui/imgui_stdlib.h"
 
 namespace Editor::ClassicContext
 {
@@ -118,93 +106,7 @@ namespace Editor::ClassicContext
 		ConnectionSide elementSide;
 	};
 
-	class ClassicContextManager
-	{
-	public:
-		ClassicContextManager(Resource::ContextID contextID)
-			:
-			contextID(contextID)
-		{
-			typedef std::tuple<SQLiteInt> NodeWorldTuple;
-			Database::Statement<NodeWorldTuple> findWorlds(
-				EditorDatabase::Instance(),
-				"SELECT id FROM world WHERE contextid = ?", contextID);
-
-			for (const NodeWorldTuple& tuple : findWorlds)
-			{
-
-			}
-
-			if (!findWorlds.finish())
-			{
-				Framework::PushErrorScene("Failed to retrive initial worlds for ContextWindow");
-				return;
-			}
-
-
-		}
-
-		~ClassicContextManager()
-		{
-			for (Node* node : nodes)
-				delete node;
-		}
-
-		void draw(sf::RenderTarget* target)
-		{
-			for (ConnectionNode* connection : connections)
-				connection->draw(target);
-			for (WorldNode* world : worlds)
-				world->draw(target);
-		}
-
-		Node* findNodeByPoint(sf::Vector2f coord) const
-		{
-			for (Node* node : nodes)
-				if (node->contains(coord))
-				{
-					return node;
-				}
-
-			return NULL;
-		}
-
-		WorldNode* findWorldNodeByPoint(sf::Vector2f coord) const
-		{
-			for (WorldNode* node : worlds)
-				if (node->contains(coord))
-				{
-					return node;
-				}
-
-			return NULL;
-		}
-
-		void findCollidingNodes(sf::FloatRect rect, std::vector<Node*>& collidingNodes)
-		{
-			for (Node* node : nodes)
-				if (doesRectContainRect(rect, node->getGlobalBounds()))
-				{
-					collidingNodes.push_back(node);
-				}
-		}
-
-	private:
-		Resource::ContextID contextID;
-
-		std::list<Node*> nodes;
-
-		std::vector<ConnectionNode*> connections;
-		std::vector<WorldNode*> worlds;
-
-		bool doesRectContainRect(sf::FloatRect rect1, sf::FloatRect rect2) const
-		{
-			return (rect1.left < rect2.left + rect2.width)
-				&& (rect1.top < rect2.top + rect2.height)
-				&& (rect2.left < rect1.left + rect1.width)
-				&& (rect2.top < rect1.top + rect1.height);
-		}
-	};
+	
 
 	/*
 	// popup when no node was selected?
@@ -233,6 +135,7 @@ namespace Editor::ClassicContext
 	// provide easy check for hover, click, ...
 	class ClassicContextWindow
 		:
+		public WindowAccess,
 		public EditorWindow,
 		public Framework::ImGuiGridWindow
 	{
@@ -310,6 +213,46 @@ namespace Editor::ClassicContext
 			}
 		}
 
+		void onDatabaseEvent(DatabaseEvent event) override
+		{
+			switch (event.table)
+			{
+			case DatabaseTable::Transitive:
+				if (event.data.transitive.contextID == manager.getContextID())
+				{
+					onDatabaseTransitiveEvent(event.type, event.data.transitive);
+				}
+
+				break;
+			case DatabaseTable::World:
+				if (event.data.world.contextID == manager.getContextID())
+				{
+					onDatabaseWorldEvent(event.type, event.data.world);
+				}
+
+				break;
+			}
+		}
+
+		void beginLink(WorldNode* node) override
+		{
+			mouseMode = MouseMode::Connect;
+			connectWorldSource = node;
+
+			assert(connectWorldSource != NULL);
+
+			sf::Vector2f mouseCursor = pixelToCoords(
+				ImGui::GetIO().MousePos.x,
+				ImGui::GetIO().MousePos.y);
+
+			connectWorldSource->addTemporaryConnection(
+				mouseConnection.getDummy(),
+				&mouseConnection);
+
+			mouseConnection.setElement(connectWorldSource);
+			mouseConnection.setTarget(mouseCursor);
+		}
+
 	private:
 		ClassicContextManager manager;
 		Framework::IndependentPopupWindow* popupWindow = NULL;
@@ -337,7 +280,7 @@ namespace Editor::ClassicContext
 		{
 			if (Node* node = manager.findNodeByPoint(point); node)
 			{
-				popupWindow = node->createPopupWindow();
+				popupWindow = node->createPopupWindow(this);
 			}
 			else
 			{
@@ -497,6 +440,54 @@ namespace Editor::ClassicContext
 
 					break;
 				}
+			}
+		}
+
+		void onDatabaseWorldEvent(
+			DatabaseEventType type, 
+			const WorldEvent& event)
+		{
+			switch (type)
+			{
+			case DatabaseEventType::Change:
+			{
+				WorldNode* node = manager.findWorldNodeByID(event.worldID);
+				assert(node != NULL);
+				node->update();
+			}
+				break;
+			case DatabaseEventType::Create:
+				manager.createWorldNode(event.worldID);
+
+				break;
+			case DatabaseEventType::Remove:
+				manager.removeWorldNode(event.worldID);
+
+				break;
+			}
+		}
+
+		void onDatabaseTransitiveEvent(
+			DatabaseEventType type,
+			const TransitiveEvent& event)
+		{
+			switch (type)
+			{
+			case DatabaseEventType::Change:
+			{
+				TransitiveNode* node = manager.findTransitiveNodeByID(event.entryID);
+				assert(node != NULL);
+				node->update();
+			}
+				break;
+			case DatabaseEventType::Create:
+				manager.createWorldNode(event.entryID);
+
+				break;
+			case DatabaseEventType::Remove:
+				manager.removeTransitiveNode(event.entryID);
+
+				break;
 			}
 		}
 

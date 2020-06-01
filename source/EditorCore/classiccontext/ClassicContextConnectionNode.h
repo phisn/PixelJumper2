@@ -14,26 +14,27 @@ namespace Editor::ClassicContext
 	{
 	public:
 		ConnectionNode(
-			WindowAccess* access,
 			ConnectionElement* source,
 			ConnectionElement* target)
 			:
 			Connection(source, target),
-			access(access),
 			sourceOut(true),
 			targetOut(false)
 		{
 			arrow.setMode(Framework::StrictBezierArrow::Mode::Default);
 		}
+		
+		virtual bool make(Resource::ReadPipe* const pipe) override
+		{
+		}
+
+		virtual bool save(Resource::WritePipe* const pipe) override
+		{
+		}
 
 		void draw(sf::RenderTarget* target)
 		{
 			target->draw(arrow);
-		}
-
-		Framework::IndependentPopupWindow* createPopupWindow() override
-		{
-			return NULL;
 		}
 
 		void setPosition(sf::Vector2f position) override
@@ -115,7 +116,7 @@ namespace Editor::ClassicContext
 					return;
 				}
 
-				access->removeLink(this);
+				arrow.setMode(Framework::StrictBezierArrow::Mode::Disabled);
 			}
 		}
 
@@ -149,9 +150,10 @@ namespace Editor::ClassicContext
 			return false;
 		}
 
-	private:
-		WindowAccess* access;
+	protected:
 
+
+	private:
 		bool sourceOut = false;
 		bool targetOut = false;
 

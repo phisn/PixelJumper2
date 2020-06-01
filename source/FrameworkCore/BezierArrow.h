@@ -2,8 +2,6 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "Logger/Logger.h"
-
 #include <cassert>
 
 namespace Framework

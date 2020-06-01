@@ -29,7 +29,8 @@ namespace Editor::ClassicContext
 		{
 		}
 
-		virtual Framework::IndependentPopupWindow* createPopupWindow() = 0;
+		virtual Framework::IndependentPopupWindow* createPopupWindow(
+			WindowAccess* access) = 0;
 
 		virtual void setStyle(NodeStyle style) = 0;
 

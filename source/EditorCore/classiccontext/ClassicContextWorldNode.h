@@ -47,15 +47,13 @@ namespace Editor::ClassicContext
 
 	public:
 		WorldNode(
-			WindowAccess* access,
-			Resource::WorldID worldID)
+			Resource::WorldID worldID,
+			std::string name)
 			:
-			access(access)
+			id(worldID),
+			name(std::move(name), Framework::GetFont(), 30)
 		{
-			name.setFont(Framework::GetFont());
-			name.setCharacterSize(30);
 			setStyle(NodeStyle::Classic);
-
 			reconstructNodeContent();
 		}
 
@@ -124,6 +122,24 @@ namespace Editor::ClassicContext
 				connections.erase(removal);
 		}
 
+		void update()
+		{
+			typedef std::tuple<SQLiteString> WorldUpdateTuple;
+
+			WorldUpdateTuple worldUpdate;
+			if (!Database::Statement<WorldUpdateTuple>(
+					EditorDatabase::Instance(),
+					"SELECT name FROM worlds WHERE id = ?", id).execute(worldUpdate))
+			{
+				Framework::Core::PushScene(new EditorFailureScene(
+					"Failed to update world in contextwindow '" + std::to_string(id) + "'"));
+				return;
+			}
+
+			name.setString(std::get<0>(worldUpdate));
+			reconstructNodeContent();
+		}
+
 		void draw(sf::RenderTarget* target)
 		{
 			target->draw(rect);
@@ -146,8 +162,14 @@ namespace Editor::ClassicContext
 			return false;
 		}
 
-		Framework::IndependentPopupWindow* createPopupWindow() override
+		void notifyBoundsChanged() override
 		{
+			reconstructConnectionsPosition();
+		}
+
+		Framework::IndependentPopupWindow* createPopupWindow(WindowAccess* access) override
+		{
+			return new WorldPopup(access, this);
 		}
 
 		void setStyle(NodeStyle styleType) override
@@ -166,9 +188,9 @@ namespace Editor::ClassicContext
 			reconstructNodePosition();
 		}
 
-		sf::Vector2f getPosition() const override
+		bool contains(sf::Vector2f point) const override
 		{
-			return rect.getPosition();
+			return rect.getGlobalBounds().contains(point);
 		}
 
 		sf::Vector2f getSize() const
@@ -176,49 +198,37 @@ namespace Editor::ClassicContext
 			return rect.getSize();
 		}
 
+		Resource::WorldID getID() const
+		{
+			return id;
+		}
+
 		sf::FloatRect getGlobalBounds() const override
 		{
 			return rect.getGlobalBounds();
 		}
 
-		bool contains(sf::Vector2f point) const override
+		sf::Vector2f getPosition() const override
 		{
-			return rect.getGlobalBounds().contains(point);
-		}
-
-		/*
-		Connection* findTransitiveToWorld(WorldNode* world0)
-		{
-			for (WorldNodeConnectionPair& pair : transitiveConnections)
-				if (pair.first == world0)
-				{
-					return pair.second->node;
-				}
-
-			return NULL;
-		}
-		*/
-
-		void notifyBoundsChanged() override
-		{
-			reconstructConnectionsPosition();
+			return rect.getPosition();
 		}
 
 	private:
-		WindowAccess* access;
+		Resource::WorldID id;
+
+		sf::RectangleShape rect;
+		sf::Text name;
 
 		// needs to be list to not invalidate pointer
 		std::list<ConnectionContainer> connections;
 		std::vector<WorldNodeConnectionPair> transitiveConnections;
 
-		sf::RectangleShape rect;
-		sf::Text name;
-
 		bool ignoreDoubleConnection = false;
 
 		void reconstructNodeContent()
 		{
-			// name.setString(world->getDataset().name);
+			// assuming information are already
+			// applied
 			reconstructNodeSize();
 		}
 

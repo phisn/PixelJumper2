@@ -495,7 +495,7 @@ namespace Database
 		StatementType* statement;
 	};
 
-	template <typename Tuple = std::tuple<>>
+	template <typename Tuple = ::std::tuple<>>
 	class Statement
 	{
 	public:
@@ -522,24 +522,22 @@ namespace Database
 			:
 			database(database)
 		{
-			Log::Information(L"creating statement",
-				database, L"database",
-				query, L"query");
 			ensureStatusCode(sqlite3_prepare_v2(
 				database->raw(),
 				query.c_str(),
 				-1, &statement, NULL), L"failed to prepare statement");
+			Log::Information(L"created statement",
+				database, L"database",
+				query, L"query",
+				statement, L"statement");
 		}
 
 		~Statement()
 		{
-			if (statement)
-			{
-				int result = sqlite3_finalize(statement);
-
-				if (result != SQLITE_OK)
-					database->logStatusCodeError(result, L"failed to finalize statement");
-			}
+			// finalize only fails if previous functions failed and
+			// does not give meaningfull information
+			// null check not needed. with null is a noop
+			sqlite3_finalize(statement);
 		}
 
 		operator bool() const
@@ -562,51 +560,57 @@ namespace Database
 			return Iterator{ this, true };
 		}
 
-		// used for queries that do not
-		// expect a result
+		// Used for queries that do not expect a result
+		// Already initiated statement can still be executed to enforce
+		// a last SQLITE_DONE
 		bool execute()
 		{
-			assert(!finished);
-
-			if (statement == NULL || initiated)
-				return false;
-
-			if (int result = sqlite3_step(statement); result != SQLITE_DONE)
+			if (finished)
 			{
-				assert(result != SQLITE_ROW);
-				ensureStatusCode(result, L"failed to step in execute");
-
+				Log::Error(L"tried to execute already finished statement",
+					statement, L"statement");
 				return false;
 			}
 
-			return true;
-		}
-
-		bool next()
-		{
-			assert(!finished);
-
 			if (statement == NULL)
+			{
+				Log::Error(L"tried to execute already failed statement",
+					statement, L"statement");
 				return false;
+			}
+
+			if (int result = sqlite3_step(statement); result != SQLITE_DONE)
+			{
+				if (result != SQLITE_ROW)
+				{
+					ensureStatusCode(result, L"failed to step in execute");
+
+					return false;
+				}
+
+				Log::Warning(L"statement returned row after execute",
+					statement, L"statement");
+			}
+			else
+			{
+				finished = true;
+			}
 
 			if (!initiated)
 				initiated = true;
 
-			switch (int result = sqlite3_step(statement); result)
-			{
-			case SQLITE_ROW:
-				StatementTupleColumn<Tuple>::Extract(value, statement);
+			return true;
+		}
 
-				return true;
-			case SQLITE_DONE:
-				finished = true;
+		// execute with single tuple to extract
+		bool execute(Tuple& tuple)
+		{
+			return next(tuple) && execute();
+		}
 
-				return false;
-			default:
-				ensureStatusCode(result, L"failed to step in next");
-
-				return false;
-			}
+		bool next()
+		{
+			return next(value);
 		}
 
 		bool hasNext() const
@@ -652,13 +656,6 @@ namespace Database
 				: ensureStatusCode(sqlite3_clear_bindings(statement), L"failed to clear bindings");
 		}
 
-		bool finish()
-		{
-			return statement != NULL
-				&& finished
-				&& ensureStatusCode(sqlite3_finalize(statement));
-		}
-
 		const TupleType& getValue() const
 		{
 			return value;
@@ -677,6 +674,41 @@ namespace Database
 
 		SQLiteDatabase* database;
 		sqlite3_stmt* statement;
+
+		bool next(Tuple& tuple)
+		{
+			if (finished)
+			{
+				Log::Error(L"tried to get next tuple from finished statement");
+				return false;
+			}
+
+			if (statement == NULL)
+			{
+				Log::Error(L"tried to next statement after failure");
+				return false;
+			}
+
+			if (!initiated)
+				initiated = true;
+
+			if (int result = sqlite3_step(statement); result != SQLITE_ROW)
+			{
+				if (result == SQLITE_DONE)
+				{
+					finished = true;
+				}
+				else
+				{
+					ensureStatusCode(result, L"failed to step in next");
+				}
+
+				return false;
+			}
+
+			StatementTupleColumn<Tuple>::Extract(tuple, statement);
+			return true;
+		}
 
 		bool ensureStatusCode(int statusCode, std::wstring info)
 		{
@@ -698,27 +730,6 @@ namespace Database
 			return true;
 		}
 	};
-
-	inline bool QuickExecute(
-		SQLiteDatabase* database,
-		std::string query)
-	{
-		Log::Information(L"quick execute",
-			database, L"database",
-			query, L"query");
-
-		int result = sqlite3_exec(database->raw(), query.c_str(),
-			NULL, NULL, NULL);
-
-		if (result != SQLITE_OK)
-		{
-			database->logStatusCodeError(result, L"failed to quick execute query");
-
-			return false;
-		}
-
-		return true;
-	}
 }
 
 using Database::SQLiteInt;

@@ -8,9 +8,9 @@
 
 namespace Editor::ClassicContext
 {
-	//struct ConnectionNode;
 	struct WindowAccess
 	{
+		virtual void beginLink(WorldNode* node) = 0;
 	};
 
 	class Popup
