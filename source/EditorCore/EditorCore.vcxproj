@@ -116,8 +116,9 @@
     <ClCompile Include="EditorDataset.cpp" />
     <ClCompile Include="EditorFailureScene.cpp" />
     <ClCompile Include="EditorScene.cpp" />
-    <ClCompile Include="EditorWindow.cpp" />
+    <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="task\CreateTransitiveTask.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +136,8 @@
     <ClInclude Include="EditorDataset.h" />
     <ClInclude Include="EditorFailureScene.h" />
     <ClInclude Include="EditorScene.h" />
-    <ClInclude Include="EditorWindow.h" />
+    <ClInclude Include="TaskManager.h" />
+    <ClInclude Include="task\CreateTransitiveTask.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

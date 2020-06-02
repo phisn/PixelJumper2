@@ -1,6 +1,7 @@
 #pragma once
 
-#include "EditorWindow.h"
+#include "EditorDatabase.h"
+#include "EditorDataset.h"
 
 #include <map>
 #include <typeindex>
@@ -8,6 +9,45 @@
 
 namespace Editor
 {
+	enum class DatabaseEventType
+	{
+		Create,
+		Change,
+		Remove
+	};
+
+	struct DatabaseEvent
+	{
+		DatabaseEventType type;
+		DatabaseTable table;
+
+		union
+		{
+			ContextEvent context;
+			WorldEvent world;
+			TransitiveEvent transitive;
+			TileEvent tile;
+
+		} data;
+	};
+
+	class EditorWindow
+	{
+		friend class WindowManager;
+
+	public:
+		~EditorWindow()
+		{
+		}
+
+		virtual void onProcess() = 0;
+		virtual void onDatabaseEvent(DatabaseEvent event) = 0;
+		virtual void onEvent(sf::Event event) = 0;
+
+	protected:
+		virtual void changeWindowIndex(int index) = 0;
+	};
+
 	class WindowManager
 	{
 		struct WindowEntry
@@ -87,10 +127,21 @@ namespace Editor
 			assert(false);
 		}
 
+		void notifyDatabaseEvent(DatabaseEvent& event)
+		{
+			for (EditorWindow* window : windowsQuick)
+				window->onDatabaseEvent(event);
+		}
+
 		template <typename T>
-		const std::vector<T*>& getWindowList()
+		const std::vector<T*>& getWindowsType()
 		{
 			return (std::vector<T*>) (windows[typeid(T)].raw);
+		}
+
+		std::vector<EditorWindow*> getWindows() const
+		{
+			return windowsQuick;
 		}
 
 	private:

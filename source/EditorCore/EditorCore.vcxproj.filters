@@ -7,21 +7,18 @@
     <Filter Include="source\classiccontext">
       <UniqueIdentifier>{8753f425-59a7-476b-ab51-d2b74c3da79b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\tasks">
+    <Filter Include="source\scene">
+      <UniqueIdentifier>{82a6fa46-2aa1-47ff-817e-1987a6bf139a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\classicworld">
+      <UniqueIdentifier>{962b6e33-e588-4c63-8026-3b4da4e4780b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\task">
       <UniqueIdentifier>{45ebe988-6290-4477-afc6-bcc322e29547}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorScene.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="ClassicWorldWindow.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorWindow.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="classiccontext\ClassicContextConnectionNode.cpp">
@@ -39,13 +36,7 @@
     <ClCompile Include="EditorDatabase.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="WindowManager.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="EditorDataset.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorFailureScene.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="classiccontext\TransitiveContextNode.cpp">
@@ -54,17 +45,26 @@
     <ClCompile Include="classiccontext\ClassicContextManager.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
+    <ClCompile Include="WindowManager.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorFailureScene.cpp">
+      <Filter>source\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassicWorldWindow.cpp">
+      <Filter>source\classicworld</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskManager.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="task\CreateTransitiveTask.cpp">
+      <Filter>source\task</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EditorScene.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="ClassicWorldWindow.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorWindow.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="classiccontext\ClassicContextConnection.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
@@ -86,13 +86,7 @@
     <ClInclude Include="EditorDatabase.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="WindowManager.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="EditorDataset.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorFailureScene.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="classiccontext\ClassicContextWorldNode.h">
@@ -103,6 +97,24 @@
     </ClInclude>
     <ClInclude Include="classiccontext\ClassicContextManager.h">
       <Filter>source\classiccontext</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowManager.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorFailureScene.h">
+      <Filter>source\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassicWorldWindow.h">
+      <Filter>source\classicworld</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskManager.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="task\CreateTransitiveTask.h">
+      <Filter>source\task</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

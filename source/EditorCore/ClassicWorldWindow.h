@@ -5,6 +5,7 @@
 
 namespace Editor
 {
+	/*
 	class ClassicWorldWindow
 		:
 		public Framework::ImGuiRenderWindow
@@ -248,4 +249,5 @@ namespace Editor
 			return 4 + std::ceil(primaryView.getSize().x / GridSize) * 2 + std::ceil(primaryView.getSize().y / GridSize) * 2;
 		}
 	};
+	*/
 }

@@ -3,7 +3,7 @@
 #include "ClassicContextWorldNode.h"
 #include "TransitiveContextNode.h"
 
-#include "EditorCore/EditorWindow.h"
+#include "EditorCore/WindowManager.h"
 #include "EditorCore/EditorFailureScene.h"
 
 namespace Editor::ClassicContext
@@ -45,7 +45,7 @@ namespace Editor::ClassicContext
 					"SELECT name FROM world WHERE id = ?", 
 					worldID).execute(createWorld))
 			{
-				Framework::Core::PushScene(new EditorFailureScene(
+				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to retrive information to create world in contextwindow '" + std::to_string(worldID) + "'"));
 
 				return false;
@@ -69,7 +69,7 @@ namespace Editor::ClassicContext
 					"SELECT outputid, inputid, name FROM transitive WHERE id = ?", 
 					entryID).execute(createTransitive))
 			{
-				Framework::Core::PushScene(new EditorFailureScene(
+				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to retrive information to create transitive in contextwindow '" + std::to_string(entryID) + "'"));
 
 				return false;
@@ -80,7 +80,7 @@ namespace Editor::ClassicContext
 
 			if (outputNode == NULL || inputNode == NULL)
 			{
-				Framework::Core::PushScene(new EditorFailureScene(
+				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to find nodes to create transitive in contextwindow '" + std::to_string(entryID) + "'"));
 
 				return false;
@@ -105,7 +105,7 @@ namespace Editor::ClassicContext
 					"DELETE FROM world WHERE id = ?",
 				worldID).execute())
 			{
-				Framework::Core::PushScene(new EditorFailureScene(
+				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to delete world from contextwindow'" + std::to_string(worldID) + "'"));
 
 				return false;
@@ -121,7 +121,7 @@ namespace Editor::ClassicContext
 					"DELETE FROM transitive WHERE id = ?",
 				entryID).execute())
 			{
-				Framework::Core::PushScene(new EditorFailureScene(
+				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to delete transitive from contextwindow'" + std::to_string(entryID) + "'"));
 
 				return false;
@@ -206,7 +206,7 @@ namespace Editor::ClassicContext
 				EditorDatabase::Instance(),
 				"SELECT name, description FROM context WHERE id = ?", contextID).execute(thisTuple))
 			{
-				Framework::Core::PushScene(new EditorFailureScene(
+				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to load context information '" + std::to_string(contextID) + "'"));
 
 				return false;
@@ -238,7 +238,7 @@ namespace Editor::ClassicContext
 
 			if (!findWorlds)
 			{
-				Framework::Core::PushScene(new EditorFailureScene(
+				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to load worlds for context '" + std::to_string(contextID) + "'",
 					[this]() -> bool
 					{
@@ -268,7 +268,7 @@ namespace Editor::ClassicContext
 
 				if (outputNode == NULL || inputNode == NULL)
 				{
-					Framework::Core::PushScene(new EditorFailureScene(
+					Framework::Core::PushChildScene(new EditorFailureScene(
 						"Got invalid worldID in transitive '" + std::to_string(entryID) + "'",
 						[entryID]() -> bool
 						{
@@ -292,7 +292,7 @@ namespace Editor::ClassicContext
 
 			if (!findTransitives)
 			{
-				Framework::Core::PushScene(new EditorFailureScene(
+				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to load transitives for context '" + std::to_string(contextID) + "'",
 					[this]() -> bool
 					{

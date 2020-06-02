@@ -9,9 +9,15 @@
     <ClInclude Include="DatabaseCore.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="Transaction.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DatabaseCore.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

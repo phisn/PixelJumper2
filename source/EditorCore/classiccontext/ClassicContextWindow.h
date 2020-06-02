@@ -2,6 +2,7 @@
 
 #include "ClassicContextManager.h"
 
+#include "EditorCore/task/CreateTransitiveTask.h"
 #include "FrameworkCore/imgui/ImGuiGridWindow.h"
 
 namespace Editor::ClassicContext
@@ -177,7 +178,7 @@ namespace Editor::ClassicContext
 					if (event.key.code == sf::Keyboard::Z &&
 						event.key.control)
 					{
-						Log::Information(L"undo");
+						TaskManager::Instance()->undo();
 
 						break;
 					}
@@ -185,7 +186,7 @@ namespace Editor::ClassicContext
 					if (event.key.code == sf::Keyboard::Y &&
 						event.key.control)
 					{
-						Log::Information(L"redo");
+						TaskManager::Instance()->redo();
 
 						break;
 					}
@@ -382,6 +383,18 @@ namespace Editor::ClassicContext
 								pixelToCoords(event.mouseButton.x, event.mouseButton.y)
 							); node)
 						{
+							if (TaskManager::Instance()->pushTask(
+									new CreateTransitiveTask(
+										manager.getContextID(),
+										"",
+										connectWorldSource->getID(),
+										node->getID())))
+							{
+								Framework::Core::PushScene(
+									new Scene::InformationScene("Failed to create transitive"));
+							}
+
+
 							// createConnection(connectWorldSource->getWorld(), node->getWorld());
 						}
 
