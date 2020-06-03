@@ -69,6 +69,8 @@ namespace Editor::ClassicContext
 			// use dataset to indirectly change out
 			connection.node = node;
 			connection.element = worldNode;
+
+
 		}
 
 		void addTemporaryConnection(

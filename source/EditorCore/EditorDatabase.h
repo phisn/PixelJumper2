@@ -87,14 +87,16 @@ namespace Editor
 
 		bool initialize()
 		{
+			system("dir");
+
 			return open(Filename)
-				&& Database::Statement(this, Definition).execute();
+				;// && Database::Statement(this, Definition).execute();
 		}
 
 		// add some error handler
 
 	private:
-		constexpr static char Filename[] = "editor.db";
+		constexpr static char Filename[] = "context.db";
 
 		constexpr static char Definition[] = R"_(
 BEGIN TRANSACTION;

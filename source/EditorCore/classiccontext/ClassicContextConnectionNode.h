@@ -26,10 +26,12 @@ namespace Editor::ClassicContext
 		
 		virtual bool make(Resource::ReadPipe* const pipe) override
 		{
+			return true;
 		}
 
 		virtual bool save(Resource::WritePipe* const pipe) override
 		{
+			return true;
 		}
 
 		void draw(sf::RenderTarget* target)

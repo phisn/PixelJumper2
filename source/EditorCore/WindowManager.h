@@ -38,7 +38,7 @@ namespace Editor
 		friend class WindowManager;
 
 	public:
-		~EditorWindow()
+		virtual ~EditorWindow()
 		{
 		}
 
@@ -77,11 +77,10 @@ namespace Editor
 			assert(instance != NULL);
 			instance = NULL;
 
-			for (decltype(windows)::value_type& pair : windows)
-				for (EditorWindow* window : pair.second.window)
-				{
-					delete window;
-				}
+			for (EditorWindow* window : windowsQuick)
+			{
+				delete window;
+			}
 		}
 
 		template <typename T>

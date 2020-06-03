@@ -299,7 +299,19 @@ namespace Editor::ClassicContext
 		void onDraw(sf::RenderTarget* target) override
 		{
 			ImGuiGridWindow::onDraw(target);
+			manager.draw(target);
 
+			switch (mouseMode)
+			{
+			case MouseMode::Mark:
+				target->draw(mouseMarkingRect);
+
+				break;
+			case MouseMode::Connect:
+				mouseConnection.draw(target);
+
+				break;
+			}
 		}
 
 		void processContent() override
@@ -497,7 +509,7 @@ namespace Editor::ClassicContext
 			}
 				break;
 			case DatabaseEventType::Create:
-				manager.createWorldNode(event.entryID);
+				manager.createTransitiveNode(event.entryID);
 
 				break;
 			case DatabaseEventType::Remove:

@@ -96,6 +96,36 @@ namespace Database
 	{
 	};
 
+	template <typename T, typename Lazy>
+	struct StatementColumn<std::optional<T>, Lazy>
+	{
+		template <typename TupleType, int Column = 0>
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			if (sqlite3_column_type(statement, Column) == SQLITE_NULL)
+			{
+				std::get<Column>(tuple).reset();
+			}
+			else
+			{
+				StatementColumn<T>::template ExtractAs<TupleType, Column>(*std::get<Column>(tuple), statement);
+			}
+		}
+
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			if (std::get<Column>(tuple))
+			{
+				StatementColumn<T>::template BindAs(*std::get<Column>(tuple), Column, statement);
+			}
+			else
+			{
+				return sqlite3_bind_null(statement, Column + 1);
+			}
+		}
+	};
+
 	// should not exist for Extract
 	template <typename Lazy>
 	struct StatementColumn<std::nullopt_t, Lazy>
@@ -359,73 +389,27 @@ namespace Database
 		}
 	};
 
-	template <typename T>
-	struct StatementPreprocessColumn
-	{
-		template <typename TupleType, int Column = 0>
-		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
-		{
-			StatementColumn<TupleType, Column>::Extract(tuple, statement);
-		}
-
-		template <typename TupleType, int Column = 0>
-		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
-		{
-			return StatementColumn<TupleType, Column>::Bind(tuple, statement);
-		}
-	};
-
-	template <typename T>
-	struct StatementPreprocessColumn<std::optional<T>>
-	{
-		template <typename TupleType, int Column = 0>
-		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
-		{
-			if (sqlite3_column_type(statement, Column) == SQLITE_NULL)
-			{
-				std::get<Column>(tuple).reset();
-			}
-			else
-			{
-				StatementColumn<T, void>::ExtractAs<Column>((SQLiteInt&) *std::get<Column>(tuple), statement);
-			}
-		}
-
-		template <typename TupleType, int Column = 0>
-		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
-		{
-			if (std::get<Column>(tuple))
-			{
-				StatementColumn<T>::BindAs(*std::get<Column>(tuple), Column, statement);
-			}
-			else
-			{
-				return sqlite3_bind_null(statement, Column + 1);
-			}
-		}
-	};
-
 	template <typename Arg, typename... Args>
 	struct StatementVariadicColumn
 	{
 		template <typename TupleType, int Column = 0>
 		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			StatementVariadicColumn<Arg>::Extract<TupleType, Column>(tuple, statement);
-			StatementVariadicColumn<Args...>::Extract<TupleType, Column + 1>(tuple, statement);
+			StatementVariadicColumn<Arg>::template Extract<TupleType, Column>(tuple, statement);
+			StatementVariadicColumn<Args...>::template Extract<TupleType, Column + 1>(tuple, statement);
 		}
 
 		template <typename TupleType, int Column = 0>
 		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			int result = StatementVariadicColumn<Arg>::Bind<TupleType, Column>(tuple, statement);
+			int result = StatementVariadicColumn<Arg>::template Bind<TupleType, Column>(tuple, statement);
 
 			if (result != SQLITE_OK)
 			{
 				return result;
 			}
 
-			return StatementVariadicColumn<Args...>::Bind<TupleType, Column + 1>(tuple, statement);
+			return StatementVariadicColumn<Args...>::template Bind<TupleType, Column + 1>(tuple, statement);
 		}
 	};
 
@@ -435,13 +419,13 @@ namespace Database
 		template <typename TupleType, int Column = 0>
 		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			StatementPreprocessColumn<Arg>::Extract<TupleType, Column>(tuple, statement);
+			StatementColumn<Arg>::template Extract<TupleType, Column>(tuple, statement);
 		}
 
 		template <typename TupleType, int Column = 0>
 		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			return StatementPreprocessColumn<Arg>::Bind<TupleType, Column>(tuple, statement);
+			return StatementColumn<Arg>::template Bind<TupleType, Column>(tuple, statement);
 		}
 	};
 

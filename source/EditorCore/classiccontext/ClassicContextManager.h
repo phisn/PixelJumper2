@@ -92,6 +92,12 @@ namespace Editor::ClassicContext
 				entryID,
 				std::get<2>(createTransitive));
 
+			outputNode->addTransitiveConnection(inputNode, node);
+			inputNode->addTransitiveConnection(outputNode, node);
+
+			outputNode->notifyBoundsChanged();
+			inputNode->notifyBoundsChanged();
+
 			nodes.push_back(node);
 			transitives.push_back(node);
 
@@ -116,6 +122,8 @@ namespace Editor::ClassicContext
 
 		bool removeTransitiveNode(Resource::WorldEntryID entryID)
 		{
+			// find transitive worlds
+
 			if (!Database::Statement<>(
 					EditorDatabase::Instance(),
 					"DELETE FROM transitive WHERE id = ?",
@@ -257,7 +265,7 @@ namespace Editor::ClassicContext
 
 			Database::Statement<NodeTransitiveTuple> findTransitives(
 				EditorDatabase::Instance(),
-				"SELECT id, name, outputid, inputid FROM transitive WHERE contextid = ", contextID);
+				"SELECT id, name, outputid, inputid FROM transitive WHERE contextid = ?", contextID);
 
 			for (const NodeTransitiveTuple& tuple : findTransitives)
 			{
@@ -285,6 +293,12 @@ namespace Editor::ClassicContext
 					inputNode,
 					std::get<0>(tuple),
 					std::get<1>(tuple));
+
+				outputNode->addTransitiveConnection(inputNode, node);
+				inputNode->addTransitiveConnection(outputNode, node);
+				
+				outputNode->notifyBoundsChanged();
+				inputNode->notifyBoundsChanged();
 
 				nodes.push_back(node);
 				transitives.push_back(node);

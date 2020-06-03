@@ -1,48 +1,3 @@
-/*
-#include <iostream>
-#include <SFML/Graphics.hpp>
-
-int main()
-{
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(10.f);
-	shape.setFillColor(sf::Color::Green);
-
-	sf::View view;
-	view.setSize(100, 100);
-	view.setCenter(view.getSize() / 2.f);
-
-	sf::RenderTexture rt;
-	rt.create(1000, 1000);
-
-	sf::Sprite sprite;
-	sprite.setTexture(rt.getTexture());
-
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-
-			if (event.type == sf::Event::EventType::MouseButtonPressed)
-			{
-				sf::Vector2f coords = rt.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }, view);
-				std::cout << coords.x << " : " << coords.y << std::endl;
-			}
-		}
-
-		window.clear();
-		rt.setView(view);
-		rt.draw(shape);
-		window.draw(sprite);
-		window.display();
-	}
-
-	return 0;
-}*/
-/*
 #include "EditorCore/EditorScene.h"
 #include "FrameworkCore/ScreenDevice.h"
 
@@ -56,6 +11,8 @@ int main()
 	{
 		return 2;
 	}
+
+    Module::Random::Initialize();
 
 	if (!Framework::Core::Initialize())
 	{
@@ -275,8 +232,8 @@ int main(int ac, char** av)
 
     return 0;
 }
-*/
 
+/*
 #include "DatabaseCore/DatabaseCore.h"
 
 #include <iostream>
@@ -305,9 +262,9 @@ int main()
         {
             std::cout.width(8);
             std::cout << std::get<0>(user) << " - ID: " << std::get<1>(user) << std::endl;
-        }*/
+        }
         
     }
 
     return 0;
-}
+}*/

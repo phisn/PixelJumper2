@@ -20,7 +20,7 @@ namespace Editor
 		{
 			Database::Transaction transaction;
 
-			if (transaction.begin(EditorDatabase::Instance()))
+			if (!transaction.begin(EditorDatabase::Instance()))
 			{
 				return false;
 			}

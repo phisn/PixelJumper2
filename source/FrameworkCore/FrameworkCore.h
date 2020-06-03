@@ -34,7 +34,7 @@ namespace Framework
 
 		void PushChildScene(
 			Scene* const scene,
-			const bool haltParentScene = false);
+			const bool haltParentScene = true);
 		void PopChildScene();
 		void FallbackChildScene();
 

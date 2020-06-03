@@ -31,6 +31,7 @@ namespace Editor::ClassicContext
 
 		Framework::IndependentPopupWindow* createPopupWindow(WindowAccess* access) override
 		{
+			return NULL;
 		}
 
 		Resource::WorldEntryID getID() const

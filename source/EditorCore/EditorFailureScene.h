@@ -23,6 +23,7 @@ namespace Editor
 
 		EditorFailureScene(std::string reason, EditorRepairData repair)
 			:
+			reason(reason),
 			repair(repair)
 		{
 		}

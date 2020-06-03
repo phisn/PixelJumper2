@@ -61,19 +61,25 @@ namespace Scene
 
 		void initialize() override
 		{
-			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
+			if (!database.initialize())
+			{
+				Framework::Core::PushChildScene(new Editor::EditorFailureScene(
+					"Failed to open database"));
 
+				return;
+			}
+
+			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 			 
 			Editor::ClassicContext::ClassicContextWindow* window = new Editor::ClassicContext::ClassicContextWindow(
 				1);
 
-
-			windows.push_back(window);
+			windowManager.makeWindow(window);
 		}
 
 		void onEvent(const sf::Event event) override
 		{
-			for (Editor::EditorWindow* window : windows)
+			for (Editor::EditorWindow* window : windowManager.getWindows())
 				window->onEvent(event);
 		}
 		
@@ -81,7 +87,7 @@ namespace Scene
 		{
 			rootWindow.process();
 
-			for (Editor::EditorWindow* window : windows)
+			for (Editor::EditorWindow* window : windowManager.getWindows())
 				window->onProcess();
 		}
 
@@ -91,6 +97,9 @@ namespace Scene
 
 	private:
 		Editor::RootWindow rootWindow;
-		std::vector<Editor::EditorWindow*> windows;
+
+		Editor::WindowManager windowManager;
+		Editor::TaskManager taskManager;
+		Editor::EditorDatabase database;
 	};
 }
