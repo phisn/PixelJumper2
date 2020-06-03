@@ -3,6 +3,7 @@
 #include "EditorDatabase.h"
 
 #include "ResourceCore/ClassicContextResource.h"
+#include "ResourceCore/WorldResource.h"
 #include "ResourceCore/component/DynamicTransitionComponent.h"
 
 namespace Editor

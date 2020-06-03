@@ -2,6 +2,8 @@
 
 #include "ImGuiUtil.h"
 
+#include "Common/RandomModule.h"
+
 #include <string>
 
 namespace Framework
@@ -11,7 +13,7 @@ namespace Framework
 	public:
 		PurePopupWindow()
 			:
-			windowFlags(WindowFlagsDefault)
+			PurePopupWindow(WindowFlagsDefault)
 		{
 		}
 
@@ -19,6 +21,10 @@ namespace Framework
 			:
 			windowFlags(windowFlags)
 		{
+			for (int i = 0; i < 8; ++i)
+			{
+				tag.push_back('A' + Module::Random::MakeRandom<int32_t>() % ('A' - 'Z'));
+			}
 		}
 
 		bool isActive() const
@@ -94,7 +100,6 @@ namespace Framework
 
 		// internal use only
 	protected:
-		std::string title;
 		ImGuiWindowFlags windowFlags;
 
 		virtual bool makeWindow() = 0;
@@ -104,6 +109,15 @@ namespace Framework
 
 		bool active = false;
 		bool opened = false;
+
+		void setTitle(std::string title)
+		{
+			this->title = title + "###" + tag;
+		}
+
+	private:
+		std::string title;
+		std::string tag;
 	};
 
 	class PopupWindow
@@ -117,7 +131,7 @@ namespace Framework
 		virtual bool makeWindow() override
 		{
 			return ImGui::BeginPopup(
-				title.c_str(),
+				getTitle().c_str(),
 				windowFlags);
 		}
 	};
@@ -135,7 +149,7 @@ namespace Framework
 		virtual bool makeWindow() override
 		{
 			return ImGui::BeginPopupModal(
-				title.c_str(),
+				getTitle().c_str(),
 				useActive ? &active : NULL,
 				windowFlags);
 		}

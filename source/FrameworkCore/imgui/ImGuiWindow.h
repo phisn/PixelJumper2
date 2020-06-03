@@ -34,7 +34,7 @@ namespace Framework
 			assert(title.size() != 0);
 
 			bool result = ImGui::Begin(
-				,
+				title.c_str(),
 				useActive ? &active : NULL,
 				windowFlags);
 

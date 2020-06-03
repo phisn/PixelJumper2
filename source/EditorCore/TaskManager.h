@@ -1,5 +1,7 @@
 #pragma once
 
+#include "EditorDatabase.h"
+
 #include "DatabaseCore/Transaction.h"
 
 #include <cassert>

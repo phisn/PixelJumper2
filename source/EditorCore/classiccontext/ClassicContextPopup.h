@@ -1,13 +1,12 @@
 #pragma once
 
-#include "EditorCore/dataset/EditorDataset.h"
-
 #include "FrameworkCore/imgui/ImGuiModalWindow.h"
 
 #include <SFML/Graphics.hpp>
 
 namespace Editor::ClassicContext
 {
+	class WorldNode;
 	struct WindowAccess
 	{
 		virtual void beginLink(WorldNode* node) = 0;

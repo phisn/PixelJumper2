@@ -3,6 +3,8 @@
 #include "EditorDatabase.h"
 #include "EditorDataset.h"
 
+#include <SFML/Window.hpp>
+
 #include <map>
 #include <typeindex>
 #include <typeinfo>

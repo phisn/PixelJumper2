@@ -18,7 +18,7 @@ namespace Framework
 			IndependentModalWindow(WindowFlagsStatic)
 		{
 			useActive = false;
-			title = "questionWindow";
+			setTitle("questionWindow");
 		}
 
 		void open(Callback callback, std::string question)

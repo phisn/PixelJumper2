@@ -63,10 +63,9 @@ namespace Scene
 		{
 			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 
-
-			Editor::ClassicContext::WindowDataset dataset;
-			dataset.classicContext = &context;
-			Editor::ClassicContext::ClassicContextWindow* window = new Editor::ClassicContext::ClassicContextWindow(dataset);
+			 
+			Editor::ClassicContext::ClassicContextWindow* window = new Editor::ClassicContext::ClassicContextWindow(
+				1);
 
 
 			windows.push_back(window);

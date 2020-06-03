@@ -3,8 +3,10 @@
 #include "ClassicContextConnection.h"
 #include "ClassicContextNode.h"
 #include "ClassicContextWindowPopup.h"
+#include "EditorFailureScene.h"
 
 #include "FrameworkCore/FrameworkCore.h"
+#include "ResourceCore/WorldResource.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -529,36 +531,6 @@ namespace Editor::ClassicContext
 			float temp0 = ((n.y - m.y) * g.x - (n.x - m.x) * g.y) / (2 * g.x * g.y);
 			float temp1 = g.x * g.x + g.y * g.y;
 			return sqrtf(temp0 * temp0 * temp1);
-		}
-
-		void reconstructConnections()
-		{
-			if (world->getDataset().parent)
-				for (ClassicWorldDataset* transitive : world->getDataset().)
-				{
-					enforceConnection(transitive);
-				}
-
-		}
-
-		void enforceConnection(ClassicWorldDataset* world)
-		{
-			for (WorldNodeConnectionPair& connectionPair : this->transitiveConnections)
-				if (connectionPair.first->world == world)
-				{
-					if (!connectionPair.second->out)
-					{
-						connectionPair.second->out = true;
-						connectionPair.second->node->setEndpointOut(this, true);
-					}
-
-					return;
-				}
-
-			// window handles node creation
-			// if target wants to connect too he
-			// can do it later on event
-			access->createConnection(this->world, world);
 		}
 	};
 }

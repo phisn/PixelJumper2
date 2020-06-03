@@ -19,6 +19,9 @@ namespace Database
 
 	class SQLiteDatabase
 	{
+		template <typename>
+		friend class Statement;
+
 	public:
 		bool open(std::string filename)
 		{
@@ -91,36 +94,6 @@ namespace Database
 	template <typename T, typename Lazy = void>
 	struct StatementColumn
 	{
-	};
-
-	template <typename T, typename Lazy>
-	struct StatementColumn<std::optional<T>, Lazy>
-	{
-		template <typename TupleType, int Column = 0>
-		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
-		{
-			if (sqlite3_column_type(statement, Column) == SQLITE_NULL)
-			{
-				std::get<Column>(tuple).reset();
-			}
-			else
-			{
-				StatementColumn<T>::ExtractAs<TupleType, Column>(*std::get<Column>(tuple), statement);
-			}
-		}
-
-		template <typename TupleType, int Column = 0>
-		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
-		{
-			if (std::get<Column>(tuple))
-			{
-				StatementColumn<T>::BindAs(*std::get<Column>(tuple), Column, statement);
-			}
-			else
-			{
-				return sqlite3_bind_null(statement, Column + 1);
-			}
-		}
 	};
 
 	// should not exist for Extract
@@ -274,7 +247,7 @@ namespace Database
 		{
 			assert(sqlite3_column_type(statement, Column) != SQLITE_NULL);
 			const char* data = (const char*)sqlite3_column_blob(statement, Column);
-			value.assign(data, data + sqlite3_column_bytes(statement, column));
+			value.assign(data, data + sqlite3_column_bytes(statement, Column));
 		}
 
 		template <typename TupleType, int Column = 0>
@@ -334,7 +307,7 @@ namespace Database
 
 	template <typename Character>
 	struct StatementColumn<std::basic_string<Character>,
-		std::enable_if_t<!std::is_same_v<Character, SQLiteString>>>
+		std::enable_if_t<!std::is_same_v<Character, SQLiteString::value_type>>>
 	{
 		typedef std::basic_string<Character> String;
 
@@ -386,6 +359,52 @@ namespace Database
 		}
 	};
 
+	template <typename T>
+	struct StatementPreprocessColumn
+	{
+		template <typename TupleType, int Column = 0>
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			StatementColumn<TupleType, Column>::Extract(tuple, statement);
+		}
+
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			return StatementColumn<TupleType, Column>::Bind(tuple, statement);
+		}
+	};
+
+	template <typename T>
+	struct StatementPreprocessColumn<std::optional<T>>
+	{
+		template <typename TupleType, int Column = 0>
+		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			if (sqlite3_column_type(statement, Column) == SQLITE_NULL)
+			{
+				std::get<Column>(tuple).reset();
+			}
+			else
+			{
+				StatementColumn<T, void>::ExtractAs<Column>((SQLiteInt&) *std::get<Column>(tuple), statement);
+			}
+		}
+
+		template <typename TupleType, int Column = 0>
+		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
+		{
+			if (std::get<Column>(tuple))
+			{
+				StatementColumn<T>::BindAs(*std::get<Column>(tuple), Column, statement);
+			}
+			else
+			{
+				return sqlite3_bind_null(statement, Column + 1);
+			}
+		}
+	};
+
 	template <typename Arg, typename... Args>
 	struct StatementVariadicColumn
 	{
@@ -416,13 +435,13 @@ namespace Database
 		template <typename TupleType, int Column = 0>
 		static inline void Extract(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			StatementColumn<Arg>::Extract<TupleType, Column>(tuple, statement);
+			StatementPreprocessColumn<Arg>::Extract<TupleType, Column>(tuple, statement);
 		}
 
 		template <typename TupleType, int Column = 0>
 		static inline int Bind(TupleType& tuple, sqlite3_stmt* statement)
 		{
-			return StatementColumn<Arg>::Bind<TupleType, Column>(tuple, statement);
+			return StatementPreprocessColumn<Arg>::Bind<TupleType, Column>(tuple, statement);
 		}
 	};
 
@@ -529,7 +548,7 @@ namespace Database
 			Log::Information(L"created statement",
 				database, L"database",
 				query, L"query",
-				statement, L"statement");
+				(void*) statement, L"statement");
 		}
 
 		~Statement()
@@ -568,14 +587,14 @@ namespace Database
 			if (finished)
 			{
 				Log::Error(L"tried to execute already finished statement",
-					statement, L"statement");
+					(void*)statement, L"statement");
 				return false;
 			}
 
 			if (statement == NULL)
 			{
 				Log::Error(L"tried to execute already failed statement",
-					statement, L"statement");
+					(void*)statement, L"statement");
 				return false;
 			}
 
@@ -589,7 +608,7 @@ namespace Database
 				}
 
 				Log::Warning(L"statement returned row after execute",
-					statement, L"statement");
+					(void*)statement, L"statement");
 			}
 			else
 			{

@@ -2,8 +2,13 @@
 
 #include "TaskManager.h"
 #include "EditorDatabase.h"
+#include "EditorFailureScene.h"
+#include "WindowManager.h"
 
+#include "Common/RandomModule.h"
+#include "FrameworkCore/FrameworkCore.h"
 #include "ResourceCore/component/DynamicTransitionComponent.h"
+#include "ResourceCore/ClassicContextResource.h"
 
 namespace Editor
 {
@@ -19,6 +24,21 @@ namespace Editor
 		Resource::WorldID inputID;
 
 		Resource::WorldEntryID entryID;
+
+		void makeDatabaseEvent(DatabaseEventType type)
+		{
+			DatabaseEvent event;
+
+			event.type = type;
+			event.table = DatabaseTable::Transitive;
+
+			event.data.transitive.contextID = contextID;
+			event.data.transitive.entryID = entryID;
+			event.data.transitive.inputWorldID = inputID;
+			event.data.transitive.outputWorldID = outputID;
+
+			WindowManager::Instance()->notifyDatabaseEvent(event);
+		}
 
 		bool insert()
 		{
@@ -75,6 +95,8 @@ namespace Editor
 			{
 				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to undo transitive creation'" + std::to_string(entryID) + "'"));
+
+				return;
 			}
 
 			makeDatabaseEvent(DatabaseEventType::Remove);
@@ -86,25 +108,74 @@ namespace Editor
 			{
 				Framework::Core::PushChildScene(new EditorFailureScene(
 					"Failed to redo transitive creation'" + std::to_string(entryID) + "'"));
+
+				return;
+			}
+
+			makeDatabaseEvent(DatabaseEventType::Create);
+		}
+	};
+
+	class RemoveTransitiveTask
+		:
+		public TransitiveTaskBase
+	{
+	public:
+		RemoveTransitiveTask(Resource::WorldEntryID id)
+		{
+			entryID = id;
+		}
+
+		bool setup() override
+		{
+			typedef std::tuple<SQLiteInt, SQLiteString, SQLiteInt, SQLiteInt> TransitiveTuple;
+
+			TransitiveTuple transitive;
+			if (!Database::Statement(
+					EditorDatabase::Instance(),
+					"SELECT contextid, name, outputid, inputid FROM transitive WHERE id = ?",
+					entryID).execute())
+			{
+				return false;
+			}
+
+			contextID = std::get<0>(transitive);
+			name = std::get<1>(transitive);
+			outputID = std::get<2>(transitive);
+			inputID = std::get<3>(transitive);
+			
+			return remove();
+		}
+
+		void notify() override
+		{
+			makeDatabaseEvent(DatabaseEventType::Remove);
+		}
+
+		void undo() override
+		{
+			if (!insert())
+			{
+				Framework::Core::PushChildScene(new EditorFailureScene(
+					"Failed to redo transitive creation'" + std::to_string(entryID) + "'"));
+
+				return;
 			}
 
 			makeDatabaseEvent(DatabaseEventType::Create);
 		}
 
-	private:
-		void makeDatabaseEvent(DatabaseEventType type)
+		void redo() override
 		{
-			DatabaseEvent event;
-			
-			event.type = type;
-			event.table = DatabaseTable::Transitive;
+			if (!remove())
+			{
+				Framework::Core::PushChildScene(new EditorFailureScene(
+					"Failed to undo transitive creation'" + std::to_string(entryID) + "'"));
 
-			event.data.transitive.contextID = contextID;
-			event.data.transitive.entryID = entryID;
-			event.data.transitive.inputWorldID = inputID;
-			event.data.transitive.outputWorldID = outputID;
+				return;
+			}
 
-			WindowManager::Instance()->notifyDatabaseEvent(event);
+			makeDatabaseEvent(DatabaseEventType::Remove);
 		}
 	};
 }

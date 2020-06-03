@@ -165,6 +165,12 @@ namespace Editor::ClassicContext
 			mouseMarkingRect.setFillColor(MouseMarkerColor);
 			mouseMarkingRect.setOutlineColor(MouseMarkerBorderColor);
 		}
+		
+		// imgui specific process
+		void onProcess() override
+		{
+			process();
+		}
 
 		void onEvent(sf::Event event) override
 		{
@@ -383,7 +389,7 @@ namespace Editor::ClassicContext
 								pixelToCoords(event.mouseButton.x, event.mouseButton.y)
 							); node)
 						{
-							if (TaskManager::Instance()->pushTask(
+							if (!TaskManager::Instance()->pushTask(
 									new CreateTransitiveTask(
 										manager.getContextID(),
 										"",
@@ -393,9 +399,6 @@ namespace Editor::ClassicContext
 								Framework::Core::PushScene(
 									new Scene::InformationScene("Failed to create transitive"));
 							}
-
-
-							// createConnection(connectWorldSource->getWorld(), node->getWorld());
 						}
 
 						mouseMode = MouseMode::None;
