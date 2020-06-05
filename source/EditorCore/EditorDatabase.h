@@ -87,8 +87,6 @@ namespace Editor
 
 		bool initialize()
 		{
-			system("dir");
-
 			return open(Filename)
 				;// && Database::Statement(this, Definition).execute();
 		}

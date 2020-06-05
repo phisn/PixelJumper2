@@ -60,6 +60,9 @@
     <ClCompile Include="task\CreateTransitiveTask.cpp">
       <Filter>source\task</Filter>
     </ClCompile>
+    <ClCompile Include="task\CreateWorldTask.cpp">
+      <Filter>source\task</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classiccontext\ClassicContextConnection.h">
@@ -111,6 +114,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="task\CreateTransitiveTask.h">
+      <Filter>source\task</Filter>
+    </ClInclude>
+    <ClInclude Include="task\CreateWorldTask.h">
       <Filter>source\task</Filter>
     </ClInclude>
   </ItemGroup>

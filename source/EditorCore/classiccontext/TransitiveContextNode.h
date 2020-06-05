@@ -6,14 +6,42 @@
 
 namespace Editor::ClassicContext
 {
+	class TransitiveNode;
+	class TransitivePopup
+		:
+		public Popup
+	{
+		const int MaxNameSize = 16;
+		const float MaxPopupWidth = 100;
+
+	public:
+		TransitivePopup(WindowAccess* access, TransitiveNode* node)
+			:
+			Popup(access),
+			node(node)
+		{
+			open();
+		}
+
+	private:
+		TransitiveNode* node;
+
+		bool makeWindow() override
+		{
+			return Framework::IndependentPopupWindow::makeWindow();
+		}
+
+		void onContent() override;
+	};
+
 	class TransitiveNode
 		:
 		public ConnectionNode
 	{
 	public:
 		TransitiveNode(
-			ConnectionElement* source,
-			ConnectionElement* target,
+			WorldNode* source,
+			WorldNode* target,
 			Resource::WorldEntryID id,
 			std::string name)
 			:
@@ -31,7 +59,7 @@ namespace Editor::ClassicContext
 
 		Framework::IndependentPopupWindow* createPopupWindow(WindowAccess* access) override
 		{
-			return NULL;
+			return new TransitivePopup(access, this);
 		}
 
 		Resource::WorldEntryID getID() const

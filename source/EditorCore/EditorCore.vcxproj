@@ -118,6 +118,7 @@
     <ClCompile Include="EditorScene.cpp" />
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="task\CreateTransitiveTask.cpp" />
+    <ClCompile Include="task\CreateWorldTask.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +138,7 @@
     <ClInclude Include="EditorScene.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="task\CreateTransitiveTask.h" />
+    <ClInclude Include="task\CreateWorldTask.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -131,10 +131,10 @@ namespace Editor
 			typedef std::tuple<SQLiteInt, SQLiteString, SQLiteInt, SQLiteInt> TransitiveTuple;
 
 			TransitiveTuple transitive;
-			if (!Database::Statement(
+			if (!Database::Statement<TransitiveTuple>(
 					EditorDatabase::Instance(),
 					"SELECT contextid, name, outputid, inputid FROM transitive WHERE id = ?",
-					entryID).execute())
+					entryID).execute(transitive))
 			{
 				return false;
 			}
@@ -157,7 +157,7 @@ namespace Editor
 			if (!insert())
 			{
 				Framework::Core::PushChildScene(new EditorFailureScene(
-					"Failed to redo transitive creation'" + std::to_string(entryID) + "'"));
+					"Failed to redo transitive removal'" + std::to_string(entryID) + "'"));
 
 				return;
 			}
@@ -170,7 +170,7 @@ namespace Editor
 			if (!remove())
 			{
 				Framework::Core::PushChildScene(new EditorFailureScene(
-					"Failed to undo transitive creation'" + std::to_string(entryID) + "'"));
+					"Failed to undo transitive removal'" + std::to_string(entryID) + "'"));
 
 				return;
 			}

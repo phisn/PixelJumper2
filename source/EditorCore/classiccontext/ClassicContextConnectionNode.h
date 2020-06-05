@@ -2,6 +2,7 @@
 
 #include "ClassicContextNode.h"
 #include "ClassicContextConnection.h"
+#include "ClassicContextWorldNode.h"
 
 #include "FrameworkCore/BezierArrow.h"
 
@@ -12,12 +13,26 @@ namespace Editor::ClassicContext
 		public Node,
 		public Connection
 	{
+		struct Style
+		{
+			sf::Color targetHeadColor;
+		};
+
+		const Style styles[(int)NodeStyle::_Length] =
+		{
+			Style { sf::Color::Color(255, 255, 255) },
+			Style { sf::Color::Color(195, 195, 195) },
+			Style { sf::Color::Color(135, 135, 135) }
+		};
+
 	public:
 		ConnectionNode(
-			ConnectionElement* source,
-			ConnectionElement* target)
+			WorldNode* source,
+			WorldNode* target)
 			:
 			Connection(source, target),
+			source(source),
+			target(target),
 			sourceOut(true),
 			targetOut(false)
 		{
@@ -45,12 +60,12 @@ namespace Editor::ClassicContext
 
 		void setStyle(NodeStyle style) override
 		{
+			arrow.setTargetHeadColor(styles[(int) style].targetHeadColor);
 		}
 
 		bool contains(sf::Vector2f point) const override
 		{
-			return false;
-			// return shape.contains(point);
+			return arrow.contains(point) == Framework::ArrowContain::Target;
 		}
 
 		sf::FloatRect getGlobalBounds() const override
@@ -132,6 +147,16 @@ namespace Editor::ClassicContext
 			return targetElement;
 		}
 
+		WorldNode* getSource() const
+		{
+			return source;
+		}
+
+		WorldNode* getTarget() const
+		{
+			return target;
+		}
+
 		Framework::StrictBezierArrow::Mode getMode()
 		{
 			return arrow.getMode();
@@ -152,10 +177,10 @@ namespace Editor::ClassicContext
 			return false;
 		}
 
-	protected:
-
-
 	private:
+		WorldNode* source;
+		WorldNode* target;
+
 		bool sourceOut = false;
 		bool targetOut = false;
 

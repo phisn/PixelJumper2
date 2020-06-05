@@ -106,34 +106,41 @@ namespace Editor::ClassicContext
 
 		bool removeWorldNode(Resource::WorldID worldID)
 		{
-			if (!Database::Statement<>(
-					EditorDatabase::Instance(),
-					"DELETE FROM world WHERE id = ?",
-				worldID).execute())
-			{
-				Framework::Core::PushChildScene(new EditorFailureScene(
-					"Failed to delete world from contextwindow'" + std::to_string(worldID) + "'"));
+			decltype(worlds)::iterator iterator = std::find_if(
+				worlds.begin(),
+				worlds.end(),
+				[worldID](WorldNode* node)
+				{
+					return node->getID() == worldID;
+				});
 
+			if (iterator == worlds.end())
 				return false;
-			}
+
+			worlds.erase(iterator);
 
 			return true;
 		}
 
 		bool removeTransitiveNode(Resource::WorldEntryID entryID)
 		{
-			// find transitive worlds
+			decltype(transitives)::iterator iterator = std::find_if(
+				transitives.begin(),
+				transitives.end(),
+				[entryID](TransitiveNode* node)
+				{
+					return node->getID() == entryID;
+				});
 
-			if (!Database::Statement<>(
-					EditorDatabase::Instance(),
-					"DELETE FROM transitive WHERE id = ?",
-				entryID).execute())
-			{
-				Framework::Core::PushChildScene(new EditorFailureScene(
-					"Failed to delete transitive from contextwindow'" + std::to_string(entryID) + "'"));
+			TransitiveNode* node = *iterator;
 
+			if (node == NULL)
 				return false;
-			}
+
+			node->getSource()->removeTransitiveConnection(node);
+			node->getTarget()->removeTransitiveConnection(node);
+
+			transitives.erase(iterator);
 
 			return true;
 		}

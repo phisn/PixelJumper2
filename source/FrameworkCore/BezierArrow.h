@@ -220,6 +220,13 @@ namespace Framework
 		}
 	};
 
+	enum ArrowContain
+	{
+		None,
+		Source,
+		Target
+	};
+
 	class BezierArrow
 		:
 		public sf::Drawable
@@ -352,6 +359,29 @@ namespace Framework
 			return curve.getWidth();
 		}
 
+		ArrowContain contains(sf::Vector2f point) const
+		{
+			if (Framework::HasTriPoint(
+					point,
+					targetTriangle[0],
+					targetTriangle[1],
+					targetTriangle[2]))
+			{
+				return ArrowContain::Target;
+			}
+
+			if (Framework::HasTriPoint(
+					point,
+					sourceTriangle[0],
+					sourceTriangle[1],
+					sourceTriangle[2]))
+			{
+				return ArrowContain::Source;
+			}
+
+			return ArrowContain::None;
+		}
+
 	protected:
 		mutable sf::VertexArray vertex;
 		mutable bool needsUpdate = true;
@@ -369,6 +399,9 @@ namespace Framework
 		}
 
 	private:
+		mutable sf::Vector2f sourceTriangle[3];
+		mutable sf::Vector2f targetTriangle[3];
+
 		sf::Color sourceColor = sf::Color::White;
 		sf::Color targetColor = sf::Color::White;
 
@@ -399,10 +432,14 @@ namespace Framework
 				sf::Vector2f sourceP0 = sf::Vector2f{ -sin(sourceAngle), cos(sourceAngle) } * headWidth / 2.f;
 				sf::Vector2f sourceP1 = -sourceP0;
 
+				sourceTriangle[0] = source;
+				sourceTriangle[1] = curve.getSource() + sourceP0;
+				sourceTriangle[2] = curve.getSource() + sourceP1;
+
 				appendTriangle(
-					source,
-					curve.getSource() + sourceP0,
-					curve.getSource() + sourceP1,
+					sourceTriangle[0],
+					sourceTriangle[1],
+					sourceTriangle[2],
 					sourceColor);
 			}
 
@@ -414,10 +451,14 @@ namespace Framework
 				sf::Vector2f targetP0 = sf::Vector2f{ -sin(targetAngle), cos(targetAngle) } * headWidth / 2.f;
 				sf::Vector2f targetP1 = -targetP0;
 
+				targetTriangle[0] = target;
+				targetTriangle[1] = curve.getTarget() + targetP0;
+				targetTriangle[2] = curve.getTarget() + targetP1;
+
 				appendTriangle(
-					target,
-					curve.getTarget() + targetP0,
-					curve.getTarget() + targetP1,
+					targetTriangle[0],
+					targetTriangle[1],
+					targetTriangle[2],
 					targetColor);
 			}
 		}
@@ -502,6 +543,11 @@ namespace Framework
 			arrow.setBodyColor(color);
 		}
 
+		ArrowContain contains(sf::Vector2f point) const
+		{
+			return arrow.contains(point);
+		}
+
 		Mode getMode() const
 		{
 			return arrow.getMode();
@@ -515,6 +561,16 @@ namespace Framework
 		sf::Vector2f getTarget() const
 		{
 			return arrow.getTarget();
+		}
+
+		void setSourceHeadColor(sf::Color color)
+		{
+			arrow.setSourceHeadColor(color);
+		}
+
+		void setTargetHeadColor(sf::Color color)
+		{
+			arrow.setTargetHeadColor(color);
 		}
 
 	protected:

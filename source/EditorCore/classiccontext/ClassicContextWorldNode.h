@@ -12,6 +12,34 @@
 
 namespace Editor::ClassicContext
 {
+	class WorldNode;
+	class WorldPopup
+		:
+		public Popup
+	{
+		const int MaxNameSize = 16;
+		const float MaxPopupWidth = 100;
+
+	public:
+		WorldPopup(WindowAccess* access, WorldNode* worldNode)
+			:
+			Popup(access),
+			worldNode(worldNode)
+		{
+			open();
+		}
+
+	private:
+		WorldNode* worldNode;
+
+		bool makeWindow() override
+		{
+			return Framework::IndependentPopupWindow::makeWindow();
+		}
+
+		void onContent() override;
+	};
+
 	class WorldNode
 		:
 		public Node,
@@ -107,6 +135,8 @@ namespace Editor::ClassicContext
 
 				assert(connections.end() != removal);
 				connections.erase(removal);
+
+				notifyBoundsChanged();
 			}
 		}
 
@@ -124,6 +154,8 @@ namespace Editor::ClassicContext
 
 			if (connections.end() != removal)
 				connections.erase(removal);
+
+			notifyBoundsChanged();
 		}
 
 		void update()
