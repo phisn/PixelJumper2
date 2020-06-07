@@ -2,34 +2,31 @@
 
 #include "ClassicContextConnection.h"
 #include "ClassicContextNode.h"
-#include "ClassicContextWindowPopup.h"
 #include "EditorFailureScene.h"
 
 #include "FrameworkCore/FrameworkCore.h"
+#include "FrameworkCore/imgui/ImGuiContextWindow.h"
 #include "ResourceCore/WorldResource.h"
 
 #include <SFML/Graphics.hpp>
 
 namespace Editor::ClassicContext
 {
-	class WorldNode;
 	class WorldPopup
 		:
-		public Popup
+		public Framework::ContextWindow
 	{
-		const int MaxNameSize = 16;
-		const float MaxPopupWidth = 100;
-
 	public:
 		WorldPopup(WindowAccess* access, WorldNode* worldNode)
 			:
-			Popup(access),
+			access(access),
 			worldNode(worldNode)
 		{
-			open();
+			width = 100;
 		}
 
 	private:
+		WindowAccess* access;
 		WorldNode* worldNode;
 
 		bool makeWindow() override

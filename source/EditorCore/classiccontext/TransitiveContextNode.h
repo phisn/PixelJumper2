@@ -9,7 +9,7 @@ namespace Editor::ClassicContext
 	class TransitiveNode;
 	class TransitivePopup
 		:
-		public Popup
+		public Framework::ContextWindow
 	{
 		const int MaxNameSize = 16;
 		const float MaxPopupWidth = 100;
@@ -17,10 +17,8 @@ namespace Editor::ClassicContext
 	public:
 		TransitivePopup(WindowAccess* access, TransitiveNode* node)
 			:
-			Popup(access),
 			node(node)
 		{
-			open();
 		}
 
 	private:

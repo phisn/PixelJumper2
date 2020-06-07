@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ClassicContextManager.h"
+#include "task/CreateWorldTask.h"
 
 #include "EditorCore/task/CreateTransitiveTask.h"
 #include "FrameworkCore/imgui/ImGuiGridWindow.h"
@@ -107,28 +108,39 @@ namespace Editor::ClassicContext
 		ConnectionSide elementSide;
 	};
 
-	
-
-	/*
 	// popup when no node was selected?
 	// needs to aquire classic context
-	class ClassicContextPopup
+	class WindowPopup
 		:
-		public Framework::IndependentPopupWindow
+		public Framework::ContextWindow
 	{
 	public:
-		void open()
+		WindowPopup(Resource::ContextID contextID)
+			:
+			contextID(contextID)
 		{
-			Framework::IndependentPopupWindow::open();
+			width = 100;
 		}
 
 	private:
+		Resource::ContextID contextID;
+
+		bool makeWindow() override
+		{
+			return Framework::IndependentPopupWindow::makeWindow();
+		}
+
 		void onContent() override
 		{
-			ImGui::Button("hello world");
+			if (ImGui::Button("Create World", ImVec2{ width, 0 }))
+			{
+				TaskManager::Instance()->pushTask(
+					new CreateWorldTask(contextID, "World Name")
+				);
+				closeWindow();
+			}
 		}
 	};
-	*/
 
 	// context is a grid that contains nodes
 	// these nodes are stored as types
@@ -291,8 +303,7 @@ namespace Editor::ClassicContext
 			}
 			else
 			{
-				// create common popup window
-#pragma message todo
+				popupWindow = new WindowPopup(manager.getContextID());
 			}
 		}
 

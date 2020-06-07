@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ClassicContextPopup.h"
 #include "EditorDatabase.h"
 
 #include "FrameworkCore/imgui/ImGuiModalWindow.h"
@@ -10,6 +9,12 @@
 
 namespace Editor::ClassicContext
 {
+	class WorldNode;
+	struct WindowAccess
+	{
+		virtual void beginLink(WorldNode* node) = 0;
+	};
+
 	enum class NodeStyle
 	{
 		Classic,

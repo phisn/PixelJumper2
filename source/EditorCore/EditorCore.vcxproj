@@ -108,7 +108,6 @@
     <ClCompile Include="classiccontext\ClassicContextConnectionNode.cpp" />
     <ClCompile Include="classiccontext\ClassicContextManager.cpp" />
     <ClCompile Include="classiccontext\ClassicContextWindow.cpp" />
-    <ClCompile Include="classiccontext\ClassicContextWindowPopup.cpp" />
     <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp" />
     <ClCompile Include="classiccontext\TransitiveContextNode.cpp" />
     <ClCompile Include="ClassicWorldWindow.cpp" />
@@ -126,9 +125,7 @@
     <ClInclude Include="classiccontext\ClassicContextConnectionNode.h" />
     <ClInclude Include="classiccontext\ClassicContextManager.h" />
     <ClInclude Include="classiccontext\ClassicContextNode.h" />
-    <ClInclude Include="classiccontext\ClassicContextPopup.h" />
     <ClInclude Include="classiccontext\ClassicContextWindow.h" />
-    <ClInclude Include="classiccontext\ClassicContextWindowPopup.h" />
     <ClInclude Include="classiccontext\ClassicContextWorldNode.h" />
     <ClInclude Include="classiccontext\TransitiveContextNode.h" />
     <ClInclude Include="ClassicWorldWindow.h" />

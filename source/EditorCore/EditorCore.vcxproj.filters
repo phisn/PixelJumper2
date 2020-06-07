@@ -24,9 +24,6 @@
     <ClCompile Include="classiccontext\ClassicContextWindow.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
-    <ClCompile Include="classiccontext\ClassicContextWindowPopup.cpp">
-      <Filter>source\classiccontext</Filter>
-    </ClCompile>
     <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp">
       <Filter>source\classiccontext</Filter>
     </ClCompile>
@@ -74,13 +71,7 @@
     <ClInclude Include="classiccontext\ClassicContextNode.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
-    <ClInclude Include="classiccontext\ClassicContextPopup.h">
-      <Filter>source\classiccontext</Filter>
-    </ClInclude>
     <ClInclude Include="classiccontext\ClassicContextWindow.h">
-      <Filter>source\classiccontext</Filter>
-    </ClInclude>
-    <ClInclude Include="classiccontext\ClassicContextWindowPopup.h">
       <Filter>source\classiccontext</Filter>
     </ClInclude>
     <ClInclude Include="EditorDatabase.h">

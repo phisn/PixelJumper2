@@ -9,6 +9,7 @@
 #include "FrameworkCore/FrameworkCore.h"
 #include "ResourceCore/component/DynamicTransitionComponent.h"
 #include "ResourceCore/ClassicContextResource.h"
+#include "ResourceCore/pipes/MemoryPipe.h"
 
 namespace Editor
 {
