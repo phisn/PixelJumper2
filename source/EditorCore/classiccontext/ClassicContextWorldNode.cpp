@@ -4,13 +4,13 @@
 
 void Editor::ClassicContext::WorldPopup::onContent()
 {
-	if (ImGui::Button("Connect to", ImVec2{ width, 0 }))
+	if (ImGui::MenuItem("Connect to"))
 	{
 		access->beginLink(worldNode);
 		closeWindow();
 	}
 
-	if (ImGui::Button("Remove", ImVec2{ width, 0 }))
+	if (ImGui::MenuItem("Remove"))
 	{
 		TaskManager::Instance()->pushTask(
 			new RemoveWorldTask(worldNode->getID())

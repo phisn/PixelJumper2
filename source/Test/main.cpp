@@ -44,8 +44,8 @@ int main()
 		ImGui::SFML::Update(
 			*Device::Screen::GetWindow(),
 			delta);
-		Framework::Core::ProcessLogic(delta);
-		
+
+		Framework::Core::ProcessLogic(delta);		
 		if (!Framework::Core::IsRunning())
 		{
 			break;

@@ -115,14 +115,16 @@ namespace Editor::ClassicContext
 		public Framework::ContextWindow
 	{
 	public:
-		WindowPopup(Resource::ContextID contextID)
+		WindowPopup(WindowAccess* access, Resource::ContextID contextID)
 			:
+			access(access),
 			contextID(contextID)
 		{
 			width = 100;
 		}
 
 	private:
+		WindowAccess* access;
 		Resource::ContextID contextID;
 
 		bool makeWindow() override
@@ -134,9 +136,12 @@ namespace Editor::ClassicContext
 		{
 			if (ImGui::Button("Create World", ImVec2{ width, 0 }))
 			{
-				TaskManager::Instance()->pushTask(
-					new CreateWorldTask(contextID, "World Name")
-				);
+				CreateWorldTask* task = new CreateWorldTask(contextID, "World Name");
+				if (TaskManager::Instance()->pushTask(task))
+				{
+					access->notifyWorldCreated(task->getWorldID());
+				}
+
 				closeWindow();
 			}
 		}
@@ -272,6 +277,31 @@ namespace Editor::ClassicContext
 			mouseConnection.setTarget(mouseCursor);
 		}
 
+		void notifyWorldCreated(Resource::WorldID worldID) override
+		{
+			WorldNode* node = manager.findWorldNodeByID(worldID);
+
+			node->setPosition(
+				pixelToCoords(mousePosition.x, mousePosition.y));
+
+			if (mouseMode == MouseMode::Connect)
+			{
+				if (!TaskManager::Instance()->pushTask(
+					new CreateTransitiveTask(
+						manager.getContextID(),
+						"",
+						connectWorldSource->getID(),
+						worldID)))
+				{
+					Framework::Core::PushScene(
+						new Scene::InformationScene("Failed to create transitive"));
+				}
+
+				mouseMode = MouseMode::None;
+				connectWorldSource->removeTemporaryConnection(&mouseConnection);
+			}
+		}
+
 	private:
 		ClassicContextManager manager;
 		Framework::IndependentPopupWindow* popupWindow = NULL;
@@ -279,6 +309,7 @@ namespace Editor::ClassicContext
 		// utility
 		bool mouseMoved = true;
 		MouseMode mouseMode = MouseMode::None;
+		sf::Vector2i mousePosition;
 
 		Node* nodeHovered = NULL;
 		sf::Clock clickClock;
@@ -303,7 +334,7 @@ namespace Editor::ClassicContext
 			}
 			else
 			{
-				popupWindow = new WindowPopup(manager.getContextID());
+				popupWindow = new WindowPopup(this, manager.getContextID());
 			}
 		}
 
@@ -333,8 +364,6 @@ namespace Editor::ClassicContext
 			{
 				popupWindow = NULL;
 			}
-
-
 		}
 
 		void changeWindowIndex(int index) override
@@ -346,6 +375,9 @@ namespace Editor::ClassicContext
 		{
 			if (!mouseMoved)
 				mouseMoved = true;
+
+			mousePosition.x = event.mouseMove.x;
+			mousePosition.y = event.mouseMove.y;
 
 			switch (mouseMode)
 			{
@@ -381,7 +413,10 @@ namespace Editor::ClassicContext
 
 				manager.findCollidingNodes(mouseMarkingRect.getGlobalBounds(), nodeSelected);
 				for (Node* node : nodeSelected)
+				{
 					node->setStyle(NodeStyle::Selected);
+					manager.PullNodeToFront(node);
+				}
 
 				break;
 			case MouseMode::None:
@@ -449,6 +484,11 @@ namespace Editor::ClassicContext
 							}
 							else
 							{
+								manager.PullNodeToFront(node);
+
+								for (Node* node : nodeSelected)
+									node->setStyle(NodeStyle::Classic);
+
 								if (nodeSelected.size() > 0)
 									nodeSelected.clear();
 

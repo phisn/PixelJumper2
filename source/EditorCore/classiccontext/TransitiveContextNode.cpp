@@ -4,7 +4,7 @@
 
 void Editor::ClassicContext::TransitivePopup::onContent()
 {
-	if (ImGui::Button("Remove", ImVec2{ MaxPopupWidth, 0 }))
+	if (ImGui::MenuItem("Remove"))
 	{
 		TaskManager::Instance()->pushTask(
 			new RemoveTransitiveTask(node->getID())

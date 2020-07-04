@@ -173,7 +173,7 @@ namespace Editor::ClassicContext
 			reconstructNodeContent();
 		}
 
-		void draw(sf::RenderTarget* target)
+		void draw(sf::RenderTarget* target) override
 		{
 			target->draw(rect);
 			target->draw(name);

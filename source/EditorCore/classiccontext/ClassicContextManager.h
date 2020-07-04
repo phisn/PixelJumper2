@@ -29,10 +29,8 @@ namespace Editor::ClassicContext
 
 		void draw(sf::RenderTarget* target)
 		{
-			for (ConnectionNode* transitive : transitives)
-				transitive->draw(target);
-			for (WorldNode* world : worlds)
-				world->draw(target);
+			for (Node* node : nodes)
+				node->draw(target);
 		}
 
 		bool createWorldNode(Resource::WorldID worldID)
@@ -117,6 +115,10 @@ namespace Editor::ClassicContext
 			if (iterator == worlds.end())
 				return false;
 
+			nodes.erase(std::find(
+				nodes.begin(),
+				nodes.end(),
+				*iterator));
 			worlds.erase(iterator);
 
 			return true;
@@ -140,6 +142,10 @@ namespace Editor::ClassicContext
 			node->getSource()->removeTransitiveConnection(node);
 			node->getTarget()->removeTransitiveConnection(node);
 
+			nodes.erase(std::find(
+				nodes.begin(),
+				nodes.end(),
+				(Node*)*iterator));
 			transitives.erase(iterator);
 
 			return true;
@@ -187,6 +193,17 @@ namespace Editor::ClassicContext
 				}
 
 			return NULL;
+		}
+
+		void PullNodeToFront(Node* node)
+		{
+			nodes.splice(
+				nodes.end(),
+				nodes,
+				std::find(
+					nodes.begin(),
+					nodes.end(),
+					node));
 		}
 
 		void findCollidingNodes(sf::FloatRect rect, std::vector<Node*>& collidingNodes)

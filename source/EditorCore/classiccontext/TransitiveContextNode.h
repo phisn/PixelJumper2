@@ -11,9 +11,6 @@ namespace Editor::ClassicContext
 		:
 		public Framework::ContextWindow
 	{
-		const int MaxNameSize = 16;
-		const float MaxPopupWidth = 100;
-
 	public:
 		TransitivePopup(WindowAccess* access, TransitiveNode* node)
 			:

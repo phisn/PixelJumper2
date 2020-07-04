@@ -49,7 +49,7 @@ namespace Editor::ClassicContext
 			return true;
 		}
 
-		void draw(sf::RenderTarget* target)
+		void draw(sf::RenderTarget* target) override
 		{
 			target->draw(arrow);
 		}

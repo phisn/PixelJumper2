@@ -8,6 +8,12 @@ namespace Editor
 		:
 		public Task
 	{
+	public:
+		Resource::WorldID getWorldID() const
+		{
+			return worldID;
+		}
+
 	protected:
 		Resource::ContextID contextID;
 		std::string name;

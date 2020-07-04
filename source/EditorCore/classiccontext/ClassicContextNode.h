@@ -3,7 +3,7 @@
 #include "EditorDatabase.h"
 
 #include "FrameworkCore/imgui/ImGuiModalWindow.h"
-#include "ResourceCore/ResourceBase.h"
+#include "ResourceCore/WorldResource.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -13,6 +13,7 @@ namespace Editor::ClassicContext
 	struct WindowAccess
 	{
 		virtual void beginLink(WorldNode* node) = 0;
+		virtual void notifyWorldCreated(Resource::WorldID worldID) = 0;
 	};
 
 	enum class NodeStyle
@@ -37,6 +38,7 @@ namespace Editor::ClassicContext
 		virtual Framework::IndependentPopupWindow* createPopupWindow(
 			WindowAccess* access) = 0;
 
+		virtual void draw(sf::RenderTarget* target) = 0;
 		virtual void setStyle(NodeStyle style) = 0;
 
 		virtual void setPosition(sf::Vector2f position) = 0;

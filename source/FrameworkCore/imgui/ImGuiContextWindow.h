@@ -11,15 +11,13 @@ namespace Framework
 	public:
 		ContextWindow()
 			:
-			IndependentPopupWindow(WindowFlagsStatic)
+			IndependentPopupWindow(WindowFlagsStatic | ImGuiWindowFlags_AlwaysAutoResize)
 		{
 			active = true;
 		}
 
 		virtual bool makeWindow() override
 		{
-			ImGui::SetNextWindowSize(
-				ImVec2(width, 0));
 			return IndependentPopupWindow::makeWindow();
 		}
 
