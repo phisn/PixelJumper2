@@ -14,7 +14,7 @@ namespace Framework
 			IndependentModalWindow(WindowFlagsOverlay),
 			dimColor(dimColor)
 		{
-			title = "loading_window";
+			setTitle("loading_window");
 		}
 
 		using ModalWindow::open;

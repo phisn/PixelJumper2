@@ -9,10 +9,7 @@
     <ClInclude Include="DatabaseCore.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="StatementBase.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="TableBase.h">
+    <ClInclude Include="Transaction.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
@@ -20,10 +17,7 @@
     <ClCompile Include="DatabaseCore.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="StatementBase.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="TableBase.cpp">
+    <ClCompile Include="Transaction.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

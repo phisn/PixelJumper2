@@ -5,6 +5,9 @@
 
 namespace Scene
 {
+	// informative scene does use popscene and not popchildscene
+	// therefore when the information scene is pushed as a child it will close
+	// the pushing scene
 	class InformationScene
 		:
 		public Framework::Scene
@@ -31,6 +34,7 @@ namespace Scene
 
 			if (!window.process())
 			{
+				// see above
 				Framework::Core::PopScene();
 			}
 
@@ -44,4 +48,12 @@ namespace Scene
 	private:
 		Framework::InformationModalWindow window;
 	};
+}
+
+namespace Framework
+{
+	inline void PushErrorScene(std::string message)
+	{
+		Core::PushChildScene(new ::Scene::InformationScene{ message, "OK" });
+	}
 }

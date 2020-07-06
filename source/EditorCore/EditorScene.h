@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ClassicContextWindow.h"
+#include "classiccontext/ClassicContextWindow.h"
 
 #include "FrameworkCore/FrameworkCore.h"
 #include "FrameworkCore/imgui/ImGuiUtil.h"
@@ -17,7 +17,7 @@ namespace Editor
 			:
 			ImGuiWindowComponent(Framework::WindowFlagsOverlay)
 		{
-			title = "editor_root_window";
+			setTitle("");
 		}
 
 		void process()
@@ -61,23 +61,25 @@ namespace Scene
 
 		void initialize() override
 		{
+			if (!database.initialize())
+			{
+				Framework::Core::PushChildScene(new Editor::EditorFailureScene(
+					"Failed to open database"));
+
+				return;
+			}
+
 			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
+			 
+			Editor::ClassicContext::ClassicContextWindow* window = new Editor::ClassicContext::ClassicContextWindow(
+				1);
 
-			Editor::ClassicWorld* world = new Editor::ClassicWorld;
-			world->name = "test world";
-			context.worlds.push_back(world);
-
-			Editor::ClassicContextWindowDataset dataset;
-			dataset.classicContext = &context;
-			Editor::ClassicContextWindow* window = new Editor::ClassicContextWindow(dataset);
-
-
-			windows.push_back(window);
+			windowManager.makeWindow(window);
 		}
 
 		void onEvent(const sf::Event event) override
 		{
-			for (Editor::EditorWindow* window : windows)
+			for (Editor::EditorWindow* window : windowManager.getWindows())
 				window->onEvent(event);
 		}
 		
@@ -85,7 +87,7 @@ namespace Scene
 		{
 			rootWindow.process();
 
-			for (Editor::EditorWindow* window : windows)
+			for (Editor::EditorWindow* window : windowManager.getWindows())
 				window->onProcess();
 		}
 
@@ -94,9 +96,10 @@ namespace Scene
 		}
 
 	private:
-		Editor::ClassicContext context;
 		Editor::RootWindow rootWindow;
 
-		std::vector<Editor::EditorWindow*> windows;
+		Editor::WindowManager windowManager;
+		Editor::TaskManager taskManager;
+		Editor::EditorDatabase database;
 	};
 }

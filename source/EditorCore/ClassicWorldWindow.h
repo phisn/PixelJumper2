@@ -5,6 +5,7 @@
 
 namespace Editor
 {
+	/*
 	class ClassicWorldWindow
 		:
 		public Framework::ImGuiRenderWindow
@@ -17,6 +18,7 @@ namespace Editor
 	public:
 		ClassicWorldWindow()
 		{
+			setTitle("World Window #n");
 			title = "ClassicContext";
 			grid.setPrimitiveType(sf::PrimitiveType::Lines);
 			primaryView.setSize({ 100, 100 });
@@ -27,7 +29,7 @@ namespace Editor
 
 		void onEvent(sf::Event event)
 		{
-			event = convertWindowEvent(event);
+			convertWindowEvent(event);
 
 			switch (event.type)
 			{
@@ -247,4 +249,5 @@ namespace Editor
 			return 4 + std::ceil(primaryView.getSize().x / GridSize) * 2 + std::ceil(primaryView.getSize().y / GridSize) * 2;
 		}
 	};
+	*/
 }

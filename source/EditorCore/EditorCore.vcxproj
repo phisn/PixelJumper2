@@ -82,6 +82,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseCore\DatabaseCore.vcxproj">
+      <Project>{50f55989-dc3d-4134-9782-3174d0644ae9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\FrameworkCore\FrameworkCore.vcxproj">
       <Project>{b1736540-20ad-4bac-b9ed-26bd4052e2cf}</Project>
     </ProjectReference>
@@ -97,27 +100,45 @@
     <ProjectReference Include="..\Logger\Logger.vcxproj">
       <Project>{2132b508-f7f2-4cfb-9b81-bbac679ae5a9}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\NodeEditor\NodeEditor.vcxproj">
-      <Project>{2a69481d-2df4-4041-afd6-0d0edd16246d}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\ResourceCore\Resource.vcxproj">
       <Project>{52da07a5-220a-4d77-a4eb-b7a9ff800d9c}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClassicContextWindow.cpp" />
+    <ClCompile Include="classiccontext\ClassicContextConnectionNode.cpp" />
+    <ClCompile Include="classiccontext\ClassicContextManager.cpp" />
+    <ClCompile Include="classiccontext\ClassicContextWindow.cpp" />
+    <ClCompile Include="classiccontext\ClassicContextWorldNode.cpp" />
+    <ClCompile Include="classiccontext\TransitiveContextNode.cpp" />
     <ClCompile Include="ClassicWorldWindow.cpp" />
+    <ClCompile Include="EditorDatabase.cpp" />
     <ClCompile Include="EditorDataset.cpp" />
+    <ClCompile Include="EditorFailureScene.cpp" />
     <ClCompile Include="EditorScene.cpp" />
-    <ClCompile Include="EditorWindow.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="property\PropertyWindow.cpp" />
+    <ClCompile Include="TaskManager.cpp" />
+    <ClCompile Include="task\CreateTransitiveTask.cpp" />
+    <ClCompile Include="task\CreateWorldTask.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClassicContextWindow.h" />
+    <ClInclude Include="classiccontext\ClassicContextConnection.h" />
+    <ClInclude Include="classiccontext\ClassicContextConnectionNode.h" />
+    <ClInclude Include="classiccontext\ClassicContextManager.h" />
+    <ClInclude Include="classiccontext\ClassicContextNode.h" />
+    <ClInclude Include="classiccontext\ClassicContextWindow.h" />
+    <ClInclude Include="classiccontext\ClassicContextWorldNode.h" />
+    <ClInclude Include="classiccontext\TransitiveContextNode.h" />
     <ClInclude Include="ClassicWorldWindow.h" />
+    <ClInclude Include="EditorDatabase.h" />
     <ClInclude Include="EditorDataset.h" />
+    <ClInclude Include="EditorFailureScene.h" />
     <ClInclude Include="EditorScene.h" />
-    <ClInclude Include="EditorWindow.h" />
+    <ClInclude Include="property\PropertyWindow.h" />
+    <ClInclude Include="TaskManager.h" />
+    <ClInclude Include="task\CreateTransitiveTask.h" />
+    <ClInclude Include="task\CreateWorldTask.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

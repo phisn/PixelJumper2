@@ -1,2 +1,0 @@
-C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\DatabaseCore.pdb
-C:\Users\phisn\source\repos\PixelJumper2\source\DatabaseCore\x64\Debug\DatabaseCore.pdb

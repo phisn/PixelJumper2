@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -83,16 +83,20 @@
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp" />
     <ClCompile Include="imgui\ImGuiModalWindow.cpp" />
+    <ClCompile Include="imgui\ImGuiContextWindow.cpp" />
     <ClCompile Include="imgui\ImGuiRenderWindow.cpp" />
     <ClCompile Include="imgui\ImGuiWindow.cpp" />
     <ClCompile Include="ScreenDevice.cpp" />
     <ClCompile Include="ViewChain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrowShape.h" />
+    <ClInclude Include="BezierArrow.h" />
     <ClInclude Include="CrossShape.h" />
     <ClInclude Include="FrameworkCore.h" />
     <ClInclude Include="imgui\ImGuiGridWindow.h" />
     <ClInclude Include="imgui\ImGuiModalWindow.h" />
+    <ClInclude Include="imgui\ImGuiContextWindow.h" />
     <ClInclude Include="imgui\ImGuiRenderWindow.h" />
     <ClInclude Include="imgui\ImGuiUtil.h" />
     <ClInclude Include="imgui\ImGuiWindow.h" />

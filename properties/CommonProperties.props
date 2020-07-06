@@ -4,12 +4,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir>$(SolutionDir)build\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir>build\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\include;$(SolutionDir)source\;$(ProjectDir);$(SolutionDir)source\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;STEAMNETWORKINGSOCKETS_STATIC_LINK;_MBCS;UNICODE;SFML_STATIC;_UNICODE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;STEAMNETWORKINGSOCKETS_STATIC_LINK;_MBCS;UNICODE;SFML_STATIC;_UNICODE;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level1</WarningLevel>
       <DisableSpecificWarnings>26812</DisableSpecificWarnings>
     </ClCompile>

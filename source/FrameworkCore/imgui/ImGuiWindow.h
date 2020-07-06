@@ -2,6 +2,7 @@
 
 #include "ImGuiUtil.h"
 
+#include "Common/RandomModule.h"
 #include "Logger/Logger.h"
 
 #include <SFML/Graphics.hpp>
@@ -22,6 +23,10 @@ namespace Framework
 			:
 			windowFlags(windowFlags)
 		{
+			for (int i = 0; i < 8; ++i)
+			{
+				tag.push_back('A' + Module::Random::MakeRandom<int32_t>() % ('Z' - 'A'));
+			}
 		}
 
 		virtual bool begin()
@@ -55,7 +60,6 @@ namespace Framework
 
 	protected:
 		bool useActive = false;
-		std::string title;
 		ImGuiWindowFlags windowFlags;
 
 		bool windowFocused;
@@ -63,7 +67,15 @@ namespace Framework
 		sf::Vector2f windowSize;
 		sf::Vector2f windowPosition;
 
+		void setTitle(std::string title)
+		{
+			this->title = title + "###" + tag;
+		}
+
 	private:
+		std::string title;
+		std::string tag;
+
 		bool active = true;
 	};
 }

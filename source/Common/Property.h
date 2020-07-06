@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Notifier.h"
+
 #include <functional>
 #include <vector>
 
@@ -14,54 +16,9 @@ namespace Util
 		virtual void onValueChanged() const noexcept = 0;
 	};
 
-	// used to add listener indpendently from
-	// template type
-	class IndependentPropertyBase
-	{
-	public:
-		typedef size_t IndependentListenerId;
-		typedef std::function<void()> IndependentListener;
-
-		IndependentListenerId addIndependentListener(const IndependentListener listener)
-		{
-			const IndependentListenerId nextId = ++lastId;
-			independentListeners.push_back(std::make_pair(nextId, listener));
-			return nextId;
-		}
-
-		bool removeIndependentListener(const IndependentListenerId id)
-		{
-			for (IndependentListenerContainer::const_iterator iterator = independentListeners.cbegin()
-			   ; iterator != independentListeners.cend(); iterator++)
-				if (iterator->first == id)
-				{
-					independentListeners.erase(iterator);
-					return true;
-				}
-
-			return false;
-		}
-
-	protected:
-		void callIndependentListeners() const
-		{
-			for (const IndependentListenerPair& listener : independentListeners)
-				listener.second();
-		}
-
-	private:
-		static IndependentListenerId lastId;
-
-		typedef std::pair<IndependentListenerId, IndependentListener> IndependentListenerPair;
-		typedef std::vector<IndependentListenerPair> IndependentListenerContainer;
-
-		IndependentListenerContainer independentListeners;
-	};
-
-	template <typename ListenerT>
 	class PropertyBase
 		:
-		public IndependentPropertyBase
+		public Util::Notifier<PropertyBase>
 	{
 		PropertyBase& operator=(PropertyBase&) = delete;
 		PropertyBase& operator=(const PropertyBase&) = delete;
@@ -70,30 +27,22 @@ namespace Util
 		PropertyBase(const PropertyBase&) = delete;
 
 	public:
-		typedef ListenerT Listener;
-
-		PropertyBase() = default;
-
-		void addListener(const Listener listener)
+		PropertyBase()
 		{
-			listeners.push_back(listener);
 		}
 
-	protected:
-		std::vector<Listener> listeners;
+		typedef Util::Notifier<PropertyBase> NotifierT;
+
+		using NotifierT::notify;
 	};
 
 	template <typename T>
 	class ValuePropertyBase
 		:
-		public PropertyBase<std::function<void(
-			T oldValue,
-			T newValue)>>
+		public PropertyBase
 	{
 	public:
 		typedef T Type;
-
-		T value;
 
 		ValuePropertyBase()
 		{
@@ -127,39 +76,19 @@ namespace Util
 			return value;
 		}
 
-#ifdef DANGEROUS // TODO: ?
-		T& writeValue()
-		{
-			return value;
-		}
-#endif
 		// enable workarounds for indirect properties
 		// like size and lazy property
 		virtual void setValue(const T value)
 		{
-			const T temp = std::move(this->value);
-			this->value = T(value);
-
-			valueChanged(
-				std::move(temp)
-			);
+			if (value != this->value)
+			{
+				this->value = T(value);
+				notify();
+			}
 		}
 
 	protected:
-		void valueChanged(const T&& oldValue) const
-		{
-			if (value == oldValue)
-			{
-				return;
-			}
-
-			for (const Listener& listener : listeners)
-			{
-				listener(std::move(oldValue), value);
-			}
-
-			callIndependentListeners();
-		}
+		T value;
 	};
 
 	enum class BasicPropertyType
@@ -167,6 +96,9 @@ namespace Util
 		CommonProperty,
 		CustomProperty,
 		VectorProperty,
+		ContainerMapProperty,
+		ContainerVectorProperty,
+		StringProperty,
 		ArithmeticProperty,
 		PointerProperty
 	};
@@ -199,6 +131,18 @@ namespace Util
 	struct DeterminePropertyType<sf::Vector2<T>, void>
 	{
 		static const BasicPropertyType type = BasicPropertyType::VectorProperty;
+	};
+
+	template <typename T>
+	struct DeterminePropertyType<std::vector<T>, void>
+	{
+		static const BasicPropertyType type = BasicPropertyType::ContainerVectorProperty;
+	};
+
+	template <typename T>
+	struct DeterminePropertyType<std::basic_string<T>, void>
+	{
+		static const BasicPropertyType type = BasicPropertyType::StringProperty;
 	};
 
 	template <typename T, 
@@ -253,52 +197,46 @@ namespace Util
 		{
 		}
 
-		/*explicit Property(const E x, const E y)
-			:
-			ValuePropertyBase(
-				sf::Vector2<E>(x, y)
-			)
-		{
-		}*/
-
-		/*explicit Property(const E x, const E y)
-		{
-			value.x = std::move(x);
-			value.y = std::move(y);
-		}*/
-
 		Property& operator+=(const _T z)
 		{
-			const _T oldValue = value;
-			value += z;
-			valueChanged(std::move(oldValue));
+			if (z != sf::Vector2<E>{ 0, 0 })
+			{
+				value += z;
+				notify();
+			}
 
 			return *this;
 		}
 
 		Property& operator-=(const _T z)
 		{
-			const _T oldValue = value;
-			value -= z;
-			valueChanged(std::move(oldValue));
+			if (z != sf::Vector2<E>{ 0, 0 })
+			{
+				value -= z;
+				notify();
+			}
 
 			return *this;
 		}
 
 		Property& operator*=(const E z)
 		{
-			const _T oldValue = value;
-			value *= z;
-			valueChanged(std::move(oldValue));
+			if (z != 1)
+			{
+				value *= z;
+				notify();
+			}
 
 			return *this;
 		}
 
 		Property& operator/=(const E z)
 		{
-			const _T oldValue = value;
-			value /= z;
-			valueChanged(std::move(oldValue));
+			if (z != 1)
+			{
+				value /= z;
+				notify();
+			}
 
 			return *this;
 		}
@@ -315,27 +253,32 @@ namespace Util
 
 		void setX(const E x)
 		{
-			const _T oldValue = value;
-			value.x = std::move(x);
-			valueChanged(std::move(oldValue));
+			if (x != value.x)
+			{
+				value.x = std::move(x);
+				notify();
+			}
 		}
 
 		void setY(const E y)
 		{
-			const _T oldValue = value;
-			value.y = std::move(y);
-			valueChanged(std::move(oldValue));
+			if (y != value.y)
+			{
+				value.y = std::move(y);
+				notify();
+			}
 		}
 
 		using ValuePropertyBase::setValue;
 		void setValue(const E x, const E y)
 		{
-			const _T oldValue = value;
-			
-			value.x = std::move(x);
-			value.y = std::move(y);
+			if (x != value.x || y != value.y)
+			{
+				value.x = std::move(x);
+				value.y = std::move(y);
 
-			valueChanged(std::move(oldValue));
+				notify();
+			}
 		}
 
 		using ValuePropertyBase::operator const _T;
@@ -362,38 +305,36 @@ namespace Util
 
 		Property& operator++()
 		{
-			const T oldValue = value;
 			++value;
-			valueChanged(std::move(oldValue));
+			notify();
 
 			return *this;
 		}
 
 		T operator++(int)
 		{
-			const T oldValue = value;
+			T oldValue = value;
 			++value;
-			valueChanged(std::move(oldValue));
-
+			notify();
 			return oldValue;
 		}
 
 		template <typename Z>
 		Property& operator+=(const Z z)
 		{
-
-			const T oldValue = value;
-			value += (T) z;
-			valueChanged(std::move(oldValue));
+			if (z != 0)
+			{
+				value += (T)z;
+				notify();
+			}
 
 			return *this;
 		}
 
 		Property& operator--()
 		{
-			const T oldValue = value;
 			--value;
-			valueChanged(std::move(oldValue));
+			notify();
 
 			return *this;
 		}
@@ -402,18 +343,18 @@ namespace Util
 		{
 			const T oldValue = value;
 			--value;
-			valueChanged(std::move(oldValue));
-
+			notify();
 			return oldValue;
 		}
 
 		template <typename Z>
 		Property& operator-=(const Z z)
 		{
-
-			const T oldValue = value;
-			value -= (T)z;
-			valueChanged(std::move(oldValue));
+			if (z != 0)
+			{
+				value -= (T)z;
+				notify();
+			}
 
 			return *this;
 		}
@@ -421,10 +362,11 @@ namespace Util
 		template <typename Z>
 		Property& operator*=(const Z z)
 		{
-
-			const T oldValue = value;
-			value *= (T)z;
-			valueChanged(std::move(oldValue));
+			if (z != 1)
+			{
+				value *= (T) z;
+				notify();
+			}
 
 			return *this;
 		}
@@ -432,10 +374,11 @@ namespace Util
 		template <typename Z>
 		Property& operator/=(const Z z)
 		{
-
-			const T oldValue = value;
-			value /= (T)z;
-			valueChanged(std::move(oldValue));
+			if (z != 1)
+			{
+				value /= (T)z;
+				notify();
+			}
 
 			return *this;
 		}
@@ -472,9 +415,7 @@ namespace Util
 	template <typename T>
 	class Property<T, BasicPropertyType::CustomProperty>
 		:
-		public PropertyBase<
-			std::function<void(const T&)>
-		>
+		public PropertyBase
 	{
 		class Value : public T
 		{
@@ -489,7 +430,7 @@ namespace Util
 
 			void onValueChanged() const noexcept override
 			{
-				parent->onValueChanged();
+				parent->notify();
 			}
 
 		private:
@@ -515,18 +456,58 @@ namespace Util
 		}
 
 	public:
-		void onValueChanged()
-		{
-			for (const Listener& listener : listeners)
-			{
-				listener(value);
-			}
-
-			callIndependentListeners();
-		}
-
 		Value value;
 	};
+
+	/*template <typename T>
+	class Property<std::vector<T>, BasicPropertyType::ContainerVectorProperty>
+		:
+		public PropertyBase,
+		public std::vector<T>
+	{
+	public:
+		using vector::vector;
+
+		Property()
+			:
+			vector()
+		{
+		}
+
+		void push_back(T value)
+		{
+			vector::push_back(value);
+			notify();
+		}
+
+		void pop_back()
+		{
+			vector::pop_back();
+			notify();
+		}
+
+		template <class... _Valty>
+		decltype(auto) emplace_back(_Valty&&... _Val)
+		{
+			decltype(auto) temp = vector::emplace_back(_Val...);
+			notify();
+			return temp;
+		}
+
+		void clear()
+		{
+			vector::clear();
+			vector::emplace_back();
+			notify();
+		}
+
+		iterator erase(const_iterator _Where)
+		{
+			iterator temp = vector::erase(_Where);
+			notify();
+			return temp;
+		}
+	};*/
 }
 
 // need special for auto casting between

@@ -13,7 +13,7 @@ namespace Framework
 			:
 			IndependentModalWindow(WindowFlagsStatic)
 		{
-			title = "information_window";
+			setTitle("information window");
 		}
 
 		void open(std::string text, std::string button = "Close")

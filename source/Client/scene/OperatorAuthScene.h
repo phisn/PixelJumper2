@@ -35,7 +35,7 @@ namespace Scene
 				ImGuiWindowFlags_NoBackground |
 				ImGuiWindowFlags_MenuBar)
 		{
-			title = "###root_window";
+			setTitle("");
 			useActive = true;
 		}
 
@@ -68,7 +68,7 @@ namespace Scene
 			:
 			ImGuiWindowComponent(Framework::WindowFlagsStatic)
 		{
-			title = "login_window";
+			setTitle("login_window");
 			Framework::ImGuiApplyColorStyleLight();
 		}
 

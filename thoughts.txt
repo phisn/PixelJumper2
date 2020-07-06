@@ -1,13 +1,32 @@
-#classic resource
-- gamecore classicsiumulation is broken
--> currently all nearby worlds are loaded immedialty after entering a world
-   but the client often does not know their resources until requested. 
-# clients do not longer request resources from the server
-  the server does always send the client a new resource
--> the classicsimulation should be able to delay world initialization when
-   the parent needs to
--> the client enters a new world, the loading of other worlds is delayed first.
-   the server sends new resources, the client loads all resoruces
-# idea -> load every resource, that the server sends (might allow bad thinks?)
-- client needs updates for new classicclient changes and now many request
-  adjustments
+- nodes do only represent data from datasets and do not change data directly
+- popups are not dependent on nodes but dependent on data. they change data. these changes
+  are indirectly (though the window as a taskcontext buffer)  made on the nodes
+
+- contextwindow has no responsibility to handle world properties
+  its only responsibility is to handle connections
+-> properties like world name are changed in a property window
+-> a popup in contextwindow should only contain buttons
+- there should be a global window manager that manages all windows
+-> a contextwindow could aquire a list of all property windows
+   and show them in a list
+   [rightclick on world >> context menu opens >> select properties 
+    >> new contextmenu opens >> lists all property windows and a 
+    create at the bottom to create a new property window]
+-> windows are listed from 0 to N and shown as Window #i
+-> maybe the manager should have a list of definitions that individually
+   manages all windows of a category
+
+- new model uses   
+0. a manager, that stores a map of all datasets
+   with a datasetid
+1. doubled initialization
+-> first only static content
+-> second refernces to other datasets.
+   these have to be extracted with datasetids
+2. responsibility is shared. a dataset can request responsibility
+   for a dataset
+   datasets without responsability can potentially be deleted or error?
+3. datasets can reference optional datasets
+   these can be set to non existing at any time
+   when a other dataset releases the responsability and
+   no other dataset has one anymore

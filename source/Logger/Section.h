@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Conversion.h"
 #include "LoggerLevel.h"
 #include "SectionHost.h"
 

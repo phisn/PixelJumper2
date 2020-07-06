@@ -92,14 +92,12 @@ namespace Game
 			view(view)
 		{
 			properties.viewFollow.addListener(
-				[this](const bool oldViewFollow,
-					   const bool newViewFollow)
+				[this]()
 				{
 					properties.viewWindow.update(true);
 				});
 			properties.viewWindow.addListener(
-				[this](const sf::FloatRect oldViewWindow,
-					   const sf::FloatRect newViewWindow)
+				[this]()
 				{
 					if (properties.viewFollow)
 					{
@@ -109,28 +107,26 @@ namespace Game
 
 						this->view->setSize(
 							{
-								newViewWindow.width,
-								newViewWindow.height
+								properties.viewWindow->width,
+								properties.viewWindow->height
 							});
 					}
 					else
 					{
-						this->view->setRect(newViewWindow);
+						this->view->setRect(properties.viewWindow);
 					}
 				});
 			properties.viewRotation.addListener(
-				[this](const float oldViewRotation,
-					   const float newViewRotation)
+				[this]()
 				{
-					this->view->setRotation(newViewRotation);
+					this->view->setRotation(properties.viewRotation);
 				});
 			properties.position.addListener(
-				[this](const sf::Vector2f oldPosition,
-					   const sf::Vector2f newPosition)
+				[this]()
 				{
 					if (properties.viewFollow)
 					{
-						this->view->setCenter(newPosition);
+						this->view->setCenter(properties.position);
 					}
 				});
 		}

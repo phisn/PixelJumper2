@@ -1,2 +1,0 @@
-C:\Users\phisn\source\repos\PixelJumper2\build\Debug_x64\OperatorClient.pdb
-C:\Users\phisn\source\repos\PixelJumper2\source\OperatorClient\x64\Debug\OperatorClient.pdb

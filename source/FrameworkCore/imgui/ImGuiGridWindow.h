@@ -112,7 +112,7 @@ namespace Framework
 	protected:
 		float zoomSpeed = 0.9f;
 		float maxViewSize = 10.f;
-		float minViewSize = 0.4f;
+		float minViewSize = 0.004f;
 		float GridSize = 50.f;
 
 		sf::Color BackgroundColor = { 40, 40, 40 };

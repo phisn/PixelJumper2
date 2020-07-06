@@ -31,6 +31,7 @@ namespace Device
 				Resource::SettingsResourceDefinition))
 		{
 			screenResource = resource.content;
+
 		}
 		else
 		{

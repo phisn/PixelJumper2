@@ -10,6 +10,8 @@ namespace Resource
 {
 	extern const Resource::ResourceTypeDefinition ClassicContextResourceDefinition;
 
+	typedef uint64_t ContextID;
+
 	// does not conain actual world
 	class ClassicWorldResource
 		:

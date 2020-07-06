@@ -54,6 +54,15 @@
     <ClInclude Include="imgui\ImGuiGridWindow.h">
       <Filter>source\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="ArrowShape.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierArrow.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\ImGuiContextWindow.h">
+      <Filter>source\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameworkCore.cpp">
@@ -72,6 +81,9 @@
       <Filter>source\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\ImGuiRenderWindow.cpp">
+      <Filter>source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\ImGuiContextWindow.cpp">
       <Filter>source\imgui</Filter>
     </ClCompile>
   </ItemGroup>
