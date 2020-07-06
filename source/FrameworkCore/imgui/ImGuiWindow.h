@@ -25,7 +25,7 @@ namespace Framework
 		{
 			for (int i = 0; i < 8; ++i)
 			{
-				tag.push_back('A' + Module::Random::MakeRandom<int32_t>() % ('A' - 'Z'));
+				tag.push_back('A' + Module::Random::MakeRandom<int32_t>() % ('Z' - 'A'));
 			}
 		}
 

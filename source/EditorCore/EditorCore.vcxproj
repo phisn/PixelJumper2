@@ -115,6 +115,7 @@
     <ClCompile Include="EditorDataset.cpp" />
     <ClCompile Include="EditorFailureScene.cpp" />
     <ClCompile Include="EditorScene.cpp" />
+    <ClCompile Include="property\PropertyWindow.cpp" />
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="task\CreateTransitiveTask.cpp" />
     <ClCompile Include="task\CreateWorldTask.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="EditorDataset.h" />
     <ClInclude Include="EditorFailureScene.h" />
     <ClInclude Include="EditorScene.h" />
+    <ClInclude Include="property\PropertyWindow.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="task\CreateTransitiveTask.h" />
     <ClInclude Include="task\CreateWorldTask.h" />
